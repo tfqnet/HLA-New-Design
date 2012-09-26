@@ -26,6 +26,7 @@
 		C4E9D1CA1612C7D300016053 /* MainScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1C91612C7D300016053 /* MainScreen.m */; };
 		C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1CB1612C9C300016053 /* QuartzCore.framework */; };
 		C4E9D1D01612CBFF00016053 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1CF1612CBFF00016053 /* Test.m */; };
+		C4E9D2071612DBD200016053 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D2061612DBD200016053 /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,10 +34,10 @@
 		C4E9D1941612C64900016053 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C4E9D1961612C64900016053 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C4E9D1981612C64900016053 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		C4E9D19C1612C64900016053 /* HLA Ipad-Info.plist */ = {isa = PBXFileReference; path = "HLA Ipad-Info.plist"; sourceTree = "<group>"; };
+		C4E9D19C1612C64900016053 /* HLA Ipad-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HLA Ipad-Info.plist"; sourceTree = "<group>"; };
 		C4E9D19E1612C64900016053 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C4E9D1A01612C64900016053 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C4E9D1A21612C64900016053 /* HLA Ipad-Prefix.pch */ = {isa = PBXFileReference; path = "HLA Ipad-Prefix.pch"; sourceTree = "<group>"; };
+		C4E9D1A21612C64900016053 /* HLA Ipad-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HLA Ipad-Prefix.pch"; sourceTree = "<group>"; };
 		C4E9D1A31612C64900016053 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C4E9D1A41612C64900016053 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C4E9D1A71612C64900016053 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
@@ -58,6 +59,7 @@
 		C4E9D1CB1612C9C300016053 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C4E9D1CE1612CBFF00016053 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
 		C4E9D1CF1612CBFF00016053 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
+		C4E9D2061612DBD200016053 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../../Desktop/libsqlite3.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				C4E9D1951612C64900016053 /* UIKit.framework in Frameworks */,
 				C4E9D1971612C64900016053 /* Foundation.framework in Frameworks */,
 				C4E9D1991612C64900016053 /* CoreGraphics.framework in Frameworks */,
+				C4E9D2071612DBD200016053 /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +101,7 @@
 		C4E9D1931612C64900016053 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4E9D2061612DBD200016053 /* libsqlite3.dylib */,
 				C4E9D1941612C64900016053 /* UIKit.framework */,
 				C4E9D1961612C64900016053 /* Foundation.framework */,
 				C4E9D1981612C64900016053 /* CoreGraphics.framework */,
@@ -315,6 +319,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../Desktop\"",
 				);
 				PRODUCT_NAME = "HLA Ipad";
 				WRAPPER_EXTENSION = app;
@@ -330,6 +335,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../Desktop\"",
 				);
 				PRODUCT_NAME = "HLA Ipad";
 				WRAPPER_EXTENSION = app;
