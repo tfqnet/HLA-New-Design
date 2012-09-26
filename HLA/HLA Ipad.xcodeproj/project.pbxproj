@@ -1,0 +1,363 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C4E9D1951612C64900016053 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1941612C64900016053 /* UIKit.framework */; };
+		C4E9D1971612C64900016053 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1961612C64900016053 /* Foundation.framework */; };
+		C4E9D1991612C64900016053 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1981612C64900016053 /* CoreGraphics.framework */; };
+		C4E9D19F1612C64900016053 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D19D1612C64900016053 /* InfoPlist.strings */; };
+		C4E9D1A11612C64900016053 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1A01612C64900016053 /* main.m */; };
+		C4E9D1A51612C64900016053 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1A41612C64900016053 /* AppDelegate.m */; };
+		C4E9D1A81612C64900016053 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */; };
+		C4E9D1AB1612C64900016053 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1AA1612C64900016053 /* ViewController.m */; };
+		C4E9D1BA1612C68200016053 /* FSVerticalTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1B31612C68200016053 /* FSVerticalTabBar.m */; };
+		C4E9D1BB1612C68200016053 /* FSVerticalTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1B51612C68200016053 /* FSVerticalTabBarButton.m */; };
+		C4E9D1BC1612C68200016053 /* FSVerticalTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1B71612C68200016053 /* FSVerticalTabBarController.m */; };
+		C4E9D1BD1612C68200016053 /* selectionIndicatorImage.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1B81612C68200016053 /* selectionIndicatorImage.png */; };
+		C4E9D1BE1612C68200016053 /* selectionIndicatorImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1B91612C68200016053 /* selectionIndicatorImage@2x.png */; };
+		C4E9D1C51612C78400016053 /* ios-linen.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1C21612C78400016053 /* ios-linen.png */; };
+		C4E9D1C61612C78400016053 /* magnifying-glass.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1C31612C78400016053 /* magnifying-glass.png */; };
+		C4E9D1C71612C78400016053 /* magnifying-glass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1C41612C78400016053 /* magnifying-glass@2x.png */; };
+		C4E9D1CA1612C7D300016053 /* MainScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1C91612C7D300016053 /* MainScreen.m */; };
+		C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1CB1612C9C300016053 /* QuartzCore.framework */; };
+		C4E9D1D01612CBFF00016053 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1CF1612CBFF00016053 /* Test.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C4E9D1901612C64900016053 /* HLA Ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HLA Ipad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4E9D1941612C64900016053 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C4E9D1961612C64900016053 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C4E9D1981612C64900016053 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C4E9D19C1612C64900016053 /* HLA Ipad-Info.plist */ = {isa = PBXFileReference; path = "HLA Ipad-Info.plist"; sourceTree = "<group>"; };
+		C4E9D19E1612C64900016053 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C4E9D1A01612C64900016053 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C4E9D1A21612C64900016053 /* HLA Ipad-Prefix.pch */ = {isa = PBXFileReference; path = "HLA Ipad-Prefix.pch"; sourceTree = "<group>"; };
+		C4E9D1A31612C64900016053 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C4E9D1A41612C64900016053 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C4E9D1A71612C64900016053 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		C4E9D1A91612C64900016053 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C4E9D1AA1612C64900016053 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C4E9D1B21612C68200016053 /* FSVerticalTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSVerticalTabBar.h; sourceTree = "<group>"; };
+		C4E9D1B31612C68200016053 /* FSVerticalTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSVerticalTabBar.m; sourceTree = "<group>"; };
+		C4E9D1B41612C68200016053 /* FSVerticalTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSVerticalTabBarButton.h; sourceTree = "<group>"; };
+		C4E9D1B51612C68200016053 /* FSVerticalTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSVerticalTabBarButton.m; sourceTree = "<group>"; };
+		C4E9D1B61612C68200016053 /* FSVerticalTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSVerticalTabBarController.h; sourceTree = "<group>"; };
+		C4E9D1B71612C68200016053 /* FSVerticalTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSVerticalTabBarController.m; sourceTree = "<group>"; };
+		C4E9D1B81612C68200016053 /* selectionIndicatorImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selectionIndicatorImage.png; sourceTree = "<group>"; };
+		C4E9D1B91612C68200016053 /* selectionIndicatorImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selectionIndicatorImage@2x.png"; sourceTree = "<group>"; };
+		C4E9D1C21612C78400016053 /* ios-linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-linen.png"; sourceTree = "<group>"; };
+		C4E9D1C31612C78400016053 /* magnifying-glass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "magnifying-glass.png"; sourceTree = "<group>"; };
+		C4E9D1C41612C78400016053 /* magnifying-glass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "magnifying-glass@2x.png"; sourceTree = "<group>"; };
+		C4E9D1C81612C7D300016053 /* MainScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreen.h; sourceTree = "<group>"; };
+		C4E9D1C91612C7D300016053 /* MainScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreen.m; sourceTree = "<group>"; };
+		C4E9D1CB1612C9C300016053 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C4E9D1CE1612CBFF00016053 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		C4E9D1CF1612CBFF00016053 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C4E9D18D1612C64900016053 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */,
+				C4E9D1951612C64900016053 /* UIKit.framework in Frameworks */,
+				C4E9D1971612C64900016053 /* Foundation.framework in Frameworks */,
+				C4E9D1991612C64900016053 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C4E9D1851612C64900016053 = {
+			isa = PBXGroup;
+			children = (
+				C4E9D1CB1612C9C300016053 /* QuartzCore.framework */,
+				C4E9D1BF1612C6A500016053 /* Images */,
+				C4E9D1B11612C65000016053 /* FSVerticalTabBarController */,
+				C4E9D19A1612C64900016053 /* HLA */,
+				C4E9D1931612C64900016053 /* Frameworks */,
+				C4E9D1911612C64900016053 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C4E9D1911612C64900016053 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C4E9D1901612C64900016053 /* HLA Ipad.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C4E9D1931612C64900016053 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C4E9D1941612C64900016053 /* UIKit.framework */,
+				C4E9D1961612C64900016053 /* Foundation.framework */,
+				C4E9D1981612C64900016053 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C4E9D19A1612C64900016053 /* HLA */ = {
+			isa = PBXGroup;
+			children = (
+				C4E9D1A31612C64900016053 /* AppDelegate.h */,
+				C4E9D1A41612C64900016053 /* AppDelegate.m */,
+				C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */,
+				C4E9D1A91612C64900016053 /* ViewController.h */,
+				C4E9D1AA1612C64900016053 /* ViewController.m */,
+				C4E9D19B1612C64900016053 /* Supporting Files */,
+				C4E9D1C81612C7D300016053 /* MainScreen.h */,
+				C4E9D1C91612C7D300016053 /* MainScreen.m */,
+				C4E9D1CE1612CBFF00016053 /* Test.h */,
+				C4E9D1CF1612CBFF00016053 /* Test.m */,
+			);
+			path = HLA;
+			sourceTree = "<group>";
+		};
+		C4E9D19B1612C64900016053 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C4E9D19C1612C64900016053 /* HLA Ipad-Info.plist */,
+				C4E9D19D1612C64900016053 /* InfoPlist.strings */,
+				C4E9D1A01612C64900016053 /* main.m */,
+				C4E9D1A21612C64900016053 /* HLA Ipad-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C4E9D1B11612C65000016053 /* FSVerticalTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				C4E9D1B21612C68200016053 /* FSVerticalTabBar.h */,
+				C4E9D1B31612C68200016053 /* FSVerticalTabBar.m */,
+				C4E9D1B41612C68200016053 /* FSVerticalTabBarButton.h */,
+				C4E9D1B51612C68200016053 /* FSVerticalTabBarButton.m */,
+				C4E9D1B61612C68200016053 /* FSVerticalTabBarController.h */,
+				C4E9D1B71612C68200016053 /* FSVerticalTabBarController.m */,
+				C4E9D1B81612C68200016053 /* selectionIndicatorImage.png */,
+				C4E9D1B91612C68200016053 /* selectionIndicatorImage@2x.png */,
+			);
+			name = FSVerticalTabBarController;
+			sourceTree = "<group>";
+		};
+		C4E9D1BF1612C6A500016053 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				C4E9D1C21612C78400016053 /* ios-linen.png */,
+				C4E9D1C31612C78400016053 /* magnifying-glass.png */,
+				C4E9D1C41612C78400016053 /* magnifying-glass@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C4E9D18F1612C64900016053 /* HLA Ipad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4E9D1AE1612C64900016053 /* Build configuration list for PBXNativeTarget "HLA Ipad" */;
+			buildPhases = (
+				C4E9D18C1612C64900016053 /* Sources */,
+				C4E9D18D1612C64900016053 /* Frameworks */,
+				C4E9D18E1612C64900016053 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "HLA Ipad";
+			productName = HLA;
+			productReference = C4E9D1901612C64900016053 /* HLA Ipad.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C4E9D1871612C64900016053 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "InfoConnect Sdn Bhd";
+			};
+			buildConfigurationList = C4E9D18A1612C64900016053 /* Build configuration list for PBXProject "HLA Ipad" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C4E9D1851612C64900016053;
+			productRefGroup = C4E9D1911612C64900016053 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C4E9D18F1612C64900016053 /* HLA Ipad */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C4E9D18E1612C64900016053 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4E9D19F1612C64900016053 /* InfoPlist.strings in Resources */,
+				C4E9D1A81612C64900016053 /* MainStoryboard.storyboard in Resources */,
+				C4E9D1BD1612C68200016053 /* selectionIndicatorImage.png in Resources */,
+				C4E9D1BE1612C68200016053 /* selectionIndicatorImage@2x.png in Resources */,
+				C4E9D1C51612C78400016053 /* ios-linen.png in Resources */,
+				C4E9D1C61612C78400016053 /* magnifying-glass.png in Resources */,
+				C4E9D1C71612C78400016053 /* magnifying-glass@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C4E9D18C1612C64900016053 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4E9D1A11612C64900016053 /* main.m in Sources */,
+				C4E9D1A51612C64900016053 /* AppDelegate.m in Sources */,
+				C4E9D1AB1612C64900016053 /* ViewController.m in Sources */,
+				C4E9D1BA1612C68200016053 /* FSVerticalTabBar.m in Sources */,
+				C4E9D1BB1612C68200016053 /* FSVerticalTabBarButton.m in Sources */,
+				C4E9D1BC1612C68200016053 /* FSVerticalTabBarController.m in Sources */,
+				C4E9D1CA1612C7D300016053 /* MainScreen.m in Sources */,
+				C4E9D1D01612CBFF00016053 /* Test.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C4E9D19D1612C64900016053 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C4E9D19E1612C64900016053 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C4E9D1A71612C64900016053 /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C4E9D1AC1612C64900016053 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		C4E9D1AD1612C64900016053 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C4E9D1AF1612C64900016053 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HLA/HLA Ipad-Prefix.pch";
+				INFOPLIST_FILE = "HLA/HLA Ipad-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				PRODUCT_NAME = "HLA Ipad";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C4E9D1B01612C64900016053 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HLA/HLA Ipad-Prefix.pch";
+				INFOPLIST_FILE = "HLA/HLA Ipad-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				PRODUCT_NAME = "HLA Ipad";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C4E9D18A1612C64900016053 /* Build configuration list for PBXProject "HLA Ipad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4E9D1AC1612C64900016053 /* Debug */,
+				C4E9D1AD1612C64900016053 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C4E9D1AE1612C64900016053 /* Build configuration list for PBXNativeTarget "HLA Ipad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4E9D1AF1612C64900016053 /* Debug */,
+				C4E9D1B01612C64900016053 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C4E9D1871612C64900016053 /* Project object */;
+}
