@@ -1,13 +1,13 @@
 //
-//  Test.h
-//  HLA
+//  Login.h
+//  HLA Ipad
 //
-//  Created by Md. Nazmus Saadat on 9/26/12.
+//  Created by Md. Nazmus Saadat on 9/28/12.
 //  Copyright (c) 2012 InfoConnect Sdn Bhd. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface Test : UIViewController
+@interface Login : UIViewController
 
 @end
