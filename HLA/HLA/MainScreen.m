@@ -8,7 +8,7 @@
 
 #import "MainScreen.h"
 #import "FSVerticalTabBarController.h"
-#import "Test.h"
+#import "setting.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -34,11 +34,10 @@
     //Create view controllers
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
     
-    Test* zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"test"];
+    setting* settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
     
-    zzz.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"View 1" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
-    [controllersToAdd addObject:zzz];    
-    
+    settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:settingPage];    
     
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     

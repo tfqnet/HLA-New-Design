@@ -7,7 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
 
 @interface Login : UIViewController
+{
+    NSString *databasePath;
+    sqlite3 *contactDB;
+    UITextField *activeField;
+}
+
+@property (nonatomic, assign) int statusLogin;
+@property (nonatomic, assign) int indexNo;
+@property (nonatomic, copy) NSString *agentID;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewLogin;
+@property (weak, nonatomic) IBOutlet UITextField *txtUsername;
+@property (weak, nonatomic) IBOutlet UITextField *txtPassword;
+@property (weak, nonatomic) IBOutlet UILabel *lblForgotPwd;
+- (IBAction)btnLogin:(id)sender;
+
+-(void)keyboardDidShow:(NSNotificationCenter *)notification;
+-(void)keyboardDidHide:(NSNotificationCenter *)notification;
 
 @end
