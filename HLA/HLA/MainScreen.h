@@ -11,4 +11,6 @@
 
 @interface MainScreen : FSVerticalTabBarController<FSTabBarControllerDelegate>
 
+@property (nonatomic, assign,readwrite) int indexNo;
+
 @end

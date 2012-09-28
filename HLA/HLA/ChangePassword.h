@@ -7,7 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
 
-@interface ChangePassword : UIViewController
+@interface ChangePassword : UIViewController{
+    NSString *databasePath;
+    sqlite3 *contactDB;
+}
+
+@property (nonatomic, assign,readwrite) int userID;
+
+@property (weak, nonatomic) IBOutlet UITextField *txtOldPwd;
+@property (weak, nonatomic) IBOutlet UITextField *txtNewPwd;
+@property (weak, nonatomic) IBOutlet UITextField *txtConfirmPwd;
+- (IBAction)btnChange:(id)sender;
+- (IBAction)btnCancel:(id)sender;
+
+
+@property (nonatomic, copy) NSString *passwordDB;
+@property (weak, nonatomic) IBOutlet UILabel *lblmsg;
 
 @end

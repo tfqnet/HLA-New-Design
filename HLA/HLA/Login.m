@@ -121,7 +121,7 @@
             [self presentViewController:newProfile animated:YES completion:nil];
             */
             setting *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            //newProfile.userID = indexNo;
+            newProfile.indexNo = indexNo;
             [self presentViewController:newProfile animated:YES completion:nil];
             
             

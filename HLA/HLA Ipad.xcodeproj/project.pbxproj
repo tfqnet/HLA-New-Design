@@ -40,6 +40,7 @@
 		C4EB49211615556300C7FC8C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C4EB49201615556300C7FC8C /* libsqlite3.dylib */; };
 		C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB4923161558F300C7FC8C /* ChangePassword.m */; };
 		C4EB492716155A4A00C7FC8C /* setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB492616155A4A00C7FC8C /* setting.m */; };
+		C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB493B161592EB00C7FC8C /* UserProfile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +89,8 @@
 		C4EB4923161558F300C7FC8C /* ChangePassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePassword.m; sourceTree = "<group>"; };
 		C4EB492516155A4A00C7FC8C /* setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = setting.h; sourceTree = "<group>"; };
 		C4EB492616155A4A00C7FC8C /* setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setting.m; sourceTree = "<group>"; };
+		C4EB493A161592EB00C7FC8C /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
+		C4EB493B161592EB00C7FC8C /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +197,8 @@
 		C4EB48EC16152E8800C7FC8C /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				C4EB493A161592EB00C7FC8C /* UserProfile.h */,
+				C4EB493B161592EB00C7FC8C /* UserProfile.m */,
 				C4EB491D1615402800C7FC8C /* Login.h */,
 				C4EB491E1615402800C7FC8C /* Login.m */,
 				C4EB4922161558F300C7FC8C /* ChangePassword.h */,
@@ -318,6 +323,7 @@
 				C4EB491F1615402800C7FC8C /* Login.m in Sources */,
 				C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */,
 				C4EB492716155A4A00C7FC8C /* setting.m in Sources */,
+				C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
