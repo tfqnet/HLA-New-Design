@@ -9,6 +9,7 @@
 #import "Login.h"
 #import "MainScreen.h"
 #import "setting.h"
+#import "ForgotPwd.h"
 
 @interface Login ()
 
@@ -33,7 +34,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -42,6 +42,7 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forgotPassword:)];
     tapGesture.numberOfTapsRequired = 1;
     [lblForgotPwd addGestureRecognizer:tapGesture];
+
     
 }
 
@@ -120,9 +121,11 @@
             newProfile.userID = indexNo;
             [self presentViewController:newProfile animated:YES completion:nil];
             */
-            setting *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            newProfile.indexNo = indexNo;
-            [self presentViewController:newProfile animated:YES completion:nil];
+            setting *settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            settingPage.indexNo = indexNo;
+            settingPage.userRequest = agentID;
+            
+            [self presentViewController:settingPage animated:YES completion:nil];
             
             
         } else if (statusLogin == 0 && indexNo != 0) {
@@ -130,10 +133,9 @@
             txtUsername.text = @"";
             txtPassword.text = @"";
             
-            
-            MainScreen *mainMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"mainMenu"];
-            //mainMenu.userRequest = agentID;
-            //mainMenu.indexNo = indexNo;
+            MainScreen *mainMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            mainMenu.userRequest = agentID;
+            mainMenu.indexNo = indexNo;
             [self presentViewController:mainMenu animated:YES completion:nil];
             
             
@@ -146,13 +148,12 @@
 
 - (void)forgotPassword:(id)sender
 {
-    /*
-    ForgotPwdViewController *forgotView = [self.storyboard instantiateViewControllerWithIdentifier:@"forgotPasswordView"];
+    ForgotPwd *forgotView = [self.storyboard instantiateViewControllerWithIdentifier:@"ForgotPwd"];
     forgotView.modalPresentationStyle = UIModalPresentationFormSheet;
     forgotView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:forgotView animated:YES];
     forgotView.view.superview.bounds = CGRectMake(0, 0, 550, 600);
-     */
+     
 }
 
 -(void)checkingFirstLogin

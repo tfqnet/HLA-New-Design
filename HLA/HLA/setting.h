@@ -11,9 +11,9 @@
 @interface setting : UIViewController
 
 @property (nonatomic, assign,readwrite) int indexNo;
+@property (nonatomic,strong) id userRequest;
 
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
-@property (weak, nonatomic) IBOutlet UIView *RightView;
 
 @end

@@ -18,6 +18,7 @@
 
 @implementation MainScreen
 @synthesize indexNo;
+@synthesize userRequest;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,14 +39,9 @@
     
     setting* settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
     settingPage.indexNo = self.indexNo;
+    settingPage.userRequest = self.userRequest;
     settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:settingPage];    
-    
-    
-      UserProfile *tabletest = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
-    
-    tabletest.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"User Profile" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
-    [controllersToAdd addObject:tabletest];    
     
     
     viewControllers = [NSArray arrayWithArray:controllersToAdd];

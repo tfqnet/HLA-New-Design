@@ -25,6 +25,11 @@
 		C4E9D1C71612C78400016053 /* magnifying-glass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1C41612C78400016053 /* magnifying-glass@2x.png */; };
 		C4E9D1CA1612C7D300016053 /* MainScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1C91612C7D300016053 /* MainScreen.m */; };
 		C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1CB1612C9C300016053 /* QuartzCore.framework */; };
+		C4EA9BCD1616D7C700D51FE9 /* SecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */; };
+		C4EA9BD21616DB7F00D51FE9 /* SecurityQuesTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */; };
+		C4EA9BD816171ADE00D51FE9 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4EA9BD716171ADE00D51FE9 /* hladb.sqlite */; };
+		C4EA9BDB16171E5200D51FE9 /* RetreivePwdTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BDA16171E5200D51FE9 /* RetreivePwdTbViewController.m */; };
+		C4EA9BDE16171F4800D51FE9 /* ForgotPwd.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BDD16171F4800D51FE9 /* ForgotPwd.m */; };
 		C4EB49101615327E00C7FC8C /* button_hover.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB49061615327E00C7FC8C /* button_hover.png */; };
 		C4EB49111615327E00C7FC8C /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB49071615327E00C7FC8C /* button.png */; };
 		C4EB49121615327E00C7FC8C /* header-repeted.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB49081615327E00C7FC8C /* header-repeted.png */; };
@@ -35,7 +40,6 @@
 		C4EB49171615327E00C7FC8C /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB490D1615327E00C7FC8C /* menu.png */; };
 		C4EB49181615327E00C7FC8C /* protectGlobe.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB490E1615327E00C7FC8C /* protectGlobe.png */; };
 		C4EB49191615327E00C7FC8C /* topbar.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB490F1615327E00C7FC8C /* topbar.png */; };
-		C4EB491C1615386E00C7FC8C /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4EB491B1615386E00C7FC8C /* hladb.sqlite */; };
 		C4EB491F1615402800C7FC8C /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB491E1615402800C7FC8C /* Login.m */; };
 		C4EB49211615556300C7FC8C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C4EB49201615556300C7FC8C /* libsqlite3.dylib */; };
 		C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB4923161558F300C7FC8C /* ChangePassword.m */; };
@@ -71,6 +75,15 @@
 		C4E9D1C81612C7D300016053 /* MainScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreen.h; sourceTree = "<group>"; };
 		C4E9D1C91612C7D300016053 /* MainScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreen.m; sourceTree = "<group>"; };
 		C4E9D1CB1612C9C300016053 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C4EA9BCB1616D7C600D51FE9 /* SecurityQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestion.h; sourceTree = "<group>"; };
+		C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestion.m; sourceTree = "<group>"; };
+		C4EA9BD01616DB7F00D51FE9 /* SecurityQuesTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuesTbViewController.h; sourceTree = "<group>"; };
+		C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuesTbViewController.m; sourceTree = "<group>"; };
+		C4EA9BD716171ADE00D51FE9 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		C4EA9BD916171E5200D51FE9 /* RetreivePwdTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetreivePwdTbViewController.h; sourceTree = "<group>"; };
+		C4EA9BDA16171E5200D51FE9 /* RetreivePwdTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetreivePwdTbViewController.m; sourceTree = "<group>"; };
+		C4EA9BDC16171F4800D51FE9 /* ForgotPwd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPwd.h; sourceTree = "<group>"; };
+		C4EA9BDD16171F4800D51FE9 /* ForgotPwd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPwd.m; sourceTree = "<group>"; };
 		C4EB49061615327E00C7FC8C /* button_hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_hover.png; sourceTree = "<group>"; };
 		C4EB49071615327E00C7FC8C /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button.png; sourceTree = "<group>"; };
 		C4EB49081615327E00C7FC8C /* header-repeted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-repeted.png"; sourceTree = "<group>"; };
@@ -81,7 +94,6 @@
 		C4EB490D1615327E00C7FC8C /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
 		C4EB490E1615327E00C7FC8C /* protectGlobe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = protectGlobe.png; sourceTree = "<group>"; };
 		C4EB490F1615327E00C7FC8C /* topbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topbar.png; sourceTree = "<group>"; };
-		C4EB491B1615386E00C7FC8C /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		C4EB491D1615402800C7FC8C /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		C4EB491E1615402800C7FC8C /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
 		C4EB49201615556300C7FC8C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -144,6 +156,7 @@
 		C4E9D19A1612C64900016053 /* HLA */ = {
 			isa = PBXGroup;
 			children = (
+				C4EA9BCF1616DAFF00D51FE9 /* PopOver */,
 				C4EB48EC16152E8800C7FC8C /* Login */,
 				C4E9D1A31612C64900016053 /* AppDelegate.h */,
 				C4E9D1A41612C64900016053 /* AppDelegate.m */,
@@ -194,6 +207,17 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		C4EA9BCF1616DAFF00D51FE9 /* PopOver */ = {
+			isa = PBXGroup;
+			children = (
+				C4EA9BD916171E5200D51FE9 /* RetreivePwdTbViewController.h */,
+				C4EA9BDA16171E5200D51FE9 /* RetreivePwdTbViewController.m */,
+				C4EA9BD01616DB7F00D51FE9 /* SecurityQuesTbViewController.h */,
+				C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */,
+			);
+			name = PopOver;
+			sourceTree = "<group>";
+		};
 		C4EB48EC16152E8800C7FC8C /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,6 +229,10 @@
 				C4EB4923161558F300C7FC8C /* ChangePassword.m */,
 				C4EB492516155A4A00C7FC8C /* setting.h */,
 				C4EB492616155A4A00C7FC8C /* setting.m */,
+				C4EA9BCB1616D7C600D51FE9 /* SecurityQuestion.h */,
+				C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */,
+				C4EA9BDC16171F4800D51FE9 /* ForgotPwd.h */,
+				C4EA9BDD16171F4800D51FE9 /* ForgotPwd.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -229,7 +257,7 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				C4EB491B1615386E00C7FC8C /* hladb.sqlite */,
+				C4EA9BD716171ADE00D51FE9 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -302,7 +330,7 @@
 				C4EB49171615327E00C7FC8C /* menu.png in Resources */,
 				C4EB49181615327E00C7FC8C /* protectGlobe.png in Resources */,
 				C4EB49191615327E00C7FC8C /* topbar.png in Resources */,
-				C4EB491C1615386E00C7FC8C /* hladb.sqlite in Resources */,
+				C4EA9BD816171ADE00D51FE9 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +352,10 @@
 				C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */,
 				C4EB492716155A4A00C7FC8C /* setting.m in Sources */,
 				C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */,
+				C4EA9BCD1616D7C700D51FE9 /* SecurityQuestion.m in Sources */,
+				C4EA9BD21616DB7F00D51FE9 /* SecurityQuesTbViewController.m in Sources */,
+				C4EA9BDB16171E5200D51FE9 /* RetreivePwdTbViewController.m in Sources */,
+				C4EA9BDE16171F4800D51FE9 /* ForgotPwd.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
