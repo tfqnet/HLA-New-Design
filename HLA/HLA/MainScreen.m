@@ -9,7 +9,8 @@
 #import "MainScreen.h"
 #import "FSVerticalTabBarController.h"
 #import "setting.h"
-#import "UserProfile.h"
+#import "ProspectViewController.h"
+#import "ProspectListing.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -43,6 +44,21 @@
     settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:settingPage];    
     
+    /*
+    ProspectViewController* ProspectPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
+    //ProspectPage.indexNo = self.indexNo;
+    //ProspectPage.userRequest = self.userRequest;
+    ProspectPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:ProspectPage];    
+    */
+    
+    ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
+    //ProspectPage.indexNo = self.indexNo;
+    //ProspectPage.userRequest = self.userRequest;
+    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:ProspectListingPage];    
+    
+    
     
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
@@ -69,7 +85,7 @@
 }
 
 -(BOOL)tabBarController:(FSVerticalTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([viewControllers indexOfObject:viewController] == 2) {
+    if ([viewControllers indexOfObject:viewController] == 5) {
         return NO;
     }
     return YES;

@@ -10,6 +10,7 @@
 #import "MainScreen.h"
 #import "setting.h"
 #import "ForgotPwd.h"
+#import "FirstTimeViewController.h"
 
 @interface Login ()
 
@@ -42,8 +43,6 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forgotPassword:)];
     tapGesture.numberOfTapsRequired = 1;
     [lblForgotPwd addGestureRecognizer:tapGesture];
-
-    
 }
 
 - (void)viewDidUnload
@@ -116,17 +115,18 @@
         NSLog(@"user:%@",agentID);
         
         if (statusLogin == 1 && indexNo != 0) {
-            /*
-            ProfilesDetailsViewController *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
+            
+            FirstTimeViewController *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
             newProfile.userID = indexNo;
             [self presentViewController:newProfile animated:YES completion:nil];
-            */
+            
+            /*
             setting *settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
             settingPage.indexNo = indexNo;
             settingPage.userRequest = agentID;
             
             [self presentViewController:settingPage animated:YES completion:nil];
-            
+            */
             
         } else if (statusLogin == 0 && indexNo != 0) {
             
@@ -173,6 +173,8 @@
                 indexNo = sqlite3_column_int(statement, 0);
                 agentID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 statusLogin = sqlite3_column_int(statement, 2);
+                
+                
                 
                 txtPassword.text = @"";
                 
