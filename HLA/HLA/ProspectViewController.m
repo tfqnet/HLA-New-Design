@@ -105,47 +105,32 @@
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     
-    NSString *zzz = [ContactType objectAtIndex:row];
-    
-    if (ContactTypeTracker == @"1") {
-        txtContact1.enabled = true;
-        [outletType1 setTitle:zzz forState:UIControlStateNormal]; 
-        
-    }
-
+    NSString *SelectedContactType = [ContactType objectAtIndex:row];
     
     if (ContactTypeTracker == @"2") {
         txtContact2.enabled = true;
-        [outletType2 setTitle:zzz forState:UIControlStateNormal];   
+        [outletType2 setTitle:SelectedContactType forState:UIControlStateNormal];   
         
     }
     else if (ContactTypeTracker == @"1") {
         txtContact1.enabled = true;
-        [outletType1 setTitle:zzz forState:UIControlStateNormal]; 
+        [outletType1 setTitle:SelectedContactType forState:UIControlStateNormal]; 
         
     }
     else if (ContactTypeTracker == @"3") {
-        [outletType3 setTitle:zzz forState:UIControlStateNormal]; 
+        txtContact3.enabled = true;
+        [outletType3 setTitle:SelectedContactType forState:UIControlStateNormal]; 
         
     }
     else if (ContactTypeTracker == @"4") {
-        [outletType4 setTitle:zzz forState:UIControlStateNormal]; 
+        txtContact4.enabled = true;
+        [outletType4 setTitle:SelectedContactType forState:UIControlStateNormal]; 
     }
     else if (ContactTypeTracker == @"5") {
-        [outletType5 setTitle:zzz forState:UIControlStateNormal]; 
+        txtContact5.enabled = TRUE;
+        [outletType5 setTitle:SelectedContactType forState:UIControlStateNormal]; 
     }
     
 }
@@ -153,9 +138,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -276,8 +258,6 @@
         //ContactTypePicker.hidden = true;
         outletContactType.hidden = true;
         txtRemark.hidden = FALSE;
-        
-        
     }
 
 }
@@ -401,65 +381,196 @@
     sqlite3_stmt *statement3;
     NSString *lastID;
     NSString *contactCode;
-    /*
-     switch (segContact1.selectedSegmentIndex) {
-     case 0: //mobile
-     contactCode = @"CONT008";
-     break;
-     case 1: //home
-     contactCode = @"CONT006";
-     break;
-     case 2: //fax
-     contactCode = @"CONT009";
-     break;
-     case 3: //office
-     contactCode = @"CONT007";
-     break;
-     
-     default:
-     break;
-     }
-     */
     
-    if (outletType1.titleLabel.text == @"Mobile") {
-        contactCode = @"CONT008";    
-    }
-    else if (outletType1.titleLabel.text == @"Home") {
-        contactCode = @"CONT006";
-    }
-    else if (outletType1.titleLabel.text == @"Fax") {
-        contactCode = @"CONT009";
-    }
-    else if (outletType1.titleLabel.text == @"Office") {
-        contactCode = @"CONT007";
-    }
+    const char *dbpath = [databasePath UTF8String];
     
-    
-    NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select last_insert_rowid() from prospect_profile"];
-    const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
-    if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK) 
-    {
-        if (sqlite3_step(statement2) == SQLITE_ROW)
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+        NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select indexno  from prospect_profile order by \"indexNo\" desc limit 1"];
+        const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
+        if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK) 
         {
-            lastID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+            if (sqlite3_step(statement2) == SQLITE_ROW)
+            {
+                lastID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+                sqlite3_finalize(statement2);
+                
+            }
+                
+        }
+    }
+    
+    for (int a = 0; a<5; a++) {
+        
+        switch (a) {
+            case 0:
+                
+                if (outletType1.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType1.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType1.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType1.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                                
+                break;
             
-            sqlite3_finalize(statement2);
-            NSString *insertContactSQL = [NSString stringWithFormat:
-                                          @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                          " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+            case 1:
+                if (outletType2.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType2.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType2.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType2.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                break;
+            
+            case 2:
+                if (outletType3.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType3.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType3.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType3.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                break;
+            
+            case 3:
+                if (outletType4.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType4.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType4.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType4.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                break;
+            
+            case 4:
+                if (outletType5.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType5.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType5.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType5.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                break;
+                
+            default:
+                break;
+        }
+        
+        if (![contactCode isEqualToString:@""]) {
+            /*
+            NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select last_insert_rowid() from prospect_profile"];
+            const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
+            if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK) 
+            {
+                if (sqlite3_step(statement2) == SQLITE_ROW)
+                {
+                    lastID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+                    
+                    sqlite3_finalize(statement2);
+                    NSString *insertContactSQL = [NSString stringWithFormat:
+                                                  @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                                  " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+                    const char *insert_contactStmt = [insertContactSQL UTF8String];
+                    if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
+                        if (sqlite3_step(statement3) == SQLITE_DONE){
+                            sqlite3_finalize(statement3);
+                            //UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                            //[SuccessAlert show];
+                            
+                        }
+                        else {
+                            NSLog(@"Error - 4");
+                        }
+                    }
+                    else {
+                        NSLog(@"Error - 3");
+                    }
+                }
+                else {
+                    NSLog(@"Error - 2 ");
+                }
+                sqlite3_close(contactDB);
+            }
+            else {
+                
+                NSLog(@"Error get last ID statement");
+            }
+             */
+            NSString *insertContactSQL;
+            if (a==0) {
+                 insertContactSQL = [NSString stringWithFormat:
+                                              @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                              " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+            }
+            else if (a==1) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N"];   
+            }
+            else if (a==2) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N"];   
+            }
+            else if (a==3) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N"];   
+            }
+            else if (a==4) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N"];   
+            }
+            
             const char *insert_contactStmt = [insertContactSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
                 if (sqlite3_step(statement3) == SQLITE_DONE){
                     sqlite3_finalize(statement3);
-                    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                    [SuccessAlert show];
-                    
-                    /*
-                    EditTableViewController *Listing = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
-                    Listing.modalPresentationStyle = UIModalPresentationFullScreen;
-                    Listing.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                    [self presentModalViewController:Listing animated:YES];
-                    */
+                    //UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    //[SuccessAlert show];
                     
                 }
                 else {
@@ -469,16 +580,13 @@
             else {
                 NSLog(@"Error - 3");
             }
+
         }
-        else {
-            NSLog(@"Error - 2 ");
-        }
-        sqlite3_close(contactDB);
-    }
-    else {
+         
         
-        NSLog(@"Error get last ID statement");
     }
+    
+    
     
 }
 
@@ -602,31 +710,57 @@
 }
 
 - (void)OccupDescSelected:(NSString *)color {
-    /*
-     if ([color compare:@"Red"] == NSOrderedSame) {
-     //_nameLabel.textColor = [UIColor redColor];
-     txtOccupation.text = color;
-     } else if ([color compare:@"Green"] == NSOrderedSame) {
-     //_nameLabel.textColor = [UIColor greenColor];
-     } else if ([color compare:@"Blue"] == NSOrderedSame){
-     //_nameLabel.textColor = [UIColor blueColor];
-     }
-     */  
-    //txtOccupation.text = color;
     [outletOccup setTitle:color forState:UIControlStateNormal];
     [self.OccupationListPopover dismissPopoverAnimated:YES];
 }
 
 
 - (IBAction)btnContact2:(id)sender {
+    outletContactType.hidden = false;
+    outletDobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"2";
+    [self.view endEditing:TRUE];
+    if ([outletType2.titleLabel.text isEqualToString:@""]) {
+        [outletType2 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
+
 }
 
 - (IBAction)btnContact3:(id)sender {
+    outletContactType.hidden = false;
+    outletDobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"3";
+    [self.view endEditing:TRUE];
+    if ([outletType3.titleLabel.text isEqualToString:@""]) {
+        [outletType3 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)btnContact4:(id)sender {
+    outletContactType.hidden = false;
+    outletDobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"4";
+    [self.view endEditing:TRUE];
+    if ([outletType4.titleLabel.text isEqualToString:@""]) {
+        [outletType4 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)btnContact5:(id)sender {
+    outletContactType.hidden = false;
+    outletDobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"5";
+    [self.view endEditing:TRUE];
+    if ([outletType5.titleLabel.text isEqualToString:@""]) {
+        [outletType5 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
 }
 @end

@@ -15,6 +15,14 @@
 
 @implementation EditProspect
 @synthesize outletDelete;
+@synthesize outletType2;
+@synthesize outletType3;
+@synthesize outletType4;
+@synthesize outletType5;
+@synthesize txtContact2;
+@synthesize txtContact3;
+@synthesize txtContact4;
+@synthesize txtContact5;
 @synthesize ContactTypePicker;
 @synthesize DobPicker;
 @synthesize txtRemark;
@@ -89,21 +97,14 @@
 }
 
 - (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    //return [ContactType objectAtIndex:row];
-    return @"dsadasdasda";
+    return [ContactType objectAtIndex:row];
     
 }
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     
     NSString *zzz = [ContactType objectAtIndex:row];
     
-    if (ContactTypeTracker == @"1") {
-        txtContact1.enabled = true;
-        [outletType1 setTitle:zzz forState:UIControlStateNormal]; 
         
-    }
-    
-    /*
      if (ContactTypeTracker == @"2") {
      txtContact2.enabled = true;
      [outletType2 setTitle:zzz forState:UIControlStateNormal];   
@@ -124,7 +125,7 @@
      else if (ContactTypeTracker == @"5") {
      [outletType5 setTitle:zzz forState:UIControlStateNormal]; 
      }
-     */
+     
 }
 
 - (void)viewDidUnload
@@ -160,6 +161,14 @@
     [self setTxtContact1:nil];
     [self setTxtContact1:nil];
     [self setOutletDelete:nil];
+    [self setOutletType2:nil];
+    [self setOutletType3:nil];
+    [self setOutletType4:nil];
+    [self setOutletType5:nil];
+    [self setTxtContact2:nil];
+    [self setTxtContact3:nil];
+    [self setTxtContact4:nil];
+    [self setTxtContact5:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -205,27 +214,104 @@
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
+            
+            int a = 0;
             while (sqlite3_step(statement) == SQLITE_ROW){
+                
                 NSString *ContactCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                 NSString *ContactNo = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 
-                if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
-                    [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
-                    txtContact1.text  = ContactNo;
+                if (a==0) {
+                    if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
+                        [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
+                        txtContact1.text  = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT006"]) { //home
+                        [outletType1 setTitle:@"Home" forState:UIControlStateNormal];
+                        txtContact1.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
+                        [outletType1 setTitle:@"Fax" forState:UIControlStateNormal];
+                        txtContact1.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT007"]) { //office
+                        [outletType1 setTitle:@"Office" forState:UIControlStateNormal];
+                        txtContact1.text = ContactNo;
+                    }
                 }
-                else if ([ContactCode isEqualToString:@"CONT006"]) { //home
-                    [outletType1 setTitle:@"Home" forState:UIControlStateNormal];
-                    txtContact1.text = ContactNo;
+                else if (a==1) {
+                    if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
+                        [outletType2 setTitle:@"Mobile" forState:UIControlStateNormal];
+                        txtContact2.text  = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT006"]) { //home
+                        [outletType2 setTitle:@"Home" forState:UIControlStateNormal];
+                        txtContact2.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
+                        [outletType2 setTitle:@"Fax" forState:UIControlStateNormal];
+                        txtContact2.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT007"]) { //office
+                        [outletType2 setTitle:@"Office" forState:UIControlStateNormal];
+                        txtContact2.text = ContactNo;
+                    }
                 }
-                else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
-                    [outletType1 setTitle:@"Fax" forState:UIControlStateNormal];
-                    txtContact1.text = ContactNo;
+                else if (a==2) {
+                    if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
+                        [outletType3 setTitle:@"Mobile" forState:UIControlStateNormal];
+                        txtContact3.text  = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT006"]) { //home
+                        [outletType3 setTitle:@"Home" forState:UIControlStateNormal];
+                        txtContact3.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
+                        [outletType3 setTitle:@"Fax" forState:UIControlStateNormal];
+                        txtContact3.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT007"]) { //office
+                        [outletType3 setTitle:@"Office" forState:UIControlStateNormal];
+                        txtContact3.text = ContactNo;
+                    }
                 }
-                else if ([ContactCode isEqualToString:@"CONT007"]) { //office
-                    [outletType1 setTitle:@"Office" forState:UIControlStateNormal];
-                    txtContact1.text = ContactNo;
+                else if (a==3) {
+                    if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
+                        [outletType4 setTitle:@"Mobile" forState:UIControlStateNormal];
+                        txtContact4.text  = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT006"]) { //home
+                        [outletType4 setTitle:@"Home" forState:UIControlStateNormal];
+                        txtContact4.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
+                        [outletType4 setTitle:@"Fax" forState:UIControlStateNormal];
+                        txtContact4.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT007"]) { //office
+                        [outletType4 setTitle:@"Office" forState:UIControlStateNormal];
+                        txtContact4.text = ContactNo;
+                    }
                 }
-                
+                else if (a==4) {
+                    if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
+                        [outletType5 setTitle:@"Mobile" forState:UIControlStateNormal];
+                        txtContact5.text  = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT006"]) { //home
+                        [outletType5 setTitle:@"Home" forState:UIControlStateNormal];
+                        txtContact5.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
+                        [outletType5 setTitle:@"Fax" forState:UIControlStateNormal];
+                        txtContact5.text = ContactNo;
+                    }
+                    else if ([ContactCode isEqualToString:@"CONT007"]) { //office
+                        [outletType5 setTitle:@"Office" forState:UIControlStateNormal];
+                        txtContact5.text = ContactNo;
+                    }
+                }
+                a = a + 1;
             }
             sqlite3_finalize(statement);
             [self PopulateOccupCode];
@@ -336,8 +422,8 @@
     pickerToolbar.hidden = NO;
     [self.view endEditing:TRUE];
     txtRemark.hidden = TRUE;
-    //ContactTypePicker.hidden = true;
     ContactTypePicker.hidden = true;
+    outletDelete.hidden = true;
 }
 
 - (IBAction)btnContactType1:(id)sender {
@@ -346,6 +432,7 @@
     pickerToolbar.hidden = FALSE;
     txtRemark.hidden = true;
     ContactTypeTracker = @"1";
+    outletDelete.hidden = true;
     [self.view endEditing:TRUE];
     if ([outletType1.titleLabel.text isEqualToString:@""]) {
         [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
@@ -366,12 +453,13 @@
         pickerToolbar.hidden = YES;
         DobPicker.hidden = YES;
         txtRemark.hidden = FALSE;
+        outletDelete.hidden = false;
     }
     else { // Contact type picker
         pickerToolbar.hidden = true;
-        //ContactTypePicker.hidden = true;
         ContactTypePicker.hidden = true;
         txtRemark.hidden = FALSE;
+        outletDelete.hidden = false;
     }
 
 }
@@ -446,89 +534,172 @@
 
 -(void) GetLastID{
     
-    sqlite3_stmt *statement2;
     sqlite3_stmt *statement3;
     NSString *lastID;
     NSString *contactCode;
-    /*
-     switch (segContact1.selectedSegmentIndex) {
-     case 0: //mobile
-     contactCode = @"CONT008";
-     break;
-     case 1: //home
-     contactCode = @"CONT006";
-     break;
-     case 2: //fax
-     contactCode = @"CONT009";
-     break;
-     case 3: //office
-     contactCode = @"CONT007";
-     break;
-     
-     default:
-     break;
-     }
-     */
     
-    if (outletType1.titleLabel.text == @"Mobile") {
-        contactCode = @"CONT008";    
-    }
-    else if (outletType1.titleLabel.text == @"Home") {
-        contactCode = @"CONT006";
-    }
-    else if (outletType1.titleLabel.text == @"Fax") {
-        contactCode = @"CONT009";
-    }
-    else if (outletType1.titleLabel.text == @"Office") {
-        contactCode = @"CONT007";
-    }
+    //delete record first 
+    [self DeleteRecord];
     
     
-    NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select last_insert_rowid() from prospect_profile"];
-    const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
-    if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK) 
-    {
-        if (sqlite3_step(statement2) == SQLITE_ROW)
-        {
-            lastID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
-            
-            sqlite3_finalize(statement2);
-            NSString *insertContactSQL = [NSString stringWithFormat:
-                                          @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                          " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
-            const char *insert_contactStmt = [insertContactSQL UTF8String];
-            if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
-                if (sqlite3_step(statement3) == SQLITE_DONE){
-                    sqlite3_finalize(statement3);
-                    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                    [SuccessAlert show];
-                    
-                    /*
-                     EditTableViewController *Listing = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
-                     Listing.modalPresentationStyle = UIModalPresentationFullScreen;
-                     Listing.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                     [self presentModalViewController:Listing animated:YES];
-                     */
-                    
+    
+    for (int a=0; a<5; a++) {
+        
+        switch (a) {
+            case 0:
+                if (outletType1.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType1.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType1.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType1.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
                 }
                 else {
-                    NSLog(@"Error - 4");
+                    contactCode = @"";
                 }
-            }
-            else {
+                
+                break;
+
+            case 1:
+                if (outletType2.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType2.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType2.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType2.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                
+
+                break;
+            case 2:
+                if (outletType3.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType3.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType3.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType3.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                
+
+                break;
+            case 3:
+                if (outletType4.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType4.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType4.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType4.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+                
+
+                break;
+            case 4:
+                if (outletType5.titleLabel.text == @"Mobile") {
+                    contactCode = @"CONT008";    
+                }
+                else if (outletType5.titleLabel.text == @"Home") {
+                    contactCode = @"CONT006";
+                }
+                else if (outletType5.titleLabel.text == @"Fax") {
+                    contactCode = @"CONT009";
+                }
+                else if (outletType5.titleLabel.text == @"Office") {
+                    contactCode = @"CONT007";
+                }
+                else {
+                    contactCode = @"";
+                }
+    
+                break;
+            
+        }
+        
+        if (![contactCode isEqualToString:@""]) {
+        
+            lastID = pp.ProspectID;
+                    
+            NSString *insertContactSQL = [NSString stringWithFormat:
+                                            @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                            " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+                    const char *insert_contactStmt = [insertContactSQL UTF8String];
+                    if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
+                        if (sqlite3_step(statement3) == SQLITE_DONE){
+                            sqlite3_finalize(statement3);
+                            //UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                            //[SuccessAlert show];
+                            
+                        }
+                        else {
+                            NSLog(@"Error - 4");
+                        }
+                }
+                else {
                 NSLog(@"Error - 3");
-            }
+                }
+                
+            sqlite3_close(contactDB);
+            
+                        
+            
+        }
+        
+        
+    }
+    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [SuccessAlert show];
+
+}
+
+
+- (void) DeleteRecord{
+    sqlite3_stmt *statement;
+    
+    const char *dbpath = [databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *DeleteSQL = [NSString stringWithFormat:@"Delete from contact_input where indexNo = \"%@\"", pp.ProspectID];
+        const char *Delete_stmt = [DeleteSQL UTF8String];
+        if(sqlite3_prepare_v2(contactDB, Delete_stmt, -1, &statement, NULL) == SQLITE_OK) 
+        {
+            sqlite3_finalize(statement);
+            
         }
         else {
-            NSLog(@"Error - 2 ");
+            
+            NSLog(@"Error in Delete Statement");
         }
         sqlite3_close(contactDB);
     }
-    else {
-        
-        NSLog(@"Error get last ID statement");
-    }
-    
 }
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
@@ -536,17 +707,6 @@
 }
 
 - (void)OccupDescSelected:(NSString *)color {
-    /*
-     if ([color compare:@"Red"] == NSOrderedSame) {
-     //_nameLabel.textColor = [UIColor redColor];
-     txtOccupation.text = color;
-     } else if ([color compare:@"Green"] == NSOrderedSame) {
-     //_nameLabel.textColor = [UIColor greenColor];
-     } else if ([color compare:@"Blue"] == NSOrderedSame){
-     //_nameLabel.textColor = [UIColor blueColor];
-     }
-     */  
-    //txtOccupation.text = color;
     [outletOccup setTitle:color forState:UIControlStateNormal];
     [self.OccupationListPopover dismissPopoverAnimated:YES];
     
@@ -627,9 +787,7 @@
 
 -(void)textFieldDidChange:(id) sender
 {
-    //txtState.text = @"Selangor";
-    //txtTown.text = @"Petaling Jaya";
-    
+
     BOOL gotRow = false;
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -775,4 +933,55 @@
     }
 } 
 
+- (IBAction)btnContact2:(id)sender {
+    ContactTypePicker.hidden = false;
+    DobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"2";
+    outletDelete.hidden = true;
+    [self.view endEditing:TRUE];
+    if ([outletType2.titleLabel.text isEqualToString:@""]) {
+        [outletType2 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)btnContact3:(id)sender {
+    ContactTypePicker.hidden = false;
+    DobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"3";
+    outletDelete.hidden = true;
+    [self.view endEditing:TRUE];
+    if ([outletType3.titleLabel.text isEqualToString:@""]) {
+        [outletType3 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)btnContact4:(id)sender {
+    ContactTypePicker.hidden = false;
+    DobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"4";
+    outletDelete.hidden = true;
+    [self.view endEditing:TRUE];
+    if ([outletType4.titleLabel.text isEqualToString:@""]) {
+        [outletType4 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)btnContact5:(id)sender {
+    ContactTypePicker.hidden = false;
+    DobPicker.hidden = true;
+    pickerToolbar.hidden = FALSE;
+    txtRemark.hidden = true;
+    ContactTypeTracker = @"5";
+    outletDelete.hidden = true;
+    [self.view endEditing:TRUE];
+    if ([outletType5.titleLabel.text isEqualToString:@""]) {
+        [outletType5 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }
+}
 @end

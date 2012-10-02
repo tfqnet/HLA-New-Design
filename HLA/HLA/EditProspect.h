@@ -71,5 +71,17 @@
 - (IBAction)btnCancel:(id)sender;
 - (IBAction)btnSave:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
+@property (weak, nonatomic) IBOutlet UIButton *outletType2;
+@property (weak, nonatomic) IBOutlet UIButton *outletType3;
+@property (weak, nonatomic) IBOutlet UIButton *outletType4;
+@property (weak, nonatomic) IBOutlet UIButton *outletType5;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact2;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact3;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact4;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact5;
+- (IBAction)btnContact2:(id)sender;
+- (IBAction)btnContact3:(id)sender;
+- (IBAction)btnContact4:(id)sender;
+- (IBAction)btnContact5:(id)sender;
 
 @end
