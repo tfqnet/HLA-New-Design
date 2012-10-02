@@ -52,6 +52,18 @@
 @property (weak, nonatomic) IBOutlet UITextView *txtRemark;
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (weak, nonatomic) IBOutlet UITextField *txtContact1;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact2;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact3;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact4;
+@property (weak, nonatomic) IBOutlet UITextField *txtContact5;
+@property (weak, nonatomic) IBOutlet UIButton *outletType2;
+@property (weak, nonatomic) IBOutlet UIButton *outletType3;
+@property (weak, nonatomic) IBOutlet UIButton *outletType4;
+@property (weak, nonatomic) IBOutlet UIButton *outletType5;
+- (IBAction)btnContact2:(id)sender;
+- (IBAction)btnContact3:(id)sender;
+- (IBAction)btnContact4:(id)sender;
+- (IBAction)btnContact5:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *outletDobPicker;
 - (IBAction)ActionDobDate:(id)sender;

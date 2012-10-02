@@ -21,6 +21,14 @@
 @synthesize txtRemark;
 @synthesize txtEmail;
 @synthesize txtContact1;
+@synthesize txtContact2;
+@synthesize txtContact3;
+@synthesize txtContact4;
+@synthesize txtContact5;
+@synthesize outletType2;
+@synthesize outletType3;
+@synthesize outletType4;
+@synthesize outletType5;
 @synthesize outletDobPicker;
 @synthesize outletDOB;
 @synthesize txtHomeAddr1;
@@ -118,7 +126,7 @@
         
     }
 
-    /*
+    
     if (ContactTypeTracker == @"2") {
         txtContact2.enabled = true;
         [outletType2 setTitle:zzz forState:UIControlStateNormal];   
@@ -139,7 +147,7 @@
     else if (ContactTypeTracker == @"5") {
         [outletType5 setTitle:zzz forState:UIControlStateNormal]; 
     }
-    */
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -204,6 +212,14 @@
     [self setTxtContact1:nil];
     [self setOutletType1:nil];
     [self setBtnCancel:nil];
+    [self setTxtContact2:nil];
+    [self setTxtContact3:nil];
+    [self setTxtContact4:nil];
+    [self setTxtContact5:nil];
+    [self setOutletType2:nil];
+    [self setOutletType3:nil];
+    [self setOutletType4:nil];
+    [self setOutletType5:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -360,7 +376,7 @@
         [alert show];
         return false;
     }
-    /*
+    
     if(![txtContact1.text isEqualToString:@"" ]){
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
@@ -375,7 +391,7 @@
         }
         
     }
-    */
+    
     return true;
 }
 
@@ -602,4 +618,15 @@
 }
 
 
+- (IBAction)btnContact2:(id)sender {
+}
+
+- (IBAction)btnContact3:(id)sender {
+}
+
+- (IBAction)btnContact4:(id)sender {
+}
+
+- (IBAction)btnContact5:(id)sender {
+}
 @end

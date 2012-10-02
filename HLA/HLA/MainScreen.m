@@ -51,12 +51,10 @@
     ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];    
     
-    
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
     LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:LogoutPage];
-    
     
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
