@@ -43,6 +43,7 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forgotPassword:)];
     tapGesture.numberOfTapsRequired = 1;
     [lblForgotPwd addGestureRecognizer:tapGesture];
+    
 }
 
 - (void)viewDidUnload
@@ -56,7 +57,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+{   
 	return YES;
 }
 

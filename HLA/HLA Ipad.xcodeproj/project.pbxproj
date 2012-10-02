@@ -36,6 +36,7 @@
 		C4EA9BF31619460500D51FE9 /* ProspectProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BF21619460500D51FE9 /* ProspectProfile.m */; };
 		C4EA9BF61619630F00D51FE9 /* EditProspect.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BF51619630E00D51FE9 /* EditProspect.m */; };
 		C4EA9BFC161989D200D51FE9 /* FirstTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BFB161989D100D51FE9 /* FirstTimeViewController.m */; };
+		C4EA9C07161A76A900D51FE9 /* Logout.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9C06161A76A800D51FE9 /* Logout.m */; };
 		C4EB49101615327E00C7FC8C /* button_hover.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB49061615327E00C7FC8C /* button_hover.png */; };
 		C4EB49111615327E00C7FC8C /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB49071615327E00C7FC8C /* button.png */; };
 		C4EB49121615327E00C7FC8C /* header-repeted.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB49081615327E00C7FC8C /* header-repeted.png */; };
@@ -102,6 +103,8 @@
 		C4EA9BF51619630E00D51FE9 /* EditProspect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProspect.m; sourceTree = "<group>"; };
 		C4EA9BFA161989D000D51FE9 /* FirstTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTimeViewController.h; sourceTree = "<group>"; };
 		C4EA9BFB161989D100D51FE9 /* FirstTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstTimeViewController.m; sourceTree = "<group>"; };
+		C4EA9C05161A76A700D51FE9 /* Logout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logout.h; sourceTree = "<group>"; };
+		C4EA9C06161A76A800D51FE9 /* Logout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logout.m; sourceTree = "<group>"; };
 		C4EB49061615327E00C7FC8C /* button_hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_hover.png; sourceTree = "<group>"; };
 		C4EB49071615327E00C7FC8C /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button.png; sourceTree = "<group>"; };
 		C4EB49081615327E00C7FC8C /* header-repeted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-repeted.png"; sourceTree = "<group>"; };
@@ -185,6 +188,8 @@
 				C4E9D19B1612C64900016053 /* Supporting Files */,
 				C4E9D1C81612C7D300016053 /* MainScreen.h */,
 				C4E9D1C91612C7D300016053 /* MainScreen.m */,
+				C4EA9C05161A76A700D51FE9 /* Logout.h */,
+				C4EA9C06161A76A800D51FE9 /* Logout.m */,
 			);
 			path = HLA;
 			sourceTree = "<group>";
@@ -400,6 +405,7 @@
 				C4EA9BF31619460500D51FE9 /* ProspectProfile.m in Sources */,
 				C4EA9BF61619630F00D51FE9 /* EditProspect.m in Sources */,
 				C4EA9BFC161989D200D51FE9 /* FirstTimeViewController.m in Sources */,
+				C4EA9C07161A76A900D51FE9 /* Logout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
