@@ -27,7 +27,6 @@
 		C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1CB1612C9C300016053 /* QuartzCore.framework */; };
 		C4EA9BCD1616D7C700D51FE9 /* SecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */; };
 		C4EA9BD21616DB7F00D51FE9 /* SecurityQuesTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */; };
-		C4EA9BD816171ADE00D51FE9 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4EA9BD716171ADE00D51FE9 /* hladb.sqlite */; };
 		C4EA9BDB16171E5200D51FE9 /* RetreivePwdTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BDA16171E5200D51FE9 /* RetreivePwdTbViewController.m */; };
 		C4EA9BDE16171F4800D51FE9 /* ForgotPwd.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BDD16171F4800D51FE9 /* ForgotPwd.m */; };
 		C4EA9BEA16181FFB00D51FE9 /* ProspectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BE916181FFB00D51FE9 /* ProspectViewController.m */; };
@@ -86,7 +85,6 @@
 		C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestion.m; sourceTree = "<group>"; };
 		C4EA9BD01616DB7F00D51FE9 /* SecurityQuesTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuesTbViewController.h; sourceTree = "<group>"; };
 		C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuesTbViewController.m; sourceTree = "<group>"; };
-		C4EA9BD716171ADE00D51FE9 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		C4EA9BD916171E5200D51FE9 /* RetreivePwdTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetreivePwdTbViewController.h; sourceTree = "<group>"; };
 		C4EA9BDA16171E5200D51FE9 /* RetreivePwdTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetreivePwdTbViewController.m; sourceTree = "<group>"; };
 		C4EA9BDC16171F4800D51FE9 /* ForgotPwd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPwd.h; sourceTree = "<group>"; };
@@ -300,7 +298,6 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				C4EA9BD716171ADE00D51FE9 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -373,7 +370,6 @@
 				C4EB49171615327E00C7FC8C /* menu.png in Resources */,
 				C4EB49181615327E00C7FC8C /* protectGlobe.png in Resources */,
 				C4EB49191615327E00C7FC8C /* topbar.png in Resources */,
-				C4EA9BD816171ADE00D51FE9 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
