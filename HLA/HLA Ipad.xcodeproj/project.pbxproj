@@ -51,6 +51,18 @@
 		C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB4923161558F300C7FC8C /* ChangePassword.m */; };
 		C4EB492716155A4A00C7FC8C /* setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB492616155A4A00C7FC8C /* setting.m */; };
 		C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB493B161592EB00C7FC8C /* UserProfile.m */; };
+		EF059839161A8BD1004A9095 /* NewLAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059837161A8BCF004A9095 /* NewLAViewController.m */; };
+		EF05983F161A8C85004A9095 /* ListingTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05983D161A8C85004A9095 /* ListingTbViewController.m */; };
+		EF059842161A901A004A9095 /* PayorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059840161A901A004A9095 /* PayorViewController.m */; };
+		EF059845161A9055004A9095 /* SecondLAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059843161A9055004A9095 /* SecondLAViewController.m */; };
+		EF059848161A912A004A9095 /* BasicPlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059846161A912A004A9095 /* BasicPlanViewController.m */; };
+		EF05984B161A91EF004A9095 /* RiderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059849161A91EE004A9095 /* RiderViewController.m */; };
+		EF059850161A92C4004A9095 /* DateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05984E161A92C4004A9095 /* DateViewController.m */; };
+		EF059853161A92E3004A9095 /* JobListTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059852161A92E3004A9095 /* JobListTbViewController.m */; };
+		EF059856161A9373004A9095 /* PremiumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059854161A9373004A9095 /* PremiumViewController.m */; };
+		EF059859161A9406004A9095 /* RiderPTypeTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059857161A9406004A9095 /* RiderPTypeTbViewController.m */; };
+		EF05985C161A9428004A9095 /* RiderListTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05985A161A9428004A9095 /* RiderListTbViewController.m */; };
+		EF05985F161A943A004A9095 /* RiderFormTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05985D161A943A004A9095 /* RiderFormTbViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +134,30 @@
 		C4EB492616155A4A00C7FC8C /* setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setting.m; sourceTree = "<group>"; };
 		C4EB493A161592EB00C7FC8C /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		C4EB493B161592EB00C7FC8C /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
+		EF059837161A8BCF004A9095 /* NewLAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLAViewController.m; sourceTree = "<group>"; };
+		EF059838161A8BD0004A9095 /* NewLAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLAViewController.h; sourceTree = "<group>"; };
+		EF05983D161A8C85004A9095 /* ListingTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListingTbViewController.m; sourceTree = "<group>"; };
+		EF05983E161A8C85004A9095 /* ListingTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListingTbViewController.h; sourceTree = "<group>"; };
+		EF059840161A901A004A9095 /* PayorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayorViewController.m; sourceTree = "<group>"; };
+		EF059841161A901A004A9095 /* PayorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorViewController.h; sourceTree = "<group>"; };
+		EF059843161A9055004A9095 /* SecondLAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLAViewController.m; sourceTree = "<group>"; };
+		EF059844161A9055004A9095 /* SecondLAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondLAViewController.h; sourceTree = "<group>"; };
+		EF059846161A912A004A9095 /* BasicPlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicPlanViewController.m; sourceTree = "<group>"; };
+		EF059847161A912A004A9095 /* BasicPlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicPlanViewController.h; sourceTree = "<group>"; };
+		EF059849161A91EE004A9095 /* RiderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderViewController.m; sourceTree = "<group>"; };
+		EF05984A161A91EE004A9095 /* RiderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderViewController.h; sourceTree = "<group>"; };
+		EF05984E161A92C4004A9095 /* DateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateViewController.m; sourceTree = "<group>"; };
+		EF05984F161A92C4004A9095 /* DateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateViewController.h; sourceTree = "<group>"; };
+		EF059851161A92E3004A9095 /* JobListTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JobListTbViewController.h; sourceTree = "<group>"; };
+		EF059852161A92E3004A9095 /* JobListTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JobListTbViewController.m; sourceTree = "<group>"; };
+		EF059854161A9373004A9095 /* PremiumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PremiumViewController.m; sourceTree = "<group>"; };
+		EF059855161A9373004A9095 /* PremiumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PremiumViewController.h; sourceTree = "<group>"; };
+		EF059857161A9406004A9095 /* RiderPTypeTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderPTypeTbViewController.m; sourceTree = "<group>"; };
+		EF059858161A9406004A9095 /* RiderPTypeTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderPTypeTbViewController.h; sourceTree = "<group>"; };
+		EF05985A161A9428004A9095 /* RiderListTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderListTbViewController.m; sourceTree = "<group>"; };
+		EF05985B161A9428004A9095 /* RiderListTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderListTbViewController.h; sourceTree = "<group>"; };
+		EF05985D161A943A004A9095 /* RiderFormTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderFormTbViewController.m; sourceTree = "<group>"; };
+		EF05985E161A943A004A9095 /* RiderFormTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderFormTbViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +214,9 @@
 				C4EA9BDF16181F7F00D51FE9 /* Prospect */,
 				C4EA9BCF1616DAFF00D51FE9 /* PopOver */,
 				C4EB48EC16152E8800C7FC8C /* Login */,
+				EF05983A161A8BDB004A9095 /* LA */,
+				EF05984D161A9230004A9095 /* BasicPlan */,
+				EF05984C161A9201004A9095 /* Rider */,
 				C4E9D1A31612C64900016053 /* AppDelegate.h */,
 				C4E9D1A41612C64900016053 /* AppDelegate.m */,
 				C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */,
@@ -238,6 +277,10 @@
 				C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */,
 				C4EA9BEB1619359D00D51FE9 /* OccupationList.h */,
 				C4EA9BEC1619359D00D51FE9 /* OccupationList.m */,
+				EF05984F161A92C4004A9095 /* DateViewController.h */,
+				EF05984E161A92C4004A9095 /* DateViewController.m */,
+				EF059851161A92E3004A9095 /* JobListTbViewController.h */,
+				EF059852161A92E3004A9095 /* JobListTbViewController.m */,
 			);
 			name = PopOver;
 			sourceTree = "<group>";
@@ -300,6 +343,47 @@
 			children = (
 			);
 			name = Database;
+			sourceTree = "<group>";
+		};
+		EF05983A161A8BDB004A9095 /* LA */ = {
+			isa = PBXGroup;
+			children = (
+				EF059838161A8BD0004A9095 /* NewLAViewController.h */,
+				EF059837161A8BCF004A9095 /* NewLAViewController.m */,
+				EF059841161A901A004A9095 /* PayorViewController.h */,
+				EF059840161A901A004A9095 /* PayorViewController.m */,
+				EF059844161A9055004A9095 /* SecondLAViewController.h */,
+				EF059843161A9055004A9095 /* SecondLAViewController.m */,
+				EF05983E161A8C85004A9095 /* ListingTbViewController.h */,
+				EF05983D161A8C85004A9095 /* ListingTbViewController.m */,
+			);
+			name = LA;
+			sourceTree = "<group>";
+		};
+		EF05984C161A9201004A9095 /* Rider */ = {
+			isa = PBXGroup;
+			children = (
+				EF05984A161A91EE004A9095 /* RiderViewController.h */,
+				EF059849161A91EE004A9095 /* RiderViewController.m */,
+				EF059858161A9406004A9095 /* RiderPTypeTbViewController.h */,
+				EF059857161A9406004A9095 /* RiderPTypeTbViewController.m */,
+				EF05985B161A9428004A9095 /* RiderListTbViewController.h */,
+				EF05985A161A9428004A9095 /* RiderListTbViewController.m */,
+				EF05985E161A943A004A9095 /* RiderFormTbViewController.h */,
+				EF05985D161A943A004A9095 /* RiderFormTbViewController.m */,
+			);
+			name = Rider;
+			sourceTree = "<group>";
+		};
+		EF05984D161A9230004A9095 /* BasicPlan */ = {
+			isa = PBXGroup;
+			children = (
+				EF059847161A912A004A9095 /* BasicPlanViewController.h */,
+				EF059846161A912A004A9095 /* BasicPlanViewController.m */,
+				EF059855161A9373004A9095 /* PremiumViewController.h */,
+				EF059854161A9373004A9095 /* PremiumViewController.m */,
+			);
+			name = BasicPlan;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -402,6 +486,18 @@
 				C4EA9BF61619630F00D51FE9 /* EditProspect.m in Sources */,
 				C4EA9BFC161989D200D51FE9 /* FirstTimeViewController.m in Sources */,
 				C4EA9C07161A76A900D51FE9 /* Logout.m in Sources */,
+				EF059839161A8BD1004A9095 /* NewLAViewController.m in Sources */,
+				EF05983F161A8C85004A9095 /* ListingTbViewController.m in Sources */,
+				EF059842161A901A004A9095 /* PayorViewController.m in Sources */,
+				EF059845161A9055004A9095 /* SecondLAViewController.m in Sources */,
+				EF059848161A912A004A9095 /* BasicPlanViewController.m in Sources */,
+				EF05984B161A91EF004A9095 /* RiderViewController.m in Sources */,
+				EF059850161A92C4004A9095 /* DateViewController.m in Sources */,
+				EF059853161A92E3004A9095 /* JobListTbViewController.m in Sources */,
+				EF059856161A9373004A9095 /* PremiumViewController.m in Sources */,
+				EF059859161A9406004A9095 /* RiderPTypeTbViewController.m in Sources */,
+				EF05985C161A9428004A9095 /* RiderListTbViewController.m in Sources */,
+				EF05985F161A943A004A9095 /* RiderFormTbViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
