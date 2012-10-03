@@ -315,7 +315,8 @@
     SecurityQuestion *SecurityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
     SecurityPage.userID = userID;
     SecurityPage.FirstTimeLogin = 1;
-    [self presentViewController:SecurityPage animated:YES completion:nil];
+    SecurityPage.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentModalViewController:SecurityPage animated:YES];
     
 }
 @end

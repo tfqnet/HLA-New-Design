@@ -882,6 +882,7 @@
                         <outlet property="lblQuesOne" destination="tzs-s1-IWx" id="cYh-zh-AeP"/>
                         <outlet property="lblQuesTwo" destination="gOV-uZ-KKH" id="QDS-OX-TaX"/>
                         <outlet property="lblQuestThree" destination="dA7-dX-Um6" id="w5e-Ga-Wka"/>
+                        <outlet property="outletCancel" destination="8TM-RL-OkJ" id="nSg-lg-OsE"/>
                         <outlet property="txtAnswerQ1" destination="vn6-Jq-IEy" id="kaN-2v-voi"/>
                         <outlet property="txtAnswerQ2" destination="4Fb-kC-yIi" id="dYd-dE-KtE"/>
                         <outlet property="txtAnswerQ3" destination="2sk-ho-bgm" id="BWZ-pn-pMU"/>

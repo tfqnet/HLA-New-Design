@@ -39,5 +39,6 @@
 - (IBAction)btnCancel:(id)sender;
 
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *outletCancel;
 
 @end

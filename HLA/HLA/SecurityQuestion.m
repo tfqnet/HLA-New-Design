@@ -8,12 +8,14 @@
 
 #import "SecurityQuestion.h"
 #import "SecurityQuesTbViewController.h"
+#import "FirstTimeViewController.h"
 
 @interface SecurityQuestion ()
 
 @end
 
 @implementation SecurityQuestion
+@synthesize outletCancel;
 @synthesize lblQuesOne, FirstTimeLogin;
 @synthesize lblQuesTwo;
 @synthesize lblQuestThree;
@@ -51,6 +53,12 @@
     UITapGestureRecognizer *gestureQThree = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectQuestThree:)];
     gestureQThree.numberOfTapsRequired = 1;
     [lblQuestThree addGestureRecognizer:gestureQThree];
+    
+    //FirstTimeLogin *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
+    
+    if (FirstTimeLogin == 1) {
+        outletCancel.enabled = false;
+    }
 }
 
 - (void)viewDidUnload
@@ -61,6 +69,7 @@
     [self setTxtAnswerQ1:nil];
     [self setTxtAnswerQ2:nil];
     [self setTxtAnswerQ3:nil];
+    [self setOutletCancel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
