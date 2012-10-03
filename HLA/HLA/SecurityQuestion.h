@@ -15,11 +15,13 @@
     sqlite3 *contactDB;
     UITextField *activeField;
     UIPopoverController *popOverConroller;
+    
     BOOL selectOne;
     BOOL selectTwo;
     BOOL selectThree;
 }
 @property (nonatomic, assign,readwrite) int userID;
+@property (nonatomic, assign,readwrite) int FirstTimeLogin;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblQuesOne;
 @property (weak, nonatomic) IBOutlet UILabel *lblQuesTwo;

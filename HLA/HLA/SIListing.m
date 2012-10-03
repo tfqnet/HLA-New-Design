@@ -1,0 +1,594 @@
+//
+//  SIListing.m
+//  HLA Ipad
+//
+//  Created by Md. Nazmus Saadat on 10/2/12.
+//  Copyright (c) 2012 InfoConnect Sdn Bhd. All rights reserved.
+//
+
+#import "SIListing.h"
+
+@interface SIListing ()
+
+@end
+
+@implementation SIListing
+@synthesize lblSINO;
+@synthesize lblDateCreated;
+@synthesize lblName;
+@synthesize lblPlan;
+@synthesize lblBasicSA;
+@synthesize outletDateFrom;
+@synthesize outletDelete;
+@synthesize myTableView;
+@synthesize outletDate;
+@synthesize outletDone;
+@synthesize btnSortBy;
+@synthesize outletDateTo;
+@synthesize txtSINO;
+@synthesize txtLAName, SINO,FilteredBasicSA,FilteredDateCreated,FilteredName;
+@synthesize FilteredSINO,FilteredPlanName,FilteredSIStatus,SIStatus;
+@synthesize BasicSA,Name,PlanName, DateCreated;
+@synthesize SortBy = _SortBy;
+@synthesize Popover = _Popover;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    outletDate.hidden = true;
+    outletDone.hidden = true;
+    
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+        NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, A.datecreated, name, planname, basicSA, 'Not Created' "
+                                  " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
+                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode "];
+        const char *SelectSI = [SIListingSQL UTF8String];
+        if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
+            
+            SINO = [[NSMutableArray alloc] init ];
+            DateCreated = [[NSMutableArray alloc] init ];
+            Name = [[NSMutableArray alloc] init ];
+            PlanName = [[NSMutableArray alloc] init ];
+            BasicSA = [[NSMutableArray alloc] init ];
+            SIStatus = [[NSMutableArray alloc] init ];
+            
+            while (sqlite3_step(statement) == SQLITE_ROW){
+                NSString *SINumber = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                NSString *ItemDateCreated = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                NSString *ItemName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                NSString *ItemPlanName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                NSString *ItemBasicSA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                NSString *ItemStatus = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+                
+                
+                [SINO addObject:SINumber];
+                [DateCreated addObject:ItemDateCreated ];
+                [Name addObject:ItemName ];
+                [PlanName addObject:ItemPlanName ];
+                [BasicSA addObject:ItemBasicSA ];
+                [SIStatus addObject:ItemStatus];
+            }
+            
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(contactDB);
+    }
+    
+    
+    //    UITableView *tableView =  [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+    
+    /*    UITableView *tableView =  [[UITableView alloc] initWithFrame:CGRectMake(100.0,100.0,300,500) style:UITableViewStyleGrouped ];
+     
+     tableView.delegate = self;
+     tableView.dataSource = self;
+     
+     self.myTableView = tableView;
+     
+     //self.view = tableView;
+     [self.view addSubview:tableView];
+     */  
+    myTableView.rowHeight = 50;
+    myTableView.backgroundColor = [UIColor clearColor];
+    myTableView.opaque = NO;
+    myTableView.backgroundView = nil;
+    
+    [self.view addSubview:myTableView];
+
+}
+
+- (void)viewDidUnload
+{
+    [self setTxtSINO:nil];
+    [self setTxtLAName:nil];
+    [self setOutletDateFrom:nil];
+    [self setOutletDateTo:nil];
+    [self setBtnSortBy:nil];
+    [self setOutletDelete:nil];
+    [self setMyTableView:nil];
+    [self setOutletDate:nil];
+    [self setOutletDone:nil];
+    [self setLblSINO:nil];
+    [self setLblDateCreated:nil];
+    [self setLblName:nil];
+    [self setLblPlan:nil];
+    [self setLblBasicSA:nil];
+    [self setOutletDateFrom:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;   
+}
+
+- (NSInteger)tableView:(UITableView *)myTableView numberOfRowsInSection:(NSInteger)section {
+    //return List.count;
+    if (isFilter == false) {
+        return SINO.count;
+    }
+    else {
+        return FilteredSINO.count;
+    }
+    
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)myTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [self.myTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    /*
+     cell.textLabel.text = [[List objectAtIndex:indexPath.row] stringByAppendingFormat:@"                 dsadsa"];
+     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+     */
+    
+    /*
+     cell.detailTextLabel.numberOfLines = 0;
+     cell.detailTextLabel.text = @"dasdsadsdadas\ndsadsadsa";
+     cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
+     */
+    //cell.backgroundColor = [UIColor redColor];
+    
+    if (isFilter == false) {
+        CGRect frame=CGRectMake(0,0, 200, 50);
+        UILabel *label1=[[UILabel alloc]init];            
+        label1.frame=frame;
+        label1.text= [SINO objectAtIndex:indexPath.row];
+        label1.tag = 1001;
+        label1.textAlignment = UITextAlignmentCenter;
+        [cell.contentView addSubview:label1];
+        //label1.backgroundColor = [UIColor lightGrayColor];
+        
+        CGRect frame2=CGRectMake(200,0, 200, 50);
+        UILabel *label2=[[UILabel alloc]init];
+        label2.frame=frame2;
+        label2.text= [DateCreated objectAtIndex:indexPath.row];
+        label2.textAlignment = UITextAlignmentCenter;    
+        label2.tag = 1002;
+        //label2.backgroundColor = [UIColor grayColor];
+        [cell.contentView addSubview:label2];
+        
+        CGRect frame3=CGRectMake(400,0, 200, 50);
+        UILabel *label3=[[UILabel alloc]init];            
+        label3.frame=frame3;
+        label3.text= [Name objectAtIndex:indexPath.row];
+        label3.tag = 1003;
+        label3.textAlignment = UITextAlignmentCenter;
+        [cell.contentView addSubview:label3];
+        //label3.backgroundColor = [UIColor lightGrayColor];
+        
+        CGRect frame4=CGRectMake(600,0, 200, 50);
+        UILabel *label4=[[UILabel alloc]init];
+        label4.frame=frame4;
+        label4.text= [PlanName objectAtIndex:indexPath.row];
+        label4.textAlignment = UITextAlignmentCenter;    
+        label4.tag = 1004;
+        //label4.backgroundColor = [UIColor grayColor];
+        [cell.contentView addSubview:label4];
+        
+        CGRect frame5=CGRectMake(800,0, 150, 50);
+        UILabel *label5=[[UILabel alloc]init];            
+        label5.frame=frame5;
+        label5.text= [BasicSA objectAtIndex:indexPath.row];
+        label5.tag = 1005;
+        label5.textAlignment = UITextAlignmentCenter;
+        [cell.contentView addSubview:label5];
+        //label5.backgroundColor = [UIColor lightGrayColor];
+        
+        /*
+         CGRect frame6=CGRectMake(850,0, 150, 50);
+         UILabel *label6=[[UILabel alloc]init];
+         label6.frame=frame6;
+         label6.text= [SIStatus objectAtIndex:indexPath.row];
+         label6.textAlignment = UITextAlignmentCenter;    
+         label6.tag = 1006;
+         //label6.backgroundColor = [UIColor grayColor];
+         [cell.contentView addSubview:label6];
+         */
+        
+    }
+    else {
+        CGRect frame=CGRectMake(0,0, 200, 50);
+        UILabel *label1=[[UILabel alloc]init];            
+        label1.frame=frame;
+        label1.text= [FilteredSINO objectAtIndex:indexPath.row];
+        //label1.tag = 1001;
+        label1.textAlignment = UITextAlignmentCenter;
+        [cell.contentView addSubview:label1];
+        //label1.backgroundColor = [UIColor lightGrayColor];
+        
+        CGRect frame2=CGRectMake(200,0, 200, 50);
+        UILabel *label2=[[UILabel alloc]init];
+        label2.frame=frame2;
+        label2.text= [FilteredDateCreated objectAtIndex:indexPath.row];
+        label2.textAlignment = UITextAlignmentCenter;    
+        //label2.tag = 1002;
+        //label2.backgroundColor = [UIColor grayColor];
+        [cell.contentView addSubview:label2];
+        
+        CGRect frame3=CGRectMake(400,0, 200, 50);
+        UILabel *label3=[[UILabel alloc]init];            
+        label3.frame=frame3;
+        label3.text= [FilteredName objectAtIndex:indexPath.row];
+        //label3.tag = 1003;
+        label3.textAlignment = UITextAlignmentCenter;
+        [cell.contentView addSubview:label3];
+        //label3.backgroundColor = [UIColor lightGrayColor];
+        
+        CGRect frame4=CGRectMake(600,0, 200, 50);
+        UILabel *label4=[[UILabel alloc]init];
+        label4.frame=frame4;
+        label4.text= [FilteredPlanName objectAtIndex:indexPath.row];
+        label4.textAlignment = UITextAlignmentCenter;    
+        //label4.tag = 1004;
+        //label4.backgroundColor = [UIColor grayColor];
+        [cell.contentView addSubview:label4];
+        
+        CGRect frame5=CGRectMake(800,0, 150, 50);
+        UILabel *label5=[[UILabel alloc]init];            
+        label5.frame=frame5;
+        label5.text= [FilteredBasicSA objectAtIndex:indexPath.row];
+        //label5.tag = 1005;
+        label5.textAlignment = UITextAlignmentCenter;
+        [cell.contentView addSubview:label5];
+        //label5.backgroundColor = [UIColor lightGrayColor];
+        
+        /*
+         CGRect frame6=CGRectMake(850,0, 150, 50);
+         UILabel *label6=[[UILabel alloc]init];
+         label6.frame=frame6;
+         label6.text= [FilteredSIStatus objectAtIndex:indexPath.row];
+         label6.textAlignment = UITextAlignmentCenter;    
+         label6.tag = 1006;
+         //label6.backgroundColor = [UIColor grayColor];
+         [cell.contentView addSubview:label6];
+         */
+        
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    
+    return cell;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+ 
+}
+
+- (IBAction)btnDateFrom:(id)sender {
+    outletDate.hidden = false;
+    outletDone.hidden = false;
+    outletDate.tag = 1;
+}
+- (IBAction)btnDateTo:(id)sender {
+    outletDate.hidden = false;
+    outletDone.hidden = false;
+    outletDate.tag = 2;
+}
+- (IBAction)segOrderBy:(id)sender {
+}
+
+- (IBAction)btnSearch:(id)sender {
+    
+        
+        //isFilter = true;
+        
+        NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *docsDir = [dirPaths objectAtIndex:0];
+        databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+        
+        sqlite3_stmt *statement;
+        const char *dbpath = [databasePath UTF8String];
+        
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+            NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, A.datecreated, name, planname, basicSA, 'Not Created' "
+                                      " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
+                                      " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode " ];        
+            
+            if (![txtSINO.text isEqualToString:@""]) {
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
+                
+            }
+            
+            if (![txtLAName.text isEqualToString:@""]) {
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND name like \"%%%@%%\"", txtLAName.text ];
+                
+            }
+            
+            NSString *Sorting = [[NSString alloc] init ];
+            Sorting = @"";
+            
+            if (lblBasicSA.highlighted == TRUE) {
+                Sorting = @"basicSA";
+            }
+            
+            if (lblDateCreated.highlighted == TRUE) {
+                if ([Sorting isEqualToString:@""]) {
+                    Sorting = @"A.datecreated";
+                }
+                else {
+                    Sorting = [Sorting stringByAppendingFormat:@",A.datecreated"];
+                    
+                }
+            }
+            
+            if (lblName.highlighted == TRUE) {
+                if ([Sorting isEqualToString:@""]) {
+                    Sorting = @"name";
+                }
+                else {
+                    Sorting = [Sorting stringByAppendingFormat:@",name"];
+                    
+                }
+            }
+            
+            if (lblPlan.highlighted == TRUE) {
+                if ([Sorting isEqualToString:@""]) {
+                    Sorting = @"planname";
+                }
+                else {
+                    Sorting = [Sorting stringByAppendingFormat:@",planname"];
+                    
+                }
+            }
+            
+            if (lblSINO.highlighted == TRUE) {
+                if ([Sorting isEqualToString:@""]) {
+                    Sorting = @"A.SINO";
+                }
+                else {
+                    Sorting = [Sorting stringByAppendingFormat:@",A.SINO"];
+                    
+                }
+            }
+            
+            if ([Sorting isEqualToString:@""]) {
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@"", Sorting ];
+                
+            }
+            else {
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ desc ", Sorting ];
+            }
+            
+            
+            const char *SelectSI = [SIListingSQL UTF8String];
+            if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
+                
+                
+                SINO = nil;
+                DateCreated = nil;
+                Name = nil;
+                PlanName = nil;
+                BasicSA = nil;
+                SIStatus = nil;
+                
+                SINO = [[NSMutableArray alloc] init ];
+                DateCreated = [[NSMutableArray alloc] init ];
+                Name = [[NSMutableArray alloc] init ];
+                PlanName = [[NSMutableArray alloc] init ];
+                BasicSA = [[NSMutableArray alloc] init ];
+                SIStatus = [[NSMutableArray alloc] init ];
+                
+                /*
+                 FilteredSINO = [[NSMutableArray alloc] init ];
+                 FilteredDateCreated = [[NSMutableArray alloc] init ];
+                 FilteredName = [[NSMutableArray alloc] init ];
+                 FilteredPlanName = [[NSMutableArray alloc] init ];
+                 FilteredBasicSA = [[NSMutableArray alloc] init ];
+                 FilteredSIStatus = [[NSMutableArray alloc] init ];
+                 */
+                
+                
+                while (sqlite3_step(statement) == SQLITE_ROW){
+                    NSString *SINumber = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                    NSString *ItemDateCreated = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                    NSString *ItemName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    NSString *ItemPlanName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                    NSString *ItemBasicSA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                    NSString *ItemStatus = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+                    
+                    /*
+                     [FilteredSINO addObject:SINumber];
+                     [FilteredDateCreated addObject:ItemDateCreated ];
+                     [FilteredName addObject:ItemName ];
+                     [FilteredPlanName addObject:ItemPlanName ];
+                     [FilteredBasicSA addObject:ItemBasicSA ];
+                     [FilteredSIStatus addObject:ItemStatus];
+                     */
+                    [SINO addObject:SINumber];
+                    [DateCreated addObject:ItemDateCreated ];
+                    [Name addObject:ItemName ];
+                    [PlanName addObject:ItemPlanName ];
+                    [BasicSA addObject:ItemBasicSA ];
+                    [SIStatus addObject:ItemStatus];
+                }
+                
+                
+                
+                sqlite3_finalize(statement);
+            }
+            else {
+                
+                NSLog(@"%@", SIListingSQL);
+            }
+            
+            sqlite3_close(contactDB);
+        }
+        else {
+            NSLog(@"cannot open DB");
+        }
+    
+    [myTableView reloadData];
+}
+
+- (IBAction)btnEdit:(id)sender {
+    if ([self.myTableView isEditing]) {
+        [self.myTableView setEditing:NO animated:TRUE];
+    }
+    else{
+        [self.myTableView setEditing:YES animated:TRUE]; 
+    }
+}
+
+- (IBAction)btnDelete:(id)sender {
+    NSArray *visibleCells = [myTableView visibleCells];
+    NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    
+    for (UITableViewCell *cell in visibleCells) {
+        //[myTableView beginUpdates];
+        if (cell.selected) {
+            NSIndexPath *indexPath = [myTableView indexPathForCell:cell];
+            
+            //[SINO removeObjectAtIndex:indexPath.row];
+            NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+            [ItemToBeDeleted addObject:zzz];
+            //[myTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationTop];
+            //[indexPaths addObject:<#(id)#> ]
+            [indexPaths addObject:indexPath];
+        }
+        //[myTableView endUpdates];
+    }
+    
+    for(int a=0; a<ItemToBeDeleted.count; a++){
+        int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
+        value = value - a;
+        [SINO removeObjectAtIndex:value];
+        [DateCreated removeObjectAtIndex:value];
+        [Name removeObjectAtIndex:value];
+        [PlanName removeObjectAtIndex:value];
+        [BasicSA removeObjectAtIndex:value];
+        [SIStatus removeObjectAtIndex:value];
+        
+    }
+    
+    [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+    
+    [self.myTableView reloadData]; 
+}
+- (IBAction)btnDone:(id)sender {
+    outletDate.hidden = true;
+    outletDone.hidden = true;
+}
+
+- (IBAction)ActionDate:(id)sender {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    
+    NSString *pickerDate = [dateFormatter stringFromDate:[outletDate date]];
+    
+    NSString *msg = [NSString stringWithFormat:@"%@",pickerDate];
+    if (outletDate.tag == 1) {
+          [self.outletDateFrom setTitle:msg forState:UIControlStateNormal];
+    }
+    else {
+          [self.outletDateTo setTitle:msg forState:UIControlStateNormal];
+    }
+  
+}
+
+- (void) SortBySelected:(NSMutableArray *)SortBySelected{
+    
+    //NSLog(@"%@", [SortBySelected objectAtIndex:0 ]);
+    
+    lblSINO.highlighted = false;
+    lblDateCreated.highlighted= false;
+    lblName.highlighted= false;
+    lblPlan.highlighted = false;
+    lblBasicSA.highlighted = false;
+    
+    for (NSString *zzz in SortBySelected ) {
+        if ([zzz isEqualToString:@"SI NO"]) {
+            lblSINO.highlightedTextColor = [UIColor blueColor];
+            lblSINO.highlighted = TRUE;
+            
+        }
+        else if ([zzz isEqualToString:@"Plan Name"]) {
+            lblPlan.highlightedTextColor = [UIColor blueColor];
+            lblPlan.highlighted = TRUE;
+            
+        }
+        
+        else if ([zzz isEqualToString:@"Name"]) {
+            lblName.highlightedTextColor = [UIColor blueColor];
+            lblName.highlighted = TRUE;
+            
+        }
+        
+        else if ([zzz isEqualToString:@"Date Created"]) {
+            lblDateCreated.highlightedTextColor = [UIColor blueColor];
+            lblDateCreated.highlighted = TRUE;
+            
+        }
+        
+        else if ([zzz isEqualToString:@"Basic SA"]) {
+            lblBasicSA.highlightedTextColor = [UIColor blueColor];
+            lblBasicSA.highlighted = TRUE;
+            
+        }
+    }
+    
+    
+    
+    
+}
+- (IBAction)btnSortBy:(id)sender {
+    if (_SortBy == nil) {
+        self.SortBy = [[siListingSortBy alloc] initWithStyle:UITableViewStylePlain];
+        _SortBy.delegate = self;
+        self.Popover = [[UIPopoverController alloc] initWithContentViewController:_SortBy];               
+    }
+    
+    
+    [self.Popover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+
+}
+@end

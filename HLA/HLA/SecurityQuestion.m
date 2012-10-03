@@ -14,7 +14,7 @@
 @end
 
 @implementation SecurityQuestion
-@synthesize lblQuesOne;
+@synthesize lblQuesOne, FirstTimeLogin;
 @synthesize lblQuesTwo;
 @synthesize lblQuestThree;
 @synthesize txtAnswerQ1;

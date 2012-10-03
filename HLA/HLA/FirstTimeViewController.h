@@ -34,7 +34,6 @@
 - (IBAction)btnSave:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *txtAgentCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtAgentName;
-@property (weak, nonatomic) IBOutlet UITextField *txtAgentType;
 @property (weak, nonatomic) IBOutlet UITextField *txtAgentContactNo;
 @property (weak, nonatomic) IBOutlet UITextField *txtLeaderCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtLeaderName;
@@ -51,5 +50,7 @@
 @property (nonatomic,copy) NSString *questTwoCode;
 @property (nonatomic,copy) NSString *questThreeCode;
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
+@property (weak, nonatomic) IBOutlet UIButton *btnNext;
+- (IBAction)ActionNext:(id)sender;
 
 @end

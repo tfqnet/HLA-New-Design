@@ -7,15 +7,17 @@
 //
 
 #import "FirstTimeViewController.h"
+#import "UserProfile.h"
+#import "SecurityQuestion.h"
 
 @interface FirstTimeViewController ()
 
 @end
 
 @implementation FirstTimeViewController
+@synthesize btnNext;
 @synthesize txtAgentCode, userID;
 @synthesize txtAgentName;
-@synthesize txtAgentType;
 @synthesize txtAgentContactNo;
 @synthesize txtLeaderCode;
 @synthesize txtLeaderName;
@@ -78,7 +80,6 @@
     [self setBtnCancel:nil];
     [self setTxtAgentCode:nil];
     [self setTxtAgentName:nil];
-    [self setTxtAgentType:nil];
     [self setTxtAgentContactNo:nil];
     [self setTxtLeaderCode:nil];
     [self setTxtLeaderName:nil];
@@ -86,6 +87,7 @@
     [self setTxtEmail:nil];
     [self setLblStatus:nil];
     [self setMyScrollView:nil];
+    [self setBtnNext:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -120,13 +122,9 @@
 	[super viewDidDisappear:animated];
 }
 
-- (IBAction)btnCancel:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-
 - (IBAction)ActionCancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:Nil];
+    
 }
 
 - (IBAction)btnSave:(id)sender {
@@ -165,16 +163,20 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"UserProfile Update!");
+                lblStatus.text = @"Data updated! Please Click Next.";
+                btnNext.hidden = false;
                 
             } else {
                 NSLog(@"UserProfile Failed!");
+                lblStatus.text = @"Update failed!.";
+                
             }
             sqlite3_finalize(statement);
         }
-        
-        NSString *query2 = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\", AgentName= \"%@\" ,AgentType= \"%@\",AgentContactNo= \"%@\",ImmediateLeaderCode= \"%@\","
+        /*
+        NSString *query2 = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\", AgentName= \"%@\" ,AgentContactNo= \"%@\",ImmediateLeaderCode= \"%@\","
                             "ImmediateLeaderName= \"%@\",BusinessRegNumber= \"%@\",AgentEmail= \"%@\" WHERE IndexNo = \"%d\"",
-                            txtAgentCode.text,txtAgentName.text,txtAgentType.text,txtAgentContactNo.text,txtLeaderCode.text,txtLeaderName.text,txtRegistrationNo.text,txtEmail.text,self.userID];
+                            txtAgentCode.text,txtAgentName.text,txtAgentContactNo.text,txtLeaderCode.text,txtLeaderName.text,txtRegistrationNo.text,txtEmail.text,self.userID];
         
         const char *result = [query2 UTF8String];
         if (sqlite3_prepare_v2(contactDB, result, -1, &statement, NULL) == SQLITE_OK)
@@ -205,7 +207,7 @@
             }
             sqlite3_finalize(statement);
         }
-
+         */
         
         sqlite3_close(contactDB);
     }
@@ -309,4 +311,11 @@
     selectThree = NO;
 }
 
+- (IBAction)ActionNext:(id)sender {
+    SecurityQuestion *SecurityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
+    SecurityPage.userID = userID;
+    SecurityPage.FirstTimeLogin = 1;
+    [self presentViewController:SecurityPage animated:YES completion:nil];
+    
+}
 @end

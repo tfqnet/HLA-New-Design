@@ -12,6 +12,7 @@
 #import "ProspectViewController.h"
 #import "ProspectListing.h"
 #import "Logout.h"
+#import "SIListing.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -46,8 +47,6 @@
     [controllersToAdd addObject:settingPage];    
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
-    //ProspectPage.indexNo = self.indexNo;
-    //ProspectPage.userRequest = self.userRequest;
     ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];    
     
@@ -55,8 +54,14 @@
     LogoutPage.indexNo = self.indexNo;
     LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:LogoutPage];
-    
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
+    
+    SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
+    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:SIListingPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
     
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];
