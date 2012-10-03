@@ -11,6 +11,7 @@
 #import "ListingTbViewController.h"
 #import "DateViewController.h"
 #import "JobListTbViewController.h"
+#import "SIHandler.h"
 
 @interface NewLAViewController : UIViewController<UITextFieldDelegate,UIPopoverControllerDelegate,ListingTbViewControllerDelegate,DateViewControllerDelegate,JobListTbViewControllerDelegate>{
     NSString *databasePath;
@@ -21,9 +22,10 @@
     BOOL useExist;
 }
 
+@property (nonatomic,strong) SIHandler *handler;
+@property (strong, nonatomic) NSMutableArray *dataInsert;
+
 //request from previous
-@property (nonatomic, assign,readwrite) int indexNo;
-@property (nonatomic,strong) id agenID;
 @property (nonatomic,strong) id requestSINo;
 
 //LA Field
@@ -80,6 +82,7 @@
 - (IBAction)btnOccPressed:(id)sender;
 - (IBAction)doSaveLA:(id)sender;
 - (IBAction)selectProspect:(id)sender;
+- (IBAction)goBack:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

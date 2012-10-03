@@ -8,20 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
+#import "SIHandler.h"
 
 @interface BasicPlanViewController : UIViewController <UITextFieldDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
+    UITextField *activeField;
     BOOL showHL;
     BOOL Saved;
 }
 
 //request from previous
-@property (nonatomic, assign,readwrite) int indexNo;
-@property (nonatomic,strong) id agenID;
 @property (nonatomic, assign,readwrite) int ageClient;
-@property (nonatomic,strong) id requestSINo;
-@property (nonatomic,strong) id requestOccpCode;
+@property (nonatomic,retain) NSString *requestSINo;
+@property (nonatomic,retain) NSString *requestOccpCode;
+@property (nonatomic,strong) SIHandler *handler;
+
 //screen field
 @property (retain, nonatomic) IBOutlet UITextField *planField;
 @property (retain, nonatomic) IBOutlet UITextField *termField;
@@ -38,6 +40,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *HLTermField;
 @property (retain, nonatomic) IBOutlet UITextField *tempHLField;
 @property (retain, nonatomic) IBOutlet UITextField *tempHLTermField;
+@property (strong, nonatomic) IBOutlet UIScrollView *myScrollView;
 
 @property (nonatomic, assign,readwrite) int termCover;
 @property (nonatomic, assign,readwrite) int minSA;
@@ -67,8 +70,10 @@
 - (IBAction)incomeSegmentPressed:(id)sender;
 - (IBAction)advanceIncomeSegmentPressed:(id)sender;
 - (IBAction)cashDividendSegmentPressed:(id)sender;
+- (IBAction)goBack:(id)sender;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
+-(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
 
 @end

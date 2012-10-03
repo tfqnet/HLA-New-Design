@@ -13,6 +13,7 @@
 #import "ProspectListing.h"
 #import "Logout.h"
 #import "SIListing.h"
+#import "SIMenuViewController.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -62,6 +63,11 @@
     [controllersToAdd addObject:SIListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
+    SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:menuSIPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+
     
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];

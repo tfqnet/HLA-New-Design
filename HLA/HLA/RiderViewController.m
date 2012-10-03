@@ -10,6 +10,8 @@
 #import "BasicPlanViewController.h"
 #import "NewLAViewController.h"
 
+#import "SIMenuViewController.h"
+
 @interface RiderViewController ()
 
 @end
@@ -41,8 +43,7 @@
 @synthesize maxDisplayLabel;
 @synthesize btnPType;
 @synthesize btnAddRider;
-@synthesize riderBtn;
-@synthesize indexNo,agenID,requestPlanCode,requestSINo,requestAge,requestCoverTerm,requestBasicSA,requestOccpCode;
+@synthesize requestPlanCode,requestSINo,requestAge,requestCoverTerm,requestBasicSA,requestOccpCode;
 @synthesize pTypeCode,PTypeSeq,pTypeDesc,riderCode,riderDesc,popOverConroller;
 @synthesize FLabelCode,FLabelDesc,FRidName,FInputCode,FFieldName,FTbName,FCondition;
 @synthesize expAge,minSATerm,maxSATerm,minTerm,maxTerm,maxRiderTerm,planCode,SINoPlan,planOption,deductible,maxRiderSA;
@@ -58,22 +59,22 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    NSLog(@"indexNo:%d,agenID:%@,propectAge:%d,covered:%d,SINo:%@ planCode:%@",self.indexNo,[self.agenID description],self.requestAge,self.requestCoverTerm,[self.requestSINo description],[self.requestPlanCode description]);
+    NSLog(@"propectAge:%d,covered:%d,SINo:%@ planCode:%@",self.requestAge,self.requestCoverTerm,[self.requestSINo description],[self.requestPlanCode description]);
     
-    [riderBtn setBackgroundImage:[UIImage imageNamed:@"button_hover"] forState:UIControlStateNormal];
     deducBtn.hidden = YES;
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",[self.requestSINo description]];
     planCode = [[NSString alloc] initWithFormat:@"%@",[self.requestPlanCode description]];
     incomeRider = NO;
-    
-    if (!listPType) {
-        listPType = [[RiderPTypeTbViewController alloc]initWithString:SINoPlan];
-        listPType.delegate = self;
+    if (self.requestSINo) {
+        if (!listPType) {
+            listPType = [[RiderPTypeTbViewController alloc]initWithString:SINoPlan];
+            listPType.delegate = self;
+        }
+        pTypeCode = [[NSString alloc] initWithFormat:@"%@",listPType.selectedCode];
+        PTypeSeq = [listPType.selectedSeqNo intValue];
+        pTypeDesc = [[NSString alloc] initWithFormat:@"%@",listPType.selectedDesc];
+        [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
     }
-    pTypeCode = [[NSString alloc] initWithFormat:@"%@",listPType.selectedCode];
-    PTypeSeq = [listPType.selectedSeqNo intValue];
-    pTypeDesc = [[NSString alloc] initWithFormat:@"%@",listPType.selectedDesc];
-    [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
     
     [self getListingRider];
     myTableView.rowHeight = 50;
@@ -336,8 +337,6 @@
     if ([[segue identifier] isEqualToString:@"riderGoBasic"]) {
         
         BasicPlanViewController *basicPlan = [segue destinationViewController];
-        basicPlan.indexNo = self.indexNo;
-        basicPlan.agenID = [self.agenID description];
         basicPlan.ageClient = self.requestAge;
         basicPlan.requestSINo = SINoPlan;
         basicPlan.requestOccpCode = [self.requestOccpCode description];
@@ -345,8 +344,6 @@
     else if ([[segue identifier] isEqualToString:@"riderGoLA"]) {
         
         NewLAViewController *laView = [segue destinationViewController];
-        laView.indexNo = self.indexNo;
-        laView.agenID = [self.agenID description];
         laView.requestSINo = SINoPlan;
     }
 }
@@ -474,6 +471,14 @@
         NSLog(@"validate - 4th save");
         [self validateSaver];
     }
+}
+
+- (IBAction)goBack:(id)sender
+{
+    SIMenuViewController *aaMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+    aaMenu.modalPresentationStyle = UIModalPresentationFullScreen;
+    aaMenu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:aaMenu animated:YES];
 }
 
 -(void)validateTerm
@@ -737,6 +742,7 @@
 }
 
 #pragma mark - DB handling
+
 -(void)getLabelForm
 {
     FLabelCode = [[NSMutableArray alloc] init];
@@ -747,13 +753,11 @@
     FFieldName = [[NSMutableArray alloc] init];
     FCondition = [[NSMutableArray alloc] init];
     
-    const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:@"SELECT LabelCode,LabelDesc,RiderName,InputCode,TableName,FieldName,Condition FROM Trad_Sys_Rider_Label WHERE RiderCode=\"%@\"",riderCode];
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while(sqlite3_step(statement) == SQLITE_ROW)
             {
@@ -779,13 +783,11 @@
 
 -(void) getRiderTermRule
 {
-    const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT MinAge,MaxAge,ExpiryAge,MinTerm,MaxTerm,MinSA,MaxSA,MaxSAFactor FROM tbl_SI_Trad_Rider_Mtn WHERE RiderCode=\"%@\"",riderCode];
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT MinAge,MaxAge,ExpiryAge,MinTerm,MaxTerm,MinSA,MaxSA,MaxSAFactor FROM Trad_Sys_Rider_Mtn WHERE RiderCode=\"%@\"",riderCode];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
@@ -985,15 +987,12 @@
 
 -(void)getOccLoad
 {
-    const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                    @"SELECT Class,PA_CPA,OccLoading_TL FROM Trad_Sys_Occupation_Loading WHERE OccpCode=\"%@\"",[self.requestOccpCode description]];
-        
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+                    @"SELECT Class,PA_CPA,OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",[self.requestOccpCode description]];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
@@ -1104,8 +1103,6 @@
     [self setPlanOption:nil];
     [self setDeductible:nil];
     [self setPlanCode:nil];
-    [self setAgenID:nil];
-    [self setRiderBtn:nil];
     [self setRequestPlanCode:nil];
     [self setRequestSINo:nil];
     [self setBtnPType:nil];

@@ -10,6 +10,7 @@
 #import "RiderViewController.h"
 #import "NewLAViewController.h"
 #import "PremiumViewController.h"
+#import "SIMenuViewController.h"
 
 @interface BasicPlanViewController ()
 
@@ -31,10 +32,11 @@
 @synthesize HLTermField;
 @synthesize tempHLField;
 @synthesize tempHLTermField;
-@synthesize indexNo,agenID,ageClient,requestSINo,termCover,planChoose,maxSA,minSA,SINoPlan;
+@synthesize myScrollView;
+@synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA,SINoPlan;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
-@synthesize planCode,requestOccpCode;
+@synthesize planCode,requestOccpCode,handler;
 
 #pragma mark - Cycle View
 
@@ -46,17 +48,20 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    NSLog(@"indexNo:%d , agenID:%@, age:%d,SINo:%@",self.indexNo,[self.agenID description],self.ageClient,[self.requestSINo description]);
+    ageClient = handler.Age;
+    requestSINo = handler.SINo;
+    requestOccpCode = handler.OccpCode;
+    NSLog(@"SINo:%@, age:%d, job:%@",requestSINo,ageClient,requestOccpCode);
     
     healthLoadingView.alpha = 0;
     showHL = NO;
     planChoose = @"HLAIB";
-    SINoPlan = [[NSString alloc] initWithFormat:@"%@",[self.requestSINo description]];
+    SINoPlan = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     termField.enabled = NO;
     planField.enabled = NO;
     [self getTermRule];
     
-    if (self.requestSINo) {
+    if (requestSINo) {
         [self checkingExisting];
         if (getSINo.length != 0) {
             NSLog(@"view selected field");
@@ -83,6 +88,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
@@ -97,10 +104,21 @@
 	[super viewDidDisappear:animated];
 }
 
+-(void)keyboardDidShow:(NSNotificationCenter *)notification
+{
+    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-352);
+    self.myScrollView.contentSize = CGSizeMake(1024, 704);
+    
+    CGRect textFieldRect = [activeField frame];
+    textFieldRect.origin.y += 10;
+    [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
+}
+
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
     minSALabel.text = @"";
     maxSALabel.text = @"";
+    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704);
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -122,6 +140,7 @@
             break;
     }
     Saved = NO;
+    activeField = textField;
     return YES;
 }
 
@@ -132,21 +151,17 @@
     if ([[segue identifier] isEqualToString:@"basicGoRider"]) {
         
         RiderViewController *riderPlan = [segue destinationViewController];
-        riderPlan.indexNo = self.indexNo;
-        riderPlan.agenID = [self.agenID description];
         riderPlan.requestSINo = SINoPlan;
-        riderPlan.requestAge = self.ageClient;
+        riderPlan.requestAge = ageClient;
         riderPlan.requestCoverTerm = termCover;
         riderPlan.requestPlanCode = planCode;
         riderPlan.requestBasicSA = [yearlyIncomeField.text intValue];
-        riderPlan.requestOccpCode = [self.requestOccpCode description];
+        riderPlan.requestOccpCode = requestOccpCode;
         riderPlan.requestMOP = MOP;
     }
     else if ([[segue identifier] isEqualToString:@"basicGoLA"]) {
         
         NewLAViewController *laView = [segue destinationViewController];
-        laView.indexNo = self.indexNo;
-        laView.agenID = [self.agenID description];
         laView.requestSINo = SINoPlan;
     }
 }
@@ -219,6 +234,14 @@
     Saved = NO;
 }
 
+- (IBAction)goBack:(id)sender
+{    
+    SIMenuViewController *aaMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+    aaMenu.modalPresentationStyle = UIModalPresentationFullScreen;
+    aaMenu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:aaMenu animated:YES];
+}
+
 - (IBAction)calculatePressed:(id)sender
 {
     if (Saved) {
@@ -230,11 +253,11 @@
         premView.requestPlanCode = planCode;
         premView.requestSINo = SINoPlan;
         premView.requestMOP = MOP;
-        premView.requestAge = self.ageClient;
+        premView.requestAge = ageClient;
         premView.requestTerm = termCover;
         premView.requestBasicSA = yearlyIncomeField.text;
         premView.requestBasicHL = HLField.text;
-        premView.requestOccpCode = [self.requestOccpCode description];
+        premView.requestOccpCode = requestOccpCode;
         [self presentModalViewController:premView animated:YES];
         premView.view.superview.bounds = CGRectMake(0, 0, 650, 550);
     } else {
@@ -319,10 +342,10 @@
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (Per 1k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
         }
-        else if ((MOP == 9 && basicSumA < 1000 && self.ageClient >= 66 && self.ageClient <= 70)||
-            (MOP == 9 && basicSumA >= 1000 && self.ageClient >= 68 && self.ageClient <= 70)||
-            (MOP == 12 && basicSumA < 1000 && self.ageClient >= 59 && self.ageClient <= 70)||
-            (MOP == 12 && basicSumA >= 1000 && self.ageClient >= 61 && self.ageClient <= 70))
+        else if ((MOP == 9 && basicSumA < 1000 && ageClient >= 66 && ageClient <= 70)||
+            (MOP == 9 && basicSumA >= 1000 && ageClient >= 68 && ageClient <= 70)||
+            (MOP == 12 && basicSumA < 1000 && ageClient >= 59 && ageClient <= 70)||
+            (MOP == 12 && basicSumA >= 1000 && ageClient >= 61 && ageClient <= 70))
         {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please note that the Guaranteed Benefit payout for selected plan maybe lesser than total premium outlay.\nChoose OK to proceed.\nChoose CANCEL to select other plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
             [alert setTag:1002];
@@ -425,14 +448,14 @@
                 minSA = sqlite3_column_int(statement, 4);
                 maxSA = sqlite3_column_int(statement, 5);
                 
-                termCover = maxTerm - self.ageClient;
+                termCover = maxTerm - ageClient;
                 planField.text = @"HLA Income Builder";
                 termField.text = [[NSString alloc] initWithFormat:@"%d",termCover];
                 
-                if (self.ageClient < minAge) {
+                if (ageClient < minAge) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Age Last Birthday must be greater than or equal to %d for this product.",minAge] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                     [alert show];
-                } else if (self.ageClient > maxAge) {
+                } else if (ageClient > maxAge) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Age Last Birthday must be less than or equal to %d for this product.",minAge] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                     [alert show];
                 }
@@ -577,31 +600,6 @@
     }
 }
 
-//not use anymore replace with pentaRate
--(void)getBasicRate
-{
-    const char *dbpath = [databasePath UTF8String];
-    sqlite3_stmt *statement;
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM tbl_SI_Trad_HLAIB WHERE PremPayOpt=\"%d\" AND Term=\"%d\"",MOP,termCover];
-        
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_ROW)
-            {
-                basicRate =  sqlite3_column_int(statement, 0);
-                
-            } else {
-                NSLog(@"error access Trad_HLAIB");
-            }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
-
 #pragma mark - Memory Management
 - (void)viewDidUnload
 {
@@ -615,7 +613,6 @@
     [self setBtnHealthLoading:nil];
     [self setHealthLoadingView:nil];
     [self setRequestSINo:nil];
-    [self setAgenID:nil];
     [self setMOPSegment:nil];
     [self setIncomeSegment:nil];
     [self setAdvanceIncomeSegment:nil];
@@ -631,6 +628,7 @@
     [self setGetTempHL:nil];
     [self setPlanCode:nil];
     [self setRequestOccpCode:nil];
+    [self setMyScrollView:nil];
     [super viewDidUnload];
 }
 

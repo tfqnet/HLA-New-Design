@@ -46,15 +46,13 @@
     ridCode = [[NSMutableArray alloc] init];
     ridDesc = [[NSMutableArray alloc] init];
     
-    const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode,b.RiderDesc FROM tbl_SI_Trad_RiderComb a LEFT JOIN tbl_SI_Trad_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.SeqNo=\"%d\"",[self.requestPtype description],self.requestSeq];
+            @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.SeqNo=\"%d\"",[self.requestPtype description],self.requestSeq];
         
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
             {

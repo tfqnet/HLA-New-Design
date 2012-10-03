@@ -31,7 +31,6 @@
 }
 
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
-@property (retain, nonatomic) IBOutlet UIButton *riderBtn;
 @property (retain, nonatomic) IBOutlet UIButton *btnPType;
 @property (retain, nonatomic) IBOutlet UIButton *btnAddRider;
 
@@ -56,8 +55,6 @@
 @property (retain, nonatomic) IBOutlet UILabel *maxDisplayLabel;
 
 //request from previous
-@property (nonatomic, assign,readwrite) int indexNo;
-@property (nonatomic,strong) id agenID;
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic, assign,readwrite) int requestCoverTerm;
@@ -123,6 +120,7 @@
 - (IBAction)planBtnPressed:(id)sender;
 - (IBAction)deducBtnPressed:(id)sender;
 - (IBAction)doSaveRider:(id)sender;
+- (IBAction)goBack:(id)sender;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

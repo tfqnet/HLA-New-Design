@@ -12,13 +12,15 @@
 #import "BasicPlanViewController.h"
 #import "RiderViewController.h"
 
+#import "SIMenuViewController.h"
+#import "SIHandler.h"
+
 @interface NewLAViewController ()
 
 @end
 
 @implementation NewLAViewController
 @synthesize myScrollView;
-@synthesize indexNo;
 @synthesize LANameField;
 @synthesize sexSegment;
 @synthesize smokerSegment;
@@ -31,7 +33,8 @@
 @synthesize btnOccp;
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
-@synthesize agenID,popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
+@synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
+@synthesize dataInsert,handler;
 
 - (void)viewDidLoad
 {
@@ -40,8 +43,6 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    
-    NSLog(@"indexNo:%d , agenID:%@",self.indexNo,[self.agenID description]);
 
     LAOccLoadingField.enabled = NO;
     LACPAField.enabled = NO;
@@ -277,6 +278,7 @@
 		
 		[popOverController setPopoverContentSize:CGSizeMake(500.0f, 400.0f)];
         [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
         popOverController.delegate = self;
 	}
     else {
@@ -329,6 +331,11 @@
 	}
 }
 
+- (IBAction)goBack:(id)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag==1001 && buttonIndex == 0) {
@@ -360,8 +367,6 @@
         }
         
         BasicPlanViewController *basicPlan = [segue destinationViewController];
-        basicPlan.indexNo = self.indexNo;
-        basicPlan.agenID = [self.agenID description];
         basicPlan.ageClient = age;
         basicPlan.requestSINo = SINo;
         basicPlan.requestOccpCode = occuCode;
@@ -369,8 +374,6 @@
     else if ([[segue identifier] isEqualToString:@"goRiderView"])
     {
         RiderViewController *rider = [segue destinationViewController];
-        rider.indexNo = self.indexNo;
-        rider.agenID = [self.agenID description];
         rider.requestSINo = SINo;
         rider.requestAge = age;
     }
@@ -573,12 +576,13 @@
     SINo = [[NSString alloc] initWithFormat:@"SI%@-000%d",currentdate,runningNoSI];
     CustCode = [[NSString alloc] initWithFormat:@"CL%@-000%d",currentdate,runningNoCust];
     
+    dataInsert = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-                        @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"1\",\"%@\",\"%@\")",SINo, CustCode,LACommencementDateField.text,[self.agenID description]];
-        
+                        @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"1\",\"%@\",\"hla\")",SINo, CustCode,LACommencementDateField.text];
+        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -590,8 +594,8 @@
         }
         
         NSString *insertSQL2 = [NSString stringWithFormat:
-                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"%@\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, LACommencementDateField.text, [self.agenID description]];
-        
+                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, LACommencementDateField.text];
+        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -601,6 +605,9 @@
             }
             sqlite3_finalize(statement);
         }
+        
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode]];
+        
         sqlite3_close(contactDB);
     }
 }
@@ -615,7 +622,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"%@\" WHERE id=\"%d\"",LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,[self.agenID description],clientID];
+            @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,clientID];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -642,6 +649,7 @@
             } else {
                 NSLog(@"SI update Failed!");
             }
+            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode]];
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
@@ -655,7 +663,7 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                 @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
-        
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -842,7 +850,6 @@
     [self setOccCode:nil];
     [self setOccCPA:nil];
     [self setOccPA:nil];
-    [self setAgenID:nil];
     [self setSINo:nil];
     [self setCustCode:nil];
     [self setSIDate:nil];

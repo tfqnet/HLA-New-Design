@@ -62,7 +62,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc FROM tbl_SI_Trad_LAPayor a LEFT JOIN tbl_Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq WHERE a.SINo=\"%@\"",SINoPlan];
+                              @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq WHERE a.SINo=\"%@\"",SINoPlan];
         NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
