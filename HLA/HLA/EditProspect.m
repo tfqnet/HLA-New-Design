@@ -7,6 +7,7 @@
 //
 
 #import "EditProspect.h"
+#import "ProspectListing.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface EditProspect ()
@@ -53,6 +54,7 @@
 @synthesize OccupationListPopover = _OccupationListPopover;
 @synthesize myScrollView;
 @synthesize outletOccup;
+@synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,6 +68,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     
@@ -643,31 +646,67 @@
             
         }
         
+        
         if (![contactCode isEqualToString:@""]) {
         
             lastID = pp.ProspectID;
-                    
-            NSString *insertContactSQL = [NSString stringWithFormat:
-                                            @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                            " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
-                    const char *insert_contactStmt = [insertContactSQL UTF8String];
-                    if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
-                        if (sqlite3_step(statement3) == SQLITE_DONE){
-                            sqlite3_finalize(statement3);
-                            //UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                            //[SuccessAlert show];
-                            
-                        }
-                        else {
-                            NSLog(@"Error - 4");
-                        }
+            NSString *insertContactSQL;
+            
+            if (a == 0) {
+                insertContactSQL = [NSString stringWithFormat:
+                                              @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                              " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+                
+            }
+            else if (a == 1) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N"];
+                
+            }
+            else if (a == 2) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N"];
+                
+            }
+            else if (a == 3) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N"];
+                
+            }
+            else if (a == 4) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N"];
+                
+            }
+            
+            if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK) {
+                
+                const char *insert_contactStmt = [insertContactSQL UTF8String];
+                if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
+                    if (sqlite3_step(statement3) == SQLITE_DONE){
+                        sqlite3_finalize(statement3);
+                        //UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        //[SuccessAlert show];
+                        
+                    }
+                    else {
+                        NSLog(@"Error - 4");
+                    }
                 }
                 else {
-                NSLog(@"Error - 3");
+                    NSLog(@"Error - 3");
+                    NSLog(@"%@", insertContactSQL);
                 }
                 
-            sqlite3_close(contactDB);
+                sqlite3_close(contactDB);
+
+            }
             
+                       
                         
             
         }
@@ -676,7 +715,18 @@
     }
     UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [SuccessAlert show];
-
+    
+    if (_delegate != nil) {
+        [_delegate FinishEdit];
+    }
+    else {
+         NSLog( @"dsadasdada");
+    }
+    
+    ProspectListing *ListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
+    [ListingPage ReloadTableData];
+    [ListingPage.tableView reloadData];
+    
 }
 
 
@@ -691,6 +741,7 @@
         const char *Delete_stmt = [DeleteSQL UTF8String];
         if(sqlite3_prepare_v2(contactDB, Delete_stmt, -1, &statement, NULL) == SQLITE_OK) 
         {
+            sqlite3_step(statement);
             sqlite3_finalize(statement);
             
         }
@@ -732,6 +783,8 @@
 }
 
 - (IBAction)btnCancel:(id)sender {
+    
+    
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -780,9 +833,14 @@
             NSLog(@"Error Open");
         }
         
+        
     }
+    /*
+    ProspectListing *ListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
+    [ListingPage ReloadTableData];
+    [ListingPage.tableView reloadData];
+    */
     
-
 }
 
 -(void)textFieldDidChange:(id) sender

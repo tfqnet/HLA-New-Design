@@ -8,18 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
+#import "EditProspect.h"
 
-@interface ProspectListing : UITableViewController
+@interface ProspectListing : UITableViewController<EditProspectDelegate>
 {
     NSString *databasePath;
     sqlite3 *contactDB;
+    EditProspect *_EditProspect;
 }
 
+@property (nonatomic, retain) EditProspect *EditProspect;
 @property (strong, nonatomic) NSMutableArray* ProspectTableData;
 @property (strong, nonatomic) NSMutableArray* FilteredProspectTableData;
 @property (nonatomic, assign) bool isFiltered;
 - (IBAction)btnAddNew:(id)sender;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 - (IBAction)btnRefresh:(id)sender;
-
+-(void) ReloadTableData;
 @end

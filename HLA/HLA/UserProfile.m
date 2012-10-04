@@ -14,7 +14,8 @@
 @end
 
 @implementation UserProfile
-@synthesize lblAgentLoginID;
+@synthesize outletCancel;
+@synthesize lblAgentLoginID,FirstTimeLogin;
 @synthesize lblStatus;
 @synthesize ScrollView;
 @synthesize txtAgentCode;
@@ -39,6 +40,12 @@
 {
     [super viewDidLoad];
 
+    if (FirstTimeLogin == 1) {
+        outletCancel.enabled = false;
+    }
+    else {
+        outletCancel.enabled = true;
+    }
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -61,6 +68,7 @@
     [self setTxtEmailAddr:nil];
     [self setLblAgentLoginID:nil];
     [self setLblStatus:nil];
+    [self setOutletCancel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -199,6 +207,12 @@
             {
                 lblStatus.text = @"Data successfully update!";
                 lblStatus.textColor = [UIColor blueColor];
+                
+                UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                  message:@"Click Next to continue" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                success.tag = 1;
+                [success show];
+                
                 NSLog(@"Done update!");
                 
             } else {
@@ -218,4 +232,6 @@
 
 - (IBAction)btnSave:(id)sender {
 }
+
+
 @end

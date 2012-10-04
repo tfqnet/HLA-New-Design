@@ -21,12 +21,16 @@
 
 @property (nonatomic, retain) siListingSortBy *SortBy;
 @property (nonatomic, retain) UIPopoverController *Popover;
+@property (nonatomic, copy) NSString *DBDateFrom;
+@property (nonatomic, copy) NSString *DBDateTo;
+@property (nonatomic, copy) NSString *OrderBy;
 @property (retain, nonatomic) NSMutableArray *SINO;
 @property (retain, nonatomic) NSMutableArray *DateCreated;
 @property (retain, nonatomic) NSMutableArray *Name;
 @property (retain, nonatomic) NSMutableArray *PlanName;
 @property (retain, nonatomic) NSMutableArray *BasicSA;
 @property (retain, nonatomic) NSMutableArray *SIStatus;
+@property (retain, nonatomic) NSMutableArray *CustomerCode;
 
 @property (retain, nonatomic) NSMutableArray *FilteredSINO;
 @property (retain, nonatomic) NSMutableArray *FilteredDateCreated;
@@ -58,6 +62,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPlan;
 @property (weak, nonatomic) IBOutlet UILabel *lblBasicSA;
 - (IBAction)btnSortBy:(id)sender;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *outletGender;
 
 
 @end

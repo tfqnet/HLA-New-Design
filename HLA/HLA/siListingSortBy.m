@@ -168,7 +168,7 @@
     }
     
     
-    NSLog(@"%d", SelectedSortBy.count);
+    //NSLog(@"%d", SelectedSortBy.count);
     
     if (_delegate != nil) {
         

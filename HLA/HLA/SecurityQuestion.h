@@ -40,5 +40,7 @@
 
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *outletCancel;
+@property (weak, nonatomic) IBOutlet UIButton *outletNext;
+- (IBAction)btnNext:(id)sender;
 
 @end

@@ -9,6 +9,7 @@
 #import "SecurityQuestion.h"
 #import "SecurityQuesTbViewController.h"
 #import "FirstTimeViewController.h"
+#import "UserProfile.h"
 
 @interface SecurityQuestion ()
 
@@ -16,6 +17,7 @@
 
 @implementation SecurityQuestion
 @synthesize outletCancel;
+@synthesize outletNext;
 @synthesize lblQuesOne, FirstTimeLogin;
 @synthesize lblQuesTwo;
 @synthesize lblQuestThree;
@@ -54,7 +56,6 @@
     gestureQThree.numberOfTapsRequired = 1;
     [lblQuestThree addGestureRecognizer:gestureQThree];
     
-    //FirstTimeLogin *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
     
     if (FirstTimeLogin == 1) {
         outletCancel.enabled = false;
@@ -70,6 +71,7 @@
     [self setTxtAnswerQ2:nil];
     [self setTxtAnswerQ3:nil];
     [self setOutletCancel:nil];
+    [self setOutletNext:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -156,7 +158,15 @@
         if(sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"save question success!");
+                //NSLog(@"save question success!");
+                UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                        message:@"Click Next to continue" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                [success show];
+                if (FirstTimeLogin == 1) {
+                    outletNext.hidden = false;
+                    
+                }
+                
                 
             } else {
                 NSLog(@"Failed save question");
@@ -190,4 +200,13 @@
     selectThree = NO;
 }
 
+- (IBAction)btnNext:(id)sender {
+    UserProfile *UserProfilePage = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
+    UserProfilePage.indexNo = userID;
+    UserProfilePage.FirstTimeLogin = 1;
+    UserProfilePage.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentModalViewController:UserProfilePage animated:YES];
+    //[self dismissModalViewControllerAnimated:NO];
+    
+}
 @end

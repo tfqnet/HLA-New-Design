@@ -16,6 +16,7 @@
 }
 @property (nonatomic,strong) id idRequest;
 @property (nonatomic, assign) int indexNo;
+@property (nonatomic, assign,readwrite) int FirstTimeLogin;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *ScrollView;
 @property (weak, nonatomic) IBOutlet UITextField *txtAgentCode;
@@ -39,5 +40,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 - (IBAction)btnCancel:(id)sender;
 - (IBAction)btnSave:(id)sender;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *outletCancel;
 
 @end

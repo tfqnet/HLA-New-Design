@@ -18,6 +18,7 @@
 
 @implementation ProspectListing
 @synthesize searchBar, ProspectTableData, FilteredProspectTableData, isFiltered;
+@synthesize EditProspect = _EditProspect;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -131,6 +132,7 @@
 {
 	return YES;
 }
+
 
 #pragma mark - Table view data source
 
@@ -300,6 +302,8 @@
 }
 
 -(void) ReloadTableData{
+    
+    
 NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 NSString *docsDir = [dirPaths objectAtIndex:0];
 
@@ -363,5 +367,10 @@ if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
 }
     [self.tableView reloadData];
     
+}
+
+-(void) FinishEdit{
+    NSLog(@"dsadsada");
+    [self ReloadTableData];
 }
 @end

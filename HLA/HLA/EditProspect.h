@@ -11,12 +11,17 @@
 #import <sqlite3.h>
 #import "OccupationList.h"
 
+@protocol EditProspectDelegate
+- (void)FinishEdit;
+@end
+
 @interface EditProspect : UIViewController<OccupationListDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
     OccupationList *_OccupationList;
     UIPopoverController *_OccupationListPopover;
+    id<EditProspectDelegate> _delegate;
 }
 @property (strong, nonatomic) ProspectProfile* pp;
 @property (nonatomic, copy) NSString *gender;
@@ -24,6 +29,7 @@
 @property (nonatomic, copy) NSString *OccupCodeSelected;
 @property (nonatomic, copy) NSString *SelectedStateCode;
 @property (nonatomic, copy) NSString *SelectedOfficeStateCode;
+@property (nonatomic, strong) id<EditProspectDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtPreferredName;
 @property (weak, nonatomic) IBOutlet UITextField *txtrFullName;
