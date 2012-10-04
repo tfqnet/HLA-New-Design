@@ -9,18 +9,23 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "siListingSortBy.h"
+#import "SIDate.h"
 
-@interface SIListing : UIViewController<UITableViewDelegate, UITableViewDataSource, siListingDelegate>
+@interface SIListing : UIViewController<UITableViewDelegate, UITableViewDataSource, siListingDelegate, SIDateDelegate>
 {
     NSString *databasePath;
     sqlite3 *contactDB;
     Boolean isFilter;
     siListingSortBy *_SortBy;
     UIPopoverController *_Popover;
+    SIDate *_SIDate;
+    UIPopoverController *_SIDatePopover;
 }
 
 @property (nonatomic, retain) siListingSortBy *SortBy;
 @property (nonatomic, retain) UIPopoverController *Popover;
+@property (nonatomic, retain) SIDate *SIDate;
+@property (nonatomic, retain) UIPopoverController *SIDatePopover;
 @property (nonatomic, copy) NSString *DBDateFrom;
 @property (nonatomic, copy) NSString *DBDateTo;
 @property (nonatomic, copy) NSString *OrderBy;

@@ -375,7 +375,26 @@
         
     }
     
+    if(![txtEmail.text isEqualToString:@""]){
+        if( [self NSStringIsValidEmail:txtEmail.text] == FALSE){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Email Address is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return FALSE;
+        }
+    }
+    
     return true;
+}
+
+-(BOOL) NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES; 
+    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
 }
 
 -(void) GetLastID{

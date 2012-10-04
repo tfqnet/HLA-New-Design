@@ -32,6 +32,8 @@
 @synthesize BasicSA,Name,PlanName, DateCreated;
 @synthesize SortBy = _SortBy;
 @synthesize Popover = _Popover;
+@synthesize SIDate = _SIDate;
+@synthesize SIDatePopover = _SIDatePopover;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -333,14 +335,35 @@
 }
 
 - (IBAction)btnDateFrom:(id)sender {
-    outletDate.hidden = false;
+    /*outletDate.hidden = false;
     outletDone.hidden = false;
     outletDate.tag = 1;
+     */
+    outletDate.tag = 1;
+    if (_SIDate == Nil) {
+        
+        self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
+        _SIDate.delegate = self;
+        self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
+    }
+    
+    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+
 }
 - (IBAction)btnDateTo:(id)sender {
-    outletDate.hidden = false;
-    outletDone.hidden = false;
+    //outletDate.hidden = false;
+    //outletDone.hidden = false;
     outletDate.tag = 2;
+    if (_SIDate == Nil) {
+        
+        self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
+        _SIDate.delegate = self;
+        self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
+    }
+    
+    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 - (IBAction)segOrderBy:(id)sender {
     if (outletGender.selectedSegmentIndex == 0) {
@@ -692,11 +715,25 @@
         _SortBy.delegate = self;
         self.Popover = [[UIPopoverController alloc] initWithContentViewController:_SortBy];               
     }
-    
-    
+    [self.Popover setPopoverContentSize:CGSizeMake(200, 300)];    
     [self.Popover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 
+}
+
+-(void)DateSelected:(NSString *)strDate:(NSString *)dbDate{
+    if (outletDate.tag == 1) {
+        [outletDateFrom setTitle:strDate forState:UIControlStateNormal];
+        DBDateFrom = dbDate;
+    }
+    else {
+        [outletDateTo setTitle:strDate forState:UIControlStateNormal];
+        DBDateTo = dbDate;
+    }
+}
+
+-(void)CloseWindow{
+    [self.SIDatePopover dismissPopoverAnimated:YES];
 }
 
 @end

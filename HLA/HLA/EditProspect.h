@@ -10,6 +10,7 @@
 #import "ProspectProfile.h"
 #import <sqlite3.h>
 #import "OccupationList.h"
+#import "ContactTypeClass.h"
 
 @protocol EditProspectDelegate
 - (void)FinishEdit;

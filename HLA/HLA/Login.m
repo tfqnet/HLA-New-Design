@@ -119,8 +119,10 @@
             
             FirstTimeViewController *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
             newProfile.userID = indexNo;
-            [self presentViewController:newProfile animated:YES completion:nil];
-            
+            //[self presentViewController:newProfile animated:YES completion:nil];
+            newProfile.modalPresentationStyle = UIModalPresentationPageSheet;
+            newProfile.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentModalViewController:newProfile animated:YES];
             /*
             setting *settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
             settingPage.indexNo = indexNo;

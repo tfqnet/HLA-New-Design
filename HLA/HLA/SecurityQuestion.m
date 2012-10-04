@@ -207,7 +207,7 @@
     UserProfilePage.indexNo = userID;
     UserProfilePage.idRequest = @"hla";
     UserProfilePage.FirstTimeLogin = 1;
-    UserProfilePage.modalPresentationStyle = UIModalPresentationFormSheet;
+    UserProfilePage.modalPresentationStyle = UIModalPresentationPageSheet;
     [self presentModalViewController:UserProfilePage animated:YES];
     
     

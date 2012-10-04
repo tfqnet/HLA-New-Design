@@ -108,15 +108,18 @@
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {   
-    if (alertView.tag == 1) {
-        Login *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-        LoginPage.modalPresentationStyle = UIModalPresentationFullScreen;
-        LoginPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentModalViewController:LoginPage animated:YES ];
-        
-        [self dismissModalViewControllerAnimated:YES];
-        
+    if (FirstTimeLogin == 1) {
+        if (alertView.tag == 1) {
+            Login *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+            LoginPage.modalPresentationStyle = UIModalPresentationFullScreen;
+            LoginPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentModalViewController:LoginPage animated:YES ];
+            
+            [self dismissModalViewControllerAnimated:YES];
+            
+        }
     }
+    
     /*
     else {
         [self updateUserData];
@@ -185,18 +188,20 @@
 }
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
-{
+{/*
     self.ScrollView.frame = CGRectMake(0, 0, 1024, 748-352);
     self.ScrollView.contentSize = CGSizeMake(1024, 748);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
     [self.ScrollView scrollRectToVisible:textFieldRect animated:YES];
+  */
 }
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
-{
+{/*
     self.ScrollView.frame = CGRectMake(0, 0, 1024, 748);
+  */
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField

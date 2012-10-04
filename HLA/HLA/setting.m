@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Security Question", @"Change Password", nil ];
+    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Change Password", nil ];
     [self.view addSubview:myTableView];
 }
 
@@ -79,13 +79,18 @@
     if (indexPath.row == 0) {
          UserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
         
-        UserProfileView.modalPresentationStyle = UIModalPresentationFormSheet;
+        UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
         UserProfileView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         UserProfileView.indexNo = self.indexNo;
         UserProfileView.idRequest = self.userRequest;
         [self presentModalViewController:UserProfileView animated:YES];
         UserProfileView.view.superview.frame = CGRectMake(350, 50, 600, 600);
     }
+    /*
+     
+     
+     
+     
     else if (indexPath.row == 1) {
         SecurityQuestion *SecurityQuesView = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
         SecurityQuesView.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -94,13 +99,13 @@
         [self presentModalViewController:SecurityQuesView animated:YES];
         SecurityQuesView.view.superview.frame = CGRectMake(350, 50, 600, 600); 
     }
-   
-    else if (indexPath.row == 2) {
+   */
+    else if (indexPath.row == 1) {
         //ChangePassword* zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePwd"];
         //zzz.userID = self.indexNo;
         
         ChangePassword *changePwdView = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePwd"];
-        changePwdView.modalPresentationStyle = UIModalPresentationFormSheet;
+        changePwdView.modalPresentationStyle = UIModalPresentationPageSheet;
         changePwdView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         changePwdView.userID = self.indexNo;
         [self presentModalViewController:changePwdView animated:YES];
