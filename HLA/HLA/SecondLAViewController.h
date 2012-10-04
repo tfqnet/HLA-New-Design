@@ -11,6 +11,7 @@
 #import "ListingTbViewController.h"
 #import "DateViewController.h"
 #import "JobListTbViewController.h"
+#import "SIHandler.h"
 
 @interface SecondLAViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate,DateViewControllerDelegate,JobListTbViewControllerDelegate> {
     NSString *databasePath;
@@ -21,6 +22,7 @@
 
 @property (nonatomic, retain) UIPopoverController *popOverController;
 @property (nonatomic,strong) id requestSINo;
+@property (nonatomic,strong) SIHandler *la2ndH;
 
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;

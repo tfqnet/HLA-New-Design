@@ -23,12 +23,13 @@
 @synthesize CPAField;
 @synthesize PAField;
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occCPA,occLoading,occPA,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc;
-@synthesize popOverController,requestSINo;
+@synthesize popOverController,requestSINo,payorH;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"getSINo:%@",[self.requestSINo description]);
+    requestSINo = payorH.storedSINo;
+    NSLog(@"Payor-SINo:%@",[self.requestSINo description]);
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];

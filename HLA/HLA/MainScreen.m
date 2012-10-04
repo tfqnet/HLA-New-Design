@@ -23,6 +23,7 @@
 @implementation MainScreen
 @synthesize indexNo;
 @synthesize userRequest;
+@synthesize IndexTab,mainH,mainBH;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,6 +38,10 @@
 {
     [super viewDidLoad];
     self.delegate = self;
+    
+    //passing value
+    NSLog(@"MAINLA-SINo:%@, age:%d, job:%@",mainH.storedSINo,mainH.storedAge,mainH.storedOccpCode);
+    NSLog(@"MAINBasic-SINo:%@, age:%d, job:%@",mainBH.storedSINo,mainBH.storedAge,mainBH.storedOccpCode);
     
     //Create view controllers
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
@@ -57,6 +62,8 @@
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+    menuSIPage.menuH = mainH;
+    menuSIPage.menuBH = mainBH;
     menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
@@ -75,7 +82,12 @@
     NSArray *colors = [NSArray arrayWithObjects:(id)[UIColor whiteColor].CGColor,(id)[UIColor lightGrayColor].CGColor, nil];
     self.tabBar.backgroundGradientColors = colors;
     
-    self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:0]);
+    if (self.IndexTab) {
+        self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:IndexTab]);
+    }
+    else {
+        self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:0]);
+    }
 }
 
 - (void)viewDidUnload

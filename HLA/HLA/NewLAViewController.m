@@ -14,6 +14,7 @@
 
 #import "SIMenuViewController.h"
 #import "SIHandler.h"
+#import "MainScreen.h"
 
 @interface NewLAViewController ()
 
@@ -34,7 +35,7 @@
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
-@synthesize dataInsert,handler;
+@synthesize dataInsert,laH;
 
 - (void)viewDidLoad
 {
@@ -50,8 +51,9 @@
     useExist = NO;
     
     [self toogleView];
-    
-    if (self.requestSINo) {
+    requestSINo = laH.storedSINo;
+    NSLog(@"LA-SINo%@",requestSINo);
+    if (requestSINo) {
         [self checkingExisting];
         if (SINo.length != 0) {
             [self getSavedField];
@@ -158,6 +160,14 @@
     LAPAField.text = occPA;
     
     useExist = YES;
+    
+    dataInsert = [[NSMutableArray alloc] init];
+    SIHandler *ss = [[SIHandler alloc] init];
+    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode]];
+    for (NSUInteger i=0; i< dataInsert.count; i++) {
+        ss = [dataInsert objectAtIndex:i];
+        NSLog(@"stored %@",ss.storedSINo);
+    }
 }
 
 #pragma mark - Action
@@ -181,75 +191,6 @@
         smoker = @"N";
     }
     [self toogleView];
-}
-
-
-- (IBAction)payorBtnPressed:(id)sender 
-{
-    if (age >= 18) {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Life Assured's age must not greater or equal to 18 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    else if (age < 16) {
-        
-        PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
-        payorView.modalPresentationStyle = UIModalPresentationFormSheet;
-        payorView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        payorView.requestSINo = SINo;
-        [self presentModalViewController:payorView animated:YES];
-        payorView.view.superview.bounds = CGRectMake(0, 0, 800, 400);
-    }
-    else {
-        NSLog(@"age 16-17");
-        
-        [self checking2ndLA];
-        if (CustCode2.length != 0) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        } else {
-            PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
-            payorView.requestSINo = SINo;
-            payorView.modalPresentationStyle = UIModalPresentationFormSheet;
-            payorView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-            payorView.requestSINo = SINo;
-            [self presentModalViewController:payorView animated:YES];
-            payorView.view.superview.bounds = CGRectMake(0, 0, 800, 400);
-        }
-    }
-}
-
-- (IBAction)secondLAPressed:(id)sender 
-{
-    if (age >= 18)
-    {
-        SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-        secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-        secondLA.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        secondLA.requestSINo = SINo;
-        [self presentModalViewController:secondLA animated:YES];
-        secondLA.view.superview.bounds = CGRectMake(0, 0, 800, 400);
-    }
-    else if (age < 16){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    else {
-        NSLog(@"age 16-17");
-        [self checkingPayor];
-        if (payorSINo.length != 0) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        else {
-            SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-            secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-            secondLA.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-            secondLA.requestSINo = SINo;
-            [self presentModalViewController:secondLA animated:YES];
-            secondLA.view.superview.bounds = CGRectMake(0, 0, 800, 400);
-        }
-    }
 }
 
 - (IBAction)btnDOBPressed:(id)sender
@@ -333,7 +274,25 @@
 
 - (IBAction)goBack:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    if (dataInsert.count != 0) {
+        
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            SIHandler *ss = [dataInsert objectAtIndex:i];
+            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            main.modalPresentationStyle = UIModalPresentationFullScreen;
+            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            main.mainH = ss;
+            main.IndexTab = 3;
+            [self presentModalViewController:main animated:YES];
+        }
+    }
+    else {
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.IndexTab = 3;
+        [self presentModalViewController:main animated:YES];
+    }
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -355,29 +314,6 @@
     }
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"goBasicPlan"])
-    {
-        [self checkingPayor];
-        if (age < 10 && payorSINo.length == 0) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert show];
-        }
-        
-        BasicPlanViewController *basicPlan = [segue destinationViewController];
-        basicPlan.ageClient = age;
-        basicPlan.requestSINo = SINo;
-        basicPlan.requestOccpCode = occuCode;
-    }
-    else if ([[segue identifier] isEqualToString:@"goRiderView"])
-    {
-        RiderViewController *rider = [segue destinationViewController];
-        rider.requestSINo = SINo;
-        rider.requestAge = age;
-    }
-}
 
 #pragma mark - Handle Data
 
@@ -576,7 +512,6 @@
     SINo = [[NSString alloc] initWithFormat:@"SI%@-000%d",currentdate,runningNoSI];
     CustCode = [[NSString alloc] initWithFormat:@"CL%@-000%d",currentdate,runningNoCust];
     
-    dataInsert = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -595,7 +530,6 @@
         
         NSString *insertSQL2 = [NSString stringWithFormat:
                     @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, LACommencementDateField.text];
-        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -606,7 +540,13 @@
             sqlite3_finalize(statement);
         }
         
+        dataInsert = [[NSMutableArray alloc] init];
+        SIHandler *ss = [[SIHandler alloc] init];
         [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode]];
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            ss = [dataInsert objectAtIndex:i];
+            NSLog(@"stored %@",ss.storedSINo);
+        }
         
         sqlite3_close(contactDB);
     }
@@ -662,8 +602,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
-        NSLog(@"%@",querySQL);
+                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",requestSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -678,6 +617,7 @@
                 occuCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
                 commencementDate = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
                 clientID = sqlite3_column_int(statement, 9);
+            
             } else {
                 NSLog(@"error access tbl_SI_Trad_LAPayor");
             }
@@ -693,7 +633,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-        @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",[self.requestSINo description]];
+        @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",requestSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -717,7 +657,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",[self.requestSINo description]];
+                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",requestSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -803,7 +743,7 @@
 #pragma mark - delegate
 -(void)listing:(ListingTbViewController *)inController didSelectItem:(NSString *)item
 {
-     self.requestSINo = [[NSString alloc] initWithFormat:@"%@",item];
+    requestSINo = [[NSString alloc] initWithFormat:@"%@",item];
     [self checkingExisting];
     [self getSavedField];
     [popOverController dismissPopoverAnimated:YES];

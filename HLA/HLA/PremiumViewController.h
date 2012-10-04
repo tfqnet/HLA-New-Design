@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
+#import "SIHandler.h"
+#import "BasicPlanHandler.h"
 
 @interface PremiumViewController : UIViewController {
     NSString *databasePath;
@@ -15,6 +17,8 @@
 }
 
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
+@property (nonatomic,strong) SIHandler *premH;
+@property (nonatomic,strong) BasicPlanHandler *premBH;
 
 @property (nonatomic, assign,readwrite) int requestMOP;
 @property (nonatomic, assign,readwrite) int requestTerm;

@@ -22,7 +22,8 @@
 @property (nonatomic, assign,readwrite) int ageClient;
 @property (nonatomic,retain) NSString *requestSINo;
 @property (nonatomic,retain) NSString *requestOccpCode;
-@property (nonatomic,strong) SIHandler *handler;
+@property (nonatomic,strong) SIHandler *basicH;
+@property (strong, nonatomic) NSMutableArray *dataInsert;
 
 //screen field
 @property (retain, nonatomic) IBOutlet UITextField *planField;
@@ -64,7 +65,6 @@
 @property (nonatomic,assign,readwrite) int getHLTerm;
 
 - (IBAction)btnShowHealthLoadingPressed:(id)sender;
-- (IBAction)calculatePressed:(id)sender;
 - (IBAction)doSavePlan:(id)sender;
 - (IBAction)MOPSegmentPressed:(id)sender;
 - (IBAction)incomeSegmentPressed:(id)sender;
@@ -72,7 +72,6 @@
 - (IBAction)cashDividendSegmentPressed:(id)sender;
 - (IBAction)goBack:(id)sender;
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
 

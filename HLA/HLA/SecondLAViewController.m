@@ -23,7 +23,7 @@
 @synthesize CPAField;
 @synthesize PAField;
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occCPA,occLoading,occPA,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc;
-@synthesize popOverController,requestSINo;
+@synthesize popOverController,requestSINo,la2ndH;
 
 - (void)viewDidLoad
 {
@@ -35,9 +35,11 @@
     
     ageField.enabled = NO;
     useExist = NO;
-    NSLog(@"getSINo:%@",[self.requestSINo description]);
     
-    if (self.requestSINo) {
+    requestSINo = la2ndH.storedSINo;
+    NSLog(@"2ndLA-SINo:%@",requestSINo);
+    
+    if (requestSINo) {
         [self checkingExisting];
         if (SINo.length != 0) {
             [self getSavedField];

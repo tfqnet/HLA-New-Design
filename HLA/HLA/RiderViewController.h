@@ -11,6 +11,8 @@
 #import "RiderPTypeTbViewController.h"
 #import "RiderListTbViewController.h"
 #import "RiderFormTbViewController.h"
+#import "BasicPlanHandler.h"
+#import "SIHandler.h"
 
 @interface RiderViewController : UIViewController <RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,RiderFormTbViewControllerDelegate,UITextFieldDelegate>
 {
@@ -29,6 +31,18 @@
     BOOL pressedDeduc;
     BOOL incomeRider;
 }
+
+//request from previous
+@property (nonatomic,strong) BasicPlanHandler *riderBH;
+@property (nonatomic,strong) SIHandler *riderH;
+
+@property (nonatomic, assign,readwrite) int requestAge;
+@property (nonatomic,strong) id requestSINo;
+@property (nonatomic, assign,readwrite) int requestCoverTerm;
+@property (nonatomic,strong) id requestPlanCode;
+@property (nonatomic, assign,readwrite) int requestBasicSA;
+@property (nonatomic,strong) id requestOccpCode;
+@property (nonatomic, assign,readwrite) int requestMOP;
 
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
 @property (retain, nonatomic) IBOutlet UIButton *btnPType;
@@ -53,15 +67,6 @@
 @property (retain, nonatomic) IBOutlet UIButton *deducBtn;
 @property (retain, nonatomic) IBOutlet UILabel *minDisplayLabel;
 @property (retain, nonatomic) IBOutlet UILabel *maxDisplayLabel;
-
-//request from previous
-@property (nonatomic, assign,readwrite) int requestAge;
-@property (nonatomic,strong) id requestSINo;
-@property (nonatomic, assign,readwrite) int requestCoverTerm;
-@property (nonatomic,strong) id requestPlanCode;
-@property (nonatomic, assign,readwrite) int requestBasicSA;
-@property (nonatomic,strong) id requestOccpCode;
-@property (nonatomic, assign,readwrite) int requestMOP;
 
 //get from popover
 @property (nonatomic,copy) NSString *pTypeCode;
@@ -122,7 +127,6 @@
 - (IBAction)doSaveRider:(id)sender;
 - (IBAction)goBack:(id)sender;
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
 
 @end

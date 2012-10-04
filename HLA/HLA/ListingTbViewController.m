@@ -43,6 +43,7 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT a.SINo, b.Name, b.DateCreated FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.PTypeCode=\"LA\" AND a.Sequence=1"];
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)

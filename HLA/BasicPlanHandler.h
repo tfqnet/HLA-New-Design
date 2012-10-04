@@ -10,15 +10,16 @@
 
 @interface BasicPlanHandler : NSObject
 
-@property (nonatomic, retain) NSString *SINo;
-@property (nonatomic ,assign ,readwrite) int Age;
-@property (nonatomic, retain) NSString *OccpCode;
-@property (nonatomic ,assign ,readwrite) int Covered;
-@property (nonatomic, retain) NSString *basicSA;
-@property (nonatomic ,assign ,readwrite) int MOP;
-@property (nonatomic, retain) NSString *basicPlanCode;
+@property (nonatomic, retain) NSString *storedSINo;
+@property (nonatomic ,assign ,readwrite) int storedAge;
+@property (nonatomic, retain) NSString *storedOccpCode;
+@property (nonatomic ,assign ,readwrite) int storedCovered;
+@property (nonatomic, retain) NSString *storedbasicSA;
+@property (nonatomic, retain) NSString *storedbasicHL;
+@property (nonatomic ,assign ,readwrite) int storedMOP;
+@property (nonatomic, retain) NSString *storedPlanCode;
 
--(id) initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode;
+-(id) initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode;
 
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "PremiumViewController.h"
+#import "MainScreen.h"
 
 @interface PremiumViewController ()
 
@@ -21,6 +22,7 @@
 @synthesize riderAge,riderCustCode,riderSmoker;
 @synthesize annualRiderTot,halfRiderTot,quarterRiderTot,monthRiderTot;
 @synthesize htmlRider,occLoad,annualRider,halfYearRider,quarterRider,monthlyRider,annualRiderSum,halfRiderSum,monthRiderSum,quarterRiderSum;
+@synthesize premBH,premH;
 
 - (void)viewDidLoad
 {
@@ -30,7 +32,16 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    NSLog(@"tbPrem - MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@",self.requestMOP,self.requestTerm,self.requestBasicSA,self.requestBasicHL,[self.requestOccpCode description]);
+    requestSINo = premBH.storedSINo;
+    requestTerm = premBH.storedCovered;
+    requestOccpCode = premBH.storedOccpCode;
+    requestPlanCode = premBH.storedPlanCode;
+    requestMOP = premBH.storedMOP;
+    requestAge = premBH.storedAge;
+    requestBasicSA = premBH.storedbasicSA;
+    requestBasicHL = premBH.storedbasicHL;
+    
+    NSLog(@"Prem-SINo:%@, MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@",requestSINo,self.requestMOP,self.requestTerm,self.requestBasicSA,self.requestBasicHL,[self.requestOccpCode description]);
     
     [self getBasicPentaRate];
     [self getLSDRate];
@@ -55,7 +66,13 @@
 
 - (IBAction)doClose:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    main.modalPresentationStyle = UIModalPresentationFullScreen;
+    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    main.mainH = premH;
+    main.mainBH = premBH;
+    main.IndexTab = 3;
+    [self presentModalViewController:main animated:YES];
 }
 
 #pragma mark - Calculation
@@ -124,7 +141,7 @@
     }
     
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
-                 @"<html><body><table border='1' width='500' align='center'> "
+                 @"<html><body><table border='1' width='500' align='left'> "
                  "<tr><td>Description</td><td>Annually</td><td>Semi-annual</td><td>Quarterly</td><td>Monthly</td></tr>"
                  "<tr><td>Basic</td><td>%.3f</td><td>%.3f</td><td>%.3f</td><td>%.3f</td></tr>"
                  "<tr><td>Occupation Loading</td><td>%.3f</td><td>%.3f</td><td>%.3f</td><td>%.3f</td></tr>"
@@ -518,7 +535,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode, b.RiderDesc, a.RiderTerm, a.SumAssured, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.CustCode,d.Smoker,d.ALB from Trad_Rider_Details a, tbl_SI_Trad_Rider_Profile b, tbl_SI_Trad_LAPayor c, tbl_Clt_Profile d WHERE a.RiderCode=b.RiderCode AND a.PTypeCode=c.PTypeCode AND a.Seq=c.Sequence AND d.CustCode=c.CustCode AND a.SINo=c.SINo AND a.SINo=\"%@\"", [self.requestSINo description]];
+            @"SELECT a.RiderCode, b.RiderDesc, a.RiderTerm, a.SumAssured, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.CustCode,d.Smoker,d.ALB from Trad_Rider_Details a, Trad_Sys_Rider_Profile b, Trad_LAPayor c, Clt_Profile d WHERE a.RiderCode=b.RiderCode AND a.PTypeCode=c.PTypeCode AND a.Seq=c.Sequence AND d.CustCode=c.CustCode AND a.SINo=c.SINo AND a.SINo=\"%@\"", [self.requestSINo description]];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {

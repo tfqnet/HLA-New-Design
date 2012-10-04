@@ -50,8 +50,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.SeqNo=\"%d\"",[self.requestPtype description],self.requestSeq];
-        
+            @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\"",[self.requestPtype description],self.requestSeq];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -105,6 +104,7 @@
 {
     selectedIndex = indexPath.row;
     [_delegate RiderListController:self didSelectCode:self.selectedCode desc:self.selectedDesc];
+//    NSLog(@"%@",self.selectedDesc);
     [tableView reloadData];
 }
 

@@ -11,6 +11,10 @@
 #import "NewLAViewController.h"
 #import "PremiumViewController.h"
 #import "SIMenuViewController.h"
+#import "SIHandler.h"
+#import "MainScreen.h"
+#import "BasicPlanHandler.h"
+
 
 @interface BasicPlanViewController ()
 
@@ -36,7 +40,7 @@
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA,SINoPlan;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
-@synthesize planCode,requestOccpCode,handler;
+@synthesize planCode,requestOccpCode,basicH,dataInsert;
 
 #pragma mark - Cycle View
 
@@ -48,10 +52,12 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    ageClient = handler.Age;
-    requestSINo = handler.SINo;
-    requestOccpCode = handler.OccpCode;
-    NSLog(@"SINo:%@, age:%d, job:%@",requestSINo,ageClient,requestOccpCode);
+    
+    //passing value
+    ageClient = basicH.storedAge;
+    requestSINo = basicH.storedSINo;
+    requestOccpCode = basicH.storedOccpCode;
+    NSLog(@"BASIC-SINo:%@, age:%d, job:%@",requestSINo,ageClient,requestOccpCode);
     
     healthLoadingView.alpha = 0;
     showHL = NO;
@@ -60,6 +66,7 @@
     termField.enabled = NO;
     planField.enabled = NO;
     [self getTermRule];
+    
     
     if (requestSINo) {
         [self checkingExisting];
@@ -144,27 +151,8 @@
     return YES;
 }
 
-#pragma mark - Action
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"basicGoRider"]) {
-        
-        RiderViewController *riderPlan = [segue destinationViewController];
-        riderPlan.requestSINo = SINoPlan;
-        riderPlan.requestAge = ageClient;
-        riderPlan.requestCoverTerm = termCover;
-        riderPlan.requestPlanCode = planCode;
-        riderPlan.requestBasicSA = [yearlyIncomeField.text intValue];
-        riderPlan.requestOccpCode = requestOccpCode;
-        riderPlan.requestMOP = MOP;
-    }
-    else if ([[segue identifier] isEqualToString:@"basicGoLA"]) {
-        
-        NewLAViewController *laView = [segue destinationViewController];
-        laView.requestSINo = SINoPlan;
-    }
-}
+#pragma mark - Action
 
 - (IBAction)btnShowHealthLoadingPressed:(id)sender
 {
@@ -235,34 +223,25 @@
 }
 
 - (IBAction)goBack:(id)sender
-{    
-    SIMenuViewController *aaMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
-    aaMenu.modalPresentationStyle = UIModalPresentationFullScreen;
-    aaMenu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:aaMenu animated:YES];
-}
-
-- (IBAction)calculatePressed:(id)sender
 {
-    if (Saved) {
-        [self getPlanCodePenta];
-        
-        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-        premView.modalPresentationStyle = UIModalPresentationFormSheet;
-        premView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        premView.requestPlanCode = planCode;
-        premView.requestSINo = SINoPlan;
-        premView.requestMOP = MOP;
-        premView.requestAge = ageClient;
-        premView.requestTerm = termCover;
-        premView.requestBasicSA = yearlyIncomeField.text;
-        premView.requestBasicHL = HLField.text;
-        premView.requestOccpCode = requestOccpCode;
-        [self presentModalViewController:premView animated:YES];
-        premView.view.superview.bounds = CGRectMake(0, 0, 650, 550);
+    if (dataInsert.count != 0) {
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            BasicPlanHandler *ss = [dataInsert objectAtIndex:i];
+            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            main.modalPresentationStyle = UIModalPresentationFullScreen;
+            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            main.mainH = basicH;
+            main.mainBH = ss;
+            main.IndexTab = 3;
+            [self presentModalViewController:main animated:YES];
+        }
     } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please save before proceed." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.mainH = basicH;
+        main.IndexTab = 3;
+        [self presentModalViewController:main animated:YES];
     }
 }
 
@@ -379,6 +358,7 @@
     }
 }
 
+
 #pragma mark - Toogle view
 
 -(void)toogleExistingField
@@ -428,7 +408,17 @@
         tempHLTermField.text = [NSString stringWithFormat:@"%d",getTempHLTerm];
     }
     Saved = YES;
+    [self getPlanCodePenta];
+    
+    dataInsert = [[NSMutableArray alloc] init];
+    BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
+    [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode]];
+    for (NSUInteger i=0; i< dataInsert.count; i++) {
+        ss = [dataInsert objectAtIndex:i];
+        NSLog(@"storedbasic:%@",ss.storedSINo);
+    }
 }
+
 
 #pragma mark - Handle DB
 
@@ -495,7 +485,6 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                 @"SELECT SINo,PolicyTerm,BasicSA,PremiumPaymentOption,CashDividend,YearlyIncome,AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",SINoPlan];
-    
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -542,6 +531,16 @@
             {
                 NSLog(@"Saved BasicPlan!");
                 Saved = YES;
+                [self getPlanCodePenta];
+                
+                dataInsert = [[NSMutableArray alloc] init];
+                BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
+                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode]];
+                for (NSUInteger i=0; i< dataInsert.count; i++) {
+                    ss = [dataInsert objectAtIndex:i];
+                    NSLog(@"storedbasic:%@",ss.storedSINo);
+                }
+                
             } else {
                 NSLog(@"Failed Save basicPlan!");
             }
@@ -569,6 +568,15 @@
             {
                 NSLog(@"BasicPlan update!");
                 Saved = YES;
+                [self getPlanCodePenta];
+                
+                dataInsert = [[NSMutableArray alloc] init];
+                BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
+                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode]];
+                for (NSUInteger i=0; i< dataInsert.count; i++) {
+                    ss = [dataInsert objectAtIndex:i];
+                    NSLog(@"storedbasic:%@",ss.storedSINo);
+                }
                 
             } else {
                 NSLog(@"BasicPlan update Failed!");
@@ -585,7 +593,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat: @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"HLAIB\" AND PremPayOpt=\"%d\"",MOP];
-
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

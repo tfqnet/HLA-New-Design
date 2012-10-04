@@ -22,9 +22,8 @@
     BOOL useExist;
 }
 
-@property (nonatomic,strong) SIHandler *handler;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
-
+@property (nonatomic,strong) SIHandler *laH;
 //request from previous
 @property (nonatomic,strong) id requestSINo;
 
@@ -76,8 +75,6 @@
 
 - (IBAction)sexSegmentPressed:(id)sender;
 - (IBAction)smokerSegmentPressed:(id)sender;
-- (IBAction)payorBtnPressed:(id)sender;
-- (IBAction)secondLAPressed:(id)sender;
 - (IBAction)btnDOBPressed:(id)sender;
 - (IBAction)btnOccPressed:(id)sender;
 - (IBAction)doSaveLA:(id)sender;
@@ -86,6 +83,5 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
 @end

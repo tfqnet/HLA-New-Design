@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "FSVerticalTabBarController.h"
+#import "SIHandler.h"
+#import "BasicPlanHandler.h"
 
 @interface MainScreen : FSVerticalTabBarController<FSTabBarControllerDelegate>
 
 @property (nonatomic, assign,readwrite) int indexNo;
 @property (nonatomic,strong) id userRequest;
+
+@property (nonatomic, assign,readwrite) int IndexTab;
+@property (nonatomic,strong) SIHandler *mainH;
+@property (nonatomic,strong) BasicPlanHandler *mainBH;
 
 @end

@@ -10,15 +10,15 @@
 
 @implementation SIHandler
 
-@synthesize SINo,Age,OccpCode;
+@synthesize storedSINo,storedAge,storedOccpCode;
 
 -(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
 {
     self = [super init];
     if(self) {
-        self.SINo = aaSINo;
-        self.Age = aaAge;
-        self.OccpCode = aaOccpCode;
+        self.storedSINo = aaSINo;
+        self.storedAge = aaAge;
+        self.storedOccpCode = aaOccpCode;
     }
     return self;
 }

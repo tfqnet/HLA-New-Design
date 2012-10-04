@@ -10,9 +10,9 @@
 
 @interface SIHandler : NSObject
 
-@property (nonatomic, retain) NSString *SINo;
-@property (nonatomic ,assign ,readwrite) int Age;
-@property (nonatomic, retain) NSString *OccpCode;
+@property (nonatomic, retain) NSString *storedSINo;
+@property (nonatomic ,assign ,readwrite) int storedAge;
+@property (nonatomic, retain) NSString *storedOccpCode;
 
 -(id) initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode;
 

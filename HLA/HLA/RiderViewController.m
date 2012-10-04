@@ -10,7 +10,7 @@
 #import "BasicPlanViewController.h"
 #import "NewLAViewController.h"
 
-#import "SIMenuViewController.h"
+#import "MainScreen.h"
 
 @interface RiderViewController ()
 
@@ -49,7 +49,7 @@
 @synthesize expAge,minSATerm,maxSATerm,minTerm,maxTerm,maxRiderTerm,planCode,SINoPlan,planOption,deductible,maxRiderSA;
 @synthesize inputHL1KSA,inputHL1KSATerm,inputHL100SA,inputHL100SATerm,inputHLPercentage,inputHLPercentageTerm;
 @synthesize LRiderCode,LSumAssured,LTerm,LUnits,atcRidCode,atcPlanChoice,existRidCode,GYI,requestMOP;
-@synthesize occLoad,occClass,occCPA;
+@synthesize occLoad,occClass,occCPA,riderBH,riderH;
 
 #pragma mark - Cycle View
 
@@ -59,13 +59,20 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    NSLog(@"propectAge:%d,covered:%d,SINo:%@ planCode:%@",self.requestAge,self.requestCoverTerm,[self.requestSINo description],[self.requestPlanCode description]);
+    requestSINo = riderBH.storedSINo;
+    requestAge = riderBH.storedAge;
+    requestCoverTerm = riderBH.storedCovered;
+    requestPlanCode = riderBH.storedPlanCode;
+    requestBasicSA = [riderBH.storedbasicSA intValue];
+    requestOccpCode = riderBH.storedOccpCode;
+    requestMOP = riderBH.storedMOP;
+    NSLog(@"Rider-Age:%d,covered:%d,SINo:%@ planCode:%@",requestAge,requestCoverTerm,requestSINo,requestPlanCode);
     
     deducBtn.hidden = YES;
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",[self.requestSINo description]];
     planCode = [[NSString alloc] initWithFormat:@"%@",[self.requestPlanCode description]];
     incomeRider = NO;
-    if (self.requestSINo) {
+    if (requestSINo) {
         if (!listPType) {
             listPType = [[RiderPTypeTbViewController alloc]initWithString:SINoPlan];
             listPType.delegate = self;
@@ -150,7 +157,9 @@
     return YES;
 }
 
+
 #pragma mark - logic cycle/calculation
+
 -(void)toggleForm
 {
     NSUInteger i;
@@ -331,22 +340,8 @@
     }
 }
 
+
 #pragma mark - Action
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"riderGoBasic"]) {
-        
-        BasicPlanViewController *basicPlan = [segue destinationViewController];
-        basicPlan.ageClient = self.requestAge;
-        basicPlan.requestSINo = SINoPlan;
-        basicPlan.requestOccpCode = [self.requestOccpCode description];
-    }
-    else if ([[segue identifier] isEqualToString:@"riderGoLA"]) {
-        
-        NewLAViewController *laView = [segue destinationViewController];
-        laView.requestSINo = SINoPlan;
-    }
-}
 
 - (IBAction)btnPTypePressed:(id)sender
 {
@@ -475,10 +470,13 @@
 
 - (IBAction)goBack:(id)sender
 {
-    SIMenuViewController *aaMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
-    aaMenu.modalPresentationStyle = UIModalPresentationFullScreen;
-    aaMenu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:aaMenu animated:YES];
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    main.modalPresentationStyle = UIModalPresentationFullScreen;
+    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    main.mainH = riderH;
+    main.mainBH = riderBH;
+    main.IndexTab = 3;
+    [self presentModalViewController:main animated:YES];
 }
 
 -(void)validateTerm
@@ -619,6 +617,7 @@
     }
 }
 
+
 #pragma mark - Delegate
 
 -(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq desc:(NSString *)desc
@@ -633,6 +632,7 @@
 
 -(void)RiderListController:(RiderListTbViewController *)inController didSelectCode:(NSString *)code desc:(NSString *)desc
 {
+    
     //reset value existing
     if (riderCode != NULL) {
         term = NO;
@@ -659,12 +659,13 @@
         [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
         [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     }
+    
     riderCode = [[NSString alloc] initWithFormat:@"%@",code];
     riderDesc = [[NSString alloc] initWithFormat:@"%@",desc];
     [self.btnAddRider setTitle:riderDesc forState:UIControlStateNormal];
     [popOverConroller dismissPopoverAnimated:YES];
     
-    //get occp_notAttach
+    //validation part
     [self getOccpNotAttach];
     if ([atcRidCode count] != 0)
     {
@@ -706,6 +707,8 @@
         [self toggleForm];
         [self getRiderTermRule];
     }
+   
+    
 }
 
 -(void) RiderFormController:(RiderFormTbViewController *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
@@ -741,6 +744,7 @@
     pressedDeduc = NO;
 }
 
+
 #pragma mark - DB handling
 
 -(void)getLabelForm
@@ -757,6 +761,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:@"SELECT LabelCode,LabelDesc,RiderName,InputCode,TableName,FieldName,Condition FROM Trad_Sys_Rider_Label WHERE RiderCode=\"%@\"",riderCode];
+    
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while(sqlite3_step(statement) == SQLITE_ROW)
@@ -767,13 +772,13 @@
                 [FInputCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)]];
                 
                 const char *tbname = (const char *)sqlite3_column_text(statement, 4);
-                [FTbName addObject:tbname == NULL ? nil : [[NSString alloc] initWithUTF8String:tbname]];
+                [FTbName addObject:tbname == NULL ? @"" : [[NSString alloc] initWithUTF8String:tbname]];
                 
                 const char *fieldname = (const char *)sqlite3_column_text(statement, 5);
-                [FFieldName addObject:fieldname == NULL ? nil :[[NSString alloc] initWithUTF8String:fieldname]];
+                [FFieldName addObject:fieldname == NULL ? @"" :[[NSString alloc] initWithUTF8String:fieldname]];
                 
                 const char *condition = (const char *)sqlite3_column_text(statement, 6);
-                [FCondition addObject:condition == NULL ? nil :[[NSString alloc] initWithUTF8String:condition]];
+                [FCondition addObject:condition == NULL ? @"" :[[NSString alloc] initWithUTF8String:condition]];
             }
             sqlite3_finalize(statement);
         }
@@ -1009,7 +1014,9 @@
     }
 }
 
+
 #pragma mark - Table view data source
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -1027,8 +1034,7 @@
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
-    
-    CGRect frame=CGRectMake(0,0, 200, 50);
+    CGRect frame=CGRectMake(0,0, 177, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [LRiderCode objectAtIndex:indexPath.row];
@@ -1036,7 +1042,7 @@
     label1.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label1];
     
-    CGRect frame2=CGRectMake(200,0, 200, 50);
+    CGRect frame2=CGRectMake(177,0, 177, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
     label2.text= [LSumAssured objectAtIndex:indexPath.row];
@@ -1044,7 +1050,7 @@
     label2.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(400,0, 200, 50);
+    CGRect frame3=CGRectMake(354,0, 177, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
     label3.text= [LTerm objectAtIndex:indexPath.row];
@@ -1052,7 +1058,7 @@
     label3.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label3];
     
-    CGRect frame4=CGRectMake(600,0, 200, 50);
+    CGRect frame4=CGRectMake(531,0, 177, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     label4.text= [LUnits objectAtIndex:indexPath.row];
@@ -1079,6 +1085,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     return cell;
 }
+
 
 #pragma mark - Table view delegate
 
