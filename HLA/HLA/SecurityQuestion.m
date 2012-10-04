@@ -60,6 +60,8 @@
     if (FirstTimeLogin == 1) {
         outletCancel.enabled = false;
     }
+    
+    
 }
 
 - (void)viewDidUnload
@@ -203,9 +205,12 @@
 - (IBAction)btnNext:(id)sender {
     UserProfile *UserProfilePage = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
     UserProfilePage.indexNo = userID;
+    UserProfilePage.idRequest = @"hla";
     UserProfilePage.FirstTimeLogin = 1;
     UserProfilePage.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentModalViewController:UserProfilePage animated:YES];
+    
+    
     //[self dismissModalViewControllerAnimated:NO];
     
 }

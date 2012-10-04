@@ -8,6 +8,8 @@
 
 #import "UserProfile.h"
 #import "ChangePassword.h"
+#import "SecurityQuestion.h"
+#import "Login.h"
 
 @interface UserProfile ()
 
@@ -105,13 +107,27 @@
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
+{   
+    if (alertView.tag == 1) {
+        Login *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+        LoginPage.modalPresentationStyle = UIModalPresentationFullScreen;
+        LoginPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentModalViewController:LoginPage animated:YES ];
+        
         [self dismissModalViewControllerAnimated:YES];
         
-    } else {
+    }
+    /*
+    else {
         [self updateUserData];
     }
+     */
+    /*
+    if (alertView.tag == 1) {
+        NSLog(@"dsadasdasdas");
+        [self dismissModalViewControllerAnimated:YES ];
+    }
+     */
 }
 
 -(void)viewExisting
@@ -208,12 +224,8 @@
                 lblStatus.text = @"Data successfully update!";
                 lblStatus.textColor = [UIColor blueColor];
                 
-                UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                  message:@"Click Next to continue" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
-                success.tag = 1;
-                [success show];
                 
-                NSLog(@"Done update!");
+                //NSLog(@"Done update!");
                 
             } else {
                 lblStatus.text = @"Failed to update!";
@@ -224,6 +236,12 @@
         }
         sqlite3_close(contactDB);
     }
+    
+    UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                      message:@"Data Updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+    success.tag = 1;
+    [success show];
+    
 }
 
 - (IBAction)btnCancel:(id)sender {
@@ -231,6 +249,7 @@
 }
 
 - (IBAction)btnSave:(id)sender {
+    [self updateUserData ];
 }
 
 

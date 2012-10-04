@@ -9,15 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "EditProspect.h"
+#import "ProspectViewController.h"
 
-@interface ProspectListing : UITableViewController<EditProspectDelegate>
+@interface ProspectListing : UITableViewController<EditProspectDelegate,ProspectViewControllerDelegate>
 {
     NSString *databasePath;
     sqlite3 *contactDB;
     EditProspect *_EditProspect;
+    ProspectViewController *_ProspectViewController;
 }
 
 @property (nonatomic, retain) EditProspect *EditProspect;
+@property (nonatomic, retain) ProspectViewController *ProspectViewController;
 @property (strong, nonatomic) NSMutableArray* ProspectTableData;
 @property (strong, nonatomic) NSMutableArray* FilteredProspectTableData;
 @property (nonatomic, assign) bool isFiltered;

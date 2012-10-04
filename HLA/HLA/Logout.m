@@ -32,12 +32,25 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    UIAlertView *alert = [[UIAlertView alloc] 
+                          initWithTitle: NSLocalizedString(@"Log Out",nil)
+                          message: NSLocalizedString(@"Are you sure you want to log out?",nil)
+                          delegate: self
+                          cancelButtonTitle: NSLocalizedString(@"No",nil)
+                          otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
 
+    [alert show ];
     
-    [self updateDateLogout];
     
     [super viewDidLoad];
 	
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self updateDateLogout];
+        
+    }
 }
 
 -(void)updateDateLogout

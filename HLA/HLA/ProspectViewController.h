@@ -9,14 +9,23 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "OccupationList.h"
+#import "ContactTypeClass.h"
 
-@interface ProspectViewController : UIViewController<OccupationListDelegate>{
+@protocol ProspectViewControllerDelegate
+- (void)FinishInsert;
+@end
+
+@interface ProspectViewController : UIViewController<ContactTypeClassDelegate, OccupationListDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
     //UIPickerView *ContactTypePicker;
     OccupationList *_OccupationList;
+    ContactTypeClass *_ContactTypeClass;
     UIPopoverController *_OccupationListPopover;
+    UIPopoverController *_ContactTypePopover;
+    id<ProspectViewControllerDelegate> _delegate;
+    
 }
 
 @property (nonatomic, copy) NSString *gender;
@@ -24,6 +33,7 @@
 @property (nonatomic, copy) NSString *OccupCodeSelected;
 @property (nonatomic, copy) NSString *SelectedStateCode;
 @property (nonatomic, copy) NSString *SelectedOfficeStateCode;
+@property (nonatomic, strong) id<ProspectViewControllerDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtPreferredName;
 @property (weak, nonatomic) IBOutlet UITextField *txtFullName;
@@ -78,6 +88,9 @@
 @property (nonatomic, copy) NSString *ContactTypeTracker;
 @property (nonatomic, retain) OccupationList *OccupationList;
 @property (nonatomic, retain) UIPopoverController *OccupationListPopover;
+@property (nonatomic, retain) ContactTypeClass  *ContactTypeClass;
+@property (nonatomic, retain) UIPopoverController *ContactTypePopover;
+
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnCancel;
 - (IBAction)ActionCancel:(id)sender;
 

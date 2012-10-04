@@ -507,14 +507,14 @@
     
     if([txtrFullName.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Full Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                    message:@"Full Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
     }
     
     if(segGender.selectedSegmentIndex == -1){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Gender field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                    message:@"Gender field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
     }
@@ -699,34 +699,28 @@
                 }
                 else {
                     NSLog(@"Error - 3");
-                    NSLog(@"%@", insertContactSQL);
+                    
                 }
                 
                 sqlite3_close(contactDB);
-
             }
-            
-                       
-                        
-            
         }
-        
-        
     }
-    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    [SuccessAlert show];
     
     if (_delegate != nil) {
         [_delegate FinishEdit];
     }
-    else {
-         NSLog( @"dsadasdada");
-    }
     
+    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" 
+                                    message:@"Saved Successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    SuccessAlert.tag = 2;
+    [SuccessAlert show];
+    
+    /*
     ProspectListing *ListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
     [ListingPage ReloadTableData];
     [ListingPage.tableView reloadData];
-    
+    */
 }
 
 
@@ -784,11 +778,12 @@
 
 - (IBAction)btnCancel:(id)sender {
     
-    
+    [self resignFirstResponder];
     [self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)btnSave:(id)sender {
+    [self resignFirstResponder];
     if ([self Validation] == TRUE) {
         
         sqlite3_stmt *statement;
@@ -925,7 +920,9 @@
     switch (buttonIndex) {
         case 0: 
         {       
-            
+            if (alertView.tag == 2) {
+                [self dismissModalViewControllerAnimated:YES];
+            }
         }
             break;
             
@@ -972,16 +969,21 @@
                         if (delCount == SQLITE_DONE){
                             
                             sqlite3_finalize(statement);
-                            sqlite3_close(contactDB);
-                            UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Delete Success" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                            
+                            if (_delegate != nil) {
+                                [_delegate FinishEdit];
+                            }
+                            
+                            UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile"
+                                                            message:@"Delete Success" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                            SuccessAlert.tag = 2;
                             [SuccessAlert show];    
-                            
-                            
                             
                         }
                         
                     }
                     
+                sqlite3_close(contactDB);    
                 }
 
             }

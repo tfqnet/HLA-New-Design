@@ -54,6 +54,9 @@
 @synthesize OccupationList = _OccupationList;
 @synthesize OccupationListPopover = _OccupationListPopover;
 @synthesize btnCancel;
+@synthesize ContactTypeClass = _ContactTypeClass;
+@synthesize ContactTypePopover = _ContactTypePopover;
+@synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -86,7 +89,6 @@
     //ContactType = [[NSArray alloc] init];
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
-    //ContactTypePicker.hidden = true;
     
 }
 
@@ -221,6 +223,7 @@
 }
 
 - (IBAction)btnDOB:(id)sender {
+    [self resignFirstResponder];
     outletDobPicker.hidden = NO;
     pickerToolbar.hidden = NO;
     [self.view endEditing:TRUE];
@@ -586,8 +589,22 @@
         
     }
     
+    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile"
+                                                           message:@"Saved Successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    SuccessAlert.tag = 1;
+    [SuccessAlert show];
     
     
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        if (_delegate != Nil) {
+            [_delegate FinishInsert ];
+        }
+        [self dismissModalViewControllerAnimated:YES];
+    }
+
 }
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
@@ -696,16 +713,33 @@
 }
 
 - (IBAction)btnContact1:(id)sender {
+    /*
     //ContactTypePicker.hidden = false;
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    
     outletContactType.hidden = false;
     outletDobPicker.hidden = true;
     pickerToolbar.hidden = FALSE;
     txtRemark.hidden = true;
     ContactTypeTracker = @"1";
-    [self.view endEditing:TRUE];
-    if ([outletType1.titleLabel.text isEqualToString:@""]) {
+    //if ([outletType1.titleLabel.text isEqualToString:@""]) {
         [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
+    //}
+    */
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    txtContact1.enabled = true;
+    ContactTypeTracker = @"1";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
     }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
     
 }
 
@@ -716,51 +750,130 @@
 
 
 - (IBAction)btnContact2:(id)sender {
-    outletContactType.hidden = false;
+    /*outletContactType.hidden = false;
     outletDobPicker.hidden = true;
     pickerToolbar.hidden = FALSE;
     txtRemark.hidden = true;
     ContactTypeTracker = @"2";
+    [self resignFirstResponder];
     [self.view endEditing:TRUE];
     if ([outletType2.titleLabel.text isEqualToString:@""]) {
         [outletType2 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }*/
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    txtContact2.enabled = true;
+    ContactTypeTracker = @"2";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
     }
-
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 
 - (IBAction)btnContact3:(id)sender {
-    outletContactType.hidden = false;
+    /*outletContactType.hidden = false;
     outletDobPicker.hidden = true;
     pickerToolbar.hidden = FALSE;
     txtRemark.hidden = true;
     ContactTypeTracker = @"3";
     [self.view endEditing:TRUE];
+    [self resignFirstResponder];
     if ([outletType3.titleLabel.text isEqualToString:@""]) {
         [outletType3 setTitle:@"Mobile" forState:UIControlStateNormal];
     }
+     */
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    txtContact3.enabled = true;
+    ContactTypeTracker = @"3";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
+    }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 
 - (IBAction)btnContact4:(id)sender {
-    outletContactType.hidden = false;
+    /*outletContactType.hidden = false;
     outletDobPicker.hidden = true;
     pickerToolbar.hidden = FALSE;
     txtRemark.hidden = true;
     ContactTypeTracker = @"4";
     [self.view endEditing:TRUE];
+    [self resignFirstResponder];
     if ([outletType4.titleLabel.text isEqualToString:@""]) {
         [outletType4 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }*/
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    txtContact4.enabled = true;
+    ContactTypeTracker = @"4";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
     }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 
 - (IBAction)btnContact5:(id)sender {
-    outletContactType.hidden = false;
+    /*outletContactType.hidden = false;
     outletDobPicker.hidden = true;
     pickerToolbar.hidden = FALSE;
     txtRemark.hidden = true;
     ContactTypeTracker = @"5";
     [self.view endEditing:TRUE];
+    [self resignFirstResponder];
     if ([outletType5.titleLabel.text isEqualToString:@""]) {
         [outletType5 setTitle:@"Mobile" forState:UIControlStateNormal];
+    }*/
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    txtContact5.enabled = true;
+    ContactTypeTracker = @"5";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
+    }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+}
+
+-(void)ContactTypeSelected:(NSString *)ContactTypeString{
+    if ([ContactTypeTracker isEqualToString:@"1" ]) {
+        [outletType1 setTitle:ContactTypeString forState:UIControlStateNormal ];
+        [self.ContactTypePopover dismissPopoverAnimated:YES];
+    }
+    else if ([ContactTypeTracker isEqualToString:@"2" ]) {
+        [outletType2 setTitle:ContactTypeString forState:UIControlStateNormal ];
+        [self.ContactTypePopover dismissPopoverAnimated:YES];
+    }
+    else if ([ContactTypeTracker isEqualToString:@"3" ]) {
+        [outletType3 setTitle:ContactTypeString forState:UIControlStateNormal ];
+        [self.ContactTypePopover dismissPopoverAnimated:YES];
+    }
+    else if ([ContactTypeTracker isEqualToString:@"4" ]) {
+        [outletType4 setTitle:ContactTypeString forState:UIControlStateNormal ];
+        [self.ContactTypePopover dismissPopoverAnimated:YES];
+    }
+    else if ([ContactTypeTracker isEqualToString:@"5" ]) {
+        [outletType5 setTitle:ContactTypeString forState:UIControlStateNormal ];
+        [self.ContactTypePopover dismissPopoverAnimated:YES];
     }
 }
 @end

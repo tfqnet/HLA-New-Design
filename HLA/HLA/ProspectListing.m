@@ -19,6 +19,7 @@
 @implementation ProspectListing
 @synthesize searchBar, ProspectTableData, FilteredProspectTableData, isFiltered;
 @synthesize EditProspect = _EditProspect;
+@synthesize ProspectViewController = _ProspectViewController;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -33,6 +34,9 @@
 {
     [super viewDidLoad];
 
+    
+    
+    
     searchBar.delegate = (id)self;
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -102,6 +106,7 @@
                 //NSString *ProspectContactNo = @"0128765462";
                 
                 // NSLog(@"%@", ProspectRemark);
+                
                 [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName 
                                                                   AndProspecGender:ProspectGender AndResidenceAddress1:ResidenceAddress1
                                                               AndResidenceAddress2:ResidenceAddress2 AndResidenceAddress3:ResidenceAddress3  
@@ -117,7 +122,6 @@
         }
         sqlite3_close(contactDB);
     }
-
 }
 
 - (void)viewDidUnload
@@ -281,20 +285,45 @@
     zzz.pp = pp;
     
     //[self.navigationController pushViewController:zzz animated:true];    
+    
+    if (_EditProspect == Nil) {
+        //self.EditProspect = [[EditProspect alloc] init ];
+        self.EditProspect = [self.storyboard instantiateViewControllerWithIdentifier:@"EditProspect"];
+        _EditProspect.delegate = self;
+    }
+    
+    _EditProspect.modalTransitionStyle = UIModalTransitionStyleCrossDissolve; 
+    _EditProspect.modalPresentationStyle = UIModalPresentationFormSheet; 
+    
     zzz.modalPresentationStyle = UIModalPresentationFormSheet;
     zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
    
-    [self presentModalViewController:zzz animated:YES];
-     zzz.view.superview.frame = CGRectMake(40, 0, 1000, 768);
+    //[self presentModalViewController:zzz animated:YES];
+    // zzz.view.superview.frame = CGRectMake(40, 0, 1000, 768);
+    _EditProspect.pp = pp;
+    [self presentModalViewController:_EditProspect animated:YES];
+    _EditProspect.view.superview.frame = CGRectMake(40, 0, 1000, 768);
+    
 }
 
 - (IBAction)btnAddNew:(id)sender {
+    /*
     ProspectViewController *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
     pvc.modalPresentationStyle = UIModalPresentationPageSheet;
     pvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:pvc animated:YES];
     pvc.view.superview.frame = CGRectMake(20, 0, 1000, 768);
     //[self.navigationController pushViewController:pvc animated:YES ];
+     */
+    
+    if (_ProspectViewController == Nil) {
+        self.ProspectViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
+        _ProspectViewController.delegate = self;
+    }
+    _ProspectViewController.modalPresentationStyle = UIModalPresentationPageSheet;
+    _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:_ProspectViewController animated:YES];
+    _ProspectViewController.view.superview.frame = CGRectMake(20, 0, 1000, 768); 
 }
 - (IBAction)btnRefresh:(id)sender {
     //[self.tableView reloadData];
@@ -370,7 +399,11 @@ if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
 }
 
 -(void) FinishEdit{
-    NSLog(@"dsadsada");
     [self ReloadTableData];
 }
+
+-(void) FinishInsert{
+    [self ReloadTableData];
+}
+
 @end
