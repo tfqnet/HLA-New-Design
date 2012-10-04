@@ -26,16 +26,16 @@
 @synthesize sexSegment;
 @synthesize smokerSegment;
 @synthesize LAAgeField;
-@synthesize LACommencementDateField;
 @synthesize LAOccLoadingField;
 @synthesize LACPAField;
 @synthesize LAPAField;
 @synthesize btnDOB;
 @synthesize btnOccp;
+@synthesize btnCommDate;
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
-@synthesize dataInsert,laH;
+@synthesize dataInsert,laH,commDate;
 
 - (void)viewDidLoad
 {
@@ -44,11 +44,14 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-
+    
+    
     LAOccLoadingField.enabled = NO;
     LACPAField.enabled = NO;
     LAPAField.enabled = NO;
     useExist = NO;
+    date1 = NO;
+    date2 = NO;
     
     [self toogleView];
     requestSINo = laH.storedSINo;
@@ -126,8 +129,8 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    NSString *commencementDateStr = [dateFormatter stringFromDate:[NSDate date]];
-    LACommencementDateField.text = [[NSString alloc]initWithFormat:@"%@",commencementDateStr];
+    commDate = [dateFormatter stringFromDate:[NSDate date]];
+    [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];    
 }
 
 -(void)getSavedField
@@ -135,7 +138,7 @@
     LANameField.text = clientName;
     [self.btnDOB setTitle:DOB forState:UIControlStateNormal];
     LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-    LACommencementDateField.text = commencementDate;
+    [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
 
     if ([sex isEqualToString:@"M"]) {
         sexSegment.selectedSegmentIndex = 0;
@@ -196,6 +199,7 @@
 - (IBAction)btnDOBPressed:(id)sender
 {
     if(![popOverController isPopoverVisible]) {
+        date1 = YES;
         DateViewController *datePick = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
 		popOverController = [[UIPopoverController alloc] initWithContentViewController:datePick];
         datePick.delegate = self;
@@ -293,6 +297,23 @@
         main.IndexTab = 3;
         [self presentModalViewController:main animated:YES];
     }
+}
+
+- (IBAction)btnCommDatePressed:(id)sender
+{
+    if(![popOverController isPopoverVisible]) {
+        date2 = YES;
+        DateViewController *datePick = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
+		popOverController = [[UIPopoverController alloc] initWithContentViewController:datePick];
+        datePick.delegate = self;
+		
+		[popOverController setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        popOverController.delegate = self;
+	}
+    else {
+		[popOverController dismissPopoverAnimated:YES];
+	}
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -516,7 +537,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-                        @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"1\",\"%@\",\"hla\")",SINo, CustCode,LACommencementDateField.text];
+                        @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"1\",\"%@\",\"hla\")",SINo, CustCode,commDate];
         NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -529,7 +550,7 @@
         }
         
         NSString *insertSQL2 = [NSString stringWithFormat:
-                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, LACommencementDateField.text];
+                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate];
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -615,7 +636,7 @@
                 DOB = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
                 age = sqlite3_column_int(statement, 6);
                 occuCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
-                commencementDate = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+                commDate = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
                 clientID = sqlite3_column_int(statement, 9);
             
             } else {
@@ -751,12 +772,21 @@
 
 -(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB
 {
-    [self.btnDOB setTitle:aDate forState:UIControlStateNormal];
-    LAAgeField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
-    DOB = aDate;
-    age = bAge;
-    ANB = aANB;
-    [popOverController dismissPopoverAnimated:YES];
+    if (date1) {
+        [self.btnDOB setTitle:aDate forState:UIControlStateNormal];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
+        DOB = aDate;
+        age = bAge;
+        ANB = aANB;
+        [popOverController dismissPopoverAnimated:YES];
+        date1 = NO;
+    } else if (date2) {
+        [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
+        commDate = aDate;
+        [popOverController dismissPopoverAnimated:YES];
+        date2 = NO;
+    }
+    
 }
 
 -(void) joblist:(JobListTbViewController *)inController selectCode:(NSString *)aaCode selectDesc:(NSString *)aaDesc
@@ -779,7 +809,6 @@
     [self setSexSegment:nil];
     [self setSmokerSegment:nil];
     [self setLAAgeField:nil];
-    [self setLACommencementDateField:nil];
     [self setLAOccLoadingField:nil];
     [self setLACPAField:nil];
     [self setLAPAField:nil];
@@ -804,6 +833,7 @@
     [self setCommencementDate:nil];
     [self setOccuDesc:nil];
     [self setPayorSINo:nil];
+    [self setBtnCommDate:nil];
     [super viewDidUnload];
 }
 

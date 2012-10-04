@@ -20,6 +20,8 @@
     UIPopoverController *popOverController;
     BOOL Saved;
     BOOL useExist;
+    BOOL date1;
+    BOOL date2;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;
@@ -32,12 +34,12 @@
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *smokerSegment;
 @property (retain, nonatomic) IBOutlet UITextField *LAAgeField;
-@property (retain, nonatomic) IBOutlet UITextField *LACommencementDateField;
 @property (retain, nonatomic) IBOutlet UITextField *LAOccLoadingField;
 @property (retain, nonatomic) IBOutlet UITextField *LACPAField;
 @property (retain, nonatomic) IBOutlet UITextField *LAPAField;
 @property (retain, nonatomic) IBOutlet UIButton *btnDOB;
 @property (retain, nonatomic) IBOutlet UIButton *btnOccp;
+@property (strong, nonatomic) IBOutlet UIButton *btnCommDate;
 
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, copy) NSString *occuCode;
@@ -48,6 +50,7 @@
 @property (nonatomic, copy) NSString *sex;
 @property (nonatomic, copy) NSString *smoker;
 @property (nonatomic, copy) NSString *DOB;
+@property (nonatomic, copy) NSString *commDate;
 @property (nonatomic, copy) NSString *jobDesc;
 @property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, copy) NSString *SIDate;
@@ -80,6 +83,7 @@
 - (IBAction)doSaveLA:(id)sender;
 - (IBAction)selectProspect:(id)sender;
 - (IBAction)goBack:(id)sender;
+- (IBAction)btnCommDatePressed:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
