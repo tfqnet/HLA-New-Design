@@ -35,7 +35,7 @@
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
-@synthesize dataInsert,laH,commDate;
+@synthesize dataInsert,laH,commDate,occuClass;
 
 - (void)viewDidLoad
 {
@@ -45,6 +45,7 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    NSLog(@"%@",databasePath);
     
     LAOccLoadingField.enabled = NO;
     LACPAField.enabled = NO;
@@ -166,7 +167,7 @@
     
     dataInsert = [[NSMutableArray alloc] init];
     SIHandler *ss = [[SIHandler alloc] init];
-    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode]];
+    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"stored %@",ss.storedSINo);
@@ -349,6 +350,7 @@
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
+                occuClass = sqlite3_column_int(statement, 0);
                 occCPA  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 occPA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 occLoading = sqlite3_column_int(statement, 2);
@@ -505,6 +507,7 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 occuDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                occuClass = sqlite3_column_int(statement, 2);
                 occCPA  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 occPA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 occLoading =  sqlite3_column_int(statement, 4);
@@ -563,7 +566,7 @@
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode]];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"stored %@",ss.storedSINo);
@@ -610,7 +613,15 @@
             } else {
                 NSLog(@"SI update Failed!");
             }
-            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode]];
+            
+            dataInsert = [[NSMutableArray alloc] init];
+            SIHandler *ss = [[SIHandler alloc] init];
+            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass]];
+            for (NSUInteger i=0; i< dataInsert.count; i++) {
+                ss = [dataInsert objectAtIndex:i];
+                NSLog(@"stored %@",ss.storedSINo);
+            }
+            
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);

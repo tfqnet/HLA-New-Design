@@ -108,17 +108,60 @@
 @property (nonatomic, assign,readwrite) int occLoad;
 @property (nonatomic, assign,readwrite) int occClass;
 @property (nonatomic, assign,readwrite) int occCPA;
+@property (nonatomic, assign,readwrite) int storedMaxTerm;
+@property (nonatomic, assign,readwrite) int basicRate;
+@property (nonatomic, assign,readwrite) int LSDRate;
 
 //setup tableview listing rider
 @property (retain, nonatomic) IBOutlet UITableView *myTableView;
 @property (retain, nonatomic) NSMutableArray *LRiderCode;
 @property (retain, nonatomic) NSMutableArray *LSumAssured;
 @property (retain, nonatomic) NSMutableArray *LTerm;
+@property (retain, nonatomic) NSMutableArray *LPlanOpt;
 @property (retain, nonatomic) NSMutableArray *LUnits;
+@property(nonatomic , retain) NSMutableArray *LDeduct;
+@property(nonatomic , retain) NSMutableArray *LRidHL1K;
+@property(nonatomic , retain) NSMutableArray *LRidHL100;
+@property(nonatomic , retain) NSMutableArray *LRidHLP;
+@property(nonatomic , retain) NSMutableArray *LSmoker;
+@property(nonatomic , retain) NSMutableArray *LAge;
 @property (retain, nonatomic) IBOutlet UILabel *titleRidCode;
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
 @property (retain, nonatomic) IBOutlet UILabel *titleTerm;
 @property (retain, nonatomic) IBOutlet UILabel *titleUnit;
+
+@property (nonatomic, assign,readwrite) int riderRate;
+@property (nonatomic,strong) NSString *pentaSQL;
+@property (nonatomic,strong) NSString *plnOptC;
+@property (nonatomic,strong) NSString *planOptHMM;
+@property (nonatomic,strong) NSString *deducHMM;
+@property (nonatomic,strong) NSString *planHSPII;
+@property (nonatomic,strong) NSString *planMGII;
+@property (nonatomic,strong) NSString *planMGIV;
+@property (nonatomic,strong) NSString *planCodeRider;
+@property (nonatomic,strong) NSString *medPlanCodeRider;
+@property (nonatomic,strong) NSMutableArray *annualRiderPrem;
+@property (nonatomic,strong) NSMutableArray *quarterRiderPrem;
+@property (nonatomic,strong) NSMutableArray *halfRiderPrem;
+@property (nonatomic,strong) NSMutableArray *monthRiderPrem;
+@property (nonatomic, assign,readwrite) double annualRiderSum;
+@property (nonatomic, assign,readwrite) double halfRiderSum;
+@property (nonatomic, assign,readwrite) double quarterRiderSum;
+@property (nonatomic, assign,readwrite) double monthRiderSum;
+
+@property (nonatomic,strong) NSMutableArray *annualMedRiderPrem;
+@property (nonatomic,strong) NSMutableArray *quarterMedRiderPrem;
+@property (nonatomic,strong) NSMutableArray *halfMedRiderPrem;
+@property (nonatomic,strong) NSMutableArray *monthMedRiderPrem;
+@property (nonatomic, assign,readwrite) double annualMedRiderSum;
+@property (nonatomic, assign,readwrite) double halfMedRiderSum;
+@property (nonatomic, assign,readwrite) double quarterMedRiderSum;
+@property (nonatomic, assign,readwrite) double monthMedRiderSum;
+
+@property (nonatomic, assign,readwrite) double basicPrem;
+@property (nonatomic, assign,readwrite) double riderPrem;
+@property (nonatomic, assign,readwrite) double medRiderPrem;
+
 
 - (IBAction)btnPTypePressed:(id)sender;
 - (IBAction)btnAddRiderPressed:(id)sender;

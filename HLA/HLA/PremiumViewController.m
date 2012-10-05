@@ -206,7 +206,8 @@
                 }
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",plnOptC];
                 
-            } else if ([[riderCode objectAtIndex:i] isEqualToString:@"HMM"])
+            }
+            else if ([[riderCode objectAtIndex:i] isEqualToString:@"HMM"])
             {
                 if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"H150"]) {
                     planOptHMM = @"HMM_150";
@@ -220,15 +221,16 @@
                 
                 if ([[riderDeduct objectAtIndex:i] isEqualToString:@"1"]) {
                     deducHMM = @"5000";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"2"]) {
+                } else if ([[riderDeduct objectAtIndex:i] isEqualToString:@"2"]) {
                     deducHMM = @"10000";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"3"]) {
-                    deducHMM = @"10000";
+                } else if ([[riderDeduct objectAtIndex:i] isEqualToString:@"3"]) {
+                    deducHMM = @"15000";
                 }
                 pentaSQL = [[NSString alloc] initWithFormat:
                         @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HMM\" AND PlanOption=\"%@\" AND Deductible=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planOptHMM,deducHMM,[riderAge objectAtIndex:i],[riderAge objectAtIndex:i]];
                 
-            } else if ([[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"])
+            }
+            else if ([[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"])
             {
                 if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"STD"]) {
                     planHSPII = @"S";
@@ -240,7 +242,8 @@
                 pentaSQL = [[NSString alloc] initWithFormat:
                         @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planHSPII];
                 
-            } else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"])
+            }
+            else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"])
             {
                 if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"M100"]) {
                     planMGII = @"MG_II_100";
@@ -469,6 +472,8 @@
         monthRiderSum = monthRiderSum + [[monthRiderTot objectAtIndex:a] doubleValue];
     }
 }
+
+
 
 #pragma mark - handle db
 -(void)getBasicPentaRate
