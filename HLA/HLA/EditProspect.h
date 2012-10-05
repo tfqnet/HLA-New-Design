@@ -16,12 +16,15 @@
 - (void)FinishEdit;
 @end
 
-@interface EditProspect : UIViewController<OccupationListDelegate>{
+@interface EditProspect : UIViewController<OccupationListDelegate, ContactTypeClassDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
     OccupationList *_OccupationList;
     UIPopoverController *_OccupationListPopover;
+    ContactTypeClass *_ContactTypeClass;
+    UIPopoverController *_ContactTypePopover;
+    
     id<EditProspectDelegate> _delegate;
 }
 @property (strong, nonatomic) ProspectProfile* pp;
@@ -64,8 +67,10 @@
 @property (strong, nonatomic) NSArray* ContactType;
 @property (nonatomic, copy) NSString *ContactTypeTracker;
 @property (nonatomic, retain) OccupationList *OccupationList;
+@property (nonatomic, retain) ContactTypeClass *ContactTypeClass;
 @property (weak, nonatomic) IBOutlet UITextField *txtContact1;
 @property (nonatomic, retain) UIPopoverController *OccupationListPopover;
+@property (nonatomic, retain) UIPopoverController *ContactTypePopover;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *outletOccup;
 - (IBAction)ActionGender:(id)sender;
