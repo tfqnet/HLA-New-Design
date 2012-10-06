@@ -25,6 +25,7 @@
 @synthesize txtEmail;
 @synthesize lblStatus;
 @synthesize myScrollView;
+@synthesize outletSave;
 @synthesize txtOldPassword;
 @synthesize txtNewPassword;
 @synthesize txtConfirmPassword;
@@ -88,6 +89,7 @@
     [self setLblStatus:nil];
     [self setMyScrollView:nil];
     [self setBtnNext:nil];
+    [self setOutletSave:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -165,7 +167,7 @@
                 NSLog(@"UserProfile Update!");
                 lblStatus.text = @"Data updated! Please Click Next.";
                 btnNext.hidden = false;
-                
+                outletSave.hidden = true;
                 
             } else {
                 NSLog(@"UserProfile Failed!");

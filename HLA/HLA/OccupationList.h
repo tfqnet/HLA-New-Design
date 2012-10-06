@@ -28,6 +28,7 @@
 @property (nonatomic, strong) id<OccupationListDelegate> delegate;
 @property(retain) NSIndexPath* lastIndexPath;
 @property (strong, nonatomic) NSMutableArray* FilteredData;
+@property (strong, nonatomic) NSMutableArray* FilteredCode;
 @property (nonatomic, assign) bool isFiltered;
 
 

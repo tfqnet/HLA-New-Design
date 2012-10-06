@@ -404,6 +404,7 @@ if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
 
 -(void) FinishInsert{
     [self ReloadTableData];
+    _ProspectViewController = nil;
 }
 
 @end

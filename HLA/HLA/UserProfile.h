@@ -24,8 +24,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtAgentContactNo;
 @property (weak, nonatomic) IBOutlet UITextField *txtLeaderCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtLeaderName;
-@property (weak, nonatomic) IBOutlet UILabel *txtBizRegNo;
-@property (weak, nonatomic) IBOutlet UILabel *txtEmailAddr;
+@property (weak, nonatomic) IBOutlet UITextField *txtBizRegNo;
+@property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 
 
 @property (nonatomic, copy) NSString *username;

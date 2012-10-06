@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4660E63161F118B00BA4AFE /* ColorHexCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660E62161F118B00BA4AFE /* ColorHexCode.m */; };
 		C4E7B388161B119E00066CBF /* SIListing.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7B387161B119E00066CBF /* SIListing.m */; };
 		C4E7B38B161B147800066CBF /* siListingSortBy.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7B38A161B147800066CBF /* siListingSortBy.m */; };
 		C4E9D1951612C64900016053 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1941612C64900016053 /* UIKit.framework */; };
@@ -74,6 +75,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C4660E61161F118B00BA4AFE /* ColorHexCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorHexCode.h; sourceTree = "<group>"; };
+		C4660E62161F118B00BA4AFE /* ColorHexCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorHexCode.m; sourceTree = "<group>"; };
 		C4E7B386161B119E00066CBF /* SIListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIListing.h; sourceTree = "<group>"; };
 		C4E7B387161B119E00066CBF /* SIListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIListing.m; sourceTree = "<group>"; };
 		C4E7B389161B147800066CBF /* siListingSortBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = siListingSortBy.h; sourceTree = "<group>"; };
@@ -263,6 +266,8 @@
 				EF28C318161BE224009585CC /* SIMenuViewController.m */,
 				C4EA9C05161A76A700D51FE9 /* Logout.h */,
 				C4EA9C06161A76A800D51FE9 /* Logout.m */,
+				C4660E61161F118B00BA4AFE /* ColorHexCode.h */,
+				C4660E62161F118B00BA4AFE /* ColorHexCode.m */,
 			);
 			path = HLA;
 			sourceTree = "<group>";
@@ -550,6 +555,7 @@
 				EF28C323161C11C2009585CC /* SIHandler.m in Sources */,
 				EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */,
 				C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */,
+				C4660E63161F118B00BA4AFE /* ColorHexCode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

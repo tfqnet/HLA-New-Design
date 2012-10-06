@@ -17,7 +17,7 @@ NSString *SelectedString;
 @synthesize OccupCode = _OccupCode;
 @synthesize OccupDesc = _OccupDesc;
 @synthesize isFiltered;
-@synthesize FilteredData;
+@synthesize FilteredData, FilteredCode;
 @synthesize lastIndexPath;
 @synthesize delegate = _delegate;
 
@@ -150,12 +150,14 @@ NSString *SelectedString;
     else {
         isFiltered = true;
         FilteredData = [[NSMutableArray alloc] init ];
+        FilteredCode = [[NSMutableArray alloc] init ];
         
         for (int a =0; a<_OccupDesc.count; a++ ) {
             NSRange Occu = [[_OccupDesc objectAtIndex:a ] rangeOfString:text options:NSCaseInsensitiveSearch];
             
             if (Occu.location != NSNotFound) {
                 [FilteredData addObject:[_OccupDesc objectAtIndex:a ] ];
+                [FilteredCode addObject:[_OccupCode objectAtIndex:a]];
             }
         }
     }
@@ -209,6 +211,8 @@ NSString *SelectedString;
     if (_delegate != nil) {
         
         if (isFiltered == false) {
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
             
             NSString *OccuDesc = [_OccupDesc objectAtIndex:indexPath.row];
             [_delegate OccupDescSelected:OccuDesc];
@@ -229,10 +233,13 @@ NSString *SelectedString;
             //cell.accessoryType = UITableViewCellAccessoryCheckmark;
         } 
         else {
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             NSString *OccuDesc = [FilteredData objectAtIndex:indexPath.row];
             [_delegate OccupDescSelected:OccuDesc];
             
-            NSString *occupCode = [FilteredData objectAtIndex:indexPath.row];
+            NSString *occupCode = [FilteredCode objectAtIndex:indexPath.row];
             [_delegate OccupCodeSelected:occupCode];
             SelectedString = [FilteredData objectAtIndex:indexPath.row];
             

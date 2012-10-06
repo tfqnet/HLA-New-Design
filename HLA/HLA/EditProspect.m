@@ -87,6 +87,7 @@
     txtOfficeState.backgroundColor = [UIColor grayColor];
     txtOfficeCountry.backgroundColor = [UIColor grayColor];
     
+    
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
 }
@@ -211,11 +212,24 @@
         segGender.selectedSegmentIndex = 1;
     }
     
+    txtContact1.text = @"";
+    txtContact2.text = @"";
+    txtContact3.text = @"";
+    txtContact4.text = @"";
+    txtContact5.text = @"";
+    
+    outletType1.titleLabel.text = @"";
+    outletType2.titleLabel.text = @"";
+    outletType3.titleLabel.text = @"";
+    outletType4.titleLabel.text = @"";
+    outletType5.titleLabel.text = @"";
+    
     
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *querySQL = [NSString stringWithFormat:@"SELECT ContactCode, ContactNo FROM contact_input where indexNo = %@ ", pp.ProspectID];
+        
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -486,7 +500,7 @@
                           initWithTitle: NSLocalizedString(@"Delete prospect",nil)
                           message: NSLocalizedString(@"Are you sure you want to delete this prospect profile?",nil)
                           delegate: self
-                          cancelButtonTitle: NSLocalizedString(@"Cancel",nil)
+                          cancelButtonTitle: NSLocalizedString(@"No",nil)
                           otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
     alert.tag = 1;
     [alert show];
@@ -778,14 +792,17 @@
 
 - (void)OccupDescSelected:(NSString *)color {
     [outletOccup setTitle:color forState:UIControlStateNormal];
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    
     [self.OccupationListPopover dismissPopoverAnimated:YES];
     
 }
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 748-350);
-    self.myScrollView.contentSize = CGSizeMake(1024, 748);
+    self.myScrollView.frame = CGRectMake(0, 10, 1000, 748-350);
+    self.myScrollView.contentSize = CGSizeMake(1000, 748);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 15;
@@ -797,7 +814,7 @@
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 748);
+    self.myScrollView.frame = CGRectMake(0, 10, 1000, 748);
     ContactTypePicker.hidden = true;
 }
 
@@ -824,11 +841,11 @@
                                    "\"ResidenceAddressCountry\"= \"%@\", \"OfficeAddress1\"= \"%@\", \"OfficeAddress2\"= \"%@\", \"OfficeAddress3\"= \"%@\", "
                                    "\"OfficeAddressTown\"= \"%@\",\"OfficeAddressState\"= \"%@\",\"OfficeAddressPostCode\"= \"%@\", "
                                    "\"OfficeAddressCountry\"= \"%@\", \"ProspectEmail\"= \"%@\",\"ProspectOccupationCode\"= \"%@\", \"ExactDuties\"= \"%@\", \"ProspectRemark\"= \"%@\","
-                                   "\"DateModified\"= \"%@\",\"ModifiedBy\"= \"%@\" where indexNo = \"%@\" "
+                                   "\"DateModified\"= %@,\"ModifiedBy\"= \"%@\" where indexNo = \"%@\" "
                                    "", txtPreferredName.text, txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, 
                                    txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfiiceAddr1.text, 
                                    txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, 
-                                   txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"28-5-1987", @"1", pp.ProspectID];
+                                   txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"date(\"now\")", @"1", pp.ProspectID];
             
             
             const char *Update_stmt = [insertSQL UTF8String];
@@ -891,6 +908,7 @@
         
         if (gotRow == false) {
             UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            txtOfficePostCode.text = @"";
             txtHomeState.text = @"";
             txtHomeTown.text = @"";
             txtHomeCountry.text = @"";

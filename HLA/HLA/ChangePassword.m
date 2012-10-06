@@ -104,7 +104,7 @@
         txtOldPwd.text = @"";
         txtNewPwd.text = @"";
         txtConfirmPwd.text = @"";
-        NSLog(@"%@", passwordDB);
+        
     }
 }
 

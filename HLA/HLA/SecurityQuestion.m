@@ -16,6 +16,7 @@
 @end
 
 @implementation SecurityQuestion
+@synthesize outletSave;
 @synthesize outletCancel;
 @synthesize outletNext;
 @synthesize lblQuesOne, FirstTimeLogin;
@@ -74,6 +75,7 @@
     [self setTxtAnswerQ3:nil];
     [self setOutletCancel:nil];
     [self setOutletNext:nil];
+    [self setOutletSave:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -147,37 +149,111 @@
 
 - (void) saveData
 {
-    const char *dbpath = [databasePath UTF8String];
-    sqlite3_stmt *statement;
-    
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
-    {
+    if ([self Validation] == TRUE) {
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement;
         
-        NSString *insertSQL = [NSString stringWithFormat:
-                               @"INSERT INTO SecurityQuestion_Input (SecurityQuestionCode, SecurityQuestionAns) SELECT \"%@\", \"%@\" UNION ALL SELECT \"%@\", \"%@\" UNION ALL SELECT \"%@\", \"%@\"",questOneCode,txtAnswerQ1.text,questTwoCode,txtAnswerQ2.text,questThreeCode,txtAnswerQ3.text];
-        
-        const char *insert_stmt = [insertSQL UTF8String];
-        if(sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL) == SQLITE_OK) {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                //NSLog(@"save question success!");
-                UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
-                                        message:@"Click Next to continue" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
-                [success show];
-                if (FirstTimeLogin == 1) {
-                    outletNext.hidden = false;
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+        {
+            
+            NSString *insertSQL = [NSString stringWithFormat:
+                                   @"INSERT INTO SecurityQuestion_Input (SecurityQuestionCode, SecurityQuestionAns) SELECT \"%@\", \"%@\" UNION ALL SELECT \"%@\", \"%@\" UNION ALL SELECT \"%@\", \"%@\"",questOneCode,txtAnswerQ1.text,questTwoCode,txtAnswerQ2.text,questThreeCode,txtAnswerQ3.text];
+            
+            const char *insert_stmt = [insertSQL UTF8String];
+            if(sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement) == SQLITE_DONE)
+                {
+                    UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                      message:@"Click Next to continue" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                    [success show];
+                    if (FirstTimeLogin == 1) {
+                        outletNext.hidden = false;
+                        outletSave.hidden = TRUE;
+                    }
                     
+                    
+                } else {
+                    NSLog(@"Failed save question");
                 }
-                
-                
-            } else {
-                NSLog(@"Failed save question");
+                sqlite3_finalize(statement);
             }
-            sqlite3_finalize(statement);
+            
+            sqlite3_close(contactDB);
         }
-        
-        sqlite3_close(contactDB);
     }
+    
+    
+}
+
+-(BOOL)Validation{
+    
+    
+    if ([lblQuesOne.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please select your security question for question 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([lblQuesOne.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please select your security question for question 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([lblQuesOne.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please select your security question for question 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([lblQuesOne.text isEqualToString:lblQuesTwo.text]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You cannot have 2 same security question !" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([lblQuesOne.text isEqualToString:lblQuestThree.text]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You cannot have 2 same security question !" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([lblQuesTwo.text isEqualToString:lblQuestThree.text]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You cannot have 2 same security question !" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([txtAnswerQ1.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please provide answer for question 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([txtAnswerQ2.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please provide answer for question 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([txtAnswerQ3.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please provide answer for question 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    
+    
+    return  TRUE;
 }
 
 #pragma mark - delegate

@@ -41,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
+@property (weak, nonatomic) IBOutlet UIButton *outletSave;
 
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;

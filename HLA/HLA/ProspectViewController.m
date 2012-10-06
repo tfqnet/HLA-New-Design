@@ -9,6 +9,7 @@
 #import "ProspectViewController.h"
 #import "ProspectListing.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ColorHexCode.h"
 
 @interface ProspectViewController ()
 
@@ -279,11 +280,11 @@
                                    "\"ResidenceAddressCountry\", \"OfficeAddress1\",\"OfficeAddress2\",\"OfficeAddress3\",\"OfficeAddressTown\",\"OfficeAddressState\",\"OfficeAddressPostCode\", "
                                    "\"OfficeAddressCountry\", \"ProspectEmail\",\"ProspectOccupationCode\", \"ExactDuties\",\"ProspectRemark\",\"DateCreated\","
                                    "\"CreatedBy\",\"DateModified\",\"ModifiedBy\") "
-                                   "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",
+                                   "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",%@,\"%@\",\"%@\",\"%@\")",
                                    txtPreferredName.text, txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, 
                                    txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text,
                                    SelectedOfficeStateCode, txtOfficePostcode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, 
-                                   @"27-7-1988", @"1", @"28-5-1987", @"1"];
+                                   @"date(\"now\")", @"1", @"", @"1"];
             
             const char *insert_stmt = [insertSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL) == SQLITE_OK) {
@@ -299,6 +300,7 @@
                 sqlite3_finalize(statement);
             }
             else {
+                NSLog(@"%@", insertSQL);
                 NSLog(@"Error Statement");
             }
             sqlite3_close(contactDB);        
@@ -360,6 +362,37 @@
         return false;
     }
     
+    if([txtHomePostCode.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Home Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if([txtOfficeAddr1.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Office Address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if([txtOfficePostcode.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Office Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if(OccupCodeSelected == NULL){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Occupation field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    else {
+        NSLog(@"%@", OccupCodeSelected);
+    }
+    
     if(![txtContact1.text isEqualToString:@"" ]){
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
@@ -373,6 +406,13 @@
             return false;
         }
         
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please enter atleast 1 contact number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        return FALSE;
     }
     
     if(![txtEmail.text isEqualToString:@""]){
@@ -636,8 +676,8 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 748-350);
-    self.myScrollView.contentSize = CGSizeMake(1024, 748);
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748-350);
+    self.myScrollView.contentSize = CGSizeMake(1000, 748);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 15;
@@ -649,7 +689,7 @@
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 748);
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
     //ContactTypePicker.hidden = true;
     outletContactType.hidden = true;
 }
@@ -684,6 +724,7 @@
         
         if (gotRow == false) {
             UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            txtHomePostCode.text = @"";
             txtHomeState.text = @"";
             txtHomeTown.text = @"";
             txtHomeCountry.text = @"";
@@ -765,6 +806,8 @@
 - (void)OccupDescSelected:(NSString *)color {
     [outletOccup setTitle:color forState:UIControlStateNormal];
     [self.OccupationListPopover dismissPopoverAnimated:YES];
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
 }
 
 

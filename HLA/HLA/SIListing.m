@@ -7,6 +7,7 @@
 //
 
 #import "SIListing.h"
+#import "ColorHexCode.h"
 
 @interface SIListing ()
 
@@ -53,6 +54,39 @@
     outletDone.hidden = true;
     DBDateFrom = @"";
     DBDateTo = @"";
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    
+    CGRect frame=CGRectMake(0,230, 200, 50);
+    lblSINO.frame = frame;
+    lblSINO.textAlignment = UITextAlignmentCenter;
+    lblSINO.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    lblSINO.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame2=CGRectMake(200,230, 200, 50);
+    lblDateCreated.frame = frame2;
+    lblDateCreated.textAlignment = UITextAlignmentCenter;
+        lblDateCreated.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    lblDateCreated.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame3=CGRectMake(400,230, 200, 50);
+    lblName.frame = frame3;
+    lblName.textAlignment = UITextAlignmentCenter;
+    lblName.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    lblName.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame4=CGRectMake(600,230, 200, 50);
+    lblPlan.frame = frame4;
+    lblPlan.textAlignment = UITextAlignmentCenter;
+    lblPlan.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    lblPlan.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame5=CGRectMake(800,230, 150, 50);
+    lblBasicSA.frame = frame5;
+    lblBasicSA.textAlignment = UITextAlignmentCenter;
+    lblBasicSA.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    lblBasicSA.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -191,6 +225,7 @@
     [[cell.contentView viewWithTag:1004] removeFromSuperview ];
     [[cell.contentView viewWithTag:1005] removeFromSuperview ];
     
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
     if (isFilter == false) {
         CGRect frame=CGRectMake(0,0, 200, 50);
@@ -249,7 +284,22 @@
          //label6.backgroundColor = [UIColor grayColor];
          [cell.contentView addSubview:label6];
          */
-        
+        if (indexPath.row % 2 == 0) {
+            label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label5.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            
+        }
+        else {
+            label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label2.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label5.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            
+        }
     }
     else {
         CGRect frame=CGRectMake(0,0, 200, 50);

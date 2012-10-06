@@ -26,7 +26,7 @@
 @synthesize txtLeaderCode;
 @synthesize txtLeaderName;
 @synthesize txtBizRegNo;
-@synthesize txtEmailAddr;
+@synthesize txtEmail;
 @synthesize email,leaderCode,leaderName,contactNo,code, username, name, registerNo, idRequest, indexNo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -66,11 +66,11 @@
     [self setTxtAgentContactNo:nil];
     [self setTxtLeaderCode:nil];
     [self setTxtLeaderName:nil];
-    [self setTxtBizRegNo:nil];
-    [self setTxtEmailAddr:nil];
     [self setLblAgentLoginID:nil];
     [self setLblStatus:nil];
     [self setOutletCancel:nil];
+    [self setTxtBizRegNo:nil];
+    [self setTxtEmail:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -175,7 +175,7 @@
                 txtLeaderCode.text = leaderCode;
                 txtLeaderName.text = leaderName;
                 txtBizRegNo.text = registerNo;
-                txtEmailAddr.text = email;
+                txtEmail.text = email;
                 
                 
             } else {
@@ -212,48 +212,97 @@
 
 -(void)updateUserData
 {
-    const char *dbpath = [databasePath UTF8String];
-    sqlite3_stmt *statement;
-    
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\",AgentName= \"%@\",AgentContactNo= \"%@\",ImmediateLeaderCode= \"%@\",ImmediateLeaderName= \"%@\",BusinessRegNumber = \"%@\",AgentEmail= \"%@\" WHERE IndexNo=\"%d\"",
-                              txtAgentCode.text,txtAgentName.text,txtAgentContactNo.text,txtLeaderCode.text,txtLeaderName.text,txtBizRegNo.text,txtEmailAddr.text,self.indexNo];
+    if([self Validation] == TRUE){
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement;
         
-        const char *query_stmt = [querySQL UTF8String];
-        
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
-            if (sqlite3_step(statement) == SQLITE_DONE)
+            
+             NSString *querySQL = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\",AgentName= \"%@\",AgentContactNo= \"%@\",ImmediateLeaderCode= \"%@\",ImmediateLeaderName= \"%@\",BusinessRegNumber = \"%@\",AgentEmail= \"%@\" WHERE IndexNo=\"%d\"",
+             txtAgentCode.text,txtAgentName.text,txtAgentContactNo.text,txtLeaderCode.text,txtLeaderName.text,txtBizRegNo.text,txtEmail.text,self.indexNo];
+             
+            
+            
+            const char *query_stmt = [querySQL UTF8String];
+            
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
             {
-                lblStatus.text = @"Data successfully update!";
-                lblStatus.textColor = [UIColor blueColor];
-                
-                
-                //NSLog(@"Done update!");
-                
-            } else {
-                lblStatus.text = @"Failed to update!";
-                lblStatus.textColor = [UIColor redColor];
-                NSLog(@"Failed!");
+                if (sqlite3_step(statement) == SQLITE_DONE)
+                {
+                    lblStatus.text = @"Data successfully update!";
+                    lblStatus.textColor = [UIColor blueColor];
+                    UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                      message:@"Data Updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                    success.tag = 1;
+                    [success show];
+                    
+                } else {
+                    lblStatus.text = @"Failed to update!";
+                    lblStatus.textColor = [UIColor redColor];
+                    
+                }
+                sqlite3_finalize(statement);
             }
-            sqlite3_finalize(statement);
+            sqlite3_close(contactDB);
         }
-        sqlite3_close(contactDB);
+        
     }
     
-    UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                      message:@"Data Updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
-    success.tag = 1;
-    [success show];
+    
+    
     
 }
+
+-(BOOL) Validation{
+    
+    if(![txtAgentContactNo.text isEqualToString:@"" ]){
+        BOOL valid;
+        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtAgentContactNo.text];
+        valid = [alphaNums isSupersetOfSet:inStringSet]; 
+        if (!valid) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
+        
+    }
+    
+    if (![txtEmail.text isEqualToString:@""]) {
+        if( [self NSStringIsValidEmail:txtEmail.text] == FALSE ){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Email address is not in valid form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return FALSE;
+        }
+            
+    }
+    
+    return TRUE;
+}
+
+-(BOOL) NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES; 
+    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
+}
+
 
 - (IBAction)btnCancel:(id)sender {
     [self dismissModalViewControllerAnimated:YES ];
 }
 
 - (IBAction)btnSave:(id)sender {
+    [self.view endEditing:TRUE];
+    [self resignFirstResponder];
     [self updateUserData ];
 }
 
