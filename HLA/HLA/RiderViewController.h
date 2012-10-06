@@ -132,6 +132,7 @@
 
 @property (nonatomic, assign,readwrite) int riderRate;
 @property (nonatomic,strong) NSString *pentaSQL;
+@property (nonatomic,strong) NSString *medPentaSQL;
 @property (nonatomic,strong) NSString *plnOptC;
 @property (nonatomic,strong) NSString *planOptHMM;
 @property (nonatomic,strong) NSString *deducHMM;

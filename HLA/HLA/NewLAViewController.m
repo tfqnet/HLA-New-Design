@@ -167,7 +167,7 @@
     
     dataInsert = [[NSMutableArray alloc] init];
     SIHandler *ss = [[SIHandler alloc] init];
-    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass]];
+    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"stored %@",ss.storedSINo);
@@ -566,7 +566,7 @@
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass]];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"stored %@",ss.storedSINo);
@@ -616,7 +616,7 @@
             
             dataInsert = [[NSMutableArray alloc] init];
             SIHandler *ss = [[SIHandler alloc] init];
-            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass]];
+            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex]];
             for (NSUInteger i=0; i< dataInsert.count; i++) {
                 ss = [dataInsert objectAtIndex:i];
                 NSLog(@"stored %@",ss.storedSINo);

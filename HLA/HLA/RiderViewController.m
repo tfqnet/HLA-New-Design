@@ -54,7 +54,7 @@
 @synthesize planHSPII,planMGII,planMGIV,LSmoker,planCodeRider,LRidHL100,LRidHL1K,LRidHLP,riderRate;
 @synthesize annualRiderSum,halfRiderSum,quarterRiderSum,monthRiderSum,medPlanCodeRider;
 @synthesize annualMedRiderPrem,halfMedRiderPrem,quarterMedRiderPrem,monthMedRiderPrem,annualMedRiderSum,halfMedRiderSum,quarterMedRiderSum,monthMedRiderSum;
-@synthesize basicPrem,riderPrem,medRiderPrem;
+@synthesize basicPrem,riderPrem,medRiderPrem,medPentaSQL;
 
 #pragma mark - Cycle View
 
@@ -163,7 +163,7 @@
 }
 
 
-#pragma mark - logic cycle/calculation
+#pragma mark - logic cycle
 
 -(void)toggleForm
 {
@@ -289,6 +289,46 @@
         HLTField.enabled = NO;
     }
 }
+
+-(void)MHIGuideLines
+{
+    double totalPrem = basicPrem + riderPrem;
+    double medicTotal = medRiderPrem * 2;
+    
+    if (medicTotal > totalPrem) {
+        double minus = totalPrem - medRiderPrem;
+        
+        if (minus > 0) {
+            double inc = minus * (requestBasicSA + 0.5);
+            double varSA = medRiderPrem/inc;
+            NSLog(@"%.f",varSA);
+            
+            //check attached riderSA except C+,CIR,MG_II,MG_IV,HB,HSP_II,HMM,CIWP,LCWP,PR,SP_STD,SP_PRE
+                // if riderSA > 0
+                    //RiderSA = medRiderPrem/(minus * riderSA)
+                    //if RiderSA > MaxSA
+                        //set RiderSA = MaxSA
+            
+            //get NewRiderPrem except C+,CIR,MG_II,MG_IV,HB,HSP_II,HMM
+            //get NewPrem
+        }
+    }
+}
+
+-(void)RoomBoard
+{
+    
+    //get OccpCatCode from Adm_OccpCat_Occp i.e STU
+    
+    //get CombNo from Trad_Sys_Medical_MST
+    
+    //get RBBenefit from Trad_Sys_Medical_Benefit WHERE RiderCode=code AND PlanChoice=planSelect
+    
+    //get Limit,RBGroup from Trad_Sys_Medical_Comb WHERE OccpCode=OccpCatCode AND Comb=CombNo i.e 1234
+}
+
+
+#pragma mark - calculation
 
 -(void)calculateTerm
 {
@@ -475,6 +515,11 @@
             {
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",[LRiderCode objectAtIndex:i]];
             }
+            
+            else {
+                continue;
+            }
+            NSLog(@"%@",pentaSQL);
             if (sqlite3_prepare_v2(contactDB, [pentaSQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
                 if (sqlite3_step(statement) == SQLITE_ROW)
@@ -490,7 +535,20 @@
         }
         
         int ridTerm = [[LTerm objectAtIndex:i] intValue];
-        [self getRiderRate:planCodeRider riderTerm:ridTerm];
+        //get rate
+        if ([[LRiderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"ID40R"])
+        {
+            [self getIncomeRiderRate:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"CPA"]) {
+            [self getCPARiderRate:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"PA"]) {
+            [self getPARiderRate:planCodeRider riderTerm:ridTerm];
+        }
+        else {
+            [self getRiderRate:planCodeRider riderTerm:ridTerm];
+        }
         
         double BasicSA = requestBasicSA;
         double BasicHLoad = [riderBH.storedbasicHL doubleValue];
@@ -635,11 +693,12 @@
         NSString *calRiderHalf = [NSString stringWithFormat:@"%.3f",halfYearRider];
         NSString *calRiderQuarter = [NSString stringWithFormat:@"%.3f",quarterRider];
         NSString *calRiderMonth = [NSString stringWithFormat:@"%.3f",monthlyRider];
+        NSLog(@"cal(%@) A:%@ S:%@ Q:%@ M:%@",[LRiderCode objectAtIndex:i],calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        
         [annualRiderPrem addObject:calRiderAnn];
         [halfRiderPrem addObject:calRiderHalf];
         [quarterRiderPrem addObject:calRiderQuarter];
         [monthRiderPrem addObject:calRiderMonth];
-        NSLog(@"RiderTotal(%@) A:%@, S:%@, Q:%@, M:%@",[LRiderCode objectAtIndex:i],[annualRiderPrem objectAtIndex:i],[halfRiderPrem objectAtIndex:i],[quarterRiderPrem objectAtIndex:i],[monthRiderPrem objectAtIndex:i]);
     }
     
     annualRiderSum = 0;
@@ -667,10 +726,8 @@
     for (i=0; i<[LRiderCode count]; i++) {
         //getpentacode
         sqlite3_stmt *statement;
-        NSString *medPentaSQL;
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
         {
-                        
             if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"])
             {
                 if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"H150"]) {
@@ -741,6 +798,10 @@
             else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HB"]) {
                 medPentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",[LRiderCode objectAtIndex:i]];
             }
+            else {
+                continue;
+            }
+            NSLog(@"SQL:%@",medPentaSQL);
             if (sqlite3_prepare_v2(contactDB, [medPentaSQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
                 if (sqlite3_step(statement) == SQLITE_ROW)
@@ -756,13 +817,10 @@
         }
         
         int ridTerm = [[LTerm objectAtIndex:i] intValue];
-        [self getRiderRate:planCodeRider riderTerm:ridTerm];
+        [self getRiderRate:medPlanCodeRider riderTerm:ridTerm];
         
         double BasicSA = requestBasicSA;
-        double BasicHLoad = [riderBH.storedbasicHL doubleValue];
-        
         double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
-        double PolicyTerm = requestCoverTerm;
         double riderHLoad;
         if ([LRidHL1K count] != 0) {
             riderHLoad = [[LRidHL1K objectAtIndex:i] doubleValue];
@@ -774,12 +832,6 @@
             riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
         }
         NSLog(@"riderRate:%d, ridersum:%.3f, HL:%.3f",riderRate,ridSA,riderHLoad);
-        
-        //calculate occupationLoading
-        double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 1;
-        double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.5125;
-        double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.2625;
-        double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.0875;
         
         //calculate rider health loading
         double RiderHLAnnually = riderHLoad * (BasicSA/1000) * 1;
@@ -809,17 +861,24 @@
             monthlyRider = riderRate * (1 + RiderHLMonthly/100) * selectUnit * 0.0875;
         }
         
+        else {
+            annualRider = 0;
+            halfYearRider = 0;
+            quarterRider = 0;
+            monthlyRider = 0;
+        }
+        
         NSString *calRiderAnn = [NSString stringWithFormat:@"%.3f",annualRider];
         NSString *calRiderHalf = [NSString stringWithFormat:@"%.3f",halfYearRider];
         NSString *calRiderQuarter = [NSString stringWithFormat:@"%.3f",quarterRider];
         NSString *calRiderMonth = [NSString stringWithFormat:@"%.3f",monthlyRider];
+        NSLog(@"cal(%@) A:%@ S:%@ Q:%@ M:%@",[LRiderCode objectAtIndex:i],calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        
         [annualMedRiderPrem addObject:calRiderAnn];
         [halfMedRiderPrem addObject:calRiderHalf];
         [quarterMedRiderPrem addObject:calRiderQuarter];
         [monthMedRiderPrem addObject:calRiderMonth];
-        NSLog(@"MedRiderTotal(%@) A:%@, S:%@, Q:%@, M:%@",[LRiderCode objectAtIndex:i],[annualMedRiderPrem objectAtIndex:i],[halfMedRiderPrem objectAtIndex:i],[quarterMedRiderPrem objectAtIndex:i],[monthMedRiderPrem objectAtIndex:i]);
     }
-    
     annualMedRiderSum = 0;
     halfMedRiderSum = 0;
     quarterMedRiderSum = 0;
@@ -835,6 +894,7 @@
     medRiderPrem = annualMedRiderSum;
     NSLog(@"medPrem:%.2f",medRiderPrem);
 }
+
 
 #pragma mark - Action
 
@@ -1445,7 +1505,7 @@
                 [self getBasicPentaRate];
                 [self calculateBasicPremium];
                 [self calculateRiderPrem];
-//                [self calculateMedRiderPrem];
+                [self calculateMedRiderPrem];
             }
             
             [self.myTableView reloadData];
@@ -1618,8 +1678,8 @@
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE PlanCode=\"%@\" AND FromTerm=\"%d\" AND FromMortality=0",aaplan,aaterm];
-        
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE PlanCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND Sex=\"%@\"",aaplan,aaterm,aaterm,riderH.storedSex];
+        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1627,7 +1687,82 @@
             {
                 riderRate =  sqlite3_column_int(statement, 0);
             } else {
-                NSLog(@"error access Trad_Sys_Basic_Prem");
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getIncomeRiderRate:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE PlanCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,aaterm,aaterm,riderH.storedAge,riderH.storedAge];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_int(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getCPARiderRate:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE PlanCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0",aaplan,aaterm,aaterm];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_int(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getPARiderRate:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE PlanCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,aaterm,aaterm,riderH.storedAge,riderH.storedAge];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_int(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
             }
             sqlite3_finalize(statement);
         }
@@ -1772,7 +1907,20 @@
     [self setTitleTerm:nil];
     [self setTitleUnit:nil];
     [self setExistRidCode:nil];
+    [self setPlanCodeRider:nil];
     [self setMedPlanCodeRider:nil];
+    [self setMedPentaSQL:nil];
+    [self setAnnualMedRiderPrem:nil];
+    [self setQuarterMedRiderPrem:nil];
+    [self setHalfMedRiderPrem:nil];
+    [self setMonthMedRiderPrem:nil];
+    [self setPentaSQL:nil];
+    [self setPlnOptC:nil];
+    [self setPlanOptHMM:nil];
+    [self setDeducHMM:nil];
+    [self setPlanHSPII:nil];
+    [self setPlanMGII:nil];
+    [self setPlanMGIV:nil];
     [super viewDidUnload];
 }
 

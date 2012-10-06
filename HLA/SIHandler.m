@@ -10,9 +10,10 @@
 
 @implementation SIHandler
 
-@synthesize storedSINo,storedAge,storedOccpCode,storedOccpClass;
+@synthesize storedSINo,storedAge,storedOccpCode,storedOccpClass,storedSex;
 
--(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass
+
+-(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex
 {
     self = [super init];
     if(self) {
@@ -20,6 +21,7 @@
         self.storedAge = aaAge;
         self.storedOccpCode = aaOccpCode;
         self.storedOccpClass = aaOccpClass;
+        self.storedSex = aaSex;
     }
     return self;
 }
