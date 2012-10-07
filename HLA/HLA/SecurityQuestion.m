@@ -188,21 +188,21 @@
 -(BOOL)Validation{
     
     
-    if ([lblQuesOne.text isEqualToString:@""]) {
+    if (questOneCode == NULL) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please select your security question for question 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
     }
     
-    if ([lblQuesOne.text isEqualToString:@""]) {
+    if (questTwoCode == NULL) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please select your security question for question 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
     }
     
-    if ([lblQuesOne.text isEqualToString:@""]) {
+    if (questThreeCode == NULL) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please select your security question for question 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];

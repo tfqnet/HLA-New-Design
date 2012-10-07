@@ -211,7 +211,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return YES;
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+        return YES;
+    
+    return NO;
 }
 
 - (IBAction)ActionGender:(id)sender {
@@ -284,7 +287,7 @@
                                    txtPreferredName.text, txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, 
                                    txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text,
                                    SelectedOfficeStateCode, txtOfficePostcode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, 
-                                   @"date(\"now\")", @"1", @"", @"1"];
+                                   @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1"];
             
             const char *insert_stmt = [insertSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL) == SQLITE_OK) {
@@ -333,12 +336,47 @@
         [alert show];
         return false;
     }
+    else {
+        BOOL valid;
+        NSString *strToBeTest = [txtPreferredName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] ;
+        
+        for (int i=0; i<strToBeTest.length; i++) {
+            int str1=(int)[strToBeTest characterAtIndex:i];
+            
+            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
+                valid = TRUE;
+                
+            }else {
+                valid = FALSE;
+                break;
+            }
+        }
+        if (!valid) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Preferred name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
+    }
     
     if([txtFullName.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Full Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
+    }
+    else {
+        BOOL valid;
+        NSCharacterSet *alpha = [NSCharacterSet alphanumericCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtFullName.text];
+        valid = [alpha isSupersetOfSet:inStringSet]; 
+        if (!valid) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Full name cannot contain numeric number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
     }
     
     if(segGender.selectedSegmentIndex == -1){
@@ -351,6 +389,13 @@
     if([outletDOB.titleLabel.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Date of Birth (DOB) cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if([txtEmail.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please enter email address" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
     }
@@ -390,10 +435,17 @@
         return false;
     }
     else {
-        NSLog(@"%@", OccupCodeSelected);
+        //NSLog(@"%@", OccupCodeSelected);
     }
     
     if(![txtContact1.text isEqualToString:@"" ]){
+        if (txtContact1.text.length > 11) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Contact number's length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
+        
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
         NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact1.text];

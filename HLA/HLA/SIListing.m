@@ -601,6 +601,7 @@
     else{
         [self.myTableView setEditing:YES animated:TRUE]; 
         outletDelete.hidden = FALSE;
+        outletDelete.enabled = true;
     }
 }
 

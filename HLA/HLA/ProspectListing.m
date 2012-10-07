@@ -49,7 +49,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         //NSString *querySQL = [NSString stringWithFormat: @"SELECT * from tbl_prospect_profile"];
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile"];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile order by dateCreated desc"];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -134,7 +134,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return YES;
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+        return YES;
+    
+    return NO;
 }
 
 
@@ -323,7 +326,7 @@
     _ProspectViewController.modalPresentationStyle = UIModalPresentationPageSheet;
     _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:_ProspectViewController animated:YES];
-    _ProspectViewController.view.superview.frame = CGRectMake(20, 0, 1000, 768); 
+    _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768); 
 }
 - (IBAction)btnRefresh:(id)sender {
     //[self.tableView reloadData];
@@ -343,7 +346,7 @@ const char *dbpath = [databasePath UTF8String];
 sqlite3_stmt *statement;
 if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
 {
-    NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile"];
+    NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile order by datecreated desc"];
     const char *query_stmt = [querySQL UTF8String];
     if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
     {

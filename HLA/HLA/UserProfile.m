@@ -77,7 +77,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return YES;
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+        return YES;
+    
+    return NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -230,7 +233,7 @@
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-                    lblStatus.text = @"Data successfully update!";
+                    //lblStatus.text = @"Data successfully update!";
                     lblStatus.textColor = [UIColor blueColor];
                     UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
                                                                       message:@"Data Updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
@@ -256,7 +259,56 @@
 
 -(BOOL) Validation{
     
+    if ([txtAgentName.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Agent name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return FALSE;
+        
+        
+    }
+    else {
+        
+        BOOL valid;
+        NSString *strToBeTest = [txtAgentName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] ;
+        
+        for (int i=0; i<strToBeTest.length; i++) {
+            int str1=(int)[strToBeTest characterAtIndex:i];
+        
+            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
+                valid = TRUE;
+                
+            }else {
+                valid = FALSE;
+                break;
+            }
+        }
+        if (!valid) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Agent name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
+    }
+
+    if ([txtAgentCode.text isEqualToString:@""] || txtAgentCode.text.length == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Agent Code cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return FALSE;
+        
+    }
+    
     if(![txtAgentContactNo.text isEqualToString:@"" ]){
+        if (txtAgentContactNo.text.length > 11) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Contact number length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
+        
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
         NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtAgentContactNo.text];
@@ -270,6 +322,12 @@
         }
         
     }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please enter agent contact number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
     
     if (![txtEmail.text isEqualToString:@""]) {
         if( [self NSStringIsValidEmail:txtEmail.text] == FALSE ){
@@ -280,6 +338,13 @@
             return FALSE;
         }
             
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Email address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        return FALSE;
     }
     
     return TRUE;

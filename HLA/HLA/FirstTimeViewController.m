@@ -138,7 +138,6 @@
         
     } else if ([txtNewPassword.text isEqualToString:txtConfirmPassword.text]){
         
-        NSLog(@"Password match!");
         [self saveData];
         
     } else {
@@ -164,14 +163,22 @@
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"UserProfile Update!");
-                lblStatus.text = @"Data updated! Please Click Next.";
+                //lblStatus.text = @"Data updated! Please Click Next.";
                 btnNext.hidden = false;
                 outletSave.hidden = true;
                 
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" 
+                                        message:@"New Password saved! Click Next to continue" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
             } else {
-                NSLog(@"UserProfile Failed!");
-                lblStatus.text = @"Update failed!.";
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                                                message:@"New Password not saved!" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                
+                //lblStatus.text = @"Update failed!.";
                 
             }
             sqlite3_finalize(statement);
