@@ -68,6 +68,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblBasicSA;
 - (IBAction)btnSortBy:(id)sender;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *outletGender;
+@property (weak, nonatomic) IBOutlet UIButton *outletEdit;
 
 
 @end

@@ -15,6 +15,7 @@
 
 @implementation SIListing
 @synthesize outletGender;
+@synthesize outletEdit;
 @synthesize lblSINO, DBDateTo, DBDateFrom,OrderBy;
 @synthesize lblDateCreated;
 @synthesize lblName;
@@ -175,6 +176,7 @@
     [self setLblBasicSA:nil];
     [self setOutletDateFrom:nil];
     [self setOutletGender:nil];
+    [self setOutletEdit:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -290,6 +292,12 @@
             label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label5.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+
+            label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             
         }
         else {
@@ -298,6 +306,12 @@
             label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             label5.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            
+            label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             
         }
     }
@@ -379,9 +393,55 @@
     cell.selectedBackgroundView = selectionView;
     */
     //    [myTableView deselectRowAtIndexPath:indexPath animated:NO];
+    if ([myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
         
+        for (UITableViewCell *zzz in [myTableView visibleCells]) {
+            
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+            
+        }
+        
+        if (!gotRowSelected) {
+            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = FALSE;
+        }
+        else {
+            [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = TRUE;
+        }
+ 
+    }
     
-    
+        
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
+        
+        for (UITableViewCell *zzz in [myTableView visibleCells]) {
+            
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+            
+        }
+        
+        if (!gotRowSelected) {
+            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = FALSE;
+        }
+        else {
+            [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = TRUE;
+        }
+        
+    }
 }
 
 - (IBAction)btnDateFrom:(id)sender {
@@ -597,87 +657,112 @@
     if ([self.myTableView isEditing]) {
         [self.myTableView setEditing:NO animated:TRUE];
         outletDelete.hidden = true;
+        [outletEdit setTitle:@"Edit" forState:UIControlStateNormal ];
     }
     else{
         [self.myTableView setEditing:YES animated:TRUE]; 
         outletDelete.hidden = FALSE;
-        outletDelete.enabled = true;
+        [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        [outletEdit setTitle:@"Cancel" forState:UIControlStateNormal ];
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+    if (alertView.tag == 1) {
+        
+        if (buttonIndex == 1) {
+            NSArray *visibleCells = [myTableView visibleCells];
+            NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
+            NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+            
+            for (UITableViewCell *cell in visibleCells) {
+                //[myTableView beginUpdates];
+                if (cell.selected) {
+                    NSIndexPath *indexPath = [myTableView indexPathForCell:cell];
+                    
+                    NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+                    [ItemToBeDeleted addObject:zzz];
+                    [indexPaths addObject:indexPath];
+                }
+                //[myTableView endUpdates];
+            }
+            
+            NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *docsDir = [dirPaths objectAtIndex:0];
+            databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+            
+            sqlite3_stmt *statement;
+            sqlite3_stmt *statement2;
+            const char *dbpath = [databasePath UTF8String];
+            
+            if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+                for(int a=0; a<ItemToBeDeleted.count; a++){
+                    int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
+                    value = value - a;
+                    
+                    NSString *DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
+                                                  " trad_lapayor where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [DeleteLAPayorSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        
+                        int zzz = sqlite3_step(statement);
+                        if (zzz == SQLITE_DONE) {
+                            
+                        }
+                        sqlite3_finalize(statement);
+                        
+                    }
+                    
+                    NSString *DeleteCltProfileSQL = [NSString stringWithFormat:@"Delete from "
+                                                     " clt_Profile where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [DeleteCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+                        int zzz = sqlite3_step(statement2);
+                        if (zzz == SQLITE_DONE) {
+                            
+                        }
+                        sqlite3_finalize(statement2);
+                    }
+                    
+                    [SINO removeObjectAtIndex:value];
+                    [DateCreated removeObjectAtIndex:value];
+                    [Name removeObjectAtIndex:value];
+                    [PlanName removeObjectAtIndex:value];
+                    [BasicSA removeObjectAtIndex:value];
+                    [SIStatus removeObjectAtIndex:value];
+                    [CustomerCode removeObjectAtIndex:value];
+                    
+                }
+                
+                sqlite3_close(contactDB);
+                
+            }
+            
+            
+            
+            [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+            
+            [self.myTableView reloadData]; 
+        }
+        
+    }
+
+}
+
+
 - (IBAction)btnDelete:(id)sender {
-    NSArray *visibleCells = [myTableView visibleCells];
-    NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     
-    for (UITableViewCell *cell in visibleCells) {
-        //[myTableView beginUpdates];
-        if (cell.selected) {
-            NSIndexPath *indexPath = [myTableView indexPathForCell:cell];
-            
-            NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
-            [ItemToBeDeleted addObject:zzz];
-            [indexPaths addObject:indexPath];
-        }
-        //[myTableView endUpdates];
-    }
+    UIAlertView *alert = [[UIAlertView alloc] 
+                          initWithTitle: NSLocalizedString(@"Delete SI",nil)
+                          message: NSLocalizedString(@"Are you sure you want to delete these SI ?",nil)
+                          delegate: self
+                          cancelButtonTitle: NSLocalizedString(@"No",nil)
+                          otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+    alert.tag = 1;
+    [alert show];
+
     
-    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docsDir = [dirPaths objectAtIndex:0];
-    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    
-    sqlite3_stmt *statement;
-    sqlite3_stmt *statement2;
-    const char *dbpath = [databasePath UTF8String];
-    
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-        for(int a=0; a<ItemToBeDeleted.count; a++){
-            int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
-            value = value - a;
-            
-            NSString *DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
-                                   " trad_lapayor where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
-            
-            if(sqlite3_prepare_v2(contactDB, [DeleteLAPayorSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                
-                int zzz = sqlite3_step(statement);
-                if (zzz == SQLITE_DONE) {
-                    
-                }
-                sqlite3_finalize(statement);
-                
-            }
-            
-            NSString *DeleteCltProfileSQL = [NSString stringWithFormat:@"Delete from "
-                                             " clt_Profile where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
-            
-            if(sqlite3_prepare_v2(contactDB, [DeleteCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
-                int zzz = sqlite3_step(statement2);
-                if (zzz == SQLITE_DONE) {
-                    
-                }
-                sqlite3_finalize(statement2);
-            }
-            
-            [SINO removeObjectAtIndex:value];
-            [DateCreated removeObjectAtIndex:value];
-            [Name removeObjectAtIndex:value];
-            [PlanName removeObjectAtIndex:value];
-            [BasicSA removeObjectAtIndex:value];
-            [SIStatus removeObjectAtIndex:value];
-            [CustomerCode removeObjectAtIndex:value];
-            
-        }
-        
-        sqlite3_close(contactDB);
-        
-    }
-        
-    
-        
-    [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
-    
-    [self.myTableView reloadData]; 
 }
 - (IBAction)btnDone:(id)sender {
     outletDate.hidden = true;

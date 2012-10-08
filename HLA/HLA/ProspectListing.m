@@ -180,6 +180,7 @@
     //cell.detailTextLabel.text = food.description;
     cell.textLabel.text = pp.ProspectName;
     cell.detailTextLabel.text = pp.NickName;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     return cell;
 }
 

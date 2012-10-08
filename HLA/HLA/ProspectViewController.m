@@ -81,12 +81,15 @@
     
     [txtHomePostCode addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtOfficePostcode addTarget:self action:@selector(OfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
-    txtHomeTown.backgroundColor = [UIColor grayColor];
-    txtHomeState.backgroundColor = [UIColor grayColor];
-    txtHomeCountry.backgroundColor = [UIColor grayColor];
-    txtOfficeTown.backgroundColor = [UIColor grayColor];
-    txtOfficeState.backgroundColor = [UIColor grayColor];
-    txtOfficeCountry.backgroundColor = [UIColor grayColor];
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc] init ];
+    
+    txtHomeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtHomeState.backgroundColor = [UIColor lightGrayColor];
+    txtHomeCountry.backgroundColor = [UIColor lightGrayColor];
+    txtOfficeTown.backgroundColor = [UIColor lightGrayColor];
+    txtOfficeState.backgroundColor = [UIColor lightGrayColor];
+    txtOfficeCountry.backgroundColor = [UIColor lightGrayColor];
     //ContactType = [[NSArray alloc] init];
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
@@ -367,13 +370,22 @@
     }
     else {
         BOOL valid;
-        NSCharacterSet *alpha = [NSCharacterSet alphanumericCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtFullName.text];
-        valid = [alpha isSupersetOfSet:inStringSet]; 
-        if (!valid) {
+        NSString *strToBeTest = [txtFullName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] ;
+        
+        for (int i=0; i<strToBeTest.length; i++) {
+            int str1=(int)[strToBeTest characterAtIndex:i];
             
+            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
+                valid = TRUE;
+                
+            }else {
+                valid = FALSE;
+                break;
+            }
+        }
+        if (!valid) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Full name cannot contain numeric number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Full name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return false;
         }
@@ -434,9 +446,7 @@
         [alert show];
         return false;
     }
-    else {
-        //NSLog(@"%@", OccupCodeSelected);
-    }
+    
     
     if(![txtContact1.text isEqualToString:@"" ]){
         if (txtContact1.text.length > 11) {

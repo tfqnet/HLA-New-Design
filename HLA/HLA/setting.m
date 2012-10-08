@@ -72,6 +72,8 @@
     cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16 ];
     
     return cell;
     

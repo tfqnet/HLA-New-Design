@@ -9,6 +9,7 @@
 #import "EditProspect.h"
 #import "ProspectListing.h"
 #import <QuartzCore/QuartzCore.h>
+#import "ColorHexCode.h"
 
 @interface EditProspect ()
 
@@ -80,12 +81,14 @@
     
     [txtHomePostCode addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtOfficePostCode addTarget:self action:@selector(OfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
-    txtHomeTown.backgroundColor = [UIColor grayColor];
-    txtHomeState.backgroundColor = [UIColor grayColor];
-    txtHomeCountry.backgroundColor = [UIColor grayColor];
-    txtOfficeTown.backgroundColor = [UIColor grayColor];
-    txtOfficeState.backgroundColor = [UIColor grayColor];
-    txtOfficeCountry.backgroundColor = [UIColor grayColor];
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    txtHomeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtHomeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtHomeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     
     
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
@@ -527,12 +530,56 @@
         [alert show];
         return false;
     }
+    else {
+        BOOL valid;
+        NSString *strToBeTest = [txtPreferredName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] ;
+        
+        for (int i=0; i<strToBeTest.length; i++) {
+            int str1=(int)[strToBeTest characterAtIndex:i];
+            
+            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
+                valid = TRUE;
+                
+            }else {
+                valid = FALSE;
+                break;
+            }
+        }
+        if (!valid) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Preferred name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
+    }
     
     if([txtrFullName.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                     message:@"Full Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
+    }
+    else {
+        BOOL valid;
+        NSString *strToBeTest = [txtrFullName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] ;
+        
+        for (int i=0; i<strToBeTest.length; i++) {
+            int str1=(int)[strToBeTest characterAtIndex:i];
+            
+            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
+                valid = TRUE;
+                
+            }else {
+                valid = FALSE;
+                break;
+            }
+        }
+        if (!valid) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Full name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return false;
+        }
     }
     
     if(segGender.selectedSegmentIndex == -1){
@@ -559,6 +606,34 @@
     if([txtHomeAddr1.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Home Address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if([txtHomePostCode.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Home Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if([txtOfiiceAddr1.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Office Address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if([txtOfficePostCode.text isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Office Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if(OccupCodeSelected == NULL){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Occupation field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
     }
@@ -594,6 +669,7 @@
             return FALSE;
         }
     }
+    
     return true;
 }
 
