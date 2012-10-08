@@ -10,7 +10,6 @@
 #import "FSVerticalTabBarButton.h"
 #import <QuartzCore/QuartzCore.h>
 
-
 #define DEFAULT_ITEM_HEIGHT 80.0
 
 
@@ -153,7 +152,7 @@
 #pragma mark <UITableViewDataSource>
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.items count];
+    return [self.items count ];
 }
 
 
@@ -174,5 +173,7 @@
     
     return cell;
 }
+
+
 
 @end

@@ -104,21 +104,21 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" contentMode="left" text="Select" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="gGc-di-lft">
-                                        <rect key="frame" x="439" y="93" width="307" height="43"/>
+                                        <rect key="frame" x="509" y="93" width="307" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" contentMode="left" text="Select" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="J4U-9r-HdY">
-                                        <rect key="frame" x="439" y="135" width="307" height="43"/>
+                                        <rect key="frame" x="509" y="135" width="307" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" contentMode="left" text="Select" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" id="gyu-67-nV3">
-                                        <rect key="frame" x="439" y="177" width="307" height="56"/>
+                                        <rect key="frame" x="509" y="177" width="307" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -156,49 +156,28 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Old Password" minimumFontSize="17" id="L1v-cQ-wSc">
-                                        <rect key="frame" x="222" y="112" width="208" height="31"/>
+                                        <rect key="frame" x="238" y="112" width="208" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" minimumFontSize="17" id="G8p-Oe-UYk">
-                                        <rect key="frame" x="222" y="157" width="208" height="31"/>
+                                        <rect key="frame" x="238" y="157" width="208" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm New Password" minimumFontSize="17" id="Zym-WS-nec">
-                                        <rect key="frame" x="222" y="202" width="208" height="31"/>
+                                        <rect key="frame" x="238" y="202" width="208" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Change Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="UIn-D1-71W">
-                                        <rect key="frame" x="234" y="49" width="196" height="33"/>
+                                        <rect key="frame" x="250" y="49" width="196" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="20"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="2cN-OZ-ABl">
-                                        <rect key="frame" x="412" y="93" width="28" height="43"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="2." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Dlv-9a-xxj">
-                                        <rect key="frame" x="412" y="135" width="28" height="43"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="3." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="pJc-Oy-dZU">
-                                        <rect key="frame" x="412" y="178" width="28" height="54"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="User Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="CUc-X2-ZTo">
@@ -253,7 +232,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" id="yEs-9r-OTL">
-                                        <rect key="frame" x="401" y="20" width="597" height="218"/>
+                                        <rect key="frame" x="494" y="31" width="337" height="218"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
@@ -491,7 +470,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="XUH-Ax-Adt">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="XUH-Ax-Adt">
                                         <rect key="frame" x="0.0" y="54" width="633" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -622,8 +601,8 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="VpF-a5-0vS">
-                                        <rect key="frame" x="273" y="64" width="42" height="21"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="VpF-a5-0vS">
+                                        <rect key="frame" x="273" y="64" width="227" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -4025,427 +4004,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="image.png" width="1024" height="768"/>
         <image name="login.png" width="200" height="30"/>
     </resources>
-    <classes>
-        <class className="BasicPlanViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/BasicPlanViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="MOPSegmentPressed:"/>
-                <relationship kind="action" name="advanceIncomeSegmentPressed:"/>
-                <relationship kind="action" name="btnShowHealthLoadingPressed:"/>
-                <relationship kind="action" name="cashDividendSegmentPressed:"/>
-                <relationship kind="action" name="doSavePlan:"/>
-                <relationship kind="action" name="goBack:"/>
-                <relationship kind="action" name="incomeSegmentPressed:"/>
-                <relationship kind="outlet" name="HLField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="HLTermField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="MOPSegment" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="advanceIncomeSegment" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="btnHealthLoading" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="cashDividendSegment" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="healthLoadingView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="incomeSegment" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="maxSALabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="minSALabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="myScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="planField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="tempHLField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="tempHLTermField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="termField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="yearlyIncomeField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="ChangePassword" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ChangePassword.h"/>
-            <relationships>
-                <relationship kind="action" name="btnCancel:"/>
-                <relationship kind="action" name="btnChange:"/>
-                <relationship kind="outlet" name="lblmsg" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="txtConfirmPwd" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtNewPwd" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOldPwd" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="DateViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DateViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="dateChange:"/>
-                <relationship kind="action" name="donePressed:"/>
-                <relationship kind="outlet" name="datePickerView" candidateClass="UIDatePicker"/>
-            </relationships>
-        </class>
-        <class className="EditProspect" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditProspect.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionDobPicker:"/>
-                <relationship kind="action" name="ActionGender:"/>
-                <relationship kind="action" name="btnCancel:"/>
-                <relationship kind="action" name="btnContact2:"/>
-                <relationship kind="action" name="btnContact3:"/>
-                <relationship kind="action" name="btnContact4:"/>
-                <relationship kind="action" name="btnContact5:"/>
-                <relationship kind="action" name="btnContactType1:"/>
-                <relationship kind="action" name="btnDOB:"/>
-                <relationship kind="action" name="btnDelete:"/>
-                <relationship kind="action" name="btnDone:"/>
-                <relationship kind="action" name="btnOccup:"/>
-                <relationship kind="action" name="btnSave:"/>
-                <relationship kind="outlet" name="ContactTypePicker" candidateClass="UIPickerView"/>
-                <relationship kind="outlet" name="DobPicker" candidateClass="UIDatePicker"/>
-                <relationship kind="outlet" name="myScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="outletDOB" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletDelete" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletOccup" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType1" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType2" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType3" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType4" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType5" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="pickerToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="segGender" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="txtContact1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact3" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact4" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact5" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtEmail" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtExactDuties" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeAddr1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeAddr2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeAddr3" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeCountry" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomePostCode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeState" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeTown" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeAddr2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeAddr3" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeCountry" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficePostCode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeState" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeTown" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfiiceAddr1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtPreferredName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtRemark" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="txtrFullName" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="FSVerticalTabBarController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FSVerticalTabBarController.h"/>
-        </class>
-        <class className="FirstTimeViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FirstTimeViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionCancel:"/>
-                <relationship kind="action" name="ActionNext:"/>
-                <relationship kind="action" name="btnSave:"/>
-                <relationship kind="outlet" name="btnCancel" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="btnNext" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="lblQues1" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblQues2" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblQues3" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblStatus" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="myScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="outletSave" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="txtAgentCode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAgentContactNo" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAgentName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAnswer1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAnswer2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAnswer3" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtConfirmPassword" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtEmail" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtLeaderCode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtLeaderName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtNewPassword" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOldPassword" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtRegistrationNo" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="ForgotPwd" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ForgotPwd.h"/>
-            <relationships>
-                <relationship kind="action" name="btnCancel:"/>
-                <relationship kind="action" name="btnRetrieve:"/>
-                <relationship kind="outlet" name="lblSelectQues" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblStatusOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblStatusTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="txtAnswer" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="Login" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/Login.h"/>
-            <relationships>
-                <relationship kind="action" name="btnLogin:"/>
-                <relationship kind="outlet" name="lblForgotPwd" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="scrollViewLogin" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="txtPassword" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtUsername" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="Logout" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/Logout.h"/>
-        </class>
-        <class className="MainScreen" superclassName="FSVerticalTabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainScreen.h"/>
-        </class>
-        <class className="NewLAViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewLAViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="btnCommDatePressed:"/>
-                <relationship kind="action" name="btnDOBPressed:"/>
-                <relationship kind="action" name="btnOccPressed:"/>
-                <relationship kind="action" name="doSaveLA:"/>
-                <relationship kind="action" name="goBack:"/>
-                <relationship kind="action" name="selectProspect:"/>
-                <relationship kind="action" name="sexSegmentPressed:"/>
-                <relationship kind="action" name="smokerSegmentPressed:"/>
-                <relationship kind="outlet" name="LAAgeField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="LACPAField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="LANameField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="LAOccLoadingField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="LAPAField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="btnCommDate" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="btnDOB" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="btnOccp" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="myScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="sexSegment" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="smokerSegment" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="PayorViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PayorViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="DOBBtnPressed:"/>
-                <relationship kind="action" name="doClosePayor:"/>
-                <relationship kind="action" name="doSave:"/>
-                <relationship kind="action" name="doSelectProspect:"/>
-                <relationship kind="action" name="occpBtnPressed:"/>
-                <relationship kind="action" name="sexSegmentChange:"/>
-                <relationship kind="action" name="smokerSegmentChange:"/>
-                <relationship kind="outlet" name="CPAField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="DOBBtn" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="PAField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="ageField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="nameField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="occpBtn" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="occpLoadField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="sexSegment" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="smokerSegment" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="PremiumViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PremiumViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="doClose:"/>
-                <relationship kind="outlet" name="WebView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="ProspectListing" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ProspectListing.h"/>
-            <relationships>
-                <relationship kind="action" name="btnAddNew:"/>
-                <relationship kind="action" name="btnRefresh:"/>
-                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
-            </relationships>
-        </class>
-        <class className="ProspectViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ProspectViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionCancel:"/>
-                <relationship kind="action" name="ActionDobDate:"/>
-                <relationship kind="action" name="ActionGender:"/>
-                <relationship kind="action" name="btnContact1:"/>
-                <relationship kind="action" name="btnContact2:"/>
-                <relationship kind="action" name="btnContact3:"/>
-                <relationship kind="action" name="btnContact4:"/>
-                <relationship kind="action" name="btnContact5:"/>
-                <relationship kind="action" name="btnDOB:"/>
-                <relationship kind="action" name="btnDone:"/>
-                <relationship kind="action" name="btnOccup:"/>
-                <relationship kind="action" name="btnSave:"/>
-                <relationship kind="outlet" name="btnCancel" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="myScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="outletContactType" candidateClass="UIPickerView"/>
-                <relationship kind="outlet" name="outletDOB" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletDobPicker" candidateClass="UIDatePicker"/>
-                <relationship kind="outlet" name="outletOccup" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType1" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType2" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType3" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType4" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType5" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="pickerToolbar" candidateClass="UIToolbar"/>
-                <relationship kind="outlet" name="segGender" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="txtContact1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact3" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact4" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact5" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtEmail" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtExactDuties" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtFullName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeAddr1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeAddr2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeAddr3" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeCountry" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomePostCode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeState" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtHomeTown" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeAddr1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeAddr2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeAddr3" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeCountry" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficePostcode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeState" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtOfficeTown" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtPreferredName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtRemark" candidateClass="UITextView"/>
-            </relationships>
-        </class>
-        <class className="RiderViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RiderViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="btnAddRiderPressed:"/>
-                <relationship kind="action" name="btnPTypePressed:"/>
-                <relationship kind="action" name="deducBtnPressed:"/>
-                <relationship kind="action" name="doSaveRider:"/>
-                <relationship kind="action" name="goBack:"/>
-                <relationship kind="action" name="planBtnPressed:"/>
-                <relationship kind="outlet" name="HLField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="HLLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="HLTField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="HLTLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="btnAddRider" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="btnPType" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="cpaField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="cpaLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="deducBtn" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="maxDisplayLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="minDisplayLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="occpField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="occpLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="planBtn" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="planLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="sumField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="sumLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="termField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="termLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleRidCode" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleSA" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleTerm" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleUnit" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="unitField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="unitLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SIDate" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SIDate.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionDate:"/>
-                <relationship kind="action" name="btnClose:"/>
-                <relationship kind="outlet" name="outletDate" candidateClass="UIDatePicker"/>
-            </relationships>
-        </class>
-        <class className="SIListing" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SIListing.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionDate:"/>
-                <relationship kind="action" name="btnDateFrom:"/>
-                <relationship kind="action" name="btnDateTo:"/>
-                <relationship kind="action" name="btnDelete:"/>
-                <relationship kind="action" name="btnDone:"/>
-                <relationship kind="action" name="btnEdit:"/>
-                <relationship kind="action" name="btnSearch:"/>
-                <relationship kind="action" name="btnSortBy:"/>
-                <relationship kind="action" name="segOrderBy:"/>
-                <relationship kind="outlet" name="btnSortBy" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="lblBasicSA" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblDateCreated" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblName" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblPlan" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblSINO" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="outletDate" candidateClass="UIDatePicker"/>
-                <relationship kind="outlet" name="outletDateFrom" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletDateTo" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletDelete" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletDone" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletEdit" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletGender" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="txtLAName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtSINO" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="SIMenuViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SIMenuViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="RightView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="SecondLAViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SecondLAViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="DOBBtnPressed:"/>
-                <relationship kind="action" name="OccpBtnPressed:"/>
-                <relationship kind="action" name="doCloseView:"/>
-                <relationship kind="action" name="doSave:"/>
-                <relationship kind="action" name="doSelectProspect:"/>
-                <relationship kind="action" name="sexSegmentChange:"/>
-                <relationship kind="action" name="smokerSegmentChange:"/>
-                <relationship kind="outlet" name="CPAField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="DOBBtn" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="OccpBtn" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="OccpLoadField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="PAField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="ageField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="nameField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="sexSegment" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="smokerSegment" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="SecurityQuestion" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SecurityQuestion.h"/>
-            <relationships>
-                <relationship kind="action" name="btnCancel:"/>
-                <relationship kind="action" name="btnNext:"/>
-                <relationship kind="action" name="btnSave:"/>
-                <relationship kind="outlet" name="lblQuesOne" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblQuesTwo" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblQuestThree" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="outletCancel" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="outletNext" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletSave" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="txtAnswerQ1" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAnswerQ2" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAnswerQ3" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="UserProfile" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UserProfile.h"/>
-            <relationships>
-                <relationship kind="action" name="btnCancel:"/>
-                <relationship kind="action" name="btnSave:"/>
-                <relationship kind="outlet" name="ScrollView" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="lblAgentLoginID" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="lblStatus" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="outletCancel" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="txtAgentCode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAgentContactNo" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtAgentName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtBizRegNo" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtEmail" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtLeaderCode" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtLeaderName" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="setting" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/setting.h"/>
-            <relationships>
-                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation" orientation="landscapeRight"/>

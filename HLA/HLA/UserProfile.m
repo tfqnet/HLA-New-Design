@@ -152,25 +152,25 @@
                 username = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 
                 const char *code2 = (const char*)sqlite3_column_text(statement, 2);
-                code = code2 == NULL ? nil : [[NSString alloc] initWithUTF8String:code2];
+                code = code2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:code2];
                 
                 const char *name2 = (const char*)sqlite3_column_text(statement, 3);
-                name = name2 == NULL ? nil : [[NSString alloc] initWithUTF8String:name2];
+                name = name2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:name2];
                 
                 const char *contactNo2 = (const char*)sqlite3_column_text(statement, 4);
-                contactNo = contactNo2 == NULL ? nil : [[NSString alloc] initWithUTF8String:contactNo2];
+                contactNo = contactNo2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:contactNo2];
                 
                 const char *leaderCode2 = (const char*)sqlite3_column_text(statement, 5);
-                leaderCode = leaderCode2 == NULL ? nil : [[NSString alloc] initWithUTF8String:leaderCode2];
+                leaderCode = leaderCode2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:leaderCode2];
                 
                 const char *leaderName2 = (const char*)sqlite3_column_text(statement, 6);
-                leaderName = leaderName2 == NULL ? nil : [[NSString alloc] initWithUTF8String:leaderName2];
+                leaderName = leaderName2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:leaderName2];
                 
                 const char *register2 = (const char*)sqlite3_column_text(statement, 7);
-                registerNo = register2 == NULL ? nil : [[NSString alloc] initWithUTF8String:register2];
+                registerNo = register2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:register2];
                 
                 const char *email2 = (const char*)sqlite3_column_text(statement, 8);
-                email = email2 == NULL ? nil : [[NSString alloc] initWithUTF8String:email2];
+                email = email2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:email2];
                 
                 txtAgentCode.text = code;
                 txtAgentName.text = name;

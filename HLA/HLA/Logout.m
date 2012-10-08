@@ -38,9 +38,8 @@
                           delegate: self
                           cancelButtonTitle: NSLocalizedString(@"No",nil)
                           otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
-
-    [alert show ];
     
+    [alert show ];
     
     [super viewDidLoad];
 	
@@ -52,6 +51,7 @@
         
     }
 }
+
 
 -(void)updateDateLogout
 {

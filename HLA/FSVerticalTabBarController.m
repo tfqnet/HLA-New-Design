@@ -7,7 +7,7 @@
 //
 
 #import "FSVerticalTabBarController.h"
-
+#import "Login.h"
 
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
@@ -185,8 +185,74 @@
 #pragma mark <UITableViewDelegate>
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self setSelectedIndex:indexPath.row];
+    
+    if (indexPath.row == 4) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle: NSLocalizedString(@"Log Out",nil)
+                              message: NSLocalizedString(@"Are you sure you want to log out?",nil)
+                              delegate: self
+                              cancelButtonTitle: NSLocalizedString(@"No",nil)
+                              otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+        
+        [alert show ];
+        
+    }
+    else {
+        [self setSelectedIndex:indexPath.row];
+    }
+    
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self updateDateLogout];
+        
+    }
+}
+
+-(void)updateDateLogout
+{
+    NSString *databasePath;
+    sqlite3 *contactDB;
+    
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
+    Login *mainLogin = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+    mainLogin.modalPresentationStyle = UIModalPresentationFullScreen;
+    mainLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:mainLogin animated:YES];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE User_Profile SET LastLogoutDate= \"%@\" WHERE IndexNo=\"%d\"",dateString, 1];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"date update!");
+                
+            } else {
+                NSLog(@"date update Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+}
+
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

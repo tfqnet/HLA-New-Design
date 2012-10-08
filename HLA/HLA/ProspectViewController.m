@@ -85,11 +85,11 @@
     ColorHexCode *CustomColor = [[ColorHexCode alloc] init ];
     
     txtHomeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
-    txtHomeState.backgroundColor = [UIColor lightGrayColor];
-    txtHomeCountry.backgroundColor = [UIColor lightGrayColor];
-    txtOfficeTown.backgroundColor = [UIColor lightGrayColor];
-    txtOfficeState.backgroundColor = [UIColor lightGrayColor];
-    txtOfficeCountry.backgroundColor = [UIColor lightGrayColor];
+    txtHomeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtHomeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     //ContactType = [[NSArray alloc] init];
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
