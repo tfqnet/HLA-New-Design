@@ -129,8 +129,17 @@
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
 @property (retain, nonatomic) IBOutlet UILabel *titleTerm;
 @property (retain, nonatomic) IBOutlet UILabel *titleUnit;
+@property (retain, nonatomic) NSMutableArray *TRiderCode;
+@property (retain, nonatomic) NSMutableArray *TPlanOpt;
+@property (retain, nonatomic) NSMutableArray *LTRiderCode;
 
 @property (nonatomic, assign,readwrite) int riderRate;
+@property (nonatomic, assign,readwrite) int CombNo;
+@property (nonatomic, assign,readwrite) int RBBenefit;
+@property (nonatomic, assign,readwrite) int RBLimit;
+@property (nonatomic, assign,readwrite) int RBGroup;
+@property (nonatomic, assign,readwrite) int AllCombNo;
+@property (nonatomic,strong) NSString *OccpCat;
 @property (nonatomic,strong) NSString *pentaSQL;
 @property (nonatomic,strong) NSString *medPentaSQL;
 @property (nonatomic,strong) NSString *plnOptC;
@@ -141,6 +150,8 @@
 @property (nonatomic,strong) NSString *planMGIV;
 @property (nonatomic,strong) NSString *planCodeRider;
 @property (nonatomic,strong) NSString *medPlanCodeRider;
+@property (nonatomic,strong) NSString *medRiderCode;
+@property (nonatomic,strong) NSString *medPlanOpt;
 @property (nonatomic,strong) NSMutableArray *annualRiderPrem;
 @property (nonatomic,strong) NSMutableArray *quarterRiderPrem;
 @property (nonatomic,strong) NSMutableArray *halfRiderPrem;
@@ -149,6 +160,8 @@
 @property (nonatomic, assign,readwrite) double halfRiderSum;
 @property (nonatomic, assign,readwrite) double quarterRiderSum;
 @property (nonatomic, assign,readwrite) double monthRiderSum;
+@property (nonatomic,strong) NSMutableArray *arrCombNo;
+@property (nonatomic,strong) NSMutableArray *arrRBBenefit;
 
 @property (nonatomic,strong) NSMutableArray *annualMedRiderPrem;
 @property (nonatomic,strong) NSMutableArray *quarterMedRiderPrem;

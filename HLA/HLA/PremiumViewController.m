@@ -209,34 +209,18 @@
             }
             else if ([[riderCode objectAtIndex:i] isEqualToString:@"HMM"])
             {
-                if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"H150"]) {
-                    planOptHMM = @"HMM_150";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"H200"]) {
-                    planOptHMM = @"HMM_200";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"H300"]) {
-                    planOptHMM = @"HMM_300";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"H400"]) {
-                    planOptHMM = @"HMM_400";
-                }
-                
-                if ([[riderDeduct objectAtIndex:i] isEqualToString:@"1"]) {
-                    deducHMM = @"5000";
-                } else if ([[riderDeduct objectAtIndex:i] isEqualToString:@"2"]) {
-                    deducHMM = @"10000";
-                } else if ([[riderDeduct objectAtIndex:i] isEqualToString:@"3"]) {
-                    deducHMM = @"15000";
-                }
+                planOptHMM = [riderPlanOpt objectAtIndex:i];
+                deducHMM = [riderDeduct objectAtIndex:i];
                 pentaSQL = [[NSString alloc] initWithFormat:
                         @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HMM\" AND PlanOption=\"%@\" AND Deductible=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planOptHMM,deducHMM,[riderAge objectAtIndex:i],[riderAge objectAtIndex:i]];
-                
             }
             else if ([[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"])
             {
-                if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"STD"]) {
+                if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"Standard"]) {
                     planHSPII = @"S";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"DLX"]) {
+                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"Deluxe"]) {
                     planHSPII = @"D";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"PRE"]) {
+                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"Premier"]) {
                     planHSPII = @"P";
                 }
                 pentaSQL = [[NSString alloc] initWithFormat:
@@ -245,15 +229,7 @@
             }
             else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"])
             {
-                if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"M100"]) {
-                    planMGII = @"MG_II_100";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"M200"]) {
-                    planMGII = @"MG_II_200";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"M300"]) {
-                    planMGII = @"MG_II_300";
-                } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"M400"]) {
-                    planMGII = @"MG_II_400";
-                }
+                planMGII = [riderPlanOpt objectAtIndex:i];
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planMGII];
                 
             } else if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID40R"])
@@ -266,15 +242,7 @@
                 
             } else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
             {
-                if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"MV150"]) {
-                    planMGIV = [[NSString alloc] initWithFormat:@"MGIVP_150"];
-                } else  if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"MV200"]) {
-                    planMGIV = [[NSString alloc] initWithFormat:@"MGIVP_200"];
-                } else  if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"MV300"]) {
-                    planMGIV = [[NSString alloc] initWithFormat:@"MGIVP_300"];
-                } else  if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"MV400"]) {
-                    planMGIV = [[NSString alloc] initWithFormat:@"MGIVP_400"];
-                }
+                planMGIV = [riderPlanOpt objectAtIndex:i];
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_IV\" AND PlanOption=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planMGIV,[riderAge objectAtIndex:i],[riderAge objectAtIndex:i]];
             }
             else {

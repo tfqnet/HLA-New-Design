@@ -41,8 +41,8 @@
     getSINo = menuH.storedSINo;
     getAge = menuH.storedAge;
     getOccpCode = menuH.storedOccpCode;
-    NSLog(@"MENULA-SINo:%@ Age:%d OccCode:%@",getSINo,getAge,getOccpCode);
-    NSLog(@"MENUBasic-SINo:%@ Age:%d OccCode:%@",menuBH.storedSINo,menuBH.storedAge,menuBH.storedOccpCode);
+//    NSLog(@"MENULA-SINo:%@ Age:%d OccCode:%@",getSINo,getAge,getOccpCode);
+//    NSLog(@"MENUBasic-SINo:%@ Age:%d OccCode:%@",menuBH.storedSINo,menuBH.storedAge,menuBH.storedOccpCode);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -265,6 +265,9 @@
         newLA.laH = menuH;
         [self presentModalViewController:newLA animated:YES];
         newLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+        
+//        [self addChildViewController:newLA];
+//        [self.RightView addSubview:newLA.view];
     }
     
     else if (indexPath.row == 1) {
