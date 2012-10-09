@@ -1145,7 +1145,8 @@
     if (existRidCode.length == 0)
     {
         //validate as a new
-        for (NSUInteger i=0; i<LRiderCode.count; i++) {
+        for (NSUInteger i=0; i<LRiderCode.count; i++)
+        {
             if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
             {
                 medRiderCode = [LRiderCode objectAtIndex:i];
@@ -1218,58 +1219,55 @@
         //validate as existing
         NSLog(@"same medRider!");
         
-        for (NSUInteger i=0; i<LRiderCode.count-1; i++)
+        double allBenefit = 0;
+        for (NSUInteger i=0; i<LRiderCode.count; i++)
         {
             if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
             {
-                NSLog(@"Cycle out:%d",i);
-                [self getTempListRider];
-                for (NSUInteger q=0; q<TRiderCode.count; q++)
-                {
-                    NSLog(@"Cycle in:%d",q);
-                    
-                    if ([[TRiderCode objectAtIndex:q] isEqualToString:@"HMM"]||[[TRiderCode objectAtIndex:q] isEqualToString:@"HSP_II"]||[[TRiderCode objectAtIndex:q] isEqualToString:@"MG_II"]||[[TRiderCode objectAtIndex:q] isEqualToString:@"MG_IV"]) {
-                    
-                        medRiderCode = [TRiderCode objectAtIndex:i];
-                        medPlanOpt = [TPlanOpt objectAtIndex:i];
-                    
-                        [self getListCombNo];
-                        NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
-                        [arrCombNo addObject:tempCombNo];
-                    
-                        [self getListRBBenefit];
-                        NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
-                        [arrRBBenefit addObject:tempBenefit];
-                        
-                        NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[TRiderCode objectAtIndex:i]);
-                    
-                    } else {
-                        continue;
-                    }
-                }
+                medRiderCode = [LRiderCode objectAtIndex:i];
+                medPlanOpt = [LPlanOpt objectAtIndex:i];
+                
+                [self getListCombNo];
+                NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                [arrCombNo addObject:tempCombNo];
+                
+                [self getListRBBenefit];
+                NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                [arrRBBenefit addObject:tempBenefit];
+                NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                
             } else {
                 continue;
             }
         }
-            
-        //calculate existing benefit
-        double allBenefit = 0;
-        if (arrRBBenefit.count != 0) {
-            for (NSUInteger z=0; z<arrRBBenefit.count; z++) {
-                allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:z] doubleValue];
+        
+        for (NSUInteger m=0; m<LRiderCode.count; m++)
+        {
+            if ([[LRiderCode objectAtIndex:m] isEqualToString:riderCode]) {
+                
+                medRiderCode = [LRiderCode objectAtIndex:m];
+                medPlanOpt = [LPlanOpt objectAtIndex:m];
+                [self getListRBBenefit];
+                
+            } else {
+                continue;
             }
-            NSLog(@"total listBenefit:%.f",allBenefit);
         }
-            
-        //get selected CombNo
-        [self getCombNo];
-        NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
-        [arrCombNo addObject:tempCombNo];
-            
+        
+        //total up all benefit
+        for (NSUInteger z=0; z<arrRBBenefit.count; z++) {
+            allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:z] doubleValue];
+        }
+        NSLog(@"currentBenefit:%.f",allBenefit);
+        
+        //minus benefit
+        allBenefit = allBenefit - RBBenefit;
+        NSLog(@"benefit:%d, newBenefit:%.f",RBBenefit,allBenefit);
+        
         //sort combNo
         NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];
         [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
-            
+        
         //combine all CombNo
         NSString *newComb =[[NSString alloc] init];
         for ( NSUInteger h=0; h<arrCombNo.count; h++) {
@@ -1277,11 +1275,11 @@
         }
         AllCombNo = [newComb intValue];
         NSLog(@"newComb:%@",newComb);
-            
+        
         //get selected RBBenefit and calculate
         [self getRBBenefit];
         allBenefit = allBenefit + RBBenefit;
-        NSLog(@"total allBenefit:%.f",allBenefit);
+        NSLog(@"allBenefit:%.f",allBenefit);
             
         //get Limit,RBGroup
         [self getRBLimit];
