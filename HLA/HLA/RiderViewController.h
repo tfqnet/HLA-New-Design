@@ -129,9 +129,6 @@
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
 @property (retain, nonatomic) IBOutlet UILabel *titleTerm;
 @property (retain, nonatomic) IBOutlet UILabel *titleUnit;
-@property (retain, nonatomic) NSMutableArray *TRiderCode;
-@property (retain, nonatomic) NSMutableArray *TPlanOpt;
-@property (retain, nonatomic) NSMutableArray *LTRiderCode;
 
 @property (nonatomic, assign,readwrite) int riderRate;
 @property (nonatomic, assign,readwrite) int CombNo;

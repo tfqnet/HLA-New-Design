@@ -40,6 +40,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *btnDOB;
 @property (retain, nonatomic) IBOutlet UIButton *btnOccp;
 @property (strong, nonatomic) IBOutlet UIButton *btnCommDate;
+@property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, copy) NSString *occuCode;

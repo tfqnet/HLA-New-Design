@@ -32,6 +32,7 @@
 @synthesize btnDOB;
 @synthesize btnOccp;
 @synthesize btnCommDate;
+@synthesize statusLabel;
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
@@ -101,17 +102,18 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 748-352);
-    self.myScrollView.contentSize = CGSizeMake(1024, 748);
+    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
+    self.myScrollView.contentSize = CGSizeMake(1024, 704);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
     [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
+    
 }
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 748);
+    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704);
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -558,8 +560,12 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Done LA2");
+                statusLabel.text = @"Successfully saved!";
+                statusLabel.textColor = [UIColor blueColor];
             } else {
                 NSLog(@"Failed LA2");
+                statusLabel.text = @"Save failed!";
+                statusLabel.textColor = [UIColor redColor];
             }
             sqlite3_finalize(statement);
         }
@@ -592,7 +598,9 @@
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"SI update!");
+                statusLabel.text = @"Successfully updated!";
+                statusLabel.textColor = [UIColor blueColor];
+                
                 if (age < 16) {
                     [self checking2ndLA];
                     if (CustCode2.length != 0) {
@@ -611,7 +619,8 @@
                     }
                 }
             } else {
-                NSLog(@"SI update Failed!");
+                statusLabel.text = @"Update Failed!";
+                statusLabel.textColor = [UIColor redColor];
             }
             
             dataInsert = [[NSMutableArray alloc] init];
@@ -845,6 +854,7 @@
     [self setOccuDesc:nil];
     [self setPayorSINo:nil];
     [self setBtnCommDate:nil];
+    [self setStatusLabel:nil];
     [super viewDidUnload];
 }
 

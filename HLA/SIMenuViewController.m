@@ -291,6 +291,9 @@
         zzz.riderH = menuH;
         [self presentModalViewController:zzz animated:YES];
         zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
+        
+//        [self addChildViewController:zzz];
+//        [self.RightView addSubview:zzz.view];
     }
     
     else if (indexPath.row == 5) {

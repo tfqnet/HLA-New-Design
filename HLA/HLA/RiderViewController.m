@@ -55,7 +55,7 @@
 @synthesize annualRiderSum,halfRiderSum,quarterRiderSum,monthRiderSum,medPlanCodeRider;
 @synthesize annualMedRiderPrem,halfMedRiderPrem,quarterMedRiderPrem,monthMedRiderPrem,annualMedRiderSum,halfMedRiderSum,quarterMedRiderSum,monthMedRiderSum;
 @synthesize basicPrem,riderPrem,medRiderPrem,medPentaSQL,OccpCat,CombNo,RBBenefit,RBLimit,RBGroup,medRiderCode;
-@synthesize arrCombNo,AllCombNo,medPlanOpt,arrRBBenefit,TPlanOpt,TRiderCode,LTRiderCode;
+@synthesize arrCombNo,AllCombNo,medPlanOpt,arrRBBenefit;
 
 #pragma mark - Cycle View
 
@@ -90,7 +90,6 @@
     }
     
     [self getListingRider];
-    [self getListingRider2];
     myTableView.rowHeight = 50;
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.opaque = NO;
@@ -1632,36 +1631,13 @@
                 titleTerm.hidden = NO;
                 titleUnit.hidden = NO;
                 
-                /*
                 [self getBasicPentaRate];
                 [self calculateBasicPremium];
                 [self calculateRiderPrem];
                 [self calculateMedRiderPrem];
-                 */
             }
             
             [self.myTableView reloadData];
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
-
--(void)getListingRider2
-{
-    LTRiderCode = [[NSMutableArray alloc] init];
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.Smoker, c.ALB FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            while (sqlite3_step(statement) == SQLITE_ROW)
-            {
-                [LTRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]];
-                
-            }
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
@@ -2055,32 +2031,6 @@
                 
             } else {
                 NSLog(@"error access Trad_LSD_HLAIB");
-            }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
-
--(void)getTempListRider
-{
-    TRiderCode = [[NSMutableArray alloc] init];
-    TPlanOpt = [[NSMutableArray alloc] init];
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.RiderCode, a.PlanOption FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\" AND a.RiderCode != \"%@\"",SINoPlan,riderCode];
-//        NSLog(@"%@",querySQL);
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            while (sqlite3_step(statement) == SQLITE_ROW)
-            {
-                [TRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]];
-                
-                const char *zzplan = (const char *) sqlite3_column_text(statement, 1);
-                [TPlanOpt addObject:zzplan == NULL ? nil :[[NSString alloc] initWithUTF8String:zzplan]];
-                
             }
             sqlite3_finalize(statement);
         }
