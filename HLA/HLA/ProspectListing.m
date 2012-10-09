@@ -297,16 +297,16 @@
     }
     
     _EditProspect.modalTransitionStyle = UIModalTransitionStyleCrossDissolve; 
-    _EditProspect.modalPresentationStyle = UIModalPresentationFormSheet; 
+    _EditProspect.modalPresentationStyle = UIModalPresentationPageSheet; 
     
-    zzz.modalPresentationStyle = UIModalPresentationFormSheet;
-    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    //zzz.modalPresentationStyle = UIModalPresentationPageSheet;
+    //zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
    
     //[self presentModalViewController:zzz animated:YES];
     // zzz.view.superview.frame = CGRectMake(40, 0, 1000, 768);
     _EditProspect.pp = pp;
     [self presentModalViewController:_EditProspect animated:YES];
-    _EditProspect.view.superview.frame = CGRectMake(40, 0, 1000, 768);
+    _EditProspect.view.superview.frame = CGRectMake(50, 0, 970, 768);
     
 }
 

@@ -99,12 +99,16 @@
 {
     if ([txtOldPwd.text isEqualToString:passwordDB]){
         
-        NSLog(@"Password enter match!");
+        //NSLog(@"Password enter match!");
+        
+        
+        
         [self saveChanges];
         
     } else {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password did not match!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Password did not match! Please enter correct old password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         txtOldPwd.text = @"";
         txtNewPwd.text = @"";
@@ -163,16 +167,26 @@
         
     else {
         
-        if ([txtNewPwd.text isEqualToString:txtConfirmPwd.text]) {
-           [self validatePassword]; 
+        if (txtNewPwd.text.length < 6 || txtNewPwd.text.length > 20 ) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                                            message:@"New Password length must be at least 6 and not more than 20 characters long!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
         }
         else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password did not match!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            txtOldPwd.text = @"";
-            txtNewPwd.text = @"";
-            txtConfirmPwd.text = @"";
-        }   
+            if ([txtNewPwd.text isEqualToString:txtConfirmPwd.text]) {
+                [self validatePassword]; 
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                txtOldPwd.text = @"";
+                txtNewPwd.text = @"";
+                txtConfirmPwd.text = @"";
+            }   
+            
+        }
+        
         
     }
      

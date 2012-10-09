@@ -57,6 +57,8 @@
 @synthesize btnCancel;
 @synthesize ContactTypeClass = _ContactTypeClass;
 @synthesize ContactTypePopover = _ContactTypePopover;
+@synthesize SIDate = _SIDate;
+@synthesize SIDatePopover = _SIDatePopover;
 @synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -230,13 +232,25 @@
 }
 
 - (IBAction)btnDOB:(id)sender {
+    /*
     [self resignFirstResponder];
+    [self.view endEditing:YES];
     outletDobPicker.hidden = NO;
     pickerToolbar.hidden = NO;
     [self.view endEditing:TRUE];
     txtRemark.hidden = TRUE;
     //ContactTypePicker.hidden = true;
     outletContactType.hidden = true;
+     */
+    if (_SIDate == Nil) {
+         
+         self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
+         _SIDate.delegate = self;
+         self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
+     }
+    
+    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 - (IBAction)btnOccup:(id)sender {
     if (_OccupationList == nil) {
@@ -271,6 +285,11 @@
     }
 
 }
+
+- (BOOL)disablesAutomaticKeyboardDismissal {
+    return NO;
+}
+
 - (IBAction)btnSave:(id)sender {
     if ([self Validation] == TRUE) {
         
@@ -1002,5 +1021,13 @@
         [outletType5 setTitle:ContactTypeString forState:UIControlStateNormal ];
         [self.ContactTypePopover dismissPopoverAnimated:YES];
     }
+}
+
+-(void)DateSelected:(NSString *)strDate :(NSString *)dbDate{
+    [outletDOB setTitle:strDate forState:UIControlStateNormal ];
+}
+
+-(void)CloseWindow{
+    [_SIDatePopover dismissPopoverAnimated:YES];
 }
 @end

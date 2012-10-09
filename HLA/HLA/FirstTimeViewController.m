@@ -136,17 +136,38 @@
         [alert show];
         
         
-    } else if ([txtNewPassword.text isEqualToString:txtConfirmPassword.text]){
+    }
+    else {
         
-        [self saveData];
+        if (txtNewPassword.text.length < 6 || txtNewPassword.text.length > 20 ) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                                            message:@"New Password length must be at least 6 and not more than 20 characters long!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+        }
+        else {
+            if ([txtNewPassword.text isEqualToString:txtConfirmPassword.text]) {
+                
+                if ([txtOldPassword.text isEqualToString:@"password"]) {
+                    [self saveData];
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                                                    message:@"Old password doest not match !" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+
+                
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with the confirmed password!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+            }
+        }
         
-    } else {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password did not match!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
         
     }
-
 }
 
 - (void) saveData

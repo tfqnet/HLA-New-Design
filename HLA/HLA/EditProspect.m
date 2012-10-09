@@ -58,6 +58,8 @@
 @synthesize delegate = _delegate;
 @synthesize ContactTypeClass = _ContactTypeClass;
 @synthesize ContactTypePopover = _ContactTypePopover;
+@synthesize SIDate = _SIDate;
+@synthesize SIDatePopover = _SIDatePopover;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -443,12 +445,23 @@
 
 
 - (IBAction)btnDOB:(id)sender {
+    /*
     DobPicker.hidden = NO;
     pickerToolbar.hidden = NO;
     [self.view endEditing:TRUE];
     txtRemark.hidden = TRUE;
     ContactTypePicker.hidden = true;
     outletDelete.hidden = true;
+     */
+    if (_SIDate == Nil) {
+        
+        self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
+        _SIDate.delegate = self;
+        self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
+    }
+    
+    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 
 - (IBAction)btnContactType1:(id)sender {
@@ -910,7 +923,7 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 10, 1000, 748-350);
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748-350);
     self.myScrollView.contentSize = CGSizeMake(1000, 748);
     
     CGRect textFieldRect = [activeField frame];
@@ -923,7 +936,7 @@
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 10, 1000, 748);
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
     ContactTypePicker.hidden = true;
 }
 
@@ -1231,5 +1244,13 @@
         [outletType5 setTitle:ContactTypeString forState:UIControlStateNormal ];
         [self.ContactTypePopover dismissPopoverAnimated:YES];
     }
+}
+
+-(void)DateSelected:(NSString *)strDate :(NSString *)dbDate{
+    [outletDOB setTitle:strDate forState:UIControlStateNormal ];
+}
+
+-(void)CloseWindow{
+    [_SIDatePopover dismissPopoverAnimated:YES];
 }
 @end

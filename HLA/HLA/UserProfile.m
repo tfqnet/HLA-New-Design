@@ -47,6 +47,11 @@
         outletCancel.enabled = false;
     }
     else {
+        AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+        
+        self.indexNo = zzz.indexNo;
+        self.idRequest = zzz.userRequest;
+        
         outletCancel.enabled = true;
     }
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -56,10 +61,6 @@
     //NSLog(@"receive User:%@",[self.idRequest description]);
     //NSLog(@"receive Index:%d",self.indexNo);
     
-    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-    
-    self.indexNo = zzz.indexNo;
-    self.idRequest = zzz.userRequest;
     
     lblAgentLoginID.text = [NSString stringWithFormat:@"%@",[self.idRequest description]];
 }

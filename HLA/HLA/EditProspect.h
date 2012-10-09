@@ -11,12 +11,13 @@
 #import <sqlite3.h>
 #import "OccupationList.h"
 #import "ContactTypeClass.h"
+#import "SIDate.h"
 
 @protocol EditProspectDelegate
 - (void)FinishEdit;
 @end
 
-@interface EditProspect : UIViewController<OccupationListDelegate, ContactTypeClassDelegate>{
+@interface EditProspect : UIViewController<OccupationListDelegate, ContactTypeClassDelegate, SIDateDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -24,7 +25,8 @@
     UIPopoverController *_OccupationListPopover;
     ContactTypeClass *_ContactTypeClass;
     UIPopoverController *_ContactTypePopover;
-    
+    SIDate *_SIDate;
+    UIPopoverController *_SIDatePopover;
     id<EditProspectDelegate> _delegate;
 }
 @property (strong, nonatomic) ProspectProfile* pp;
@@ -71,6 +73,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtContact1;
 @property (nonatomic, retain) UIPopoverController *OccupationListPopover;
 @property (nonatomic, retain) UIPopoverController *ContactTypePopover;
+@property (nonatomic, retain) SIDate *SIDate;
+@property (nonatomic, retain) UIPopoverController *SIDatePopover;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *outletOccup;
 - (IBAction)ActionGender:(id)sender;

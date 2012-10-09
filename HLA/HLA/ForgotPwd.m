@@ -84,18 +84,31 @@
         if ([txtAnswer.text isEqualToString:answer]) {
             
             [self retrievePassword];
+          
+            NSString *MsgToDisplay = [[NSString alloc] initWithFormat:@"Your password is %@",password ];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:MsgToDisplay delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            
+            /*
             lblStatusOne.text = @"Success!";
             lblStatusOne.textColor = [UIColor blueColor];
             
             lblStatusTwo.text = [[NSString alloc] initWithFormat:@"Your password is %@",password];
             lblStatusTwo.textColor = [UIColor blueColor];
+             */
         }
         else {
+            /*
             lblStatusOne.text = @"Failed!";
             lblStatusOne.textColor = [UIColor redColor];
             
-            lblStatusTwo.text = @"Please insert correct answer!";
+            lblStatusTwo.text = @"Please key in the correct answer for the question you have chose!";
             lblStatusTwo.textColor = [UIColor redColor];
+             */
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please key in the correct answer for the question you have chose!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
         }
     }
 

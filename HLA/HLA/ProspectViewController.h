@@ -10,20 +10,23 @@
 #import <sqlite3.h>
 #import "OccupationList.h"
 #import "ContactTypeClass.h"
+#import "SIDate.h"
 
 @protocol ProspectViewControllerDelegate
 - (void)FinishInsert;
 @end
 
-@interface ProspectViewController : UIViewController<ContactTypeClassDelegate, OccupationListDelegate>{
+@interface ProspectViewController : UIViewController<ContactTypeClassDelegate, SIDateDelegate, OccupationListDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
     //UIPickerView *ContactTypePicker;
     OccupationList *_OccupationList;
     ContactTypeClass *_ContactTypeClass;
+    SIDate *_SIDate;
     UIPopoverController *_OccupationListPopover;
     UIPopoverController *_ContactTypePopover;
+    UIPopoverController *_SIDatePopover;
     id<ProspectViewControllerDelegate> _delegate;
     
 }
@@ -86,6 +89,8 @@
 
 @property (strong, nonatomic) NSArray* ContactType;
 @property (nonatomic, copy) NSString *ContactTypeTracker;
+@property (nonatomic, retain) SIDate *SIDate;
+@property (nonatomic, retain) UIPopoverController *SIDatePopover;
 @property (nonatomic, retain) OccupationList *OccupationList;
 @property (nonatomic, retain) UIPopoverController *OccupationListPopover;
 @property (nonatomic, retain) ContactTypeClass  *ContactTypeClass;

@@ -37,7 +37,9 @@
 	// Do any additional setup after loading the view.
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Change Password", nil ];
     [self.view addSubview:myTableView];
-    
+    myTableView.backgroundColor = [UIColor clearColor];
+    myTableView.backgroundView = nil;
+    myTableView.opaque = NO;
     
 }
 
