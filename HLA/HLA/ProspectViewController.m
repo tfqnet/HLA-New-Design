@@ -733,6 +733,9 @@
 }
 
 - (IBAction)ActionCancel:(id)sender {
+    if (_delegate != Nil) {
+        [_delegate FinishInsert ];
+    }
     [self dismissModalViewControllerAnimated:YES ];
 }
 

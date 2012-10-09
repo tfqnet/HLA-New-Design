@@ -10,6 +10,7 @@
 #import "ChangePassword.h"
 #import "UserProfile.h"
 #import "SecurityQuestion.h"
+#import "AppDelegate.h"
 
 @interface setting ()
 
@@ -36,7 +37,10 @@
 	// Do any additional setup after loading the view.
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Change Password", nil ];
     [self.view addSubview:myTableView];
+    
+    
 }
+
 
 - (void)viewDidUnload
 {
@@ -74,6 +78,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16 ];
+    
     
     return cell;
     

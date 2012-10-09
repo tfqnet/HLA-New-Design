@@ -11,6 +11,7 @@
 #import "setting.h"
 #import "ForgotPwd.h"
 #import "FirstTimeViewController.h"
+#import "AppDelegate.h"
 
 @interface Login ()
 
@@ -138,6 +139,10 @@
             
             txtUsername.text = @"";
             txtPassword.text = @"";
+            
+            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+            zzz.indexNo = self.indexNo;
+            zzz.userRequest = agentID;
             
             MainScreen *mainMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
             mainMenu.userRequest = agentID;

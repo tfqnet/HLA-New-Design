@@ -11,5 +11,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, assign,readwrite) int indexNo;
+@property (nonatomic,strong) id userRequest;
 
 @end

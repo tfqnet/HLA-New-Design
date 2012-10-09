@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 
 @implementation AppDelegate
+@synthesize indexNo;
+@synthesize userRequest;
 
 @synthesize window = _window;
 

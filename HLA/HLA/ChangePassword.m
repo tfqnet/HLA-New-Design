@@ -8,6 +8,8 @@
 
 #import "ChangePassword.h"
 #import "Login.h"
+#import "setting.h"
+#import "AppDelegate.h"
 
 @interface ChangePassword ()
 
@@ -40,7 +42,9 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
        
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     
+    self.userID = zzz.indexNo;
     [self validateExistingPwd];
 
 }

@@ -10,6 +10,7 @@
 #import "ChangePassword.h"
 #import "SecurityQuestion.h"
 #import "Login.h"
+#import "AppDelegate.h"
 
 @interface UserProfile ()
 
@@ -52,8 +53,13 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    NSLog(@"receive User:%@",[self.idRequest description]);
-    NSLog(@"receive Index:%d",self.indexNo);
+    //NSLog(@"receive User:%@",[self.idRequest description]);
+    //NSLog(@"receive Index:%d",self.indexNo);
+    
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    
+    self.indexNo = zzz.indexNo;
+    self.idRequest = zzz.userRequest;
     
     lblAgentLoginID.text = [NSString stringWithFormat:@"%@",[self.idRequest description]];
 }
