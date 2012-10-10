@@ -12,6 +12,7 @@
 #import "ForgotPwd.h"
 #import "FirstTimeViewController.h"
 #import "AppDelegate.h"
+#import "CarouselViewController.h"
 
 @interface Login ()
 
@@ -144,11 +145,15 @@
             zzz.indexNo = self.indexNo;
             zzz.userRequest = agentID;
             
+            /*
             MainScreen *mainMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
             mainMenu.userRequest = agentID;
             mainMenu.indexNo = indexNo;
             [self presentViewController:mainMenu animated:YES completion:nil];
-            
+            */
+           
+            CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+            [self presentViewController:carouselMenu animated:YES completion:Nil];
             
             [self updateDateLogin];
             //            [self checkingLastLogout];

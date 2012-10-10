@@ -14,6 +14,7 @@
 #import "Logout.h"
 #import "SIListing.h"
 #import "SIMenuViewController.h"
+#import "CarouselViewController.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -75,7 +76,10 @@
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    
+    CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+    carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Menu" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:carouselPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];
@@ -105,7 +109,7 @@
 }
 
 -(BOOL)tabBarController:(FSVerticalTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([viewControllers indexOfObject:viewController] == 5) {
+    if ([viewControllers indexOfObject:viewController] == 6) {
         return NO;
     }
     return YES;

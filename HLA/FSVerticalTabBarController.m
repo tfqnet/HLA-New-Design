@@ -79,10 +79,21 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
+    
+    
     if (selectedIndex != _selectedIndex && selectedIndex < [self.viewControllers count])
     {
+        
+        
         // add new view controller to hierarchy
         UIViewController *selectedViewController = [self.viewControllers objectAtIndex:selectedIndex];
+        
+        if (selectedIndex == 5) {
+            [self presentViewController:selectedViewController animated:YES completion:Nil];
+        }
+        else {
+            
+        
         [self addChildViewController:selectedViewController];
         selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
                                                        0,
@@ -112,6 +123,7 @@
         if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
         {
             [self.delegate tabBarController:self didSelectViewController:selectedViewController];
+        }
         }
     }
 }
@@ -198,6 +210,7 @@
         [alert show ];
         
     }
+    
     else {
         [self setSelectedIndex:indexPath.row];
     }
