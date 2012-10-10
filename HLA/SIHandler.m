@@ -13,7 +13,7 @@
 @synthesize storedSINo,storedAge,storedOccpCode,storedOccpClass,storedSex;
 
 
--(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex
+-(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo
 {
     self = [super init];
     if(self) {
@@ -22,8 +22,8 @@
         self.storedOccpCode = aaOccpCode;
         self.storedOccpClass = aaOccpClass;
         self.storedSex = aaSex;
+        self.storedIndexNo = aaIndexNo;
     }
     return self;
 }
-
 @end

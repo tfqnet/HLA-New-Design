@@ -36,7 +36,7 @@
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
-@synthesize dataInsert,laH,commDate,occuClass;
+@synthesize dataInsert,laH,commDate,occuClass,IndexNo,checkSI;
 
 - (void)viewDidLoad
 {
@@ -48,6 +48,11 @@
     
     NSLog(@"%@",databasePath);
     
+    LANameField.enabled = NO;
+    sexSegment.enabled = NO;
+    btnDOB.enabled = NO;
+    LAAgeField.enabled = NO;
+    btnOccp.enabled = NO;
     LAOccLoadingField.enabled = NO;
     LACPAField.enabled = NO;
     LAPAField.enabled = NO;
@@ -55,7 +60,6 @@
     date1 = NO;
     date2 = NO;
     
-    [self toogleView];
     requestSINo = laH.storedSINo;
     NSLog(@"LA-SINo%@",requestSINo);
     if (requestSINo) {
@@ -123,18 +127,9 @@
     Saved = NO;
 }
 
-#pragma mark - ToogleView
 
--(void)toogleView
-{
-    NSLog(@"sex:%@",sex);
-    NSLog(@"smoker:%@",smoker);
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    commDate = [dateFormatter stringFromDate:[NSDate date]];
-    [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];    
-}
+
+#pragma mark - ToogleView
 
 -(void)getSavedField
 {
@@ -165,11 +160,9 @@
     LACPAField.text = occCPA;
     LAPAField.text = occPA;
     
-    useExist = YES;
-    
     dataInsert = [[NSMutableArray alloc] init];
     SIHandler *ss = [[SIHandler alloc] init];
-    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex]];
+    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"stored %@",ss.storedSINo);
@@ -185,7 +178,6 @@
     else if (sexSegment.selectedSegmentIndex == 1){
         sex = @"F";
     }
-    [self toogleView];
 }
 
 - (IBAction)smokerSegmentPressed:(id)sender 
@@ -196,7 +188,6 @@
     else if (smokerSegment.selectedSegmentIndex == 1){
         smoker = @"N";
     }
-    [self toogleView];
 }
 
 - (IBAction)btnDOBPressed:(id)sender
@@ -239,7 +230,7 @@
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
     
     if (LANameField.text.length <= 0) {     /*--validate Check ProspectName --*/
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (age <= 0) {         /*--validate LA DOB Validation--*/
@@ -337,6 +328,81 @@
         [self deletePayor];
     }
 }
+
+-(void)calculateAge
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        
+    [dateFormatter setDateFormat:@"yyyy"];
+    NSString *currentYear = [dateFormatter stringFromDate:[NSDate date]];
+    [dateFormatter setDateFormat:@"MM"];
+    NSString *currentMonth = [dateFormatter stringFromDate:[NSDate date]];
+    [dateFormatter setDateFormat:@"dd"];
+    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];
+    
+//    NSString *birthYear = [DOB substringFromIndex:[DOB length]-4];
+//    NSString *birthMonth = [DOB substringWithRange:NSMakeRange(3, 2)];
+//    NSString *birthDay = [DOB substringWithRange:NSMakeRange(0, 2)];
+    
+    NSArray *foo = [DOB componentsSeparatedByString: @"/"];
+    NSString *birthDay = [foo objectAtIndex: 0];
+    NSString *birthMonth = [foo objectAtIndex: 1];
+    NSString *birthYear = [foo objectAtIndex: 2];
+    
+    int yearN = [currentYear intValue];
+    int yearB = [birthYear intValue];
+    int monthN = [currentMonth intValue];
+    int monthB = [birthMonth intValue];
+    int dayN = [currentDay intValue];
+    int dayB = [birthDay intValue];
+        
+    int ALB = yearN - yearB;
+    int newALB;
+    int newANB;
+    
+    NSString *msgAge;
+    if (yearN > yearB)
+    {
+        if (monthN < monthB) {
+            newALB = ALB - 1;
+        } else if (monthN == monthB && dayN < dayB) {
+            newALB = ALB - 1;
+        } else {
+            newALB = ALB;
+        }
+            
+        if (monthN > monthB) {
+            newANB = ALB + 1;
+        } else if (monthN == monthB && dayN >= dayB) {
+            newANB = ALB + 1;
+        } else {
+            newANB = ALB;
+        }
+        msgAge = [[NSString alloc] initWithFormat:@"%d",newALB];
+        age = newALB;
+        ANB = newANB;
+    }
+    else if (yearN == yearB)
+    {
+        if (monthN > monthB) {
+            newALB = monthN - monthB;
+            msgAge = [[NSString alloc] initWithFormat:@"%d months",newALB];
+                
+        } else if (monthN == monthB && dayB<dayN) {
+            newALB = dayN - dayB;
+            msgAge = [[NSString alloc] initWithFormat:@"%d days",newALB];
+            if (newALB < 30) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+        }
+        age = 0;
+        ANB = 1;
+    }
+    NSLog(@"msgAge:%@",msgAge);
+    LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+}
+
 
 
 #pragma mark - Handle Data
@@ -543,7 +609,6 @@
     {
         NSString *insertSQL = [NSString stringWithFormat:
                         @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"1\",\"%@\",\"hla\")",SINo, CustCode,commDate];
-        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -555,7 +620,7 @@
         }
         
         NSString *insertSQL2 = [NSString stringWithFormat:
-                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate];
+                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -572,7 +637,7 @@
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex]];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"stored %@",ss.storedSINo);
@@ -625,7 +690,7 @@
             
             dataInsert = [[NSMutableArray alloc] init];
             SIHandler *ss = [[SIHandler alloc] init];
-            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex]];
+            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
             for (NSUInteger i=0; i< dataInsert.count; i++) {
                 ss = [dataInsert objectAtIndex:i];
                 NSLog(@"stored %@",ss.storedSINo);
@@ -661,6 +726,30 @@
             
             } else {
                 NSLog(@"error access tbl_SI_Trad_LAPayor");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)checkingSI
+{
+    checkSI = [[NSString alloc] init];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+            @"SELECT a.SINo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE b.indexNo=\"%d\"",IndexNo];
+                
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                checkSI = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                
+            } else {
+                NSLog(@"error access Clt_Profile");
             }
             sqlite3_finalize(statement);
         }
@@ -781,13 +870,120 @@
     }
 }
 
+
+
 #pragma mark - delegate
--(void)listing:(ListingTbViewController *)inController didSelectItem:(NSString *)item
+
+-(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode
 {
-    requestSINo = [[NSString alloc] initWithFormat:@"%@",item];
-    [self checkingExisting];
-    [self getSavedField];
+    statusLabel.text = @"";
+    NSLog(@"namedb:%@, gender:%@",aaName,aaGender);
+    IndexNo = [aaIndex intValue];
+    [self checkingSI];
+    
+    if (checkSI.length == 0)
+    {
+        NSLog(@"view new client");
+        LANameField.text = aaName;
+        sex = aaGender;
+        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else if ([sex isEqualToString:@"F"]) {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        
+        [btnDOB setTitle:aaDOB forState:UIControlStateNormal];
+        DOB = aaDOB;
+        [self calculateAge];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        commDate = [dateFormatter stringFromDate:[NSDate date]];
+        [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
+        
+        occuCode = aaCode;
+        [self getOccLoadExist];
+        [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+        if (occLoading == 0) {
+            LAOccLoadingField.text = @"STD";
+        } else {
+            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+        LACPAField.text = occCPA;
+        LAPAField.text = occPA;
+    }
+    else {
+        useExist = YES;
+        NSLog(@"view existing client");
+        requestSINo = checkSI;
+        [self checkingExisting];
+        
+        BOOL valid;
+        if (![aaName isEqualToString:clientName]) {
+            valid = FALSE;
+        } 
+        
+        if (![aaGender isEqualToString:sex]) {
+            valid = FALSE;
+        }
+        
+        if (![DOB isEqualToString:aaDOB]) {
+            valid = FALSE;
+        } 
+        
+        if (![occuCode isEqualToString:aaCode]) {
+            valid = FALSE;
+        }
+        
+        if (valid) {
+            NSLog(@"valid");
+            [self getSavedField];
+        }
+        else
+        {
+            NSLog(@"not valid");
+            
+            LANameField.text = aaName;
+            sex = aaGender;
+            
+            if ([sex isEqualToString:@"M"]) {
+                sexSegment.selectedSegmentIndex = 0;
+            } else if ([sex isEqualToString:@"F"]) {
+                sexSegment.selectedSegmentIndex = 1;
+            }
+            
+            if ([smoker isEqualToString:@"Y"]) {
+                smokerSegment.selectedSegmentIndex = 0;
+            } else if ([smoker isEqualToString:@"N"]) {
+                smokerSegment.selectedSegmentIndex = 1;
+            }
+            
+            [btnDOB setTitle:aaDOB forState:UIControlStateNormal];
+            DOB = aaDOB;
+            [self calculateAge];
+            
+            [btnCommDate setTitle:commDate forState:UIControlStateNormal];
+            
+            occuCode = aaCode;
+            [self getOccLoadExist];
+            [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+            if (occLoading == 0) {
+                LAOccLoadingField.text = @"STD";
+            } else {
+                LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+            }
+            LACPAField.text = occCPA;
+            LAPAField.text = occPA;
+            
+            statusLabel.text = @"Data changed. Please resave!";
+            statusLabel.textColor = [UIColor redColor];
+        }
+    }
+    
     [popOverController dismissPopoverAnimated:YES];
+    
 }
 
 -(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB

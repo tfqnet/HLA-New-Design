@@ -47,6 +47,8 @@
 @property (nonatomic, copy) NSString *occuDesc;
 @property (nonatomic, copy) NSString *commencementDate;
 @property (nonatomic, assign,readwrite) int occuClass;
+@property (nonatomic, assign,readwrite) int IndexNo;
+@property (nonatomic, copy) NSString *checkSI;
 
 //declare for store in DB
 @property (nonatomic, copy) NSString *sex;

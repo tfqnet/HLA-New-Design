@@ -7,6 +7,7 @@
 //
 
 #import "SecondLAViewController.h"
+#import "MainScreen.h"
 
 @interface SecondLAViewController ()
 
@@ -33,7 +34,15 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    nameField.enabled = NO;
+    sexSegment.enabled = NO;
+    DOBBtn.enabled = NO;
     ageField.enabled = NO;
+    OccpBtn.enabled = NO;
+    OccpLoadField.enabled = NO;
+    CPAField.enabled = NO;
+    PAField.enabled = NO;
+    
     useExist = NO;
     
     requestSINo = la2ndH.storedSINo;
@@ -155,7 +164,12 @@
 
 - (IBAction)doCloseView:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    main.modalPresentationStyle = UIModalPresentationFullScreen;
+    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    main.IndexTab = 3;
+    main.mainH = la2ndH;
+    [self presentModalViewController:main animated:YES];
 }
 
 - (IBAction)doSave:(id)sender
@@ -193,10 +207,110 @@
     }
 }
 
-#pragma mark - delegate
--(void)listing:(ListingTbViewController *)inController didSelectItem:(NSString *)item
+-(void)calculateAge
 {
-    NSLog(@"passing %@",item);
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy"];
+    NSString *currentYear = [dateFormatter stringFromDate:[NSDate date]];
+    [dateFormatter setDateFormat:@"MM"];
+    NSString *currentMonth = [dateFormatter stringFromDate:[NSDate date]];
+    [dateFormatter setDateFormat:@"dd"];
+    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];
+    
+    NSArray *foo = [DOB componentsSeparatedByString: @"/"];
+    NSString *birthDay = [foo objectAtIndex: 0];
+    NSString *birthMonth = [foo objectAtIndex: 1];
+    NSString *birthYear = [foo objectAtIndex: 2];
+    
+    int yearN = [currentYear intValue];
+    int yearB = [birthYear intValue];
+    int monthN = [currentMonth intValue];
+    int monthB = [birthMonth intValue];
+    int dayN = [currentDay intValue];
+    int dayB = [birthDay intValue];
+    
+    int ALB = yearN - yearB;
+    int newALB;
+    int newANB;
+    
+    NSString *msgAge;
+    if (yearN > yearB)
+    {
+        if (monthN < monthB) {
+            newALB = ALB - 1;
+        } else if (monthN == monthB && dayN < dayB) {
+            newALB = ALB - 1;
+        } else {
+            newALB = ALB;
+        }
+        
+        if (monthN > monthB) {
+            newANB = ALB + 1;
+        } else if (monthN == monthB && dayN >= dayB) {
+            newANB = ALB + 1;
+        } else {
+            newANB = ALB;
+        }
+        msgAge = [[NSString alloc] initWithFormat:@"%d",newALB];
+        age = newALB;
+        ANB = newANB;
+    }
+    else if (yearN == yearB)
+    {
+        if (monthN > monthB) {
+            newALB = monthN - monthB;
+            msgAge = [[NSString alloc] initWithFormat:@"%d months",newALB];
+            
+        } else if (monthN == monthB && dayB<dayN) {
+            newALB = dayN - dayB;
+            msgAge = [[NSString alloc] initWithFormat:@"%d days",newALB];
+            if (newALB < 30) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+        }
+        age = 0;
+        ANB = 1;
+    }
+    NSLog(@"msgAge:%@",msgAge);
+    ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
+}
+
+#pragma mark - delegate
+
+-(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode
+{
+    if (la2ndH.storedIndexNo == [aaIndex intValue]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"This Life Assured has already been attached to the plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    } else {
+        nameField.text = aaName;
+        sex = aaGender;
+    
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else if ([sex isEqualToString:@"F"]) {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        
+        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        [DOBBtn setTitle:aaDOB forState:UIControlStateNormal];
+        DOB = aaDOB;
+        [self calculateAge];
+    
+        OccpCode = aaCode;
+        [self getOccLoadExist];
+        [self.OccpBtn setTitle:OccpDesc forState:UIControlStateNormal];
+        if (occLoading == 0) {
+            OccpLoadField.text = @"STD";
+        } else {
+            OccpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+        CPAField.text = occCPA;
+        PAField.text = occPA;
+    }
+    
     [popOverController dismissPopoverAnimated:YES];
 }
 
@@ -438,6 +552,8 @@
         sqlite3_close(contactDB);
     }
 }
+
+
 
 #pragma mark - memory management
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController

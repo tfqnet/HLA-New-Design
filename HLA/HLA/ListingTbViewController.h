@@ -11,7 +11,7 @@
 
 @class ListingTbViewController;
 @protocol ListingTbViewControllerDelegate
--(void)listing:(ListingTbViewController *)inController didSelectItem:(NSString *)item;
+-(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode;
 @end
 
 @interface ListingTbViewController : UITableViewController {
@@ -22,7 +22,9 @@
 }
 
 @property (nonatomic,strong) id <ListingTbViewControllerDelegate> delegate;
-@property (readonly) NSString *selectedItem;
-@property(nonatomic , retain) NSMutableArray *nameList;
-@property(nonatomic , retain) NSMutableArray *SINoList;
+@property(nonatomic , retain) NSMutableArray *indexNo;
+@property(nonatomic , retain) NSMutableArray *NameList;
+@property(nonatomic , retain) NSMutableArray *DOBList;
+@property(nonatomic , retain) NSMutableArray *GenderList;
+@property(nonatomic , retain) NSMutableArray *OccpCodeList;
 @end
