@@ -403,11 +403,15 @@ if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
 }
 
 -(void) FinishEdit{
+    isFiltered = FALSE;
     [self ReloadTableData];
+    searchBar.text = @"";
+    
 }
 
 -(void) FinishInsert{
     [self ReloadTableData];
+    searchBar.text = @"";
     _ProspectViewController = nil;
 }
 

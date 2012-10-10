@@ -49,22 +49,22 @@
     setting* settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
     settingPage.indexNo = self.indexNo;
     settingPage.userRequest = self.userRequest;
-    settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"setting_btnB2.png"] tag: 0];
     [controllersToAdd addObject:settingPage];    
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"prospect.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];    
     
     SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
-    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"SI_button.png"] tag: 0];
     [controllersToAdd addObject:SIListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
     menuSIPage.menuH = mainH;
     menuSIPage.menuBH = mainBH;
-    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"SI_buttonB.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
 

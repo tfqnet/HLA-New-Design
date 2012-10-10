@@ -98,7 +98,7 @@
     
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-        NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, A.datecreated, name, planname, basicSA, 'Not Created', A.CustCode "
+        NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
                                   " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
                                   " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode "];
         const char *SelectSI = [SIListingSQL UTF8String];
@@ -233,7 +233,7 @@
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
     if (isFilter == false) {
-        CGRect frame=CGRectMake(0,0, 200, 50);
+        CGRect frame=CGRectMake(-30,0, 230, 50);
         UILabel *label1=[[UILabel alloc]init];            
         label1.frame=frame;
         label1.text= [SINO objectAtIndex:indexPath.row];
@@ -452,6 +452,14 @@
     outletDone.hidden = false;
     outletDate.tag = 1;
      */
+    
+    if ([DBDateFrom isEqualToString:@""]) {
+        NSDateFormatter* df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"dd/MM/yyyy"];
+        NSString* d = [df stringFromDate:[[NSDate date] dateByAddingTimeInterval:3600*8]];    
+        [outletDateFrom setTitle:d forState:UIControlStateNormal];
+    }
+    
     outletDate.tag = 1;
     if (_SIDate == Nil) {
         
@@ -468,6 +476,15 @@
     //outletDate.hidden = false;
     //outletDone.hidden = false;
     outletDate.tag = 2;
+    
+    
+    if ([DBDateTo isEqualToString:@""]) {
+        NSDateFormatter* df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"dd/MM/yyyy"];
+        NSString* d = [df stringFromDate:[[NSDate date] dateByAddingTimeInterval:3600*8]];    
+        [outletDateTo setTitle:d forState:UIControlStateNormal];
+    }
+    
     if (_SIDate == Nil) {
         
         self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
@@ -492,8 +509,18 @@
     
         
         //isFilter = true;
-        
+    NSDateFormatter* df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy-MM-dd"];
+    NSDate* d = [df dateFromString:DBDateFrom];
+    NSDate* d2 = [df dateFromString:DBDateTo];
     
+    if ([ d compare:d2] == NSOrderedDescending) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                                            message:@"Date To cannot be greater than Date From" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+        [alert show ];
+    }
+    else {
+        
         NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *docsDir = [dirPaths objectAtIndex:0];
         databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -502,7 +529,7 @@
         const char *dbpath = [databasePath UTF8String];
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-            NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, A.datecreated, name, planname, basicSA, 'Not Created', A.CustCode "
+            NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, CreatedAT, name, planname, basicSA, 'Not Created', A.CustCode "
                                       " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
                                       " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode " ];        
             
@@ -518,16 +545,17 @@
             
             if ( ![DBDateFrom isEqualToString:@""]) {
                                 
-                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt > \"%@\" ", DBDateFrom ];
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
                 
             }
             
             if ( ![DBDateTo isEqualToString:@""] ) {
                 
-                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT < \"%@\" ", DBDateTo ];
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
                 
             }
             
+            //NSLog(@"%@", SIListingSQL);
             NSString *Sorting = [[NSString alloc] init ];
             Sorting = @"";
             
@@ -583,7 +611,7 @@
                 SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
             }
             
-            NSLog(@"%@", SIListingSQL);
+            //NSLog(@"%@", SIListingSQL);
             
             const char *SelectSI = [SIListingSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
@@ -654,6 +682,7 @@
         }
     
     [myTableView reloadData];
+    }
 }
 
 - (IBAction)btnEdit:(id)sender {
