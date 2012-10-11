@@ -14,6 +14,7 @@
 #import "Logout.h"
 #import "SIListing.h"
 #import "SIMenuViewController.h"
+#import "CarouselViewController.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -49,22 +50,22 @@
     setting* settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
     settingPage.indexNo = self.indexNo;
     settingPage.userRequest = self.userRequest;
-    settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"setting_btnB2.png"] tag: 0];
     [controllersToAdd addObject:settingPage];    
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"prospect.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];    
     
     SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
-    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"SI_button.png"] tag: 0];
     [controllersToAdd addObject:SIListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
     menuSIPage.menuH = mainH;
     menuSIPage.menuBH = mainBH;
-    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"SI_buttonB.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
 
@@ -75,7 +76,10 @@
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    
+    CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+    carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Menu" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:carouselPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];
@@ -105,7 +109,7 @@
 }
 
 -(BOOL)tabBarController:(FSVerticalTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([viewControllers indexOfObject:viewController] == 5) {
+    if ([viewControllers indexOfObject:viewController] == 6) {
         return NO;
     }
     return YES;
