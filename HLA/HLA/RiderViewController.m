@@ -315,7 +315,8 @@
     {
         [self getMaxRiderTerm];
         double maxRiderTerm1 = fmin(self.requestCoverTerm,age1);
-        double maxRiderTerm2 = fmax(requestMOP,storedMaxTerm);
+//        double maxRiderTerm2 = fmax(requestMOP,storedMaxTerm);
+        double maxRiderTerm2 = fmax(requestCoverTerm,storedMaxTerm);
         maxRiderTerm = fmin(maxRiderTerm1,maxRiderTerm2);
     }
     
@@ -838,7 +839,7 @@
         popView.delegate = self;
 		
 		[popOverConroller setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];        
-        [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [popOverConroller presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
     else{
 		[popOverConroller dismissPopoverAnimated:YES];
@@ -855,7 +856,7 @@
         popView.delegate = self;
 		
 		[popOverConroller setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
-        [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [popOverConroller presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
     else{
 		[popOverConroller dismissPopoverAnimated:YES];
@@ -1339,12 +1340,12 @@
         [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
         [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     }
-    
+    NSLog(@"code:%@",code);
     riderCode = [[NSString alloc] initWithFormat:@"%@",code];
     riderDesc = [[NSString alloc] initWithFormat:@"%@",desc];
     [self.btnAddRider setTitle:riderDesc forState:UIControlStateNormal];
     [popOverConroller dismissPopoverAnimated:YES];
-    
+
     //validation part
     [self getOccpNotAttach];
     if ([atcRidCode count] != 0)
@@ -1390,6 +1391,7 @@
     }
     
     else {
+        NSLog(@"enter stage");
         [self getLabelForm];
         [self toggleForm];
         [self getRiderTermRule];
@@ -1554,10 +1556,17 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Saved Rider!");
+                
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
+                
                 [self getListingRider];
                 
             } else {
                 NSLog(@"Failed Save Rider!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }
@@ -1657,10 +1666,10 @@
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
                 const char *zzRidCode = (const char *)sqlite3_column_text(statement, 0);
-                [atcRidCode addObject:zzRidCode == NULL ? nil :[[NSString alloc] initWithUTF8String:zzRidCode]];
+                [atcRidCode addObject:zzRidCode == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzRidCode]];
                 
                 const char *zzPlan = (const char *)sqlite3_column_text(statement, 1);
-                [atcPlanChoice addObject:zzPlan == NULL ? nil :[[NSString alloc] initWithUTF8String:zzPlan]];
+                [atcPlanChoice addObject:zzPlan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzPlan]];
             }
             sqlite3_finalize(statement);
         }
@@ -1704,8 +1713,15 @@
             {
                 [self getListingRider];
                 NSLog(@"Update Rider success!");
+                
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
+                
             } else {
                 NSLog(@"Update Rider failed!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }
@@ -1749,6 +1765,7 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 storedMaxTerm = sqlite3_column_int(statement, 0);
+                NSLog(@"maxStored:%d",storedMaxTerm);
                 
             } else {
                 NSLog(@"error access Trad_LSD_HLAIB");

@@ -21,9 +21,9 @@
 @implementation SIMenuViewController
 @synthesize myTableView;
 @synthesize RightView;
-@synthesize ListOfSubMenu;
+@synthesize ListOfSubMenu,SelectedRow;
 @synthesize menuH,menuBH;
-@synthesize getAge,getSINo,getOccpCode;
+@synthesize getAge,getSINo,getOccpCode,getbasicSA;
 @synthesize payorCustCode,payorSINo,CustCode2,clientID2;
 
 
@@ -38,11 +38,29 @@
     
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
     
+    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"5", nil ];
+    
     getSINo = menuH.storedSINo;
     getAge = menuH.storedAge;
     getOccpCode = menuH.storedOccpCode;
-//    NSLog(@"MENULA-SINo:%@ Age:%d OccCode:%@",getSINo,getAge,getOccpCode);
-//    NSLog(@"MENUBasic-SINo:%@ Age:%d OccCode:%@",menuBH.storedSINo,menuBH.storedAge,menuBH.storedOccpCode);
+    getbasicSA = menuBH.storedbasicSA;
+    LAEmpty = YES;
+    PlanEmpty = YES;
+    
+    if (getSINo)
+    {
+        LAEmpty = NO;
+        NSLog(@"la receive!");
+    }
+
+    if (getbasicSA)
+    {
+        PlanEmpty = NO;
+        NSLog(@"plan receive!");
+    }
+    
+    [self toogleView];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -50,15 +68,58 @@
 	return YES;
 }
 
+-(void)toogleView
+{
+    if (LAEmpty)
+    {
+        [SelectedRow addObject:@"1" ];
+        [SelectedRow addObject:@"2" ];
+        
+        NSLog(@"LA empty");
+    }
+    else {
+        [SelectedRow removeObject:@"1"];
+        [SelectedRow removeObject:@"2"];
+        NSLog(@"LA not empty");
+    }
+    
+    if (PlanEmpty)
+    {
+        [SelectedRow addObject:@"5"];
+        NSLog(@"Plan empty");
+    }
+    else {
+        [SelectedRow removeObject:@"5"];
+        NSLog(@"Plan not empty");
+    }
+}
+
 
 #pragma mark - action
 
 -(void)select2ndLA
 {
-    if (getSINo) {
-        
-        if (getAge >= 18)
-        {
+    if (getAge >= 18)
+    {
+        SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
+        secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
+        secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        secondLA.la2ndH = menuH;
+        [self presentModalViewController:secondLA animated:YES];
+        secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+    }
+    else if (getAge < 16){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else {
+        NSLog(@"age 16-17");
+        [self checkingPayor];
+        if (payorSINo.length != 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        else {
             SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
             secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
             secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -66,35 +127,6 @@
             [self presentModalViewController:secondLA animated:YES];
             secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
         }
-        else if (getAge < 16){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        }
-        else {
-            NSLog(@"age 16-17");
-            [self checkingPayor];
-            if (payorSINo.length != 0) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-            }
-            else {
-                SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-                secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-                secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                secondLA.la2ndH = menuH;
-                [self presentModalViewController:secondLA animated:YES];
-                secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
-            }
-        }
-    }
-    else {
-        
-        SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-        secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-        secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        secondLA.la2ndH = menuH;
-        [self presentModalViewController:secondLA animated:YES];
-        secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
     }
 }
 
@@ -160,7 +192,6 @@
         [self presentModalViewController:zzz animated:YES];
         zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
     }
-
 }
 
 -(void)calculatedPrem
@@ -263,6 +294,7 @@
         newLA.modalPresentationStyle = UIModalPresentationFormSheet;
         newLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         newLA.laH = menuH;
+        newLA.laBH = menuBH;
         [self presentModalViewController:newLA animated:YES];
         newLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
         
@@ -291,9 +323,7 @@
         zzz.riderH = menuH;
         [self presentModalViewController:zzz animated:YES];
         zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
-        
-//        [self addChildViewController:zzz];
-//        [self.RightView addSubview:zzz.view];
+
     }
     
     else if (indexPath.row == 5) {
@@ -301,6 +331,33 @@
     }
     
     [tableView reloadData];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    BOOL found = false;
+    
+    if ([SelectedRow count ] == 0) {
+        return  44;
+    }
+    else {
+        NSString *aString = [[NSString alloc] initWithFormat:@"%d", indexPath.row ];
+        for (int f = 0; f < [SelectedRow count]; f++) {
+            NSString * stringFromArray = [SelectedRow objectAtIndex:f];
+            if ([aString isEqualToString:stringFromArray]) {
+                found = true;
+                break;
+            }
+        }
+        
+        if (found) {
+            return 0;
+            
+        }
+        else {
+            return  44;
+        }
+    }
 }
 
 #pragma mark - memory
@@ -314,6 +371,7 @@
     [self setPayorCustCode:nil];
     [self setPayorSINo:nil];
     [self setCustCode2:nil];
+    [self setGetbasicSA:nil];
     [super viewDidUnload];
 }
 

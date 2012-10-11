@@ -12,6 +12,7 @@
 #import "DateViewController.h"
 #import "JobListTbViewController.h"
 #import "SIHandler.h"
+#import "BasicPlanHandler.h"
 
 @interface NewLAViewController : UIViewController<UITextFieldDelegate,UIPopoverControllerDelegate,ListingTbViewControllerDelegate,DateViewControllerDelegate,JobListTbViewControllerDelegate>{
     NSString *databasePath;
@@ -26,6 +27,7 @@
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 @property (nonatomic,strong) SIHandler *laH;
+@property (nonatomic,strong) BasicPlanHandler *laBH;
 //request from previous
 @property (nonatomic,strong) id requestSINo;
 

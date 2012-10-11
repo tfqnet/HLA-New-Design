@@ -36,7 +36,7 @@
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
-@synthesize dataInsert,laH,commDate,occuClass,IndexNo,checkSI;
+@synthesize dataInsert,laH,commDate,occuClass,IndexNo,checkSI,laBH;
 
 - (void)viewDidLoad
 {
@@ -261,8 +261,8 @@
 		popOverController = [[UIPopoverController alloc] initWithContentViewController:listingMenu];
         listingMenu.delegate = self;
 		
-		[popOverController setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//		[popOverController setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+        [popOverController presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         popOverController.delegate = self;
 	}
     else {
@@ -280,6 +280,7 @@
             main.modalPresentationStyle = UIModalPresentationFullScreen;
             main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             main.mainH = ss;
+            main.mainBH = laBH;
             main.IndexTab = 3;
             [self presentModalViewController:main animated:YES];
         }
@@ -625,12 +626,14 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Done LA2");
-                statusLabel.text = @"Successfully saved!";
-                statusLabel.textColor = [UIColor blueColor];
+
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
             } else {
                 NSLog(@"Failed LA2");
-                statusLabel.text = @"Save failed!";
-                statusLabel.textColor = [UIColor redColor];
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }
@@ -663,8 +666,8 @@
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                statusLabel.text = @"Successfully updated!";
-                statusLabel.textColor = [UIColor blueColor];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
                 
                 if (age < 16) {
                     [self checking2ndLA];
@@ -684,8 +687,9 @@
                     }
                 }
             } else {
-                statusLabel.text = @"Update Failed!";
-                statusLabel.textColor = [UIColor redColor];
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             
             dataInsert = [[NSMutableArray alloc] init];

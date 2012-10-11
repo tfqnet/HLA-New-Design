@@ -113,7 +113,7 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-352);
+    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
     self.myScrollView.contentSize = CGSizeMake(1024, 704);
     
     CGRect textFieldRect = [activeField frame];
@@ -157,7 +157,7 @@
 - (IBAction)btnShowHealthLoadingPressed:(id)sender
 {
     if (showHL) {
-        [self.btnHealthLoading setTitle:@"SHOW" forState:UIControlStateNormal];
+        [self.btnHealthLoading setTitle:@"Show" forState:UIControlStateNormal];
         [UIView animateWithDuration:0.5 animations:^{
             healthLoadingView.alpha = 0;
         }];
@@ -165,7 +165,7 @@
     }
     else {
         
-        [self.btnHealthLoading setTitle:@"HIDE" forState:UIControlStateNormal];
+        [self.btnHealthLoading setTitle:@"Hide" forState:UIControlStateNormal];
         [UIView animateWithDuration:0.5 animations:^{
             healthLoadingView.alpha = 1;
         }];
@@ -516,15 +516,17 @@
 
 -(void)saveBasicPlan
 {
+    /*
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    */
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\")", SINoPlan,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], dateString];
+        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\")", SINoPlan,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")"];
         
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -541,8 +543,14 @@
                     NSLog(@"storedbasic:%@",ss.storedSINo);
                 }
                 
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
+                
             } else {
                 NSLog(@"Failed Save basicPlan!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }
@@ -578,8 +586,14 @@
                     NSLog(@"storedbasic:%@",ss.storedSINo);
                 }
                 
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
+                
             } else {
                 NSLog(@"BasicPlan update Failed!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }

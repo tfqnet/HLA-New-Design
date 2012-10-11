@@ -109,8 +109,8 @@
 		popOverController = [[UIPopoverController alloc] initWithContentViewController:listingMenu];
         listingMenu.delegate = self;
 		
-		[popOverController setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//		[popOverController setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+        [popOverController presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         popOverController.delegate = self;
 	}
     else {
@@ -438,8 +438,15 @@
             {
                 NSLog(@"Done LA2");
                 [self updateRunCustCode];
+                
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
+                
             } else {
                 NSLog(@"Failed LA2");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }
@@ -466,7 +473,6 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Run Cust update!");
-                [self dismissModalViewControllerAnimated:YES];
                 
             } else {
                 NSLog(@"Run Cust update Failed!");
@@ -550,10 +556,15 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"SI update!");
-                [self dismissModalViewControllerAnimated:YES];
+                
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
                 
             } else {
                 NSLog(@"SI update Failed!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }

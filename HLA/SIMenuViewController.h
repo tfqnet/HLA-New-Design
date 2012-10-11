@@ -14,18 +14,23 @@
 @interface SIMenuViewController : UIViewController {
     NSString *databasePath;
     sqlite3 *contactDB;
+    BOOL LAEmpty;
+    BOOL PlanEmpty;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *RightView;
 
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
+@property (retain, nonatomic) NSMutableArray *SelectedRow;
 @property (nonatomic,strong) SIHandler *menuH;
 @property (nonatomic,strong) BasicPlanHandler *menuBH;
 
 @property (nonatomic, retain) NSString *getSINo;
 @property (nonatomic ,assign ,readwrite) int getAge;
 @property (nonatomic, retain) NSString *getOccpCode;
+@property (nonatomic, retain) NSString *getbasicSA;
+
 @property (nonatomic, copy) NSString *payorSINo;
 @property (nonatomic, copy) NSString *payorCustCode;
 @property (nonatomic, assign,readwrite) int clientID2;
