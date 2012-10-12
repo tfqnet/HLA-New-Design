@@ -9,7 +9,7 @@
 #import "BasicPlanHandler.h"
 
 @implementation BasicPlanHandler
-@synthesize storedSINo,storedAge,storedOccpCode,storedCovered,storedPlanCode,storedMOP,storedbasicSA;
+@synthesize storedSINo,storedAge,storedOccpCode,storedCovered,storedPlanCode,storedMOP,storedbasicSA,storedbasicHL;
 
 
 -(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode
