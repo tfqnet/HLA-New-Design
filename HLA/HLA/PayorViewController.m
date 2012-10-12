@@ -25,6 +25,7 @@
 @synthesize PAField;
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occCPA,occLoading,occPA,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc;
 @synthesize popOverController,requestSINo,payorH;
+@synthesize ProspectList = _ProspectList;
 
 - (void)viewDidLoad
 {
@@ -103,19 +104,13 @@
 
 - (IBAction)doSelectProspect:(id)sender
 {
-    if(![popOverController isPopoverVisible]) {
-        
-		ListingTbViewController *listingMenu = [[ListingTbViewController alloc] init];
-		popOverController = [[UIPopoverController alloc] initWithContentViewController:listingMenu];
-        listingMenu.delegate = self;
-		
-//		[popOverController setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-        [popOverController presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        popOverController.delegate = self;
-	}
-    else {
-		[popOverController dismissPopoverAnimated:YES];
-	}
+    if (_ProspectList == nil) {
+        self.ProspectList = [[ListingTbViewController alloc] initWithStyle:UITableViewStylePlain];
+        _ProspectList.delegate = self;
+        popOverController = [[UIPopoverController alloc] initWithContentViewController:_ProspectList];
+    }
+    
+    [popOverController presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)sexSegmentChange:(id)sender

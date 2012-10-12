@@ -19,6 +19,7 @@
     sqlite3 *contactDB;
     UITextField *activeField;
     UIPopoverController *popOverController;
+    ListingTbViewController *_ProspectList;
     BOOL Saved;
     BOOL useExist;
     BOOL date1;
@@ -30,6 +31,8 @@
 @property (nonatomic,strong) BasicPlanHandler *laBH;
 //request from previous
 @property (nonatomic,strong) id requestSINo;
+
+@property (nonatomic, retain) ListingTbViewController *ProspectList;
 
 //LA Field
 @property (retain, nonatomic) IBOutlet UITextField *LANameField;

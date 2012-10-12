@@ -17,10 +17,13 @@
     NSString *databasePath;
     sqlite3 *contactDB;
     UIPopoverController *popOverController;
+    ListingTbViewController *_ProspectList;
     BOOL useExist;
 }
 
 @property (nonatomic, retain) UIPopoverController *popOverController;
+@property (nonatomic, retain) ListingTbViewController *ProspectList;
+
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) SIHandler *payorH;
 
