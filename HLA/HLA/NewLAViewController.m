@@ -894,7 +894,7 @@
         
         if ([sex isEqualToString:@"M"]) {
             sexSegment.selectedSegmentIndex = 0;
-        } else if ([sex isEqualToString:@"F"]) {
+        } else {
             sexSegment.selectedSegmentIndex = 1;
         }
         
