@@ -34,7 +34,7 @@
     
     outletCarousel.dataSource = self;
     outletCarousel.delegate = self;
-    outletCarousel.type = iCarouselTypeCylinder;
+    outletCarousel.type = iCarouselTypeRotary;
     // Do any additional setup after loading the view.
 }
 

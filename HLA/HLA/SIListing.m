@@ -184,9 +184,13 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+    {
         return YES;
+    }
+    else {
+        return NO;
+    }
     
-    return NO;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -453,13 +457,16 @@
     outletDate.tag = 1;
      */
     
+    /*
     if ([DBDateFrom isEqualToString:@""]) {
         NSDateFormatter* df = [[NSDateFormatter alloc] init];
-        [df setDateFormat:@"dd/MM/yyyy"];
-        NSString* d = [df stringFromDate:[[NSDate date] dateByAddingTimeInterval:3600*8]];    
+        [df setDateFormat:@"MM/dd/yyyy"];
+        //NSString* d = [df stringFromDate:[[NSDate date] dateByAddingTimeInterval:3600*8]];    
+        NSString* d = [df stringFromDate:[NSDate date]];    
         [outletDateFrom setTitle:d forState:UIControlStateNormal];
+        DBDateFrom = d;
     }
-    
+    */
     outletDate.tag = 1;
     if (_SIDate == Nil) {
         
@@ -477,13 +484,17 @@
     //outletDone.hidden = false;
     outletDate.tag = 2;
     
-    
+    /*
     if ([DBDateTo isEqualToString:@""]) {
         NSDateFormatter* df = [[NSDateFormatter alloc] init];
         [df setDateFormat:@"dd/MM/yyyy"];
-        NSString* d = [df stringFromDate:[[NSDate date] dateByAddingTimeInterval:3600*8]];    
+        //NSString* d = [df stringFromDate:[[NSDate date] dateByAddingTimeInterval:3600*8]];    
+        NSString* d = [df stringFromDate:[NSDate date]];    
+        
         [outletDateTo setTitle:d forState:UIControlStateNormal];
+        DBDateTo = d;
     }
+     */
     
     if (_SIDate == Nil) {
         
@@ -545,13 +556,15 @@
             
             if ( ![DBDateFrom isEqualToString:@""]) {
                                 
-                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
+                //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", DBDateFrom ];
                 
             }
             
             if ( ![DBDateTo isEqualToString:@""] ) {
                 
-                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
+                //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
+                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", DBDateTo ];
                 
             }
             
@@ -565,10 +578,10 @@
             
             if (lblDateCreated.highlighted == TRUE) {
                 if ([Sorting isEqualToString:@""]) {
-                    Sorting = @"A.datecreated";
+                    Sorting = @" createdAt";
                 }
                 else {
-                    Sorting = [Sorting stringByAppendingFormat:@",A.datecreated"];
+                    Sorting = [Sorting stringByAppendingFormat:@",createdAt"];
                     
                 }
             }
@@ -611,7 +624,7 @@
                 SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
             }
             
-            //NSLog(@"%@", SIListingSQL);
+            NSLog(@"%@", SIListingSQL);
             
             const char *SelectSI = [SIListingSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
@@ -810,13 +823,18 @@
     NSString *msg = [NSString stringWithFormat:@"%@",pickerDate];
     if (outletDate.tag == 1) {
           [self.outletDateFrom setTitle:msg forState:UIControlStateNormal];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        //[dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        [dateFormatter setDateFormat:@"MM/dd/yyyy"];
+        
         DBDateFrom = [dateFormatter stringFromDate:[outletDate date]];
+        
     }
     else {
           [self.outletDateTo setTitle:msg forState:UIControlStateNormal];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        //[dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        [dateFormatter setDateFormat:@"MM/dd/yyyy"];
         DBDateTo = [dateFormatter stringFromDate:[outletDate date]];  
+        
     }
   
 }

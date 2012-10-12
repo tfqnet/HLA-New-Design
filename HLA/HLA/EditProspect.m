@@ -540,6 +540,9 @@
     if([txtPreferredName.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Preferred Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -561,6 +564,10 @@
         if (!valid) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Preferred name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return false;
         }
@@ -569,6 +576,9 @@
     if([txtrFullName.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                     message:@"Full Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -590,6 +600,9 @@
         if (!valid) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Full name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return false;
         }
@@ -598,6 +611,10 @@
     if(segGender.selectedSegmentIndex == -1){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                     message:@"Gender field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -605,6 +622,10 @@
     if([outletDOB.titleLabel.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Date of Birth (DOB) cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -612,6 +633,9 @@
     if([txtEmail.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please enter email address" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -619,6 +643,10 @@
     if([txtHomeAddr1.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Home Address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -626,6 +654,10 @@
     if([txtHomePostCode.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Home Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -633,6 +665,9 @@
     if([txtOfiiceAddr1.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Office Address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -640,6 +675,10 @@
     if([txtOfficePostCode.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Office Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -647,6 +686,10 @@
     if(OccupCodeSelected == NULL){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Occupation field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
         [alert show];
         return false;
     }
@@ -660,6 +703,10 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return false;
         }
@@ -668,8 +715,11 @@
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please enter atleast 1 contact number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
         
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
+        [alert show];
         return FALSE;
     }
 
@@ -690,6 +740,9 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return false;
         }
@@ -712,6 +765,9 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return false;
         }
@@ -734,6 +790,9 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return false;
         }
@@ -756,6 +815,10 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return false;
         }
@@ -766,6 +829,9 @@
         if( [self NSStringIsValidEmail:txtEmail.text] == FALSE){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Email Address is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
             [alert show];
             return FALSE;
         }
@@ -1035,6 +1101,7 @@
 }
 
 - (IBAction)btnSave:(id)sender {
+    [self.view  endEditing:YES];
     [self resignFirstResponder];
     if ([self Validation] == TRUE) {
         
@@ -1174,6 +1241,8 @@
         case 0: 
         {       
             if (alertView.tag == 2) {
+                [self resignFirstResponder];
+                [self.view endEditing:YES];
                 [self dismissModalViewControllerAnimated:YES];
             }
         }
