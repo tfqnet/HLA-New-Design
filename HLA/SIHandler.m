@@ -10,7 +10,7 @@
 
 @implementation SIHandler
 
-@synthesize storedSINo,storedAge,storedOccpCode,storedOccpClass,storedSex;
+@synthesize storedSINo,storedAge,storedOccpCode,storedOccpClass,storedSex,storedIndexNo;
 
 
 -(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo
