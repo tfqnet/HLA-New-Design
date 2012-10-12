@@ -453,6 +453,10 @@
     ContactTypePicker.hidden = true;
     outletDelete.hidden = true;
      */
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
     if (_SIDate == Nil) {
         
         self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
@@ -1101,7 +1105,7 @@
 }
 
 - (IBAction)btnSave:(id)sender {
-    [self.view  endEditing:YES];
+    [self.view endEditing:YES];
     [self resignFirstResponder];
     if ([self Validation] == TRUE) {
         
@@ -1408,6 +1412,12 @@
 }
 
 -(void)CloseWindow{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
     [_SIDatePopover dismissPopoverAnimated:YES];
+}
+
+- (BOOL)disablesAutomaticKeyboardDismissal {
+    return NO;
 }
 @end

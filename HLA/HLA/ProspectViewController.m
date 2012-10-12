@@ -242,6 +242,10 @@
     //ContactTypePicker.hidden = true;
     outletContactType.hidden = true;
      */
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
     if (_SIDate == Nil) {
          
          self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
@@ -1197,6 +1201,8 @@
 }
 
 -(void)CloseWindow{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
     [_SIDatePopover dismissPopoverAnimated:YES];
 }
 @end

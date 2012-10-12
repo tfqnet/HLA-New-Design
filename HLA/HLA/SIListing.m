@@ -922,4 +922,22 @@
     [self.SIDatePopover dismissPopoverAnimated:YES];
 }
 
+- (IBAction)btnReset:(id)sender {
+    txtSINO.text = @"";
+    txtLAName.text = @"";
+    [outletDateFrom setTitle:@"" forState:UIControlStateNormal];
+    [outletDateTo setTitle:@"" forState:UIControlStateNormal];
+    DBDateFrom = @"";
+    DBDateTo = @"";
+    lblBasicSA.highlighted = FALSE;
+    lblDateCreated.highlighted = FALSE;
+    lblName.highlighted = FALSE;
+    lblPlan.highlighted = FALSE;
+    lblSINO.highlighted = FALSE;
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    outletGender.selectedSegmentIndex = -1;
+    outletGender.enabled = FALSE;
+
+}
 @end

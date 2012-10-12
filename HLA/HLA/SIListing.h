@@ -69,6 +69,7 @@
 - (IBAction)btnSortBy:(id)sender;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *outletGender;
 @property (weak, nonatomic) IBOutlet UIButton *outletEdit;
+- (IBAction)btnReset:(id)sender;
 
 
 @end
