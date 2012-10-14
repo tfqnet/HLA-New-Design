@@ -665,6 +665,22 @@
         [alert show];
         return false;
     }
+    else {
+        BOOL valid;
+        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtHomePostCode.text];
+        valid = [alphaNums isSupersetOfSet:inStringSet]; 
+        if (!valid) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Residence post code must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+    }
     
     if([txtOfiiceAddr1.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -685,6 +701,22 @@
         
         [alert show];
         return false;
+    }
+    else {
+        BOOL valid;
+        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtOfficePostCode.text];
+        valid = [alphaNums isSupersetOfSet:inStringSet]; 
+        if (!valid) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Office post code must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
     }
     
     if(OccupCodeSelected == NULL){
@@ -1099,9 +1131,16 @@
 }
 
 - (IBAction)btnCancel:(id)sender {
+    //[self dismissModalViewControllerAnimated:YES];
     
+    [self.view endEditing:YES];
     [self resignFirstResponder];
-    [self dismissModalViewControllerAnimated:YES];
+    
+    UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to close ?" 
+                                                   delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", Nil];
+    Alert.tag = 1003;
+    [Alert show];
+    
 }
 
 - (IBAction)btnSave:(id)sender {
@@ -1245,6 +1284,11 @@
         case 0: 
         {       
             if (alertView.tag == 2) {
+                [self resignFirstResponder];
+                [self.view endEditing:YES];
+                [self dismissModalViewControllerAnimated:YES];
+            }
+            else if (alertView.tag == 1003) {
                 [self resignFirstResponder];
                 [self.view endEditing:YES];
                 [self dismissModalViewControllerAnimated:YES];

@@ -299,11 +299,6 @@
     _EditProspect.modalTransitionStyle = UIModalTransitionStyleCrossDissolve; 
     _EditProspect.modalPresentationStyle = UIModalPresentationPageSheet; 
     
-    //zzz.modalPresentationStyle = UIModalPresentationPageSheet;
-    //zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-   
-    //[self presentModalViewController:zzz animated:YES];
-    // zzz.view.superview.frame = CGRectMake(40, 0, 1000, 768);
     _EditProspect.pp = pp;
     [self presentModalViewController:_EditProspect animated:YES];
     _EditProspect.view.superview.frame = CGRectMake(50, 0, 970, 768);
@@ -413,6 +408,10 @@ if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     [self ReloadTableData];
     searchBar.text = @"";
     _ProspectViewController = nil;
+}
+
+- (BOOL)disablesAutomaticKeyboardDismissal {
+    return NO;
 }
 
 @end

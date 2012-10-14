@@ -47,12 +47,19 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return YES;
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+    {
+        return YES;
+    }
+    else {
+        return NO;
+    }
+
 }
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    return 10;
+    return 4;
 }
 
 
@@ -73,9 +80,12 @@
     else if (index % 4 == 3) {
         [button setTitle:[NSString stringWithFormat:@"New SI", index] forState:UIControlStateNormal];
     }
-    
+    /*
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    
+    NSString *filename = [NSString stringWithFormat:@"IMG_00%i", (index+39)];
+    UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
+    */
+    //[button setBackgroundImage:image forState:UIControlStateNormal];
     button.titleLabel.font = [button.titleLabel.font fontWithSize:50];
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     return button;

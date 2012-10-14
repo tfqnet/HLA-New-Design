@@ -80,6 +80,10 @@
 		C4F08D5B161DA491008BCC1A /* ContactTypeClass.h in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D59161DA491008BCC1A /* ContactTypeClass.h */; };
 		C4F08D5C161DA491008BCC1A /* ContactTypeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */; };
 		C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5F161DBDBB008BCC1A /* SIDate.m */; };
+		C4F82FEE16296F6700EF8FAA /* IMG_0039.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEB16296F6700EF8FAA /* IMG_0039.png */; };
+		C4F82FEF16296F6700EF8FAA /* IMG_0040.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEC16296F6700EF8FAA /* IMG_0040.png */; };
+		C4F82FF016296F6700EF8FAA /* IMG_0041.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FED16296F6700EF8FAA /* IMG_0041.png */; };
+		C4F82FF61629700900EF8FAA /* IMG_0042.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FF51629700900EF8FAA /* IMG_0042.png */; };
 		EF059839161A8BD1004A9095 /* NewLAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059837161A8BCF004A9095 /* NewLAViewController.m */; };
 		EF05983F161A8C85004A9095 /* ListingTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05983D161A8C85004A9095 /* ListingTbViewController.m */; };
 		EF059842161A901A004A9095 /* PayorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059840161A901A004A9095 /* PayorViewController.m */; };
@@ -202,6 +206,10 @@
 		C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTypeClass.m; sourceTree = "<group>"; };
 		C4F08D5E161DBDBB008BCC1A /* SIDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDate.h; sourceTree = "<group>"; };
 		C4F08D5F161DBDBB008BCC1A /* SIDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIDate.m; sourceTree = "<group>"; };
+		C4F82FEB16296F6700EF8FAA /* IMG_0039.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0039.png; sourceTree = "<group>"; };
+		C4F82FEC16296F6700EF8FAA /* IMG_0040.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0040.png; sourceTree = "<group>"; };
+		C4F82FED16296F6700EF8FAA /* IMG_0041.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0041.png; sourceTree = "<group>"; };
+		C4F82FF51629700900EF8FAA /* IMG_0042.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0042.png; sourceTree = "<group>"; };
 		EF059837161A8BCF004A9095 /* NewLAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLAViewController.m; sourceTree = "<group>"; };
 		EF059838161A8BD0004A9095 /* NewLAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLAViewController.h; sourceTree = "<group>"; };
 		EF05983D161A8C85004A9095 /* ListingTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListingTbViewController.m; sourceTree = "<group>"; };
@@ -363,6 +371,10 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4F82FF51629700900EF8FAA /* IMG_0042.png */,
+				C4F82FEB16296F6700EF8FAA /* IMG_0039.png */,
+				C4F82FEC16296F6700EF8FAA /* IMG_0040.png */,
+				C4F82FED16296F6700EF8FAA /* IMG_0041.png */,
 				C4660EA11625047800BA4AFE /* delete_button.png */,
 				C4660EA21625047800BA4AFE /* exit_btnB_144.png */,
 				C4660EA31625047800BA4AFE /* exit_btnB.png */,
@@ -609,6 +621,10 @@
 				C4660EC81625047800BA4AFE /* SI_button2.png in Resources */,
 				C4660EC91625047800BA4AFE /* SI_buttonB_144.png in Resources */,
 				C4660ECA1625047800BA4AFE /* SI_buttonB.png in Resources */,
+				C4F82FEE16296F6700EF8FAA /* IMG_0039.png in Resources */,
+				C4F82FEF16296F6700EF8FAA /* IMG_0040.png in Resources */,
+				C4F82FF016296F6700EF8FAA /* IMG_0041.png in Resources */,
+				C4F82FF61629700900EF8FAA /* IMG_0042.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

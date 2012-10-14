@@ -8,6 +8,9 @@
 
 #import "SIListing.h"
 #import "ColorHexCode.h"
+#import "NewLAViewController.h"
+#import "MainScreen.h"
+#import "SIHandler.h"
 
 @interface SIListing ()
 
@@ -100,7 +103,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
                                   " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
-                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode "];
+                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 order by createdAt Desc "];
         const char *SelectSI = [SIListingSQL UTF8String];
         if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
             
@@ -422,6 +425,17 @@
         }
  
     }
+    else {
+       
+        NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+        MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        MainScreenPage.IndexTab = 3;
+        NewLAPage.modalPresentationStyle = UIModalPresentationPageSheet;
+        NewLAPage.requestSINo = [SINO objectAtIndex:indexPath.row];
+        //[self presentViewController:MainScreenPage animated:YES completion:Nil];
+        [self presentModalViewController:NewLAPage animated:YES];
+        
+    }
     
         
 }
@@ -518,6 +532,8 @@
 
 - (IBAction)btnSearch:(id)sender {
     
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
         
         //isFilter = true;
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
@@ -542,7 +558,7 @@
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
             NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, CreatedAT, name, planname, basicSA, 'Not Created', A.CustCode "
                                       " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
-                                      " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode " ];        
+                                      " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 " ];        
             
             if (![txtSINO.text isEqualToString:@""]) {
                 SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
