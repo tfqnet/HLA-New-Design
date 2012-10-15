@@ -20,6 +20,7 @@
     sqlite3 *contactDB;
     UIPopoverController *popOverConroller;
     RiderPTypeTbViewController *listPType;
+    RiderListTbViewController *_RiderList;
     BOOL term;
     BOOL sumA;
     BOOL plan;
@@ -35,6 +36,8 @@
 //request from previous
 @property (nonatomic,strong) BasicPlanHandler *riderBH;
 @property (nonatomic,strong) SIHandler *riderH;
+
+@property (nonatomic, retain) RiderListTbViewController *RiderList;
 
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestSINo;

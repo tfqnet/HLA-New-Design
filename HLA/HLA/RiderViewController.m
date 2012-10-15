@@ -56,6 +56,7 @@
 @synthesize annualMedRiderPrem,halfMedRiderPrem,quarterMedRiderPrem,monthMedRiderPrem,annualMedRiderSum,halfMedRiderSum,quarterMedRiderSum,monthMedRiderSum;
 @synthesize basicPrem,riderPrem,medRiderPrem,medPentaSQL,OccpCat,CombNo,RBBenefit,RBLimit,RBGroup,medRiderCode;
 @synthesize arrCombNo,AllCombNo,medPlanOpt,arrRBBenefit;
+@synthesize RiderList = _RiderList;
 
 #pragma mark - Cycle View
 
@@ -464,7 +465,6 @@
                     plnOptC = @"N";
                 }
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",plnOptC];
-                
             }
             
             else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"ID40R"])
@@ -848,19 +848,17 @@
 
 - (IBAction)btnAddRiderPressed:(id)sender
 {
-    if(![popOverConroller isPopoverVisible]){
-		RiderListTbViewController *popView = [[RiderListTbViewController alloc] init];
-        popView.requestPtype = self.pTypeCode;
-        popView.requestSeq = self.PTypeSeq;
-		popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
-        popView.delegate = self;
-		
-		[popOverConroller setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
-        [popOverConroller presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	}
-    else{
-		[popOverConroller dismissPopoverAnimated:YES];
-	}
+    if (_RiderList == nil) {
+        self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
+        _RiderList.delegate = self;
+        _RiderList.requestPtype = self.pTypeCode;
+        _RiderList.requestSeq = self.PTypeSeq; 
+        _RiderList.requestOccpClass = riderH.storedOccpClass;
+        popOverConroller = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
+    }
+    
+    [popOverConroller setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
+    [popOverConroller presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)planBtnPressed:(id)sender
@@ -1312,7 +1310,6 @@
 
 -(void)RiderListController:(RiderListTbViewController *)inController didSelectCode:(NSString *)code desc:(NSString *)desc
 {
-    
     //reset value existing
     if (riderCode != NULL) {
         term = NO;
@@ -1382,7 +1379,7 @@
             }
         }
     }
-    else if (([riderCode isEqualToString:@"CPA"] && riderH.storedOccpClass < 1 && riderH.storedOccpClass > 4)||([riderCode isEqualToString:@"PA"] && riderH.storedOccpClass < 1 && riderH.storedOccpClass > 4)) {
+    else if (([riderCode isEqualToString:@"CPA"] && riderH.storedOccpClass > 4)||([riderCode isEqualToString:@"PA"] && riderH.storedOccpClass > 4)) {
         NSLog(@"Occpclass:%d",riderH.storedOccpClass);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];

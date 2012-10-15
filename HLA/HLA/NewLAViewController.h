@@ -79,8 +79,7 @@
 @property(nonatomic , retain) NSMutableArray *occDesc;
 @property(nonatomic , retain) NSMutableArray *occCode;
 @property(nonatomic , assign,readwrite) int occLoading;
-@property(nonatomic , retain) NSString *occCPA;
-@property(nonatomic , retain) NSString *occPA;
+@property(nonatomic , assign,readwrite) int occCPA_PA;
 
 @property (retain, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, retain) UIPopoverController *popOverController;

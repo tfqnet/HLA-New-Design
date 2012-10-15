@@ -13,24 +13,17 @@
 @end
 
 @implementation RiderListTbViewController
-@synthesize requestPlanCode,requestPtype,requestSeq,ridCode,ridDesc,selectedCode,selectedDesc;
+@synthesize requestPtype,requestSeq,ridCode,ridDesc,selectedCode,selectedDesc,requestOccpClass;
 @synthesize delegate = _delegate;
-
--(id)init
-{
-    self = [super init];
-	if (self != nil) {
-		NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *docsDir = [dirPaths objectAtIndex:0];
-        databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-	}
-	return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"RIDERLIST ptype:%@, seq:%d",[self.requestPtype description],self.requestSeq);
+    NSLog(@"RIDERLIST ptype:%@, seq:%d class:%d",[self.requestPtype description],self.requestSeq,self.requestOccpClass);
+    
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
     [self getRiderListing];
 }
@@ -47,10 +40,17 @@
     ridDesc = [[NSMutableArray alloc] init];
     
     sqlite3_stmt *statement;
+    NSString *querySQL;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\"",[self.requestPtype description],self.requestSeq];
+        if (self.requestOccpClass > 4) {
+            querySQL = [NSString stringWithFormat:
+            @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\" AND a.RiderCode != \"CPA\" AND a.RiderCode != \"PA\" AND a.RiderCode != \"HMM\" AND a.RiderCode != \"HB\" AND a.RiderCode != \"MG_II\" AND a.RiderCode != \"MG_IV\" AND a.RiderCode != \"HSP_II\"",[self.requestPtype description],self.requestSeq];
+        } else {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\"",[self.requestPtype description],self.requestSeq];
+        }
+        
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -104,7 +104,6 @@
 {
     selectedIndex = indexPath.row;
     [_delegate RiderListController:self didSelectCode:self.selectedCode desc:self.selectedDesc];
-//    NSLog(@"%@",self.selectedDesc);
     [tableView reloadData];
 }
 
@@ -123,7 +122,6 @@
 - (void)viewDidUnload
 {
     [self setDelegate:nil];
-    [self setRequestPlanCode:nil];
     [self setRequestPtype:nil];
     [self setRidCode:nil];
     [self setRidDesc:nil];

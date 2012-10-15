@@ -23,7 +23,7 @@
 @synthesize OccpLoadField;
 @synthesize CPAField;
 @synthesize PAField;
-@synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occCPA,occLoading,occPA,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc;
+@synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
 @synthesize popOverController,requestSINo,la2ndH;
 @synthesize ProspectList = _ProspectList;
 
@@ -87,8 +87,15 @@
     } else {
         OccpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
     }
-    CPAField.text = occCPA;
-    PAField.text = occPA;
+    
+    if (occCPA_PA > 4) {
+        CPAField.text = @"D";
+        PAField.text = @"D";
+    } else {
+        CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    }
+    
     useExist = YES;
 }
 
@@ -302,8 +309,14 @@
         } else {
             OccpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
         }
-        CPAField.text = occCPA;
-        PAField.text = occPA;
+        
+        if (occCPA_PA > 4) {
+            CPAField.text = @"D";
+            PAField.text = @"D";
+        } else {
+            CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
     }
     
     [popOverController dismissPopoverAnimated:YES];
@@ -341,8 +354,7 @@
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                occCPA  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                occPA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                occCPA_PA  = sqlite3_column_int(statement, 1);
                 occLoading = sqlite3_column_int(statement, 2);
                 
                 if (occLoading == 0) {
@@ -351,8 +363,13 @@
                     OccpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
                 }
                 
-                CPAField.text = occCPA;
-                PAField.text = occPA;
+                if (occCPA_PA > 4) {
+                    CPAField.text = @"D";
+                    PAField.text = @"D";
+                } else {
+                    CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+                    PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+                }
             }
             else {
                 NSLog(@"Error retrieve loading!");
@@ -515,8 +532,7 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 OccpDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                occCPA  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
-                occPA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                occCPA_PA  = sqlite3_column_int(statement, 3);
                 occLoading =  sqlite3_column_int(statement, 4);
             }
             else {
@@ -586,8 +602,6 @@
     [self setDOB:nil];
     [self setJobDesc:nil];
     [self setOccpCode:nil];
-    [self setOccCPA:nil];
-    [self setOccPA:nil];
     [self setSINo:nil];
     [self setCustDate:nil];
     [self setCustCode:nil];

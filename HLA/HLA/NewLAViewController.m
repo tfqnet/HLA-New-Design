@@ -34,7 +34,7 @@
 @synthesize btnCommDate;
 @synthesize statusLabel;
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
-@synthesize occDesc,occCode,occLoading,occCPA,occPA,payorSINo;
+@synthesize occDesc,occCode,occLoading,payorSINo,occCPA_PA;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
 @synthesize dataInsert,laH,commDate,occuClass,IndexNo,checkSI,laBH;
 @synthesize ProspectList=_ProspectList;
@@ -159,13 +159,20 @@
     
     [self getOccLoadExist];
     [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+    
     if (occLoading == 0) {
         LAOccLoadingField.text = @"STD";
     } else {
         LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
     }
-    LACPAField.text = occCPA;
-    LAPAField.text = occPA;
+    
+    if (occCPA_PA > 4) {
+        LACPAField.text = @"D";
+        LAPAField.text = @"D";
+    } else {
+        LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    }
     
     dataInsert = [[NSMutableArray alloc] init];
     SIHandler *ss = [[SIHandler alloc] init];
@@ -421,8 +428,7 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 occuClass = sqlite3_column_int(statement, 0);
-                occCPA  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                occPA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                occCPA_PA  = sqlite3_column_int(statement, 1);
                 occLoading = sqlite3_column_int(statement, 2);
             
                 if (occLoading == 0) {
@@ -431,8 +437,14 @@
                     LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
                 }
                 
-                LACPAField.text = occCPA;
-                LAPAField.text = occPA;
+                if (occCPA_PA > 4) {
+                    LACPAField.text = @"D";
+                    LAPAField.text = @"D";
+                } else {
+                    LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+                    LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+                }
+                
             }
             else {
                 NSLog(@"Error retrieve loading!");
@@ -578,8 +590,7 @@
             {
                 occuDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 occuClass = sqlite3_column_int(statement, 2);
-                occCPA  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
-                occPA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                occCPA_PA  = sqlite3_column_int(statement, 3);
                 occLoading =  sqlite3_column_int(statement, 4);
             }
             else {
@@ -911,13 +922,21 @@
         occuCode = aaCode;
         [self getOccLoadExist];
         [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+        
         if (occLoading == 0) {
             LAOccLoadingField.text = @"STD";
         } else {
             LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
         }
-        LACPAField.text = occCPA;
-        LAPAField.text = occPA;
+        
+        if (occCPA_PA > 4) {
+            LACPAField.text = @"D";
+            LAPAField.text = @"D";
+        } else {
+            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
     }
     else {
         useExist = YES;
@@ -979,8 +998,14 @@
             } else {
                 LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
             }
-            LACPAField.text = occCPA;
-            LAPAField.text = occPA;
+            
+            if (occCPA_PA > 4) {
+                LACPAField.text = @"D";
+                LAPAField.text = @"D";
+            } else {
+                LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+                LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            }
             
             statusLabel.text = @"Data changed. Please resave!";
             statusLabel.textColor = [UIColor redColor];
@@ -1038,8 +1063,6 @@
     [self setSex:nil];
     [self setOccDesc:nil];
     [self setOccCode:nil];
-    [self setOccCPA:nil];
-    [self setOccPA:nil];
     [self setSINo:nil];
     [self setCustCode:nil];
     [self setSIDate:nil];
