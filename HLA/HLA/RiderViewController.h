@@ -19,6 +19,7 @@
     NSString *databasePath;
     sqlite3 *contactDB;
     UIPopoverController *popOverConroller;
+    UIPopoverController *_RiderListPopover;
     RiderPTypeTbViewController *listPType;
     RiderListTbViewController *_RiderList;
     BOOL term;
@@ -47,6 +48,7 @@
 @property (nonatomic,strong) id requestOccpCode;
 @property (nonatomic, assign,readwrite) int requestMOP;
 
+@property (nonatomic, retain) UIPopoverController *RiderListPopover;
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
 @property (retain, nonatomic) IBOutlet UIButton *btnPType;
 @property (retain, nonatomic) IBOutlet UIButton *btnAddRider;

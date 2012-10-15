@@ -57,6 +57,7 @@
 @synthesize basicPrem,riderPrem,medRiderPrem,medPentaSQL,OccpCat,CombNo,RBBenefit,RBLimit,RBGroup,medRiderCode;
 @synthesize arrCombNo,AllCombNo,medPlanOpt,arrRBBenefit;
 @synthesize RiderList = _RiderList;
+@synthesize RiderListPopover = _RiderListPopover;
 
 #pragma mark - Cycle View
 
@@ -90,6 +91,12 @@
         [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
     }
     
+    [self getBasicPentaRate];
+    [self getOccLoad];
+    [self getOccpCatCode];
+    [self getLSDRate];
+    NSLog(@"basicRate:%d,lsdRate:%d,pa_cpa:%d",basicRate,LSDRate,occLoad);
+    
     [self getListingRider];
     myTableView.rowHeight = 50;
     myTableView.backgroundColor = [UIColor clearColor];
@@ -97,8 +104,7 @@
     myTableView.backgroundView = nil;
     [self.view addSubview:myTableView];
     
-    [self getOccLoad];
-    [self getOccpCatCode];
+    
     
     [super viewDidLoad];
 }
@@ -429,14 +435,6 @@
     double basicTotalM = BasicMonthly + OccpLoadM + BasicHLMonthly - LSDMonthly;
     NSLog(@"BasicTotal A:%.3f, S:%.3f, Q:%.3f, M:%.3f",basicTotalA,basicTotalS,basicTotalQ,basicTotalM);
     
-    /*
-     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-     [formatter setMaximumFractionDigits:2];
-     NSString *numberString = [formatter stringFromNumber:[NSNumber numberWithDouble:basicTotalA]];
-     NSLog(@"basicPrem:%@",numberString);
-     */
-    
     basicPrem = basicTotalA;
     NSLog(@"basicPrem:%.2f",basicPrem);
 }
@@ -455,13 +453,13 @@
         {
             if ([[LRiderCode objectAtIndex:i] isEqualToString:@"C+"])
             {
-                if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"1"]) {
+                if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Level"]) {
                     plnOptC = @"L";
-                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"2"]) {
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Increasing"]) {
                     plnOptC = @"I";
-                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"3"]) {
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Level_NCB"]) {
                     plnOptC = @"B";
-                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"4"]) {
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Increasing_NCB"]) {
                     plnOptC = @"N";
                 }
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",plnOptC];
@@ -554,10 +552,11 @@
         if ([[LRiderCode objectAtIndex:i] isEqualToString:@"ETPD"])
         {
             double fsar = (65 - self.requestAge) * ridSA;
-            annualRider = (riderRate + RiderHLAnnually/10)*(ridSA/100) * 1 + fsar/1000 * OccpLoadA * 1;
-            halfYearRider = (riderRate + RiderHLHalfYear/10)*(ridSA/100) * 0.5125 + fsar/1000 * OccpLoadA * 0.5125;
-            quarterRider = (riderRate + RiderHLQuarterly/10)*(ridSA/100) * 0.2625 + fsar/1000 * OccpLoadA * 0.2625;
-            monthlyRider = (riderRate + RiderHLMonthly/10)*(ridSA/100) * 0.0875 + fsar/1000 * OccpLoadA * 0.0875;
+            
+            annualRider = (riderRate *ridSA /100 *1) + (RiderHLAnnually /10 *ridSA /100 *1) + (fsar /1000 *OccpLoadA *1);
+            halfYearRider = (riderRate *ridSA /100 *0.5125) + (RiderHLHalfYear /10 *ridSA /100 *0.5125) + (fsar /1000 *OccpLoadH *0.5125);
+            quarterRider = (riderRate *ridSA /100 *0.2625) + (RiderHLQuarterly /10 *ridSA /100 *0.2625) + (fsar /1000 *OccpLoadQ *0.2625);
+            monthlyRider = (riderRate *ridSA /100 *0.0875) + (RiderHLMonthly /10 *ridSA /100 *0.0875) + (fsar /1000 *OccpLoadM *0.0875);
         }
         
         else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I40R"])
@@ -566,18 +565,18 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm + 1)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm + 1)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm + 1)/2);
-            annualRider = (riderRate + occLoadFactorA + RiderHLAnnually) * (ridSA/1000) * 1;
-            halfYearRider = (riderRate + occLoadFactorH + RiderHLHalfYear) * (ridSA/1000) * 0.5125;
-            quarterRider = (riderRate + occLoadFactorQ + RiderHLQuarterly) * (ridSA/1000) * 0.2625;
-            monthlyRider = (riderRate + occLoadFactorM + RiderHLMonthly) * (ridSA/1000) * 0.0875;
+            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
+            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
+            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
+            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
         }
         
         else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"ICR"])
         {
-            annualRider = (riderRate + OccpLoadA * ridTerm + RiderHLAnnually) * ridSA/1000 * 1;
-            halfYearRider = (riderRate + OccpLoadH * ridTerm + RiderHLHalfYear) * ridSA/1000 * 0.5125;
-            quarterRider = (riderRate + OccpLoadQ * ridTerm + RiderHLQuarterly) * ridSA/1000 * 0.2625;
-            monthlyRider = (riderRate + OccpLoadM * ridTerm + RiderHLMonthly) * ridSA/1000 * 0.0875;
+            annualRider = (riderRate *ridSA /1000 *1) + ((OccpLoadA *ridTerm) *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
+            halfYearRider = (riderRate *ridSA /1000 *0.5125) + ((OccpLoadH *ridTerm) *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
+            quarterRider = (riderRate *ridSA /1000 *0.2625) + ((OccpLoadQ *ridTerm) *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
+            monthlyRider = (riderRate *ridSA /1000 *0.0875) + ((OccpLoadM *ridTerm) *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
         }
         
         else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"ID20R"])
@@ -586,10 +585,10 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm - 20)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 20)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm - 20)/2);
-            annualRider = (riderRate + occLoadFactorA + RiderHLAnnually) * (ridSA/1000) * 1;
-            halfYearRider = (riderRate + occLoadFactorH + RiderHLHalfYear) * (ridSA/1000) * 0.5125;
-            quarterRider = (riderRate + occLoadFactorQ + RiderHLQuarterly) * (ridSA/1000) * 0.2625;
-            monthlyRider = (riderRate + occLoadFactorM + RiderHLMonthly) * (ridSA/1000) * 0.0875;
+            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
+            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
+            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
+            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
         }
         
         else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"ID30R"])
@@ -598,10 +597,10 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm - 30)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 30)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm - 30)/2);
-            annualRider = (riderRate + occLoadFactorA + RiderHLAnnually) * (ridSA/1000) * 1;
-            halfYearRider = (riderRate + occLoadFactorH + RiderHLHalfYear) * (ridSA/1000) * 0.5125;
-            quarterRider = (riderRate + occLoadFactorQ + RiderHLQuarterly) * (ridSA/1000) * 0.2625;
-            monthlyRider = (riderRate + occLoadFactorM + RiderHLMonthly) * (ridSA/1000) * 0.0875;
+            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
+            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
+            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
+            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
         }
         
         else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"ID40R"])
@@ -610,10 +609,10 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm - 40)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 40)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm - 40)/2);
-            annualRider = (riderRate + occLoadFactorA + RiderHLAnnually) * (ridSA/1000) * 1;
-            halfYearRider = (riderRate + occLoadFactorH + RiderHLHalfYear) * (ridSA/1000) * 0.5125;
-            quarterRider = (riderRate + occLoadFactorQ + RiderHLQuarterly) * (ridSA/1000) * 0.2625;
-            monthlyRider = (riderRate + occLoadFactorM + RiderHLMonthly) * (ridSA/1000) * 0.0875;
+            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
+            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
+            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
+            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
         }
         
         else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"CIWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"])
@@ -623,7 +622,6 @@
             double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
             double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
             NSLog(@"RiderHLWaiver A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
-            
             annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadA + RiderHLAnnually/100) * 1;
             halfYearRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadH + RiderHLHalfYear/100) * 0.5125;
             annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadQ + RiderHLQuarterly/100) * 0.2625;
@@ -636,19 +634,19 @@
             double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * 0.5125;
             double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
             double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
-            
-            annualRider = (riderRate + OccpLoadA + RiderHLAnnually) * ridSA/1000 * 1;
-            halfYearRider = (riderRate + OccpLoadH + RiderHLHalfYear) * ridSA/1000 * 0.5125;
-            annualRider = (riderRate + OccpLoadQ + RiderHLQuarterly) * ridSA/1000 * 0.2625;
-            annualRider = (riderRate + OccpLoadM + RiderHLMonthly) * ridSA/1000 * 0.0875;
+            annualRider = (riderRate *ridSA /1000 *1) + (OccpLoadA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
+            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (OccpLoadM *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
+            quarterRider = (riderRate *ridSA /1000 *0.2625) + (OccpLoadQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
+            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (OccpLoadM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
         }
         
         else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"C+"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"CCTR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"CIR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"LCPR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"CPA"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"PA"])
         {
-            annualRider = (riderRate + OccpLoadA + RiderHLAnnually) * (ridSA/1000) * 1;
-            halfYearRider = (riderRate + OccpLoadH  + RiderHLHalfYear) * (ridSA/1000) * 0.5125;
-            quarterRider = (riderRate + OccpLoadQ  + RiderHLQuarterly) * (ridSA/1000) * 0.2625;
-            monthlyRider = (riderRate + OccpLoadM + RiderHLMonthly) * (ridSA/1000) * 0.0875;
+            annualRider = (riderRate *ridSA /1000 *1) + (OccpLoadA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
+            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (OccpLoadM *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
+            quarterRider = (riderRate *ridSA /1000 *0.2625) + (OccpLoadQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
+            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (OccpLoadM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            
         } else {
             annualRider = 0;
             halfYearRider = 0;
@@ -854,11 +852,11 @@
         _RiderList.requestPtype = self.pTypeCode;
         _RiderList.requestSeq = self.PTypeSeq; 
         _RiderList.requestOccpClass = riderH.storedOccpClass;
-        popOverConroller = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
+        self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
     }
     
-    [popOverConroller setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
-    [popOverConroller presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
+    [self.RiderListPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)planBtnPressed:(id)sender
@@ -1340,7 +1338,7 @@
     riderCode = [[NSString alloc] initWithFormat:@"%@",code];
     riderDesc = [[NSString alloc] initWithFormat:@"%@",desc];
     [self.btnAddRider setTitle:riderDesc forState:UIControlStateNormal];
-    [popOverConroller dismissPopoverAnimated:YES];
+    [self.RiderListPopover dismissPopoverAnimated:YES];
 
     //validation part
     [self getOccpNotAttach];
@@ -1387,7 +1385,6 @@
     }
     
     else {
-        NSLog(@"enter stage");
         [self getLabelForm];
         [self toggleForm];
         [self getRiderTermRule];
@@ -1636,7 +1633,6 @@
                 titleTerm.hidden = NO;
                 titleUnit.hidden = NO;
                 
-                [self getBasicPentaRate];
                 [self calculateBasicPremium];
                 [self calculateRiderPrem];
                 [self calculateMedRiderPrem];

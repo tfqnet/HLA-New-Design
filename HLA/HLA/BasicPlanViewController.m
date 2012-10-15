@@ -47,6 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self resignFirstResponder];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -233,7 +234,8 @@
             main.mainH = basicH;
             main.mainBH = ss;
             main.IndexTab = 3;
-            [self presentModalViewController:main animated:YES];
+//            [self presentModalViewController:main animated:YES];
+            [self presentViewController:main animated:YES completion:nil];
         }
     } else {
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
@@ -241,7 +243,8 @@
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         main.mainH = basicH;
         main.IndexTab = 3;
-        [self presentModalViewController:main animated:YES];
+        [self presentViewController:main animated:YES completion:nil];
+//        [self presentModalViewController:main animated:YES];
     }
 }
 
@@ -627,6 +630,7 @@
 #pragma mark - Memory Management
 - (void)viewDidUnload
 {
+    [self resignFirstResponder];
     [self setSINoPlan:nil];
     [self setGetSINo:nil];
     [self setPlanField:nil];

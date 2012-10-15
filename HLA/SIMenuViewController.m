@@ -30,6 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self resignFirstResponder];
     [self.view addSubview:myTableView];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -50,13 +51,13 @@
     if (getSINo)
     {
         LAEmpty = NO;
-        NSLog(@"la receive!");
+//        NSLog(@"la receive!");
     }
 
     if (getbasicSA)
     {
         PlanEmpty = NO;
-        NSLog(@"plan receive!");
+//        NSLog(@"plan receive!");
     }
     
     [self toogleView];
@@ -75,22 +76,22 @@
         [SelectedRow addObject:@"1" ];
         [SelectedRow addObject:@"2" ];
         
-        NSLog(@"LA empty");
+//        NSLog(@"LA empty");
     }
     else {
         [SelectedRow removeObject:@"1"];
         [SelectedRow removeObject:@"2"];
-        NSLog(@"LA not empty");
+//        NSLog(@"LA not empty");
     }
     
     if (PlanEmpty)
     {
         [SelectedRow addObject:@"5"];
-        NSLog(@"Plan empty");
+//        NSLog(@"Plan empty");
     }
     else {
         [SelectedRow removeObject:@"5"];
-        NSLog(@"Plan not empty");
+//        NSLog(@"Plan not empty");
     }
 }
 
@@ -364,6 +365,7 @@
 
 - (void)viewDidUnload
 {
+    [self resignFirstResponder];
     [self setMyTableView:nil];
     [self setRightView:nil];
     [self setGetSINo:nil];

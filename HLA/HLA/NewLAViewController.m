@@ -42,6 +42,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self resignFirstResponder];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -290,7 +291,8 @@
             main.mainH = ss;
             main.mainBH = laBH;
             main.IndexTab = 3;
-            [self presentModalViewController:main animated:YES];
+//            [self presentModalViewController:main animated:YES];
+            [self presentViewController:main animated:NO completion:nil];
         }
     }
     else {
@@ -298,7 +300,9 @@
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         main.IndexTab = 3;
-        [self presentModalViewController:main animated:YES];
+//        [self presentModalViewController:main animated:YES];
+        [self presentViewController:main animated:NO completion:nil];
+
     }
 }
 
@@ -1051,6 +1055,7 @@
 
 - (void)viewDidUnload
 {
+    [self resignFirstResponder];
     [self setLANameField:nil];
     [self setSexSegment:nil];
     [self setSmokerSegment:nil];
