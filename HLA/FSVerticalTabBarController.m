@@ -83,10 +83,18 @@
     
     if (selectedIndex != _selectedIndex && selectedIndex < [self.viewControllers count])
     {
+        [self.view endEditing:YES];
+        [self resignFirstResponder];
+        
+        Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+        id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+        [activeInstance performSelector:@selector(dismissKeyboard)];
         
         
         // add new view controller to hierarchy
         UIViewController *selectedViewController = [self.viewControllers objectAtIndex:selectedIndex];
+        
+        
         
         if (selectedIndex == 5) {
             [self presentViewController:selectedViewController animated:YES completion:Nil];
@@ -94,6 +102,9 @@
         else {
             
         
+        
+                
+            
         [self addChildViewController:selectedViewController];
         selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
                                                        0,
@@ -101,7 +112,9 @@
                                                        self.view.bounds.size.height);
         selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
         [self.view addSubview:selectedViewController.view];
-        
+         
+                   
+            
         // remove previously selected view controller (if any)
         if (-1 < _selectedIndex && _selectedIndex < INT_MAX)
         {
@@ -110,6 +123,9 @@
             [previousViewController removeFromParentViewController];
         }
 
+            
+            
+            
         // set new selected index
         _selectedIndex = selectedIndex;
         
@@ -124,6 +140,7 @@
         {
             [self.delegate tabBarController:self didSelectViewController:selectedViewController];
         }
+        
         }
     }
 }
@@ -284,5 +301,9 @@
     }
 }
 
+
+- (BOOL)disablesAutomaticKeyboardDismissal {
+    return NO;
+}
 
 @end

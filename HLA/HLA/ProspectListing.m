@@ -34,7 +34,8 @@
 {
     [super viewDidLoad];
 
-    
+    [self.view endEditing:YES];
+    [self resignFirstResponder];
     
     
     searchBar.delegate = (id)self;
@@ -296,13 +297,15 @@
         _EditProspect.delegate = self;
     }
     
-    _EditProspect.modalTransitionStyle = UIModalTransitionStyleCrossDissolve; 
-    _EditProspect.modalPresentationStyle = UIModalPresentationPageSheet; 
-    
     _EditProspect.pp = pp;
+        
+    
+    _EditProspect.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    _EditProspect.modalPresentationStyle = UIModalPresentationPageSheet; 
     [self presentModalViewController:_EditProspect animated:YES];
     _EditProspect.view.superview.frame = CGRectMake(50, 0, 970, 768);
     
+
 }
 
 - (IBAction)btnAddNew:(id)sender {
@@ -320,7 +323,7 @@
         _ProspectViewController.delegate = self;
     }
     _ProspectViewController.modalPresentationStyle = UIModalPresentationPageSheet;
-    _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:_ProspectViewController animated:YES];
     _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768); 
 }

@@ -246,6 +246,11 @@
     [self resignFirstResponder];
     [self.view endEditing:YES];
     
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    
     if (_SIDate == Nil) {
          
          self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
@@ -290,15 +295,19 @@
 
 }
 
-/*
+
 - (BOOL)disablesAutomaticKeyboardDismissal {
     return NO;
 }
-*/
+
  
 - (IBAction)btnSave:(id)sender {
     [self.view endEditing:YES];
     [self resignFirstResponder];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
     
     if ([self Validation] == TRUE) {
         
@@ -959,6 +968,14 @@
     if (_delegate != Nil) {
         [_delegate FinishInsert ];
     }
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     [self dismissModalViewControllerAnimated:YES ];
 }
 
@@ -1078,6 +1095,12 @@
     */
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    
     txtContact1.enabled = true;
     ContactTypeTracker = @"1";
     if (_ContactTypeClass == nil) {
@@ -1113,6 +1136,11 @@
     }*/
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     txtContact2.enabled = true;
     ContactTypeTracker = @"2";
     if (_ContactTypeClass == nil) {
@@ -1140,6 +1168,11 @@
      */
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     txtContact3.enabled = true;
     ContactTypeTracker = @"3";
     if (_ContactTypeClass == nil) {
@@ -1166,6 +1199,11 @@
     }*/
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     txtContact4.enabled = true;
     ContactTypeTracker = @"4";
     if (_ContactTypeClass == nil) {
@@ -1192,6 +1230,11 @@
     }*/
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     txtContact5.enabled = true;
     ContactTypeTracker = @"5";
     if (_ContactTypeClass == nil) {
