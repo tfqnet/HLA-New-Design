@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "SIHandler.h"
+#import "PlanList.h"
 
-@interface BasicPlanViewController : UIViewController <UITextFieldDelegate>{
+@interface BasicPlanViewController : UIViewController <UITextFieldDelegate,PlanListDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
+    UIPopoverController *popoverController;
+    PlanList *planList;
     BOOL showHL;
     BOOL Saved;
 }
@@ -25,8 +28,10 @@
 @property (nonatomic,strong) SIHandler *basicH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 
+@property (nonatomic, retain) UIPopoverController *popoverController;
+
 //screen field
-@property (retain, nonatomic) IBOutlet UITextField *planField;
+@property (strong, nonatomic) IBOutlet UIButton *btnPlan;
 @property (retain, nonatomic) IBOutlet UITextField *termField;
 @property (retain, nonatomic) IBOutlet UITextField *yearlyIncomeField;
 @property (retain, nonatomic) IBOutlet UILabel *minSALabel;
@@ -64,6 +69,7 @@
 @property (nonatomic,assign,readwrite) int getTempHLTerm;
 @property (nonatomic,assign,readwrite) int getHLTerm;
 
+- (IBAction)btnPlanPressed:(id)sender;
 - (IBAction)btnShowHealthLoadingPressed:(id)sender;
 - (IBAction)doSavePlan:(id)sender;
 - (IBAction)MOPSegmentPressed:(id)sender;

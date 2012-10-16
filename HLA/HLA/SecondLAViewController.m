@@ -26,6 +26,7 @@
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
 @synthesize popOverController,requestSINo,la2ndH;
 @synthesize ProspectList = _ProspectList;
+@synthesize CheckRiderCode;
 
 - (void)viewDidLoad
 {
@@ -181,21 +182,36 @@
     if (nameField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
-    } else if (age <= 0) {
+    }
+    else if (age <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Date of Birth is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
-    } else if (OccpCode.length == 0) {
+    }
+    else if (OccpCode.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
-    } else if ([nameField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+    }
+    else if ([nameField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
-    } else {
+    }
+    else if (smoker.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Save?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
         [alert show];
     }
+}
+
+- (IBAction)doDelete:(id)sender
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Delete Secondary Life Assured?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+    [alert setTag:1002];
+    [alert show];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -206,6 +222,22 @@
         } else {
             [self saveData];
         }
+    }
+    else if (alertView.tag == 1002 && buttonIndex == 0) {
+        [self checkingRider];
+        [self deleteLA];
+        if (CheckRiderCode.length != 0) {
+            [self deleteRider];
+        }
+        nameField.text = @"";
+        [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        [DOBBtn setTitle:@"" forState:UIControlStateNormal];
+        ageField.text = @"";
+        [OccpBtn setTitle:@"" forState:UIControlStateNormal];
+        OccpLoadField.text = @"";
+        CPAField.text = @"";
+        PAField.text = @"";
     }
 }
 
@@ -283,6 +315,11 @@
 
 -(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode
 {
+    if (sex != NULL) {
+        sex = nil;
+        smoker = nil;
+    }
+    
     if (la2ndH.storedIndexNo == [aaIndex intValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"This Life Assured has already been attached to the plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -576,6 +613,80 @@
     }
 }
 
+-(void)deleteLA
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_LAPayor WHERE CustCode=\"%@\"",CustCode];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"LAPayor delete!");
+                
+            } else {
+                NSLog(@"LAPayor delete Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        NSString *deleteSQL = [NSString stringWithFormat:@"DELETE FROM Clt_Profile WHERE CustCode=\"%@\"",CustCode];
+        if (sqlite3_prepare_v2(contactDB, [deleteSQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Clt_Profile delete!");
+                
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Deleted Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
+                
+            } else {
+                NSLog(@"Clt_Profile delete Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)checkingRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode,SumAssured,RiderTerm,Units FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"LA\" AND Seq=\"2\"",requestSINo];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                CheckRiderCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)deleteRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"LA\" AND Seq=\"2\"",requestSINo];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"rider delete!");
+                
+            } else {
+                NSLog(@"rider delete Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
 
 
 #pragma mark - memory management
@@ -586,6 +697,7 @@
 
 - (void)viewDidUnload
 {
+    [self setCheckRiderCode:nil];
     [self setNameField:nil];
     [self setSexSegment:nil];
     [self setSmokerSegment:nil];

@@ -80,6 +80,8 @@
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",[self.requestSINo description]];
     planCode = [[NSString alloc] initWithFormat:@"%@",[self.requestPlanCode description]];
     incomeRider = NO;
+    PtypeChange = NO;
+    
     if (requestSINo) {
         if (!listPType) {
             listPType = [[RiderPTypeTbViewController alloc]initWithString:SINoPlan];
@@ -846,17 +848,16 @@
 
 - (IBAction)btnAddRiderPressed:(id)sender
 {
-    if (_RiderList == nil) {
-        self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
-        _RiderList.delegate = self;
-        _RiderList.requestPtype = self.pTypeCode;
-        _RiderList.requestSeq = self.PTypeSeq; 
-        _RiderList.requestOccpClass = riderH.storedOccpClass;
-        self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
-    }
+    self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
+    _RiderList.delegate = self;
+    _RiderList.requestPtype = self.pTypeCode;
+    _RiderList.requestSeq = self.PTypeSeq;
+    _RiderList.requestOccpClass = riderH.storedOccpClass;
+    self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
     
     [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
     [self.RiderListPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 
 - (IBAction)planBtnPressed:(id)sender
@@ -967,19 +968,29 @@
 
 -(void)validateTerm
 {
+    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    
     if (termField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([termField.text intValue] > maxRiderTerm) {
+    }
+    else if ([termField.text intValue] > maxRiderTerm) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be less than or equal to %.f",maxRiderTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([termField.text intValue] < minTerm) {
+    }
+    else if ([termField.text intValue] < minTerm) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be greater than or equal to %d",minTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([HLTField.text intValue] > [termField.text intValue]) {
+    }
+    else if ([HLTField.text intValue] > [termField.text intValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if (sumA) {
+    }
+    else if ([termField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Rider Term must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if (sumA) {
         NSLog(@"validate - 1st sum");
         [self validateSum];
     } else if (unit) {
@@ -996,6 +1007,8 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     
+    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    
     float num = [sumField.text floatValue];
     int riderSumA = num;
     float riderFraction = num - riderSumA;
@@ -1008,21 +1021,35 @@
     else if ([sumField.text intValue] < minSATerm && !(incomeRider)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        sumField.text = @"";
     }
     else if ([sumField.text intValue] < minSATerm && incomeRider) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        sumField.text = @"";
     }
     else if ([sumField.text intValue] > maxRiderSA && !(incomeRider)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        sumField.text = @"";
     }
     else if ([sumField.text intValue] > maxRiderSA && incomeRider) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        sumField.text = @"";
     }
     else if (incomeRider && msg.length > 4) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Guaranteed Yearly Income only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        sumField.text = @"";
+    }
+    else if (!(incomeRider) && msg.length > 4) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        sumField.text = @"";
+    }
+    else if ([sumField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (unit) {
@@ -1052,6 +1079,8 @@
 {
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    
+    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
         
     float numHL = [HLField.text floatValue];
     int HLValue = numHL;
@@ -1063,7 +1092,11 @@
     float ccHL = aaHL - bbHL;
     NSString *msg2 = [formatter stringFromNumber:[NSNumber numberWithFloat:ccHL]];
 
-    if (inputHLPercentage.length != 0 && [HLField.text intValue] > 500) {
+    if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if (inputHLPercentage.length != 0 && [HLField.text intValue] > 500) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
@@ -1298,6 +1331,11 @@
 
 -(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq desc:(NSString *)desc
 {
+    if (pTypeDesc != NULL) {
+        if (![desc isEqualToString:pTypeDesc]) {
+            PtypeChange = YES;
+        }
+    }
     pTypeCode = [[NSString alloc] initWithFormat:@"%@",code];
     PTypeSeq = [seq intValue];
     pTypeDesc = [[NSString alloc] initWithFormat:@"%@",desc];

@@ -98,6 +98,7 @@
 		EF05985F161A943A004A9095 /* RiderFormTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05985D161A943A004A9095 /* RiderFormTbViewController.m */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
+		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
 		EF3FBAF316216FE8005FCB1B /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF3FBAF216216FE8005FCB1B /* hladb.sqlite */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 /* End PBXBuildFile section */
@@ -238,6 +239,8 @@
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
 		EF28C321161C11C2009585CC /* SIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIHandler.h; path = ../SIHandler.h; sourceTree = "<group>"; };
 		EF28C322161C11C2009585CC /* SIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIHandler.m; path = ../SIHandler.m; sourceTree = "<group>"; };
+		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
+		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
 		EF3FBAF216216FE8005FCB1B /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
@@ -421,6 +424,8 @@
 				EF059852161A92E3004A9095 /* JobListTbViewController.m */,
 				C4F08D5E161DBDBB008BCC1A /* SIDate.h */,
 				C4F08D5F161DBDBB008BCC1A /* SIDate.m */,
+				EF33ACEE162D42B2006BB4C6 /* PlanList.h */,
+				EF33ACEF162D42B3006BB4C6 /* PlanList.m */,
 			);
 			name = PopOver;
 			sourceTree = "<group>";
@@ -680,6 +685,7 @@
 				C4660E63161F118B00BA4AFE /* ColorHexCode.m in Sources */,
 				C4660EEA1625997D00BA4AFE /* iCarousel.m in Sources */,
 				C4660EED16259AD700BA4AFE /* CarouselViewController.m in Sources */,
+				EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

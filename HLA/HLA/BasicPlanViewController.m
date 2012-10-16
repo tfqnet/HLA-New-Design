@@ -21,7 +21,7 @@
 @end
 
 @implementation BasicPlanViewController
-@synthesize planField;
+@synthesize btnPlan;
 @synthesize termField;
 @synthesize yearlyIncomeField;
 @synthesize minSALabel;
@@ -41,6 +41,7 @@
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
 @synthesize planCode,requestOccpCode,basicH,dataInsert;
+@synthesize popoverController;
 
 #pragma mark - Cycle View
 
@@ -53,19 +54,23 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    
     //passing value
     ageClient = basicH.storedAge;
     requestSINo = basicH.storedSINo;
     requestOccpCode = basicH.storedOccpCode;
     NSLog(@"BASIC-SINo:%@, age:%d, job:%@",requestSINo,ageClient,requestOccpCode);
     
+    if (!planList) {
+        planList = [[PlanList alloc] init];
+        planList.delegate = self;
+    }
+    planChoose = [[NSString alloc] initWithFormat:@"%@",planList.selectedCode];
+    [self.btnPlan setTitle:planList.selectedDesc forState:UIControlStateNormal];
+    
     healthLoadingView.alpha = 0;
     showHL = NO;
-    planChoose = @"HLAIB";
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     termField.enabled = NO;
-    planField.enabled = NO;
     [self getTermRule];
     
     
@@ -155,6 +160,22 @@
 
 #pragma mark - Action
 
+- (IBAction)btnPlanPressed:(id)sender
+{    
+    if(![popoverController isPopoverVisible]){
+        
+		PlanList *popView = [[PlanList alloc] init];
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:popView];
+        popView.delegate = self;
+		
+		[popoverController setPopoverContentSize:CGSizeMake(350.0f, 200.0f)];
+        [popoverController presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
+    else{
+		[popoverController dismissPopoverAnimated:YES];
+	}
+}
+
 - (IBAction)btnShowHealthLoadingPressed:(id)sender
 {
     if (showHL) {
@@ -234,7 +255,6 @@
             main.mainH = basicH;
             main.mainBH = ss;
             main.IndexTab = 3;
-//            [self presentModalViewController:main animated:YES];
             [self presentViewController:main animated:YES completion:nil];
         }
     } else {
@@ -244,53 +264,76 @@
         main.mainH = basicH;
         main.IndexTab = 3;
         [self presentViewController:main animated:YES completion:nil];
-//        [self presentModalViewController:main animated:YES];
     }
 }
 
 - (IBAction)doSavePlan:(id)sender
 {
+    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    
     if (yearlyIncomeField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if (!(MOP)) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Premium Payment option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    }
+    else if ([yearlyIncomeField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Desired Yearly Income must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
-    } else if (yearlyIncome.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Yearly Income Option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    } else if (cashDividend.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Cash Dividend option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    } else if ([yearlyIncomeField.text intValue] < minSA) {
+        yearlyIncomeField.text = @"";
+    }
+    else if ([yearlyIncomeField.text intValue] < minSA) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Desired Yearly Income must be greater than or equal to %d",minSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([yearlyIncomeField.text intValue] > maxSA) {
+    }
+    else if ([yearlyIncomeField.text intValue] > maxSA) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Desired Yearly Income must be less than or equal to %d",maxSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([HLField.text intValue] >= 10000) {
+    }
+    else if (!(MOP)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Premium Payment option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if (yearlyIncome.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Yearly Income Option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if (cashDividend.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Cash Dividend option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([HLField.text intValue] >= 10000) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([HLField.text intValue] > 0 && HLTermField.text.length == 0) {
+    }
+    else if ([HLField.text intValue] > 0 && HLTermField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([HLTermField.text intValue] > 0 && HLField.text.length == 0) {
+    }
+    else if ([HLTermField.text intValue] > 0 && HLField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([tempHLField.text intValue] >= 10000) {
+    }
+    else if ([tempHLField.text intValue] >= 10000) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (Per 1k SA) cannot greater than 10000" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([tempHLField.text intValue] > 0 && tempHLTermField.text.length == 0) {
+    }
+    else if ([tempHLField.text intValue] > 0 && tempHLTermField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (per 1k SA) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([tempHLTermField.text intValue] > 0 && tempHLField.text.length == 0) {
+    }
+    else if ([tempHLTermField.text intValue] > 0 && tempHLField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (per 1k SA) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([HLTermField.text intValue] > termCover) {
+    }
+    else if ([HLTermField.text intValue] > termCover) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if ([tempHLTermField.text intValue] > termCover) {
+    }
+    else if ([tempHLTermField.text intValue] > termCover) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater thann %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTermField.text rangeOfCharacterFromSet:set].location != NSNotFound||[tempHLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[tempHLTermField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading input must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else {
@@ -444,7 +487,6 @@
                 maxSA = sqlite3_column_int(statement, 5);
                 
                 termCover = maxTerm - ageClient;
-                planField.text = @"HLA Income Builder";
                 termField.text = [[NSString alloc] initWithFormat:@"%d",termCover];
                 
                 if (ageClient < minAge) {
@@ -627,13 +669,24 @@
     }
 }
 
+#pragma mark - delegate
+
+-(void)Planlisting:(PlanList *)inController didSelectCode:(NSString *)aaCode andDesc:(NSString *)aaDesc
+{
+    planChoose = [[NSString alloc] initWithFormat:@"%@",aaCode];
+    [self.btnPlan setTitle:aaDesc forState:UIControlStateNormal];
+    
+//    NSLog(@"receive 1-%@ 2-%@",aaCode,aaDesc);
+    
+    [popoverController dismissPopoverAnimated:YES];
+}
+
 #pragma mark - Memory Management
 - (void)viewDidUnload
 {
     [self resignFirstResponder];
     [self setSINoPlan:nil];
     [self setGetSINo:nil];
-    [self setPlanField:nil];
     [self setTermField:nil];
     [self setYearlyIncomeField:nil];
     [self setMinSALabel:nil];
@@ -657,6 +710,7 @@
     [self setPlanCode:nil];
     [self setRequestOccpCode:nil];
     [self setMyScrollView:nil];
+    [self setBtnPlan:nil];
     [super viewDidUnload];
 }
 

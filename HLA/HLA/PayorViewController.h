@@ -53,6 +53,7 @@
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, assign,readwrite) int clientID;
 @property (nonatomic, copy) NSString *OccpDesc;
+@property (nonatomic, copy) NSString *CheckRiderCode;
 
 - (IBAction)doClosePayor:(id)sender;
 - (IBAction)doSelectProspect:(id)sender;
@@ -61,5 +62,6 @@
 - (IBAction)DOBBtnPressed:(id)sender;
 - (IBAction)occpBtnPressed:(id)sender;
 - (IBAction)doSave:(id)sender;
+- (IBAction)doDelete:(id)sender;
 
 @end

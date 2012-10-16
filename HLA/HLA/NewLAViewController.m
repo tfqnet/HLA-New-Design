@@ -244,20 +244,24 @@
 {
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
     
-    if (LANameField.text.length <= 0) {     /*--validate Check ProspectName --*/
+    if (LANameField.text.length <= 0) {   
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
-    else if (age <= 0) {         /*--validate LA DOB Validation--*/
+    else if (age <= 0) {         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Date of Birth is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
-    else if (occuCode.length == 0) {        /*--validate Occupation Information Empty--*/
+    else if (occuCode.length == 0) {        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     } else if ([LANameField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if (smoker.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else {
@@ -335,10 +339,21 @@
             [self insertData];
         }
         Saved = YES;
-    } else if (alertView.tag==1002 && buttonIndex == 0) {
+    }
+    else if (alertView.tag==1002 && buttonIndex == 0) {
         [self delete2ndLA];
-    } else if (alertView.tag==1003 && buttonIndex == 0) {
+    }
+    else if (alertView.tag==1003 && buttonIndex == 0) {
         [self deletePayor];
+    }
+    else if (alertView.tag==1004 && buttonIndex == 0) {
+        
+        if (smoker.length == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        } else {
+            [self updateData];
+        }        
     }
 }
 
@@ -685,6 +700,8 @@
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
+                statusLabel.text = @"";
+                
                 if (age < 16) {
                     [self checking2ndLA];
                     if (CustCode2.length != 0) {
@@ -896,6 +913,11 @@
 
 -(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode
 {
+    if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
+        sex = nil;
+        smoker = nil;
+    }
+    
     statusLabel.text = @"";
     NSLog(@"namedb:%@, gender:%@",aaName,aaGender);
     IndexNo = [aaIndex intValue];
@@ -1011,8 +1033,13 @@
                 LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
             }
             
-            statusLabel.text = @"Data changed. Please resave!";
-            statusLabel.textColor = [UIColor redColor];
+//            statusLabel.text = @"Data changed. Please resave!";
+//            statusLabel.textColor = [UIColor redColor];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert setTag:1004];
+            [alert show];
+            
         }
     }
     

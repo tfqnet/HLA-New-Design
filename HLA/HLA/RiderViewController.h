@@ -32,6 +32,7 @@
     BOOL pressedPlan;
     BOOL pressedDeduc;
     BOOL incomeRider;
+    BOOL PtypeChange;
 }
 
 //request from previous
