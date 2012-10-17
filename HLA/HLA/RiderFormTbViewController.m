@@ -15,6 +15,7 @@
 @implementation RiderFormTbViewController
 @synthesize selectedItem,itemDesc,requestCondition,itemValue,selectedItemDesc;
 @synthesize delegate = _delegate;
+@synthesize requestSA,requestOption;
 
 - (void)viewDidLoad
 {
@@ -24,6 +25,18 @@
     
     [super viewDidLoad];
     [self getRiderCondition];
+    
+    if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"]) {
+        [itemValue addObject:@"HMM1000"];
+        [itemDesc addObject:@"HMM_1000"];
+    }
+    else if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"DeductibleHMM"] && [self.requestOption isEqualToString:@"HMM_1000"]) {
+        [itemValue removeAllObjects];
+        [itemDesc removeAllObjects];
+        
+        [itemValue addObject:@"4"];
+        [itemDesc addObject:@"30000"];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

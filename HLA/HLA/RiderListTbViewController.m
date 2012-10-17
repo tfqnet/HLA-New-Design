@@ -13,7 +13,7 @@
 @end
 
 @implementation RiderListTbViewController
-@synthesize requestPtype,requestSeq,ridCode,ridDesc,selectedCode,selectedDesc,requestOccpClass;
+@synthesize requestPtype,requestSeq,ridCode,ridDesc,selectedCode,selectedDesc,requestOccpClass,requestAge;
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad
@@ -46,7 +46,12 @@
         if (self.requestOccpClass > 4) {
             querySQL = [NSString stringWithFormat:
             @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\" AND a.RiderCode != \"CPA\" AND a.RiderCode != \"PA\" AND a.RiderCode != \"HMM\" AND a.RiderCode != \"HB\" AND a.RiderCode != \"MG_II\" AND a.RiderCode != \"MG_IV\" AND a.RiderCode != \"HSP_II\"",[self.requestPtype description],self.requestSeq];
-        } else {
+        }
+        else if (self.requestAge > 60) {
+            querySQL = [NSString stringWithFormat:
+                @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\" AND a.RiderCode != \"C+\" AND a.RiderCode != \"CCTR\" AND a.RiderCode != \"CIR\" AND a.RiderCode != \"CPA\" AND a.RiderCode != \"ETPD\" AND a.RiderCode != \"HB\" AND a.RiderCode != \"HSP_II\" AND a.RiderCode != \"I20R\" AND a.RiderCode != \"I30R\" AND a.RiderCode != \"I40R\" AND a.RiderCode != \"ICR\" AND a.RiderCode != \"ID20R\" AND a.RiderCode != \"ID30R\" AND a.RiderCode != \"ID40R\" AND a.RiderCode != \"IE20R\" AND a.RiderCode != \"IE30R\" AND a.RiderCode != \"LCPR\" AND a.RiderCode != \"MG_II\"",[self.requestPtype description],self.requestSeq];
+        }
+        else {
             querySQL = [NSString stringWithFormat:
                         @"SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\"",[self.requestPtype description],self.requestSeq];
         }

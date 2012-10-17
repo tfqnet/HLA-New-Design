@@ -28,6 +28,9 @@
 @property(nonatomic , retain) NSMutableArray *itemDesc;
 
 @property (nonatomic,strong) id requestCondition;
+@property (nonatomic, assign,readwrite) int requestSA;
+@property (nonatomic,strong) id requestOption;
+
 
 
 @end

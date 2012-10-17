@@ -106,8 +106,6 @@
     myTableView.backgroundView = nil;
     [self.view addSubview:myTableView];
     
-    
-    
     [super viewDidLoad];
 }
 
@@ -853,6 +851,7 @@
     _RiderList.requestPtype = self.pTypeCode;
     _RiderList.requestSeq = self.PTypeSeq;
     _RiderList.requestOccpClass = riderH.storedOccpClass;
+    _RiderList.requestAge = self.requestAge;
     self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
     
     [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
@@ -871,6 +870,7 @@
                 pressedPlan = YES;
                 RiderFormTbViewController *popView = [[RiderFormTbViewController alloc] init];
                 popView.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
+                popView.requestSA = self.requestBasicSA;
                 popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
                 popView.delegate = self;
                 
@@ -894,6 +894,8 @@
                 pressedDeduc = YES;
                 RiderFormTbViewController *popView = [[RiderFormTbViewController alloc] init];
                 popView.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
+                popView.requestSA = self.requestBasicSA;
+                popView.requestOption = planOption;
                 popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
                 popView.delegate = self;
                 
@@ -1443,20 +1445,14 @@
                 } else {
                     [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
                     planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
-                    NSLog(@"planoption:%@",planOption);
-                    
-//                    [self RoomBoard];
                 }
             }
-        }
-        else {
+        } else {
             [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
             planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
-            NSLog(@"planoption:%@",planOption);
-            
-//            [self RoomBoard];
         }
-    } else if (pressedDeduc) {
+    }
+    else if (pressedDeduc) {
         [self.deducBtn setTitle:itemdesc forState:UIControlStateNormal];
         deductible = [[NSString alloc] initWithFormat:@"%@",itemdesc];
     }
@@ -1631,28 +1627,28 @@
                 [LRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]];
                 
                 const char *aaRidSA = (const char *)sqlite3_column_text(statement, 1);
-                [LSumAssured addObject:aaRidSA == NULL ? nil :[[NSString alloc] initWithUTF8String:aaRidSA]];
+                [LSumAssured addObject:aaRidSA == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaRidSA]];
                 
                 const char *aaTerm = (const char *)sqlite3_column_text(statement, 2);
-                [LTerm addObject:aaTerm == NULL ? nil :[[NSString alloc] initWithUTF8String:aaTerm]];
+                [LTerm addObject:aaTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaTerm]];
                 
                 const char *zzplan = (const char *) sqlite3_column_text(statement, 3);
-                [LPlanOpt addObject:zzplan == NULL ? nil :[[NSString alloc] initWithUTF8String:zzplan]];
+                [LPlanOpt addObject:zzplan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzplan]];
                 
                 const char *aaUnit = (const char *)sqlite3_column_text(statement, 4);
-                [LUnits addObject:aaUnit == NULL ? nil :[[NSString alloc] initWithUTF8String:aaUnit]];
+                [LUnits addObject:aaUnit == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaUnit]];
                 
                 const char *deduct2 = (const char *) sqlite3_column_text(statement, 5);
-                [LDeduct addObject:deduct2 == NULL ? nil :[[NSString alloc] initWithUTF8String:deduct2]];
+                [LDeduct addObject:deduct2 == NULL ? @"" :[[NSString alloc] initWithUTF8String:deduct2]];
                 
                 const char *ridHL = (const char *)sqlite3_column_text(statement, 6);
-                [LRidHL1K addObject:ridHL == NULL ? nil :[[NSString alloc] initWithUTF8String:ridHL]];
+                [LRidHL1K addObject:ridHL == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL]];
                 
                 const char *ridHL100 = (const char *)sqlite3_column_text(statement, 7);
-                [LRidHL100 addObject:ridHL100 == NULL ? nil :[[NSString alloc] initWithUTF8String:ridHL100]];
+                [LRidHL100 addObject:ridHL100 == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL100]];
                 
                 const char *ridHLP = (const char *)sqlite3_column_text(statement, 8);
-                [LRidHLP addObject:ridHLP == NULL ? nil :[[NSString alloc] initWithUTF8String:ridHLP]];
+                [LRidHLP addObject:ridHLP == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHLP]];
                 
                 [LSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
                 [LAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
@@ -2105,7 +2101,11 @@
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
-    CGRect frame=CGRectMake(0,0, 177, 50);
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+    
+    CGRect frame=CGRectMake(0,0, 100, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [LRiderCode objectAtIndex:indexPath.row];
@@ -2113,15 +2113,16 @@
     label1.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label1];
     
-    CGRect frame2=CGRectMake(177,0, 177, 50);
+    CGRect frame2=CGRectMake(100,0, 129, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
-    label2.text= [LSumAssured objectAtIndex:indexPath.row];
+    NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LSumAssured objectAtIndex:indexPath.row] doubleValue]]];
+    label2.text= num;
     label2.textAlignment = UITextAlignmentCenter;
     label2.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(354,0, 177, 50);
+    CGRect frame3=CGRectMake(229,0, 60, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
     label3.text= [LTerm objectAtIndex:indexPath.row];
@@ -2129,30 +2130,72 @@
     label3.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label3];
     
-    CGRect frame4=CGRectMake(531,0, 177, 50);
+    CGRect frame4=CGRectMake(289,0, 60, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     label4.text= [LUnits objectAtIndex:indexPath.row];
     label4.textAlignment = UITextAlignmentCenter;
     label4.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label4];
-    /*
-    CGRect frame5=CGRectMake(800,0, 200, 50);
+    
+    CGRect frame5=CGRectMake(349,0, 60, 50);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
-    label5.text= [List objectAtIndex:indexPath.row];
+    label5.text= [NSString stringWithFormat:@"%d",occClass];
     label5.textAlignment = UITextAlignmentCenter;
     label5.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label5];
     
-    CGRect frame6=CGRectMake(850,0, 150, 50);
+    CGRect frame6=CGRectMake(409,0, 60, 50);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
-    label6.text= [List objectAtIndex:indexPath.row];
+    label6.text= [NSString stringWithFormat:@"%d",occLoad];
     label6.textAlignment = UITextAlignmentCenter;
     label6.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label6];
-    */
+    
+    CGRect frame7=CGRectMake(469,0, 80, 50);
+    UILabel *label7=[[UILabel alloc]init];
+    label7.frame=frame7;
+    NSString *hl1k;
+    if ([[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+        hl1k = @"";
+    } else {
+        hl1k = [LRidHL1K objectAtIndex:indexPath.row];
+    }
+    label7.text= hl1k;
+    label7.textAlignment = UITextAlignmentCenter;
+    label7.backgroundColor = [UIColor lightGrayColor];
+    [cell.contentView addSubview:label7];
+    
+    CGRect frame8=CGRectMake(549,0, 80, 50);
+    UILabel *label8=[[UILabel alloc]init];
+    label8.frame=frame8;
+    NSString *hl100;
+    if ([[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+        hl100 = @"";
+    } else {
+        hl100 = [LRidHL100 objectAtIndex:indexPath.row];
+    }
+    label8.text= hl100;
+    label8.textAlignment = UITextAlignmentCenter;
+    label8.backgroundColor = [UIColor grayColor];
+    [cell.contentView addSubview:label8];
+    
+    CGRect frame9=CGRectMake(629,0, 80, 50);
+    UILabel *label9=[[UILabel alloc]init];
+    label9.frame=frame9;
+    NSString *hlp;
+    if ([[LRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+        hlp = @"";
+    } else {
+        hlp = [LRidHLP objectAtIndex:indexPath.row];
+    }
+    label9.text=hlp;
+    label9.textAlignment = UITextAlignmentCenter;
+    label9.backgroundColor = [UIColor lightGrayColor];
+    [cell.contentView addSubview:label9];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     return cell;
 }

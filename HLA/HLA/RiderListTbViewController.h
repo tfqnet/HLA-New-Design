@@ -31,5 +31,5 @@
 @property (nonatomic,strong) id requestPtype;
 @property (nonatomic, assign,readwrite) int requestSeq;
 @property (nonatomic, assign,readwrite) int requestOccpClass;
-
+@property (nonatomic, assign,readwrite) int requestAge;
 @end

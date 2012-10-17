@@ -67,6 +67,10 @@
     planChoose = [[NSString alloc] initWithFormat:@"%@",planList.selectedCode];
     [self.btnPlan setTitle:planList.selectedDesc forState:UIControlStateNormal];
     
+    if (ageClient > 60) {
+        advanceIncomeSegment.enabled = NO;
+    }
+    
     healthLoadingView.alpha = 0;
     showHL = NO;
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",requestSINo];
