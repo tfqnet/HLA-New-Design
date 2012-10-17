@@ -149,7 +149,8 @@
             if ([txtNewPassword.text isEqualToString:txtConfirmPassword.text]) {
                 
                 if ([txtOldPassword.text isEqualToString:@"password"]) {
-                    [self saveData];
+                    //[self saveData];
+                    [self saveChangePwdData];
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
@@ -168,6 +169,16 @@
         
         
     }
+}
+
+-(void) saveChangePwdData{
+    btnNext.hidden = false;
+    outletSave.hidden = true;
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" 
+                                                    message:@"New Password saved! Click Next to continue" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 - (void) saveData
@@ -204,6 +215,8 @@
             }
             sqlite3_finalize(statement);
         }
+        
+        
         /*
         NSString *query2 = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\", AgentName= \"%@\" ,AgentContactNo= \"%@\",ImmediateLeaderCode= \"%@\","
                             "ImmediateLeaderName= \"%@\",BusinessRegNumber= \"%@\",AgentEmail= \"%@\" WHERE IndexNo = \"%d\"",
@@ -242,6 +255,7 @@
         
         sqlite3_close(contactDB);
     }
+
 }
 
 - (void)selectQuestOne:(id)sender
@@ -343,11 +357,22 @@
 }
 
 - (IBAction)ActionNext:(id)sender {
+    
+     UserProfile *UserProfilePage = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
+     UserProfilePage.indexNo = userID;
+     UserProfilePage.idRequest = @"hla";
+     UserProfilePage.FirstTimeLogin = 1;
+     UserProfilePage.ChangePwdPassword = txtNewPassword.text;
+     UserProfilePage.modalPresentationStyle = UIModalPresentationPageSheet;
+     [self presentModalViewController:UserProfilePage animated:YES];
+     
+    
+    /*
     SecurityQuestion *SecurityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
     SecurityPage.userID = userID;
     SecurityPage.FirstTimeLogin = 1;
     SecurityPage.modalPresentationStyle = UIModalPresentationPageSheet;
     [self presentModalViewController:SecurityPage animated:YES];
-    
+    */
 }
 @end

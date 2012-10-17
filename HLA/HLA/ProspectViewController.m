@@ -583,7 +583,7 @@
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Please enter atleast 1 contact number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Please enter numeric input for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
         

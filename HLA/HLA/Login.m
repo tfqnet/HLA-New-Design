@@ -13,6 +13,7 @@
 #import "FirstTimeViewController.h"
 #import "AppDelegate.h"
 #import "CarouselViewController.h"
+#import "SecurityQuestion.h"
 
 @interface Login ()
 
@@ -110,7 +111,7 @@
 - (IBAction)btnLogin:(id)sender {
     if (txtUsername.text.length <= 0 || txtPassword.text.length <= 0) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please insert ID/Password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid password or username" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
     } else {
@@ -122,19 +123,23 @@
         
         if (statusLogin == 1 && indexNo != 0) {
             
+            /*
             FirstTimeViewController *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
             newProfile.userID = indexNo;
             //[self presentViewController:newProfile animated:YES completion:nil];
             newProfile.modalPresentationStyle = UIModalPresentationPageSheet;
             newProfile.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentModalViewController:newProfile animated:YES];
-            /*
-            setting *settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            settingPage.indexNo = indexNo;
-            settingPage.userRequest = agentID;
-            
-            [self presentViewController:settingPage animated:YES completion:nil];
             */
+            
+            SecurityQuestion *securityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
+            securityPage.userID = indexNo;
+            securityPage.FirstTimeLogin = 1;
+            securityPage.modalPresentationStyle = UIModalPresentationPageSheet;
+            securityPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentModalViewController:securityPage animated:YES];
+    
+            
             
         } else if (statusLogin == 0 && indexNo != 0) {
             
@@ -190,12 +195,10 @@
                 agentID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 statusLogin = sqlite3_column_int(statement, 2);
                 
-                
-                
                 txtPassword.text = @"";
                 
             } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Wrong Id/Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid password or username" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
                 [alert show];
                 
             }

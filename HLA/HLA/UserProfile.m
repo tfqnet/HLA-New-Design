@@ -27,7 +27,7 @@
 @synthesize txtLeaderCode;
 @synthesize txtLeaderName;
 @synthesize txtBizRegNo;
-@synthesize txtEmail;
+@synthesize txtEmail, ChangePwdPassword, ChangePwdUsername;
 @synthesize email,leaderCode,leaderName,contactNo,code, username, name, registerNo, idRequest, indexNo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -225,6 +225,7 @@
     if([self Validation] == TRUE){
         const char *dbpath = [databasePath UTF8String];
         sqlite3_stmt *statement;
+        sqlite3_stmt *statement2;
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
@@ -240,12 +241,24 @@
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-                    //lblStatus.text = @"Data successfully update!";
-                    lblStatus.textColor = [UIColor blueColor];
-                    UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                      message:@"Data Updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
-                    success.tag = 1;
-                    [success show];
+            
+                    NSString *FinalSQL = [NSString stringWithFormat:@"UPDATE User_Profile SET AgentPassword= \"%@\", FirstLogin = 0 WHERE IndexNo=\"%d\"", self.ChangePwdPassword ,self.indexNo];
+                    
+                    
+                    if (sqlite3_prepare_v2(contactDB, [FinalSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK){
+                        
+                        if (sqlite3_step(statement2) == SQLITE_DONE)
+                        {
+                            UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                              message:@"Data Updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                            success.tag = 1;
+                            [success show];
+                        }
+                            
+                        
+                    }
+                    
+                    
                     
                 } else {
                     lblStatus.text = @"Failed to update!";

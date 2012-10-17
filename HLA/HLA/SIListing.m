@@ -103,7 +103,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
                                   " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
-                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 order by createdAt Desc "];
+                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" order by createdAt Desc "];
         const char *SelectSI = [SIListingSQL UTF8String];
         if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
             
@@ -432,8 +432,14 @@
         MainScreenPage.IndexTab = 3;
         NewLAPage.modalPresentationStyle = UIModalPresentationPageSheet;
         NewLAPage.requestSINo = [SINO objectAtIndex:indexPath.row];
-        //[self presentViewController:MainScreenPage animated:YES completion:Nil];
-        [self presentModalViewController:NewLAPage animated:YES];
+        
+        [self presentViewController:MainScreenPage animated:YES completion:^(){
+            [MainScreenPage presentModalViewController:NewLAPage animated:NO];
+            //[self presentModalViewController:NewLAPage animated:YES];
+            NewLAPage.view.superview.bounds =  CGRectMake(-300, 0, 1024, 748);
+            
+        }];
+        
         
     }
     
@@ -558,7 +564,7 @@
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
             NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, CreatedAT, name, planname, basicSA, 'Not Created', A.CustCode "
                                       " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
-                                      " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 " ];        
+                                      " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" " ];        
             
             if (![txtSINO.text isEqualToString:@""]) {
                 SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];

@@ -150,6 +150,10 @@
 - (void) saveData
 {
     if ([self Validation] == TRUE) {
+        
+        //delete old security question data first if any
+        [self DeleteOldData];
+        
         const char *dbpath = [databasePath UTF8String];
         sqlite3_stmt *statement;
         
@@ -183,6 +187,23 @@
     }
     
     
+}
+
+-(void)DeleteOldData{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *DeleteSQL = [NSString stringWithFormat:
+                               @"Delete from SecurityQuestion_Input"];
+        if(sqlite3_prepare_v2(contactDB, [DeleteSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            sqlite3_step(statement);
+            sqlite3_finalize(statement);
+                
+        }
+        
+    }
 }
 
 -(BOOL)Validation{
@@ -279,15 +300,23 @@
 }
 
 - (IBAction)btnNext:(id)sender {
+    
+    FirstTimeViewController *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
+    newProfile.userID = userID;
+    newProfile.modalPresentationStyle = UIModalPresentationPageSheet;
+    newProfile.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:newProfile animated:YES];
+
+    /*
     UserProfile *UserProfilePage = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
     UserProfilePage.indexNo = userID;
     UserProfilePage.idRequest = @"hla";
     UserProfilePage.FirstTimeLogin = 1;
     UserProfilePage.modalPresentationStyle = UIModalPresentationPageSheet;
     [self presentModalViewController:UserProfilePage animated:YES];
+    */
     
     
-    //[self dismissModalViewControllerAnimated:NO];
     
 }
 @end

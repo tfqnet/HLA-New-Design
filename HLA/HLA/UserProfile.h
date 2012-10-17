@@ -17,6 +17,8 @@
 @property (nonatomic,strong) id idRequest;
 @property (nonatomic, assign) int indexNo;
 @property (nonatomic, assign,readwrite) int FirstTimeLogin;
+@property (nonatomic,strong) id ChangePwdUsername;
+@property (nonatomic,strong) id ChangePwdPassword;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *ScrollView;
 @property (weak, nonatomic) IBOutlet UITextField *txtAgentCode;
