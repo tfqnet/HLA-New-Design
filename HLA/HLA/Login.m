@@ -111,7 +111,7 @@
 - (IBAction)btnLogin:(id)sender {
     if (txtUsername.text.length <= 0 || txtPassword.text.length <= 0) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid password or username" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Both Username and password is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
     } else {
@@ -198,7 +198,7 @@
                 txtPassword.text = @"";
                 
             } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid password or username" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Password. Please check your password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
                 [alert show];
                 
             }

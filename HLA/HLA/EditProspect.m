@@ -633,7 +633,7 @@
         return false;
     }
     
-    if([outletDOB.titleLabel.text isEqualToString:@""]){
+    if(outletDOB.titleLabel.text == NULL){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Date of Birth (DOB) cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
@@ -760,7 +760,7 @@
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Please enter atleast 1 contact number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Please enter input for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -1072,8 +1072,8 @@
         [_delegate FinishEdit];
     }
     
-    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" 
-                                    message:@"Saved Successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Edit Prospect Profile" 
+                                    message:@"Prospect record successfully updated." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
     SuccessAlert.tag = 2;
     [SuccessAlert show];
     
