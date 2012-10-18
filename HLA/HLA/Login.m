@@ -43,9 +43,12 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     [self makeDBCopy];
     
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forgotPassword:)];
     tapGesture.numberOfTapsRequired = 1;
     [lblForgotPwd addGestureRecognizer:tapGesture];
+    
+    [self isFirstTimeLogin];
     
 }
 
@@ -176,6 +179,40 @@
     forgotView.view.superview.bounds = CGRectMake(0, 0, 550, 600);
      
 }
+
+-(void)isFirstTimeLogin
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT firstLogin FROM User_Profile WHERE AgentLoginID=\"hla\" "];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                int FirstLogin = sqlite3_column_int(statement, 0);
+                
+                if (FirstLogin == 0) {
+                    lblForgotPwd.hidden = FALSE;
+                }
+                else {
+                    lblForgotPwd.hidden = TRUE;
+                }
+                
+            } else {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 
 -(void)checkingFirstLogin
 {

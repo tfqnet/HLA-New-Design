@@ -141,7 +141,7 @@
         
         if (txtNewPassword.text.length < 6 || txtNewPassword.text.length > 20 ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
-                                                            message:@"New Password length must be at least 6 and not more than 20 characters long!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Password must be at least 6 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             
         }

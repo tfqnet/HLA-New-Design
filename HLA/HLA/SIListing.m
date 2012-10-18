@@ -280,7 +280,9 @@
         CGRect frame5=CGRectMake(800,0, 150, 50);
         UILabel *label5=[[UILabel alloc]init];            
         label5.frame=frame5;
-        label5.text= [BasicSA objectAtIndex:indexPath.row];
+        double zzz = [[BasicSA objectAtIndex:indexPath.row] doubleValue ] / (double) 1.00 ;
+        //label5.text= [BasicSA objectAtIndex:indexPath.row];
+        label5.text = [NSString stringWithFormat:@"%.2f", zzz ];
         label5.tag = 1005;
         label5.textAlignment = UITextAlignmentCenter;
         [cell.contentView addSubview:label5];

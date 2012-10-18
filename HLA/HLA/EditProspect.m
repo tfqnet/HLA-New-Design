@@ -16,6 +16,11 @@
 @end
 
 @implementation EditProspect
+@synthesize txtPrefix1;
+@synthesize txtPrefix2;
+@synthesize txtPrefix3;
+@synthesize txtPrefix4;
+@synthesize txtPrefix5;
 @synthesize outletDelete;
 @synthesize outletType2;
 @synthesize outletType3;
@@ -180,6 +185,11 @@
     [self setTxtContact3:nil];
     [self setTxtContact4:nil];
     [self setTxtContact5:nil];
+    [self setTxtPrefix1:nil];
+    [self setTxtPrefix2:nil];
+    [self setTxtPrefix3:nil];
+    [self setTxtPrefix4:nil];
+    [self setTxtPrefix5:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -236,7 +246,7 @@
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT ContactCode, ContactNo FROM contact_input where indexNo = %@ ", pp.ProspectID];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT ContactCode, ContactNo, Prefix FROM contact_input where indexNo = %@ ", pp.ProspectID];
         
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -247,95 +257,116 @@
                 
                 NSString *ContactCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                 NSString *ContactNo = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                
+                NSString *Prefix = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+
                 if (a==0) {
                     if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
                         [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
                         txtContact1.text  = ContactNo;
+                        txtPrefix1.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT006"]) { //home
                         [outletType1 setTitle:@"Home" forState:UIControlStateNormal];
                         txtContact1.text = ContactNo;
+                        txtPrefix1.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
                         [outletType1 setTitle:@"Fax" forState:UIControlStateNormal];
                         txtContact1.text = ContactNo;
+                        txtPrefix1.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT007"]) { //office
                         [outletType1 setTitle:@"Office" forState:UIControlStateNormal];
                         txtContact1.text = ContactNo;
+                        txtPrefix1.text = Prefix;
                     }
                 }
                 else if (a==1) {
                     if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
                         [outletType2 setTitle:@"Mobile" forState:UIControlStateNormal];
                         txtContact2.text  = ContactNo;
+                        txtPrefix2.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT006"]) { //home
                         [outletType2 setTitle:@"Home" forState:UIControlStateNormal];
                         txtContact2.text = ContactNo;
+                        txtPrefix2.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
                         [outletType2 setTitle:@"Fax" forState:UIControlStateNormal];
                         txtContact2.text = ContactNo;
+                        txtPrefix2.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT007"]) { //office
                         [outletType2 setTitle:@"Office" forState:UIControlStateNormal];
                         txtContact2.text = ContactNo;
+                        txtPrefix2.text = Prefix;
                     }
                 }
                 else if (a==2) {
                     if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
                         [outletType3 setTitle:@"Mobile" forState:UIControlStateNormal];
                         txtContact3.text  = ContactNo;
+                        txtPrefix3.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT006"]) { //home
                         [outletType3 setTitle:@"Home" forState:UIControlStateNormal];
                         txtContact3.text = ContactNo;
+                        txtPrefix3.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
                         [outletType3 setTitle:@"Fax" forState:UIControlStateNormal];
                         txtContact3.text = ContactNo;
+                        txtPrefix3.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT007"]) { //office
                         [outletType3 setTitle:@"Office" forState:UIControlStateNormal];
                         txtContact3.text = ContactNo;
+                        txtPrefix3.text = Prefix;
                     }
                 }
                 else if (a==3) {
                     if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
                         [outletType4 setTitle:@"Mobile" forState:UIControlStateNormal];
                         txtContact4.text  = ContactNo;
+                        txtPrefix4.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT006"]) { //home
                         [outletType4 setTitle:@"Home" forState:UIControlStateNormal];
                         txtContact4.text = ContactNo;
+                        txtPrefix4.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
                         [outletType4 setTitle:@"Fax" forState:UIControlStateNormal];
                         txtContact4.text = ContactNo;
+                        txtPrefix4.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT007"]) { //office
                         [outletType4 setTitle:@"Office" forState:UIControlStateNormal];
                         txtContact4.text = ContactNo;
+                        txtPrefix4.text = Prefix;
                     }
                 }
                 else if (a==4) {
                     if ([ContactCode isEqualToString:@"CONT008"]) { //mobile
                         [outletType5 setTitle:@"Mobile" forState:UIControlStateNormal];
                         txtContact5.text  = ContactNo;
+                        txtPrefix5.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT006"]) { //home
                         [outletType5 setTitle:@"Home" forState:UIControlStateNormal];
                         txtContact5.text = ContactNo;
+                        txtPrefix5.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT009"]) { //fax
                         [outletType5 setTitle:@"Fax" forState:UIControlStateNormal];
                         txtContact5.text = ContactNo;
+                        txtPrefix5.text = Prefix;
                     }
                     else if ([ContactCode isEqualToString:@"CONT007"]) { //office
                         [outletType5 setTitle:@"Office" forState:UIControlStateNormal];
                         txtContact5.text = ContactNo;
+                        txtPrefix5.text = Prefix;
                     }
                 }
                 a = a + 1;
@@ -644,6 +675,123 @@
         [alert show];
         return false;
     }
+    
+    
+    if(outletType1.titleLabel.text != NULL) {
+        if ([txtPrefix1.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix1.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+    
+    if(outletType2.titleLabel.text != NULL) {
+        if ([txtPrefix2.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix2.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+    
+    if(outletType3.titleLabel.text != NULL) {
+        if ([txtPrefix3.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix3.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+    
+    if(outletType4.titleLabel.text != NULL) {
+        if ([txtPrefix4.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 4" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix4.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+    
+    if(outletType5.titleLabel.text != NULL) {
+        if ([txtPrefix5.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 5" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix5.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+    
     
     if([txtEmail.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -1016,32 +1164,32 @@
             
             if (a == 0) {
                 insertContactSQL = [NSString stringWithFormat:
-                                              @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                              " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+                                              @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                              " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N", txtPrefix1.text];
                 
             }
             else if (a == 1) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N"];
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N", txtPrefix2.text];
                 
             }
             else if (a == 2) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N"];
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N", txtPrefix3.text];
                 
             }
             else if (a == 3) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N"];
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N", txtPrefix4.text];
                 
             }
             else if (a == 4) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N"];
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N", txtPrefix5.text];
                 
             }
             
@@ -1152,10 +1300,13 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+    
     UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to discard all the changes ?" 
                                                    delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", Nil];
     Alert.tag = 1003;
     [Alert show];
+     
+
     
 }
 
@@ -1241,7 +1392,7 @@
                 
                 txtHomeState.text = State;
                 txtHomeTown.text = Town;
-                txtHomeCountry.text = @"Malaysia";
+                txtHomeCountry.text = @"MALAYSIA";
                 SelectedStateCode = Statecode;
                 gotRow = true;
             }

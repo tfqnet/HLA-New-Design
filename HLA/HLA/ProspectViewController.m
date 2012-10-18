@@ -16,6 +16,11 @@
 @end
 
 @implementation ProspectViewController
+@synthesize txtPrefix1;
+@synthesize txtPrefix2;
+@synthesize txtPrefix3;
+@synthesize txtPrefix4;
+@synthesize txtPrefix5;
 @synthesize outletType1;
 @synthesize pickerToolbar;
 @synthesize outletContactType;
@@ -210,6 +215,11 @@
     [self setOutletType3:nil];
     [self setOutletType4:nil];
     [self setOutletType5:nil];
+    [self setTxtPrefix1:nil];
+    [self setTxtPrefix2:nil];
+    [self setTxtPrefix3:nil];
+    [self setTxtPrefix4:nil];
+    [self setTxtPrefix5:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -554,11 +564,125 @@
         return false;
     }
     
+    if(outletType1.titleLabel.text != NULL) {
+        if ([txtPrefix1.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix1.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+ 
+    if(outletType2.titleLabel.text != NULL) {
+        if ([txtPrefix2.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix2.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+    
+    if(outletType3.titleLabel.text != NULL) {
+        if ([txtPrefix3.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix3.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+    
+    if(outletType4.titleLabel.text != NULL) {
+        if ([txtPrefix4.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 4" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix4.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
+ 
+    if(outletType5.titleLabel.text != NULL) {
+        if ([txtPrefix5.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Please key in prefix for contact no 5" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            if (txtPrefix5.text.length > 4) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self resignFirstResponder];
+                [self.view endEditing:TRUE];
+                
+                [alert show];
+                return false;
+            }
+        }
+    }
     
     if(![txtContact1.text isEqualToString:@"" ]){
-        if (txtContact1.text.length > 11) {
+        if (txtContact1.text.length > 7) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -593,9 +717,9 @@
     }
     
     if(![txtContact2.text isEqualToString:@"" ]){
-        if (txtContact2.text.length > 11) {
+        if (txtContact2.text.length > 7) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -621,9 +745,9 @@
     }
     
     if(![txtContact3.text isEqualToString:@"" ]){
-        if (txtContact3.text.length > 11) {
+        if (txtContact3.text.length > 7) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
@@ -649,9 +773,9 @@
     }
     
     if(![txtContact4.text isEqualToString:@"" ]){
-        if (txtContact4.text.length > 11) {
+        if (txtContact4.text.length > 7) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             [alert show];
@@ -676,9 +800,9 @@
     }
     
     if(![txtContact5.text isEqualToString:@"" ]){
-        if (txtContact5.text.length > 11) {
+        if (txtContact5.text.length > 7) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -895,28 +1019,28 @@
             NSString *insertContactSQL;
             if (a==0) {
                  insertContactSQL = [NSString stringWithFormat:
-                                              @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                              " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+                                              @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                              " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N", txtPrefix1.text];
             }
             else if (a==1) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N"];   
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N", txtPrefix3.text];   
             }
             else if (a==2) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N"];   
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N", txtPrefix3.text];   
             }
             else if (a==3) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N"];   
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N", txtPrefix4.text];   
             }
             else if (a==4) {
                 insertContactSQL = [NSString stringWithFormat:
-                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N"];   
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N", txtPrefix5.text];   
             }
             
             const char *insert_contactStmt = [insertContactSQL UTF8String];
@@ -937,7 +1061,6 @@
 
         }
          
-        
     }
     
     UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile"
@@ -1022,7 +1145,7 @@
                 
                 txtHomeState.text = State;
                 txtHomeTown.text = Town;
-                txtHomeCountry.text = @"Malaysia";
+                txtHomeCountry.text = @"MALAYSIA";
                 SelectedStateCode = Statecode;
                 gotRow = true;
             }

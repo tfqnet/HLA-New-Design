@@ -281,7 +281,7 @@
     
     if ([txtAgentName.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Agent name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Agent Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             
             return FALSE;
@@ -314,7 +314,7 @@
 
     if ([txtAgentCode.text isEqualToString:@""] || txtAgentCode.text.length == 0) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Agent Code cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Agent Code is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             return FALSE;
         
@@ -344,7 +344,7 @@
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Please enter agent contact number" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Agent's Contact No is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return false;
     }
@@ -361,7 +361,7 @@
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Email address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Email is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         return FALSE;

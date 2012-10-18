@@ -15,6 +15,7 @@
 #import "SIListing.h"
 #import "SIMenuViewController.h"
 #import "CarouselViewController.h"
+#import "DemoHtml.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -81,6 +82,12 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
+    DemoHtml *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
+    demoPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    [controllersToAdd addObject:demoPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
+    
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];
     
@@ -115,7 +122,7 @@
 }
 
 -(BOOL)tabBarController:(FSVerticalTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([viewControllers indexOfObject:viewController] == 6) {
+    if ([viewControllers indexOfObject:viewController] == 7) {
         return NO;
     }
     return YES;

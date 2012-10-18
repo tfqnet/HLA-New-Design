@@ -92,7 +92,7 @@
          UserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
         
         UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
-        UserProfileView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        UserProfileView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         UserProfileView.indexNo = self.indexNo;
         UserProfileView.idRequest = self.userRequest;
         [self presentModalViewController:UserProfileView animated:YES];

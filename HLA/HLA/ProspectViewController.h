@@ -101,5 +101,11 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
+@property (weak, nonatomic) IBOutlet UITextField *txtPrefix1;
+@property (weak, nonatomic) IBOutlet UITextField *txtPrefix2;
+@property (weak, nonatomic) IBOutlet UITextField *txtPrefix3;
+@property (weak, nonatomic) IBOutlet UITextField *txtPrefix4;
+@property (weak, nonatomic) IBOutlet UITextField *txtPrefix5;
+
 
 @end
