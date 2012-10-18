@@ -33,6 +33,11 @@
     [self resignFirstResponder];
     [self.view addSubview:myTableView];
     
+    self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
+//    self.myTableView.separatorColor = [UIColor clearColor];
+//    self.RightView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"IMG_0039.png"]];
+    self.RightView.backgroundColor = [UIColor colorWithRed:(5.0/255.0) green:(150.0/255.0) blue:(200.0/255.0) alpha:1.0];
+    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -284,6 +289,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
     cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:18];
+    cell.textLabel.textAlignment = UITextAlignmentLeft;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     return cell;
 }
@@ -334,7 +343,8 @@
     [tableView reloadData];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     BOOL found = false;
     

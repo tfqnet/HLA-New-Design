@@ -67,8 +67,22 @@
     planChoose = [[NSString alloc] initWithFormat:@"%@",planList.selectedCode];
     [self.btnPlan setTitle:planList.selectedDesc forState:UIControlStateNormal];
     
-    if (ageClient > 60) {
+    if (ageClient > 65) {
         advanceIncomeSegment.enabled = NO;
+    }
+    
+    if (ageClient > 50 && ageClient <=65)
+    {
+        NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
+        UISegmentedControl *segName = [[UISegmentedControl alloc] initWithItems:buttons];
+        [self setAdvanceIncomeSegment:segName];
+        segName.frame = CGRectMake(342, 363, 287, 44);
+        segName.segmentedControlStyle = UISegmentedControlStylePlain;
+        segName.momentary = NO;
+        segName.selectedSegmentIndex = 0;
+        [segName addTarget:self action:@selector(otherAdvancePressed:)
+                  forControlEvents:UIControlEventValueChanged];
+        [self.view addSubview:segName];
     }
     
     healthLoadingView.alpha = 0;
@@ -238,6 +252,17 @@
     Saved = NO;
 }
 
+-(void)otherAdvancePressed:(id)sender
+{
+    if (advanceIncomeSegment.selectedSegmentIndex == 0) {
+        advanceYearlyIncome = 0;
+    }
+    else if (advanceIncomeSegment.selectedSegmentIndex == 1) {
+        advanceYearlyIncome = 75;
+    }
+    NSLog(@"value:%d",advanceYearlyIncome);
+}
+
 - (IBAction)cashDividendSegmentPressed:(id)sender
 {
     if (cashDividendSegment.selectedSegmentIndex == 0) {
@@ -274,6 +299,7 @@
 - (IBAction)doSavePlan:(id)sender
 {
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
     if (yearlyIncomeField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -336,8 +362,20 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater thann %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
-    else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTermField.text rangeOfCharacterFromSet:set].location != NSNotFound||[tempHLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[tempHLTermField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading input must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+    else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading (per 1k SA) must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if ([HLTermField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading (per 1k SA) Term must be numeric 0 to 9" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if ([tempHLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Temporary Health Loading (per 1k SA) must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if ([tempHLTermField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Temporary Health Loading (per 1k SA) Term must be numeric 0 to 9" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else {
@@ -680,9 +718,20 @@
     planChoose = [[NSString alloc] initWithFormat:@"%@",aaCode];
     [self.btnPlan setTitle:aaDesc forState:UIControlStateNormal];
     
-//    NSLog(@"receive 1-%@ 2-%@",aaCode,aaDesc);
-    
     [popoverController dismissPopoverAnimated:YES];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString *newString     = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSArray  *arrayOfString = [newString componentsSeparatedByString:@"."];
+    
+    if ([arrayOfString count] > 2 )
+    {
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - Memory Management

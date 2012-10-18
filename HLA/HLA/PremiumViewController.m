@@ -41,7 +41,7 @@
     requestBasicSA = premBH.storedbasicSA;
     requestBasicHL = premBH.storedbasicHL;
     
-    NSLog(@"Prem-SINo:%@, MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@",requestSINo,self.requestMOP,self.requestTerm,self.requestBasicSA,self.requestBasicHL,[self.requestOccpCode description]);
+    NSLog(@"Prem-SINo:%@, MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@ sex:%@",requestSINo,self.requestMOP,self.requestTerm,self.requestBasicSA,self.requestBasicHL,[self.requestOccpCode description],premH.storedSex);
     
     [self getBasicPentaRate];
     [self getLSDRate];

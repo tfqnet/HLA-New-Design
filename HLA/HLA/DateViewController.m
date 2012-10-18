@@ -100,19 +100,35 @@
         } else if (monthN == monthB && dayB<dayN) {
             newALB = dayN - dayB;
             msgAge = [[NSString alloc] initWithFormat:@"%d days",newALB];
+            /*
             if (newALB < 30) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
-            }
+            }*/
         }
         Age = 0;
         ANB = 1;
     }
     
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *selectDate = [dateFormatter stringFromDate:[datePickerView date]];
+    NSDate *startDate = [dateFormatter dateFromString:selectDate];
+        
+    NSString *todayDate = [dateFormatter stringFromDate:[NSDate date]];
+    NSDate *endDate = [dateFormatter dateFromString:todayDate];
+        
+    unsigned flags = NSDayCalendarUnit;
+    NSDateComponents *difference = [[NSCalendar currentCalendar] components:flags fromDate:startDate toDate:endDate options:0];
+    int diffDays = [difference day];
+    
     if ((yearN<yearB)||(yearN==yearB && monthN<monthB)||(yearN==yearB && monthN==monthB && dayN<dayB)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Entered date cannot be greater than today." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else {
+    } else if (diffDays > 182) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Maximum backdating days allowed is 182 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else {
         [_delegate datePick:self strDate:self.selectedStrDate strAge:self.selectedStrAge intAge:self.selectedIntAge intANB:self.selectedIntANB];
     }
 }

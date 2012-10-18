@@ -209,7 +209,7 @@
 
 - (IBAction)doDelete:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Delete Payor?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Delete Payor:%@?",nameField.text] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
     [alert setTag:2002];
     [alert show];
 }

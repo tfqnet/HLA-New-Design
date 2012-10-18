@@ -964,7 +964,88 @@
     [self presentModalViewController:main animated:YES];
 }
 
+-(void)editRider
+{
+    if ([self.myTableView isEditing]) {
+        [self.myTableView setEditing:NO animated:TRUE];
+//        outletDelete.hidden = true;
+//        [outletEdit setTitle:@"Edit" forState:UIControlStateNormal ];
+    }
+    else{
+        [self.myTableView setEditing:YES animated:TRUE];
+//        outletDelete.hidden = FALSE;
+//        [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+//        [outletEdit setTitle:@"Cancel" forState:UIControlStateNormal ];
+    }
+}
 
+-(void)deleteRider
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure want to delete these Rider(s)?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
+    [alert setTag:1001];
+    [alert show];
+}
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==1001 && buttonIndex == 0)
+    {
+        NSArray *visibleCells = [myTableView visibleCells];
+        NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        for (UITableViewCell *cell in visibleCells)
+        {
+            if (cell.selected) {
+                NSIndexPath *indexPath = [myTableView indexPathForCell:cell];
+                
+                NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+                [ItemToBeDeleted addObject:zzz];
+                [indexPaths addObject:indexPath];
+            }
+        }
+        
+        sqlite3_stmt *statement;
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            for(int a=0; a<ItemToBeDeleted.count; a++) {
+                int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
+                value = value - a;
+                
+                NSString *querySQL = [NSString stringWithFormat:
+                                      @"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,[LRiderCode objectAtIndex:value]];
+                NSLog(@"%@",querySQL);
+                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                {
+                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        NSLog(@"rider delete!");
+                        
+                    } else {
+                        NSLog(@"rider delete Failed!");
+                    }
+                    sqlite3_finalize(statement);
+                }
+            
+                [LRiderCode removeObjectAtIndex:value];
+                [LSumAssured removeObjectAtIndex:value];
+                [LTerm removeObjectAtIndex:value];
+                [LPlanOpt removeObjectAtIndex:value];
+                [LUnits removeObjectAtIndex:value];
+                [LDeduct removeObjectAtIndex:value];
+                [LRidHL1K removeObjectAtIndex:value];
+                [LRidHL100 removeObjectAtIndex:value];
+                [LRidHLP removeObjectAtIndex:value];
+                [LSmoker removeObjectAtIndex:value];
+                [LAge removeObjectAtIndex:value];
+            }
+            sqlite3_close(contactDB);
+        }
+
+        [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];        
+        [self.myTableView reloadData];
+    }
+}
 
 #pragma mark - validate
 
@@ -2202,12 +2283,57 @@
 
 
 #pragma mark - Table view delegate
-
+/*
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView reloadData];
+    if ([myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
+        
+        for (UITableViewCell *zzz in [myTableView visibleCells])
+        {
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+        }
+        
+        if (!gotRowSelected) {
+            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = FALSE;
+        }
+        else {
+            [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = TRUE;
+        }
+    }
 }
+*/
 
+/*
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
+        
+        for (UITableViewCell *zzz in [myTableView visibleCells])
+        {
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+        }
+        
+        if (!gotRowSelected) {
+            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = FALSE;
+        }
+        else {
+            [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            outletDelete.enabled = TRUE;
+        }
+    }
+}
+*/
 
 #pragma mark - Memory Management
 

@@ -151,6 +151,7 @@
     } else {
         sexSegment.selectedSegmentIndex = 1;
     }
+    NSLog(@"sex:%@",sex);
     
     if ([smoker isEqualToString:@"Y"]) {
         smokerSegment.selectedSegmentIndex = 0;
@@ -180,7 +181,7 @@
     [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
-        NSLog(@"stored %@",ss.storedSINo);
+        NSLog(@"stored SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
     }
 }
 
@@ -657,6 +658,7 @@
         
         NSString *insertSQL2 = [NSString stringWithFormat:
                     @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
+        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -696,7 +698,7 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
             @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,clientID];
-        
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -734,7 +736,7 @@
             [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
             for (NSUInteger i=0; i< dataInsert.count; i++) {
                 ss = [dataInsert objectAtIndex:i];
-                NSLog(@"stored %@",ss.storedSINo);
+                NSLog(@"stored SI%@, sex:%@",ss.storedSINo,ss.storedSex);
             }
             
             sqlite3_finalize(statement);
@@ -932,7 +934,6 @@
     if (checkSI.length == 0)
     {
         NSLog(@"view new client");
-        
         DOB = aaDOB;
         [self calculateAge];
         if (age > 70) {
@@ -950,6 +951,7 @@
             } else {
                 sexSegment.selectedSegmentIndex = 1;
             }
+            NSLog(@"sex:%@",sex);
         
             [btnDOB setTitle:DOB forState:UIControlStateNormal];
             LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
@@ -1015,6 +1017,7 @@
             } else if ([sex isEqualToString:@"F"]) {
                 sexSegment.selectedSegmentIndex = 1;
             }
+            NSLog(@"sex:%@",sex);
             
             if ([smoker isEqualToString:@"Y"]) {
                 smokerSegment.selectedSegmentIndex = 0;
