@@ -12,7 +12,7 @@
 #import "JTTableViewDatasource.h"
 #import "JTTableViewCellModal.h"
 #import "JTTableViewCellFactory.h"
-
+#import "ChangePassword.h"
 typedef enum {
     JTTableRowTypeBack,
     JTTableRowTypePushContentView,
@@ -69,6 +69,8 @@ typedef enum {
     _revealView.contentView.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(toggleButtonPressed:)];
     
     [self.view addSubview:_revealView];
+    
+    
     
     
 }
@@ -217,9 +219,9 @@ typedef enum {
                     [view addSubview:webView1];
                     webView1.alpha = 1.0;
                     webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-                    [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]]];                    
+                    //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]]];                    
                     
-                    //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"IMG_0042" ofType:@"PNG"]isDirectory:NO]]];
+                    [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page1" ofType:@"html"]isDirectory:NO]]];
                     webView1.scalesPageToFit = YES;
                     
                 }
@@ -250,8 +252,10 @@ typedef enum {
                 //[view addSubview:pushButton];
                 
                 //view.title = [(JTTableViewCellModalSimpleType *)object title];
+                //[_revealView.contentView setRootView:view];
                 [_revealView.contentView setRootView:view];
                 [_revealView revealSidebar:NO];
+                
             }
             
             default:

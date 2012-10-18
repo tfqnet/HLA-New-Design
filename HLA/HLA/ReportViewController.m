@@ -13,6 +13,7 @@
 @end
 
 @implementation ReportViewController
+@synthesize SINo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,6 +30,17 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        NSString *getHeaderSQL = [NSString stringWithFormat:@"Select * from trad_rider_details where sino = \"%@\" ", SINo];
+        
+        if(sqlite3_prepare_v2(contactDB, [getHeaderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW){
+                
+            } 
+        }
+    }    
     
 }
 

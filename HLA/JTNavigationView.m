@@ -121,7 +121,7 @@
 
 - (void)setRootView:(UIView *)rootView {
     [_rootView removeFromSuperview], _rootView = nil;
-    //_rootView = [rootView retain];
+    _rootView = rootView;
 
     for (UIView *view in _views) {
         [self popViewAnimated:NO];

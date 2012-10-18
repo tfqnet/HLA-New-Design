@@ -14,4 +14,6 @@
     NSString *databasePath;
     sqlite3 *contactDB;
 }
+@property (nonatomic,strong) id SINo;
+
 @end

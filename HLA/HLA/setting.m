@@ -118,7 +118,7 @@
         
         ChangePassword *changePwdView = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePwd"];
         changePwdView.modalPresentationStyle = UIModalPresentationPageSheet;
-        changePwdView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        changePwdView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         changePwdView.userID = self.indexNo;
         [self presentModalViewController:changePwdView animated:YES];
         changePwdView.view.superview.frame = CGRectMake(350, 50, 600, 600); 

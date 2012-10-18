@@ -584,6 +584,63 @@
                 [alert show];
                 return false;
             }
+            else {
+                if(![txtContact1.text isEqualToString:@"" ]){
+                    
+                    if (txtContact1.text.length > 8) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    BOOL valid; 
+                    BOOL valid2;
+                    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+                    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact1.text];
+                    NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix1.text];
+                    
+                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid2 = [alphaNums isSupersetOfSet:inStringSet2];
+                    if (!valid) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    if (!valid2) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Prefix for contact no 1 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:@"Please enter input for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    
+                    [self resignFirstResponder];
+                    [self.view endEditing:TRUE];
+                    
+                    [alert show];
+                    return FALSE;
+                }
+            }
         }
     }
  
@@ -606,6 +663,63 @@
                 
                 [alert show];
                 return false;
+            }
+            else {
+                if(![txtContact2.text isEqualToString:@"" ]){
+                    
+                    if (txtContact2.text.length > 8) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    BOOL valid; 
+                    BOOL valid2;
+                    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+                    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact2.text];
+                    NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix2.text];
+                    
+                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid2 = [alphaNums isSupersetOfSet:inStringSet2];
+                    if (!valid) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    if (!valid2) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Prefix for contact no 2 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:@"Please enter input for contact no 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    
+                    [self resignFirstResponder];
+                    [self.view endEditing:TRUE];
+                    
+                    [alert show];
+                    return FALSE;
+                }
             }
         }
     }
@@ -630,6 +744,63 @@
                 [alert show];
                 return false;
             }
+            else {
+                if(![txtContact3.text isEqualToString:@"" ]){
+                    
+                    if (txtContact3.text.length > 8) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    BOOL valid; 
+                    BOOL valid2;
+                    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+                    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact3.text];
+                    NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix3.text];
+                    
+                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid2 = [alphaNums isSupersetOfSet:inStringSet2];
+                    if (!valid) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    if (!valid2) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Prefix for contact no 3 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:@"Please enter input for contact no 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    
+                    [self resignFirstResponder];
+                    [self.view endEditing:TRUE];
+                    
+                    [alert show];
+                    return FALSE;
+                }
+            }
         }
     }
     
@@ -652,6 +823,63 @@
                 
                 [alert show];
                 return false;
+            }
+            else {
+                if(![txtContact4.text isEqualToString:@"" ]){
+                    
+                    if (txtContact4.text.length > 8) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    BOOL valid; 
+                    BOOL valid2;
+                    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+                    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact4.text];
+                    NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix4.text];
+                    
+                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid2 = [alphaNums isSupersetOfSet:inStringSet2];
+                    if (!valid) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    if (!valid2) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Prefix for contact no 4 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:@"Please enter input for contact no 4" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    
+                    [self resignFirstResponder];
+                    [self.view endEditing:TRUE];
+                    
+                    [alert show];
+                    return FALSE;
+                }
             }
         }
     }
@@ -676,158 +904,67 @@
                 [alert show];
                 return false;
             }
+            else {
+                if(![txtContact5.text isEqualToString:@"" ]){
+                    
+                    if (txtContact5.text.length > 8) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    BOOL valid; 
+                    BOOL valid2;
+                    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+                    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact5.text];
+                    NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix5.text];
+                    
+                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid2 = [alphaNums isSupersetOfSet:inStringSet2];
+                    if (!valid) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                    
+                    if (!valid2) {
+                        
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Prefix for contact no 5 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [self resignFirstResponder];
+                        [self.view endEditing:TRUE];
+                        
+                        [alert show];
+                        return false;
+                    }
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                    message:@"Please enter input for contact no 5" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    
+                    [self resignFirstResponder];
+                    [self.view endEditing:TRUE];
+                    
+                    [alert show];
+                    return FALSE;
+                }
+            }
         }
     }
     
-    if(![txtContact1.text isEqualToString:@"" ]){
-        if (txtContact1.text.length > 7) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact1.text];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-    }
-    else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Please enter numeric input for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
-        
-        [alert show];
-        return FALSE;
-    }
-    
-    if(![txtContact2.text isEqualToString:@"" ]){
-        if (txtContact2.text.length > 7) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact2.text];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-    }
-    
-    if(![txtContact3.text isEqualToString:@"" ]){
-        if (txtContact3.text.length > 7) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            [alert show];
-            return false;
-        }
-        
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact3.text];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-    }
-    
-    if(![txtContact4.text isEqualToString:@"" ]){
-        if (txtContact4.text.length > 7) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            [alert show];
-            return false;
-        }
-        
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact4.text];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-    }
-    
-    if(![txtContact5.text isEqualToString:@"" ]){
-        if (txtContact5.text.length > 7) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number's length must be less than 7 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact5.text];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        
-    }
-    
-    if(![txtEmail.text isEqualToString:@""]){
+        if(![txtEmail.text isEqualToString:@""]){
         if( [self NSStringIsValidEmail:txtEmail.text] == FALSE){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"You have entered an invalid email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1025,7 +1162,7 @@
             else if (a==1) {
                 insertContactSQL = [NSString stringWithFormat:
                                     @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N", txtPrefix3.text];   
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N", txtPrefix2.text];   
             }
             else if (a==2) {
                 insertContactSQL = [NSString stringWithFormat:
