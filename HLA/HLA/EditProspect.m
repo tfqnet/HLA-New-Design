@@ -196,7 +196,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
         return YES;
     
     return NO;
@@ -667,7 +667,7 @@
     
     if(outletDOB.titleLabel.text == NULL){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Date of Birth (DOB) cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Date of Birth is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -755,6 +755,16 @@
                 }
             }
         }
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Please fill-in Contact No 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
+        [alert show];
+        return FALSE; 
     }
     
     if(![outletType2.titleLabel.text isEqualToString:@""]) {

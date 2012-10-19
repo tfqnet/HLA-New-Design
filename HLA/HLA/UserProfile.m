@@ -84,7 +84,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
         return YES;
     
     return NO;
@@ -279,6 +279,14 @@
 
 -(BOOL) Validation{
     
+    if ([txtAgentCode.text isEqualToString:@""] || txtAgentCode.text.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Agent Code is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return FALSE;
+        
+    }
+    
     if ([txtAgentName.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Agent Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -312,14 +320,6 @@
         }
     }
 
-    if ([txtAgentCode.text isEqualToString:@""] || txtAgentCode.text.length == 0) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Agent Code is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            return FALSE;
-        
-    }
-    
     if(![txtAgentContactNo.text isEqualToString:@"" ]){
         if (txtAgentContactNo.text.length > 11) {
             

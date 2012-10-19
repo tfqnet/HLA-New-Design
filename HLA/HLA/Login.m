@@ -64,7 +64,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {   
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeLeft || interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
         return YES;
     
     return NO;
@@ -112,12 +112,17 @@
 }
 
 - (IBAction)btnLogin:(id)sender {
-    if (txtUsername.text.length <= 0 || txtPassword.text.length <= 0) {
+    if (txtUsername.text.length <= 0) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Both Username and password is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
-    } else {
+    } 
+    else if (txtPassword.text.length <=0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else {
         
         [self checkingFirstLogin];
         NSLog(@"loginstatus:%d",statusLogin);
