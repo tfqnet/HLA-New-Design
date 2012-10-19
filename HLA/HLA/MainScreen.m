@@ -82,11 +82,12 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
+    /*
     DemoHtml *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
     demoPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:demoPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    
+    */
     
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];

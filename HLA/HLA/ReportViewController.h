@@ -15,5 +15,8 @@
     sqlite3 *contactDB;
 }
 @property (nonatomic,strong) id SINo;
+@property (nonatomic,strong) id YearlyIncome;
+@property (nonatomic,strong) id CashDividend;
+
 
 @end
