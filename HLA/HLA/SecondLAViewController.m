@@ -209,7 +209,7 @@
 
 - (IBAction)doDelete:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Delete Secondary Life Assured?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Delete 2nd Life Assured:%@?",nameField.text] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
     [alert setTag:1002];
     [alert show];
 }
@@ -308,7 +308,6 @@
         ANB = 1;
     }
     NSLog(@"msgAge:%@",msgAge);
-    ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
 }
 
 #pragma mark - delegate
@@ -337,6 +336,7 @@
         [DOBBtn setTitle:aaDOB forState:UIControlStateNormal];
         DOB = aaDOB;
         [self calculateAge];
+        ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
     
         OccpCode = aaCode;
         [self getOccLoadExist];
@@ -484,7 +484,7 @@
                 NSLog(@"Done LA2");
                 [self updateRunCustCode];
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
@@ -598,7 +598,7 @@
             {
                 NSLog(@"SI update!");
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
@@ -637,11 +637,14 @@
             {
                 NSLog(@"Clt_Profile delete!");
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Deleted Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record Deleted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in deleting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }

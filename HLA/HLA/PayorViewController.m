@@ -183,8 +183,8 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
-    else if (age <= 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Date of Birth is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+    else if (age < 16) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (OccpCode.length == 0) {
@@ -291,23 +291,16 @@
     }
     else if (yearN == yearB)
     {
-        if (monthN > monthB) {
-            newALB = monthN - monthB;
-            msgAge = [[NSString alloc] initWithFormat:@"%d months",newALB];
-            
-        } else if (monthN == monthB && dayB<dayN) {
-            newALB = dayN - dayB;
-            msgAge = [[NSString alloc] initWithFormat:@"%d days",newALB];
-            if (newALB < 30) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-            }
-        }
-        age = 0;
-        ANB = 1;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    
+    if (age < 16) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
     }
     NSLog(@"msgAge:%@",msgAge);
-    ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    
 }
 
 
@@ -338,6 +331,7 @@
         [DOBBtn setTitle:aaDOB forState:UIControlStateNormal];
         DOB = aaDOB;
         [self calculateAge];
+        ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
         
         OccpCode = aaCode;
         [self getOccLoadExist];
@@ -488,7 +482,7 @@
                 NSLog(@"Done LA2");
                 [self updateRunCustCode];
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
@@ -605,7 +599,7 @@
             {
                 NSLog(@"SI update!");
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record updated." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
@@ -644,11 +638,14 @@
             {
                 NSLog(@"Clt_Profile delete!");
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Deleted Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record deleted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in deleting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
             }
             sqlite3_finalize(statement);
         }

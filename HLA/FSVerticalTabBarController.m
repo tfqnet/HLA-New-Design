@@ -106,7 +106,7 @@
             
             if (selectedIndex == 1) { //prospect profile
                 SIHandler *SIH = [[SIHandler alloc] init ];
-                NSLog(@"%@", SIH.storedIndexNo);
+                NSLog(@"%d", SIH.storedIndexNo);
                 
             }
         

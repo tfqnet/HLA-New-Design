@@ -151,14 +151,18 @@
     NSString *LSDMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]];
     
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
-                 @"<html><body><table border='1' width='500' align='left'> "
-                 "<tr><td>Description</td><td>Annually</td><td>Semi-annual</td><td>Quarterly</td><td>Monthly</td></tr>"
-                 "<tr><td>Basic</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td></tr>"
-                 "<tr><td>Occupation Loading</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td></tr>"
-                 "<tr><td>Health Loading</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td></tr>"
-                 "<tr><td>%@</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td></tr>"
-                 "<tr><td>Sub-Total</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td>"
-                 "</tr>",BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
+        @"<html><body><table border='1' width='70%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
+        "<tr><td width='32%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Description</font></td>"
+            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Annually</font></td>"
+            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Semi-Annual</font></td>"
+            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Quarterly</font></td>"
+            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Monthly</font></td></tr>"
+            "<tr><td>Basic</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
+            "<tr><td>Occupation Loading</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
+            "<tr><td>Health Loading</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
+            "<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
+            "<tr><td>Sub-Total</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>"
+        "</tr>",BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
     
     NSString *htmlTail = nil;
     if ([riderCode count] != 0) {
@@ -174,7 +178,7 @@
         
         htmlTail = [[NSString alloc] initWithFormat:
                     @"<tr><td colspan='5'>&nbsp;</td></tr>"
-                    "<tr><td>Total</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td></tr>"
+                    "<tr><td>Total</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
                     "</table></body></html>",annualSUM,halfSUM,quarterSUM,monthSUM];
         
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlRider];
@@ -185,7 +189,7 @@
         
         htmlTail = [[NSString alloc] initWithFormat:
                     @"<tr><td colspan='5'>&nbsp;</td></tr>"
-                    "<tr><td>Total</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td></tr>"
+                    "<tr><td>Total</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
                     "</table></body></html>",basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
         
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlTail];
@@ -464,11 +468,11 @@
         if (htmlRider.length == 0) {
             htmlRider = [[NSString alloc]initWithFormat:
                          @"<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-                         "<tr><td>%@</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td>"
+                         "<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>"
                          "</tr>",title,annual,half,quarter,month];
         } else {
             
-            htmlRider = [htmlRider stringByAppendingFormat:@"<tr><td>%@</td><td>%@</td><td>%@</td><td>%@</td><td>%@</td>""</tr>",title,annual,half,quarter,month];
+            htmlRider = [htmlRider stringByAppendingFormat:@"<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>""</tr>",title,annual,half,quarter,month];
         }
         annualRiderSum = annualRiderSum + [[annualRiderTot objectAtIndex:a] doubleValue];
         halfRiderSum = halfRiderSum + [[halfRiderTot objectAtIndex:a] doubleValue];

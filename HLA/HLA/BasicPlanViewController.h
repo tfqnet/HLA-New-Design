@@ -18,7 +18,7 @@
     UIPopoverController *popoverController;
     PlanList *planList;
     BOOL showHL;
-    BOOL Saved;
+    BOOL useExist;
 }
 
 //request from previous

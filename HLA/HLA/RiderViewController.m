@@ -9,6 +9,7 @@
 #import "RiderViewController.h"
 #import "BasicPlanViewController.h"
 #import "NewLAViewController.h"
+#import "ColorHexCode.h"
 
 #import "MainScreen.h"
 
@@ -21,6 +22,13 @@
 @synthesize titleSA;
 @synthesize titleTerm;
 @synthesize titleUnit;
+@synthesize titleClass;
+@synthesize titleLoad;
+@synthesize titleHL1K;
+@synthesize titleHL100;
+@synthesize titleHLP;
+@synthesize editBtn;
+@synthesize deleteBtn;
 @synthesize myTableView;
 @synthesize termLabel;
 @synthesize sumLabel;
@@ -77,6 +85,8 @@
     NSLog(@"Rider-Age:%d,covered:%d,SINo:%@ planCode:%@",requestAge,requestCoverTerm,requestSINo,requestPlanCode);
     
     deducBtn.hidden = YES;
+    deleteBtn.hidden = TRUE;
+    deleteBtn.enabled = FALSE;
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",[self.requestSINo description]];
     planCode = [[NSString alloc] initWithFormat:@"%@",[self.requestPlanCode description]];
     incomeRider = NO;
@@ -92,6 +102,62 @@
         pTypeDesc = [[NSString alloc] initWithFormat:@"%@",listPType.selectedDesc];
         [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
     }
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    
+    CGRect frame=CGRectMake(0,411, 100, 50);
+    titleRidCode.frame = frame;
+    titleRidCode.textAlignment = UITextAlignmentCenter;
+    titleRidCode.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleRidCode.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame2=CGRectMake(100,411, 129, 50);
+    titleSA.frame = frame2;
+    titleSA.textAlignment = UITextAlignmentCenter;
+    titleSA.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleSA.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame3=CGRectMake(229,411, 62, 50);
+    titleTerm.frame = frame3;
+    titleTerm.textAlignment = UITextAlignmentCenter;
+    titleTerm.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleTerm.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame4=CGRectMake(291,411, 62, 50);
+    titleUnit.frame = frame4;
+    titleUnit.textAlignment = UITextAlignmentCenter;
+    titleUnit.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleUnit.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame5=CGRectMake(353,411, 62, 50);
+    titleClass.frame = frame5;
+    titleClass.textAlignment = UITextAlignmentCenter;
+    titleClass.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleClass.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+
+    CGRect frame6=CGRectMake(415,411, 62, 50);
+    titleLoad.frame = frame6;
+    titleLoad.textAlignment = UITextAlignmentCenter;
+    titleLoad.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleLoad.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame7=CGRectMake(477,411, 84, 50);
+    titleHL1K.frame = frame7;
+    titleHL1K.textAlignment = UITextAlignmentCenter;
+    titleHL1K.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleHL1K.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame8=CGRectMake(561,411, 84, 50);
+    titleHL100.frame = frame8;
+    titleHL100.textAlignment = UITextAlignmentCenter;
+    titleHL100.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleHL100.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame9=CGRectMake(645,411, 84, 50);
+    titleHLP.frame = frame9;
+    titleHLP.textAlignment = UITextAlignmentCenter;
+    titleHLP.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleHLP.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     [self getBasicPentaRate];
     [self getOccLoad];
@@ -964,22 +1030,22 @@
     [self presentModalViewController:main animated:YES];
 }
 
--(void)editRider
+- (IBAction)editPressed:(id)sender
 {
     if ([self.myTableView isEditing]) {
         [self.myTableView setEditing:NO animated:TRUE];
-//        outletDelete.hidden = true;
-//        [outletEdit setTitle:@"Edit" forState:UIControlStateNormal ];
+        deleteBtn.hidden = true;
+        [editBtn setTitle:@"Edit" forState:UIControlStateNormal ];
     }
     else{
         [self.myTableView setEditing:YES animated:TRUE];
-//        outletDelete.hidden = FALSE;
-//        [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
-//        [outletEdit setTitle:@"Cancel" forState:UIControlStateNormal ];
+        deleteBtn.hidden = FALSE;
+        [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        [editBtn setTitle:@"Cancel" forState:UIControlStateNormal ];
     }
 }
 
--(void)deleteRider
+- (IBAction)deletePressed:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure want to delete these Rider(s)?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
     [alert setTag:1001];
@@ -1044,6 +1110,9 @@
 
         [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];        
         [self.myTableView reloadData];
+        
+        deleteBtn.enabled = FALSE;
+        [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
     }
 }
 
@@ -1741,12 +1810,22 @@
                 titleSA.hidden = YES;
                 titleTerm.hidden = YES;
                 titleUnit.hidden = YES;
+                titleClass.hidden = YES;
+                titleLoad.hidden = YES;
+                titleHL1K.hidden = YES;
+                titleHL100.hidden = YES;
+                titleHLP.hidden = YES;
             } else {
                 myTableView.hidden = NO;
                 titleRidCode.hidden = NO;
                 titleSA.hidden = NO;
                 titleTerm.hidden = NO;
                 titleUnit.hidden = NO;
+                titleClass.hidden = NO;
+                titleLoad.hidden = NO;
+                titleHL1K.hidden = NO;
+                titleHL100.hidden = NO;
+                titleHLP.hidden = NO;
                 
                 [self calculateBasicPremium];
                 [self calculateRiderPrem];
@@ -2186,12 +2265,13 @@
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
     
-    CGRect frame=CGRectMake(0,0, 100, 50);
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    
+    CGRect frame=CGRectMake(-30,0, 130, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [LRiderCode objectAtIndex:indexPath.row];
     label1.textAlignment = UITextAlignmentCenter;
-    label1.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label1];
     
     CGRect frame2=CGRectMake(100,0, 129, 50);
@@ -2200,42 +2280,37 @@
     NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LSumAssured objectAtIndex:indexPath.row] doubleValue]]];
     label2.text= num;
     label2.textAlignment = UITextAlignmentCenter;
-    label2.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(229,0, 60, 50);
+    CGRect frame3=CGRectMake(229,0, 62, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
     label3.text= [LTerm objectAtIndex:indexPath.row];
     label3.textAlignment = UITextAlignmentCenter;
-    label3.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label3];
     
-    CGRect frame4=CGRectMake(289,0, 60, 50);
+    CGRect frame4=CGRectMake(291,0, 62, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     label4.text= [LUnits objectAtIndex:indexPath.row];
     label4.textAlignment = UITextAlignmentCenter;
-    label4.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label4];
     
-    CGRect frame5=CGRectMake(349,0, 60, 50);
+    CGRect frame5=CGRectMake(353,0, 62, 50);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text= [NSString stringWithFormat:@"%d",occClass];
     label5.textAlignment = UITextAlignmentCenter;
-    label5.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label5];
     
-    CGRect frame6=CGRectMake(409,0, 60, 50);
+    CGRect frame6=CGRectMake(415,0, 62, 50);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
     label6.text= [NSString stringWithFormat:@"%d",occLoad];
     label6.textAlignment = UITextAlignmentCenter;
-    label6.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label6];
     
-    CGRect frame7=CGRectMake(469,0, 80, 50);
+    CGRect frame7=CGRectMake(477,0, 84, 50);
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
     NSString *hl1k;
@@ -2246,10 +2321,9 @@
     }
     label7.text= hl1k;
     label7.textAlignment = UITextAlignmentCenter;
-    label7.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label7];
     
-    CGRect frame8=CGRectMake(549,0, 80, 50);
+    CGRect frame8=CGRectMake(561,0, 84, 50);
     UILabel *label8=[[UILabel alloc]init];
     label8.frame=frame8;
     NSString *hl100;
@@ -2260,10 +2334,9 @@
     }
     label8.text= hl100;
     label8.textAlignment = UITextAlignmentCenter;
-    label8.backgroundColor = [UIColor grayColor];
     [cell.contentView addSubview:label8];
     
-    CGRect frame9=CGRectMake(629,0, 80, 50);
+    CGRect frame9=CGRectMake(645,0, 84, 50);
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
     NSString *hlp;
@@ -2274,16 +2347,58 @@
     }
     label9.text=hlp;
     label9.textAlignment = UITextAlignmentCenter;
-    label9.backgroundColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:label9];
     
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    if (indexPath.row % 2 == 0) {
+        label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label5.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label6.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label7.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label8.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label9.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        
+        label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label7.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label8.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label9.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    }
+    else {
+        label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label2.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label5.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label6.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label7.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label8.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label9.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        
+        label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label7.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label8.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label9.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 
 
 #pragma mark - Table view delegate
-/*
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([myTableView isEditing] == TRUE ) {
@@ -2298,18 +2413,16 @@
         }
         
         if (!gotRowSelected) {
-            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
-            outletDelete.enabled = FALSE;
+            [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            deleteBtn.enabled = FALSE;
         }
         else {
-            [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
-            outletDelete.enabled = TRUE;
+            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            deleteBtn.enabled = TRUE;
         }
     }
 }
-*/
 
-/*
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([myTableView isEditing] == TRUE ) {
@@ -2324,16 +2437,15 @@
         }
         
         if (!gotRowSelected) {
-            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
-            outletDelete.enabled = FALSE;
+            [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            deleteBtn.enabled = FALSE;
         }
         else {
-            [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
-            outletDelete.enabled = TRUE;
+            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            deleteBtn.enabled = TRUE;
         }
     }
 }
-*/
 
 #pragma mark - Memory Management
 
@@ -2407,6 +2519,13 @@
     [self setPlanMGII:nil];
     [self setPlanMGIV:nil];
     [self setArrCombNo:nil];
+    [self setTitleClass:nil];
+    [self setTitleLoad:nil];
+    [self setTitleHL1K:nil];
+    [self setTitleHL100:nil];
+    [self setTitleHLP:nil];
+    [self setEditBtn:nil];
+    [self setDeleteBtn:nil];
     [super viewDidUnload];
 }
 

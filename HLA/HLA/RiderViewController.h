@@ -14,7 +14,7 @@
 #import "BasicPlanHandler.h"
 #import "SIHandler.h"
 
-@interface RiderViewController : UIViewController <RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,RiderFormTbViewControllerDelegate,UITextFieldDelegate>
+@interface RiderViewController : UIViewController <RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,RiderFormTbViewControllerDelegate,UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     NSString *databasePath;
     sqlite3 *contactDB;
@@ -135,6 +135,13 @@
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
 @property (retain, nonatomic) IBOutlet UILabel *titleTerm;
 @property (retain, nonatomic) IBOutlet UILabel *titleUnit;
+@property (strong, nonatomic) IBOutlet UILabel *titleClass;
+@property (strong, nonatomic) IBOutlet UILabel *titleLoad;
+@property (strong, nonatomic) IBOutlet UILabel *titleHL1K;
+@property (strong, nonatomic) IBOutlet UILabel *titleHL100;
+@property (strong, nonatomic) IBOutlet UILabel *titleHLP;
+@property (strong, nonatomic) IBOutlet UIButton *editBtn;
+@property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
 
 @property (nonatomic, assign,readwrite) int riderRate;
 @property (nonatomic, assign,readwrite) int CombNo;
@@ -179,13 +186,14 @@
 @property (nonatomic, assign,readwrite) double riderPrem;
 @property (nonatomic, assign,readwrite) double medRiderPrem;
 
-
 - (IBAction)btnPTypePressed:(id)sender;
 - (IBAction)btnAddRiderPressed:(id)sender;
 - (IBAction)planBtnPressed:(id)sender;
 - (IBAction)deducBtnPressed:(id)sender;
 - (IBAction)doSaveRider:(id)sender;
 - (IBAction)goBack:(id)sender;
+- (IBAction)editPressed:(id)sender;
+- (IBAction)deletePressed:(id)sender;
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
 

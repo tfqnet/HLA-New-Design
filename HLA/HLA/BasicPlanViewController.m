@@ -87,6 +87,7 @@
     
     healthLoadingView.alpha = 0;
     showHL = NO;
+    useExist = NO;
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     termField.enabled = NO;
     [self getTermRule];
@@ -170,7 +171,6 @@
             maxSALabel.text = @"";
             break;
     }
-    Saved = NO;
     activeField = textField;
     return YES;
 }
@@ -224,7 +224,6 @@
     else if (MOPSegment.selectedSegmentIndex == 2) {
         MOP = 12;
     }
-    Saved = NO;
 }
 
 - (IBAction)incomeSegmentPressed:(id)sender
@@ -235,7 +234,6 @@
     else if (incomeSegment.selectedSegmentIndex == 1) {
         yearlyIncome = @"POF";
     }
-    Saved = NO;
 }
 
 - (IBAction)advanceIncomeSegmentPressed:(id)sender
@@ -249,7 +247,6 @@
     else if (advanceIncomeSegment.selectedSegmentIndex == 2) {
         advanceYearlyIncome = 75;
     }
-    Saved = NO;
 }
 
 -(void)otherAdvancePressed:(id)sender
@@ -270,7 +267,6 @@
     } else if (cashDividendSegment.selectedSegmentIndex == 1) {
         cashDividend = @"POF";
     }
-    Saved = NO;
 }
 
 - (IBAction)goBack:(id)sender
@@ -419,7 +415,14 @@
             [alert show];
             
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Save?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+            
+            NSString *msg;
+            if (useExist) {
+                msg = @"Confirm changes?";
+            } else {
+                msg = @"Confirm creating new record?";
+            }
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
             [alert setTag:1003];
             [alert show];
         }
@@ -428,13 +431,12 @@
 
 -(void)checkingSave
 {
-    [self checkingExisting];
-    if (!(getSINo)) {
-        NSLog(@"will save");
-        [self saveBasicPlan];
-    } else {
+    if (useExist) {
         NSLog(@"will update");
         [self updateBasicPlan];
+    } else {
+        NSLog(@"will save");
+        [self saveBasicPlan];
     }
 }
 
@@ -497,8 +499,9 @@
     if (getTempHLTerm != 0) {
         tempHLTermField.text = [NSString stringWithFormat:@"%d",getTempHLTerm];
     }
-    Saved = YES;
     [self getPlanCodePenta];
+    
+    useExist = YES;
     
     dataInsert = [[NSMutableArray alloc] init];
     BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
@@ -621,7 +624,6 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Saved BasicPlan!");
-                Saved = YES;
                 [self getPlanCodePenta];
                 
                 dataInsert = [[NSMutableArray alloc] init];
@@ -632,7 +634,7 @@
                     NSLog(@"storedbasic:%@",ss.storedSINo);
                 }
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
@@ -664,7 +666,6 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"BasicPlan update!");
-                Saved = YES;
                 [self getPlanCodePenta];
                 
                 dataInsert = [[NSMutableArray alloc] init];
@@ -675,7 +676,7 @@
                     NSLog(@"storedbasic:%@",ss.storedSINo);
                 }
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {

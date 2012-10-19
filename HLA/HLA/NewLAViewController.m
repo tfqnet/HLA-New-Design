@@ -74,6 +74,7 @@
         [self checkingExisting];
         if (SINo.length != 0) {
             [self getSavedField];
+            useExist = YES;
         }
     } else {
         NSLog(@"SINo not exist!");
@@ -267,7 +268,13 @@
     }
     else {
         //prompt save
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Save?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+        NSString *msg;
+        if (useExist) {
+            msg = @"Confirm changes?";
+        } else {
+            msg = @"Save?";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
         [alert show];
     }
@@ -664,7 +671,7 @@
             {
                 NSLog(@"Done LA2");
 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Saved Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
             } else {
                 NSLog(@"Failed LA2");
@@ -703,7 +710,7 @@
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Updated Successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
                 statusLabel.text = @"";
@@ -924,6 +931,7 @@
     if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
         sex = nil;
         smoker = nil;
+        useExist = NO;
     }
     
     statusLabel.text = @"";
