@@ -822,15 +822,50 @@
 
 - (IBAction)btnDelete:(id)sender {
     
-    UIAlertView *alert = [[UIAlertView alloc] 
-                          initWithTitle: NSLocalizedString(@"Delete SI",nil)
-                          message: NSLocalizedString(@"Are you sure you want to delete these SI ?",nil)
-                          delegate: self
-                          cancelButtonTitle: NSLocalizedString(@"No",nil)
-                          otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
-    alert.tag = 1;
-    [alert show];
+    int RecCount = 0;
+    NSString *FirstSINo;
+    for (UITableViewCell *zzz in [myTableView visibleCells]) {
+        
+        if (zzz.selected  == TRUE) {
+            NSIndexPath *selectedIndexPath =  [myTableView indexPathForCell:zzz];
+            if (RecCount == 0) {
+                FirstSINo = [SINO objectAtIndex:selectedIndexPath.row];
+            }
+            
+            RecCount = RecCount + 1;
+            
+            if (RecCount > 1) {
+                break;
+            }
+        }
+        
+    }
+    
+    if (RecCount == 1) {
+        NSString *deleteMsg = [NSString stringWithFormat: @"Delete this SI: %@ and all related records?", FirstSINo];
+        UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle: NSLocalizedString(@"Delete SI",nil)
+                              message: deleteMsg
+                              delegate: self
+                              cancelButtonTitle: NSLocalizedString(@"No",nil)
+                              otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+        alert.tag = 1;
+        [alert show];
 
+    }
+    else {
+        NSString *deleteMsg = [NSString stringWithFormat: @"Are you sure you want to delete these SI?"];
+        UIAlertView *alert = [[UIAlertView alloc] 
+                              initWithTitle: NSLocalizedString(@"Delete SI",nil)
+                              message: deleteMsg
+                              delegate: self
+                              cancelButtonTitle: NSLocalizedString(@"No",nil)
+                              otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+        alert.tag = 1;
+        [alert show];
+    }
+    
+   
     
 }
 - (IBAction)btnDone:(id)sender {

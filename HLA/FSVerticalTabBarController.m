@@ -106,7 +106,8 @@
             
             if (selectedIndex == 1) { //prospect profile
                 SIHandler *SIH = [[SIHandler alloc] init ];
-                NSLog(@"%@", SIH.storedAge);
+                NSLog(@"%@", SIH.storedIndexNo);
+                
             }
         
                 
