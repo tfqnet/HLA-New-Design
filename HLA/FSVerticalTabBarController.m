@@ -8,6 +8,7 @@
 
 #import "FSVerticalTabBarController.h"
 #import "Login.h"
+#import "SIHandler.h"
 
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
@@ -100,9 +101,13 @@
             [self presentViewController:selectedViewController animated:YES completion:Nil];
         }
         
+        
         else {
             
-        
+            if (selectedIndex == 1) { //prospect profile
+                SIHandler *SIH = [[SIHandler alloc] init ];
+                NSLog(@"%@", SIH.storedAge);
+            }
         
                 
             
