@@ -113,7 +113,6 @@
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
-		EF3FBAF316216FE8005FCB1B /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF3FBAF216216FE8005FCB1B /* hladb.sqlite */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 /* End PBXBuildFile section */
 
@@ -278,7 +277,6 @@
 		EF28C322161C11C2009585CC /* SIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIHandler.m; path = ../SIHandler.m; sourceTree = "<group>"; };
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
-		EF3FBAF216216FE8005FCB1B /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -529,7 +527,6 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				EF3FBAF216216FE8005FCB1B /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -688,7 +685,6 @@
 				C4EB49171615327E00C7FC8C /* menu.png in Resources */,
 				C4EB49181615327E00C7FC8C /* protectGlobe.png in Resources */,
 				C4EB49191615327E00C7FC8C /* topbar.png in Resources */,
-				EF3FBAF316216FE8005FCB1B /* hladb.sqlite in Resources */,
 				C4660EB61625047800BA4AFE /* delete_button.png in Resources */,
 				C4660EB71625047800BA4AFE /* exit_btnB_144.png in Resources */,
 				C4660EB81625047800BA4AFE /* exit_btnB.png in Resources */,
