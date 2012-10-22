@@ -20,6 +20,7 @@
 @end
 
 @implementation Login
+@synthesize outletReset;
 @synthesize scrollViewLogin;
 @synthesize txtUsername;
 @synthesize txtPassword;
@@ -58,6 +59,7 @@
     [self setTxtPassword:nil];
     [self setLblForgotPwd:nil];
     [self setScrollViewLogin:nil];
+    [self setOutletReset:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -330,6 +332,59 @@
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
     self.scrollViewLogin.frame = CGRectMake(0, 0, 1024, 748);
+}
+
+- (IBAction)btnReset:(id)sender {
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    sqlite3_stmt *statement2;
+    sqlite3_stmt *statement3;
+    
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE User_Profile SET firstLogin = 1, agentPassword = \"password\" WHERE IndexNo=\"1\""];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSString *querySQL2 = [NSString stringWithFormat:@"DELETE from SecurityQuestion_Input "];
+                if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement2, NULL) == SQLITE_OK)
+                {
+                    if (sqlite3_step(statement2) == SQLITE_DONE){
+                        
+                        NSString *querySQL3 = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode = \"\", AgentName = \"\", "
+                                            " AgentContactNo = \"\", ImmediateLeaderCode = \"\", ImmediateLeaderName = \"\", BusinessRegNumber = \"\", "
+                                            " AgentEmail = \"\" "];
+                        if (sqlite3_prepare_v2(contactDB, [querySQL3 UTF8String], -1, &statement3, NULL) == SQLITE_OK)
+                        {
+                            if (sqlite3_step(statement3) == SQLITE_DONE){
+                                
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reset"
+                                                                                message:@"System has been restored to first time login mode" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                                [alert show];
+                                
+                            }
+                            
+                            sqlite3_finalize(statement3);
+                        }
+                        
+                    }
+                    sqlite3_finalize(statement2);    
+                    
+                }
+                    
+                
+            } else {
+                NSLog(@"reset error");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField

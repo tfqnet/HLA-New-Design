@@ -28,5 +28,7 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
+- (IBAction)btnReset:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *outletReset;
 
 @end
