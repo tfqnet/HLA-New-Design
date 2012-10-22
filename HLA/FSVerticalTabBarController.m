@@ -97,14 +97,14 @@
         
         
         
-        if (selectedIndex == 5) {
+        if (selectedIndex == 0) {
             [self presentViewController:selectedViewController animated:YES completion:Nil];
         }
         
         
         else {
             
-            if (selectedIndex == 1) { //prospect profile
+            if (selectedIndex == 2) { //prospect profile
                 SIHandler *SIH = [[SIHandler alloc] init ];
                 NSLog(@"%d", SIH.storedIndexNo);
                 
@@ -222,7 +222,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if (indexPath.row == 4) {
+    if (indexPath.row == 5) {
         
         UIAlertView *alert = [[UIAlertView alloc] 
                               initWithTitle: NSLocalizedString(@"Log Out",nil)

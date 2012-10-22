@@ -104,7 +104,7 @@
     if ([outletCarousel indexOfItemView:sender] % 4 == 0) {
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 0;
+        zzz.IndexTab = 1;
         [self presentViewController:zzz animated:YES completion:Nil];
         //[self.navigationController pushViewController:zzz animated:YES];
     }
@@ -112,23 +112,15 @@
     else if ([outletCarousel indexOfItemView:sender] % 4 == 1) {
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 1;
+        zzz.IndexTab = 2;
         [self presentViewController:zzz animated:YES completion:Nil];
         
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
     else if ([outletCarousel indexOfItemView:sender] % 4 == 2) {
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 2;
+        zzz.IndexTab = 3;
         [self presentViewController:zzz animated:YES completion:Nil];
         
     }
@@ -136,7 +128,7 @@
     else if ([outletCarousel indexOfItemView:sender] % 4 == 3) {
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 3;
+        zzz.IndexTab = 4;
         [self presentViewController:zzz animated:YES completion:Nil];
         
     }

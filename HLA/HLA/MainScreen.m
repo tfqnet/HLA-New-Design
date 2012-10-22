@@ -48,6 +48,11 @@
     //Create view controllers
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
     
+    CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+    carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Menu" image:[UIImage imageNamed:@"home_btn.png"] tag: 0];
+    [controllersToAdd addObject:carouselPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
     setting* settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
     settingPage.indexNo = self.indexNo;
     settingPage.userRequest = self.userRequest;
@@ -73,14 +78,10 @@
     
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
-    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"exit_btnB.png"] tag: 0];
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
-    carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Menu" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
-    [controllersToAdd addObject:carouselPage];
-    viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     /*
     DemoHtml *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
@@ -101,7 +102,7 @@
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:IndexTab]);
     }
     else {
-        self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:0]);
+        self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);
     }
 }
 
