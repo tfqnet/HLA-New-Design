@@ -43,9 +43,7 @@
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-//        [NSString stringWithFormat:@"SELECT a.SINo, b.Name, b.DateCreated FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.PTypeCode=\"LA\" AND a.Sequence=1"];
-        
+    {        
         NSString *querySQL = [NSString stringWithFormat: @"SELECT IndexNo, ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile"];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {

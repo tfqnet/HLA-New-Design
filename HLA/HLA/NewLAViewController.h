@@ -53,7 +53,6 @@
 @property (nonatomic, copy) NSString *commencementDate;
 @property (nonatomic, assign,readwrite) int occuClass;
 @property (nonatomic, assign,readwrite) int IndexNo;
-@property (nonatomic, copy) NSString *checkSI;
 
 //declare for store in DB
 @property (nonatomic, copy) NSString *sex;
@@ -83,6 +82,11 @@
 
 @property (retain, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, retain) UIPopoverController *popOverController;
+
+@property(nonatomic , retain) NSString *NamePP;
+@property(nonatomic , retain) NSString *DOBPP;
+@property(nonatomic , retain) NSString *GenderPP;
+@property(nonatomic , retain) NSString *OccpCodePP;
 
 - (IBAction)sexSegmentPressed:(id)sender;
 - (IBAction)smokerSegmentPressed:(id)sender;

@@ -36,8 +36,9 @@
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,payorSINo,occCPA_PA;
 @synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
-@synthesize dataInsert,laH,commDate,occuClass,IndexNo,checkSI,laBH;
+@synthesize dataInsert,laH,commDate,occuClass,IndexNo,laBH;
 @synthesize ProspectList=_ProspectList;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 
 - (void)viewDidLoad
 {
@@ -69,11 +70,14 @@
     }
     NSLog(@"%@",[self.requestSINo description]);
     
-    NSLog(@"LA-SINo%@",requestSINo);
+    NSLog(@"LA-SINo: %@",requestSINo);
     if (requestSINo) {
         [self checkingExisting];
         if (SINo.length != 0) {
+            [self getProspectData];
             [self getSavedField];
+            
+            NSLog(@"will use existing data");
             useExist = YES;
         }
     } else {
@@ -137,57 +141,130 @@
 }
 
 
-
 #pragma mark - ToogleView
 
 -(void)getSavedField
 {
-    LANameField.text = clientName;
-    [self.btnDOB setTitle:DOB forState:UIControlStateNormal];
-    LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-    [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
-
-    if ([sex isEqualToString:@"M"]) {
-        sexSegment.selectedSegmentIndex = 0;
-    } else {
-        sexSegment.selectedSegmentIndex = 1;
-    }
-    NSLog(@"sex:%@",sex);
-    
-    if ([smoker isEqualToString:@"Y"]) {
-        smokerSegment.selectedSegmentIndex = 0;
-    } else {
-        smokerSegment.selectedSegmentIndex = 1;
+    BOOL valid;
+    if (![NamePP isEqualToString:clientName]) {
+        valid = FALSE;
     }
     
-    [self getOccLoadExist];
-    [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
-    
-    if (occLoading == 0) {
-        LAOccLoadingField.text = @"STD";
-    } else {
-        LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+    if (![GenderPP isEqualToString:sex]) {
+        valid = FALSE;
     }
     
-    if (occCPA_PA > 4) {
-        LACPAField.text = @"D";
-        LAPAField.text = @"D";
-    } else {
-        LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-        LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    if (![DOB isEqualToString:DOBPP]) {
+        valid = FALSE;
     }
     
-    dataInsert = [[NSMutableArray alloc] init];
-    SIHandler *ss = [[SIHandler alloc] init];
-    [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
-    for (NSUInteger i=0; i< dataInsert.count; i++) {
-        ss = [dataInsert objectAtIndex:i];
-        NSLog(@"stored SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
+    if (![occuCode isEqualToString:OccpCodePP]) {
+        valid = FALSE;
+    }
+    
+    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,occuCode);
+    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
+    
+    if (valid) {
+        
+        LANameField.text = clientName;
+        [self.btnDOB setTitle:DOB forState:UIControlStateNormal];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+        [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
+        
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",sex);
+        
+        if ([smoker isEqualToString:@"Y"]) {
+            smokerSegment.selectedSegmentIndex = 0;
+        } else {
+            smokerSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"smoker:%@",smoker);
+        
+        [self getOccLoadExist];
+        [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+        
+        if (occLoading == 0) {
+            LAOccLoadingField.text = @"STD";
+        } else {
+            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+        
+        if (occCPA_PA > 4) {
+            LACPAField.text = @"D";
+            LAPAField.text = @"D";
+        } else {
+            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        dataInsert = [[NSMutableArray alloc] init];
+        SIHandler *ss = [[SIHandler alloc] init];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            ss = [dataInsert objectAtIndex:i];
+            NSLog(@"stored SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
+        }
+    }
+    else {
+        
+        LANameField.text = NamePP;
+        sex = GenderPP;
+        
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",sex);
+        
+        if ([smoker isEqualToString:@"Y"]) {
+            smokerSegment.selectedSegmentIndex = 0;
+        } else if ([smoker isEqualToString:@"N"]) {
+            smokerSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"smoker:%@",smoker);
+        
+        [btnDOB setTitle:DOBPP forState:UIControlStateNormal];
+        DOB = DOBPP;
+        [self calculateAge];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+        
+        [btnCommDate setTitle:commDate forState:UIControlStateNormal];
+        
+        occuCode = OccpCodePP;
+        [self getOccLoadExist];
+        [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+        if (occLoading == 0) {
+            LAOccLoadingField.text = @"STD";
+        } else {
+            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+        
+        if (occCPA_PA > 4) {
+            LACPAField.text = @"D";
+            LAPAField.text = @"D";
+        } else {
+            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+//            statusLabel.text = @"Data changed. Please resave!";
+//            statusLabel.textColor = [UIColor redColor];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1004];
+        [alert show];
     }
 }
 
 #pragma mark - Action
-- (IBAction)sexSegmentPressed:(id)sender 
+- (IBAction)sexSegmentPressed:(id)sender
 {
     if ([sexSegment selectedSegmentIndex]==0) {
         sex = @"M";
@@ -758,7 +835,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
+                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id, b.IndexNo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
+    
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -773,6 +851,7 @@
                 occuCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
                 commDate = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
                 clientID = sqlite3_column_int(statement, 9);
+                IndexNo = sqlite3_column_int(statement, 10);
                 
 //                NSLog(@"sex:%@",sex);
             
@@ -785,23 +864,24 @@
     }
 }
 
--(void)checkingSI
-{
-    checkSI = [[NSString alloc] init];
+-(void)getProspectData
+{    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.SINo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE b.indexNo=\"%d\"",IndexNo];
-                
+            @"SELECT ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile WHERE IndexNo= \"%d\"",IndexNo];
+
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                checkSI = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                
+                NamePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                DOBPP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                GenderPP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                OccpCodePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
             } else {
-                NSLog(@"error access Clt_Profile");
+                NSLog(@"error access prospect_profile");
             }
             sqlite3_finalize(statement);
         }
@@ -928,142 +1008,54 @@
 
 -(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode
 {
-    if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
-        sex = nil;
-        smoker = nil;
-        useExist = NO;
-    }
-    
+    useExist = NO;
     statusLabel.text = @"";
     NSLog(@"namedb:%@, gender:%@",aaName,aaGender);
     IndexNo = [aaIndex intValue];
-    [self checkingSI];
     
-    if (checkSI.length == 0)
-    {
-        NSLog(@"view new client");
-        DOB = aaDOB;
-        [self calculateAge];
-        if (age > 70) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured's age exceed HLA Income Builder maximum entry age (70 years old)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert show];
-        }
-        else {
-
-            LANameField.text = aaName;
-            sex = aaGender;
-            [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        
-            if ([sex isEqualToString:@"M"]) {
-                sexSegment.selectedSegmentIndex = 0;
-            } else {
-                sexSegment.selectedSegmentIndex = 1;
-            }
-            NSLog(@"sex:%@",sex);
-        
-            [btnDOB setTitle:DOB forState:UIControlStateNormal];
-            LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-                
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-            commDate = [dateFormatter stringFromDate:[NSDate date]];
-            [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
-        
-            occuCode = aaCode;
-            [self getOccLoadExist];
-            [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
-        
-            if (occLoading == 0) {
-                LAOccLoadingField.text = @"STD";
-            } else {
-                LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-            }
-        
-            if (occCPA_PA > 4) {
-                LACPAField.text = @"D";
-                LAPAField.text = @"D";
-            } else {
-                LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            }
-        }
-        
+    NSLog(@"view new client");
+    DOB = aaDOB;
+    [self calculateAge];
+    if (age > 70) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured's age exceed HLA Income Builder maximum entry age (70 years old)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
     }
     else {
-        useExist = YES;
-        NSLog(@"view existing client");
-        requestSINo = checkSI;
-        [self checkingExisting];
+        LANameField.text = aaName;
+        sex = aaGender;
+        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         
-        BOOL valid;
-        if (![aaName isEqualToString:clientName]) {
-            valid = FALSE;
-        } 
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",sex);
         
-        if (![aaGender isEqualToString:sex]) {
-            valid = FALSE;
+        [btnDOB setTitle:DOB forState:UIControlStateNormal];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+                
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        commDate = [dateFormatter stringFromDate:[NSDate date]];
+        [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
+        
+        occuCode = aaCode;
+        [self getOccLoadExist];
+        [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+        
+        if (occLoading == 0) {
+            LAOccLoadingField.text = @"STD";
+        } else {
+            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
         }
         
-        if (![DOB isEqualToString:aaDOB]) {
-            valid = FALSE;
-        } 
-        
-        if (![occuCode isEqualToString:aaCode]) {
-            valid = FALSE;
-        }
-        
-        if (valid) {
-            [self getSavedField];
-        }
-        else {
-            
-            LANameField.text = aaName;
-            sex = aaGender;
-            
-            if ([sex isEqualToString:@"M"]) {
-                sexSegment.selectedSegmentIndex = 0;
-            } else if ([sex isEqualToString:@"F"]) {
-                sexSegment.selectedSegmentIndex = 1;
-            }
-            NSLog(@"sex:%@",sex);
-            
-            if ([smoker isEqualToString:@"Y"]) {
-                smokerSegment.selectedSegmentIndex = 0;
-            } else if ([smoker isEqualToString:@"N"]) {
-                smokerSegment.selectedSegmentIndex = 1;
-            }
-            
-            [btnDOB setTitle:aaDOB forState:UIControlStateNormal];
-            DOB = aaDOB;
-            [self calculateAge];
-            LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-            
-            [btnCommDate setTitle:commDate forState:UIControlStateNormal];
-            
-            occuCode = aaCode;
-            [self getOccLoadExist];
-            [self.btnOccp setTitle:occuDesc forState:UIControlStateNormal];
-            if (occLoading == 0) {
-                LAOccLoadingField.text = @"STD";
-            } else {
-                LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-            }
-            
-            if (occCPA_PA > 4) {
-                LACPAField.text = @"D";
-                LAPAField.text = @"D";
-            } else {
-                LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            }
-            
-//            statusLabel.text = @"Data changed. Please resave!";
-//            statusLabel.textColor = [UIColor redColor];
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert setTag:1004];
-            [alert show];
-            
+        if (occCPA_PA > 4) {
+            LACPAField.text = @"D";
+            LAPAField.text = @"D";
+        } else {
+            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
     }
     
@@ -1107,6 +1099,10 @@
 - (void)viewDidUnload
 {
     [self resignFirstResponder];
+    [self setNamePP:nil];
+    [self setGenderPP:nil];
+    [self setDOBPP:nil];
+    [self setOccpCodePP:nil];
     [self setLANameField:nil];
     [self setSexSegment:nil];
     [self setSmokerSegment:nil];
