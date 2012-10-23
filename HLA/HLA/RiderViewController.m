@@ -1026,7 +1026,7 @@
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     main.mainH = riderH;
     main.mainBH = riderBH;
-    main.IndexTab = 3;
+    main.IndexTab = 4;
     [self presentModalViewController:main animated:YES];
 }
 

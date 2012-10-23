@@ -101,12 +101,13 @@
 }
 
 #pragma mark - action
+
 - (IBAction)doClosePayor:(id)sender 
 {
     MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     main.modalPresentationStyle = UIModalPresentationFullScreen;
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.IndexTab = 3;
+    main.IndexTab = 4;
     main.mainH = payorH;
     [self presentModalViewController:main animated:YES];
 }

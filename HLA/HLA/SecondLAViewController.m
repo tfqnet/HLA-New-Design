@@ -170,7 +170,7 @@
     MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     main.modalPresentationStyle = UIModalPresentationFullScreen;
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.IndexTab = 3;
+    main.IndexTab = 4;
     main.mainH = la2ndH;
     [self presentModalViewController:main animated:YES];
 }
