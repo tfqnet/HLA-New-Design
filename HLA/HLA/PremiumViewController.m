@@ -319,7 +319,7 @@
         } else if ([riderHLP count] != 0) {
             riderHLoad = [[riderHLP objectAtIndex:i] doubleValue];
         }
-        NSLog(@"riderRate:%d, ridersum:%.3f, HL:%.3f",riderRate,ridSA,riderHLoad);
+        NSLog(@"riderRate:%.2f, ridersum:%.3f, HL:%.3f",riderRate,ridSA,riderHLoad);
         
         //calculate occupationLoading
         double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 1;
@@ -484,6 +484,7 @@
 
 
 #pragma mark - handle db
+
 -(void)getBasicPentaRate
 {
     sqlite3_stmt *statement;

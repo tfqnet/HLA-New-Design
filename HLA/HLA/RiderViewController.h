@@ -143,7 +143,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *editBtn;
 @property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
 
-@property (nonatomic, assign,readwrite) int riderRate;
+@property (nonatomic, assign,readwrite) double riderRate;
 @property (nonatomic, assign,readwrite) int CombNo;
 @property (nonatomic, assign,readwrite) int RBBenefit;
 @property (nonatomic, assign,readwrite) int RBLimit;
