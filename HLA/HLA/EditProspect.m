@@ -598,7 +598,7 @@
         for (int i=0; i<strToBeTest.length; i++) {
             int str1=(int)[strToBeTest characterAtIndex:i];
             
-            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
+            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91) || str1 == 39 || str1 == 64 || str1 == 47 || str1 == 45 || str1 == 46){
                 valid = TRUE;
                 
             }else {
@@ -635,7 +635,7 @@
         for (int i=0; i<strToBeTest.length; i++) {
             int str1=(int)[strToBeTest characterAtIndex:i];
             
-            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
+            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91) || str1 == 39 || str1 == 64 || str1 == 47 || str1 == 45 || str1 == 46){
                 valid = TRUE;
                 
             }else {
@@ -645,7 +645,7 @@
         }
         if (!valid) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Full name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe ('), alias(@),slash(/),dash(-) or dot(.)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             

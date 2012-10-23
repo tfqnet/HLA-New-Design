@@ -23,7 +23,12 @@
 @property (nonatomic, assign) int BasicSA;
 @property (nonatomic, assign) int PremiumPaymentOption;
 @property (nonatomic, assign) int AdvanceYearlyIncome;
-@property (retain, nonatomic) NSMutableArray *RiderCode;
-@property (retain, nonatomic) NSMutableArray *RiderTerm;
-@property (retain, nonatomic) NSMutableArray *RiderDesc;
+@property (nonatomic, assign) int HealthLoading;
+@property (retain, nonatomic) NSMutableArray *IncomeRiderCode;
+@property (retain, nonatomic) NSMutableArray *IncomeRiderTerm;
+@property (retain, nonatomic) NSMutableArray *IncomeRiderDesc;
+@property (retain, nonatomic) NSMutableArray *OtherRiderCode;
+@property (retain, nonatomic) NSMutableArray *OtherRiderTerm;
+@property (retain, nonatomic) NSMutableArray *OtherRiderDesc;
+
 @end

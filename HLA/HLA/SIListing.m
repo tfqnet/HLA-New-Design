@@ -431,7 +431,7 @@
        
         NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
         MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        MainScreenPage.IndexTab = 3;
+        MainScreenPage.IndexTab = 4;
         NewLAPage.modalPresentationStyle = UIModalPresentationPageSheet;
         NewLAPage.requestSINo = [SINO objectAtIndex:indexPath.row];
         

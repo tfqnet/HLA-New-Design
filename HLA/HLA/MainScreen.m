@@ -16,6 +16,7 @@
 #import "SIMenuViewController.h"
 #import "CarouselViewController.h"
 #import "DemoHtml.h"
+#import "ReportViewController.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -82,13 +83,19 @@
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
+    ReportViewController *reportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+    reportPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    reportPage.SINo = @"SI20121023-0001";
+    [controllersToAdd addObject:reportPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     
+    /*
     DemoHtml *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
     demoPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:demoPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    
+    */
     
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];
