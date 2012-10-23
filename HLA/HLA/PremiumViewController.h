@@ -31,7 +31,7 @@
 
 @property (nonatomic, assign,readwrite) int basicRate;
 @property (nonatomic, assign,readwrite) int LSDRate;
-@property (nonatomic, assign,readwrite) double riderRate;
+@property (nonatomic, assign,readwrite) int riderRate;
 @property (nonatomic, assign,readwrite) int occLoad;
 @property(nonatomic , retain) NSMutableArray *riderCode;
 @property(nonatomic , retain) NSMutableArray *riderDesc;
