@@ -31,7 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    outletCarousel.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg11.jpg"]];
     outletCarousel.dataSource = self;
     outletCarousel.delegate = self;
     outletCarousel.type = iCarouselTypeRotary;
@@ -69,16 +69,28 @@
     button.frame = CGRectMake(0, 0, 400.0f, 400.0f);
     //[button setTitle:[NSString stringWithFormat:@"%i", index] forState:UIControlStateNormal];
     if (index % 4 == 0) {
-        [button setTitle:[NSString stringWithFormat:@"Setting", index] forState:UIControlStateNormal];    
+        //[button setTitle:[NSString stringWithFormat:@"Setting", index] forState:UIControlStateNormal];    
+        NSString *filename = [NSString stringWithFormat:@"btn_setting_home"];
+        UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
+        [button setBackgroundImage:image forState:UIControlStateNormal];  
     }
     else if (index % 4 == 1) {
-        [button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];
+        //[button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];
+        NSString *filename = [NSString stringWithFormat:@"btn_prospect_home"];
+        UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
+        [button setBackgroundImage:image forState:UIControlStateNormal];  
     }
     else if (index % 4 == 2) {
-        [button setTitle:[NSString stringWithFormat:@"SI Listing", index] forState:UIControlStateNormal];
+        //[button setTitle:[NSString stringWithFormat:@"SI Listing", index] forState:UIControlStateNormal];
+        NSString *filename = [NSString stringWithFormat:@"btn_brochure_home"];
+        UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
+        [button setBackgroundImage:image forState:UIControlStateNormal];  
     }
     else if (index % 4 == 3) {
-        [button setTitle:[NSString stringWithFormat:@"New SI", index] forState:UIControlStateNormal];
+        //[button setTitle:[NSString stringWithFormat:@"New SI", index] forState:UIControlStateNormal];
+        NSString *filename = [NSString stringWithFormat:@"btn_SI_home"];
+        UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
+        [button setBackgroundImage:image forState:UIControlStateNormal];  
     }
     /*
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -118,11 +130,12 @@
     }
     
     else if ([outletCarousel indexOfItemView:sender] % 4 == 2) {
+        /*
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = 3;
         [self presentViewController:zzz animated:YES completion:Nil];
-        
+        */
     }
     
     else if ([outletCarousel indexOfItemView:sender] % 4 == 3) {
