@@ -480,14 +480,19 @@
             newALB = ALB - 1;
         } else if (monthN == monthB && dayN < dayB) {
             newALB = ALB - 1;
+        } else if (monthN == monthB && dayN == dayB) { //edited by heng
+            newALB = ALB - 1;  //edited by heng
         } else {
             newALB = ALB;
+            
         }
             
         if (monthN > monthB) {
             newANB = ALB + 1;
-        } else if (monthN == monthB && dayN >= dayB) {
+        } else if (monthN == monthB && dayN > dayB) {
             newANB = ALB + 1;
+        } else if (monthN == monthB && dayN == dayB) { // edited by heng
+            newANB = ALB; //edited by heng
         } else {
             newANB = ALB;
         }

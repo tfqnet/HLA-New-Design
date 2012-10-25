@@ -86,6 +86,7 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
+    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp]; // edited by heng
 //    [formatter setMaximumFractionDigits:2];
     
     //calculate basic premium
@@ -123,6 +124,9 @@
     double _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
     double _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
     double _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
+  
+    _LSDQuarterly = [[formatter numberFromString:[formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]]] doubleValue ];
+    _LSDMonthly = [[formatter numberFromString:[formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]]] doubleValue ];
     
     //calculate Total basic premium
     double _basicTotalA = _BasicAnnually + _OccpLoadA + _BasicHLAnnually - _LSDAnnually;
@@ -149,6 +153,7 @@
     NSString *LSDHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
     NSString *LSDQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];
     NSString *LSDMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]];
+    
     
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
         @"<html><body><table border='1' width='70%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
@@ -248,14 +253,20 @@
                 } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"Premier"]) {
                     planHSPII = @"P";
                 }
-                pentaSQL = [[NSString alloc] initWithFormat:
-                        @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planHSPII];
                 
+                /*pentaSQL = [[NSString alloc] initWithFormat:
+                        @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planHSPII];
+                */
+                //edit by heng
+                pentaSQL = [[NSString alloc] initWithFormat:
+                            @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HSP_II\" AND PlanOption=\"%@\"",planHSPII];
             }
             else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"])
             {
                 planMGII = [riderPlanOpt objectAtIndex:i];
-                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planMGII];
+                // edited by heng  pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planMGII];
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_II\" AND PlanOption=\"%@\"",planMGII];
+                
                 
             } else if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID40R"])
             {
@@ -298,10 +309,20 @@
             [self getRiderRateAge:planCodeRider riderTerm:ridTerm];
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"CPA"]) {
-            [self getRiderRate:planCodeRider riderTerm:ridTerm];
+            //[self getRiderRate:planCodeRider riderTerm:ridTerm];
+            [self getRiderRateCPA:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([[riderCode objectAtIndex:i] isEqualToString:@"PA"]) {
+            [self getRiderRatePA:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"]) {
+            [self getRiderRateHSP_II:planCodeRider riderTerm:ridTerm];
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"HB"]) {
             [self getRiderRateAge:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"] || [[riderCode objectAtIndex:i] isEqualToString:@"MG_II"]  ) {
+            [self getRiderRateClass:planCodeRider riderTerm:ridTerm];
         }
         else {
             [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
@@ -647,8 +668,19 @@
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,aaterm,aaterm,premH.storedAge,premH.storedAge];
+        //----------------- edited by heng on 25th oct 2012 because IE20R and IE30R dont have term
+        NSString *querySQL;
+        if (aaterm == 0) { 
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,premH.storedAge,premH.storedAge];
+            
+        }
+        else {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,aaterm,aaterm,premH.storedAge,premH.storedAge];
+            
+        }    
+        //-------------------
         
         NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
@@ -674,6 +706,114 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                 @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\"",aaplan,aaterm,aaterm,premH.storedAge,premH.storedAge,premH.storedSex];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateClass:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                              " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\" AND occpClass = \"%d\"",
+                              aaplan,aaterm,aaterm,premH.storedAge,premH.storedAge,premH.storedSex, premH.storedOccpClass];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateHSP_II:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND "
+                              " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\" AND occpClass = \"%d\"",
+                              aaplan,premH.storedAge,premH.storedAge,premH.storedSex, premH.storedOccpClass];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRatePA:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                              " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND occpClass = \"%d\"",
+                              aaplan,aaterm,aaterm,premH.storedAge,premH.storedAge, premH.storedOccpClass];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateCPA:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                              " FromMortality=0 AND occpClass = \"%d\"",
+                              aaplan,aaterm,aaterm, premH.storedOccpClass];
         
         NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];

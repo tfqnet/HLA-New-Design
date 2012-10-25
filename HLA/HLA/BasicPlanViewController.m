@@ -40,7 +40,7 @@
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA,SINoPlan;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
-@synthesize planCode,requestOccpCode,basicH,dataInsert;
+@synthesize planCode,requestOccpCode,basicH,dataInsert, OccuClass;
 @synthesize popoverController;
 
 #pragma mark - Cycle View
@@ -55,9 +55,11 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
     //passing value
+    
     ageClient = basicH.storedAge;
     requestSINo = basicH.storedSINo;
     requestOccpCode = basicH.storedOccpCode;
+    OccuClass = basicH.storedOccpClass;
     NSLog(@"BASIC-SINo:%@, age:%d, job:%@",requestSINo,ageClient,requestOccpCode);
     
     if (!planList) {

@@ -23,6 +23,7 @@
 
 //request from previous
 @property (nonatomic, assign,readwrite) int ageClient;
+@property (nonatomic, assign,readwrite) int OccuClass;
 @property (nonatomic,retain) NSString *requestSINo;
 @property (nonatomic,retain) NSString *requestOccpCode;
 @property (nonatomic,strong) SIHandler *basicH;
