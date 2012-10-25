@@ -83,12 +83,13 @@
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
+    /*
     ReportViewController *reportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
     reportPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     reportPage.SINo = @"SI20121023-0001";
     [controllersToAdd addObject:reportPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    
+    */
     
     /*
     DemoHtml *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];

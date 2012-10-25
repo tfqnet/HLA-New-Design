@@ -282,6 +282,7 @@
                 {
                     planCodeRider =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                     
+                    
                 } else {
                     NSLog(@"error access PentaPlanCode");
                 }

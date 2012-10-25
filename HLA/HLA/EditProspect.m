@@ -224,9 +224,11 @@
     txtExactDuties.text = pp.ExactDuties;
     
     if ([pp.ProspectGender isEqualToString:@"M"]) {
+        gender = @"M";
         segGender.selectedSegmentIndex = 0;
     }
     else { 
+        gender = @"F";
         segGender.selectedSegmentIndex = 1;
     }
     
@@ -621,7 +623,7 @@
     
     if([txtrFullName.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                    message:@"Full Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                    message:@"Full Name is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
         
@@ -656,7 +658,7 @@
     
     if(segGender.selectedSegmentIndex == -1){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                    message:@"Gender field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                    message:@"Gender field is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -680,7 +682,7 @@
     if(outletType1.titleLabel.text != NULL) {
         if ([txtPrefix1.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Please key in prefix for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Prefix is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -745,7 +747,7 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Please enter input for contact no 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Contact No is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
                     [self resignFirstResponder];
                     [self.view endEditing:TRUE];
@@ -770,7 +772,7 @@
     if(![outletType2.titleLabel.text isEqualToString:@""]) {
         if ([txtPrefix2.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Please key in prefix for contact no 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Prefix is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -835,7 +837,7 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Please enter input for contact no 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Contact No is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
                     [self resignFirstResponder];
                     [self.view endEditing:TRUE];
@@ -850,7 +852,7 @@
     if(![outletType3.titleLabel.text isEqualToString:@""]) {
         if ([txtPrefix3.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Please key in prefix for contact no 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Prefix is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -903,7 +905,7 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Please enter input for contact no 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Contact No is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
                     [self resignFirstResponder];
                     [self.view endEditing:TRUE];
@@ -918,7 +920,7 @@
     if(![outletType4.titleLabel.text isEqualToString:@""]) {
         if ([txtPrefix4.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Please key in prefix for contact no 4" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Prefix is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -983,7 +985,7 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Please enter input for contact no 4" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Contact No is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
                     [self resignFirstResponder];
                     [self.view endEditing:TRUE];
@@ -998,7 +1000,7 @@
     if(![outletType5.titleLabel.text isEqualToString:@""]) {
         if ([txtPrefix5.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Please key in prefix for contact no 5" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Prefix is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -1063,7 +1065,7 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Please enter input for contact no 5" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Contact No is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
                     [self resignFirstResponder];
                     [self.view endEditing:TRUE];
@@ -1078,7 +1080,7 @@
     
     if([txtEmail.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Please enter email address" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Email address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
         
@@ -1088,7 +1090,7 @@
     
     if([txtHomeAddr1.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Home Address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -1099,7 +1101,7 @@
     
     if([txtHomePostCode.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Home Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -1126,7 +1128,7 @@
     
     if([txtOfiiceAddr1.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Office Address cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
         
@@ -1136,7 +1138,7 @@
     
     if([txtOfficePostCode.text isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Office Address PostCode cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -1163,7 +1165,7 @@
     
     if(OccupCodeSelected == NULL){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Occupation field cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Occupation field is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -1552,8 +1554,9 @@
         }
         
         if (gotRow == false) {
-            UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            txtOfficePostCode.text = @"";
+            UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Residence address" 
+                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            txtHomePostCode.text = @"";
             txtHomeState.text = @"";
             txtHomeTown.text = @"";
             txtHomeCountry.text = @"";
@@ -1582,13 +1585,15 @@
                 
                 txtOfficeState.text = OfficeState;
                 txtOfficeTown.text = OfficeTown;
-                txtOfficeCountry.text = @"Malaysia";
+                txtOfficeCountry.text = @"MALAYSIA";
                 SelectedOfficeStateCode = Statecode;
                 gotRow = true;
             }
             
             if (gotRow == false) {
-                UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
+                                                                    delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                txtOfficePostCode.text = @"";
                 txtOfficeState.text = @"";
                 txtOfficeTown.text = @"";
                 txtOfficeCountry.text = @"";

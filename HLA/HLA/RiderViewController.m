@@ -557,6 +557,7 @@
                 {
                     planCodeRider =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                     
+                    
                 } else {
                     NSLog(@"error access PentaPlanCode");
                 }
@@ -756,7 +757,7 @@
         sqlite3_stmt *statement;
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
         {
-            if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"])
+            if ([[LRiderCode objectAtIndex:i] isEqualToString:@"a"])
             {
                 planOptHMM = [LPlanOpt objectAtIndex:i];
                 deducHMM = [LDeduct objectAtIndex:i];

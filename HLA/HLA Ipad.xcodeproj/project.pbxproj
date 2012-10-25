@@ -98,6 +98,7 @@
 		C4F83033162FCEE000EF8FAA /* Page2.html in Resources */ = {isa = PBXBuildFile; fileRef = C4F8302E162FCEE000EF8FAA /* Page2.html */; };
 		C4F83034162FCEE000EF8FAA /* Page3.html in Resources */ = {isa = PBXBuildFile; fileRef = C4F8302F162FCEE000EF8FAA /* Page3.html */; };
 		C4F83035162FCEE000EF8FAA /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = C4F83030162FCEE000EF8FAA /* style.css */; };
+		C4FCDDA2163792D50065D024 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDA1163792D50065D024 /* hladb.sqlite */; };
 		EF059839161A8BD1004A9095 /* NewLAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059837161A8BCF004A9095 /* NewLAViewController.m */; };
 		EF05983F161A8C85004A9095 /* ListingTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05983D161A8C85004A9095 /* ListingTbViewController.m */; };
 		EF059842161A901A004A9095 /* PayorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059840161A901A004A9095 /* PayorViewController.m */; };
@@ -247,6 +248,7 @@
 		C4F8302E162FCEE000EF8FAA /* Page2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page2.html; sourceTree = "<group>"; };
 		C4F8302F162FCEE000EF8FAA /* Page3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page3.html; sourceTree = "<group>"; };
 		C4F83030162FCEE000EF8FAA /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
+		C4FCDDA1163792D50065D024 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EF059837161A8BCF004A9095 /* NewLAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLAViewController.m; sourceTree = "<group>"; };
 		EF059838161A8BD0004A9095 /* NewLAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLAViewController.h; sourceTree = "<group>"; };
 		EF05983D161A8C85004A9095 /* ListingTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListingTbViewController.m; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				C4FCDDA1163792D50065D024 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -716,6 +719,7 @@
 				C4F83033162FCEE000EF8FAA /* Page2.html in Resources */,
 				C4F83034162FCEE000EF8FAA /* Page3.html in Resources */,
 				C4F83035162FCEE000EF8FAA /* style.css in Resources */,
+				C4FCDDA2163792D50065D024 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
