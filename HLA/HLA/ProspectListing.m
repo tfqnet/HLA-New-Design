@@ -37,6 +37,7 @@
     [self.view endEditing:YES];
     [self resignFirstResponder];
     
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg8.jpg"]];
     
     searchBar.delegate = (id)self;
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

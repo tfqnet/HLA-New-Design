@@ -363,7 +363,7 @@
                             if (sqlite3_step(statement3) == SQLITE_DONE){
                                 
                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reset"
-                                                                                message:@"System has been restored to first time login mode" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                                                                                message:@"System has been restored to first time login mode" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                                 [alert show];
                                 
                             }

@@ -43,6 +43,8 @@
 {
     [super viewDidLoad];
 
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+    
     if (FirstTimeLogin == 1) {
         outletCancel.enabled = false;
     }
@@ -241,24 +243,31 @@
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-            
-                    NSString *FinalSQL = [NSString stringWithFormat:@"UPDATE User_Profile SET AgentPassword= \"%@\", FirstLogin = 0 WHERE IndexNo=\"%d\"", self.ChangePwdPassword ,self.indexNo];
-                    
-                    
-                    if (sqlite3_prepare_v2(contactDB, [FinalSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK){
+                    if (FirstTimeLogin == 1) {
+                        NSString *FinalSQL = [NSString stringWithFormat:@"UPDATE User_Profile SET AgentPassword= \"%@\", FirstLogin = 0 WHERE IndexNo=\"%d\"", self.ChangePwdPassword ,self.indexNo];
                         
-                        if (sqlite3_step(statement2) == SQLITE_DONE)
-                        {
-                            UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                              message:@"Data Updated" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
-                            success.tag = 1;
-                            [success show];
-                        }
+                        
+                        if (sqlite3_prepare_v2(contactDB, [FinalSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK){
                             
-                        
+                            if (sqlite3_step(statement2) == SQLITE_DONE)
+                            {
+                                UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                                  message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                                success.tag = 1;
+                                [success show];
+                            }
+                            
+                            sqlite3_finalize(statement2);
+                        }    
+                    }
+                    else {
+                        UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                          message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                        success.tag = 1;
+                        [success show];
                     }
                     
-                    
+                   
                     
                 } else {
                     lblStatus.text = @"Failed to update!";
@@ -279,7 +288,7 @@
 
 -(BOOL) Validation{
     
-    if ([txtAgentCode.text isEqualToString:@""] || txtAgentCode.text.length == 0) {
+    if ([txtAgentCode.text isEqualToString:@""] || [txtAgentCode.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Agent Code is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -287,7 +296,7 @@
         
     }
     
-    if ([txtAgentName.text isEqualToString:@""]) {
+    if ([txtAgentName.text isEqualToString:@""] || [txtAgentName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length == 0 ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Agent Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
@@ -320,7 +329,7 @@
         }
     }
 
-    if(![txtAgentContactNo.text isEqualToString:@"" ]){
+    if(![[txtAgentContactNo.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@"" ]){
         if (txtAgentContactNo.text.length > 11) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -349,7 +358,7 @@
         return false;
     }
     
-    if (![txtEmail.text isEqualToString:@""]) {
+    if (![[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
         if( [self NSStringIsValidEmail:txtEmail.text] == FALSE ){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Email address is not in valid form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

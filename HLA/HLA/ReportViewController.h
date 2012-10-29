@@ -27,8 +27,11 @@
 @property (retain, nonatomic) NSMutableArray *IncomeRiderCode;
 @property (retain, nonatomic) NSMutableArray *IncomeRiderTerm;
 @property (retain, nonatomic) NSMutableArray *IncomeRiderDesc;
+@property (retain, nonatomic) NSMutableArray *IncomeRiderSA;
+@property (retain, nonatomic) NSMutableArray *IncomeRiderPlanOption;
 @property (retain, nonatomic) NSMutableArray *OtherRiderCode;
 @property (retain, nonatomic) NSMutableArray *OtherRiderTerm;
 @property (retain, nonatomic) NSMutableArray *OtherRiderDesc;
-
+@property (retain, nonatomic) NSMutableArray *OtherRiderSA;
+@property (retain, nonatomic) NSMutableArray *OtherRiderPlanOption;
 @end

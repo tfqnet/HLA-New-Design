@@ -15,7 +15,7 @@
 @implementation ReportViewController
 @synthesize SINo, PolicyTerm, BasicSA, PremiumPaymentOption, AdvanceYearlyIncome,OtherRiderCode,OtherRiderDesc,OtherRiderTerm;
 @synthesize YearlyIncome, CashDividend,CustCode, Age, IncomeRiderCode,IncomeRiderDesc,IncomeRiderTerm;
-@synthesize HealthLoading;
+@synthesize HealthLoading, OtherRiderSA, IncomeRiderSA, IncomeRiderPlanOption, OtherRiderPlanOption;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,8 +44,8 @@
     
     [self InsertHeaderTB]; //insert summary of basic plan header into temp table bm and english
     
-    [self InsertToSI_Temp_Trad_LA]; // for the front summary page 
-    
+    //[self InsertToSI_Temp_Trad_LA]; // for the front summary page 
+    [self InsertToSI_Temp_Trad_Details];
     
 }
 
@@ -391,17 +391,21 @@
 -(void)InsertToSI_Temp_Trad_Details{
     sqlite3_stmt *statement;
     NSString *QuerySQL;
+    NSString *RiderSQL;
     
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 
                 QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
                             " VALUES ( "
-                            " \"%@\",\"1\",\"DATA\",\"HLA Income Builder\",\"\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"2\" "
+                            " \"%@\",\"1\",\"DATA\",\"HLA Income Builder\",\"\",\"0\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"\",\"2\" "
                             ")", SINo, BasicSA,PolicyTerm,PremiumPaymentOption,16,17,18,19];
                 
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
+                        
+                        
+                        
                         
                     }
                     sqlite3_finalize(statement); 
@@ -409,7 +413,45 @@
             
             sqlite3_close(contactDB);
         }
-     
+    
+    for (int a=0; a<OtherRiderCode.count; a++) {
+        RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+                    "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
+                    " VALUES ( "
+                    " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"\",\"\" "
+                    ")", SINo, [OtherRiderDesc objectAtIndex:a],[OtherRiderPlanOption objectAtIndex:a], [OtherRiderSA objectAtIndex:a],
+                    [OtherRiderTerm objectAtIndex:a], [OtherRiderTerm objectAtIndex:a],16,17,18,19];
+        
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+            if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement) == SQLITE_DONE) {
+                    
+                } 
+                sqlite3_finalize(statement); 
+            }
+            sqlite3_close(contactDB);
+        }
+        
+    }
+
+    for (int a=0; a<IncomeRiderCode.count; a++) {
+        RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+                    "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
+                    " VALUES ( "
+                    " \"%@\",\"5\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"\",\"%d\" "
+                    ")", SINo, [IncomeRiderDesc objectAtIndex:a],@"", [IncomeRiderSA objectAtIndex:a],
+                    [IncomeRiderTerm objectAtIndex:a], PremiumPaymentOption ,16,17,18,19, 2];
+        
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+            if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement) == SQLITE_DONE) {
+                    
+                } 
+                sqlite3_finalize(statement); 
+            }
+            sqlite3_close(contactDB);
+        }
+    }
 }
 
 -(void)InsertToSI_Temp_Trad_Basic{
@@ -473,10 +515,7 @@
                             if (sqlite3_step(statement2) == SQLITE_DONE) {
                             
                             }
-                                
                         }
-                            
-                        
                     }
                     sqlite3_finalize(statement); 
                 }
@@ -653,7 +692,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
             QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
                                   "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\" from Trad_Details where \"sino\" = \"%@\" AND \"seq\" = 1 ", SINo];
-            
+        NSLog(@"%@", QuerySQL);
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             
             if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -664,6 +703,8 @@
                 YearlyIncome = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
                 AdvanceYearlyIncome = sqlite3_column_int(statement, 5);
                 HealthLoading = sqlite3_column_int(statement, 6);
+                
+                
             }
             sqlite3_finalize(statement);
             
@@ -674,13 +715,19 @@
     IncomeRiderCode = [[NSMutableArray alloc] init ];
     IncomeRiderTerm = [[NSMutableArray alloc] init ];
     IncomeRiderDesc = [[NSMutableArray alloc] init ];
+    IncomeRiderSA = [[NSMutableArray alloc] init ];
+    IncomeRiderPlanOption = [[NSMutableArray alloc] init ];
     OtherRiderCode = [[NSMutableArray alloc] init ];
     OtherRiderTerm = [[NSMutableArray alloc] init ];
     OtherRiderDesc = [[NSMutableArray alloc] init ];
+    OtherRiderSA = [[NSMutableArray alloc] init ];
+    OtherRiderPlanOption = [[NSMutableArray alloc] init ];
     
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-        QuerySQL = [ NSString stringWithFormat:@"Select A.RiderCode, \"RiderTerm\",\"RiderDesc\" from trad_rider_details as A, "
+        QuerySQL = [ NSString stringWithFormat:@"Select A.RiderCode, \"RiderTerm\",\"RiderDesc\", \"SumAssured\", \"PlanOption\" from trad_rider_details as A, "
                     "trad_sys_rider_profile as B  where \"sino\" = \"%@\" AND A.ridercode = B.RiderCode ", SINo];
+        
+        NSLog(@"%@", QuerySQL);
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
             
@@ -695,11 +742,16 @@
                     [IncomeRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)]];
                     [IncomeRiderTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)]];
                     [IncomeRiderDesc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)]];
+                    [IncomeRiderSA addObject: [NSString stringWithFormat:@"%d", sqlite3_column_int(statement2, 3)]];
+                    [IncomeRiderPlanOption addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)]];
                 }
                 else {
                     [OtherRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)]];
                     [OtherRiderTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)]];
                     [OtherRiderDesc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)]];
+                    [OtherRiderSA addObject: [NSString stringWithFormat:@"%d", sqlite3_column_int(statement2, 3)]];
+                    [OtherRiderPlanOption addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)]];
+                    
                 }
             }
             sqlite3_finalize(statement2);

@@ -14,6 +14,8 @@
 
 @synthesize window = _window;
 
+NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.

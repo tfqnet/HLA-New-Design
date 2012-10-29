@@ -50,7 +50,7 @@
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
     
     CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
-    carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Menu" image:[UIImage imageNamed:@"home_btn.png"] tag: 0];
+    carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Menu" image:[UIImage imageNamed:@"btn_home.png"] tag: 0];
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
@@ -61,42 +61,43 @@
     [controllersToAdd addObject:settingPage];    
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"prospect.png"] tag: 0];
+    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];    
     
     SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
-    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"SI_button.png"] tag: 0];
+    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:SIListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
     menuSIPage.menuH = mainH;
     menuSIPage.menuBH = mainBH;
-    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"SI_buttonB.png"] tag: 0];
+    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
 
     
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
-    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"exit_btnB.png"] tag: 0];
+    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    /*
+    
     ReportViewController *reportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
     reportPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
-    reportPage.SINo = @"SI20121023-0001";
+    reportPage.SINo = @"SI20121024-00012";
     [controllersToAdd addObject:reportPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    */
     
-    /*
+    
+    
+    
     DemoHtml *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
-    demoPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
+    demoPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report viewer" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
     [controllersToAdd addObject:demoPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    */
+    
     
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];
@@ -132,7 +133,7 @@
 }
 
 -(BOOL)tabBarController:(FSVerticalTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([viewControllers indexOfObject:viewController] == 7) {
+    if ([viewControllers indexOfObject:viewController] == 8) {
         return NO;
     }
     return YES;

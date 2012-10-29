@@ -214,15 +214,18 @@ typedef enum {
                 
                 if (selectedTitle == @"Page1"){
                     
-                    
-                    UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
-                    [view addSubview:webView1];
-                    webView1.alpha = 1.0;
-                    webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+                     viewController = [CDVViewController new];
+                    viewController.startPage = @"test.html";
+                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    [view addSubview:viewController.view];
+                    //UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
+                    //[view addSubview:webView1];
+                    //webView1.alpha = 1.0;
+                    //webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
                     //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]]];                    
                     
-                    [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page1" ofType:@"html"]isDirectory:NO]]];
-                    webView1.scalesPageToFit = YES;
+                    //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page1" ofType:@"html"]isDirectory:NO]]];
+                    //webView1.scalesPageToFit = YES;
                     
                 }
                 else if (selectedTitle == @"Page2"){

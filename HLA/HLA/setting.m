@@ -40,7 +40,7 @@
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.backgroundView = nil;
     myTableView.opaque = NO;
-    
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 }
 
 

@@ -37,6 +37,8 @@
 {
     [super viewDidLoad];
     NSLog(@"Receive userID:%d",self.userID);
+  
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -99,10 +101,6 @@
 {
     if ([txtOldPwd.text isEqualToString:passwordDB]){
         
-        //NSLog(@"Password enter match!");
-        
-        
-        
         [self saveChanges];
         
     } else {
@@ -154,18 +152,45 @@
 
 
 - (IBAction)btnChange:(id)sender {
+    bool valid;
     
-    //NSLog(@"Your existing:%@",passwordDB);
-
+   /* 
     if (txtOldPwd.text.length <= 0 || txtNewPwd.text.length <= 0 || txtConfirmPwd.text.length <= 0) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please fill up all field!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
     } 
+     */
+    if ([txtOldPwd.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length <= 0 ) {
+        
+        valid = FALSE;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
         
         
-    else {
+    }
+    else { 
+        if ([txtNewPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
+            valid = FALSE;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        else {
+            if ([txtConfirmPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
+                valid = FALSE;
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+            }
+            else {
+                valid = TRUE;
+                
+            }
+        }
+    }
+        
+    if(valid == TRUE) {
         
         if (txtNewPwd.text.length < 6 || txtNewPwd.text.length > 20 ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 

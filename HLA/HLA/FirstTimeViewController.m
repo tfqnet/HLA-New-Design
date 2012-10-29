@@ -49,6 +49,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+    
 	NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -130,14 +133,38 @@
 }
 
 - (IBAction)btnSave:(id)sender {
-    if (txtOldPassword.text.length <= 0 || txtNewPassword.text.length <= 0 || txtConfirmPassword.text.length <= 0) {
+    BOOL valid;
+    
+    if ([txtOldPassword.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length <= 0 ) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please fill password field!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        valid = FALSE;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         
     }
-    else {
+    else { 
+        if ([txtNewPassword.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
+            valid = FALSE;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        else {
+            if ([txtConfirmPassword.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
+                valid = FALSE;
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+            }
+            else {
+                valid = TRUE;
+                 
+            }
+        }
+    }
+    
+    
+    if(valid == TRUE) {
         
         if (txtNewPassword.text.length < 6 || txtNewPassword.text.length > 20 ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 

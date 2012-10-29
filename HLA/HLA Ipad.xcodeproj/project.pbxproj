@@ -31,6 +31,26 @@
 		C4660ECA1625047800BA4AFE /* SI_buttonB.png in Resources */ = {isa = PBXBuildFile; fileRef = C4660EB51625047800BA4AFE /* SI_buttonB.png */; };
 		C4660EEA1625997D00BA4AFE /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660EE91625997D00BA4AFE /* iCarousel.m */; };
 		C4660EED16259AD700BA4AFE /* CarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660EEC16259AD600BA4AFE /* CarouselViewController.m */; };
+		C486D9C7163E5319009F8F21 /* btn_exit.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9BF163E5319009F8F21 /* btn_exit.png */; };
+		C486D9C9163E5319009F8F21 /* btn_newSI_off.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9C1163E5319009F8F21 /* btn_newSI_off.png */; };
+		C486D9CA163E5319009F8F21 /* btn_newSI_on.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9C2163E5319009F8F21 /* btn_newSI_on.png */; };
+		C486D9CB163E5319009F8F21 /* btn_prospect_off.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9C3163E5319009F8F21 /* btn_prospect_off.png */; };
+		C486D9CC163E5319009F8F21 /* btn_prospect_on.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9C4163E5319009F8F21 /* btn_prospect_on.png */; };
+		C486D9CE163E5319009F8F21 /* btn_SIlisting_on.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9C6163E5319009F8F21 /* btn_SIlisting_on.png */; };
+		C486D9D1163E5466009F8F21 /* btn_home.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9CF163E5466009F8F21 /* btn_home.png */; };
+		C486D9D2163E5466009F8F21 /* btn_SIlisting_off.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9D0163E5466009F8F21 /* btn_SIlisting_off.png */; };
+		C486D9D4163E6622009F8F21 /* Cordova.plist in Resources */ = {isa = PBXBuildFile; fileRef = C486D9D3163E6622009F8F21 /* Cordova.plist */; };
+		C486D9DA163E6728009F8F21 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9D8163E6728009F8F21 /* AddressBook.framework */; };
+		C486D9DB163E6728009F8F21 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9D9163E6728009F8F21 /* AddressBookUI.framework */; };
+		C486D9DD163E6732009F8F21 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9DC163E6732009F8F21 /* AudioToolbox.framework */; };
+		C486D9DF163E6739009F8F21 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9DE163E6739009F8F21 /* AVFoundation.framework */; };
+		C486D9E1163E6741009F8F21 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E0163E6741009F8F21 /* CoreLocation.framework */; };
+		C486D9E3163E6747009F8F21 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E2163E6747009F8F21 /* MediaPlayer.framework */; };
+		C486D9E5163E6756009F8F21 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E4163E6756009F8F21 /* SystemConfiguration.framework */; };
+		C486D9E7163E675C009F8F21 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E6163E675C009F8F21 /* MobileCoreServices.framework */; };
+		C486D9E9163E6762009F8F21 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E8163E6762009F8F21 /* CoreMedia.framework */; };
+		C486D9F7163E6F92009F8F21 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9F3163E6988009F8F21 /* libCordova.a */; };
+		C486D9F9163E7127009F8F21 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C486D9F8163E7127009F8F21 /* www */; };
 		C4E7B388161B119E00066CBF /* SIListing.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7B387161B119E00066CBF /* SIListing.m */; };
 		C4E7B38B161B147800066CBF /* siListingSortBy.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7B38A161B147800066CBF /* siListingSortBy.m */; };
 		C4E9D1951612C64900016053 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1941612C64900016053 /* UIKit.framework */; };
@@ -113,17 +133,9 @@
 		C4FCDDD516395F120065D024 /* bg18.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDC816395F120065D024 /* bg18.jpg */; };
 		C4FCDDD616395F120065D024 /* ipad_bg_4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDC916395F120065D024 /* ipad_bg_4.jpg */; };
 		C4FCDDE316395F290065D024 /* btn_brochure_home.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDD716395F290065D024 /* btn_brochure_home.png */; };
-		C4FCDDE416395F290065D024 /* btn_exit.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDD816395F290065D024 /* btn_exit.png */; };
-		C4FCDDE516395F290065D024 /* btn_home.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDD916395F290065D024 /* btn_home.png */; };
-		C4FCDDE616395F290065D024 /* btn_newSI_off.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDDA16395F290065D024 /* btn_newSI_off.png */; };
-		C4FCDDE716395F290065D024 /* btn_newSI_on.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDDB16395F290065D024 /* btn_newSI_on.png */; };
 		C4FCDDE816395F290065D024 /* btn_prospect_home.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDDC16395F290065D024 /* btn_prospect_home.png */; };
-		C4FCDDE916395F290065D024 /* btn_prospect_off.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDDD16395F290065D024 /* btn_prospect_off.png */; };
-		C4FCDDEA16395F290065D024 /* btn_prospect_on.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDDE16395F290065D024 /* btn_prospect_on.png */; };
 		C4FCDDEB16395F290065D024 /* btn_setting_home.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDDF16395F290065D024 /* btn_setting_home.png */; };
 		C4FCDDEC16395F290065D024 /* btn_SI_home.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDE016395F290065D024 /* btn_SI_home.png */; };
-		C4FCDDED16395F290065D024 /* btn_SIlisting_off.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDE116395F290065D024 /* btn_SIlisting_off.png */; };
-		C4FCDDEE16395F290065D024 /* btn_SIlisting_on.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDE216395F290065D024 /* btn_SIlisting_on.png */; };
 		EF059839161A8BD1004A9095 /* NewLAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059837161A8BCF004A9095 /* NewLAViewController.m */; };
 		EF05983F161A8C85004A9095 /* ListingTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05983D161A8C85004A9095 /* ListingTbViewController.m */; };
 		EF059842161A901A004A9095 /* PayorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059840161A901A004A9095 /* PayorViewController.m */; };
@@ -141,6 +153,23 @@
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C486D9F2163E6988009F8F21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 68A32D7114102E1C006B237C;
+			remoteInfo = CordovaLib;
+		};
+		C486D9F4163E699B009F8F21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = CordovaLib;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		C4660E61161F118B00BA4AFE /* ColorHexCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorHexCode.h; sourceTree = "<group>"; };
@@ -170,6 +199,26 @@
 		C4660EE91625997D00BA4AFE /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		C4660EEB16259AD500BA4AFE /* CarouselViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarouselViewController.h; sourceTree = "<group>"; };
 		C4660EEC16259AD600BA4AFE /* CarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarouselViewController.m; sourceTree = "<group>"; };
+		C486D9BF163E5319009F8F21 /* btn_exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_exit.png; sourceTree = "<group>"; };
+		C486D9C1163E5319009F8F21 /* btn_newSI_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_newSI_off.png; sourceTree = "<group>"; };
+		C486D9C2163E5319009F8F21 /* btn_newSI_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_newSI_on.png; sourceTree = "<group>"; };
+		C486D9C3163E5319009F8F21 /* btn_prospect_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_prospect_off.png; sourceTree = "<group>"; };
+		C486D9C4163E5319009F8F21 /* btn_prospect_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_prospect_on.png; sourceTree = "<group>"; };
+		C486D9C6163E5319009F8F21 /* btn_SIlisting_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_SIlisting_on.png; sourceTree = "<group>"; };
+		C486D9CF163E5466009F8F21 /* btn_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_home.png; sourceTree = "<group>"; };
+		C486D9D0163E5466009F8F21 /* btn_SIlisting_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_SIlisting_off.png; sourceTree = "<group>"; };
+		C486D9D3163E6622009F8F21 /* Cordova.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Cordova.plist; sourceTree = "<group>"; };
+		C486D9D8163E6728009F8F21 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		C486D9D9163E6728009F8F21 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		C486D9DC163E6732009F8F21 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		C486D9DE163E6739009F8F21 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		C486D9E0163E6741009F8F21 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		C486D9E2163E6747009F8F21 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		C486D9E4163E6756009F8F21 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C486D9E6163E675C009F8F21 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		C486D9E8163E6762009F8F21 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../Downloads/phonegap-phonegap-26d211b/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
+		C486D9F8163E7127009F8F21 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C4E7B386161B119E00066CBF /* SIListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIListing.h; sourceTree = "<group>"; };
 		C4E7B387161B119E00066CBF /* SIListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIListing.m; sourceTree = "<group>"; };
 		C4E7B389161B147800066CBF /* siListingSortBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = siListingSortBy.h; sourceTree = "<group>"; };
@@ -288,17 +337,9 @@
 		C4FCDDC816395F120065D024 /* bg18.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg18.jpg; sourceTree = "<group>"; };
 		C4FCDDC916395F120065D024 /* ipad_bg_4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ipad_bg_4.jpg; sourceTree = "<group>"; };
 		C4FCDDD716395F290065D024 /* btn_brochure_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_brochure_home.png; sourceTree = "<group>"; };
-		C4FCDDD816395F290065D024 /* btn_exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_exit.png; sourceTree = "<group>"; };
-		C4FCDDD916395F290065D024 /* btn_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_home.png; sourceTree = "<group>"; };
-		C4FCDDDA16395F290065D024 /* btn_newSI_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_newSI_off.png; sourceTree = "<group>"; };
-		C4FCDDDB16395F290065D024 /* btn_newSI_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_newSI_on.png; sourceTree = "<group>"; };
 		C4FCDDDC16395F290065D024 /* btn_prospect_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_prospect_home.png; sourceTree = "<group>"; };
-		C4FCDDDD16395F290065D024 /* btn_prospect_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_prospect_off.png; sourceTree = "<group>"; };
-		C4FCDDDE16395F290065D024 /* btn_prospect_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_prospect_on.png; sourceTree = "<group>"; };
 		C4FCDDDF16395F290065D024 /* btn_setting_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_setting_home.png; sourceTree = "<group>"; };
 		C4FCDDE016395F290065D024 /* btn_SI_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_SI_home.png; sourceTree = "<group>"; };
-		C4FCDDE116395F290065D024 /* btn_SIlisting_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_SIlisting_off.png; sourceTree = "<group>"; };
-		C4FCDDE216395F290065D024 /* btn_SIlisting_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_SIlisting_on.png; sourceTree = "<group>"; };
 		EF059837161A8BCF004A9095 /* NewLAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLAViewController.m; sourceTree = "<group>"; };
 		EF059838161A8BD0004A9095 /* NewLAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLAViewController.h; sourceTree = "<group>"; };
 		EF05983D161A8C85004A9095 /* ListingTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListingTbViewController.m; sourceTree = "<group>"; };
@@ -338,8 +379,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4EB49211615556300C7FC8C /* libsqlite3.dylib in Frameworks */,
+				C486D9F7163E6F92009F8F21 /* libCordova.a in Frameworks */,
+				C486D9E9163E6762009F8F21 /* CoreMedia.framework in Frameworks */,
+				C486D9E7163E675C009F8F21 /* MobileCoreServices.framework in Frameworks */,
+				C486D9E5163E6756009F8F21 /* SystemConfiguration.framework in Frameworks */,
 				C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */,
+				C486D9E3163E6747009F8F21 /* MediaPlayer.framework in Frameworks */,
+				C486D9E1163E6741009F8F21 /* CoreLocation.framework in Frameworks */,
+				C486D9DF163E6739009F8F21 /* AVFoundation.framework in Frameworks */,
+				C486D9DD163E6732009F8F21 /* AudioToolbox.framework in Frameworks */,
+				C486D9DA163E6728009F8F21 /* AddressBook.framework in Frameworks */,
+				C486D9DB163E6728009F8F21 /* AddressBookUI.framework in Frameworks */,
+				C4EB49211615556300C7FC8C /* libsqlite3.dylib in Frameworks */,
 				C4E9D1951612C64900016053 /* UIKit.framework in Frameworks */,
 				C4E9D1971612C64900016053 /* Foundation.framework in Frameworks */,
 				C4E9D1991612C64900016053 /* CoreGraphics.framework in Frameworks */,
@@ -358,6 +409,14 @@
 			name = iCarousel;
 			sourceTree = "<group>";
 		};
+		C486D9EC163E6988009F8F21 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C486D9F3163E6988009F8F21 /* libCordova.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C4E7B384161B10F200066CBF /* SI Listing */ = {
 			isa = PBXGroup;
 			children = (
@@ -370,6 +429,17 @@
 		C4E9D1851612C64900016053 = {
 			isa = PBXGroup;
 			children = (
+				C486D9F8163E7127009F8F21 /* www */,
+				C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */,
+				C486D9E8163E6762009F8F21 /* CoreMedia.framework */,
+				C486D9E6163E675C009F8F21 /* MobileCoreServices.framework */,
+				C486D9E4163E6756009F8F21 /* SystemConfiguration.framework */,
+				C486D9E2163E6747009F8F21 /* MediaPlayer.framework */,
+				C486D9E0163E6741009F8F21 /* CoreLocation.framework */,
+				C486D9DE163E6739009F8F21 /* AVFoundation.framework */,
+				C486D9DC163E6732009F8F21 /* AudioToolbox.framework */,
+				C486D9D8163E6728009F8F21 /* AddressBook.framework */,
+				C486D9D9163E6728009F8F21 /* AddressBookUI.framework */,
 				C4F8300E162FA9B600EF8FAA /* JTRevealSidebar */,
 				C4660EE71625995600BA4AFE /* iCarousel */,
 				C4F08D59161DA491008BCC1A /* ContactTypeClass.h */,
@@ -441,6 +511,7 @@
 			isa = PBXGroup;
 			children = (
 				C4E9D19C1612C64900016053 /* HLA Ipad-Info.plist */,
+				C486D9D3163E6622009F8F21 /* Cordova.plist */,
 				C4E9D19D1612C64900016053 /* InfoPlist.strings */,
 				C4E9D1A01612C64900016053 /* main.m */,
 				C4E9D1A21612C64900016053 /* HLA Ipad-Prefix.pch */,
@@ -650,18 +721,18 @@
 		C4FCDDBC16395EFF0065D024 /* icon */ = {
 			isa = PBXGroup;
 			children = (
+				C486D9CF163E5466009F8F21 /* btn_home.png */,
+				C486D9D0163E5466009F8F21 /* btn_SIlisting_off.png */,
+				C486D9BF163E5319009F8F21 /* btn_exit.png */,
+				C486D9C1163E5319009F8F21 /* btn_newSI_off.png */,
+				C486D9C2163E5319009F8F21 /* btn_newSI_on.png */,
+				C486D9C3163E5319009F8F21 /* btn_prospect_off.png */,
+				C486D9C4163E5319009F8F21 /* btn_prospect_on.png */,
+				C486D9C6163E5319009F8F21 /* btn_SIlisting_on.png */,
 				C4FCDDD716395F290065D024 /* btn_brochure_home.png */,
-				C4FCDDD816395F290065D024 /* btn_exit.png */,
-				C4FCDDD916395F290065D024 /* btn_home.png */,
-				C4FCDDDA16395F290065D024 /* btn_newSI_off.png */,
-				C4FCDDDB16395F290065D024 /* btn_newSI_on.png */,
 				C4FCDDDC16395F290065D024 /* btn_prospect_home.png */,
-				C4FCDDDD16395F290065D024 /* btn_prospect_off.png */,
-				C4FCDDDE16395F290065D024 /* btn_prospect_on.png */,
 				C4FCDDDF16395F290065D024 /* btn_setting_home.png */,
 				C4FCDDE016395F290065D024 /* btn_SI_home.png */,
-				C4FCDDE116395F290065D024 /* btn_SIlisting_off.png */,
-				C4FCDDE216395F290065D024 /* btn_SIlisting_on.png */,
 			);
 			name = icon;
 			sourceTree = "<group>";
@@ -725,6 +796,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C486D9F5163E699B009F8F21 /* PBXTargetDependency */,
 			);
 			name = "HLA Ipad";
 			productName = HLA;
@@ -750,12 +822,28 @@
 			mainGroup = C4E9D1851612C64900016053;
 			productRefGroup = C4E9D1911612C64900016053 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C486D9EC163E6988009F8F21 /* Products */;
+					ProjectRef = C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				C4E9D18F1612C64900016053 /* HLA Ipad */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C486D9F3163E6988009F8F21 /* libCordova.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCordova.a;
+			remoteRef = C486D9F2163E6988009F8F21 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C4E9D18E1612C64900016053 /* Resources */ = {
@@ -825,17 +913,19 @@
 				C4FCDDD516395F120065D024 /* bg18.jpg in Resources */,
 				C4FCDDD616395F120065D024 /* ipad_bg_4.jpg in Resources */,
 				C4FCDDE316395F290065D024 /* btn_brochure_home.png in Resources */,
-				C4FCDDE416395F290065D024 /* btn_exit.png in Resources */,
-				C4FCDDE516395F290065D024 /* btn_home.png in Resources */,
-				C4FCDDE616395F290065D024 /* btn_newSI_off.png in Resources */,
-				C4FCDDE716395F290065D024 /* btn_newSI_on.png in Resources */,
 				C4FCDDE816395F290065D024 /* btn_prospect_home.png in Resources */,
-				C4FCDDE916395F290065D024 /* btn_prospect_off.png in Resources */,
-				C4FCDDEA16395F290065D024 /* btn_prospect_on.png in Resources */,
 				C4FCDDEB16395F290065D024 /* btn_setting_home.png in Resources */,
 				C4FCDDEC16395F290065D024 /* btn_SI_home.png in Resources */,
-				C4FCDDED16395F290065D024 /* btn_SIlisting_off.png in Resources */,
-				C4FCDDEE16395F290065D024 /* btn_SIlisting_on.png in Resources */,
+				C486D9C7163E5319009F8F21 /* btn_exit.png in Resources */,
+				C486D9C9163E5319009F8F21 /* btn_newSI_off.png in Resources */,
+				C486D9CA163E5319009F8F21 /* btn_newSI_on.png in Resources */,
+				C486D9CB163E5319009F8F21 /* btn_prospect_off.png in Resources */,
+				C486D9CC163E5319009F8F21 /* btn_prospect_on.png in Resources */,
+				C486D9CE163E5319009F8F21 /* btn_SIlisting_on.png in Resources */,
+				C486D9D1163E5466009F8F21 /* btn_home.png in Resources */,
+				C486D9D2163E5466009F8F21 /* btn_SIlisting_off.png in Resources */,
+				C486D9D4163E6622009F8F21 /* Cordova.plist in Resources */,
+				C486D9F9163E7127009F8F21 /* www in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,6 +995,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C486D9F5163E699B009F8F21 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CordovaLib;
+			targetProxy = C486D9F4163E699B009F8F21 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		C4E9D19D1612C64900016053 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -945,6 +1043,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(TARGET_BUILD_DIR)/usr/local/lib/include",
+					"$(OBJROOT)/UninstalledProducts/include",
+					"$(BUILT_PRODUCTS_DIR)",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -964,6 +1067,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(TARGET_BUILD_DIR)/usr/local/lib/include",
+					"$(OBJROOT)/UninstalledProducts/include",
+					"$(BUILT_PRODUCTS_DIR)",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -983,7 +1091,12 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/../../Desktop\"",
 				);
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-Obj-C",
+				);
 				PRODUCT_NAME = "HLA Ipad";
+				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -999,7 +1112,12 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/../../Desktop\"",
 				);
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-Obj-C",
+				);
 				PRODUCT_NAME = "HLA Ipad";
+				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
