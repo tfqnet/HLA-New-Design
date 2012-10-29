@@ -98,7 +98,6 @@
 		C4F83033162FCEE000EF8FAA /* Page2.html in Resources */ = {isa = PBXBuildFile; fileRef = C4F8302E162FCEE000EF8FAA /* Page2.html */; };
 		C4F83034162FCEE000EF8FAA /* Page3.html in Resources */ = {isa = PBXBuildFile; fileRef = C4F8302F162FCEE000EF8FAA /* Page3.html */; };
 		C4F83035162FCEE000EF8FAA /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = C4F83030162FCEE000EF8FAA /* style.css */; };
-		C4FCDDA2163792D50065D024 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDA1163792D50065D024 /* hladb.sqlite */; };
 		C4FCDDCA16395F120065D024 /* background12.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDBD16395F120065D024 /* background12.png */; };
 		C4FCDDCB16395F120065D024 /* background13.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDBE16395F120065D024 /* background13.png */; };
 		C4FCDDCC16395F120065D024 /* background14.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDBF16395F120065D024 /* background14.png */; };
@@ -139,6 +138,7 @@
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
+		EF97BD5A163E1E4E0024D76B /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF97BD59163E1E4E0024D76B /* hladb.sqlite */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 /* End PBXBuildFile section */
 
@@ -273,7 +273,6 @@
 		C4F8302E162FCEE000EF8FAA /* Page2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page2.html; sourceTree = "<group>"; };
 		C4F8302F162FCEE000EF8FAA /* Page3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page3.html; sourceTree = "<group>"; };
 		C4F83030162FCEE000EF8FAA /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
-		C4FCDDA1163792D50065D024 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		C4FCDDBD16395F120065D024 /* background12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background12.png; sourceTree = "<group>"; };
 		C4FCDDBE16395F120065D024 /* background13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background13.png; sourceTree = "<group>"; };
 		C4FCDDBF16395F120065D024 /* background14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background14.png; sourceTree = "<group>"; };
@@ -329,6 +328,7 @@
 		EF28C322161C11C2009585CC /* SIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIHandler.m; path = ../SIHandler.m; sourceTree = "<group>"; };
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
+		EF97BD59163E1E4E0024D76B /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -581,7 +581,7 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				C4FCDDA1163792D50065D024 /* hladb.sqlite */,
+				EF97BD59163E1E4E0024D76B /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -810,7 +810,6 @@
 				C4F83033162FCEE000EF8FAA /* Page2.html in Resources */,
 				C4F83034162FCEE000EF8FAA /* Page3.html in Resources */,
 				C4F83035162FCEE000EF8FAA /* style.css in Resources */,
-				C4FCDDA2163792D50065D024 /* hladb.sqlite in Resources */,
 				C4FCDDCA16395F120065D024 /* background12.png in Resources */,
 				C4FCDDCB16395F120065D024 /* background13.png in Resources */,
 				C4FCDDCC16395F120065D024 /* background14.png in Resources */,
@@ -836,6 +835,7 @@
 				C4FCDDEC16395F290065D024 /* btn_SI_home.png in Resources */,
 				C4FCDDED16395F290065D024 /* btn_SIlisting_off.png in Resources */,
 				C4FCDDEE16395F290065D024 /* btn_SIlisting_on.png in Resources */,
+				EF97BD5A163E1E4E0024D76B /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
