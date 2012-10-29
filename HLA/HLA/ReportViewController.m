@@ -394,8 +394,6 @@
     
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 
-                
-            
                 QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
                             " VALUES ( "
