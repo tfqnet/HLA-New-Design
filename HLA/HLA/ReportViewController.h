@@ -18,6 +18,7 @@
 @property (nonatomic,strong) id YearlyIncome;
 @property (nonatomic,strong) id CashDividend;
 @property (nonatomic,strong) id CustCode;
+@property (nonatomic,strong) id Name;
 @property (nonatomic, assign) int Age;
 @property (nonatomic, assign) int PolicyTerm;
 @property (nonatomic, assign) int BasicSA;

@@ -86,7 +86,7 @@
     
     ReportViewController *reportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
     reportPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Report" image:[UIImage imageNamed:@"magnifying-glass.png"] tag: 0];
-    reportPage.SINo = @"SI20121024-00012";
+    reportPage.SINo = @"SI20121030-00022";
     [controllersToAdd addObject:reportPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     

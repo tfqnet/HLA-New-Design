@@ -169,6 +169,13 @@
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = CordovaLib;
 		};
+		C486DA3B163F7293009F8F21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 68A32D7114102E1C006B237C;
+			remoteInfo = CordovaLib;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -219,6 +226,7 @@
 		C486D9E8163E6762009F8F21 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../Downloads/phonegap-phonegap-26d211b/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		C486D9F8163E7127009F8F21 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../Downloads/phonegap-phonegap-26d211b/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		C4E7B386161B119E00066CBF /* SIListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIListing.h; sourceTree = "<group>"; };
 		C4E7B387161B119E00066CBF /* SIListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIListing.m; sourceTree = "<group>"; };
 		C4E7B389161B147800066CBF /* siListingSortBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = siListingSortBy.h; sourceTree = "<group>"; };
@@ -417,6 +425,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C486DA38163F7293009F8F21 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C486DA3C163F7293009F8F21 /* libCordova.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C4E7B384161B10F200066CBF /* SI Listing */ = {
 			isa = PBXGroup;
 			children = (
@@ -429,6 +445,7 @@
 		C4E9D1851612C64900016053 = {
 			isa = PBXGroup;
 			children = (
+				C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */,
 				C486D9F8163E7127009F8F21 /* www */,
 				C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */,
 				C486D9E8163E6762009F8F21 /* CoreMedia.framework */,
@@ -827,6 +844,10 @@
 					ProductGroup = C486D9EC163E6988009F8F21 /* Products */;
 					ProjectRef = C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */;
 				},
+				{
+					ProductGroup = C486DA38163F7293009F8F21 /* Products */;
+					ProjectRef = C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -841,6 +862,13 @@
 			fileType = archive.ar;
 			path = libCordova.a;
 			remoteRef = C486D9F2163E6988009F8F21 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C486DA3C163F7293009F8F21 /* libCordova.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCordova.a;
+			remoteRef = C486DA3B163F7293009F8F21 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

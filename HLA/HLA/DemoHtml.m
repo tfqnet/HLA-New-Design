@@ -110,7 +110,10 @@ typedef enum {
           [JTTableViewCellModalSimpleType modalWithTitle:@"Page1" type:JTTableRowTypePushContentView],
           [JTTableViewCellModalSimpleType modalWithTitle:@"Page2" type:JTTableRowTypePushContentView],
           [JTTableViewCellModalSimpleType modalWithTitle:@"Page3" type:JTTableRowTypePushContentView],
-          
+          [JTTableViewCellModalSimpleType modalWithTitle:@"Page4" type:JTTableRowTypePushContentView],
+          [JTTableViewCellModalSimpleType modalWithTitle:@"Page5" type:JTTableRowTypePushContentView],
+          [JTTableViewCellModalSimpleType modalWithTitle:@"Page6" type:JTTableRowTypePushContentView],
+          [JTTableViewCellModalSimpleType modalWithTitle:@"Page7" type:JTTableRowTypePushContentView],
           nil]
          ];
     } else if ([url isEqualToString:@"push"]) {
@@ -215,7 +218,7 @@ typedef enum {
                 if (selectedTitle == @"Page1"){
                     
                      viewController = [CDVViewController new];
-                    viewController.startPage = @"test.html";
+                    viewController.startPage = @"Page1.html";
                     viewController.view.frame = CGRectMake(0, 0, 320, 480);
                     [view addSubview:viewController.view];
                     //UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
@@ -229,7 +232,7 @@ typedef enum {
                     
                 }
                 else if (selectedTitle == @"Page2"){
-                    UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
+                    /*UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
                     [view addSubview:webView1];
                     webView1.alpha = 1.0;
                     webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -237,9 +240,15 @@ typedef enum {
                     
                     [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page2" ofType:@"html"]isDirectory:NO]]];
                     webView1.scalesPageToFit = YES;
-                
+                */
+                    viewController = [CDVViewController new];
+                    viewController.startPage = @"Page2.html";
+                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    [view addSubview:viewController.view];
+                    
                 }
                 else if (selectedTitle == @"Page3"){
+                    /*
                     UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
                     [view addSubview:webView1];
                     webView1.alpha = 1.0;
@@ -248,9 +257,80 @@ typedef enum {
                     
                     [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page3" ofType:@"html"]isDirectory:NO]]];
                     webView1.scalesPageToFit = YES;
-                    
+                    */
+                    viewController = [CDVViewController new];
+                    viewController.startPage = @"Page3.html";
+                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    [view addSubview:viewController.view];
                 }
                 
+                else if (selectedTitle == @"Page4"){
+                    /*
+                     UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
+                     [view addSubview:webView1];
+                     webView1.alpha = 1.0;
+                     webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+                     //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]]];
+                     
+                     [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page3" ofType:@"html"]isDirectory:NO]]];
+                     webView1.scalesPageToFit = YES;
+                     */
+                    viewController = [CDVViewController new];
+                    viewController.startPage = @"Page4_1.html";
+                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    [view addSubview:viewController.view];
+                }
+                
+                else if (selectedTitle == @"Page5"){
+                    /*
+                     UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
+                     [view addSubview:webView1];
+                     webView1.alpha = 1.0;
+                     webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+                     //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]]];
+                     
+                     [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page3" ofType:@"html"]isDirectory:NO]]];
+                     webView1.scalesPageToFit = YES;
+                     */
+                    viewController = [CDVViewController new];
+                    viewController.startPage = @"Page5_1.html";
+                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    [view addSubview:viewController.view];
+                }
+                
+                else if (selectedTitle == @"Page6"){
+                    /*
+                     UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
+                     [view addSubview:webView1];
+                     webView1.alpha = 1.0;
+                     webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+                     //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]]];
+                     
+                     [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page3" ofType:@"html"]isDirectory:NO]]];
+                     webView1.scalesPageToFit = YES;
+                     */
+                    viewController = [CDVViewController new];
+                    viewController.startPage = @"Page6.html";
+                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    [view addSubview:viewController.view];
+                }
+                
+                else if (selectedTitle == @"Page7"){
+                    /*
+                     UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
+                     [view addSubview:webView1];
+                     webView1.alpha = 1.0;
+                     webView1.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+                     //[webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.google.com"]]];
+                     
+                     [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page3" ofType:@"html"]isDirectory:NO]]];
+                     webView1.scalesPageToFit = YES;
+                     */
+                    viewController = [CDVViewController new];
+                    viewController.startPage = @"Page7_1.html";
+                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    [view addSubview:viewController.view];
+                }
                 //NSLog(@"%@",[(JTTableViewCellModalSimpleType *)object title]);
                 //[view addSubview:pushButton];
                 

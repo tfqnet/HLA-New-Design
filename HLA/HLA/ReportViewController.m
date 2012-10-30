@@ -15,7 +15,7 @@
 @implementation ReportViewController
 @synthesize SINo, PolicyTerm, BasicSA, PremiumPaymentOption, AdvanceYearlyIncome,OtherRiderCode,OtherRiderDesc,OtherRiderTerm;
 @synthesize YearlyIncome, CashDividend,CustCode, Age, IncomeRiderCode,IncomeRiderDesc,IncomeRiderTerm;
-@synthesize HealthLoading, OtherRiderSA, IncomeRiderSA, IncomeRiderPlanOption, OtherRiderPlanOption;
+@synthesize HealthLoading, OtherRiderSA, IncomeRiderSA, IncomeRiderPlanOption, OtherRiderPlanOption,Name;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,6 +33,7 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    [self deleteTemp]; //clear all temp data
     
     [self getAllPreDetails]; // get all the details needed before proceed 
     
@@ -44,9 +45,13 @@
     
     [self InsertHeaderTB]; //insert summary of basic plan header into temp table bm and english
     
-    //[self InsertToSI_Temp_Trad_LA]; // for the front summary page 
+    [self InsertToSI_Temp_Trad_LA]; // for the front summary page 
     [self InsertToSI_Temp_Trad_Details];
-    
+    [self InsertToSI_Temp_Trad_Basic];
+    [self InsertToSI_Temp_Trad_Rider];
+    [self InsertToSI_Temp_Trad];    
+    [self InsertToSI_Temp_Trad_Overall];
+    [self InsertToSI_Temp_Trad_Summary];
 }
 
 - (void)viewDidUnload
@@ -58,6 +63,113 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+-(void)deleteTemp{
+    sqlite3_stmt *statement;
+    NSString *QuerySQL;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        
+        QuerySQL = @"Delete from SI_temp_Header_BM";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_Header_EN";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_Rider";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_Trad";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_Trad_Basic";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_Trad_details";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete  from SI_temp_Trad_Overall";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_Trad_Rider";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_Trad_Riderillus";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete  from SI_temp_Trad_Summary";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_temp_trad_LA";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+    }    
+    
 }
 
 -(void)InsertHeaderBasicPlan{
@@ -341,13 +453,45 @@
     }    
 }
 
+-(void)InsertToSI_Temp_Trad{
+    sqlite3_stmt *statement;
+    NSString *QuerySQL;
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        QuerySQL = [NSString stringWithFormat:@"INSERT INTO SI_Temp_trad(\"SINo\",\"LAName\",\"PlanCode\",\"PlanName\",\"PlanDesc\", "
+                    " \"MPlanDesc\",\"CashPaymentT\",\"CashPaymentD\",\"MCashPaymentT\",\"MCashPaymentD\",\"HLoadingT\",\"MHLoadingT\", "
+                    " \"OccLoadingT\",\"MOccLoadingT\",\"PolTerm\",\"TotPremPaid\",\"SurrenderValueHigh\",\"SurrenderValueLow\",\"CashPayment\", "
+                    " \"SurrenderValuePaidUpHigh\",\"SurrenderValuePaidUpLow\",\"GlncPaid\",\"SumTotPremPaid\",\"SurrenderValuePaidUpHigh2\", "
+                    " \"SurrenderValuePaidUpLow2\",\"SumTotPremPaid2\",\"TotalYearlylncome\",\"SumTotalYearlyIncome\",\"SumTotalYearlyIncome2\", "
+                    " \"TotalPremPaid2\",\"SurrenderValueHigh2\",\"SurrenderValueLow2\",\"TotalYearlyIncome2\") VALUES "
+                    " (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\", "
+                    " \"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\") ", 
+                    SINo, Name, @"HLAIB", @"HLA Income Builder", @"Participating Whole Life Plan with Guaranteed Yearly Income and",
+                    @"Pelan Penyertaan Sepanjang Hayat dengan Pendapatan Tahunan Terjamin dan ", @"", @"Yearly Income Pay Out", @"", @"Pendapatan Tahunan Dibayar",
+                    @"\"\"", @"\"\"", @"Occ Loading (per 1k SA)", @"Caj Tambahan Perkerjaan (1k JAD)", PolicyTerm, arc4random()%10000 + 100, 
+                    arc4random()%10000 + 100, arc4random()%10000 + 100, 0, 0, 0, 0, arc4random()%10000 + 100, 0, 0, 0, arc4random()%10000 + 100,
+                    arc4random()%10000 + 100,0,0,0,0,0 ];
+        
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            } 
+            sqlite3_finalize(statement);
+        }   
+        sqlite3_close(contactDB);
+        
+    }    
+    
+}
+
 -(void)InsertToSI_Temp_Trad_LA{
     sqlite3_stmt *statement;
     sqlite3_stmt *statement2;
     sqlite3_stmt *statement3;
     NSString *getCustomerCodeSQL;
     NSString *getFromCltProfileSQL;
-    NSString *Name, *sex, *smoker;
+    NSString *sex, *smoker;
     NSString *QuerySQL;
     
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
@@ -469,12 +613,14 @@
                 QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Basic (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
                             "\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\",\"col22\") VALUES ( "
-                             " \"%@\",\"%@\",\"DataType\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", "
-                             "\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",))", SINo, a, a, inputAge, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 ];
-             
+                            " \"%@\",\"%d\",\"DataType\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\", "
+                            "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\")", 
+                            SINo, a, a, inputAge, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 ];
+                
+                //NSLog(@"%@", QuerySQL);
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
-                        NSLog(@"done insert to si_temp_tra_basic");
+                        
                     }
                     sqlite3_finalize(statement); 
                 }
@@ -482,6 +628,33 @@
             sqlite3_close(contactDB);
         }
     } 
+}
+
+-(void)InsertToSI_Temp_Trad_Overall{
+    
+    sqlite3_stmt *statement;
+    NSString *QuerySQL;
+    
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                
+            QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Overall (\"SINO\", \"SurrenderValueHigh1\", "
+                        " \"SurrenderValueLow1\",\"TotPremPaid1\",\"TotYearlyIncome1\", "
+                        " \"SurrenderValuehigh2\",\"SurrenderValueLow2\",\"TotPremPaid2\",\"TotYearlyIncome2\") VALUES ( "
+                        " \"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\")", 
+                            SINo, arc4random()%10000 + 1000, arc4random()%10000 + 1000,arc4random()%10000 + 1000,
+                        arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
+                        arc4random()%10000 + 1000 ];
+                
+                NSLog(@"%@", QuerySQL);
+                if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                    }
+                    sqlite3_finalize(statement); 
+                }
+            
+            sqlite3_close(contactDB);
+        }
+     
 }
 
 -(void)InsertToSI_Temp_Trad_Summary{
@@ -501,20 +674,27 @@
                 QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Summary (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
                             "\"col14\",\"col15\",\"col16\",\"col17\") VALUES ( "
-                            " \"%@\",\"%@\",\"Data\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", "
-                            "\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\"))", SINo, a, a, inputAge, 1,0,0,@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",15,16,0 ];
+                            " \"%@\",\"%d\",\"Data\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", "
+                            "\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\")", SINo, a, a, inputAge, arc4random()%10000+1000,@"0",@"0",@"",@"",@"",@""
+                            ,@"",@"",@"",@"",@"",@"",@"",arc4random()%10000+1000,BasicSA,0 ];
                 
+            //NSLog(@"%@", QuerySQL);
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                         QuerySQL2 = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Summary (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                                     "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
                                     "\"col14\",\"col15\",\"col16\",\"col17\") VALUES ( "
-                                    " \"%@\",\"%@\",\"Data2\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", "
-                                    "\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\"))", SINo, a, a, inputAge, 1,2,0,4,5,6,7,@"-",@"-",10,11,12,13,@"",@"",@"",@"-" ];
+                                    " \"%@\",\"%d\",\"Data2\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%d\", "
+                                    "\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\")", SINo, a, a, inputAge,
+                                     arc4random()%10000+1000,BasicSA,0,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,
+                                     @"-",@"-",arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,
+                                     @"",@"",@"",@"-" ];
                         if(sqlite3_prepare_v2(contactDB, [QuerySQL2 UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
                             if (sqlite3_step(statement2) == SQLITE_DONE) {
                             
                             }
+                            
+                        sqlite3_finalize(statement2);
                         }
                     }
                     sqlite3_finalize(statement); 
@@ -530,82 +710,135 @@
     sqlite3_stmt *statement;
     NSString *QuerySQL;
     sqlite3_stmt *statement2;
+    sqlite3_stmt *statement3;
     NSString *QuerySQL2;
+    NSString *QuerySQL3;
     
-    int inputAge;
-    int seq = 0;
     
     if (OtherRiderCode.count > 0) {
         
         /*
-        QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Rider (\"SINO\", \"SeqNo\", \"DataType\", \"PageNo\", \"col0_1\", \"col0_2\",\"col1\" "
-                    ") SELECT  "
-                    " \"%@\",\"-2\",\"TITLE\",\"1\", @\"\", @\"\", \"%@\" UNION ALL SELECT \"%@\",\"-1\",\"HEADER\",\"1\",\"Policy Year\", "
-                    " \"Life Ass'd Age at end of year\",\"Annual Premium(Beg. of Year)\" UNION ALL SELECT "
-                    " \"%@\",\"0\",\"HEADER\",\"1\",\"Tahun Polisi\",\"Umur Hayat Diisuranskan pada Akhir Tahun\",\"Premium Tahunan (Permulaan Tahun)\" "
-                    , SINo, [RiderDesc objectAtIndex:seq], SINo, SINo];
-        
-        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-            
-            if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                if (sqlite3_step(statement) == SQLITE_DONE) {
-                    NSLog(@"");
-                    
-                }   
-                sqlite3_finalize(statement);
-            }
-            sqlite3_close(contactDB);
-        }
-        */
+         QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Rider (\"SINO\", \"SeqNo\", \"DataType\", \"PageNo\", \"col0_1\", \"col0_2\",\"col1\" "
+         ") SELECT  "
+         " \"%@\",\"-2\",\"TITLE\",\"1\", @\"\", @\"\", \"%@\" UNION ALL SELECT \"%@\",\"-1\",\"HEADER\",\"1\",\"Policy Year\", "
+         " \"Life Ass'd Age at end of year\",\"Annual Premium(Beg. of Year)\" UNION ALL SELECT "
+         " \"%@\",\"0\",\"HEADER\",\"1\",\"Tahun Polisi\",\"Umur Hayat Diisuranskan pada Akhir Tahun\",\"Premium Tahunan (Permulaan Tahun)\" "
+         , SINo, [RiderDesc objectAtIndex:seq], SINo, SINo];
          
-        NSString *strCol;
+         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+         
+         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+         if (sqlite3_step(statement) == SQLITE_DONE) {
+         NSLog(@"");
+         
+         }   
+         sqlite3_finalize(statement);
+         }
+         sqlite3_close(contactDB);
+         }
+         */
+        
+        NSString *strCol = @"";
+        NSString *strTitle= @"";
+        NSString *strHeader= @"";
+        NSString *strHeaderBM = @"";
+        NSString *strValue = @"";
         int numberOfCol =  OtherRiderCode.count  * 4;
         
         for (int i = 1; i <= numberOfCol; i++) {
-            strCol = [strCol stringByAppendingFormat:@",\"col%@\"", i];
-        }
-        
-        
-        
-        for (NSString *zzz in OtherRiderCode) {
-            
-            if ([zzz isEqualToString:@"I20R"] || [zzz isEqualToString:@"I30R"] || [zzz isEqualToString:@"I40R"]|| [zzz isEqualToString:@"ICR"]
-                || [zzz isEqualToString:@"ID20R"]|| [zzz isEqualToString:@"ID30R"]|| [zzz isEqualToString:@"ID40R"]|| [zzz isEqualToString:@"IE20R"]
-                || [zzz isEqualToString:@"IE30R"]) {
+            strCol = [strCol stringByAppendingFormat:@",\"col%d\"", i];
+            if (i%4 == 1) {
+                int dest = i/4;
                 
-                continue;
+                strTitle = [strTitle stringByAppendingFormat:@",\"%@\" ", [OtherRiderDesc objectAtIndex:dest]];
+                strHeader = [strHeader stringByAppendingFormat:@",\"Annual Premium (Beg. of Year)\""];
+                strHeaderBM = [strHeaderBM stringByAppendingFormat:@",\"Premium Tahunan (Permulaan Tahun)\""];                
+                strValue = [strValue stringByAppendingFormat:@",\"%d\" ", arc4random() % 10000 + 100];
             }
             else {
-                
-                for (int a= 1; a<=[[OtherRiderTerm objectAtIndex:seq] intValue ]; a++) {
-                    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-                        
-                        inputAge = Age + a;
-                        
-                       
-                        
-                        QuerySQL2 = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Rider (\"SINO\", \"SeqNo\", \"DataType\", \"PageNo\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-                                    "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
-                                    "\"col14\",\"col15\",\"col16\",\"col17\") VALUES ( "
-                                    " \"%@\",\"%@\",\"Data\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", "
-                                    "\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\"))", SINo, a, a, inputAge, 1,0,0,@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",@"",15,16,0 ];
-                        
-                        if(sqlite3_prepare_v2(contactDB, [QuerySQL2 UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
-                            if (sqlite3_step(statement2) == SQLITE_DONE) {
-                                
-                                
-                                
+                strTitle = [strTitle stringByAppendingFormat:@",\"-\" "];
+                strHeader = [strHeader stringByAppendingFormat:@",\"-\" "];
+                strHeaderBM = [strHeaderBM stringByAppendingFormat:@",\"-\" "];
+                strValue = [strValue stringByAppendingFormat:@",\"%d\" ", arc4random() % 10000 + 100];
+            }
+            
+        }
+        
+        QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Rider (\"SINO\", \"SeqNo\", \"DataType\", \"PageNo\",\"col0_1\",\"col0_2\" %@) VALUES ( "
+                    " \"%@\",\"%d\",\"TITLE\",\"%d\",\"%@\",\"%@\" %@)", 
+                    strCol, SINo, -2, 1, @"",@"", strTitle];
+        
+        QuerySQL2 = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Rider (\"SINO\", \"SeqNo\", \"DataType\", \"PageNo\",\"col0_1\",\"col0_2\" %@) VALUES ( "
+                     " \"%@\",\"%d\",\"HEADER\",\"%d\",\"%@\",\"%@\" %@)", 
+                     strCol, SINo, -1, 1, @"Policy Year",@"Life Ass'd Age at end of Year", strHeader];
+        
+        QuerySQL3 = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Rider (\"SINO\", \"SeqNo\", \"DataType\", \"PageNo\",\"col0_1\",\"col0_2\" %@) VALUES ( "
+                     " \"%@\",\"%d\",\"HEADER\",\"%d\",\"%@\",\"%@\" %@)", 
+                     strCol, SINo, 0, 1, @"Tahun Polisi",@"Umur Hayat Diinsuranskan pada Akhir Tahun", strHeaderBM];
+        
+        
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+            if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement) == SQLITE_DONE) {
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL2 UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+                        if (sqlite3_step(statement2) == SQLITE_DONE) {
+                            if(sqlite3_prepare_v2(contactDB, [QuerySQL3 UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
+                                if (sqlite3_step(statement3) == SQLITE_DONE) {
+                                    
+                                    
+                                }
+                                sqlite3_finalize(statement3);
                             }
-                            sqlite3_finalize(statement2); 
+                        }
+                        sqlite3_finalize(statement2);
+                    }
+                }
+                sqlite3_finalize(statement);
+            }        
+            sqlite3_close(contactDB);
+        }     
+        
+        int RiderCount =0; 
+        int inputAge;
+        
+        for (NSString *riderCode in OtherRiderCode) {
+            
+            for (int seq= 1; seq<=[[OtherRiderTerm objectAtIndex:RiderCount] intValue ]; seq++) {
+                if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                    
+                    inputAge = Age + seq;
+                    
+                    strValue = @"";
+                    
+                    for (int i = 1; i <= numberOfCol; i++) {
+                        if (i%4 == 1) {
+                            strValue = [strValue stringByAppendingFormat:@",\"%d\" ", arc4random() % 10000 + 100];
+                        }
+                        else {
+                            strValue = [strValue stringByAppendingFormat:@",\"-\" "];
                         }
                         
-                        sqlite3_close(contactDB);
                     }
-                } 
-
+                    
+                    
+                    QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Rider (\"SINO\", \"SeqNo\", "
+                                " \"DataType\", \"PageNo\",\"col0_1\",\"col0_2\" %@) VALUES ( "
+                                " \"%@\",\"%d\",\"Data\",\"%d\",\"%d\",\"%d\" %@)", 
+                                strCol, SINo, seq, 1, seq, inputAge, strValue];
+                    //NSLog(@"%@", QuerySQL);
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        if (sqlite3_step(statement) == SQLITE_DONE) {
+                            
+                        }
+                        sqlite3_finalize(statement); 
+                    }
+                    
+                    sqlite3_close(contactDB);
+                }
             }
-        
-        seq = seq + 1;
+            
+            RiderCount = RiderCount + 1;
         }
         
     }
