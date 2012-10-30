@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+        
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+    }
+        
+    function ListDBValues() {
+            
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_RiderIllus where ltrim(rtrim(DataType)) = 'I30R'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td></tr>');
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        return;
+    }
+</script>
+</head>
+ 
+<body onload="onBodyLoad()">
+ 
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">  
+  <div class="welcome">Prepared By :   hla
+  <br/>Code :    A8888888</div>  
+  <div class="Content">Printed On:   07/08/2012   11:49:35AM</div>   
+</div>
+<hr></hr>
+<div class="main-content">
+<p>Basic PlanPelan Asas: HLA Income Builder &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Yearly Income Pay Out) (Cash Dividend Pay Out) (Pendapatan Tahunan Dibayar)(Dividen Tunai Dibayar)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Life Assured Hayat Diinsuranskan: Mat</p>
+
+<div align="center">(Illustration of Income 30 Rider Illustrasi Income 30 Rider)</div>
+<table id="table-data">
+<thead>
+<tr>
+<th rowspan="3">Policy
+Year<br/>Tahun
+Polisi</th>
+<th rowspan="3">Life Ass'd Age
+at end of Year<br/>Umur Hayat
+Diinsuranskan
+pada Akhir
+Tahun</th>
+<th  colspan="8">Not Guaranteed Tidak Terjamin (Set B)</th>
+
+</tr>
+<tr>
+
+<th colspan="2">Current Year Cash Dividend<br/>
+Dividen Tunai Tahun Semasa
+(8)</th>
+<th colspan="2">Accumulated Cash Dividends<br/>
+Dividen Tunai Terkumpul
+(9)</th>
+<th colspan="2">Terminal Dividend Payable on
+Surrender/Maturity<br/>
+Dividen Terminal Dibayar atas
+Penyerahan/Matang
+(10)</th>
+<th colspan="2">Special Terminal Dividend Payable on
+Death/TPD<br/>
+Dividen Terminal Istimewa Dibayar
+atas Kematian/TPD
+(11)</th>
+</tr>
+<tr>
+<th>Sce. A</th>
+<th>Sce. B</th>
+<th>Sce. A</th>
+<th>Sce. B</th>
+<th>Sce. A</th>
+<th>Sce. B</th>
+<th>Sce. A</th>
+<th>Sce. B</th>
+</tr>
+</thead>
+<tbody>
+<!--
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+ -->
+</tbody>
+</table><br/>
+
+</div><br/>
+<div class="footer">This sales illustration consists of 57 pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. Illustrasi Jualan ini mengandungi 57 muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal<br/>
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.<br/>
+<b>Win MP (Trad) Version 6.5 (Agency) - Last Updated 20 Jul 2012 - E&amp;OE</b> <br/> Level
+3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+</div>
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>

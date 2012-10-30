@@ -1,0 +1,423 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA (I30R)</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var riderDesc = '';
+    //var cashPayment = 0;
+        
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+        //calcTotal();
+    }
+
+    function ListDBValues() {
+        
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_RiderIllus where ltrim(rtrim(DataType)) = 'I30R'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + row.col3 + '</td><td>' + row.col4 + '</td><td>' + row.col5 + '</td><td>' + row.col6 + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + row.col10 + '</td><td>' + row.col11+ '</td></tr>');
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        db.transaction(function(transaction) { //rider description
+            transaction.executeSql("SELECT RiderDesc FROM Trad_Sys_Rider_Profile where ltrim(rtrim(RiderCode)) = 'I30R'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    //riderDesc = row.RiderDesc;
+                    //alert(riderDesc)
+                    //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + row.col3 + '</td><td>' + row.col4 + '</td><td>' + row.col5 + '</td><td>' + row.col6 + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + row.col10 + '</td><td>' + row.col11+ '</td></tr>');
+                	$('#advanceYearlyIncome').html('Illustration of ' + row.RiderDesc + '&nbsp;&nbsp;&nbsp;<i>Illustrasi ' + row.RiderDesc + '</i>');    
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+
+        
+        //HLA Income Builder
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        //$('#TotPremPaid').html(formatCurrency(row.TotPremPaid));
+                        //$('#SurrenderValueHigh').html(formatCurrency(row.SurrenderValueHigh));
+                        //$('#SurrenderValueLow').html(formatCurrency(row.SurrenderValueLow));
+                        //$('#TotalYearlyIncome').html(formatCurrency(row.TotalYearlyIncome));
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                        
+                        
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+
+        //Entire Policy
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_Overall", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        //$('#TotPremPaid1').html(formatCurrency(row.TotPremPaid1));
+                        //$('#SurrenderValueHigh1').html(formatCurrency(row.SurrenderValueHigh1));
+                        //$('#SurrenderValueLow1').html(formatCurrency(row.SurrenderValueLow1));
+                        //$('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1));
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        //Details
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder</i>');
+                    	//$('#advanceYearlyDesc').hide();
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 60&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 60</i>');
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
+                	}
+                	$('#dateModified').html(row.DateModified);
+                	
+                	if ($.trim(row.CashDividend) == 'A')//payment description
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		//totalSurrenderValue
+                		//tpdBenefit
+                		if (parseInt(row.CashPayment) == 0)
+                		{
+                			$('#totalSurrenderValue').html('(6)=(3)+(9)+(10)');
+                			$('#tpdBenefit').html('(7)=(4B)+(9)+(11)');
+                			$('#accumulationYearlyIncome').hide(); //~ description
+                			//$('#premiumPaymentOption').hide(); //# description
+                		}
+                		else
+                		{
+                			$('#totalSurrenderValue').html('(6)=(3)+(9)+(10)+(11)');
+                			$('#tpdBenefit').html('(7)=(4B)+(9)+(10)+(12)');
+                			$('#cashPayment1').html('~');
+                			$('#cashPayment2').html('~');
+                			//if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			//	$('#premiumPaymentOption').hide(); //# description
+                			//}
+                		}
+                	}
+                	else if (row.CashDividend == 'P')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.CashPayment) == 0)
+                		{
+                		    $('#totalSurrenderValue').html('(6)=(3)+(9)');
+                			$('#tpdBenefit').html('(7)=(4B)+(10)');
+                			$('#accumulationYearlyIncome').hide(); //~ description
+                			//$('#premiumPaymentOption').hide(); //# description
+                		}
+                		else
+                		{
+                		    $('#totalSurrenderValue').html('(6)=(3)+(9)+(10)');
+                			$('#tpdBenefit').html('(7)=(4B)+(9)+(11)');
+                			$('#cashPayment1').html('~');
+                			$('#cashPayment2').html('~');
+                			//if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			//	$('#premiumPaymentOption').hide(); //# description
+                			//}
+                		}
+                	}
+                	
+                	//alert(row.Cash)
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        return;
+    }
+    
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+    
+</script>
+
+</head>
+ 
+<body onload="onBodyLoad(),setPage(),writeInvestmentScenariosRight()">
+ 
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<!--
+<div id="header">    
+  <div class="welcome">Prepared By :   hla
+  <br/>Code :    A8888888</div>  
+  <div class="Content">Printed On:   07/08/2012   11:49:35AM</div> 
+</div>
+<hr></hr>
+-->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+<tr>
+<td width="75%" valign="top"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/>
+<span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="25%" valign="top">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+</tr>
+</table>
+<!--<p>Basic Plan <i>Pelan Asas</i>: <span id="basicPlan">HLA Income Builder</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="paymentDesc">(Yearly Income Pay Out) (Cash Dividend Pay Out) (Pendapatan Tahunan Dibayar)(Dividen Tunai Dibayar)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Life Assured Hayat Diinsuranskan: Mat</p>-->
+
+<!--<div align="center"><span id="advanceYearlyIncome"></span></div>-->
+<table id="table-data">
+<thead>
+<tr><th colspan="13"><span id="advanceYearlyIncome"></span></th></tr>
+<tr>
+    <th rowspan="3" class="contentSmall"><br/>Policy Year<br/><br/><i>Tahun Polisi</i></th>
+    <th rowspan="3" class="contentSmall"><br/>Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
+
+<!--
+<th rowspan="3">Policy Year<br/><br/><i>TahunPolisi</i></th>
+<th rowspan="3">Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
+-->
+    
+    
+<th  colspan="7">Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Terjamin</i> (Set A)</th>
+<th  colspan="4">Not Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tidak Terjamin</i> (Set B)</th>
+
+</tr>
+<tr>
+<th rowspan="2" class="contentSmall">Annual Premium
+(Beg. of Year)<br/><br/><i>Premium
+Tahunan
+(Permulaan
+Tahun)
+<br/>(1)</i></th>
+
+<th rowspan="2" class="contentSmall">Yearly Income
+(End of Year)<br/><br/><i>Pendapatan
+Tahunan (Akhir
+Tahun)
+<br/>(2)</i></th>
+
+<th rowspan="2" class="contentSmall">Surrender Value
+(End of Year)<br/><br/><i>Nilai
+Penyerahan
+(Akhir Tahun)
+<br/>(3)</i></th>
+
+<th colspan="2" class="content">Death/TPD Benefit *^
+<br/><br/><i>Faedah Kematian/TPD
+Tahun<br/>(4)<i></th>
+
+<th colspan="2" class="content">Additional Accidental TPD
+Benefit ^<br/><br/><i>Faedah Tambahan TPD
+Kemalangan
+<br/>(5)</i></th>
+
+<th COLSPAN=2 class="content">Total Surrender Value (End of Year)<span id="cashPayment1"></span><br/><br/><i>Jumlah Nilai Penyerahan (Akhir
+Tahun)
+<br/><span id="totalSurrenderValue">{totalSurrenderValue}</span><i></th>
+
+<th COLSPAN=2 class="content">Total Death/TPD Benefit (End of
+Year)*^<span id="cashPayment2"></span><br/><br/><i>Jumlah Faedah Kematian/TPD (Akhir
+Tahun)
+<br/><span id="tpdBenefit">{tpdBenefit}</span></i></th>
+
+<!--
+<th rowspan="2" class="content">Total Annual Premium
+(Include all riders)
+(Beg. of Year)<br/><br/><i>Jumlah Premium Tahunan
+(Termasuk semua rider)
+(Permulaan Tahun)
+<br/>(8)<i></th>
+-->
+
+</tr>
+<tr>
+<th class="contentSmall">Beg. of Year<br/>
+<i>Permulaan Tahun
+<br/>(4A)</i>
+</th>
+<th class="contentSmall">End of Year<br/><i>Akhir Tahun
+<br/>(4B)</i></th>
+<th class="contentSmall">Beg. of Year<br/>
+<i>Permulaan Tahun
+<br/>(5A)</i></th>
+<th class="contentSmall">End of Year<br/><i>Akhir Tahun
+<br/>(5B)</i></th>
+<th class="content">Sce. A</th>
+<th class="content">Sce. B</th>
+<th class="content">Sce. A</th>
+<th class="content">Sce. B</th>
+</tr>
+</thead>
+<tbody>
+<!--sql data here-->
+</tbody>
+</table><br/>
+
+
+<table id="table-notes"><tr>
+<td width="50%" valign="top">
+* The figures illustrated do not include Additional Accidental TPD Benefit. Upon accidental TPD, additional amount shown in Additional Accidental TPD Benefit column will be payable.<br/>
+<i>* Nombor yang diilustrasikan tidak merangkumi Faedah Tambahan TPD Kemalangan. Apabila mengalami TPD kemalangan, amaun tambahan yang diilustrasikan dalam kolum Faedah Tambahan TPD Kemalangan akan dibayar.</i><br/>
+^ TPD benefit will be paid in accordance to the Company's TPD provision.<br/>
+<i>^ Faedah TPD akan dibayar mengikut Peruntukan TPD Syarikat.</i><br/>
+<span id="accumulationYearlyIncome">
+~ Inclusive of accumulated Guranteed Yearly Income.<br/>
+<i>~ Termasuk Pendapatan Tahunan Terjamin Terkumpul.</i><br/>
+</span>
+
+
+</td>
+
+<td width="50%" valign="top" id="investmentScenariosRight">{investmentScenariosRight}</td></tr></table>
+
+<!--The illustration of premium above take into consideration the premium of the basic plan and the premium of all riders attached<br/>
+<i>Illustrasi premium di atas mengambil kira premium pelan asas dan juga semua premium rider yang disertakan</i><br/>-->
+
+<!--
+<span id="premiumPaymentOption">
+# Advancement of all future GYI at age 75 of RM12,750.00 (85% of all future GYI yet to fall due) is aasume to be paid out.<br/>
+<i># Pendahuluan semua Pendapatan Tahunan Terjamin masa depan pada umur 75 yang berjumlah RM12,750 (85% dari semua PTT masa depan yang bekum genap tempoh) dianggap akan dibayar.</i><br/>
+</span>
+<span id="advanceYearlyDesc">
+Please ask for copy of sales illustration without advancement of future GYI if you do not require this benefit.<br/>
+<i>Sila minta salinan illustrasi jualan tanpa pengeluaran pendapatan tahunan terjamin masa depan sekiranya anda tidak memerlukan manfaat ini.</i><br/>
+</span>
+-->
+<!--<table>
+<thead>
+<tr>
+    <td colspan="4"><u>HLA Income Builder</u></td>
+    <td width="100px"></td>
+    <td colspan="4"><u>Entire Policy (include all riders) Keseluruhan Polisi (termasuk semua rider)</u></td>
+</tr>
+</thead>
+<tr>
+    <td>Total Premium Paid</td><td><i>Jumlah Bayaran Premium</i></td><td>: RM</td><td id="TotPremPaid">{TotPremPaid}</td>
+    <td></td>
+    <td>Total Premium Paid</td><td>Jumlah Bayaran Premium</td><td>: RM</td><td id="TotPremPaid1">{TotPremPaid1}</td>
+</tr>
+
+<tr>
+    <td>Projected Maturity Value</td><td><i>Jangka Nilai Matang (Sce. A)</i></td><td>: RM</td><td id="SurrenderValueHigh">{SurrenderValueHigh}</td>
+    <td></td>
+    <td>Projected Maturity Value</td><td><i>Jangka Nilai Matang (Sce. A)</i></td><td>: RM</td><td id="SurrenderValueHigh1">{SurrenderValueHigh1}</td>
+</tr>
+
+<tr>
+    <td>Projected Maturity Value</td><td><i>Jangka Nilai Matang (Sce. B)</i></td><td>: RM</td><td id="SurrenderValueLow">{SurrenderValueLow}</td>
+    <td></td>
+    <td>Projected Maturity Value</td><td><i>Jangka Nilai Matang (Sce. B)</i></td><td>: RM</td><td id="SurrenderValueLow1">{SurrenderValueLow1}</td>
+</tr>
+
+<tr>
+    <td>Total Yearly Income</td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlyIncome">{TotalYearlyIncome}</td>
+    <td></td>
+    <td>Total Yearly Income </td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlyIncome1">{TotalYearlyIncome1}</td>
+</tr>
+</table>-->
+
+
+
+<br/><br/><br/>
+
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+
+<tr>
+<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+This sales illustration consists of <span id="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span id="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+
+
+
+</td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span id="currentPage">{currentPage}</span> of <span id="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+</tr>
+</table>
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>
