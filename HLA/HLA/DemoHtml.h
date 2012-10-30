@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Cordova/CDVViewController.h>
+//#import <Cordova/CDVViewController.h>
 
 @class JTRevealSidebarView;
 @class JTTableViewDatasource;
@@ -15,7 +15,7 @@
 @interface DemoHtml : UIViewController{
     JTRevealSidebarView *_revealView;
     JTTableViewDatasource *_datasource;
-    CDVViewController* viewController;
+    //CDVViewController* viewController;
 
 }
 @end
