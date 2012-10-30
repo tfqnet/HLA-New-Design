@@ -35,4 +35,7 @@
 @property (retain, nonatomic) NSMutableArray *OtherRiderDesc;
 @property (retain, nonatomic) NSMutableArray *OtherRiderSA;
 @property (retain, nonatomic) NSMutableArray *OtherRiderPlanOption;
+
+#define IsAtLeastiOSVersion(X) ([[[UIDevice currentDevice] systemVersion] compare:X options:NSNumericSearch] != NSOrderedAscending)
+
 @end

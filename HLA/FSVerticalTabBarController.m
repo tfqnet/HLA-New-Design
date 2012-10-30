@@ -9,6 +9,7 @@
 #import "FSVerticalTabBarController.h"
 #import "Login.h"
 #import "SIHandler.h"
+#import "DemoHtml.h"
 
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
@@ -100,8 +101,11 @@
         if (selectedIndex == 0) {
             [self presentViewController:selectedViewController animated:YES completion:Nil];
         }
-        
-        
+        /*
+        else if (selectedIndex == 6) {
+            [self presentViewController:selectedViewController animated:YES completion:Nil];
+        }
+        */
         else {
             
             if (selectedIndex == 2) { //prospect profile

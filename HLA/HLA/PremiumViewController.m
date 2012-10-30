@@ -8,12 +8,14 @@
 
 #import "PremiumViewController.h"
 #import "MainScreen.h"
+#import "ReportViewController.h"
 
 @interface PremiumViewController ()
 
 @end
 
 @implementation PremiumViewController
+@synthesize doGenerate;
 @synthesize WebView;
 @synthesize requestBasicSA,requestBasicHL,requestMOP,requestTerm,requestPlanCode,requestSINo,requestAge,requestOccpCode;
 @synthesize basicRate,LSDRate,riderCode,riderSA,riderHL1K,riderHL100,riderHLP,riderRate,riderTerm;
@@ -48,6 +50,7 @@
     [self getOccLoad];
     NSLog(@"basicRate:%d,lsdRate:%d,pa_cpa:%d",basicRate,LSDRate,occLoad);
     
+    [self deleteSIStorePremium]; //heng's part for SI Report
     [self checkExistRider];
     if ([riderCode count] != 0) {
         NSLog(@"rider exist!");
@@ -138,6 +141,26 @@
     NSString *basicTotalQ = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalQ]];
     NSString *basicTotalM = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalM]];
     
+    //------------heng's part for SI report
+    
+    NSString *QuerySQL =  [ NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
+                           " \"Quarterly\",\"Monthly\") VALUES "
+                           " (\"B\", \"%@\", \"%@\", \"%@\", \"%@\") ", basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        
+        
+        if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    //--------------
     NSString *displayLSD = nil;
     if (BasicSA < 1000) {
         displayLSD = @"Policy Fee Loading";
@@ -477,6 +500,25 @@
         NSString *quarter = [formatter stringFromNumber:[NSNumber numberWithDouble:[[quarterRiderTot objectAtIndex:a] doubleValue]]];
         NSString *month = [formatter stringFromNumber:[NSNumber numberWithDouble:[[monthRiderTot objectAtIndex:a] doubleValue]]];
         
+        //-------------- heng's part for SI Report
+        NSString *QuerySQL =  [ NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
+                               " \"Quarterly\",\"Monthly\") VALUES "
+                               " (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\") ",[riderCode objectAtIndex:a], annual, half, quarter, month ];
+        
+        sqlite3_stmt *statement;
+        
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_DONE) {
+                    
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+        //---------------
         if (htmlRider.length == 0) {
             htmlRider = [[NSString alloc]initWithFormat:
                          @"<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
@@ -834,7 +876,44 @@
     [self setQuarterRiderTot:nil];
     [self setMonthRiderTot:nil];
     [self setRequestOccpCode:nil];
+    [self setDoGenerate:nil];
     [super viewDidUnload];
 }
 
+- (IBAction)btnGenerate:(id)sender {
+    ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+    ReportPage.SINo = requestSINo;
+    [self presentViewController:ReportPage animated:NO completion:^{
+        [ReportPage dismissViewControllerAnimated:NO completion:^{
+            /*
+            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            main.modalPresentationStyle = UIModalPresentationFullScreen;
+            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            main.IndexTab = 6;
+            [self presentModalViewController:main animated:YES];
+             */
+         ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
+         [self presentViewController:reportVC animated:YES completion:Nil];
+        }];
+    }];
+}
+
+-(void)deleteSIStorePremium{
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+       NSString *DeleteSQL =  [ NSString stringWithFormat: @"DELETE from SI_Store_Premium"];
+        if (sqlite3_prepare_v2(contactDB, [DeleteSQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+            }
+            
+        }
+            
+    
+    }    
+    
+    
+    
+}
 @end

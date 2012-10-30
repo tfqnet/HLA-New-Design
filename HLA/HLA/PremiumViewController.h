@@ -71,5 +71,7 @@
 @property (nonatomic,strong) NSMutableArray *monthRiderTot;
 
 - (IBAction)doClose:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *doGenerate;
+- (IBAction)btnGenerate:(id)sender;
 
 @end

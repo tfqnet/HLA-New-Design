@@ -54,7 +54,7 @@ typedef enum {
     tableView.dataSource = _datasource;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [_revealView.sidebarView pushView:tableView animated:NO];
-    _revealView.contentView.navigationItem.title = @"Pages";
+    _revealView.contentView.navigationItem.title = @"Report";
     
     // Construct a toggle button for our contentView and add into it
     //    UIButton *toggleButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -70,7 +70,8 @@ typedef enum {
     
     [self.view addSubview:_revealView];
     
-    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(CloseButtonAction)];
+    _revealView.contentView.navigationItem.rightBarButtonItem = barButton;
     
     
 }
@@ -217,11 +218,12 @@ typedef enum {
                 
                 if (selectedTitle == @"Page1"){
                     
-/*                     viewController = [CDVViewController new];
+                    viewController = [CDVViewController new];
                     viewController.startPage = @"Page1.html";
-                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    viewController.view.frame = CGRectMake(0, 0, 10, 10);
                     [view addSubview:viewController.view];
-  */                  
+                    
+                    
                     //UIWebView *webView1 = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 700)];
                     //[view addSubview:webView1];
                     //webView1.alpha = 1.0;
@@ -242,12 +244,12 @@ typedef enum {
                     [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page2" ofType:@"html"]isDirectory:NO]]];
                     webView1.scalesPageToFit = YES;
                 */
-                    /*
+                    
                     viewController = [CDVViewController new];
                     viewController.startPage = @"Page2.html";
-                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    viewController.view.frame = CGRectMake(0, 0, 10, 10);
                     [view addSubview:viewController.view];
-                    */
+                    
                 }
                 else if (selectedTitle == @"Page3"){
                     /*
@@ -261,12 +263,12 @@ typedef enum {
                     webView1.scalesPageToFit = YES;
                     */
                     
-                    /*
+                    
                     viewController = [CDVViewController new];
                     viewController.startPage = @"Page3.html";
-                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    viewController.view.frame = CGRectMake(0, 0, 10, 10);
                     [view addSubview:viewController.view];
-                     */
+                     
                 }
                 
                 else if (selectedTitle == @"Page4"){
@@ -281,12 +283,12 @@ typedef enum {
                      webView1.scalesPageToFit = YES;
                      */
                     
-                    /*
+                    
                     viewController = [CDVViewController new];
                     viewController.startPage = @"Page4_1.html";
-                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    viewController.view.frame = CGRectMake(0, 0, 10, 10);
                     [view addSubview:viewController.view];
-                     */
+                     
                 }
                 
                 else if (selectedTitle == @"Page5"){
@@ -301,12 +303,12 @@ typedef enum {
                      webView1.scalesPageToFit = YES;
                      */
                     
-                    /*
+                    
                     viewController = [CDVViewController new];
                     viewController.startPage = @"Page5_1.html";
-                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    viewController.view.frame = CGRectMake(0, 0, 10, 10);
                     [view addSubview:viewController.view];
-                     */
+                     
                 }
                 
                 else if (selectedTitle == @"Page6"){
@@ -320,21 +322,21 @@ typedef enum {
                      [webView1 loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Page3" ofType:@"html"]isDirectory:NO]]];
                      webView1.scalesPageToFit = YES;
                      */
-                    /*
+                    
                     viewController = [CDVViewController new];
                     viewController.startPage = @"Page6.html";
-                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    viewController.view.frame = CGRectMake(0, 0, 10, 10);
                     [view addSubview:viewController.view];
-                     */
+                     
                 }
                 
                 else if (selectedTitle == @"Page7"){
-                    /*
+                    
                     viewController = [CDVViewController new];
                     viewController.startPage = @"Page7_1.html";
-                    viewController.view.frame = CGRectMake(0, 0, 320, 480);
+                    viewController.view.frame = CGRectMake(0, 0, 10, 10);
                     [view addSubview:viewController.view];
-                     */
+                     
                 }
                 //NSLog(@"%@",[(JTTableViewCellModalSimpleType *)object title]);
                 //[view addSubview:pushButton];
@@ -357,7 +359,9 @@ typedef enum {
     
 }
 
-
+-(void)CloseButtonAction{
+    [self dismissViewControllerAnimated:YES completion:Nil];
+}
 
 
 @end

@@ -144,7 +144,7 @@
         },errorHandler,nullHandler);
         
         db.transaction(function(transaction) { //rider description
-            transaction.executeSql("SELECT RiderDesc FROM Trad_Rider_Profile where ltrim(rtrim(RiderCode)) = 'I30R'", [], function(transaction, result) {
+            transaction.executeSql("SELECT RiderDesc FROM Trad_Sys_Rider_Profile where ltrim(rtrim(RiderCode)) = 'I30R'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
                     //riderDesc = row.RiderDesc;
