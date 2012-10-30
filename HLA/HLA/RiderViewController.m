@@ -1244,16 +1244,16 @@
     
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
         
-    float numHL = [HLField.text floatValue];
+    double numHL = [HLField.text doubleValue];
     int HLValue = numHL;
     float HLFraction = numHL - HLValue;
     NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:HLFraction]];
     
-    float aaHL = HLValue/25;
+    double aaHL = numHL/25;
     int bbHL = aaHL;
     float ccHL = aaHL - bbHL;
     NSString *msg2 = [formatter stringFromNumber:[NSNumber numberWithFloat:ccHL]];
-    NSLog(@"value:%d,devide:%.2f,minus:%.2f,msg:%@",HLValue,aaHL,ccHL,msg2);
+    NSLog(@"value:%.2f,devide:%.2f,int:%d, minus:%.2f,msg:%@",numHL,aaHL,bbHL,ccHL,msg2);
 
     if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -1913,6 +1913,7 @@
                 titleHL1K.hidden = NO;
                 titleHL100.hidden = NO;
                 titleHLP.hidden = NO;
+                
                 
                 [self calculateBasicPremium];
                 [self calculateRiderPrem];

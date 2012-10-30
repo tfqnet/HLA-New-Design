@@ -13,6 +13,7 @@
 #import "SecondLAViewController.h"
 #import "PayorViewController.h"
 #import "PremiumViewController.h"
+#import "MainScreen.h"
 
 @interface SIMenuViewController ()
 
@@ -25,7 +26,6 @@
 @synthesize menuH,menuBH;
 @synthesize getAge,getSINo,getOccpCode,getbasicSA;
 @synthesize payorCustCode,payorSINo,CustCode2,clientID2;
-
 
 - (void)viewDidLoad
 {
@@ -72,6 +72,31 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+  
+//    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+//    main.mainBH = nil;
+//    main.mainH = nil;
+
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
 }
 
 -(void)toogleView
