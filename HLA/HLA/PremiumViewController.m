@@ -253,12 +253,18 @@
                 } else if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"Premier"]) {
                     planHSPII = @"P";
                 }
+                
+                /*pentaSQL = [[NSString alloc] initWithFormat:
+                        @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planHSPII];
+                */
+                //edit by heng
                 pentaSQL = [[NSString alloc] initWithFormat:
                             @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HSP_II\" AND PlanOption=\"%@\"",planHSPII];
             }
             else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"])
             {
                 planMGII = [riderPlanOpt objectAtIndex:i];
+                // edited by heng  pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",planMGII];
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_II\" AND PlanOption=\"%@\"",planMGII];
                 
                 
@@ -298,21 +304,25 @@
         
         int ridTerm = [[riderTerm objectAtIndex:i] intValue];
         //get rate
-        if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE30R"])
+        if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"PA"])
         {
             [self getRiderRateAge:planCodeRider riderTerm:ridTerm];
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"CPA"]) {
-            [self getRiderRateClass:planCodeRider riderTerm:ridTerm];
+            //[self getRiderRate:planCodeRider riderTerm:ridTerm];
+            [self getRiderRateCPA:planCodeRider riderTerm:ridTerm];
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"PA"]||[[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"]) {
-            [self getRiderRateAgeClass:planCodeRider riderTerm:ridTerm];
+        else if ([[riderCode objectAtIndex:i] isEqualToString:@"PA"]) {
+            [self getRiderRatePA:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"]) {
+            [self getRiderRateHSP_II:planCodeRider riderTerm:ridTerm];
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"HB"]) {
-            [self getRiderRateSex:planCodeRider riderTerm:ridTerm];
+            [self getRiderRateAge:planCodeRider riderTerm:ridTerm];
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"]||[[riderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[riderCode objectAtIndex:i] isEqualToString:@"HMM"]) {
-            [self getRiderRateAgeSexClass:planCodeRider riderTerm:ridTerm];
+        else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"] || [[riderCode objectAtIndex:i] isEqualToString:@"MG_II"]  ) {
+            [self getRiderRateClass:planCodeRider riderTerm:ridTerm];
         }
         else {
             [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
@@ -604,6 +614,31 @@
     }
 }
 
+-(void)getRiderRate:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0",aaplan,aaterm,aaterm];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 -(void)getRiderRateSex:(NSString *)aaplan riderTerm:(int)aaterm
 {
     const char *dbpath = [databasePath UTF8String];
@@ -688,7 +723,7 @@
     }
 }
 
--(void)getRiderRateAgeSexClass:(NSString *)aaplan riderTerm:(int)aaterm
+-(void)getRiderRateClass:(NSString *)aaplan riderTerm:(int)aaterm
 {
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -715,7 +750,34 @@
     }
 }
 
--(void)getRiderRateAgeClass:(NSString *)aaplan riderTerm:(int)aaterm
+-(void)getRiderRateHSP_II:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND "
+                              " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\" AND occpClass = \"%d\"",
+                              aaplan,premH.storedAge,premH.storedAge,premH.storedSex, premH.storedOccpClass];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRatePA:(NSString *)aaplan riderTerm:(int)aaterm
 {
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -742,7 +804,7 @@
     }
 }
 
--(void)getRiderRateClass:(NSString *)aaplan riderTerm:(int)aaterm
+-(void)getRiderRateCPA:(NSString *)aaplan riderTerm:(int)aaterm
 {
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
