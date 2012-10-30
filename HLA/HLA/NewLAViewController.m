@@ -1013,6 +1013,9 @@
 
 -(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode
 {
+    if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
+        smoker = nil;
+    }
     useExist = NO;
     statusLabel.text = @"";
     NSLog(@"namedb:%@, gender:%@",aaName,aaGender);

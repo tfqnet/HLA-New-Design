@@ -38,6 +38,7 @@
 //request from previous
 @property (nonatomic,strong) BasicPlanHandler *riderBH;
 @property (nonatomic,strong) SIHandler *riderH;
+@property (strong, nonatomic) NSMutableArray *dataInsert;
 
 @property (nonatomic, retain) RiderListTbViewController *RiderList;
 
