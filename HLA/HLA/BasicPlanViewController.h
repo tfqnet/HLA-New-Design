@@ -64,7 +64,7 @@
 //to display
 @property (nonatomic,strong) NSString *getSINo;
 @property (nonatomic,assign,readwrite) int getPolicyTerm;
-@property (nonatomic,assign,readwrite) int getSumAssured;
+@property (nonatomic,assign,readwrite) double getSumAssured;
 @property (nonatomic,copy) NSString *getHL;
 @property (nonatomic,copy) NSString *getTempHL;
 @property (nonatomic,assign,readwrite) int getTempHLTerm;

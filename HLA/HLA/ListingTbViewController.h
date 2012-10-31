@@ -14,11 +14,16 @@
 -(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode;
 @end
 
-@interface ListingTbViewController : UITableViewController {
+@interface ListingTbViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
     NSUInteger selectedIndex;
     id <ListingTbViewControllerDelegate> _delegate;
+    NSMutableArray *_indexNo;
+    NSMutableArray *_NameList;
+    NSMutableArray *_DOBList;
+    NSMutableArray *_GenderList;
+    NSMutableArray *_OccpCodeList;
 }
 
 @property (nonatomic,strong) id <ListingTbViewControllerDelegate> delegate;
@@ -27,4 +32,11 @@
 @property(nonatomic , retain) NSMutableArray *DOBList;
 @property(nonatomic , retain) NSMutableArray *GenderList;
 @property(nonatomic , retain) NSMutableArray *OccpCodeList;
+
+@property (strong, nonatomic) NSMutableArray *FilteredIndex;
+@property (strong, nonatomic) NSMutableArray *FilteredName;
+@property (strong, nonatomic) NSMutableArray *FilteredDOB;
+@property (strong, nonatomic) NSMutableArray *FilteredGender;
+@property (strong, nonatomic) NSMutableArray *FilteredOccp;
+@property (nonatomic, assign) bool isFiltered;
 @end

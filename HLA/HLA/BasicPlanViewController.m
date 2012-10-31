@@ -419,6 +419,7 @@
         } else {
             
             NSString *msg;
+            [self checkingExisting];
             if (useExist) {
                 msg = @"Confirm changes?";
             } else {
@@ -457,7 +458,13 @@
 
 -(void)toogleExistingField
 {
-    yearlyIncomeField.text = [[NSString alloc] initWithFormat:@"%d",getSumAssured];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setMaximumFractionDigits:2];
+    
+    NSString *sumAss = [formatter stringFromNumber:[NSNumber numberWithDouble:getSumAssured]];
+    
+    yearlyIncomeField.text = [[NSString alloc] initWithFormat:@"%@",sumAss];
     if (MOP == 6) {
         MOPSegment.selectedSegmentIndex = 0;
     } else if (MOP == 9) {
@@ -502,8 +509,6 @@
         tempHLTermField.text = [NSString stringWithFormat:@"%d",getTempHLTerm];
     }
     [self getPlanCodePenta];
-    
-    useExist = YES;
     
     dataInsert = [[NSMutableArray alloc] init];
     BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
@@ -570,6 +575,12 @@
         }
         sqlite3_close(contactDB);
     }
+    
+    if (getSINo.length != 0) {
+        useExist = YES;
+    } else {
+        useExist = NO;
+    }
 }
 
 -(void)getExistingBasic
@@ -585,7 +596,7 @@
             {
                 getSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 getPolicyTerm = sqlite3_column_int(statement, 1);
-                getSumAssured = sqlite3_column_int(statement, 2);
+                getSumAssured = sqlite3_column_double(statement, 2);
                 MOP = sqlite3_column_int(statement, 3);
                 cashDividend = [[NSString alloc ] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
                 yearlyIncome = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];

@@ -13,8 +13,13 @@
 @end
 
 @implementation ListingTbViewController
-@synthesize NameList,indexNo,DOBList,GenderList,OccpCodeList;
+@synthesize NameList = _NameList;
+@synthesize indexNo = _indexNo;
+@synthesize DOBList = _DOBList;
+@synthesize GenderList = _GenderList;
+@synthesize OccpCodeList = _OccpCodeList;
 @synthesize delegate = _delegate;
+@synthesize FilteredName,FilteredIndex,FilteredDOB,FilteredGender,FilteredOccp,isFiltered;
 
 - (void)viewDidLoad
 {
@@ -24,7 +29,17 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    self.clearsSelectionOnViewWillAppear = NO;
+    self.contentSizeForViewInPopover = CGSizeMake(500.0, 400.0);
     [self getListing];
+    
+    UISearchBar *zzz = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 200, 50) ];
+    
+    zzz.opaque = false;
+    zzz.delegate = (id) self;
+    self.tableView.tableHeaderView = zzz;
+    CGRect searchbarFrame = zzz.frame;
+    [self.tableView scrollRectToVisible:searchbarFrame animated:NO];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -35,11 +50,11 @@
 #pragma mark - handle db
 -(void)getListing
 {
-    indexNo = [[NSMutableArray alloc] init];
-    NameList = [[NSMutableArray alloc] init];
-    DOBList = [[NSMutableArray alloc] init];
-    GenderList = [[NSMutableArray alloc] init];
-    OccpCodeList = [[NSMutableArray alloc] init];
+    self.indexNo = [[NSMutableArray alloc] init];
+    self.NameList = [[NSMutableArray alloc] init];
+    self.DOBList = [[NSMutableArray alloc] init];
+    self.GenderList = [[NSMutableArray alloc] init];
+    self.OccpCodeList = [[NSMutableArray alloc] init];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -50,11 +65,11 @@
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
                 int index = sqlite3_column_int(statement, 0);
-                [indexNo addObject:[[NSString alloc] initWithFormat:@"%d",index]];
-                [NameList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)]];
-                [DOBList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)]];
-                [GenderList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)]];
-                [OccpCodeList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)]];
+                [_indexNo addObject:[[NSString alloc] initWithFormat:@"%d",index]];
+                [_NameList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)]];
+                [_DOBList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)]];
+                [_GenderList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)]];
+                [_OccpCodeList addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)]];
             }
             sqlite3_finalize(statement);
         }
@@ -71,7 +86,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [indexNo count];
+    if (isFiltered == false) {
+        return [_indexNo count];
+    }
+    else {
+        return [FilteredIndex count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -83,15 +103,50 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-	cell.textLabel.text = [NameList objectAtIndex:indexPath.row];
+    if (isFiltered == false) {
+        cell.textLabel.text = [_NameList objectAtIndex:indexPath.row];
+    }
+    else {
+        cell.textLabel.text = [FilteredName objectAtIndex:indexPath.row];
+    }
     
-	if (indexPath.row == selectedIndex) {
-		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-	}
-	else {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
+    if (indexPath.row == selectedIndex) {
+        cell.accessoryType= UITableViewCellAccessoryCheckmark;
+    }
+    else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
     return cell;
+}
+
+-(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text{
+    if (text.length == 0) {
+        isFiltered = false;
+    }
+    else {
+        isFiltered = true;
+        
+        FilteredIndex = [[NSMutableArray alloc] init ];
+        FilteredName = [[NSMutableArray alloc] init ];
+        FilteredDOB = [[NSMutableArray alloc] init];
+        FilteredGender = [[NSMutableArray alloc] init];
+        FilteredOccp = [[NSMutableArray alloc] init];
+        
+        for (int a =0; a<_NameList.count; a++ ) {
+            NSRange pp = [[_NameList objectAtIndex:a] rangeOfString:text options:NSCaseInsensitiveSearch];
+            
+            if (pp.location != NSNotFound) {
+                [FilteredIndex addObject:[_indexNo objectAtIndex:a]];
+                [FilteredName addObject:[_NameList objectAtIndex:a]];
+                [FilteredDOB addObject:[_DOBList objectAtIndex:a]];
+                [FilteredGender addObject:[_GenderList objectAtIndex:a]];
+                [FilteredOccp addObject:[_OccpCodeList objectAtIndex:a]];
+            }
+        }
+    }
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view delegate
@@ -99,7 +154,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     selectedIndex = indexPath.row;
-    [_delegate listing:self didSelectIndex:[indexNo objectAtIndex:selectedIndex] andName:[NameList objectAtIndex:selectedIndex] andDOB:[DOBList objectAtIndex:selectedIndex] andGender:[GenderList objectAtIndex:selectedIndex] andOccpCode:[OccpCodeList objectAtIndex:selectedIndex]];
+    
+    if (isFiltered == false) {
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
+        [_delegate listing:self didSelectIndex:[_indexNo objectAtIndex:selectedIndex] andName:[_NameList objectAtIndex:selectedIndex] andDOB:[_DOBList objectAtIndex:selectedIndex] andGender:[_GenderList objectAtIndex:selectedIndex] andOccpCode:[_OccpCodeList objectAtIndex:selectedIndex]];
+    }
+    else {
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
+        [_delegate listing:self didSelectIndex:[FilteredIndex objectAtIndex:selectedIndex] andName:[FilteredName objectAtIndex:selectedIndex] andDOB:[FilteredDOB objectAtIndex:selectedIndex] andGender:[FilteredGender objectAtIndex:selectedIndex] andOccpCode:[FilteredOccp objectAtIndex:selectedIndex]];
+    }
     
     [tableView reloadData];
 }
@@ -113,6 +180,11 @@
     [self setDOBList:nil];
     [self setGenderList:nil];
     [self setOccpCodeList:nil];
+    [self setFilteredIndex:nil];
+    [self setFilteredName:nil];
+    [self setFilteredGender:nil];
+    [self setFilteredDOB:nil];
+    [self setFilteredOccp:nil];
     [super viewDidUnload];
 }
 

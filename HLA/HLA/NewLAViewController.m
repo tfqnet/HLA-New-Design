@@ -78,7 +78,6 @@
             [self getSavedField];
             
             NSLog(@"will use existing data");
-            useExist = YES;
         }
     } else {
         NSLog(@"SINo not exist!");
@@ -162,8 +161,8 @@
         valid = FALSE;
     }
     
-    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,occuCode);
-    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
+//    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,occuCode);
+//    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
     
     if (valid) {
         
@@ -343,9 +342,15 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
+    else if ([occuCode isEqualToString:@"OCC01975"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
     else {
         //prompt save
         NSString *msg;
+        [self checkingExisting];
+        
         if (useExist) {
             msg = @"Confirm changes?";
         } else {
@@ -841,7 +846,6 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                 @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id, b.IndexNo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
-    
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -866,6 +870,12 @@
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
+    }
+    
+    if (SINo.length != 0) {
+        useExist = YES;
+    } else {
+        useExist = NO;
     }
 }
 
@@ -1015,6 +1025,8 @@
 {
     if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
         smoker = nil;
+        requestSINo = nil;
+        SINo = nil;
     }
     useExist = NO;
     statusLabel.text = @"";

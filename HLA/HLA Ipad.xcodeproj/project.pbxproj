@@ -49,7 +49,6 @@
 		C486D9E5163E6756009F8F21 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E4163E6756009F8F21 /* SystemConfiguration.framework */; };
 		C486D9E7163E675C009F8F21 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E6163E675C009F8F21 /* MobileCoreServices.framework */; };
 		C486D9E9163E6762009F8F21 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E8163E6762009F8F21 /* CoreMedia.framework */; };
-		C486D9F7163E6F92009F8F21 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9F3163E6988009F8F21 /* libCordova.a */; };
 		C486D9F9163E7127009F8F21 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C486D9F8163E7127009F8F21 /* www */; };
 		C486DAB8163FB928009F8F21 /* Databases.db in Resources */ = {isa = PBXBuildFile; fileRef = C486DAB7163FB928009F8F21 /* Databases.db */; };
 		C4E7B388161B119E00066CBF /* SIListing.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7B387161B119E00066CBF /* SIListing.m */; };
@@ -119,7 +118,6 @@
 		C4F83033162FCEE000EF8FAA /* Page2.html in Resources */ = {isa = PBXBuildFile; fileRef = C4F8302E162FCEE000EF8FAA /* Page2.html */; };
 		C4F83034162FCEE000EF8FAA /* Page3.html in Resources */ = {isa = PBXBuildFile; fileRef = C4F8302F162FCEE000EF8FAA /* Page3.html */; };
 		C4F83035162FCEE000EF8FAA /* style.css in Resources */ = {isa = PBXBuildFile; fileRef = C4F83030162FCEE000EF8FAA /* style.css */; };
-		C4FCDDA2163792D50065D024 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDA1163792D50065D024 /* hladb.sqlite */; };
 		C4FCDDCA16395F120065D024 /* background12.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDBD16395F120065D024 /* background12.png */; };
 		C4FCDDCB16395F120065D024 /* background13.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDBE16395F120065D024 /* background13.png */; };
 		C4FCDDCC16395F120065D024 /* background14.png in Resources */ = {isa = PBXBuildFile; fileRef = C4FCDDBF16395F120065D024 /* background14.png */; };
@@ -152,29 +150,24 @@
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
+		EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF9A5B261640C00C00D3EB57 /* hladb.sqlite */; };
+		EF9A5B331640C10300D3EB57 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9A5B301640C0F100D3EB57 /* libCordova.a */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C486D9F2163E6988009F8F21 /* PBXContainerItemProxy */ = {
+		EF9A5B2F1640C0F100D3EB57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */;
+			containerPortal = EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 68A32D7114102E1C006B237C;
 			remoteInfo = CordovaLib;
 		};
-		C486D9F4163E699B009F8F21 /* PBXContainerItemProxy */ = {
+		EF9A5B311640C0F800D3EB57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */;
+			containerPortal = EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = CordovaLib;
-		};
-		C486DA3B163F7293009F8F21 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 68A32D7114102E1C006B237C;
 			remoteInfo = CordovaLib;
 		};
 /* End PBXContainerItemProxy section */
@@ -225,9 +218,7 @@
 		C486D9E4163E6756009F8F21 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C486D9E6163E675C009F8F21 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		C486D9E8163E6762009F8F21 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../Downloads/phonegap-phonegap-26d211b/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		C486D9F8163E7127009F8F21 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
-		C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../Downloads/phonegap-phonegap-26d211b/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		C486DAB7163FB928009F8F21 /* Databases.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Databases.db; sourceTree = "<group>"; };
 		C4E7B386161B119E00066CBF /* SIListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIListing.h; sourceTree = "<group>"; };
 		C4E7B387161B119E00066CBF /* SIListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIListing.m; sourceTree = "<group>"; };
@@ -332,7 +323,6 @@
 		C4F8302E162FCEE000EF8FAA /* Page2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page2.html; sourceTree = "<group>"; };
 		C4F8302F162FCEE000EF8FAA /* Page3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page3.html; sourceTree = "<group>"; };
 		C4F83030162FCEE000EF8FAA /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
-		C4FCDDA1163792D50065D024 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		C4FCDDBD16395F120065D024 /* background12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background12.png; sourceTree = "<group>"; };
 		C4FCDDBE16395F120065D024 /* background13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background13.png; sourceTree = "<group>"; };
 		C4FCDDBF16395F120065D024 /* background14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background14.png; sourceTree = "<group>"; };
@@ -380,6 +370,8 @@
 		EF28C322161C11C2009585CC /* SIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIHandler.m; path = ../SIHandler.m; sourceTree = "<group>"; };
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
+		EF9A5B261640C00C00D3EB57 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../../Downloads/phonegap-phonegap-26d211b/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -389,7 +381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C486D9F7163E6F92009F8F21 /* libCordova.a in Frameworks */,
+				EF9A5B331640C10300D3EB57 /* libCordova.a in Frameworks */,
 				C486D9E9163E6762009F8F21 /* CoreMedia.framework in Frameworks */,
 				C486D9E7163E675C009F8F21 /* MobileCoreServices.framework in Frameworks */,
 				C486D9E5163E6756009F8F21 /* SystemConfiguration.framework in Frameworks */,
@@ -419,22 +411,6 @@
 			name = iCarousel;
 			sourceTree = "<group>";
 		};
-		C486D9EC163E6988009F8F21 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C486D9F3163E6988009F8F21 /* libCordova.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C486DA38163F7293009F8F21 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C486DA3C163F7293009F8F21 /* libCordova.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C4E7B384161B10F200066CBF /* SI Listing */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,25 +423,13 @@
 		C4E9D1851612C64900016053 = {
 			isa = PBXGroup;
 			children = (
-				C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */,
+				EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */,
 				C486D9F8163E7127009F8F21 /* www */,
-				C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */,
-				C486D9E8163E6762009F8F21 /* CoreMedia.framework */,
-				C486D9E6163E675C009F8F21 /* MobileCoreServices.framework */,
-				C486D9E4163E6756009F8F21 /* SystemConfiguration.framework */,
-				C486D9E2163E6747009F8F21 /* MediaPlayer.framework */,
-				C486D9E0163E6741009F8F21 /* CoreLocation.framework */,
-				C486D9DE163E6739009F8F21 /* AVFoundation.framework */,
-				C486D9DC163E6732009F8F21 /* AudioToolbox.framework */,
-				C486D9D8163E6728009F8F21 /* AddressBook.framework */,
-				C486D9D9163E6728009F8F21 /* AddressBookUI.framework */,
 				C4F8300E162FA9B600EF8FAA /* JTRevealSidebar */,
 				C4660EE71625995600BA4AFE /* iCarousel */,
 				C4F08D59161DA491008BCC1A /* ContactTypeClass.h */,
 				C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */,
-				C4EB49201615556300C7FC8C /* libsqlite3.dylib */,
 				C4EB491A161537B100C7FC8C /* Database */,
-				C4E9D1CB1612C9C300016053 /* QuartzCore.framework */,
 				C4E9D1BF1612C6A500016053 /* Images */,
 				C4E9D1B11612C65000016053 /* FSVerticalTabBarController */,
 				C4E9D19A1612C64900016053 /* HLA */,
@@ -485,6 +449,17 @@
 		C4E9D1931612C64900016053 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4EB49201615556300C7FC8C /* libsqlite3.dylib */,
+				C486D9E8163E6762009F8F21 /* CoreMedia.framework */,
+				C486D9E6163E675C009F8F21 /* MobileCoreServices.framework */,
+				C486D9E4163E6756009F8F21 /* SystemConfiguration.framework */,
+				C486D9E2163E6747009F8F21 /* MediaPlayer.framework */,
+				C486D9E0163E6741009F8F21 /* CoreLocation.framework */,
+				C486D9DE163E6739009F8F21 /* AVFoundation.framework */,
+				C486D9DC163E6732009F8F21 /* AudioToolbox.framework */,
+				C486D9D8163E6728009F8F21 /* AddressBook.framework */,
+				C486D9D9163E6728009F8F21 /* AddressBookUI.framework */,
+				C4E9D1CB1612C9C300016053 /* QuartzCore.framework */,
 				C4E9D1941612C64900016053 /* UIKit.framework */,
 				C4E9D1961612C64900016053 /* Foundation.framework */,
 				C4E9D1981612C64900016053 /* CoreGraphics.framework */,
@@ -672,7 +647,7 @@
 			isa = PBXGroup;
 			children = (
 				C486DAB7163FB928009F8F21 /* Databases.db */,
-				C4FCDDA1163792D50065D024 /* hladb.sqlite */,
+				EF9A5B261640C00C00D3EB57 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -802,6 +777,14 @@
 			name = BasicPlan;
 			sourceTree = "<group>";
 		};
+		EF9A5B291640C0F000D3EB57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF9A5B301640C0F100D3EB57 /* libCordova.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -816,7 +799,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				C486D9F5163E699B009F8F21 /* PBXTargetDependency */,
+				EF9A5B321640C0F800D3EB57 /* PBXTargetDependency */,
 			);
 			name = "HLA Ipad";
 			productName = HLA;
@@ -844,12 +827,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = C486D9EC163E6988009F8F21 /* Products */;
-					ProjectRef = C486D9EB163E6988009F8F21 /* CordovaLib.xcodeproj */;
-				},
-				{
-					ProductGroup = C486DA38163F7293009F8F21 /* Products */;
-					ProjectRef = C486DA37163F7293009F8F21 /* CordovaLib.xcodeproj */;
+					ProductGroup = EF9A5B291640C0F000D3EB57 /* Products */;
+					ProjectRef = EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -860,18 +839,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		C486D9F3163E6988009F8F21 /* libCordova.a */ = {
+		EF9A5B301640C0F100D3EB57 /* libCordova.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libCordova.a;
-			remoteRef = C486D9F2163E6988009F8F21 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C486DA3C163F7293009F8F21 /* libCordova.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCordova.a;
-			remoteRef = C486DA3B163F7293009F8F21 /* PBXContainerItemProxy */;
+			remoteRef = EF9A5B2F1640C0F100D3EB57 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -929,7 +901,6 @@
 				C4F83033162FCEE000EF8FAA /* Page2.html in Resources */,
 				C4F83034162FCEE000EF8FAA /* Page3.html in Resources */,
 				C4F83035162FCEE000EF8FAA /* style.css in Resources */,
-				C4FCDDA2163792D50065D024 /* hladb.sqlite in Resources */,
 				C4FCDDCA16395F120065D024 /* background12.png in Resources */,
 				C4FCDDCB16395F120065D024 /* background13.png in Resources */,
 				C4FCDDCC16395F120065D024 /* background14.png in Resources */,
@@ -958,6 +929,7 @@
 				C486D9D4163E6622009F8F21 /* Cordova.plist in Resources */,
 				C486D9F9163E7127009F8F21 /* www in Resources */,
 				C486DAB8163FB928009F8F21 /* Databases.db in Resources */,
+				EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1028,10 +1000,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C486D9F5163E699B009F8F21 /* PBXTargetDependency */ = {
+		EF9A5B321640C0F800D3EB57 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = CordovaLib;
-			targetProxy = C486D9F4163E699B009F8F21 /* PBXContainerItemProxy */;
+			targetProxy = EF9A5B311640C0F800D3EB57 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
