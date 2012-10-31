@@ -16,6 +16,7 @@
 @synthesize SINo, PolicyTerm, BasicSA, PremiumPaymentOption, AdvanceYearlyIncome,OtherRiderCode,OtherRiderDesc,OtherRiderTerm;
 @synthesize YearlyIncome, CashDividend,CustCode, Age, IncomeRiderCode,IncomeRiderDesc,IncomeRiderTerm;
 @synthesize HealthLoading, OtherRiderSA, IncomeRiderSA, IncomeRiderPlanOption, OtherRiderPlanOption,Name;
+@synthesize strBasicAnnually, strIncomeRiderAnnually;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,8 +52,8 @@
     [self InsertToSI_Temp_Trad_Rider];
     [self InsertToSI_Temp_Trad];    
     [self InsertToSI_Temp_Trad_Overall];
-    [self InsertToSI_Temp_Trad_Summary];
     [self InsertToSI_Temp_Trad_RideriLLus];
+    [self InsertToSI_Temp_Trad_Summary];
     
     NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
     //NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -510,7 +511,7 @@
                     " \"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\") ", 
                     SINo, Name, @"HLAIB", @"HLA Income Builder", @"Participating Whole Life Plan with Guaranteed Yearly Income and",
                     @"Pelan Penyertaan Sepanjang Hayat dengan Pendapatan Tahunan Terjamin dan ", @"", @"Yearly Income Pay Out", @"", @"Pendapatan Tahunan Dibayar",
-                    @"\"\"", @"\"\"", @"Occ Loading (per 1k SA)", @"Caj Tambahan Perkerjaan (1k JAD)", PolicyTerm, arc4random()%10000 + 100, 
+                    @"", @"", @"Occ Loading (per 1k SA)", @"Caj Tambahan Perkerjaan (1k JAD)", PolicyTerm, arc4random()%10000 + 100, 
                     arc4random()%10000 + 100, arc4random()%10000 + 100, 0, 0, 0, 0, arc4random()%10000 + 100, 0, 0, 0, arc4random()%10000 + 100,
                     arc4random()%10000 + 100,0,0,0,0,0 ];
         
@@ -599,6 +600,7 @@
                         strSemiAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                         strQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                         strMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                        strBasicAnnually = strAnnually;
                     }
                     sqlite3_finalize(statement);
                 }
@@ -697,6 +699,7 @@
                     strSemiAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                     strQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                     strMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                    strIncomeRiderAnnually = strAnnually;
                 }
                 sqlite3_finalize(statement);
             }
@@ -725,9 +728,10 @@
     NSString *QuerySQL;
     int inputAge;
     NSMutableArray *AnnualPremium = [[NSMutableArray alloc] init ];
-    NSString *strAnnually;   
+    NSMutableArray *arrayYearlyIncome = [[NSMutableArray alloc] init ];
+    //NSString *strAnnually;   
     
-    
+    /*
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
         NSString *SelectSQL = @"Select * from SI_Store_Premium where type = \"B\" ";
         if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -739,16 +743,29 @@
         }
         sqlite3_close(contactDB);
     }
-    
+    */
     for (int i =1; i <= PolicyTerm; i++) {
         
         if (i <= PremiumPaymentOption) {
-            [AnnualPremium addObject:strAnnually ];
+            [AnnualPremium addObject:strBasicAnnually ];
         }
         else {
             [AnnualPremium addObject:@"0.00"];
         }
+        
+        if (i + Age < AdvanceYearlyIncome) {
+            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d", BasicSA]];
+        }
+        else if (i + Age == AdvanceYearlyIncome) {
+            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"9500.00#"]];
+        }
+        else {
+            [arrayYearlyIncome addObject:@"0.00"];
+        }
+            
     }
+    
+    
     
     for (int a= 1; a<=PolicyTerm; a++) {
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
@@ -759,9 +776,9 @@
                 QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Basic (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
                             "\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\",\"col22\") VALUES ( "
-                            " \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\", "
+                            " \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\", "
                             "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\")", 
-                            SINo, a, a, inputAge, [AnnualPremium objectAtIndex:a -1],BasicSA,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
+                            SINo, a, a, inputAge, [AnnualPremium objectAtIndex:a -1],[arrayYearlyIncome objectAtIndex:a-1],arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
                             arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
                             arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
                             arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
@@ -795,7 +812,6 @@
                         arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
                         arc4random()%10000 + 1000 ];
                 
-                NSLog(@"%@", QuerySQL);
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                     }
@@ -813,8 +829,33 @@
     NSString *QuerySQL;
     sqlite3_stmt *statement2;
     NSString *QuerySQL2;
+    NSMutableArray *TotalIBPlusIR = [[NSMutableArray alloc] init ];
+    NSMutableArray *arrayYearlyIncome = [[NSMutableArray alloc] init ];
     
     int inputAge;
+    double IncomeRiderPlusIncomeBuilder = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue]
+                                          + [[strIncomeRiderAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
+    double GYI = [[IncomeRiderSA objectAtIndex:0] doubleValue ] + BasicSA ;
+    
+    for (int i =1; i <=PolicyTerm; i++) {
+        if (i < PremiumPaymentOption) {
+            [TotalIBPlusIR addObject:[NSString stringWithFormat:@"%.2f", IncomeRiderPlusIncomeBuilder] ];
+        }
+        else {
+            [TotalIBPlusIR addObject:@"0.00"];
+        }
+        
+        if (i + Age < AdvanceYearlyIncome) {
+            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%.2f", GYI]];
+        }
+        else if (i + Age == AdvanceYearlyIncome) {
+            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"9500.00#"]];
+        }
+        else {
+            [arrayYearlyIncome addObject:@"0.00"];
+        }
+        
+    }
     
     for (int a= 1; a<=PolicyTerm; a++) {
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
@@ -834,9 +875,9 @@
                         QuerySQL2 = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Summary (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                                     "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
                                     "\"col14\",\"col15\",\"col16\",\"col17\") VALUES ( "
-                                    " \"%@\",\"%d\",\"DATA2\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%d\", "
+                                    " \"%@\",\"%d\",\"DATA2\",\"%d\",\"%d\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%d\", "
                                     "\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\")", SINo, a, a, inputAge,
-                                     arc4random()%10000+1000,BasicSA,0,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,
+                                     [TotalIBPlusIR objectAtIndex:a - 1],[arrayYearlyIncome objectAtIndex:a-1],0,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,
                                      @"-",@"-",arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,arc4random()%10000+1000,
                                      @"",@"",@"",@"-" ];
                         if(sqlite3_prepare_v2(contactDB, [QuerySQL2 UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
@@ -1006,10 +1047,11 @@
         
         for (int i=0; i<IncomeRiderCode.count; i++) {
             
-                NSString *SelectSQL = [ NSString stringWithFormat:@"Select * from SI_Store_Premium where \"type\" = \"%@\" ", [IncomeRiderCode objectAtIndex:i]];
-                NSString *strAnnually = @"";
+                //NSString *strAnnually = @"";
                 NSMutableArray *AnnualPremium = [[NSMutableArray alloc] init ];
-                    
+            /*    
+            NSString *SelectSQL = [ NSString stringWithFormat:@"Select * from SI_Store_Premium where \"type\" = \"%@\" ", [IncomeRiderCode objectAtIndex:i]];
+            
                 if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 
                     if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1021,10 +1063,10 @@
                     }
                     sqlite3_close(contactDB);
                 }
-            
+            */
                 for (int i =1; i <= PolicyTerm; i++) {
                     if (i <= PremiumPaymentOption ) {
-                        [AnnualPremium addObject:strAnnually ];
+                        [AnnualPremium addObject:strIncomeRiderAnnually ];
                     }
                     else {
                         [AnnualPremium addObject:@"0.00"];
@@ -1037,12 +1079,17 @@
                             
                             inputAge = Age + a;
                             
-                            QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_RideriLLus (\"SINO\", \"SeqNo\",\"DataType\",\"DataType2\",\"PageNo\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+                            QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_RideriLLus (\"SINO\", \"SeqNo\",\"DataType\",\"DataType2\", "
+                                        " \"PageNo\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                                         "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
                                         "\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\") VALUES ( "
                                         " \"%@\",\"%d\",\"%@\",\"DATA\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\", "
                                         "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\")", 
-                                        SINo, a, [IncomeRiderCode objectAtIndex:i],0,a,inputAge, [AnnualPremium objectAtIndex:a - 1], [IncomeRiderSA objectAtIndex:i],3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 ];
+                                        SINo, a, [IncomeRiderCode objectAtIndex:i],0,a,inputAge, [AnnualPremium objectAtIndex:a - 1], [IncomeRiderSA objectAtIndex:i],
+                                        arc4random()%1000+100 ,arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,
+                                        arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,
+                                        arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,arc4random()%1000+100,
+                                        arc4random()%1000+100,arc4random()%1000+100,0,0 ];
                             
                             if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                                 if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -1069,7 +1116,6 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
             QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
                                   "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\" from Trad_Details where \"sino\" = \"%@\" AND \"seq\" = 1 ", SINo];
-        NSLog(@"%@", QuerySQL);
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             
             if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -1104,7 +1150,6 @@
         QuerySQL = [ NSString stringWithFormat:@"Select A.RiderCode, \"RiderTerm\",\"RiderDesc\", \"SumAssured\", \"PlanOption\" from trad_rider_details as A, "
                     "trad_sys_rider_profile as B  where \"sino\" = \"%@\" AND A.ridercode = B.RiderCode ", SINo];
         
-        NSLog(@"%@", QuerySQL);
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
             
