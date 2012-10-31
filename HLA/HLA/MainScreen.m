@@ -54,11 +54,13 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
+    /*
     setting* settingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
     settingPage.indexNo = self.indexNo;
     settingPage.userRequest = self.userRequest;
     settingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Setting" image:[UIImage imageNamed:@"setting_btnB2.png"] tag: 0];
     [controllersToAdd addObject:settingPage];    
+    */
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
     ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
@@ -140,7 +142,7 @@
 }
 
 -(BOOL)tabBarController:(FSVerticalTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-    if ([viewControllers indexOfObject:viewController] == 5) {
+    if ([viewControllers indexOfObject:viewController] == 6) {
         return NO;
     }
     else {

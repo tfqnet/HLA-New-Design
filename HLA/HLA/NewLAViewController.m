@@ -384,7 +384,7 @@
             main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             main.mainH = ss;
             main.mainBH = laBH;
-            main.IndexTab = 4;
+            main.IndexTab = 3;
 //            [self presentModalViewController:main animated:YES];
             [self presentViewController:main animated:NO completion:nil];
         }
@@ -393,7 +393,7 @@
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.IndexTab = 4;
+        main.IndexTab = 3;
 //        [self presentModalViewController:main animated:YES];
         [self presentViewController:main animated:NO completion:nil];
 

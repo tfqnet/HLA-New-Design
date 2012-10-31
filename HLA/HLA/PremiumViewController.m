@@ -74,7 +74,7 @@
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     main.mainH = premH;
     main.mainBH = premBH;
-    main.IndexTab = 4;
+    main.IndexTab = 3;
     [self presentModalViewController:main animated:YES];
 }
 

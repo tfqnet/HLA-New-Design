@@ -281,7 +281,7 @@
             main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             main.mainH = basicH;
             main.mainBH = ss;
-            main.IndexTab = 4;
+            main.IndexTab = 3;
             [self presentViewController:main animated:YES completion:nil];
         }
     } else {
@@ -289,7 +289,7 @@
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         main.mainH = basicH;
-        main.IndexTab = 4;
+        main.IndexTab = 3;
         [self presentViewController:main animated:YES completion:nil];
     }
 }

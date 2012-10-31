@@ -113,18 +113,17 @@
                        cancelButtonTitle:@"OK"
                        otherButtonTitles:nil] autorelease] show];
     */
-    if ([outletCarousel indexOfItemView:sender] % 4 == 0) {
-        MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    if ([outletCarousel indexOfItemView:sender] % 4 == 0) { //setting
+        setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 1;
         [self presentViewController:zzz animated:YES completion:Nil];
         //[self.navigationController pushViewController:zzz animated:YES];
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % 4 == 1) {
+    else if ([outletCarousel indexOfItemView:sender] % 4 == 1) { //prospect
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 2;
+        zzz.IndexTab = 1;
         [self presentViewController:zzz animated:YES completion:Nil];
         
     }
@@ -141,7 +140,7 @@
     else if ([outletCarousel indexOfItemView:sender] % 4 == 3) {
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 4;
+        zzz.IndexTab = 3;
         [self presentViewController:zzz animated:YES completion:Nil];
         
     }

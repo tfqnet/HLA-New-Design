@@ -129,4 +129,7 @@
 
 }
 
+- (IBAction)btnClose:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
+}
 @end

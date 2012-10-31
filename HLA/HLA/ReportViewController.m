@@ -753,20 +753,22 @@
             [AnnualPremium addObject:@"0.00"];
         }
         
-        if (i + Age < AdvanceYearlyIncome) {
-            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d", BasicSA]];
-        }
-        else if (i + Age == AdvanceYearlyIncome) {
-            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"9500.00#"]];
+        if(AdvanceYearlyIncome > 0){
+            if (i + Age < AdvanceYearlyIncome) {
+                [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d", BasicSA]];
+            }
+            else if (i + Age == AdvanceYearlyIncome) {
+                [arrayYearlyIncome addObject:[NSString stringWithFormat:@"9500.00#"]];
+            }
+            else   {
+                [arrayYearlyIncome addObject:@"0.00"];
+            }
         }
         else {
-            [arrayYearlyIncome addObject:@"0.00"];
+            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d", BasicSA]];
         }
-            
     }
-    
-    
-    
+
     for (int a= 1; a<=PolicyTerm; a++) {
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
             if (Age > 0){
@@ -835,26 +837,36 @@
     int inputAge;
     double IncomeRiderPlusIncomeBuilder = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue]
                                           + [[strIncomeRiderAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
-    double GYI = [[IncomeRiderSA objectAtIndex:0] doubleValue ] + BasicSA ;
-    
+    double GYI;
+    if (IncomeRiderCode.count > 0) {
+      GYI =[[IncomeRiderSA objectAtIndex:0] doubleValue ] + BasicSA ;   
+    }
+    else {
+        GYI = BasicSA;
+    }
+        
     for (int i =1; i <=PolicyTerm; i++) {
-        if (i < PremiumPaymentOption) {
+        if (i <= PremiumPaymentOption) {
             [TotalIBPlusIR addObject:[NSString stringWithFormat:@"%.2f", IncomeRiderPlusIncomeBuilder] ];
         }
         else {
             [TotalIBPlusIR addObject:@"0.00"];
         }
         
-        if (i + Age < AdvanceYearlyIncome) {
+        if(AdvanceYearlyIncome > 0){
+            if (i + Age < AdvanceYearlyIncome) {
+                [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%.2f", GYI]];
+            }
+            else if (i + Age == AdvanceYearlyIncome) {
+                [arrayYearlyIncome addObject:[NSString stringWithFormat:@"9500.00#"]];
+            }
+            else {
+                [arrayYearlyIncome addObject:@"0.00"];
+            }
+        }   
+        else {
             [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%.2f", GYI]];
         }
-        else if (i + Age == AdvanceYearlyIncome) {
-            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"9500.00#"]];
-        }
-        else {
-            [arrayYearlyIncome addObject:@"0.00"];
-        }
-        
     }
     
     for (int a= 1; a<=PolicyTerm; a++) {

@@ -16,7 +16,7 @@
 @end
 
 @implementation EditProspect
-@synthesize txtPrefix1;
+@synthesize txtPrefix1,strChanges;
 @synthesize txtPrefix2;
 @synthesize txtPrefix3;
 @synthesize txtPrefix4;
@@ -90,6 +90,28 @@
     
     [txtHomePostCode addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtOfficePostCode addTarget:self action:@selector(OfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtEmail addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtExactDuties addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtHomeAddr1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtHomeAddr2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtHomeAddr3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtOfficeAddr2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    
+    [txtOfficeAddr3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtPreferredName addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtrFullName addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtOfiiceAddr1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtPrefix1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtContact1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtContact2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtContact3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtContact4 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtContact5 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtPrefix2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtPrefix3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtPrefix4 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtPrefix5 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     txtHomeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
@@ -207,6 +229,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    strChanges = @"No";
+    
     txtPreferredName.text = pp.NickName;
     txtrFullName.text = pp.ProspectName;
     txtHomeAddr1.text = pp.ResidenceAddress1;
@@ -726,7 +750,7 @@
                     if (!valid) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -738,7 +762,7 @@
                     if (!valid2) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Prefix for contact no 1 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Prefix for contact no 1 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -816,7 +840,7 @@
                     if (!valid) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -828,7 +852,7 @@
                     if (!valid2) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Prefix for contact no 2 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Prefix for contact no 2 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -884,7 +908,7 @@
                     if (!valid) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -896,7 +920,7 @@
                     if (!valid2) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Prefix for contact no 3 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Prefix for contact no 3 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -964,7 +988,7 @@
                     if (!valid) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -976,7 +1000,7 @@
                     if (!valid2) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Prefix for contact no 4 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Prefix for contact no 4 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -1044,7 +1068,7 @@
                     if (!valid) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -1056,7 +1080,7 @@
                     if (!valid2) {
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                        message:@"Prefix for contact no 5 must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                        message:@"Prefix for contact no 5 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [self resignFirstResponder];
                         [self.view endEditing:TRUE];
@@ -1129,24 +1153,39 @@
     }
     
     if([[txtOfiiceAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+        if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
         
-        [alert show];
-        return false;
+            [alert show];
+            return false;
+        }
+        else {
+            txtOfficeTown.text = @"";
+            txtOfficeState.text = @"";
+            txtOfficePostCode.text = @"";
+            txtOfficeCountry.text = @"";
+            SelectedOfficeStateCode = @"";
+        }
+        
     }
     
     if([txtOfficePostCode.text isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+        if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
         
-        [alert show];
-        return false;
+            [alert show];
+            return false;
+        }
+        
     }
     else {
         BOOL valid;
@@ -1457,11 +1496,16 @@
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
     
-    UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to discard all the changes ?" 
+    if ([strChanges isEqualToString:@"Yes"]) {
+        
+        UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to discard all the changes ?" 
                                                    delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", Nil];
-    Alert.tag = 1003;
-    [Alert show];
-     
+        Alert.tag = 1003;
+        [Alert show];
+    } 
+    else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 
     
 }
@@ -1608,6 +1652,10 @@
     } 
 }
 
+-(void)detectChanges:(id) sender{
+    strChanges = @"Yes";
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     sqlite3_stmt *statement;
     sqlite3_stmt *statement2;
@@ -1677,7 +1725,7 @@
                             }
                             
                             UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile"
-                                                            message:@"Delete Success" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                                                            message:@"Prospect record successfully been deleted" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                             SuccessAlert.tag = 2;
                             [SuccessAlert show];    
                             

@@ -35,6 +35,7 @@
 @property (nonatomic, copy) NSString *OccupCodeSelected;
 @property (nonatomic, copy) NSString *SelectedStateCode;
 @property (nonatomic, copy) NSString *SelectedOfficeStateCode;
+@property (nonatomic, copy) NSString *strChanges;
 @property (nonatomic, strong) id<EditProspectDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtPreferredName;

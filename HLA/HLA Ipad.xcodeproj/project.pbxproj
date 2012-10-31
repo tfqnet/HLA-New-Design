@@ -51,6 +51,7 @@
 		C486D9E9163E6762009F8F21 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C486D9E8163E6762009F8F21 /* CoreMedia.framework */; };
 		C486D9F9163E7127009F8F21 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C486D9F8163E7127009F8F21 /* www */; };
 		C486DAB8163FB928009F8F21 /* Databases.db in Resources */ = {isa = PBXBuildFile; fileRef = C486DAB7163FB928009F8F21 /* Databases.db */; };
+		C486DAD41641696A009F8F21 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C486DAD11641694B009F8F21 /* libCordova.a */; };
 		C4E7B388161B119E00066CBF /* SIListing.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7B387161B119E00066CBF /* SIListing.m */; };
 		C4E7B38B161B147800066CBF /* siListingSortBy.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7B38A161B147800066CBF /* siListingSortBy.m */; };
 		C4E9D1951612C64900016053 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1941612C64900016053 /* UIKit.framework */; };
@@ -151,21 +152,20 @@
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
 		EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF9A5B261640C00C00D3EB57 /* hladb.sqlite */; };
-		EF9A5B331640C10300D3EB57 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9A5B301640C0F100D3EB57 /* libCordova.a */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		EF9A5B2F1640C0F100D3EB57 /* PBXContainerItemProxy */ = {
+		C486DAD01641694B009F8F21 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */;
+			containerPortal = C486DAC91641694B009F8F21 /* CordovaLib.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 68A32D7114102E1C006B237C;
 			remoteInfo = CordovaLib;
 		};
-		EF9A5B311640C0F800D3EB57 /* PBXContainerItemProxy */ = {
+		C486DAD216416962009F8F21 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */;
+			containerPortal = C486DAC91641694B009F8F21 /* CordovaLib.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = CordovaLib;
@@ -220,6 +220,7 @@
 		C486D9E8163E6762009F8F21 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		C486D9F8163E7127009F8F21 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C486DAB7163FB928009F8F21 /* Databases.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Databases.db; sourceTree = "<group>"; };
+		C486DAC91641694B009F8F21 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../Downloads/phonegap-phonegap-26d211b 3/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		C4E7B386161B119E00066CBF /* SIListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIListing.h; sourceTree = "<group>"; };
 		C4E7B387161B119E00066CBF /* SIListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIListing.m; sourceTree = "<group>"; };
 		C4E7B389161B147800066CBF /* siListingSortBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = siListingSortBy.h; sourceTree = "<group>"; };
@@ -371,7 +372,6 @@
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
 		EF9A5B261640C00C00D3EB57 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
-		EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../../Downloads/phonegap-phonegap-26d211b/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -381,7 +381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF9A5B331640C10300D3EB57 /* libCordova.a in Frameworks */,
+				C486DAD41641696A009F8F21 /* libCordova.a in Frameworks */,
 				C486D9E9163E6762009F8F21 /* CoreMedia.framework in Frameworks */,
 				C486D9E7163E675C009F8F21 /* MobileCoreServices.framework in Frameworks */,
 				C486D9E5163E6756009F8F21 /* SystemConfiguration.framework in Frameworks */,
@@ -411,6 +411,14 @@
 			name = iCarousel;
 			sourceTree = "<group>";
 		};
+		C486DACA1641694B009F8F21 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C486DAD11641694B009F8F21 /* libCordova.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C4E7B384161B10F200066CBF /* SI Listing */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,7 +431,7 @@
 		C4E9D1851612C64900016053 = {
 			isa = PBXGroup;
 			children = (
-				EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */,
+				C486DAC91641694B009F8F21 /* CordovaLib.xcodeproj */,
 				C486D9F8163E7127009F8F21 /* www */,
 				C4F8300E162FA9B600EF8FAA /* JTRevealSidebar */,
 				C4660EE71625995600BA4AFE /* iCarousel */,
@@ -777,14 +785,6 @@
 			name = BasicPlan;
 			sourceTree = "<group>";
 		};
-		EF9A5B291640C0F000D3EB57 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EF9A5B301640C0F100D3EB57 /* libCordova.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -799,7 +799,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				EF9A5B321640C0F800D3EB57 /* PBXTargetDependency */,
+				C486DAD316416962009F8F21 /* PBXTargetDependency */,
 			);
 			name = "HLA Ipad";
 			productName = HLA;
@@ -827,8 +827,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = EF9A5B291640C0F000D3EB57 /* Products */;
-					ProjectRef = EF9A5B281640C0F000D3EB57 /* CordovaLib.xcodeproj */;
+					ProductGroup = C486DACA1641694B009F8F21 /* Products */;
+					ProjectRef = C486DAC91641694B009F8F21 /* CordovaLib.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -839,11 +839,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		EF9A5B301640C0F100D3EB57 /* libCordova.a */ = {
+		C486DAD11641694B009F8F21 /* libCordova.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libCordova.a;
-			remoteRef = EF9A5B2F1640C0F100D3EB57 /* PBXContainerItemProxy */;
+			remoteRef = C486DAD01641694B009F8F21 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1000,10 +1000,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		EF9A5B321640C0F800D3EB57 /* PBXTargetDependency */ = {
+		C486DAD316416962009F8F21 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = CordovaLib;
-			targetProxy = EF9A5B311640C0F800D3EB57 /* PBXContainerItemProxy */;
+			targetProxy = C486DAD216416962009F8F21 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
