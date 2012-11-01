@@ -46,7 +46,7 @@
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic, assign,readwrite) int requestCoverTerm;
 @property (nonatomic,strong) id requestPlanCode;
-@property (nonatomic, assign,readwrite) int requestBasicSA;
+@property (nonatomic, assign,readwrite) double requestBasicSA;
 @property (nonatomic,strong) id requestOccpCode;
 @property (nonatomic, assign,readwrite) int requestMOP;
 

@@ -80,10 +80,10 @@
     requestAge = riderBH.storedAge;
     requestCoverTerm = riderBH.storedCovered;
     requestPlanCode = riderBH.storedPlanCode;
-    requestBasicSA = [riderBH.storedbasicSA intValue];
+    requestBasicSA = [riderBH.storedbasicSA doubleValue];
     requestOccpCode = riderBH.storedOccpCode;
     requestMOP = riderBH.storedMOP;
-    NSLog(@"Rider-Age:%d,covered:%d,SINo:%@ planCode:%@",requestAge,requestCoverTerm,requestSINo,requestPlanCode);
+    NSLog(@"Rider-Sum:%.2f,Age:%d,covered:%d,SINo:%@ planCode:%@",requestBasicSA,requestAge,requestCoverTerm,requestSINo,requestPlanCode);
     
     deducBtn.hidden = YES;
     deleteBtn.hidden = TRUE;
@@ -417,28 +417,28 @@
 
 -(void)calculateSA
 {
-    int dblPseudoBSA = self.requestBasicSA / 0.05;
+    double dblPseudoBSA = self.requestBasicSA / 0.05;
     double dblPseudoBSA2 = dblPseudoBSA * 0.1;
     double dblPseudoBSA3 = dblPseudoBSA * 5;
     double dblPseudoBSA4 = dblPseudoBSA * 2;
     
+//    NSLog(@"dblPseudoBSA:%.f, dblPseudoBSA3:%.f",maxRiderSA,dblPseudoBSA3);
+    
     if ([riderCode isEqualToString:@"CCTR"])
     {
-        maxRiderSA = dblPseudoBSA * 5;
+        maxRiderSA = dblPseudoBSA3;
+        
     }
-    
     else if ([riderCode isEqualToString:@"ETPD"])
     {
         maxRiderSA = fmin(dblPseudoBSA2,120000);
     }
-    
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"])
     {
         [self getGYI];
         double BasicSA_GYI = self.requestBasicSA * GYI;
         maxRiderSA = fmin(BasicSA_GYI,9999999);
     }
-    
     else if ([riderCode isEqualToString:@"CPA"]) {
         if (riderH.storedOccpClass == 1 || riderH.storedOccpClass == 2) {
             if (dblPseudoBSA < 100000) {
@@ -1057,7 +1057,27 @@
 
 - (IBAction)deletePressed:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure want to delete these Rider(s)?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
+    NSArray *visibleCells = [myTableView visibleCells];
+    NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
+    
+    for (UITableViewCell *cell in visibleCells)
+    {
+        if (cell.selected) {
+            NSIndexPath *indexPath = [myTableView indexPathForCell:cell];
+            NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+            [ItemToBeDeleted addObject:zzz];
+        }
+    }
+    
+    NSString *msg;
+    if ([ItemToBeDeleted count] > 1) {
+        msg = @"Are you sure want to delete these Rider(s)?";
+    } else {
+        int value = [[ItemToBeDeleted objectAtIndex:0] intValue];
+        msg = [NSString stringWithFormat:@"Delete Rider:%@",[LRiderCode objectAtIndex:value]];
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
     [alert setTag:1001];
     [alert show];
 }
@@ -1618,49 +1638,48 @@
 
     //validation part
     [self getOccpNotAttach];
-    if ([atcRidCode count] != 0)
+    if ([atcRidCode count] != 0 && [riderCode isEqualToString:@"CPA"])
     {
-        if ([riderCode isEqualToString:@"CPA"])
-        {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-            [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
-        } else {
-                [self getLabelForm];
-                [self toggleForm];
-                [self getRiderTermRule];
-        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
     }
     else if ([LRiderCode count] != 0)
     {
+        NSLog(@"enterList! , count:%d",[LRiderCode count]);
         NSUInteger i;
         for (i=0; i<[LRiderCode count]; i++) {
+            NSLog(@"enterList-1!");
+            
             if ([riderCode isEqualToString:@"PTR"] && ![[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider PR before PTR" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
                 [alert show];
-            } else if ([riderCode isEqualToString:@"PLCP"] && ![[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]) {
+            }
+            else if ([riderCode isEqualToString:@"PLCP"] && ![[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]) {
+                
+                NSLog(@"riderExist:%@",[LRiderCode objectAtIndex:i]);
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider LCWP before PLCP." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
                 [alert show];
-            } else if (([riderCode isEqualToString:@"LCWP"]||[riderCode isEqualToString:@"PR"]||[riderCode isEqualToString:@"SP_PRE"]||[riderCode isEqualToString:@"SP_STD"]) && ([[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"])) {
+            }
+            else if (([riderCode isEqualToString:@"LCWP"]||[riderCode isEqualToString:@"PR"]||[riderCode isEqualToString:@"SP_PRE"]||[riderCode isEqualToString:@"SP_STD"]) && ([[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"])) {
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select either PR, LCWP, WOP_SP(Standard) or WOP_SP(Premier)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
-            } else {
+                [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+            }
+            else {
+                NSLog(@"enterList-2!");
                 [self getLabelForm];
                 [self toggleForm];
                 [self getRiderTermRule];
             }
         }
     }
-    else if (([riderCode isEqualToString:@"CPA"] && riderH.storedOccpClass > 4)||([riderCode isEqualToString:@"PA"] && riderH.storedOccpClass > 4)) {
-        NSLog(@"Occpclass:%d",riderH.storedOccpClass);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
-    }
-    
     else {
+        NSLog(@"outList!");
         [self getLabelForm];
         [self toggleForm];
         [self getRiderTermRule];
@@ -1994,7 +2013,7 @@
                 [self getListingRider];
                 NSLog(@"Update Rider success!");
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider record sucessfully updated." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
             } else {
@@ -2078,11 +2097,16 @@
 
 -(void)getLSDRate
 {
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setMaximumFractionDigits:2];
+    NSString *sumAss = [formatter stringFromNumber:[NSNumber numberWithDouble:requestBasicSA]];
+    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT LSD FROM Trad_Sys_LSD_HLAIB WHERE PremPayOpt=\"%d\" AND FromSA <=\"%d\" AND ToSA >= \"%d\"",self.requestMOP,requestBasicSA,requestBasicSA];
+                              @"SELECT LSD FROM Trad_Sys_LSD_HLAIB WHERE PremPayOpt=\"%d\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",self.requestMOP,sumAss,sumAss];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {

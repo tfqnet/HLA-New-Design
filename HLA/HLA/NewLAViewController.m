@@ -326,6 +326,10 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
+    else if (smoker.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
     else if (age <= 0) {         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
@@ -336,10 +340,6 @@
     } else if ([LANameField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if (smoker.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if ([occuCode isEqualToString:@"OCC01975"]) {
@@ -507,18 +507,23 @@
     }
     else if (yearN == yearB)
     {
-        if (monthN > monthB) {
-            newALB = monthN - monthB;
-            msgAge = [[NSString alloc] initWithFormat:@"%d months",newALB];
-                
-        } else if (monthN == monthB && dayB<dayN) {
-            newALB = dayN - dayB;
-            msgAge = [[NSString alloc] initWithFormat:@"%d days",newALB];
-            if (newALB < 30) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-            }
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSString *selectDate = DOB;
+        NSDate *startDate = [dateFormatter dateFromString:selectDate];
+        
+        NSString *todayDate = [dateFormatter stringFromDate:[NSDate date]];
+        NSDate *endDate = [dateFormatter dateFromString:todayDate];
+        
+        unsigned flags = NSDayCalendarUnit;
+        NSDateComponents *difference = [[NSCalendar currentCalendar] components:flags fromDate:startDate toDate:endDate options:0];
+        int diffDays = [difference day];
+        if (diffDays < 30) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
         }
+        msgAge = [[NSString alloc] initWithFormat:@"%d days",diffDays];
+//        NSLog(@"birthday:%@, today:%@, diff:%d",selectDate,todayDate,diffDays);
+        
         age = 0;
         ANB = 1;
     }
@@ -1037,7 +1042,8 @@
     DOB = aaDOB;
     [self calculateAge];
     if (age > 70) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured's age exceed HLA Income Builder maximum entry age (70 years old)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured's age exceed HLA Income Builder maximum entry age (70 years old)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else {

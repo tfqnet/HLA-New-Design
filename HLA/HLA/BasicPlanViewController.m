@@ -299,7 +299,12 @@
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
-    if (yearlyIncomeField.text.length <= 0) {
+    if (requestSINo.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1001];
+        [alert show];
+    }
+    else if (yearlyIncomeField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
@@ -445,7 +450,22 @@
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag==1002 && buttonIndex == 0) {
+    if (alertView.tag == 1001 && buttonIndex == 0) {
+        
+        NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+        MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        MainScreenPage.IndexTab = 3;
+        NewLAPage.modalPresentationStyle = UIModalPresentationPageSheet;
+//        NewLAPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        
+        [self presentViewController:MainScreenPage animated:YES completion:^(){
+            [MainScreenPage presentModalViewController:NewLAPage animated:NO];
+//            MainScreenPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            NewLAPage.view.superview.bounds =  CGRectMake(-300, 0, 1024, 748);
+            
+        }];
+    }
+    else if (alertView.tag==1002 && buttonIndex == 0) {
         [self checkingSave];
     }
     else if (alertView.tag==1003 && buttonIndex == 0) {
@@ -461,8 +481,8 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setMaximumFractionDigits:2];
-    
     NSString *sumAss = [formatter stringFromNumber:[NSNumber numberWithDouble:getSumAssured]];
+    sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
     
     yearlyIncomeField.text = [[NSString alloc] initWithFormat:@"%@",sumAss];
     if (MOP == 6) {
