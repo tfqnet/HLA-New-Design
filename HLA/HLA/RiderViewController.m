@@ -389,12 +389,11 @@
     {
         [self getMaxRiderTerm];
         double maxRiderTerm1 = fmin(self.requestCoverTerm,age1);
-//        double maxRiderTerm2 = fmax(requestMOP,storedMaxTerm);
-        double maxRiderTerm2 = fmax(requestCoverTerm,storedMaxTerm);
+        double maxRiderTerm2 = fmax(requestMOP,storedMaxTerm);
+//        double maxRiderTerm2 = fmax(requestCoverTerm,storedMaxTerm);
         maxRiderTerm = fmin(maxRiderTerm1,maxRiderTerm2);
     }
     
-    //else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"])
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"] || [riderCode isEqualToString:@"IE20R"] || [riderCode isEqualToString:@"IE30R"] ) //edited by heng
     {
         termField.text = [NSString stringWithFormat:@"%d",maxTerm];
@@ -1152,6 +1151,23 @@
 {
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     
+    BOOL HL1kTerm = NO;
+    BOOL HL100kTerm = NO;
+    BOOL HLPTerm = NO;
+    NSUInteger i;
+    for (i=0; i<[FLabelCode count]; i++)
+    {
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1KT"]]) {
+            HL1kTerm = YES;
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10T"]]) {
+            HL100kTerm = YES;
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLPT"]]) {
+            HLPTerm = YES;
+        }
+    }
+    
     if (termField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -1165,7 +1181,15 @@
         [alert show];
     }
     else if ([HLTField.text intValue] > [termField.text intValue]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
+        } else if (HL100kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
+        } else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
     else if ([termField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
@@ -1274,8 +1298,45 @@
     float ccHL = aaHL - bbHL;
     NSString *msg2 = [formatter stringFromNumber:[NSNumber numberWithFloat:ccHL]];
     NSLog(@"value:%.2f,devide:%.2f,int:%d, minus:%.2f,msg:%@",numHL,aaHL,bbHL,ccHL,msg2);
-
-    if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+    
+    BOOL HL1kTerm = NO;
+    BOOL HL100kTerm = NO;
+    BOOL HLPTerm = NO;
+    NSUInteger i;
+    for (i=0; i<[FLabelCode count]; i++)
+    {
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1KT"]]) {
+            HL1kTerm = YES;
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10T"]]) {
+            HL100kTerm = YES;
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLPT"]]) {
+            HLPTerm = YES;
+        }
+    }
+    
+    if (plan && planOption.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Plan Option/Choice is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if (deduc && deductible.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Deductible is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([HLTField.text intValue] > [termField.text intValue]) {
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
+        } else if (HL100kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
+        } else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
@@ -1630,11 +1691,17 @@
         [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
         [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     }
-    NSLog(@"code:%@",code);
+    NSLog(@"RiderCode:%@",code);
     riderCode = [[NSString alloc] initWithFormat:@"%@",code];
     riderDesc = [[NSString alloc] initWithFormat:@"%@",desc];
     [self.btnAddRider setTitle:riderDesc forState:UIControlStateNormal];
     [self.RiderListPopover dismissPopoverAnimated:YES];
+    
+    BOOL foundPayor = YES;
+    BOOL foundLiving = YES;
+    BOOL either = NO;
+    if ([riderCode isEqualToString:@"PTR"]) { foundPayor = NO; }
+    if ([riderCode isEqualToString:@"PLCP"]) { foundLiving = NO; }
 
     //validation part
     [self getOccpNotAttach];
@@ -1646,37 +1713,63 @@
     }
     else if ([LRiderCode count] != 0)
     {
-        NSLog(@"enterList! , count:%d",[LRiderCode count]);
         NSUInteger i;
         for (i=0; i<[LRiderCode count]; i++) {
-            NSLog(@"enterList-1!");
+            NSLog(@"riderExist:%@",[LRiderCode objectAtIndex:i]);
             
-            if ([riderCode isEqualToString:@"PTR"] && ![[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider PR before PTR" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
-                [alert show];
+            if ([riderCode isEqualToString:@"PTR"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) {
+                NSLog(@"enterList-a");
+                foundPayor = YES;
             }
-            else if ([riderCode isEqualToString:@"PLCP"] && ![[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]) {
-                
-                NSLog(@"riderExist:%@",[LRiderCode objectAtIndex:i]);
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider LCWP before PLCP." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
-                [alert show];
+            if ([riderCode isEqualToString:@"PLCP"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]) {
+                foundLiving = YES;
+                NSLog(@"enterList-b");
             }
-            else if (([riderCode isEqualToString:@"LCWP"]||[riderCode isEqualToString:@"PR"]||[riderCode isEqualToString:@"SP_PRE"]||[riderCode isEqualToString:@"SP_STD"]) && ([[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"])) {
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select either PR, LCWP, WOP_SP(Standard) or WOP_SP(Premier)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-                [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+            if (([riderCode isEqualToString:@"LCWP"]) && ([[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"])) {
+                either = YES;
             }
-            else {
-                NSLog(@"enterList-2!");
-                [self getLabelForm];
-                [self toggleForm];
-                [self getRiderTermRule];
+            if (([riderCode isEqualToString:@"PR"]) && ([[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"])) {
+                either = YES;
+            }
+            if (([riderCode isEqualToString:@"SP_PRE"]) && ([[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"])) {
+                either = YES;
+            }
+            if (([riderCode isEqualToString:@"SP_STD"]) && ([[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"])) {
+                either = YES;
             }
         }
+        
+        if (!(foundPayor)) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider PR before PTR" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+            [alert show];
+        }
+        else if (!foundLiving) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider LCWP before PLCP." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+            [alert show];
+        }
+        else if ((either) && ([pTypeCode isEqualToString:@"LA"]) && (PTypeSeq == 2)) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select either PR, LCWP, WOP_SP(Standard) or WOP_SP(Premier)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+        }
+        else {
+            NSLog(@"enterList-2!");
+            [self getLabelForm];
+            [self toggleForm];
+            [self getRiderTermRule];
+        }
+    }
+    else if (!(foundPayor)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider PR before PTR" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+        [alert show];
+    }
+    else if (!foundLiving) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider LCWP before PLCP." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+        [alert show];
     }
     else {
         NSLog(@"outList!");
