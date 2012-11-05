@@ -9,11 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "ListingTbViewController.h"
-#import "DateViewController.h"
-#import "JobListTbViewController.h"
 #import "SIHandler.h"
 
-@interface SecondLAViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate,DateViewControllerDelegate,JobListTbViewControllerDelegate> {
+@interface SecondLAViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
     UIPopoverController *popOverController;
@@ -30,12 +28,13 @@
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *smokerSegment;
-@property (retain, nonatomic) IBOutlet UIButton *DOBBtn;
 @property (retain, nonatomic) IBOutlet UITextField *ageField;
-@property (retain, nonatomic) IBOutlet UIButton *OccpBtn;
 @property (retain, nonatomic) IBOutlet UITextField *OccpLoadField;
 @property (retain, nonatomic) IBOutlet UITextField *CPAField;
 @property (retain, nonatomic) IBOutlet UITextField *PAField;
+@property (strong, nonatomic) IBOutlet UITextField *DOBField;
+@property (strong, nonatomic) IBOutlet UITextField *OccpField;
+
 
 @property (nonatomic, assign,readwrite) int IndexNo;
 @property (nonatomic, copy) NSString *sex;
@@ -64,8 +63,6 @@
 - (IBAction)doSelectProspect:(id)sender;
 - (IBAction)sexSegmentChange:(id)sender;
 - (IBAction)smokerSegmentChange:(id)sender;
-- (IBAction)DOBBtnPressed:(id)sender;
-- (IBAction)OccpBtnPressed:(id)sender;
 - (IBAction)doCloseView:(id)sender;
 - (IBAction)doSave:(id)sender;
 - (IBAction)doDelete:(id)sender;

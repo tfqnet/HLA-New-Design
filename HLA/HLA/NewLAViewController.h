@@ -10,11 +10,10 @@
 #import <sqlite3.h>
 #import "ListingTbViewController.h"
 #import "DateViewController.h"
-#import "JobListTbViewController.h"
 #import "SIHandler.h"
 #import "BasicPlanHandler.h"
 
-@interface NewLAViewController : UIViewController<UITextFieldDelegate,UIPopoverControllerDelegate,ListingTbViewControllerDelegate,DateViewControllerDelegate,JobListTbViewControllerDelegate>{
+@interface NewLAViewController : UIViewController<UITextFieldDelegate,UIPopoverControllerDelegate,ListingTbViewControllerDelegate,DateViewControllerDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -42,10 +41,10 @@
 @property (retain, nonatomic) IBOutlet UITextField *LAOccLoadingField;
 @property (retain, nonatomic) IBOutlet UITextField *LACPAField;
 @property (retain, nonatomic) IBOutlet UITextField *LAPAField;
-@property (retain, nonatomic) IBOutlet UIButton *btnDOB;
-@property (retain, nonatomic) IBOutlet UIButton *btnOccp;
 @property (strong, nonatomic) IBOutlet UIButton *btnCommDate;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
+@property (strong, nonatomic) IBOutlet UITextField *LADOBField;
+@property (strong, nonatomic) IBOutlet UITextField *LAOccpField;
 
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, copy) NSString *occuCode;
@@ -90,8 +89,6 @@
 
 - (IBAction)sexSegmentPressed:(id)sender;
 - (IBAction)smokerSegmentPressed:(id)sender;
-- (IBAction)btnDOBPressed:(id)sender;
-- (IBAction)btnOccPressed:(id)sender;
 - (IBAction)doSaveLA:(id)sender;
 - (IBAction)selectProspect:(id)sender;
 - (IBAction)goBack:(id)sender;

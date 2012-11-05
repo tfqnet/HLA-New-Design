@@ -9,11 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "ListingTbViewController.h"
-#import "DateViewController.h"
-#import "JobListTbViewController.h"
 #import "SIHandler.h"
 
-@interface PayorViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate,DateViewControllerDelegate,JobListTbViewControllerDelegate> {
+@interface PayorViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
     UIPopoverController *popOverController;
@@ -30,9 +28,9 @@
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *smokerSegment;
-@property (retain, nonatomic) IBOutlet UIButton *DOBBtn;
+@property (strong, nonatomic) IBOutlet UITextField *DOBField;
 @property (retain, nonatomic) IBOutlet UITextField *ageField;
-@property (retain, nonatomic) IBOutlet UIButton *occpBtn;
+@property (strong, nonatomic) IBOutlet UITextField *OccpField;
 @property (retain, nonatomic) IBOutlet UITextField *occpLoadField;
 @property (retain, nonatomic) IBOutlet UITextField *CPAField;
 @property (retain, nonatomic) IBOutlet UITextField *PAField;
@@ -59,8 +57,6 @@
 - (IBAction)doSelectProspect:(id)sender;
 - (IBAction)sexSegmentChange:(id)sender;
 - (IBAction)smokerSegmentChange:(id)sender;
-- (IBAction)DOBBtnPressed:(id)sender;
-- (IBAction)occpBtnPressed:(id)sender;
 - (IBAction)doSave:(id)sender;
 - (IBAction)doDelete:(id)sender;
 

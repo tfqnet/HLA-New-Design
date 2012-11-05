@@ -17,16 +17,14 @@
 @synthesize nameField;
 @synthesize sexSegment;
 @synthesize smokerSegment;
-@synthesize DOBBtn;
 @synthesize ageField;
-@synthesize occpBtn;
 @synthesize occpLoadField;
 @synthesize CPAField;
 @synthesize PAField;
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
 @synthesize popOverController,requestSINo,payorH;
 @synthesize ProspectList = _ProspectList;
-@synthesize CheckRiderCode;
+@synthesize CheckRiderCode,DOBField,OccpField;
 
 - (void)viewDidLoad
 {
@@ -40,12 +38,12 @@
     
     nameField.enabled = NO;
     sexSegment.enabled = NO;
-    DOBBtn.enabled = NO;
     ageField.enabled = NO;
-    occpBtn.enabled = NO;
     occpLoadField.enabled = NO;
     CPAField.enabled = NO;
     PAField.enabled = NO;
+    DOBField.enabled = NO;
+    OccpField.enabled = NO;
     
     useExist = NO;
     
@@ -65,7 +63,7 @@
 -(void)getSavedField
 {
     nameField.text = clientName;
-    [self.DOBBtn setTitle:DOB forState:UIControlStateNormal];
+    DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
     ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
     
     if ([sex isEqualToString:@"M"]) {
@@ -81,7 +79,7 @@
     }
     
     [self getOccLoadExist];
-    [self.occpBtn setTitle:OccpDesc forState:UIControlStateNormal];
+    OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
     
     if (occLoading == 0) {
         occpLoadField.text = @"STD";
@@ -143,39 +141,6 @@
     }
 }
 
-- (IBAction)DOBBtnPressed:(id)sender
-{
-    if(![popOverController isPopoverVisible]) {
-        DateViewController *datePick = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
-		popOverController = [[UIPopoverController alloc] initWithContentViewController:datePick];
-        datePick.delegate = self;
-		
-		[popOverController setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        popOverController.delegate = self;
-	}
-    else {
-		[popOverController dismissPopoverAnimated:YES];
-	}
-}
-
-- (IBAction)occpBtnPressed:(id)sender
-{
-    if(![popOverController isPopoverVisible]) {
-        
-		JobListTbViewController *jobList = [[JobListTbViewController alloc] init];
-		popOverController = [[UIPopoverController alloc] initWithContentViewController:jobList];
-        jobList.delegate = self;
-		
-		[popOverController setPopoverContentSize:CGSizeMake(500.0f, 400.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        popOverController.delegate = self;
-	}
-    else {
-		[popOverController dismissPopoverAnimated:YES];
-	}
-}
-
 - (IBAction)doSave:(id)sender
 {
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
@@ -232,9 +197,9 @@
         nameField.text = @"";
         [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        [DOBBtn setTitle:@"" forState:UIControlStateNormal];
+        DOBField.text = @"";
         ageField.text = @"";
-        [occpBtn setTitle:@"" forState:UIControlStateNormal];
+        OccpField.text= @"";
         occpLoadField.text = @"";
         CPAField.text = @"";
         PAField.text = @"";
@@ -332,14 +297,14 @@
         }
         
         [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        [DOBBtn setTitle:aaDOB forState:UIControlStateNormal];
+        DOBField.text = [[NSString alloc] initWithFormat:@"%@",aaDOB];
         DOB = aaDOB;
         [self calculateAge];
         ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
         
         OccpCode = aaCode;
         [self getOccLoadExist];
-        [self.occpBtn setTitle:OccpDesc forState:UIControlStateNormal];
+        OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
         if (occLoading == 0) {
             occpLoadField.text = @"STD";
         } else {
@@ -358,29 +323,6 @@
     [popOverController dismissPopoverAnimated:YES];
 }
 
--(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB
-{
-    ageField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
-    if (bAge < 16) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    } else {
-        [self.DOBBtn setTitle:aDate forState:UIControlStateNormal];
-        ageField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
-        DOB = aDate;
-        age = bAge;
-        ANB = aANB;
-        [popOverController dismissPopoverAnimated:YES];
-    }
-}
-
--(void) joblist:(JobListTbViewController *)inController selectCode:(NSString *)aaCode selectDesc:(NSString *)aaDesc
-{
-    [self.occpBtn setTitle:aaDesc forState:UIControlStateNormal];
-    OccpCode = [[NSString alloc] initWithFormat:@"%@",aaCode];
-    [self getOccLoading];
-    [popOverController dismissPopoverAnimated:YES];
-}
 
 #pragma mark - db handle
 
@@ -708,9 +650,7 @@
     [self setNameField:nil];
     [self setSexSegment:nil];
     [self setSmokerSegment:nil];
-    [self setDOBBtn:nil];
     [self setAgeField:nil];
-    [self setOccpBtn:nil];
     [self setOccpLoadField:nil];
     [self setCPAField:nil];
     [self setPAField:nil];
@@ -725,6 +665,10 @@
     [self setClientName:nil];
     [self setOccpDesc:nil];
     [self setCheckRiderCode:nil];
+    [self setDOBField:nil];
+    [self setOccpField:nil];
+    [self setDOBField:nil];
+    [self setOccpField:nil];
     [super viewDidUnload];
 }
 

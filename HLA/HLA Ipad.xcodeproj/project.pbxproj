@@ -152,6 +152,7 @@
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
 		EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF9A5B261640C00C00D3EB57 /* hladb.sqlite */; };
+		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 /* End PBXBuildFile section */
 
@@ -372,6 +373,7 @@
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
 		EF9A5B261640C00C00D3EB57 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -637,6 +639,7 @@
 		C4EB48F1161531B200C7FC8C /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				EFABB36D16475A430069502B /* redBtn.png */,
 				C4EB49061615327E00C7FC8C /* button_hover.png */,
 				C4EB49071615327E00C7FC8C /* button.png */,
 				C4EB49081615327E00C7FC8C /* header-repeted.png */,
@@ -930,6 +933,7 @@
 				C486D9F9163E7127009F8F21 /* www in Resources */,
 				C486DAB8163FB928009F8F21 /* Databases.db in Resources */,
 				EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */,
+				EFABB36E16475A430069502B /* redBtn.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

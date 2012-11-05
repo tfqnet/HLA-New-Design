@@ -17,9 +17,7 @@
 @synthesize nameField;
 @synthesize sexSegment;
 @synthesize smokerSegment;
-@synthesize DOBBtn;
 @synthesize ageField;
-@synthesize OccpBtn;
 @synthesize OccpLoadField;
 @synthesize CPAField;
 @synthesize PAField;
@@ -28,6 +26,7 @@
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
+@synthesize DOBField,OccpField;
 
 - (void)viewDidLoad
 {
@@ -39,12 +38,12 @@
     
     nameField.enabled = NO;
     sexSegment.enabled = NO;
-    DOBBtn.enabled = NO;
     ageField.enabled = NO;
-    OccpBtn.enabled = NO;
     OccpLoadField.enabled = NO;
     CPAField.enabled = NO;
     PAField.enabled = NO;
+    DOBField.enabled = NO;
+    OccpField.enabled = NO;
     
     useExist = NO;
     
@@ -91,7 +90,7 @@
     if (valid) {
         
         nameField.text = clientName;
-        [self.DOBBtn setTitle:DOB forState:UIControlStateNormal];
+        DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
         ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
         
         if ([sex isEqualToString:@"M"]) {
@@ -109,7 +108,7 @@
         NSLog(@"smoker:%@",smoker);
         
         [self getOccLoadExist];
-        [self.OccpBtn setTitle:OccpDesc forState:UIControlStateNormal];
+        OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
         if (occLoading == 0) {
             OccpLoadField.text = @"STD";
         } else {
@@ -143,14 +142,14 @@
         }
         NSLog(@"smoker:%@",smoker);
         
-        [DOBBtn setTitle:DOBPP forState:UIControlStateNormal];
+        DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOBPP];
         DOB = DOBPP;
         [self calculateAge];
         ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
         
         OccpCode = OccpCodePP;
         [self getOccLoadExist];
-        [self.OccpBtn setTitle:OccpDesc forState:UIControlStateNormal];
+        OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
         if (occLoading == 0) {
             OccpLoadField.text = @"STD";
         } else {
@@ -202,39 +201,6 @@
     else if (smokerSegment.selectedSegmentIndex == 1){
         smoker = @"N";
     }
-}
-
-- (IBAction)DOBBtnPressed:(id)sender
-{
-    if(![popOverController isPopoverVisible]) {
-        DateViewController *datePick = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
-		popOverController = [[UIPopoverController alloc] initWithContentViewController:datePick];
-        datePick.delegate = self;
-		
-		[popOverController setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        popOverController.delegate = self;
-	}
-    else {
-		[popOverController dismissPopoverAnimated:YES];
-	}
-}
-
-- (IBAction)OccpBtnPressed:(id)sender
-{
-    if(![popOverController isPopoverVisible]) {
-        
-		JobListTbViewController *jobList = [[JobListTbViewController alloc] init];
-		popOverController = [[UIPopoverController alloc] initWithContentViewController:jobList];
-        jobList.delegate = self;
-		
-		[popOverController setPopoverContentSize:CGSizeMake(500.0f, 400.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        popOverController.delegate = self;
-	}
-    else {
-		[popOverController dismissPopoverAnimated:YES];
-	}
 }
 
 - (IBAction)doCloseView:(id)sender
@@ -306,9 +272,9 @@
         nameField.text = @"";
         [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        [DOBBtn setTitle:@"" forState:UIControlStateNormal];
+        DOBField.text = @"";
         ageField.text = @"";
-        [OccpBtn setTitle:@"" forState:UIControlStateNormal];
+        OccpField.text = @"";
         OccpLoadField.text = @"";
         CPAField.text = @"";
         PAField.text = @"";
@@ -419,14 +385,14 @@
         }
         
         [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        [DOBBtn setTitle:aaDOB forState:UIControlStateNormal];
+        DOBField.text = [[NSString alloc] initWithFormat:@"%@",aaDOB];
         DOB = aaDOB;
         [self calculateAge];
         ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
     
         OccpCode = aaCode;
         [self getOccLoadExist];
-        [self.OccpBtn setTitle:OccpDesc forState:UIControlStateNormal];
+        OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
         if (occLoading == 0) {
             OccpLoadField.text = @"STD";
         } else {
@@ -441,25 +407,6 @@
             PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
     }
-    
-    [popOverController dismissPopoverAnimated:YES];
-}
-
--(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB
-{
-    [self.DOBBtn setTitle:aDate forState:UIControlStateNormal];
-    ageField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
-    DOB = aDate;
-    age = bAge;
-    ANB = aANB;
-    [popOverController dismissPopoverAnimated:YES];
-}
-
--(void) joblist:(JobListTbViewController *)inController selectCode:(NSString *)aaCode selectDesc:(NSString *)aaDesc
-{
-    [self.OccpBtn setTitle:aaDesc forState:UIControlStateNormal];
-    OccpCode = [[NSString alloc] initWithFormat:@"%@",aaCode];
-    [self getOccLoading];
     
     [popOverController dismissPopoverAnimated:YES];
 }
@@ -824,9 +771,7 @@
     [self setNameField:nil];
     [self setSexSegment:nil];
     [self setSmokerSegment:nil];
-    [self setDOBBtn:nil];
     [self setAgeField:nil];
-    [self setOccpBtn:nil];
     [self setOccpLoadField:nil];
     [self setCPAField:nil];
     [self setPAField:nil];
@@ -842,6 +787,10 @@
     [self setCustCode:nil];
     [self setClientName:nil];
     [self setOccpDesc:nil];
+    [self setDOBField:nil];
+    [self setOccpField:nil];
+    [self setDOBField:nil];
+    [self setOccpField:nil];
     [super viewDidUnload];
 }
 

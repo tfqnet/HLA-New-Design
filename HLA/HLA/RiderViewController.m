@@ -1044,7 +1044,7 @@
     if ([self.myTableView isEditing]) {
         [self.myTableView setEditing:NO animated:TRUE];
         deleteBtn.hidden = true;
-        [editBtn setTitle:@"Edit" forState:UIControlStateNormal ];
+        [editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
     }
     else{
         [self.myTableView setEditing:YES animated:TRUE];
@@ -1932,10 +1932,6 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Saved Rider!");
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert show];
-                
                 [self getListingRider];
                 
             } else {
