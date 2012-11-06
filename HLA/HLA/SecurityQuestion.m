@@ -101,9 +101,12 @@
         
         selectOne = YES;
 		SecurityQuesTbViewController *popView = [[SecurityQuesTbViewController alloc] init];
-		popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
-        popView.delegate = self;
-        
+        if (popOverConroller == Nil) {
+            popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
+            popView.delegate = self;
+            
+        }
+		
 		[popOverConroller setPopoverContentSize:CGSizeMake(530.0f, 400.0f)];
         [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
@@ -119,8 +122,10 @@
         
         selectTwo = YES;
 		SecurityQuesTbViewController *popView = [[SecurityQuesTbViewController alloc] init];
-		popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
-        popView.delegate = self;
+		if (popOverConroller == Nil) {
+            popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
+            popView.delegate = self;
+        }    
         
 		[popOverConroller setPopoverContentSize:CGSizeMake(530.0f, 400.0f)];
         [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -137,8 +142,10 @@
         
         selectThree = YES;
 		SecurityQuesTbViewController *popView = [[SecurityQuesTbViewController alloc] init];
-		popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
-        popView.delegate = self;
+		if (popOverConroller == Nil) {
+            popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
+            popView.delegate = self;
+        }    
         
 		[popOverConroller setPopoverContentSize:CGSizeMake(530.0f, 400.0f)];
         [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -215,6 +222,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please select your security question for question 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        
         return false;
     }
     
@@ -257,6 +265,8 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please provide answer for question 1" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        
+        [txtAnswerQ1 becomeFirstResponder];
         return false;
     }
     
@@ -264,6 +274,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please provide answer for question 2" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [txtAnswerQ2 becomeFirstResponder];
         return false;
     }
     
@@ -271,6 +282,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Please provide answer for question 3" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [txtAnswerQ3 becomeFirstResponder];
         return false;
     }
     

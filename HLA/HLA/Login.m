@@ -119,10 +119,14 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
+        [txtUsername becomeFirstResponder];
+        
     } 
     else if (txtPassword.text.length <=0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        
+                [txtPassword becomeFirstResponder];
     }
     else {
         

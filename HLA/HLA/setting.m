@@ -96,17 +96,17 @@
         UserProfileView.indexNo = self.indexNo;
         UserProfileView.idRequest = self.userRequest;
         [self presentModalViewController:UserProfileView animated:YES];
-        UserProfileView.view.superview.frame = CGRectMake(350, 50, 600, 600);
+        UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 600);
     }
-    /*
+    
      
      
      
-     
+     /*
     else if (indexPath.row == 1) {
         SecurityQuestion *SecurityQuesView = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
         SecurityQuesView.modalPresentationStyle = UIModalPresentationFormSheet;
-        SecurityQuesView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        SecurityQuesView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         SecurityQuesView.userID = self.indexNo;
         [self presentModalViewController:SecurityQuesView animated:YES];
         SecurityQuesView.view.superview.frame = CGRectMake(350, 50, 600, 600); 
@@ -121,7 +121,7 @@
         changePwdView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         changePwdView.userID = self.indexNo;
         [self presentModalViewController:changePwdView animated:YES];
-        changePwdView.view.superview.frame = CGRectMake(350, 50, 600, 600); 
+        changePwdView.view.superview.frame = CGRectMake(150, 50, 700, 600); 
     }
     
     

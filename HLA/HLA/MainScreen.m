@@ -80,7 +80,7 @@
 
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
-    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];
+    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Exit" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     

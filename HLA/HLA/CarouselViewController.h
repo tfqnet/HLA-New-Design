@@ -13,5 +13,6 @@
 
 @property (weak, nonatomic) IBOutlet iCarousel *outletCarousel;
 
+- (IBAction)btnExit:(id)sender;
 
 @end

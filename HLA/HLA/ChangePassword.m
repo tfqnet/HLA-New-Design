@@ -108,6 +108,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Password did not match! Please enter correct old password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [txtOldPwd becomeFirstResponder];
         txtOldPwd.text = @"";
         txtNewPwd.text = @"";
         txtConfirmPwd.text = @"";
@@ -167,7 +168,7 @@
         valid = FALSE;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        
+        [txtOldPwd becomeFirstResponder];
         
     }
     else { 
@@ -175,12 +176,14 @@
             valid = FALSE;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            [txtNewPwd becomeFirstResponder];
         }
         else {
             if ([txtConfirmPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
                 valid = FALSE;
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                [txtConfirmPwd becomeFirstResponder];
                 
             }
             else {
@@ -194,8 +197,9 @@
         
         if (txtNewPwd.text.length < 6 || txtNewPwd.text.length > 20 ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
-                                                            message:@"Password must be at least 6 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"New Password must be at least 6 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            [txtNewPwd becomeFirstResponder];
             
         }
         else {

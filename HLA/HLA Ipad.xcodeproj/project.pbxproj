@@ -98,6 +98,11 @@
 		C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB4923161558F300C7FC8C /* ChangePassword.m */; };
 		C4EB492716155A4A00C7FC8C /* setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB492616155A4A00C7FC8C /* setting.m */; };
 		C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB493B161592EB00C7FC8C /* UserProfile.m */; };
+		C4EF084D1648DC5C000444BA /* iphone_delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EF084C1648DC5C000444BA /* iphone_delete_button.png */; };
+		C4EF08591648FB8F000444BA /* UINavigationItem+JTRevealSidebarV2.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF08561648FB8F000444BA /* UINavigationItem+JTRevealSidebarV2.m */; };
+		C4EF085A1648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF08581648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m */; };
+		C4EF08601648FB9C000444BA /* DataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF085D1648FB9C000444BA /* DataTable.m */; };
+		C4EF08611648FB9C000444BA /* DBController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF085F1648FB9C000444BA /* DBController.m */; };
 		C4F08D5B161DA491008BCC1A /* ContactTypeClass.h in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D59161DA491008BCC1A /* ContactTypeClass.h */; };
 		C4F08D5C161DA491008BCC1A /* ContactTypeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */; };
 		C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5F161DBDBB008BCC1A /* SIDate.m */; };
@@ -294,6 +299,16 @@
 		C4EB492616155A4A00C7FC8C /* setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setting.m; sourceTree = "<group>"; };
 		C4EB493A161592EB00C7FC8C /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		C4EB493B161592EB00C7FC8C /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
+		C4EF084C1648DC5C000444BA /* iphone_delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_delete_button.png; sourceTree = "<group>"; };
+		C4EF08541648FB8F000444BA /* JTRevealSidebarV2Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JTRevealSidebarV2Delegate.h; sourceTree = "<group>"; };
+		C4EF08551648FB8F000444BA /* UINavigationItem+JTRevealSidebarV2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationItem+JTRevealSidebarV2.h"; sourceTree = "<group>"; };
+		C4EF08561648FB8F000444BA /* UINavigationItem+JTRevealSidebarV2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationItem+JTRevealSidebarV2.m"; sourceTree = "<group>"; };
+		C4EF08571648FB8F000444BA /* UIViewController+JTRevealSidebarV2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JTRevealSidebarV2.h"; sourceTree = "<group>"; };
+		C4EF08581648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JTRevealSidebarV2.m"; sourceTree = "<group>"; };
+		C4EF085C1648FB9C000444BA /* DataTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataTable.h; sourceTree = "<group>"; };
+		C4EF085D1648FB9C000444BA /* DataTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataTable.m; sourceTree = "<group>"; };
+		C4EF085E1648FB9C000444BA /* DBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBController.h; sourceTree = "<group>"; };
+		C4EF085F1648FB9C000444BA /* DBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBController.m; sourceTree = "<group>"; };
 		C4F08D59161DA491008BCC1A /* ContactTypeClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTypeClass.h; sourceTree = "<group>"; };
 		C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTypeClass.m; sourceTree = "<group>"; };
 		C4F08D5E161DBDBB008BCC1A /* SIDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDate.h; sourceTree = "<group>"; };
@@ -541,6 +556,7 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4EF084C1648DC5C000444BA /* iphone_delete_button.png */,
 				C4FCDDBC16395EFF0065D024 /* icon */,
 				C4FCDDBB16395EDA0065D024 /* bg */,
 				C4F83004162E503D00EF8FAA /* iconHLwithbackground.png */,
@@ -663,6 +679,29 @@
 			name = Database;
 			sourceTree = "<group>";
 		};
+		C4EF08531648FB8F000444BA /* sidebarV2 */ = {
+			isa = PBXGroup;
+			children = (
+				C4EF08541648FB8F000444BA /* JTRevealSidebarV2Delegate.h */,
+				C4EF08551648FB8F000444BA /* UINavigationItem+JTRevealSidebarV2.h */,
+				C4EF08561648FB8F000444BA /* UINavigationItem+JTRevealSidebarV2.m */,
+				C4EF08571648FB8F000444BA /* UIViewController+JTRevealSidebarV2.h */,
+				C4EF08581648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m */,
+			);
+			path = sidebarV2;
+			sourceTree = "<group>";
+		};
+		C4EF085B1648FB9C000444BA /* easySqlite */ = {
+			isa = PBXGroup;
+			children = (
+				C4EF085C1648FB9C000444BA /* DataTable.h */,
+				C4EF085D1648FB9C000444BA /* DataTable.m */,
+				C4EF085E1648FB9C000444BA /* DBController.h */,
+				C4EF085F1648FB9C000444BA /* DBController.m */,
+			);
+			path = easySqlite;
+			sourceTree = "<group>";
+		};
 		C4F8300A162FA82C00EF8FAA /* Report */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,6 +714,8 @@
 		C4F8300E162FA9B600EF8FAA /* JTRevealSidebar */ = {
 			isa = PBXGroup;
 			children = (
+				C4EF085B1648FB9C000444BA /* easySqlite */,
+				C4EF08531648FB8F000444BA /* sidebarV2 */,
 				C4F83028162FB7A500EF8FAA /* JTNavigationBar.h */,
 				C4F83029162FB7A600EF8FAA /* JTNavigationBar.m */,
 				C4F83011162FAA2400EF8FAA /* JTNavigationView.h */,
@@ -934,6 +975,7 @@
 				C486DAB8163FB928009F8F21 /* Databases.db in Resources */,
 				EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */,
 				EFABB36E16475A430069502B /* redBtn.png in Resources */,
+				C4EF084D1648DC5C000444BA /* iphone_delete_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -998,6 +1040,10 @@
 				C4F83021162FAA2400EF8FAA /* JTTableViewDatasource.m in Sources */,
 				C4F83024162FAA8700EF8FAA /* DemoHtml.m in Sources */,
 				C4F8302A162FB7A600EF8FAA /* JTNavigationBar.m in Sources */,
+				C4EF08591648FB8F000444BA /* UINavigationItem+JTRevealSidebarV2.m in Sources */,
+				C4EF085A1648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m in Sources */,
+				C4EF08601648FB9C000444BA /* DataTable.m in Sources */,
+				C4EF08611648FB9C000444BA /* DBController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

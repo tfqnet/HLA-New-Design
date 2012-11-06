@@ -728,7 +728,7 @@
     if ([self.myTableView isEditing]) {
         [self.myTableView setEditing:NO animated:TRUE];
         outletDelete.hidden = true;
-        [outletEdit setTitle:@"Edit" forState:UIControlStateNormal ];
+        [outletEdit setTitle:@"Delete" forState:UIControlStateNormal ];
     }
     else{
         [self.myTableView setEditing:YES animated:TRUE]; 

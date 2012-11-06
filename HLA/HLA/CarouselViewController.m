@@ -11,6 +11,9 @@
 #import "ProspectListing.h"
 #import "setting.h"
 #import "MainScreen.h"
+#import "Login.h"
+
+const int numberOfModule = 4;
 
 @interface CarouselViewController ()<UIActionSheetDelegate>
 
@@ -59,7 +62,7 @@
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    return 4;
+    return numberOfModule;
 }
 
 
@@ -68,25 +71,25 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     button.frame = CGRectMake(0, 0, 400.0f, 400.0f);
     //[button setTitle:[NSString stringWithFormat:@"%i", index] forState:UIControlStateNormal];
-    if (index % 4 == 0) {
+    if (index % numberOfModule == 0) {
         //[button setTitle:[NSString stringWithFormat:@"Setting", index] forState:UIControlStateNormal];    
         //NSString *filename = [NSString stringWithFormat:@"btn_setting_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
         [button setBackgroundImage:[UIImage imageNamed:@"btn_setting_home"] forState:UIControlStateNormal];  
     }
-    else if (index % 4 == 1) {
+    else if (index % numberOfModule == 1) {
         //[button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_prospect_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
         [button setBackgroundImage:[UIImage imageNamed:@"btn_prospect_home"] forState:UIControlStateNormal];  
     }
-    else if (index % 4 == 2) {
+    else if (index % numberOfModule == 2) {
         //[button setTitle:[NSString stringWithFormat:@"SI Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_brochure_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
         [button setBackgroundImage:[UIImage imageNamed:@"btn_brochure_home" ] forState:UIControlStateNormal];  
     }
-    else if (index % 4 == 3) {
+    else if (index % numberOfModule == 3) {
         //[button setTitle:[NSString stringWithFormat:@"New SI", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_SI_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
@@ -98,6 +101,9 @@
     UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
     */
     //[button setBackgroundImage:image forState:UIControlStateNormal];
+    
+    
+    
     button.titleLabel.font = [button.titleLabel.font fontWithSize:50];
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     return button;
@@ -113,14 +119,14 @@
                        cancelButtonTitle:@"OK"
                        otherButtonTitles:nil] autorelease] show];
     */
-    if ([outletCarousel indexOfItemView:sender] % 4 == 0) { //setting
+    if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //setting
         setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:zzz animated:YES completion:Nil];
         //[self.navigationController pushViewController:zzz animated:YES];
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % 4 == 1) { //prospect
+    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 1) { //prospect
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = 1;
@@ -128,7 +134,7 @@
         
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % 4 == 2) {
+    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 2) {
         /*
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -137,13 +143,74 @@
         */
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % 4 == 3) {
+    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 3) {
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = 3;
         [self presentViewController:zzz animated:YES completion:Nil];
         
     }
+    
+    
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self updateDateLogout];
+        
+    }
+}
+
+-(void)updateDateLogout
+{
+    NSString *databasePath;
+    sqlite3 *contactDB;
+    
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
+    Login *mainLogin = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+    mainLogin.modalPresentationStyle = UIModalPresentationFullScreen;
+    mainLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:mainLogin animated:YES];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE User_Profile SET LastLogoutDate= \"%@\" WHERE IndexNo=\"%d\"",dateString, 1];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"date update!");
+                
+            } else {
+                NSLog(@"date update Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+}
+
+- (IBAction)btnExit:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] 
+                          initWithTitle: NSLocalizedString(@"Exit",nil)
+                          message: NSLocalizedString(@"Are you sure you want to exit?",nil)
+                          delegate: self
+                          cancelButtonTitle: NSLocalizedString(@"No",nil)
+                          otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+    
+    [alert show ];
+}
 @end

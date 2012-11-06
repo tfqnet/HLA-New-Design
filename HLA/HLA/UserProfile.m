@@ -292,6 +292,8 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Agent Code is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        
+        [txtAgentCode becomeFirstResponder];
         return FALSE;
         
     }
@@ -300,7 +302,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Agent Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            
+        [txtAgentName becomeFirstResponder];
             return FALSE;
         
         
@@ -325,6 +327,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Agent name is not valid" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            [txtAgentName becomeFirstResponder];
             return false;
         }
     }
@@ -335,6 +338,8 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Contact number length must be less than 11 digits" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            
+            [txtAgentContactNo becomeFirstResponder ];
             return false;
         }
         
@@ -345,8 +350,10 @@
         if (!valid) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Contact number must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Contact number must be numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            
+            [txtAgentContactNo becomeFirstResponder];
             return false;
         }
         
@@ -355,6 +362,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Agent's Contact No is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [txtAgentContactNo becomeFirstResponder];
         return false;
     }
     
@@ -364,6 +372,7 @@
                                                             message:@"Email address is not in valid form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             
+            [txtEmail becomeFirstResponder];
             return FALSE;
         }
             
@@ -373,6 +382,7 @@
                                                         message:@"Email is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
+        [txtEmail becomeFirstResponder];
         return FALSE;
     }
     

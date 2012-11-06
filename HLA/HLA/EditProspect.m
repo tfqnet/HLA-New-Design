@@ -66,6 +66,8 @@
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
 
+bool IsContinue = TRUE;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -121,6 +123,11 @@
     txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     
+    [outletDelete setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f]
+                            forState:UIControlStateNormal];
+    [outletDelete setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    outletDelete.titleLabel.shadowColor = [UIColor lightGrayColor];
+    outletDelete.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
@@ -613,8 +620,8 @@
     if([[txtPreferredName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Preferred Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
+        [txtPreferredName becomeFirstResponder];
+        //[self.view endEditing:TRUE];
         
         [alert show];
         return false;
@@ -639,8 +646,8 @@
                                                             message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe ('), alias(@),slash(/),dash(-) or dot(.)." 
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtPreferredName becomeFirstResponder];
+            //[self.view endEditing:TRUE];
             
             [alert show];
             return false;
@@ -650,8 +657,8 @@
     if([[txtrFullName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                     message:@"Full Name is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
+        [txtrFullName becomeFirstResponder];
+        //[self.view endEditing:TRUE];
         
         [alert show];
         return false;
@@ -674,8 +681,7 @@
         if (!valid) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe ('), alias(@),slash(/),dash(-) or dot(.)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtrFullName becomeFirstResponder];
             
             [alert show];
             return false;
@@ -684,7 +690,7 @@
     
     if(segGender.selectedSegmentIndex == -1){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                    message:@"Gender field is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                    message:@"Gender is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
         [self resignFirstResponder];
         [self.view endEditing:TRUE];
@@ -709,8 +715,7 @@
         if ([txtPrefix1.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 1 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtPrefix1 becomeFirstResponder];
             
             [alert show];
             return false;
@@ -719,8 +724,7 @@
             if (txtPrefix1.text.length > 4) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [self resignFirstResponder];
-                [self.view endEditing:TRUE];
+                [txtPrefix1 becomeFirstResponder];
                 
                 [alert show];
                 return false;
@@ -732,8 +736,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact1 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -752,8 +755,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact1 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -764,8 +766,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 1 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact1 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -773,10 +774,9 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Contact No for contact no 1 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Number for contact no 1 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
-                    [self resignFirstResponder];
-                    [self.view endEditing:TRUE];
+                    [txtContact1 becomeFirstResponder];
                     
                     [alert show];
                     return FALSE;
@@ -786,10 +786,10 @@
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Contact No 1 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                        message:@"Type for Contact No 1 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
+        [outletType1 becomeFirstResponder];
+        //[self.view endEditing:TRUE];
         
         [alert show];
         return FALSE; 
@@ -799,8 +799,7 @@
         if ([txtPrefix2.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 2 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [outletType2 becomeFirstResponder];
             
             [alert show];
             return false;
@@ -809,8 +808,7 @@
             if (txtPrefix2.text.length > 4) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [self resignFirstResponder];
-                [self.view endEditing:TRUE];
+                [txtPrefix2 becomeFirstResponder];
                 
                 [alert show];
                 return false;
@@ -822,8 +820,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact2 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -842,8 +839,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact2 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -854,8 +850,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 2 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact2 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -863,10 +858,9 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Contact No for contact no 2 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Number for contact no 2 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
-                    [self resignFirstResponder];
-                    [self.view endEditing:TRUE];
+                    [txtContact2 becomeFirstResponder];
                     
                     [alert show];
                     return FALSE;
@@ -879,8 +873,7 @@
         if ([txtPrefix3.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 3 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [outletType3 becomeFirstResponder];
             
             [alert show];
             return false;
@@ -889,8 +882,7 @@
             if (txtPrefix3.text.length > 4) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [self resignFirstResponder];
-                [self.view endEditing:TRUE];
+                [txtPrefix3 becomeFirstResponder];
                 
                 [alert show];
                 return false;
@@ -910,8 +902,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact3 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -922,8 +913,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 3 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact3 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -931,10 +921,9 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Contact No for contact no 3 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Number for contact no 3 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
-                    [self resignFirstResponder];
-                    [self.view endEditing:TRUE];
+                    [txtContact3 becomeFirstResponder];
                     
                     [alert show];
                     return FALSE;
@@ -947,8 +936,7 @@
         if ([txtPrefix4.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 4 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [outletType4 becomeFirstResponder];
             
             [alert show];
             return false;
@@ -957,8 +945,7 @@
             if (txtPrefix4.text.length > 4) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [self resignFirstResponder];
-                [self.view endEditing:TRUE];
+                [txtPrefix4 becomeFirstResponder];
                 
                 [alert show];
                 return false;
@@ -970,8 +957,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact4 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -990,8 +976,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact4 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -1002,8 +987,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 4 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact4 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -1011,10 +995,9 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Contact No for contact no 4 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Number for contact no 4 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
-                    [self resignFirstResponder];
-                    [self.view endEditing:TRUE];
+                    [txtContact4 becomeFirstResponder];
                     
                     [alert show];
                     return FALSE;
@@ -1037,8 +1020,7 @@
             if (txtPrefix5.text.length > 4) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Prefix length cannot be more than 4 characters" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [self resignFirstResponder];
-                [self.view endEditing:TRUE];
+                [txtPrefix5 becomeFirstResponder];
                 
                 [alert show];
                 return false;
@@ -1050,8 +1032,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact5 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -1070,8 +1051,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact5 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -1082,8 +1062,7 @@
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 5 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [self resignFirstResponder];
-                        [self.view endEditing:TRUE];
+                        [txtContact5 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -1091,10 +1070,9 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:@"Contact No for contact no 5 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                    message:@"Number for contact no 5 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     
-                    [self resignFirstResponder];
-                    [self.view endEditing:TRUE];
+                    [txtContact5 becomeFirstResponder];
                     
                     [alert show];
                     return FALSE;
@@ -1107,8 +1085,7 @@
     if([[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Email address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
+        [txtEmail becomeFirstResponder];
         
         [alert show];
         return false;
@@ -1118,48 +1095,35 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
+        [txtHomeAddr1 becomeFirstResponder];
         
         [alert show];
         return false;
     }
     
-    if([txtHomePostCode.text isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
-    else {
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtHomePostCode.text];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            
+    if (IsContinue == TRUE) {
+        if([txtHomePostCode.text isEqualToString:@""]){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Residence post code must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+                                                            message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [txtHomePostCode becomeFirstResponder];
             
             [alert show];
             return false;
         }
     }
+    else {
+        return FALSE;
+    }
+    
     
     if([[txtOfiiceAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-        
+            [txtOfiiceAddr1 becomeFirstResponder];
+            
             [alert show];
             return false;
         }
@@ -1173,36 +1137,25 @@
         
     }
     
-    if([txtOfficePostCode.text isEqualToString:@""]){
-        if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+    if (IsContinue == TRUE) {
+        if([txtOfficePostCode.text isEqualToString:@""]){
+            if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [txtOfficePostCode becomeFirstResponder];
+                
+                [alert show];
+                return false;        
+            }
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        }
+    }
     
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-        
-            [alert show];
-            return false;
-        }
-        
-    }
     else {
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtOfficePostCode.text];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Office post code must be in numeric form" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
+        return FALSE;
     }
+    
     
     if(OccupCodeSelected == NULL){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -1219,8 +1172,7 @@
         if( [self NSStringIsValidEmail:txtEmail.text] == FALSE){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"You have entered an invalid email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtEmail becomeFirstResponder];
             
             [alert show];
             return FALSE;
@@ -1527,6 +1479,9 @@
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
+            txtPreferredName.text = [txtPreferredName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            txtrFullName.text = [txtrFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            
             NSString *insertSQL = [NSString stringWithFormat:
                                    @"update prospect_profile set \"PreferredName\" = \"%@\" ,\"ProspectName\" = \"%@\", \"ProspectDOB\" = \"%@\", "
                                    "\"ProspectGender\" = \"%@\", \"ResidenceAddress1\" = \"%@\", \"ResidenceAddress2\" = \"%@\", \"ResidenceAddress3\" = \"%@\", "
@@ -1565,6 +1520,8 @@
         
         
     }
+    
+    IsContinue = TRUE;
     /*
     ProspectListing *ListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
     [ListingPage ReloadTableData];
@@ -1579,37 +1536,69 @@
     BOOL gotRow = false;
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtHomePostCode.text];
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
-        {
+    
+    
+    txtHomePostCode.text =[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] ;
+    
+        BOOL valid;
+        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
+        valid = [alphaNums isSupersetOfSet:inStringSet]; 
+        if (!valid) {
             
-            while (sqlite3_step(statement) == SQLITE_ROW){
-                NSString *Town = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                NSString *State = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)]; 
-                
-                txtHomeState.text = State;
-                txtHomeTown.text = Town;
-                txtHomeCountry.text = @"MALAYSIA";
-                SelectedStateCode = Statecode;
-                gotRow = true;
-            }
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Residence post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
             
-        }
-        
-        if (gotRow == false) {
-            UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Residence address" 
-                                                                delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            
             txtHomePostCode.text = @"";
             txtHomeState.text = @"";
             txtHomeTown.text = @"";
             txtHomeCountry.text = @"";
             SelectedStateCode = @"";
-            [NoPostcode show];   
+            IsContinue = FALSE;
+    
         }
-    }
+        else {
+            if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+                NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtHomePostCode.text];
+                const char *query_stmt = [querySQL UTF8String];
+                if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+                {
+                    
+                    while (sqlite3_step(statement) == SQLITE_ROW){
+                        NSString *Town = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                        NSString *State = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                        NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)]; 
+                        
+                        txtHomeState.text = State;
+                        txtHomeTown.text = Town;
+                        txtHomeCountry.text = @"MALAYSIA";
+                        SelectedStateCode = Statecode;
+                        gotRow = true;
+                        IsContinue = TRUE;
+                    }
+                    
+                }
+                
+                if (gotRow == false) {
+                    UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Residence address" 
+                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    txtHomePostCode.text = @"";
+                    txtHomeState.text = @"";
+                    txtHomeTown.text = @"";
+                    txtHomeCountry.text = @"";
+                    SelectedStateCode = @"";
+                    [NoPostcode show];   
+                    IsContinue = FALSE;
+                    
+                }
+            }
+            
+        }    
+    
     
 }
 
@@ -1619,38 +1608,68 @@
     BOOL gotRow = false;
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
-    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtOfficePostCode.text];
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
-        {
-            while (sqlite3_step(statement) == SQLITE_ROW){
-                NSString *OfficeTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                NSString *OfficeState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
-                
-                txtOfficeState.text = OfficeState;
-                txtOfficeTown.text = OfficeTown;
-                txtOfficeCountry.text = @"MALAYSIA";
-                SelectedOfficeStateCode = Statecode;
-                gotRow = true;
-            }
+    
+    txtOfficePostCode.text = [txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]; 
+    
+        BOOL valid;
+        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
+        valid = [alphaNums isSupersetOfSet:inStringSet]; 
+        if (!valid) {
             
-            if (gotRow == false) {
-                UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
-                                                                    delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                txtOfficePostCode.text = @"";
-                txtOfficeState.text = @"";
-                txtOfficeTown.text = @"";
-                txtOfficeCountry.text = @"";
-                SelectedOfficeStateCode = @"";
-                [NoPostcode show];   
-            }
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Office post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [self resignFirstResponder];
+            [self.view endEditing:TRUE];
+            
+            [alert show];
+            
+            txtOfficePostCode.text = @"";
+            txtOfficeState.text = @"";
+            txtOfficeTown.text = @"";
+            txtOfficeCountry.text = @"";
+            SelectedOfficeStateCode = @"";
+            IsContinue = FALSE;    
+    
         }
-        
-        
-    } 
-}
+        else {
+            if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+                NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtOfficePostCode.text];
+                const char *query_stmt = [querySQL UTF8String];
+                if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+                {
+                    while (sqlite3_step(statement) == SQLITE_ROW){
+                        NSString *OfficeTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                        NSString *OfficeState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                        NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                        
+                        txtOfficeState.text = OfficeState;
+                        txtOfficeTown.text = OfficeTown;
+                        txtOfficeCountry.text = @"MALAYSIA";
+                        SelectedOfficeStateCode = Statecode;
+                        gotRow = true;
+                        IsContinue = TRUE;
+                    }
+                    
+                    if (gotRow == false) {
+                        UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
+                                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        txtOfficePostCode.text = @"";
+                        txtOfficeState.text = @"";
+                        txtOfficeTown.text = @"";
+                        txtOfficeCountry.text = @"";
+                        SelectedOfficeStateCode = @"";
+                        [NoPostcode show];   
+                        IsContinue = FALSE;
+                    }
+                }
+                
+                
+            } 
+
+        }
+    
+    }
 
 -(void)detectChanges:(id) sender{
     strChanges = @"Yes";
