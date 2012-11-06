@@ -103,6 +103,9 @@
 		C4EF085A1648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF08581648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m */; };
 		C4EF08601648FB9C000444BA /* DataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF085D1648FB9C000444BA /* DataTable.m */; };
 		C4EF08611648FB9C000444BA /* DBController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF085F1648FB9C000444BA /* DBController.m */; };
+		C4EF087316496A5A000444BA /* pages.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087216496A5A000444BA /* pages.m */; };
+		C4EF087616496B13000444BA /* SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087516496B13000444BA /* SidebarViewController.m */; };
+		C4EF087916496B43000444BA /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087816496B43000444BA /* BrowserViewController.m */; };
 		C4F08D5B161DA491008BCC1A /* ContactTypeClass.h in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D59161DA491008BCC1A /* ContactTypeClass.h */; };
 		C4F08D5C161DA491008BCC1A /* ContactTypeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */; };
 		C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5F161DBDBB008BCC1A /* SIDate.m */; };
@@ -309,6 +312,12 @@
 		C4EF085D1648FB9C000444BA /* DataTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataTable.m; sourceTree = "<group>"; };
 		C4EF085E1648FB9C000444BA /* DBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBController.h; sourceTree = "<group>"; };
 		C4EF085F1648FB9C000444BA /* DBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBController.m; sourceTree = "<group>"; };
+		C4EF087116496A5A000444BA /* pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pages.h; sourceTree = "<group>"; };
+		C4EF087216496A5A000444BA /* pages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pages.m; sourceTree = "<group>"; };
+		C4EF087416496B13000444BA /* SidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarViewController.h; sourceTree = "<group>"; };
+		C4EF087516496B13000444BA /* SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarViewController.m; sourceTree = "<group>"; };
+		C4EF087716496B42000444BA /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
+		C4EF087816496B43000444BA /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
 		C4F08D59161DA491008BCC1A /* ContactTypeClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTypeClass.h; sourceTree = "<group>"; };
 		C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTypeClass.m; sourceTree = "<group>"; };
 		C4F08D5E161DBDBB008BCC1A /* SIDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDate.h; sourceTree = "<group>"; };
@@ -705,6 +714,12 @@
 		C4F8300A162FA82C00EF8FAA /* Report */ = {
 			isa = PBXGroup;
 			children = (
+				C4EF087716496B42000444BA /* BrowserViewController.h */,
+				C4EF087816496B43000444BA /* BrowserViewController.m */,
+				C4EF087416496B13000444BA /* SidebarViewController.h */,
+				C4EF087516496B13000444BA /* SidebarViewController.m */,
+				C4EF087116496A5A000444BA /* pages.h */,
+				C4EF087216496A5A000444BA /* pages.m */,
 				C4F8300B162FA84D00EF8FAA /* ReportViewController.h */,
 				C4F8300C162FA84D00EF8FAA /* ReportViewController.m */,
 			);
@@ -1044,6 +1059,9 @@
 				C4EF085A1648FB8F000444BA /* UIViewController+JTRevealSidebarV2.m in Sources */,
 				C4EF08601648FB9C000444BA /* DataTable.m in Sources */,
 				C4EF08611648FB9C000444BA /* DBController.m in Sources */,
+				C4EF087316496A5A000444BA /* pages.m in Sources */,
+				C4EF087616496B13000444BA /* SidebarViewController.m in Sources */,
+				C4EF087916496B43000444BA /* BrowserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

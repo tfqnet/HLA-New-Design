@@ -14,6 +14,7 @@
 #import "PayorViewController.h"
 #import "PremiumViewController.h"
 #import "MainScreen.h"
+#import "ReportViewController.h"
 
 @interface SIMenuViewController ()
 
@@ -42,7 +43,7 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
+    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", @"Quotation", nil ];
     
     SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", nil ];
     
@@ -365,6 +366,24 @@
     
     else if (indexPath.row == 5) {
         [self calculatedPrem];
+    }
+    
+    else if (indexPath.row == 6) { //quotation
+        ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+        ReportPage.SINo = getSINo;
+        [self presentViewController:ReportPage animated:NO completion:^{
+            [ReportPage dismissViewControllerAnimated:NO completion:^{
+                /*
+                 MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+                 main.modalPresentationStyle = UIModalPresentationFullScreen;
+                 main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                 main.IndexTab = 6;
+                 [self presentModalViewController:main animated:YES];
+                 */
+                ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
+                [self presentViewController:reportVC animated:YES completion:Nil];
+            }];
+        }];
     }
     
     [tableView reloadData];
