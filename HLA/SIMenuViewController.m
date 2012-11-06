@@ -44,7 +44,7 @@
     
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
     
-    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"5", nil ];
+    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", nil ];
     
     getSINo = menuH.storedSINo;
     getAge = menuH.storedAge;
@@ -116,10 +116,12 @@
     
     if (PlanEmpty)
     {
+        [SelectedRow addObject:@"4"];
         [SelectedRow addObject:@"5"];
 //        NSLog(@"Plan empty");
     }
     else {
+        [SelectedRow removeObject:@"4"];
         [SelectedRow removeObject:@"5"];
 //        NSLog(@"Plan not empty");
     }

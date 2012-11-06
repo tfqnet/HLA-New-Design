@@ -131,6 +131,7 @@
 @property(nonatomic , retain) NSMutableArray *LRidHL100;
 @property(nonatomic , retain) NSMutableArray *LRidHLP;
 @property(nonatomic , retain) NSMutableArray *LSmoker;
+@property(nonatomic , retain) NSMutableArray *LSex;
 @property(nonatomic , retain) NSMutableArray *LAge;
 @property (retain, nonatomic) IBOutlet UILabel *titleRidCode;
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
@@ -144,6 +145,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *editBtn;
 @property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
 
+@property (nonatomic, assign,readwrite) int age;
+@property (nonatomic,strong) NSString *sex;
 @property (nonatomic, assign,readwrite) double riderRate;
 @property (nonatomic, assign,readwrite) int CombNo;
 @property (nonatomic, assign,readwrite) int RBBenefit;
