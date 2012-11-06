@@ -294,8 +294,9 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
-    else if (age <= 0) {         
+    else if (AgeLess) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1005];
         [alert show];
     }
     else if (occuCode.length == 0) {        
@@ -409,10 +410,24 @@
             [self updateData];
         }        
     }
+    else if (alertView.tag==1005 && buttonIndex == 0) {
+        
+        LANameField.text = @"";
+        [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        LADOBField.text = @"";
+        LAAgeField.text = @"";
+        [self.btnCommDate setTitle:@"" forState:UIControlStateNormal];
+        LAOccpField.text = @"";
+        LAOccLoadingField.text = @"";
+        LACPAField.text = @"";
+        LAPAField.text = @"";
+    }
 }
 
 -(void)calculateAge
 {
+    AgeLess = NO;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         
     [dateFormatter setDateFormat:@"yyyy"];
@@ -482,8 +497,7 @@
         NSDateComponents *difference = [[NSCalendar currentCalendar] components:flags fromDate:startDate toDate:endDate options:0];
         int diffDays = [difference day];
         if (diffDays < 30) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+            AgeLess = YES;
         }
         msgAge = [[NSString alloc] initWithFormat:@"%d days",diffDays];
 //        NSLog(@"birthday:%@, today:%@, diff:%d",selectDate,todayDate,diffDays);
@@ -492,11 +506,6 @@
         ANB = 1;
     }
     NSLog(@"msgAge:%@",msgAge);
-    
-    if (yearN==yearB && monthN==monthB && dayN==dayB) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
 }
 
 

@@ -24,7 +24,8 @@
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
 @synthesize popOverController,requestSINo,payorH;
 @synthesize ProspectList = _ProspectList;
-@synthesize CheckRiderCode,DOBField,OccpField;
+@synthesize CheckRiderCode,DOBField,OccpField,IndexNo;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 
 - (void)viewDidLoad
 {
@@ -50,6 +51,7 @@
     if (self.requestSINo) {
         [self checkingExisting];
         if (SINo.length != 0) {
+            [self getProspectData];
             [self getSavedField];
         }
     }
@@ -62,40 +64,109 @@
 
 -(void)getSavedField
 {
-    nameField.text = clientName;
-    DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-    ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    BOOL valid;
     
-    if ([sex isEqualToString:@"M"]) {
-        sexSegment.selectedSegmentIndex = 0;
-    } else if ([sex isEqualToString:@"F"]) {
-        sexSegment.selectedSegmentIndex = 1;
+    if (![NamePP isEqualToString:clientName]) {
+        valid = FALSE;
     }
     
-    if ([smoker isEqualToString:@"Y"]) {
-        smokerSegment.selectedSegmentIndex = 0;
-    } else if ([smoker isEqualToString:@"N"]) {
-        smokerSegment.selectedSegmentIndex = 1;
+    if (![GenderPP isEqualToString:sex]) {
+        valid = FALSE;
     }
     
-    [self getOccLoadExist];
-    OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
-    
-    if (occLoading == 0) {
-        occpLoadField.text = @"STD";
-    } else {
-        occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
+    if (![DOB isEqualToString:DOBPP]) {
+        valid = FALSE;
     }
     
-    if (occCPA_PA > 4) {
-        CPAField.text = @"D";
-        PAField.text = @"D";
-    } else {
-        CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-        PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    if (![OccpCode isEqualToString:OccpCodePP]) {
+        valid = FALSE;
     }
     
-    useExist = YES;
+    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
+    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
+    
+    if (valid) {
+    
+        nameField.text = clientName;
+        DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+        ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",sex);
+
+        
+        if ([smoker isEqualToString:@"Y"]) {
+            smokerSegment.selectedSegmentIndex = 0;
+        } else {
+            smokerSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"smoker:%@",smoker);
+        
+        [self getOccLoadExist];
+        OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
+        if (occLoading == 0) {
+            occpLoadField.text = @"STD";
+        } else {
+            occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+    
+        if (occCPA_PA > 4) {
+            CPAField.text = @"D";
+            PAField.text = @"D";
+        } else {
+            CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+    }
+    else {
+     
+        nameField.text = NamePP;
+        sex = GenderPP;
+        
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",sex);
+        
+        if ([smoker isEqualToString:@"Y"]) {
+            smokerSegment.selectedSegmentIndex = 0;
+        } else {
+            smokerSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"smoker:%@",smoker);
+        
+        DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOBPP];
+        DOB = DOBPP;
+        [self calculateAge];
+        ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
+        
+        OccpCode = OccpCodePP;
+        [self getOccLoadExist];
+        OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
+        if (occLoading == 0) {
+            occpLoadField.text = @"STD";
+        } else {
+            occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+        
+        if (occCPA_PA > 4) {
+            CPAField.text = @"D";
+            PAField.text = @"D";
+        } else {
+            CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:2003];
+        [alert show];
+    }
 }
 
 #pragma mark - action
@@ -167,7 +238,13 @@
         [alert show];
     }
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Save?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+        NSString *msg;
+        if (useExist) {
+            msg = @"Confirm changes?";
+        } else {
+            msg = @"Save?";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:2001];
         [alert show];
     }
@@ -188,7 +265,8 @@
         } else {
             [self savePayor];
         }
-    } else if (alertView.tag == 2002 && buttonIndex == 0) {
+    }
+    else if (alertView.tag == 2002 && buttonIndex == 0) {
         [self checkingRider];
         [self deletePayor];
         if (CheckRiderCode.length != 0) {
@@ -204,6 +282,16 @@
         CPAField.text = @"";
         PAField.text = @"";
     }
+    else if (alertView.tag==2003 && buttonIndex == 0) {
+        
+        if (smoker.length == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        } else {
+            [self updatePayor];
+        }
+    }
+
 }
 
 -(void)calculateAge
@@ -282,19 +370,23 @@
         sex = nil;
         smoker = nil;
     }
+    useExist = NO;
+    IndexNo = [aaIndex intValue];
     
     if (payorH.storedIndexNo == [aaIndex intValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"This Payor has already been attached to the plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     } else {
+        
         nameField.text = aaName;
         sex = aaGender;
         
         if ([sex isEqualToString:@"M"]) {
             sexSegment.selectedSegmentIndex = 0;
-        } else if ([sex isEqualToString:@"F"]) {
+        } else {
             sexSegment.selectedSegmentIndex = 1;
         }
+        NSLog(@"sex:%@",sex);
         
         [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         DOBField.text = [[NSString alloc] initWithFormat:@"%@",aaDOB];
@@ -420,7 +512,7 @@
         }
         
         NSString *insertSQL2 = [NSString stringWithFormat:
-                                @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\")", CustCode, nameField.text, smoker, sex, DOB, age, ANB, OccpCode, dateStr];
+                                @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", CustCode, nameField.text, smoker, sex, DOB, age, ANB, OccpCode, dateStr,IndexNo];
         NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -479,7 +571,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",[self.requestSINo description]];
+                              @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id, b.IndexNo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",[self.requestSINo description]];
         
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -495,8 +587,41 @@
                 age = sqlite3_column_int(statement, 6);
                 OccpCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
                 clientID = sqlite3_column_int(statement, 8);
+                IndexNo = sqlite3_column_int(statement, 9);
             } else {
                 NSLog(@"error access tbl_SI_Trad_LAPayor");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+    if (SINo.length != 0) {
+        useExist = YES;
+    } else {
+        useExist = NO;
+    }
+}
+
+
+-(void)getProspectData
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile WHERE IndexNo= \"%d\"",IndexNo];
+        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NamePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                DOBPP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                GenderPP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                OccpCodePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
+            } else {
+                NSLog(@"error access prospect_profile");
             }
             sqlite3_finalize(statement);
         }

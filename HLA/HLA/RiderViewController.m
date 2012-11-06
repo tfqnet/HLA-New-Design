@@ -392,6 +392,9 @@
         double maxRiderTerm2 = fmax(requestMOP,storedMaxTerm);
 //        double maxRiderTerm2 = fmax(requestCoverTerm,storedMaxTerm);
         maxRiderTerm = fmin(maxRiderTerm1,maxRiderTerm2);
+        if (maxRiderTerm < maxTerm) {
+            maxRiderTerm = maxTerm;
+        }
     }
     
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"] || [riderCode isEqualToString:@"IE20R"] || [riderCode isEqualToString:@"IE30R"] ) //edited by heng
@@ -432,7 +435,7 @@
     {
         maxRiderSA = fmin(dblPseudoBSA2,120000);
     }
-    else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"])
+    else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
     {
         [self getGYI];
         double BasicSA_GYI = self.requestBasicSA * GYI;
@@ -1715,7 +1718,7 @@
     {
         NSUInteger i;
         for (i=0; i<[LRiderCode count]; i++) {
-            NSLog(@"riderExist:%@",[LRiderCode objectAtIndex:i]);
+            NSLog(@"riderExist:%@, rider enter:%@",[LRiderCode objectAtIndex:i],riderCode);
             
             if ([riderCode isEqualToString:@"PTR"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) {
                 NSLog(@"enterList-a");

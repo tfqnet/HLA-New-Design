@@ -23,6 +23,7 @@
     BOOL useExist;
     BOOL date1;
     BOOL date2;
+    BOOL AgeLess;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;

@@ -35,6 +35,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *CPAField;
 @property (retain, nonatomic) IBOutlet UITextField *PAField;
 
+@property (nonatomic, assign,readwrite) int IndexNo;
 @property (nonatomic, copy) NSString *sex;
 @property (nonatomic, copy) NSString *smoker;
 @property (nonatomic, copy) NSString *DOB;
@@ -52,6 +53,12 @@
 @property (nonatomic, assign,readwrite) int clientID;
 @property (nonatomic, copy) NSString *OccpDesc;
 @property (nonatomic, copy) NSString *CheckRiderCode;
+
+
+@property(nonatomic , retain) NSString *NamePP;
+@property(nonatomic , retain) NSString *DOBPP;
+@property(nonatomic , retain) NSString *GenderPP;
+@property(nonatomic , retain) NSString *OccpCodePP;
 
 - (IBAction)doClosePayor:(id)sender;
 - (IBAction)doSelectProspect:(id)sender;
