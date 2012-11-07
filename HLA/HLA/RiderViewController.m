@@ -66,7 +66,7 @@
 @synthesize arrCombNo,AllCombNo,medPlanOpt,arrRBBenefit;
 @synthesize RiderList = _RiderList;
 @synthesize RiderListPopover = _RiderListPopover;
-@synthesize dataInsert,LSex,sex,age;
+@synthesize dataInsert,LSex,sex,age,_maxRiderSA;
 
 #pragma mark - Cycle View
 
@@ -394,7 +394,8 @@
         double maxRiderTerm2 = fmax(requestMOP,storedMaxTerm);
 //        double maxRiderTerm2 = fmax(requestCoverTerm,storedMaxTerm);
         maxRiderTerm = fmin(maxRiderTerm1,maxRiderTerm2);
-        if (maxRiderTerm < maxTerm) {
+        
+        if (maxRiderTerm < minTerm) {
             maxRiderTerm = maxTerm;
         }
     }
@@ -430,40 +431,55 @@
     
     if ([riderCode isEqualToString:@"CCTR"])
     {
-        maxRiderSA = dblPseudoBSA3;
+        _maxRiderSA = dblPseudoBSA3;
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
         
     }
     else if ([riderCode isEqualToString:@"ETPD"])
     {
-        maxRiderSA = fmin(dblPseudoBSA2,120000);
+        _maxRiderSA = fmin(dblPseudoBSA2,120000);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
         NSLog(@"maxEtpd:%.f",maxRiderSA);
     }
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
     {
         [self getGYI];
         double BasicSA_GYI = self.requestBasicSA * GYI;
-        maxRiderSA = fmin(BasicSA_GYI,9999999);
+        _maxRiderSA = fmin(BasicSA_GYI,9999999);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
     }
     else if ([riderCode isEqualToString:@"CPA"]) {
         if (riderH.storedOccpClass == 1 || riderH.storedOccpClass == 2) {
             if (dblPseudoBSA < 100000) {
-                maxRiderSA = fmin(dblPseudoBSA3,200000);
+                _maxRiderSA = fmin(dblPseudoBSA3,200000);
+                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+                maxRiderSA = [a_maxRiderSA doubleValue];
             }
             else if (dblPseudoBSA >= 100000) {
-                maxRiderSA = fmin(dblPseudoBSA4,1000000);
+                _maxRiderSA = fmin(dblPseudoBSA4,1000000);
+                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+                maxRiderSA = [a_maxRiderSA doubleValue];
             }
         }
         else if (riderH.storedOccpClass == 3 || riderH.storedOccpClass == 4) {
-            maxRiderSA = fmin(dblPseudoBSA3,100000);
+            _maxRiderSA = fmin(dblPseudoBSA3,100000);
+            NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+            maxRiderSA = [a_maxRiderSA doubleValue];
         }
     }
-    
     else if ([riderCode isEqualToString:@"PA"]) {
-        maxRiderSA = fmin(dblPseudoBSA3,1000000);
+        _maxRiderSA = fmin(dblPseudoBSA3,1000000);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
     }
     
     else {
-        maxRiderSA = maxSATerm;
+        _maxRiderSA = maxSATerm;
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
     }
 }
 
@@ -528,13 +544,23 @@
     double _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
     double _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
     double _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
+    NSString *LSDAnnually2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDAnnually]];
+    NSString *LSDHalfYear2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
+    NSString *LSDQuarterly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];
+    NSString *LSDMonthly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]];
+    double LSDAnnually_ = [[LSDAnnually2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDHalfYear_ = [[LSDHalfYear2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDQuarterly_ = [[LSDQuarterly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDMonthly_ = [[LSDMonthly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     NSLog(@"LSD A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_LSDAnnually,_LSDHalfYear,_LSDQuarterly,_LSDMonthly);
+    NSLog(@"LSD A:%@, S:%@, Q:%@, M:%@",LSDAnnually2,LSDHalfYear2,LSDQuarterly2,LSDMonthly2);
+    NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
     
     //calculate Total basic premium
-    double _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ - _LSDAnnually;
-    double _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ - _LSDHalfYear;
-    double _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ - _LSDQuarterly;
-    double _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ - _LSDMonthly;
+    double _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ - LSDAnnually_;
+    double _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ - LSDHalfYear_;
+    double _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ - LSDQuarterly_;
+    double _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ - LSDMonthly_;
     NSString *basicTotalA = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalA]];
     NSLog(@"BasicTotal A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_basicTotalA,_basicTotalS,_basicTotalQ,_basicTotalM);
     
@@ -1183,6 +1209,9 @@
         deleteBtn.enabled = FALSE;
         [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
     }
+    else if (alertView.tag == 1002 && buttonIndex == 0) {
+        [self deleteRider];
+    }
 }
 
 #pragma mark - validate
@@ -1708,30 +1737,7 @@
 {
     //reset value existing
     if (riderCode != NULL) {
-        term = NO;
-        sumA = NO;
-        plan = NO;
-        unit = NO;
-        deduc = NO;
-        hload = NO;
-        hloadterm = NO;
-        planOption = nil;
-        deductible = nil;
-        inputHL100SA = nil;
-        inputHL1KSA = nil;
-        inputHLPercentage = nil;
-        inputHL1KSATerm = 0;
-        inputHL100SATerm = 0;
-        inputHLPercentageTerm = 0;
-        sumField.text = @"";
-        termField.text = @"";
-        HLField.text = @"";
-        HLTField.text = @"";
-        incomeRider = NO;
-        unitField.text = @"";
-        
-        [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
-        [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
+        [self clearField];
     }
     NSLog(@"RiderCode:%@",code);
     riderCode = [[NSString alloc] initWithFormat:@"%@",code];
@@ -2066,13 +2072,23 @@
                 titleHL100.hidden = NO;
                 titleHLP.hidden = NO;
                 
-                [self calculateRiderPrem];
-                [self calculateMedRiderPrem];
-                
-                if (medRiderPrem != 0) {
-                    [self MHIGuideLines];
-                } else {
-                    NSLog(@"No medical rider!");
+                if ([sumField.text intValue] > _maxRiderSA) {
+                    NSLog(@"will delete %@",riderCode);
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert setTag:1002];
+                    [alert show];
+                }
+                else {
+                    
+                    [self calculateRiderPrem];
+                    [self calculateMedRiderPrem];
+                    
+                    if (medRiderPrem != 0) {
+                        [self MHIGuideLines];
+                    } else {
+                        NSLog(@"No medical rider!");
+                    }
+                    
                 }
             }
             
@@ -2253,7 +2269,6 @@
         sqlite3_close(contactDB);
     }
 }
-
 
 //---
 
@@ -2538,6 +2553,30 @@
                 
             } else {
                 NSLog(@"error access Trad_LSD_HLAIB");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)deleteRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"rider delete!");
+                [self clearField];
+                [self getListingRider];
+                
+            } else {
+                NSLog(@"rider delete Failed!");
             }
             sqlite3_finalize(statement);
         }
@@ -2832,6 +2871,34 @@
     [self setEditBtn:nil];
     [self setDeleteBtn:nil];
     [super viewDidUnload];
+}
+
+-(void)clearField
+{
+    term = NO;
+    sumA = NO;
+    plan = NO;
+    unit = NO;
+    deduc = NO;
+    hload = NO;
+    hloadterm = NO;
+    planOption = nil;
+    deductible = nil;
+    inputHL100SA = nil;
+    inputHL1KSA = nil;
+    inputHLPercentage = nil;
+    inputHL1KSATerm = 0;
+    inputHL100SATerm = 0;
+    inputHLPercentageTerm = 0;
+    sumField.text = @"";
+    termField.text = @"";
+    HLField.text = @"";
+    HLTField.text = @"";
+    incomeRider = NO;
+    unitField.text = @"";
+    
+    [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
+    [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
 }
 
 @end

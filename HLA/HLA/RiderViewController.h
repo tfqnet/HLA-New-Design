@@ -100,6 +100,7 @@
 @property (nonatomic, assign,readwrite) int maxTerm;
 @property (nonatomic, assign,readwrite) double maxRiderTerm;
 @property (nonatomic, assign,readwrite) double maxRiderSA;
+@property (nonatomic, assign,readwrite) double _maxRiderSA;
 @property (nonatomic,strong) NSString *planOption;
 @property (nonatomic,strong) NSString *deductible;
 @property (nonatomic,strong) NSString *inputHL1KSA;

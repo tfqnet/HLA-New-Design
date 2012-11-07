@@ -19,6 +19,7 @@
     PlanList *planList;
     BOOL showHL;
     BOOL useExist;
+    BOOL newSegment;
 }
 
 //request from previous

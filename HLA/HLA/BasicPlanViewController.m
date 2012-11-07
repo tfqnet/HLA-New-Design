@@ -73,19 +73,7 @@
         advanceIncomeSegment.enabled = NO;
     }
     
-    if (ageClient > 50 && ageClient <=65)
-    {
-        NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
-        UISegmentedControl *segName = [[UISegmentedControl alloc] initWithItems:buttons];
-        [self setAdvanceIncomeSegment:segName];
-        segName.frame = CGRectMake(342, 363, 287, 44);
-        segName.segmentedControlStyle = UISegmentedControlStylePlain;
-        segName.momentary = NO;
-        segName.selectedSegmentIndex = 0;
-        [segName addTarget:self action:@selector(otherAdvancePressed:)
-                  forControlEvents:UIControlEventValueChanged];
-        [self.view addSubview:segName];
-    }
+    newSegment = YES;
     
     healthLoadingView.alpha = 0;
     showHL = NO;
@@ -109,6 +97,76 @@
     }
 }
 
+-(void)toggleSegment
+{
+    if (ageClient > 50 && ageClient <=65)
+    {
+        UISegmentedControl *segName = [[UISegmentedControl alloc] init];
+        
+        if (newSegment) {
+            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
+            segName = [[UISegmentedControl alloc] initWithItems:buttons];
+            [self setAdvanceIncomeSegment:segName];
+            segName.frame = CGRectMake(342, 363, 287, 44);
+            segName.segmentedControlStyle = UISegmentedControlStylePlain;
+            segName.momentary = NO;
+            segName.selectedSegmentIndex = 0;
+            [segName addTarget:self action:@selector(otherAdvancePressed:)
+              forControlEvents:UIControlEventValueChanged];
+            [self.view addSubview:segName];
+            NSLog(@"segment default");
+        }
+        else {
+            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
+            segName = [[UISegmentedControl alloc] initWithItems:buttons];
+            [self setAdvanceIncomeSegment:segName];
+            segName.frame = CGRectMake(342, 363-45, 287, 44);
+            segName.segmentedControlStyle = UISegmentedControlStylePlain;
+            segName.momentary = NO;
+            segName.selectedSegmentIndex = 0;
+            [segName addTarget:self action:@selector(otherAdvancePressed:)
+              forControlEvents:UIControlEventValueChanged];
+            [self.view addSubview:segName];
+            NSLog(@"segment keyboard");
+        }
+    }
+}
+/*
+-(void)loadView
+{
+    if (ageClient > 50 && ageClient <=65)
+    {
+        UISegmentedControl *segName = [[UISegmentedControl alloc] init];
+        
+        if (newSegment) {
+            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
+            segName = [[UISegmentedControl alloc] initWithItems:buttons];
+            [self setAdvanceIncomeSegment:segName];
+            segName.frame = CGRectMake(342, 363, 287, 44);
+            segName.segmentedControlStyle = UISegmentedControlStylePlain;
+            segName.momentary = NO;
+            segName.selectedSegmentIndex = 0;
+            [segName addTarget:self action:@selector(otherAdvancePressed:)
+              forControlEvents:UIControlEventValueChanged];
+            [self.view addSubview:segName];
+            NSLog(@"segment default");
+        }
+        else {
+            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
+            segName = [[UISegmentedControl alloc] initWithItems:buttons];
+            [self setAdvanceIncomeSegment:segName];
+            segName.frame = CGRectMake(342, 363-45, 287, 44);
+            segName.segmentedControlStyle = UISegmentedControlStylePlain;
+            segName.momentary = NO;
+            segName.selectedSegmentIndex = 0;
+            [segName addTarget:self action:@selector(otherAdvancePressed:)
+              forControlEvents:UIControlEventValueChanged];
+            [self.view addSubview:segName];
+            NSLog(@"segment keyboard");
+        }
+    }
+}*/
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
@@ -117,6 +175,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self toggleSegment];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -142,6 +201,9 @@
 {
     self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
     self.myScrollView.contentSize = CGSizeMake(1024, 704);
+    
+    newSegment = NO;
+    [self toggleSegment];
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
@@ -730,7 +792,6 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat: @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"HLAIB\" AND PremPayOpt=\"%d\"",MOP];
-        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

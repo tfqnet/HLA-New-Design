@@ -141,13 +141,23 @@
     double _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
     double _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
     double _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
+    NSString *LSDAnnually2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDAnnually]];
+    NSString *LSDHalfYear2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
+    NSString *LSDQuarterly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];
+    NSString *LSDMonthly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]];
+    double LSDAnnually_ = [[LSDAnnually2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDHalfYear_ = [[LSDHalfYear2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDQuarterly_ = [[LSDQuarterly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDMonthly_ = [[LSDMonthly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     NSLog(@"LSD A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_LSDAnnually,_LSDHalfYear,_LSDQuarterly,_LSDMonthly);
+    NSLog(@"LSD A:%@, S:%@, Q:%@, M:%@",LSDAnnually2,LSDHalfYear2,LSDQuarterly2,LSDMonthly2);
+    NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
     
     //calculate Total basic premium
-    double _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ - _LSDAnnually;
-    double _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ - _LSDHalfYear;
-    double _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ - _LSDQuarterly;
-    double _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ - _LSDMonthly;
+    double _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ - LSDAnnually_;
+    double _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ - LSDHalfYear_;
+    double _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ - LSDQuarterly_;
+    double _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ - LSDMonthly_;
     NSString *basicTotalA = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalA]];
     NSString *basicTotalS = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalS]];
     NSString *basicTotalQ = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalQ]];
@@ -367,26 +377,50 @@
         }
         NSLog(@"riderRate:%.2f, ridersum:%.3f, HL:%.3f",riderRate,ridSA,riderHLoad);
         
+        double annFac;
+        double halfFac;
+        double quarterFac;
+        double monthFac;
+        if ([[riderCode objectAtIndex:i] isEqualToString:@"PA"]) {
+            annFac = 1;
+            halfFac = 0.5;
+            quarterFac = 0.25;
+            monthFac = ((double)1)/12;
+        }
+        else if ([[riderCode objectAtIndex:i] isEqualToString:@"HB"]) {
+            annFac = 1;
+            halfFac = 0.55;
+            quarterFac = 0.3;
+            monthFac = 0.1;
+        }
+        else {
+            annFac = 1;
+            halfFac = 0.5125;
+            quarterFac = 0.2625;
+            monthFac = 0.0875;
+        }
+        NSLog(@"fac1:%.5f,fac2:%.5f,fac3:%.5f,fac4:%.5f",annFac,halfFac,quarterFac,monthFac);
+        
         //calculate occupationLoading
-        double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 1;
-        double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.5125;
-        double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.2625;
-        double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.0875;
+        double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
+        double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
+        double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
+        double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
         
         //calculate rider health loading
-        double RiderHLAnnually = riderHLoad * (BasicSA/1000) * 1;
-        double RiderHLHalfYear = riderHLoad * (BasicSA/1000) * 0.5125;
-        double RiderHLQuarterly = riderHLoad * (BasicSA/1000) * 0.2625;
-        double RiderHLMonthly = riderHLoad * (BasicSA/1000) * 0.0875;
+        double RiderHLAnnually = riderHLoad * (BasicSA/1000) * annFac;
+        double RiderHLHalfYear = riderHLoad * (BasicSA/1000) * halfFac;
+        double RiderHLQuarterly = riderHLoad * (BasicSA/1000) * quarterFac;
+        double RiderHLMonthly = riderHLoad * (BasicSA/1000) * monthFac;
         NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
         
         if ([[riderCode objectAtIndex:i] isEqualToString:@"ETPD"])
         {
             double fsar = (65 - self.requestAge) * ridSA;
-            annualRider = (riderRate *ridSA /100 *1) + (RiderHLAnnually /10 *ridSA /100 *1) + (fsar /1000 *OccpLoadA *1);
-            halfYearRider = (riderRate *ridSA /100 *0.5125) + (RiderHLHalfYear /10 *ridSA /100 *0.5125) + (fsar /1000 *OccpLoadH *0.5125);
-            quarterRider = (riderRate *ridSA /100 *0.2625) + (RiderHLQuarterly /10 *ridSA /100 *0.2625) + (fsar /1000 *OccpLoadQ *0.2625);
-            monthlyRider = (riderRate *ridSA /100 *0.0875) + (RiderHLMonthly /10 *ridSA /100 *0.0875) + (fsar /1000 *OccpLoadM *0.0875);
+            annualRider = (riderRate *ridSA /100 *annFac) + (RiderHLAnnually /10 *ridSA /100 *annFac) + (fsar /1000 *OccpLoadA *annFac);
+            halfYearRider = (riderRate *ridSA /100 *halfFac) + (RiderHLHalfYear /10 *ridSA /100 *halfFac) + (fsar /1000 *OccpLoadH *halfFac);
+            quarterRider = (riderRate *ridSA /100 *quarterFac) + (RiderHLQuarterly /10 *ridSA /100 *quarterFac) + (fsar /1000 *OccpLoadQ *quarterFac);
+            monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac) + (fsar /1000 *OccpLoadM *monthFac);
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"])
         {
@@ -394,17 +428,17 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm + 1)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm + 1)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm + 1)/2);
-            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
-            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
-            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
-            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"ICR"])
         {
-            annualRider = (riderRate *ridSA /1000 *1) + ((OccpLoadA *ridTerm) *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
-            halfYearRider = (riderRate *ridSA /1000 *0.5125) + ((OccpLoadH *ridTerm) *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
-            quarterRider = (riderRate *ridSA /1000 *0.2625) + ((OccpLoadQ *ridTerm) *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
-            monthlyRider = (riderRate *ridSA /1000 *0.0875) + ((OccpLoadM *ridTerm) *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            annualRider = (riderRate *ridSA /1000 *annFac) + ((OccpLoadA *ridTerm) *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + ((OccpLoadH *ridTerm) *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + ((OccpLoadQ *ridTerm) *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ((OccpLoadM *ridTerm) *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"ID20R"])
         {
@@ -412,10 +446,10 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm - 20)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 20)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm - 20)/2);
-            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
-            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
-            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
-            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
             
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"ID30R"])
@@ -424,10 +458,10 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm - 30)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 30)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm - 30)/2);
-            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
-            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
-            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
-            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
             
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"ID40R"])
@@ -436,55 +470,55 @@
             double occLoadFactorH = OccpLoadH * ((ridTerm - 40)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 40)/2);
             double occLoadFactorM = OccpLoadM * ((ridTerm - 40)/2);
-            annualRider = (riderRate *ridSA /1000 *1) + (occLoadFactorA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
-            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (occLoadFactorH *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
-            quarterRider = (riderRate *ridSA /1000 *0.2625) + (occLoadFactorQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
-            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (occLoadFactorM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"]||[[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[riderCode objectAtIndex:i] isEqualToString:@"HMM"])
         {
-            annualRider = riderRate * (1 + RiderHLAnnually/100) * 1;
-            halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * 0.5125;
-            quarterRider = riderRate * (1 + RiderHLQuarterly/100) * 0.2625;
-            monthlyRider = riderRate * (1 + RiderHLMonthly/100) * 0.0875;
+            annualRider = riderRate * (1 + RiderHLAnnually/100) * annFac;
+            halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * halfFac;
+            quarterRider = riderRate * (1 + RiderHLQuarterly/100) * quarterFac;
+            monthlyRider = riderRate * (1 + RiderHLMonthly/100) * monthFac;
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"HB"])
         {
             int selectUnit = [[riderUnit objectAtIndex:i] intValue];
-            annualRider = riderRate * (1 + RiderHLAnnually/100) * selectUnit * 1;
-            halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * selectUnit * 0.5125;
-            quarterRider = riderRate * (1 + RiderHLQuarterly/100) * selectUnit * 0.2625;
-            monthlyRider = riderRate * (1 + RiderHLMonthly/100) * selectUnit * 0.0875;
+            annualRider = riderRate * (1 + RiderHLAnnually/100) * selectUnit * annFac;
+            halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * selectUnit * halfFac;
+            quarterRider = riderRate * (1 + RiderHLQuarterly/100) * selectUnit * quarterFac;
+            monthlyRider = riderRate * (1 + RiderHLMonthly/100) * selectUnit * monthFac;
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"CIWP"]||[[riderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[riderCode objectAtIndex:i] isEqualToString:@"PR"]||[[riderCode objectAtIndex:i] isEqualToString:@"SP_STD"]||[[riderCode objectAtIndex:i] isEqualToString:@"SP_PRE"])
         {
-            double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * 1;
-            double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * 0.5125;
-            double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
-            double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
+            double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * annFac;
+            double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * halfFac;
+            double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * quarterFac;
+            double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * monthFac;
             
-            annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadA + RiderHLAnnually/100) * 1;
-            halfYearRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadH + RiderHLHalfYear/100) * 0.5125;
-            annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadQ + RiderHLQuarterly/100) * 0.2625;
-            annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadM + RiderHLMonthly/100) * 0.0875;
+            annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadA + RiderHLAnnually/100) * annFac;
+            halfYearRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadH + RiderHLHalfYear/100) * halfFac;
+            annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadQ + RiderHLQuarterly/100) * quarterFac;
+            annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadM + RiderHLMonthly/100) * monthFac;
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"PLCP"]||[[riderCode objectAtIndex:i] isEqualToString:@"PTR"])
         {
-            double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * 1;
-            double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * 0.5125;
-            double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
-            double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
+            double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * annFac;
+            double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * halfFac;
+            double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * quarterFac;
+            double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * monthFac;
             
-            annualRider = (riderRate *ridSA /1000 *1) + (OccpLoadA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
-            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (OccpLoadM *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
-            quarterRider = (riderRate *ridSA /1000 *0.2625) + (OccpLoadQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
-            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (OccpLoadM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            annualRider = (riderRate *ridSA /1000 *annFac) + (OccpLoadA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (OccpLoadM *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (OccpLoadQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else {
-            annualRider = (riderRate *ridSA /1000 *1) + (OccpLoadA *ridSA /1000 *1) + (RiderHLAnnually *ridSA /1000 *1);
-            halfYearRider = (riderRate *ridSA /1000 *0.5125) + (OccpLoadM *ridSA /1000 *0.5125) + (RiderHLHalfYear *ridSA /1000 *0.5125);
-            quarterRider = (riderRate *ridSA /1000 *0.2625) + (OccpLoadQ *ridSA /1000 *0.2625) + (RiderHLQuarterly *ridSA /1000 *0.2625);
-            monthlyRider = (riderRate *ridSA /1000 *0.0875) + (OccpLoadM *ridSA /1000 *0.0875) + (RiderHLMonthly *ridSA /1000 *0.0875);
+            annualRider = (riderRate *ridSA /1000 *annFac) + (OccpLoadA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (OccpLoadM *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (OccpLoadQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         
         NSString *calRiderAnn = [NSString stringWithFormat:@"%.3f",annualRider];
