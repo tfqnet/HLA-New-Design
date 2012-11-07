@@ -15,6 +15,7 @@
 #import "PremiumViewController.h"
 #import "MainScreen.h"
 #import "ReportViewController.h"
+#import "BrowserViewController.h"
 
 @interface SIMenuViewController ()
 
@@ -45,7 +46,7 @@
     
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", @"Quotation", nil ];
     
-    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", nil ];
+    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", @"6", nil ];
     
     getSINo = menuH.storedSINo;
     getAge = menuH.storedAge;
@@ -124,6 +125,7 @@
     else {
         [SelectedRow removeObject:@"4"];
         [SelectedRow removeObject:@"5"];
+        [SelectedRow removeObject:@"6"];
 //        NSLog(@"Plan not empty");
     }
 }
@@ -373,15 +375,16 @@
         ReportPage.SINo = getSINo;
         [self presentViewController:ReportPage animated:NO completion:^{
             [ReportPage dismissViewControllerAnimated:NO completion:^{
-                /*
-                 MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-                 main.modalPresentationStyle = UIModalPresentationFullScreen;
-                 main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                 main.IndexTab = 6;
-                 [self presentModalViewController:main animated:YES];
-                 */
-                ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"DemoHtml"];
-                [self presentViewController:reportVC animated:YES completion:Nil];
+                
+                //ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
+                //[self presentViewController:reportVC animated:YES completion:Nil];
+                BrowserViewController *controller = [[BrowserViewController alloc] init];
+                controller.title = @"Pages";
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                UINavigationController *container = [[UINavigationController alloc] init];
+                [container setNavigationBarHidden:YES animated:NO];
+                [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+                [self presentModalViewController:container animated:TRUE];
             }];
         }];
     }

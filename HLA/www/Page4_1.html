@@ -11,6 +11,7 @@
 <script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
 <script type="text/javascript" charset="utf-8">
     var db;
+    var IncomeRider = 'I20R';
     var shortName = 'WebSqlDB';
     var version = '1.0';
     var displayName = 'WebSqlDB';
@@ -53,7 +54,7 @@
         }
         
         db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Temp_Trad_RiderIllus where ltrim(rtrim(DataType)) = 'I30R'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_RiderIllus where ltrim(rtrim(DataType)) = '" + IncomeRider + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     for (var i = 0; i < result.rows.length; i++) {
@@ -65,7 +66,7 @@
         },errorHandler,nullHandler);
         
         db.transaction(function(transaction) { //rider description
-            transaction.executeSql("SELECT RiderDesc FROM Trad_Sys_Rider_Profile where ltrim(rtrim(RiderCode)) = 'I30R'", [], function(transaction, result) {
+            transaction.executeSql("SELECT RiderDesc FROM Trad_Sys_Rider_Profile where ltrim(rtrim(RiderCode)) = '" + IncomeRider + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
                     //riderDesc = row.RiderDesc;
@@ -401,8 +402,8 @@ Please ask for copy of sales illustration without advancement of future GYI if y
 
 <tr>
 <td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
-This sales illustration consists of <span id="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
-information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span id="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
 pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
 <b><span id="rptVersion">{rptVersion}</span></b> <br/>
 Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
@@ -410,7 +411,7 @@ Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Pet
 
 
 </td>
-<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span id="currentPage">{currentPage}</span> of <span id="totalPages">{totalPages}</span></td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
 <td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
 </tr>
 </table>

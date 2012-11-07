@@ -40,6 +40,11 @@
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(revealRightSidebar:)];
     
     self.navigationItem.revealSidebarDelegate = self;
+    
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" 
+                                                                  style:UIBarButtonItemStyleBordered target:self action:@selector(CloseButtonAction)];
+    self.navigationItem.rightBarButtonItem = barButton;
+    
 }
 
 - (void)viewDidUnload
@@ -134,13 +139,17 @@
     browserController.wwwFolderName = @"www";
     
     browserController.startPage = (NSString *)objectHTML;
-    browserController.view.frame = CGRectMake(0, 0, 768, 1000);
+    browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
     browserController = nil;
 }
 
 - (NSIndexPath *)lastSelectedIndexPathForSidebarViewController:(SidebarViewController *)sidebarViewController {
     return self.leftSelectedIndexPath;
+}
+
+-(void)CloseButtonAction{
+    [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
 @end

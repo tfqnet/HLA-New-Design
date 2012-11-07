@@ -11,7 +11,7 @@
 <script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
 <script type="text/javascript" charset="utf-8">
     var db;
-    var IncomeRider = 'ID20R';
+    var IncomeRider = 'IE20R';
     var shortName = 'WebSqlDB';
     var version = '1.0';
     var displayName = 'WebSqlDB';
@@ -66,7 +66,7 @@
         },errorHandler,nullHandler);
         
         db.transaction(function(transaction) { //rider description
-            transaction.executeSql("SELECT RiderDesc FROM Trad_Sys_Rider_Profile where ltrim(rtrim(RiderCode)) = '" + IncomeRider + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT RiderDesc FROM Trad_Rider_Profile where ltrim(rtrim(RiderCode)) = '" + IncomeRider + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
                     //riderDesc = row.RiderDesc;

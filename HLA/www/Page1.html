@@ -7,12 +7,19 @@
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
 <script type="text/javascript" charset="utf-8">
     var db;
     var shortName = 'WebSqlDB';
     var version = '1.0';
     var displayName = 'WebSqlDB';
     var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
         alert('Error: ' + error.message + ' code: ' + error.code);
@@ -27,7 +34,7 @@
     
     function onBodyLoad(){
         //alert($('#aa').text())
-        //alert("DEBUGGING: we are in the onBodyLoad() function");
+    	//alert("DEBUGGING: we are in the onBodyLoad() function");
         if (!window.openDatabase) {
             alert('Databases are not supported in this browser.');
             return;
@@ -61,7 +68,32 @@
         
         
         db.transaction(function(transaction) {
-            transaction.executeSql('SELECT * FROM SI_Temp_Trad_LA;', [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;                    
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                	$('#dateModified').html(row.DateModified);
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     for (var i = 0; i < result.rows.length; i++) {
@@ -167,7 +199,7 @@ $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'
 </script>
 </head>
  
-<body onload="onBodyLoad()">
+<body onload="onBodyLoad(),setPage()">
  <span id="lbUsers"></span>
 <!-- Begin Wrapper -->
 <div id="wrapper">
@@ -176,10 +208,10 @@ $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'
 <div id="header">
   <img src="img/HLassurance.png" width="135" height="30" />
   <div class="welcome">
-  Prepared By : <span id="agentName">hla</span>
-  <br/>Code : <span id="agentCode">A8888888</span>
+  Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span>
   </div>
-  <div class="Content">Printed On : <span id="printDT">07/08/2012 11:49:35AM</span></div>
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
   <!--<hr/>-->
   <div class="hrule"></div>
 </div>
@@ -340,17 +372,17 @@ dapatkan risalah maklumat PIDM daripada Hong Leong Assurance Berhad atau layari 
 
 <tr>
 <td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
-This sales illustration consists of <span id="totalPages">57</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
-information printed on each and every page. <i>Illustrasi Jualan ini mengandungi 57 muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
 pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
-<b><span id="rptVersion">Win MP (Trad) Version 6.5 (Agency) - Last Updated 20 Jul 2012 - E&amp;OE-</span></b> <br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
 Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
 
 
 
 </td>
-<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span id="currentPage">1</span> of <span id="totalPages">11</span></td>
-<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>SI20121016-00001</span></td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
 </tr>
 </table>
 <!-- End Footer -->

@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var cashPayment = 0;
+    var colType = 0;
+    var pageNum = '3';
+        
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+    }
+        
+    function ListDBValues() {
+            
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder</i>');
+                    	//$('#advanceYearlyDesc').hide();
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 60&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 60</i>');
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
+                	}
+                	$('#dateModified').html(row.DateModified);
+                	
+                	if ($.trim(row.CashDividend) == 'A')//payment description
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		//totalSurrenderValue
+                		//tpdBenefit
+                		if (parseInt(row.CashPayment) == 0)
+                		{
+                			colType = 1;
+                		}
+                		else
+                		{
+                			colType = 2;
+                		}
+                	}
+                	else if (row.CashDividend == 'P')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.CashPayment) == 0)
+                		{
+                			colType = 3;
+                		}
+                		else
+                		{
+                			colType = 4;
+                		}
+                	}
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+            
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_Rider where PageNo = '" + pageNum + "' order by DataType DESC", [], function(transaction, result) {
+            //transaction.executeSql("SELECT * FROM SI_Temp_Trad_Rider where PageNo = " + pageNum + " order by DataType DESC", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    $('#rider1').html(result.rows.item(0).col1);
+                    $('#rider2').html(result.rows.item(0).col5);
+                    $('#rider3').html(result.rows.item(0).col9);
+                                   
+                    $('#col0_1_E').html(result.rows.item(1).col0_1);
+                    $('#col0_2_E').html(result.rows.item(1).col0_2);
+                    $('#col0_1_M').html(result.rows.item(2).col0_1);
+                    $('#col0_2_M').html(result.rows.item(2).col0_2);
+                                   
+                    var row;
+                    
+                    for (var i = 1; i < 2; i++) {
+                        for (var j = 1; j < 13; j++) {//row header
+                            row = result.rows.item(i);
+                            //alert(eval('row.col' + j))
+                            $('#col' + j + '_E').html(eval('row.col' + j));
+                            row = result.rows.item(i+1);
+                            $('#col' + j + '_M').html(eval('row.col' + j));
+                        }
+                        //$('#col0_2_M').html(result.rows.item(2).col0_2);
+                        //$('#table-data > tbody').append('<tr><td>1</td><td>32</td><td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>');
+                    }
+        
+                                   
+                                   
+                    //var row;
+                    for (var i = 3; i < result.rows.length; i++) {//row data
+                        row = result.rows.item(i);
+                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + row.col3 + '</td><td>' + row.col4 + '</td><td>' + row.col5 + '</td><td>' + row.col6 + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + row.col10 + '</td><td>' + row.col11 + '</td><td>' + row.col12 +'</td></tr>');
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        return;
+    }
+</script>
+</head>
+<body onload="onBodyLoad(),setPage()">
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+<tr>
+<td width="75%" valign="top"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/>
+<span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="25%" valign="top">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+</tr>
+</table>
+<table id="table-data">
+
+<thead>
+<tr><th colspan="14" style="text-align: left;">&nbsp;&nbsp;Illustration of Riders&nbsp;&nbsp;&nbsp;<i>Illustrasi Pelan Tambahanan</i></th></tr>
+<tr>
+<th colspan="2">&nbsp;</th>
+    <th colspan="4" id="rider1" class="title">{rider1}</th>
+    <th colspan="4" id="rider2" class="title">{rider2}</th>
+    <th colspan="4" id="rider3" class="title">{rider3}</th>
+
+</tr>
+<tr>
+<th id="col0_1_E" class="content">Policy Year</th>
+<th id="col0_2_E" class="content">Life Ass'd Age at end of Year</th>
+
+<th id="col1_E" class="content">Annual Premium (Beg. of Year)</th>
+<th id="col2_E" class="content">Surrender Value</th>
+<th id="col3_E" class="content">Death/TPD Benefit</th>
+<th id="col4_E" class="content">-</th>
+
+<th id="col5_E" class="content">Annual Premium (Beg. of Year)</th>
+
+<th id="col6_E" class="content">Surrender Value (End of Year)</th>
+
+<th  id="col7_E" class="content">Death/TPD Benefit</th>
+
+<th id="col8_E" class="content">Critical Illness Benefit</th>
+
+<th id="col9_E" class="content">Annual Premium (Beg. of Year)</th>
+
+<th id="col10_E" class="content">Critical Illness Benefit</th>
+
+<th id="col11_E" class="content">-</th>
+
+<th id="col12_E" class="content">-</th>
+</tr>
+
+<tr>
+
+<th id="col0_1_M" class="contentSmall">Tahun Polisi</th>
+
+<th id="col0_2_M" class="contentSmall">Umur Hayat Diinsuranskan pada Akhir Tahun</th>
+
+<th id="col1_M" class="contentSmall">Premium Tahunan (Permulaan Tahun)</th>
+
+<th id="col2_M" class="contentSmall">Nilai Penyerahan (Akhir Tahun)</th>
+
+<th id="col3_M" class="contentSmall">Faedah Kematian/HUMK</th>
+
+<th id="col4_M" class="contentSmall">-</th>
+
+<th id="col5_M" class="contentSmall">Premium Tahunan (Permulaan Tahun)</th>
+
+<th id="col6_M" class="contentSmall">Nilai Penyerahan (Akhir Tahun)</th>
+
+<th id="col7_M" class="contentSmall">Faedah Kematian/HUMK</th>
+
+<th id="col8_M" class="contentSmall">Faedah Penyakit Kritikal</th>
+
+<th id="col9_M" class="contentSmall">Premium Tahunan (Permulaan Tahun)</th>
+
+<th id="col10_M" class="contentSmall">Faedah Penyakit Kritikal</th>
+
+<th id="col11_M" class="contentSmall">-</th>
+
+<th id="col12_M" class="contentSmall">-</th>
+</tr>
+</thead>
+<tbody>
+<!--
+<tr><td>1</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>2</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>3</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>5</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>6</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>7</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>8</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>9</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>10</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>11</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>12</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>13</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>14</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>15</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>16</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+<tr><td>17</td><td>32</td>
+<td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>
+-->
+</tbody>
+</table>
+<br/><br/><br/>
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+
+<tr>
+<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+
+
+
+</td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+</tr>
+</table>
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>

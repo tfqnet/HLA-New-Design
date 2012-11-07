@@ -11,6 +11,7 @@
 <script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
 <script type="text/javascript" charset="utf-8">
     var db;
+    var IncomeRider = 'I30R';
     var shortName = 'WebSqlDB';
     var version = '1.0';
     var displayName = 'WebSqlDB';
@@ -79,13 +80,13 @@
                     var row;
                     var row = result.rows.item(0);
                     if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
-                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder</i>');
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder</i>');
                     }
                     else if (parseInt(row.AdvanceYearlyIncome) == 60){
-                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 60&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 60</i>');
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 60&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 60</i>');
                     }
                     else if (parseInt(row.AdvanceYearlyIncome) == 75){
-                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
                 	}
                 	
                 	$('#dateModified').html(row.DateModified);
@@ -93,12 +94,12 @@
                 	if ($.trim(row.CashDividend) == 'A')//payment description
                 	{
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
-                		$('#col1').html('Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i>');
+                		$('#col1').html('Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(9)</i>');
 
                 		if (parseInt(row.CashPayment) == 0)
                 		{
-                			$('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
-                			$('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
+                			$('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(10)</i>');
+                			$('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(11)</i>');
                 			$('#col4').html('-<br/><br/>-');
                 			
                 			$('#col4A').html('-');
@@ -107,9 +108,9 @@
                 		}
                 		else
                 		{
-                		    $('#col2').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(11)</i>');
-                			$('#col3').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(12)</i>');
-                			$('#col4').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(13)</i>');
+                		    $('#col2').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(10)</i>');
+                			$('#col3').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
+                			$('#col4').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
                 			colType = 2;
                 		}
                 	}
@@ -118,8 +119,8 @@
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');                	    
                 	    if (parseInt(row.CashPayment) == 0)
                 		{
-                			$('#col1').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(10)</i>');
-                			$('#col2').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(11)</i>');
+                			$('#col1').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(9)</i>');
+                			$('#col2').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(10)</i>');
                 		    $('#col3').html('-<br/><br/>-');
                 		    $('#col4').html('-<br/><br/>-');
                 			$('#col3A').html('-');
@@ -130,9 +131,9 @@
                 		}
                 		else
                 		{
-                			$('#col1').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(10)</i>');
-                			$('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
-                		    $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
+                			$('#col1').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(9)</i>');
+                			$('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(10)</i>');
+                		    $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(11)</i>');
                 		    $('#col4').html('-<br/><br/>-');
                 		    $('#col4A').html('-');
                 			$('#col4B').html('-');
@@ -142,9 +143,21 @@
                 }
             },errorHandler);
         },errorHandler,nullHandler);
+        
+        db.transaction(function(transaction) { //rider description
+            transaction.executeSql("SELECT RiderDesc FROM Trad_Sys_Rider_Profile where ltrim(rtrim(RiderCode)) = '" + IncomeRider + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    //riderDesc = row.RiderDesc;
+                    //alert(riderDesc)
+                    //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + row.col3 + '</td><td>' + row.col4 + '</td><td>' + row.col5 + '</td><td>' + row.col6 + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + row.col10 + '</td><td>' + row.col11+ '</td></tr>');
+                	$('#advanceYearlyIncome').html('Illustration of ' + row.RiderDesc + '&nbsp;&nbsp;&nbsp;<i>Illustrasi ' + row.RiderDesc + '</i>');    
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
             
         db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Temp_Trad_Basic where DataType = 'DATA'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_RiderIllus where ltrim(rtrim(DataType)) = '" + IncomeRider + "'", [], function(transaction, result) {
             if (result != null && result.rows != null) {
                 var row;
                                                   
@@ -152,18 +165,20 @@
                     var row = result.rows.item(i);
                     //alert(colType)
                     if (colType == 1){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
                     else if (colType == 2){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td></tr>');
+                    	
                     }
                     else if (colType == 3){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td></tr>');
                     }
                     else if (colType == 4){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
                     
+                    //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td></tr>');
                     //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td></tr>');
                                                   
                 }
@@ -175,7 +190,7 @@
 </script>
 </head>
  
-<body onload="onBodyLoad(),setPage(),writeInvestmentScenarios()">
+<body onload="onBodyLoad(),setPage()">
  
 <!-- Begin Wrapper -->
 <div id="wrapper">
@@ -190,8 +205,9 @@
 <div class="main-content">
 <table>
 <tr>
-<td width="75%"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="paymentDesc">{PaymentDescription}</span></td>
-<td width="25%">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+<td width="75%" valign="top"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/>
+<span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="25%" valign="top">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
 </tr>
 </table>
 <!--<div align="center"><span id="advanceYearlyIncome"></span></div>-->
@@ -208,7 +224,7 @@
 <tr>
 
 <th colspan="2" class="content">Current Year Cash Dividend<br/><br/>
-<i>Dividen Tunai Tahun Semasa<br/>(9)</i></th>
+<i>Dividen Tunai Tahun Semasa<br/>(8)</i></th>
 
 <!--
 <th colspan="2" class="content" id="col1">Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i></th>

@@ -66,10 +66,12 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {   
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight){
         return YES;
-    
-    return NO;
+    }
+    else {
+        return NO;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -66,6 +66,7 @@
 @synthesize SIDatePopover = _SIDatePopover;
 @synthesize delegate = _delegate;
 
+bool PostcodeContinue = TRUE;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -368,6 +369,8 @@
         }
         
     }
+    
+PostcodeContinue = TRUE;
 
 }
 
@@ -496,15 +499,20 @@
         return false;
     }
     
-    if([txtHomePostCode.text isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [txtHomePostCode becomeFirstResponder];
-        //[self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
+    if (PostcodeContinue == TRUE) {
+        if([txtHomePostCode.text isEqualToString:@""]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [txtHomePostCode becomeFirstResponder];
+            
+            [alert show];
+            return false;
+        }
     }
+    else {
+        return FALSE;
+    }
+    
     
     
     if([[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
@@ -527,22 +535,25 @@
         
     }
     
-    if([txtOfficePostcode.text isEqualToString:@""]){
-        if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+    if (PostcodeContinue == TRUE) {
+        if([txtOfficePostcode.text isEqualToString:@""]){
+            if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [txtOfficePostcode becomeFirstResponder];
+                //[self.view endEditing:TRUE];
+                [alert show];
+                return false;   
+            }
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            [txtOfficePostcode becomeFirstResponder];
-            //[self.view endEditing:TRUE];
-            [alert show];
-            return false;   
         }
-        
-        
     }
-    
-    
+    else {
+        return  FALSE;
+    }
+        
     if(OccupCodeSelected == NULL){
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -1267,7 +1278,7 @@
             txtHomeTown.text = @"";
             txtHomeCountry.text = @"";
             SelectedStateCode = @"";
-            
+            PostcodeContinue = FALSE;
             
         }
         else {
@@ -1287,6 +1298,7 @@
                         txtHomeCountry.text = @"MALAYSIA";
                         SelectedStateCode = Statecode;
                         gotRow = true;
+                         PostcodeContinue = TRUE;
                     }
                     
                 }
@@ -1300,6 +1312,7 @@
                     txtHomeCountry.text = @"";
                     SelectedStateCode = @"";
                     [NoPostcode show];   
+                     PostcodeContinue = FALSE;
                 }
             }
             
@@ -1333,7 +1346,7 @@
             txtOfficeTown.text = @"";
             txtOfficeCountry.text = @"";
             SelectedOfficeStateCode = @"";
-            
+             PostcodeContinue = FALSE;
         }
         else {
             if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
@@ -1351,6 +1364,7 @@
                         txtOfficeCountry.text = @"MALAYSIA";
                         SelectedOfficeStateCode = Statecode;
                         gotRow = true;
+                         PostcodeContinue = TRUE;
                     }
                     
                     if (gotRow == false) {
@@ -1362,6 +1376,7 @@
                         txtOfficeCountry.text = @"";
                         SelectedOfficeStateCode = @"";
                         [NoPostcode show];   
+                         PostcodeContinue = FALSE;
                     }
                 }
                 

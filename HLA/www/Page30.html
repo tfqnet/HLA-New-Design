@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var cashPayment = 0;
+    var colType = 0;
+    var pageNum = '8';
+</script> 
+</head>
+ 
+<body onload="onBodyLoad(),setPage()">
+ 
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+<tr>
+<td width="75%"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="25%">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+</tr>
+</table>
+<!--<p>Basic PlanPelan Asas: HLA Income Builder &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Yearly Income Pay Out) (Cash Dividend Pay Out) (Pendapatan Tahunan Dibayar)(Dividen Tunai Dibayar)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Life Assured Hayat Diinsuranskan: Mat</p>
+-->
+
+
+<b>Description of Basic Plan Benefits</b><br/><br/>
+
+This is a participating whole life plan up to age 90 with Guaranteed Yearly Income and limited premium payment term of 6 years. The Guaranteed Yearly Income is payable from<br/>
+end of year 1 until maturity at age 90.<br/>
+
+<u><b>Death Benefit</b></u><br/>
+In the event of Death of Life Assured, the Death benefit equivalent to the sum of:<br/>
+(i) 100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
+(ii) Accumulated Guaranteed Yearly Income (if any),<br/>
+(iii) Accumulated Cash Dividend (if any) and<br/>
+(iv) Special Terminal Dividend (if any)<br/>
+shall be payable.<br/>
+<u><b>Total and Permanent Disability Benefit</b></u><br/>
+In the event of TPD (prior to attaining age 65) of the Life Assured, the TPD benefit equivalent to the sum of:<br/>
+(i) 100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
+(ii) Accumulated Guaranteed Yearly Income (if any),<br/>
+(iii) Accumulated Cash Dividend (if any) and<br/>
+(iv) Special Terminal Dividend (if any)<br/>
+shall be payable.<br/>
+Upon accidental TPD, an additional amount equivalent to 300% of the Guaranteed TPD benefit shall be payable.<br/>
+TPD Benefit will be paid in accordance to TPD provision as below:<br/>
+<table id="table-design2" >
+<tr><td>Attained Age upon TPD</td><td>TPD Benefit Limit per Life</td></tr>
+<tr><td>Less than 7</td><td>RM 100,000</td></tr>
+<tr><td>7 to less than 15</td><td>RM 500,000</td></tr>
+<tr><td>15 to less than 65</td><td>RM 3,500,000</td></tr>
+</table><br/>
+<u><b>Guaranteed Yearly Income</b></u><br/>
+This plan provides Guaranteed Yearly Income of RM500.00 starting from end of year 1 up to age 90.<br/>
+
+Total TPD Benefit payable under all policies insuring the Life Assured shall not exceed the TPD Benefit Limit per Life stated above.<br/>
+TPD Benefit per Life means TPD coverage of all in-force policies for each Life Assured at the point of claim event.<br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
+i) Policy Owner may advance the next 5 years GYI upon happening of events as listed below; starting from the policy year where the first GYI is payable and provided that the policy has acquired sufficient Net Cash<br/>
+Surrender Value<br/>
+- Marriage<br/>
+- Child Birth<br/>
+- Children's university admission<br/>
+- Children's graduation/convocation<br/>
+- Children's wedding<br/>
+- Purchase of new house<br/>
+- Starting of a business<br/>
+- Business Disruption<br/>
+- Policy Owner/ Parents/ Children admitted to hospital<br/>
+- Parent/children death<br/>
+- Policy owner diagnosed with critical illness<br/>
+- Policy owner suffers temporary total disablement due to illness or accident.<br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
+</div>
+<div class="footer">This sales illustration consists of 57 pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. Illustrasi Jualan ini mengandungi 57 muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal<br/>
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.<br/>
+<b>Win MP (Trad) Version 6.5 (Agency) - Last Updated 20 Jul 2012 - E&OE</b> <br/> Level
+3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+</div>
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>

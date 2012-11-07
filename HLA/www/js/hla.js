@@ -1,5 +1,26 @@
 function setPage(){
 	$('#rptVersion').html('Win MP (Trad) Version 6.7 (Agency) - Last Updated 03 Oct 2012 - E&amp;OE-');
+
+        db.transaction(function(transaction) {
+            transaction.executeSql('select count(*) as pCount from SI_Temp_Pages', [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0); 
+                    $('.totalPages').html(row.pCount);
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+
+	var sPath = window.location.pathname;
+	var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
+
+        db.transaction(function(transaction) {
+            transaction.executeSql("Select PageNum from SI_Temp_Pages where htmlName = '" + sPage + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0); 
+                    $('.currentPage').html(row.PageNum);
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
 }
 
 function writeInvestmentScenarios(){

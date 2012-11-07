@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 
+@class DataTable,DBController;
 @interface ReportViewController : UIViewController
 {
     NSString *databasePath;
@@ -37,6 +38,8 @@
 @property (retain, nonatomic) NSMutableArray *OtherRiderDesc;
 @property (retain, nonatomic) NSMutableArray *OtherRiderSA;
 @property (retain, nonatomic) NSMutableArray *OtherRiderPlanOption;
+@property (strong, nonatomic) DBController* db;
+@property (strong, nonatomic) DataTable * dataTable;
 
 #define IsAtLeastiOSVersion(X) ([[[UIDevice currentDevice] systemVersion] compare:X options:NSNumericSearch] != NSOrderedAscending)
 
