@@ -159,9 +159,9 @@
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
-		EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF9A5B261640C00C00D3EB57 /* hladb.sqlite */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
+		EFCDDA05164B4C3100F2FB10 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFCDDA04164B4C3100F2FB10 /* hladb.sqlite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -396,10 +396,10 @@
 		EF28C322161C11C2009585CC /* SIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIHandler.m; path = ../SIHandler.m; sourceTree = "<group>"; };
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
-		EF9A5B261640C00C00D3EB57 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
+		EFCDDA04164B4C3100F2FB10 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -683,7 +683,7 @@
 			isa = PBXGroup;
 			children = (
 				C486DAB7163FB928009F8F21 /* Databases.db */,
-				EF9A5B261640C00C00D3EB57 /* hladb.sqlite */,
+				EFCDDA04164B4C3100F2FB10 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -988,9 +988,9 @@
 				C486D9D4163E6622009F8F21 /* Cordova.plist in Resources */,
 				C486D9F9163E7127009F8F21 /* www in Resources */,
 				C486DAB8163FB928009F8F21 /* Databases.db in Resources */,
-				EF9A5B271640C00C00D3EB57 /* hladb.sqlite in Resources */,
 				EFABB36E16475A430069502B /* redBtn.png in Resources */,
 				C4EF084D1648DC5C000444BA /* iphone_delete_button.png in Resources */,
+				EFCDDA05164B4C3100F2FB10 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
