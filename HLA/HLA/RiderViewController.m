@@ -445,6 +445,7 @@
     }
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
     {
+        NSLog(@"enter gyi");
         [self getGYI];
         double BasicSA_GYI = self.requestBasicSA * GYI;
         _maxRiderSA = fmin(BasicSA_GYI,9999999);
@@ -736,7 +737,7 @@
             monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac) + (fsar /1000 *OccpLoadM *monthFac);
         }
         
-        else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I40R"])
+        else if ([[LRiderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"IE20R"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"IE30R"])
         {
             double occLoadFactorA = OccpLoadA * ((ridTerm + 1)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm + 1)/2);
@@ -2020,15 +2021,15 @@
         NSString *querySQL;
         if (self.requestMOP == 6) {
             querySQL = [[NSString alloc] initWithFormat:
-                        @"SELECT PremPayOpt_6 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND AgeFrom <=\"%d\" AND AgeTo >= \"%d\"",riderCode,self.requestAge,self.requestAge];
+                        @"SELECT PremPayOpt_6 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND FromAge <=\"%d\" AND ToAge >= \"%d\"",riderCode,self.requestAge,self.requestAge];
 
         } else if (self.requestMOP == 9) {
             querySQL = [[NSString alloc] initWithFormat:
-                        @"SELECT PremPayOpt_9 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND AgeFrom <=\"%d\" AND AgeTo >= \"%d\"",riderCode,self.requestAge,self.requestAge];
+                        @"SELECT PremPayOpt_9 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND FromAge <=\"%d\" AND ToAge >= \"%d\"",riderCode,self.requestAge,self.requestAge];
         
         } else if (self.requestMOP == 12) {
             querySQL = [[NSString alloc] initWithFormat:
-                        @"SELECT PremPayOpt_12 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND AgeFrom <=\"%d\" AND AgeTo >= \"%d\"",riderCode,self.requestAge,self.requestAge];
+                        @"SELECT PremPayOpt_12 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND FromAge <=\"%d\" AND ToAge >= \"%d\"",riderCode,self.requestAge,self.requestAge];
         }
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
