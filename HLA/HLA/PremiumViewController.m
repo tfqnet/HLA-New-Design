@@ -60,6 +60,7 @@
     }
     
     [self calculatePremium];
+    doGenerate.hidden = TRUE;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -145,6 +146,15 @@
     NSString *LSDHalfYear2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
     NSString *LSDQuarterly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];
     NSString *LSDMonthly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]];
+    //for negative value
+    LSDAnnually2 = [LSDAnnually2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDHalfYear2 = [LSDHalfYear2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDQuarterly2 = [LSDQuarterly2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDMonthly2 = [LSDMonthly2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDAnnually2 = [LSDAnnually2 stringByReplacingOccurrencesOfString:@")" withString:@""];
+    LSDHalfYear2 = [LSDHalfYear2 stringByReplacingOccurrencesOfString:@")" withString:@""];
+    LSDQuarterly2 = [LSDQuarterly2 stringByReplacingOccurrencesOfString:@")" withString:@""];
+    LSDMonthly2 = [LSDMonthly2 stringByReplacingOccurrencesOfString:@")" withString:@""];
     double LSDAnnually_ = [[LSDAnnually2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double LSDHalfYear_ = [[LSDHalfYear2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double LSDQuarterly_ = [[LSDQuarterly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
@@ -154,10 +164,31 @@
     NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
     
     //calculate Total basic premium
-    double _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ - LSDAnnually_;
-    double _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ - LSDHalfYear_;
-    double _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ - LSDQuarterly_;
-    double _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ - LSDMonthly_;
+    NSString *displayLSD = nil;
+    double _basicTotalA;
+    double _basicTotalS;
+    double _basicTotalQ;
+    double _basicTotalM;
+    if (BasicSA < 1000) {
+        displayLSD = @"Policy Fee Loading";
+        _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ + LSDAnnually_;
+        _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ + LSDHalfYear_;
+        _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ + LSDQuarterly_;
+        _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ + LSDMonthly_;
+        
+    } else {
+        displayLSD = @"Discount";
+        _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ - LSDAnnually_;
+        _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ - LSDHalfYear_;
+        _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ - LSDQuarterly_;
+        _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ - LSDMonthly_;
+    }
+    
+    NSString *LSDAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDAnnually_]];
+    NSString *LSDHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDHalfYear_]];
+    NSString *LSDQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDQuarterly_]];
+    NSString *LSDMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDMonthly_]];
+    
     NSString *basicTotalA = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalA]];
     NSString *basicTotalS = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalS]];
     NSString *basicTotalQ = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalQ]];
@@ -182,20 +213,7 @@
     }
     
     //--------------
-    NSString *displayLSD = nil;
-    if (BasicSA < 1000) {
-        displayLSD = @"Policy Fee Loading";
-        _LSDAnnually = 0 - _LSDAnnually;
-        _LSDHalfYear = 0 - _LSDHalfYear;
-        _LSDQuarterly = 0 - _LSDQuarterly;
-        _LSDMonthly = 0 - _LSDMonthly;
-    } else {
-        displayLSD = @"Discount";
-    }
-    NSString *LSDAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDAnnually]];
-    NSString *LSDHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
-    NSString *LSDQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];
-    NSString *LSDMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]];
+    
     
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
         @"<html><body><table border='1' width='70%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
