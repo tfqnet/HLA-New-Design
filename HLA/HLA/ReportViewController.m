@@ -18,7 +18,7 @@
 @synthesize SINo, PolicyTerm, BasicSA, PremiumPaymentOption, AdvanceYearlyIncome,OtherRiderCode,OtherRiderDesc,OtherRiderTerm;
 @synthesize YearlyIncome, CashDividend,CustCode, Age, IncomeRiderCode,IncomeRiderDesc,IncomeRiderTerm;
 @synthesize HealthLoading, OtherRiderSA, IncomeRiderSA, IncomeRiderPlanOption, OtherRiderPlanOption,Name;
-@synthesize strBasicAnnually, strIncomeRiderAnnually;
+@synthesize strBasicAnnually, aStrIncomeRiderAnnually, aStrOtherRiderAnnually;
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
 
@@ -38,6 +38,9 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    aStrIncomeRiderAnnually = [[NSMutableArray alloc] init ];
+    aStrOtherRiderAnnually = [[NSMutableArray alloc] init ];
+    
     [self deleteTemp]; //clear all temp data
     
     [self getAllPreDetails]; // get all the details needed before proceed 
@@ -51,7 +54,7 @@
     [self InsertHeaderTB]; //insert summary of basic plan header into temp table bm and english
     
     [self InsertToSI_Temp_Trad_LA]; // for the front summary page 
-    [self InsertToSI_Temp_Trad_Details];
+    [self InsertToSI_Temp_Trad_Details]; // for the front summary page figures
     [self InsertToSI_Temp_Trad_Basic];
     [self InsertToSI_Temp_Trad_Rider];
     [self InsertToSI_Temp_Trad];    
@@ -860,6 +863,7 @@
                 strSemiAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                 strQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 strMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                [aStrOtherRiderAnnually addObject:strAnnually];
             }
             sqlite3_finalize(statement);
         }
@@ -905,7 +909,7 @@
                     strSemiAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                     strQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                     strMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
-                    strIncomeRiderAnnually = strAnnually;
+                    [aStrIncomeRiderAnnually addObject:strAnnually];
                 }
                 sqlite3_finalize(statement);
             }
@@ -946,6 +950,13 @@
     NSMutableArray *aValueEnd = [[NSMutableArray alloc] init ];
     NSMutableArray *AnnualPremium = [[NSMutableArray alloc] init ];
     NSMutableArray *arrayYearlyIncome = [[NSMutableArray alloc] init ];
+    NSMutableArray *TotalAllPremium = [[NSMutableArray alloc] init ];
+    NSMutableArray *CurrentCashDividendRatesA = [[NSMutableArray alloc] init ];
+    NSMutableArray *CurrentCashDividendValueA = [[NSMutableArray alloc] init ];
+    NSMutableArray *CurrentCashDividendRatesB = [[NSMutableArray alloc] init ];
+    NSMutableArray *CurrentCashDividendValueB = [[NSMutableArray alloc] init ];
+        NSMutableArray *AccuCashDividendValueA = [[NSMutableArray alloc] init ];    
+        NSMutableArray *AccuCashDividendValueB = [[NSMutableArray alloc] init ];
     //NSString *strAnnually;   
     
     /*
@@ -1032,6 +1043,40 @@
             
             NSString *zzz = [DBRatesEnd objectAtIndex:DBRatesEnd.count - 1];
             [DBRatesEnd addObject:zzz];
+            sqlite3_finalize(statement);
+        }
+        //-------------------------------------
+        if(AdvanceYearlyIncome > 0){
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where advOption = \"%d\" "
+                        " AND PremPayOpt = \"%d\" AND fromAge = \"%d\" AND Type = \"H\" ", AdvanceYearlyIncome, PremiumPaymentOption, Age];
+            
+        }
+        else {
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where advOption = \"N\" "
+                        " AND PremPayOpt = \"%d\" AND fromAge = \"%d\" AND Type = \"H\" ", PremiumPaymentOption, Age];
+        }
+        
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                [CurrentCashDividendRatesA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+            }
+            sqlite3_finalize(statement);
+        }
+        //--------------------------------
+        if(AdvanceYearlyIncome > 0){
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where advOption = \"%d\" "
+                        " AND PremPayOpt = \"%d\" AND fromAge = \"%d\" AND Type = \"L\" ", AdvanceYearlyIncome, PremiumPaymentOption, Age];
+            
+        }
+        else {
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where advOption = \"N\" "
+                        " AND PremPayOpt = \"%d\" AND fromAge = \"%d\" AND Type = \"L\" ", PremiumPaymentOption, Age];
+        }
+        
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                [CurrentCashDividendRatesB addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+            }
             sqlite3_finalize(statement);
         }
         
@@ -1137,6 +1182,62 @@
         }
         [aValueEnd addObject: [NSString stringWithFormat:@"%d", TotalADEnd] ];
         //-----------------------------------
+        
+        //----------------
+        
+        double sumBasic = 0;
+        double sumIncomeRider = 0, sumOtherRider = 0;
+        if (i <= PremiumPaymentOption) {
+            sumBasic = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""  ] intValue ];
+        }
+        
+        for (int j =0; j<IncomeRiderCode.count; j++) {
+            if ( i <= [[IncomeRiderTerm objectAtIndex:j] intValue ]   ) {
+                sumIncomeRider = sumIncomeRider + 
+                [[[aStrIncomeRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];  
+                
+            }
+        }
+        
+        for (int j =0; j<OtherRiderCode.count; j++) {
+            if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
+                sumOtherRider = sumOtherRider +
+                [[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];  
+            }
+        }
+        
+        double TotalBasicAndRider = sumBasic + sumIncomeRider + sumOtherRider;
+        [TotalAllPremium addObject: [NSString stringWithFormat:@"%.2f", TotalBasicAndRider ]];
+        //-----------------
+        
+        //------------- current cash dividend
+        [CurrentCashDividendValueA addObject: [NSString stringWithFormat: @"%.0f", 
+                                               BasicSA * [[CurrentCashDividendRatesA objectAtIndex: i - 1] doubleValue ] / 100 ]];
+        [CurrentCashDividendValueB addObject: [NSString stringWithFormat: @"%.0f", 
+                                               round( BasicSA * [[CurrentCashDividendRatesB objectAtIndex: i - 1] doubleValue ] / 100) ]];
+        
+        //----------- current cash dividend
+        
+        
+        //------ accu cash dividend
+        if ([CashDividend isEqualToString:@"ACC"]) {
+            double CDInterestRateHigh = 0.055;
+            double CDInterestRateLow = 0.035;
+            
+            if (i == 1) {
+                [AccuCashDividendValueA addObject:[CurrentCashDividendValueA objectAtIndex:i -1 ]];
+            }
+            else {
+                [AccuCashDividendValueA addObject: [NSString stringWithFormat: @"%.0f", 
+                                                    [[AccuCashDividendValueA objectAtIndex:i-2] intValue ] * (1 + CDInterestRateHigh) + 
+                                                    [[CurrentCashDividendValueA objectAtIndex:i-1] intValue ]] ];
+            }
+        }
+        else {
+            [AccuCashDividendValueA addObject:@"-"];
+        }
+        
+        //------- accucash dividend
     }
 
     for (int a= 1; a<=PolicyTerm; a++) {
@@ -1149,13 +1250,15 @@
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
                             "\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\",\"col22\") VALUES ( "
                             " \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\", "
-                            "\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\")", 
+                            "\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\")", 
                             SINo, a, a, inputAge, [AnnualPremium objectAtIndex:a -1],[arrayYearlyIncome objectAtIndex:a-1], [SurrenderValue objectAtIndex:a-1],
                             [DBValue objectAtIndex:a-1],[DBValueEnd objectAtIndex:a-1],[aValue objectAtIndex:a-1 ],
                             [aValueEnd objectAtIndex:a-1],arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
-                            arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
-                            arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,arc4random()%10000 + 1000,
-                            arc4random()%10000 + 1000 ];
+                            [TotalAllPremium objectAtIndex:a-1],[CurrentCashDividendValueA objectAtIndex:a-1],[CurrentCashDividendValueB objectAtIndex:a-1],
+                            [AccuCashDividendValueA objectAtIndex:a-1],arc4random()%10000 + 1000,
+                            arc4random()%10000 + 1000,arc4random()%10000 + 1000,
+                            arc4random()%10000 + 1000,arc4random()%10000 + 1000,
+                            arc4random()%10000 + 1000,arc4random()%10000 + 1000 ];
                 
                 //NSLog(@"%@", QuerySQL);
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1207,7 +1310,7 @@
     
     int inputAge;
     double IncomeRiderPlusIncomeBuilder = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue]
-                                          + [[strIncomeRiderAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
+                                          + [[[aStrIncomeRiderAnnually objectAtIndex:0 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
     double GYI;
     if (IncomeRiderCode.count > 0) {
       GYI =[[IncomeRiderSA objectAtIndex:0] doubleValue ] + BasicSA ;   
@@ -1449,7 +1552,7 @@
             */
                 for (int i =1; i <= PolicyTerm; i++) {
                     if (i <= PremiumPaymentOption ) {
-                        [AnnualPremium addObject:strIncomeRiderAnnually ];
+                        [AnnualPremium addObject:[aStrIncomeRiderAnnually objectAtIndex:0 ] ];
                     }
                     else {
                         [AnnualPremium addObject:@"0.00"];

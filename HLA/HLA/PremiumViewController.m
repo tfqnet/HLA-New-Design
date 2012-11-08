@@ -60,6 +60,7 @@
     }
     
     [self calculatePremium];
+    doGenerate.hidden = TRUE;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

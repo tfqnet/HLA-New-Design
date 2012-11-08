@@ -516,7 +516,7 @@ PostcodeContinue = TRUE;
     
     
     if([[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+        if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"]) ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [txtOfficeAddr1 becomeFirstResponder];
@@ -537,7 +537,7 @@ PostcodeContinue = TRUE;
     
     if (PostcodeContinue == TRUE) {
         if([txtOfficePostcode.text isEqualToString:@""]){
-            if (![OccupCodeSelected isEqualToString:@"OCC02317"]) {
+            if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"] )) {
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
