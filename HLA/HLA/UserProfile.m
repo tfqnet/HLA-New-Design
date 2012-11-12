@@ -252,7 +252,7 @@
                             if (sqlite3_step(statement2) == SQLITE_DONE)
                             {
                                 UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                                  message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+                                                                                  message:@"Registration successful! Please re-login with the new password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
                                 success.tag = 1;
                                 [success show];
                             }

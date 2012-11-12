@@ -21,6 +21,7 @@
 @property (nonatomic,strong) id CustCode;
 @property (nonatomic,strong) id Name;
 @property (nonatomic,strong) id strBasicAnnually;
+@property (nonatomic,strong) id sex;
 //@property (nonatomic,strong) id strIncomeRiderAnnually;
 @property (retain, nonatomic) NSMutableArray *aStrIncomeRiderAnnually;
 @property (retain, nonatomic) NSMutableArray *aStrOtherRiderAnnually;
@@ -40,6 +41,23 @@
 @property (retain, nonatomic) NSMutableArray *OtherRiderDesc;
 @property (retain, nonatomic) NSMutableArray *OtherRiderSA;
 @property (retain, nonatomic) NSMutableArray *OtherRiderPlanOption;
+
+//summary
+@property (retain, nonatomic) NSMutableArray *SummaryGuaranteedTotalGYI;
+@property (retain, nonatomic) NSMutableArray *SummaryGuaranteedSurrenderValue;
+@property (retain, nonatomic) NSMutableArray *SummaryGuaranteedDBValueA;
+@property (retain, nonatomic) NSMutableArray *SummaryGuaranteedDBValueB;
+@property (retain, nonatomic) NSMutableArray *SummaryGuaranteedAddValue;
+@property (retain, nonatomic) NSMutableArray *SummaryGuaranteedAddEndValue;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedAccuYearlyIncomeA;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedAccuYearlyIncomeB;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedAccuCashDividendA;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedAccuCashDividendB;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedSurrenderValueA;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedSurrenderValueB;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedDBValueA;
+@property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedDBValueB;
+
 @property (strong, nonatomic) DBController* db;
 @property (strong, nonatomic) DataTable * dataTable;
 

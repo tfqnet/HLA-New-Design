@@ -999,6 +999,6 @@
     [self.view endEditing:YES];
     outletGender.selectedSegmentIndex = -1;
     outletGender.enabled = FALSE;
-
+    _SortBy = Nil;
 }
 @end

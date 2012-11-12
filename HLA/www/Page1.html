@@ -86,7 +86,7 @@
             transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
-                	$('#dateModified').html(row.DateModified);
+                	$('#dateModified').html(row.UpdatedAt);
                 }
             },errorHandler);
         },errorHandler,nullHandler);

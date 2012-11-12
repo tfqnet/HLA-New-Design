@@ -479,91 +479,6 @@ PostcodeContinue = TRUE;
         return false;
     }
     
-    if([[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Email address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [txtEmail becomeFirstResponder];
-        //[self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
-    
-    if([[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [txtHomeAddr1 becomeFirstResponder];
-        //[self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
-    
-    if (PostcodeContinue == TRUE) {
-        if([txtHomePostCode.text isEqualToString:@""]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [txtHomePostCode becomeFirstResponder];
-            
-            [alert show];
-            return false;
-        }
-    }
-    else {
-        return FALSE;
-    }
-    
-    
-    
-    if([[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [txtOfficeAddr1 becomeFirstResponder];
-            //[self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-        else {
-            txtOfficeTown.text = @"";
-            txtOfficeState.text = @"";
-            txtOfficePostcode.text = @"";
-            txtOfficeCountry.text = @"";
-            SelectedOfficeStateCode = @"";
-        }
-        
-    }
-    
-    if (PostcodeContinue == TRUE) {
-        if([txtOfficePostcode.text isEqualToString:@""]){
-            if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                
-                [txtOfficePostcode becomeFirstResponder];
-                //[self.view endEditing:TRUE];
-                [alert show];
-                return false;   
-            }
-            
-        }
-    }
-    else {
-        return  FALSE;
-    }
-        
-    if(OccupCodeSelected == NULL){
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Occupation is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
     
     
     if(outletType1.titleLabel.text != NULL) {
@@ -950,6 +865,93 @@ PostcodeContinue = TRUE;
                 }
             }
         }
+    }
+    
+    
+    if([[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Email address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [txtEmail becomeFirstResponder];
+        //[self.view endEditing:TRUE];
+        
+        [alert show];
+        return false;
+    }
+    
+    if([[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [txtHomeAddr1 becomeFirstResponder];
+        //[self.view endEditing:TRUE];
+        
+        [alert show];
+        return false;
+    }
+    
+    if (PostcodeContinue == TRUE) {
+        if([txtHomePostCode.text isEqualToString:@""]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [txtHomePostCode becomeFirstResponder];
+            
+            [alert show];
+            return false;
+        }
+    }
+    else {
+        return FALSE;
+    }
+    
+    
+    
+    if([[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+        if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [txtOfficeAddr1 becomeFirstResponder];
+            //[self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
+        else {
+            txtOfficeTown.text = @"";
+            txtOfficeState.text = @"";
+            txtOfficePostcode.text = @"";
+            txtOfficeCountry.text = @"";
+            SelectedOfficeStateCode = @"";
+        }
+        
+    }
+    
+    if (PostcodeContinue == TRUE) {
+        if([txtOfficePostcode.text isEqualToString:@""]){
+            if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [txtOfficePostcode becomeFirstResponder];
+                //[self.view endEditing:TRUE];
+                [alert show];
+                return false;   
+            }
+            
+        }
+    }
+    else {
+        return  FALSE;
+    }
+    
+    if(OccupCodeSelected == NULL){
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Occupation is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
+        [alert show];
+        return false;
     }
     
         if(![txtEmail.text isEqualToString:@""]){

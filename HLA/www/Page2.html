@@ -33,7 +33,6 @@
     function nullHandler(){};
         
     function onBodyLoad(){
-        //alert("DEBUGGING: we are in the onBodyLoad() function");
         if (!window.openDatabase) {
             alert('Databases are not supported in this browser.');
             return;
@@ -42,142 +41,6 @@
         db = openDatabase(shortName, version, displayName,maxSize);
         ListDBValues();
         //calcTotal();
-    }
-
-    function ListDBValues() {
-        
-        if (!window.openDatabase) {
-            alert('Databases are not supported in this browser.');
-            return;
-        }
-        
-        db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Temp_Trad_Basic where DataType = 'DATA'", [], function(transaction, result) {
-                if (result != null && result.rows != null) {
-                    var row;
-                    for (var i = 0; i < result.rows.length; i++) {
-                        var row = result.rows.item(i);
-                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + row.col3 + '</td><td>' + row.col4 + '</td><td>' + row.col5 + '</td><td>' + row.col6 + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + row.col10 + '</td><td>' + row.col11 + '</td><td>' + row.col12 + '</td></tr>');
-                    }
-                }
-            },errorHandler);
-        },errorHandler,nullHandler);
-
-        
-        //HLA Income Builder
-        db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
-                if (result != null && result.rows != null) {
-                    var row;
-                    for (var i = 0; i < result.rows.length; i++) {
-                        var row = result.rows.item(i);
-                        $('#TotPremPaid').html(formatCurrency(row.TotPremPaid));
-                        $('#SurrenderValueHigh').html(formatCurrency(row.SurrenderValueHigh));
-                        $('#SurrenderValueLow').html(formatCurrency(row.SurrenderValueLow));
-                        $('#TotalYearlyIncome').html(formatCurrency(row.TotalYearlyIncome));
-                        $('#SICode').html(row.SINo);
-                        siNo = row.SINo;
-                        $('#planName').html(row.PlanName);
-                        planName = row.PlanName;
-                        planCode = row.PlanCode;
-                        $('#laName').html(row.LAName);
-                        cashPaymentD = row.CashPaymentD;
-                        mcashPaymentD = row.MCashPaymentD;
-                        
-                        
-                    }
-                }
-            },errorHandler);
-        },errorHandler,nullHandler);
-        
-
-        //Entire Policy
-        db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Temp_Trad_Overall", [], function(transaction, result) {
-                if (result != null && result.rows != null) {
-                    var row;
-                    for (var i = 0; i < result.rows.length; i++) {
-                        var row = result.rows.item(i);
-                        $('#TotPremPaid1').html(formatCurrency(row.TotPremPaid1));
-                        $('#SurrenderValueHigh1').html(formatCurrency(row.SurrenderValueHigh1));
-                        $('#SurrenderValueLow1').html(formatCurrency(row.SurrenderValueLow1));
-                        $('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1));
-                    }
-                }
-            },errorHandler);
-        },errorHandler,nullHandler);
-        
-        //Details
-        db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
-                if (result != null && result.rows != null) {
-                    var row;
-                    var row = result.rows.item(0);
-                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
-                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder</i>');
-                    	$('#advanceYearlyDesc').hide();
-                    }
-                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
-                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 60&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 60</i>');
-                    }
-                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
-                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
-                	}
-                	$('#dateModified').html(row.DateModified);
-                	
-                	if ($.trim(row.CashDividend) == 'A')//payment description
-                	{
-                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
-                	
-                		//totalSurrenderValue
-                		//tpdBenefit
-                		if (parseInt(row.CashPayment) == 0)
-                		{
-                			$('#totalSurrenderValue').html('(6)=(3)+(10)+(11)');
-                			$('#tpdBenefit').html('(7)=(4B)+(10)+(12)');
-                			$('#accumulationYearlyIncome').hide(); //~ description
-                			$('#premiumPaymentOption').hide(); //# description
-                		}
-                		else
-                		{
-                			$('#totalSurrenderValue').html('(6)=(3)+(10)+(11)+(12)');
-                			$('#tpdBenefit').html('(7)=(4B)+(10)+(12)+(13)');
-                			$('#cashPayment1').html('~');
-                			$('#cashPayment2').html('~');
-                			if (parseInt(row.AdvanceYearlyIncome) == 0){
-                				$('#premiumPaymentOption').hide(); //# description
-                			}
-                		}
-                	}
-                	else if (row.CashDividend == 'P')
-                	{
-                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
-                	    if (parseInt(row.CashPayment) == 0)
-                		{
-                		    $('#totalSurrenderValue').html('(6)=(3)+(10)');
-                			$('#tpdBenefit').html('(7)=(4B)+(11)');
-                			$('#accumulationYearlyIncome').hide(); //~ description
-                			$('#premiumPaymentOption').hide(); //# description
-                		}
-                		else
-                		{
-                		    $('#totalSurrenderValue').html('(6)=(3)+(10)+(11)');
-                			$('#tpdBenefit').html('(7)=(4B)+(10)+(12)');
-                			$('#cashPayment1').html('~');
-                			$('#cashPayment2').html('~');
-                			if (parseInt(row.AdvanceYearlyIncome) == 0){
-                				$('#premiumPaymentOption').hide(); //# description
-                			}
-                		}
-                	}
-                	
-                	//alert(row.Cash)
-                }
-            },errorHandler);
-        },errorHandler,nullHandler);
-        
-        
-        return;
     }
     
     function formatCurrency(num) {
@@ -193,6 +56,178 @@
         return (((sign) ? '' : '-') + '' + num + '.' + cents);
         //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
     }
+
+    function ListDBValues() {
+        
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+                       transaction.executeSql("SELECT * FROM SI_Temp_Trad_Basic where DataType = 'DATA'", [], function(transaction, result) {
+                                              if (result != null && result.rows != null) {
+                                              var row;
+                                              for (var i = 0; i < result.rows.length; i++) {
+                                              var row = result.rows.item(i);
+                                              $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + row.col3 + '</td><td>' + row.col4 + '</td><td>' + row.col5 + '</td><td>' + row.col6 + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + row.col10 + '</td><td>' + row.col11 + '</td><td>' + row.col12 + '</td></tr>');
+                                              }
+                                              }
+                                              },errorHandler);
+                       },errorHandler,nullHandler);
+
+
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+
+                                   
+                                   if (result != null && result.rows != null) {
+                                   var row;
+                                   for (var i = 0; i < result.rows.length; i++) {
+                                   var row = result.rows.item(i);
+                                   $('#TotPremPaid').html(formatCurrency(row.TotPremPaid));
+                                   $('#SurrenderValueHigh').html(formatCurrency(row.SurrenderValueHigh));
+                                   $('#SurrenderValueLow').html(formatCurrency(row.SurrenderValueLow));
+                                   $('#TotalYearlylncome').html(formatCurrency(row.TotalYearlylncome+""));
+                                   $('#SICode').html(row.SINo);
+                                   siNo = row.SINo;
+                                   $('#planName').html(row.PlanName);
+                                   planName = row.PlanName;
+                                   planCode = row.PlanCode;
+                                   $('#laName').html(row.LAName);
+                                   cashPaymentD = row.CashPaymentD;
+                                   mcashPaymentD = row.MCashPaymentD;
+                                   
+                                   
+                                   }
+                                   }                                   
+                                   
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        
+        
+        db.transaction(function(transaction) {
+                       transaction.executeSql("SELECT * FROM SI_Temp_Trad_Overall", [], function(transaction, result) {
+                                              
+                                              
+                                              if (result != null && result.rows != null) {
+                                              var row;
+                                              for (var i = 0; i < result.rows.length; i++) {
+                                              var row = result.rows.item(i);
+
+                                              
+                                              
+                                              //alert("aaa");
+                                              $('#TotPremPaid1').html(formatCurrency(row.TotPremPaid1+""));
+                                              $('#SurrenderValueHigh1').html(formatCurrency(row.SurrenderValueHigh1+""));
+                                              $('#SurrenderValueLow1').html(formatCurrency(row.SurrenderValueLow1+""));
+                                              $('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1+""));
+
+                                              
+                                              
+                                              }
+                                              }                                   
+                                              
+                                              },errorHandler);
+                       },errorHandler,nullHandler);
+        
+        
+        
+        
+        //Details
+        db.transaction(function(transaction) {
+                       transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                                              if (result != null && result.rows != null) {
+                                              var row;
+                                              var row = result.rows.item(0);
+                                              if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                                              $('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder</i>');
+                                              $('#advanceYearlyDesc').hide();
+                                              }
+                                              else if (parseInt(row.AdvanceYearlyIncome) == 60){
+                                              $('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 60&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 60</i>');
+                                              }
+                                              else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                                              $('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
+                                              }
+                                              $('#dateModified').html(row.UpdatedAt);
+                                              
+                                              if ($.trim(row.CashDividend) == 'ACC')//payment description
+                                              {
+                                              $('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                                              
+                                              //totalSurrenderValue
+                                              //tpdBenefit
+                                              if (parseInt(row.YearlyIncome) == 'POF')
+                                              {
+                                              $('#totalSurrenderValue').html('(6)=(3)+(10)+(11)');
+                                              $('#tpdBenefit').html('(7)=(4B)+(10)+(12)');
+                                              $('#accumulationYearlyIncome').hide(); //~ description
+                                              $('#premiumPaymentOption').hide(); //# description
+                                              }
+                                              else
+                                              {
+                                              $('#totalSurrenderValue').html('(6)=(3)+(10)+(11)+(12)');
+                                              $('#tpdBenefit').html('(7)=(4B)+(10)+(12)+(13)');
+                                              $('#cashPayment1').html('~');
+                                              $('#cashPayment2').html('~');
+                                              if (parseInt(row.AdvanceYearlyIncome) == 0){
+                                              $('#premiumPaymentOption').hide(); //# description
+                                              }
+                                              }
+                                              }
+                                              else if (row.CashDividend == 'POF')
+                                              {
+                                              $('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                                              if (parseInt(row.YearlyIncome) == 'POF')
+                                              {
+                                              $('#totalSurrenderValue').html('(6)=(3)+(10)');
+                                              $('#tpdBenefit').html('(7)=(4B)+(11)');
+                                              $('#accumulationYearlyIncome').hide(); //~ description
+                                              $('#premiumPaymentOption').hide(); //# description
+                                              }
+                                              else
+                                              {
+                                              $('#totalSurrenderValue').html('(6)=(3)+(10)+(11)');
+                                              $('#tpdBenefit').html('(7)=(4B)+(10)+(12)');
+                                              $('#cashPayment1').html('~');
+                                              $('#cashPayment2').html('~');
+                                              if (parseInt(row.AdvanceYearlyIncome) == 0){
+                                              $('#premiumPaymentOption').hide(); //# description
+                                              }
+                                              }
+                                              }
+                                              
+                                              //alert(row.Cash)
+                                              }
+                                              },errorHandler);
+                       },errorHandler,nullHandler);
+        
+        
+        
+        
+        
+        return;
+    }
+
+    /*
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+     */
     
 </script>
 
@@ -358,9 +393,9 @@ Please ask for copy of sales illustration without advancement of future GYI if y
 </tr>
 
 <tr>
-    <td>Total Yearly Income</td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlyIncome">{TotalYearlyIncome}</td>
+    <td>Total Yearly Income</td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlylncome">{TotalYearlyIncome}</td>
     <td></td>
-    <td>Total Yearly Income </td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlyIncome1">{TotalYearlyIncome1}</td>
+    <td>Total Yearly Income </td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlylncome1">{TotalYearlyIncome1}</td>
 </tr>
 </table>
 
