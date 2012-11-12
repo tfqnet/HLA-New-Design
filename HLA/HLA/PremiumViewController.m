@@ -24,7 +24,9 @@
 @synthesize riderAge,riderCustCode,riderSmoker;
 @synthesize annualRiderTot,halfRiderTot,quarterRiderTot,monthRiderTot;
 @synthesize htmlRider,occLoad,annualRider,halfYearRider,quarterRider,monthlyRider,annualRiderSum,halfRiderSum,monthRiderSum,quarterRiderSum;
-@synthesize premBH,premH,age,riderSex,sex,waiverRiderAnn,waiverRiderHalf,waiverRiderQuar,waiverRiderMonth,basicPrem;
+@synthesize premBH,premH,age,riderSex,sex,waiverRiderAnn,waiverRiderHalf,waiverRiderQuar,waiverRiderMonth;
+@synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar;
+@synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2;
 
 - (void)viewDidLoad
 {
@@ -107,7 +109,7 @@
     double BasicHalfYear_ = [[BasicHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicQuarterly_ = [[BasicQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicMonthly_ = [[BasicMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"Basic A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_BasicAnnually,_BasicHalfYear,_BasicQuarterly,_BasicMonthly);
+//    NSLog(@"Basic A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_BasicAnnually,_BasicHalfYear,_BasicQuarterly,_BasicMonthly);
 //    NSLog(@"Basic A:%@, S:%@, Q:%@, M:%@",BasicAnnually,BasicHalfYear,BasicQuarterly,BasicQuarterly);
 //    NSLog(@"Basic A:%.2f, S:%.2f, Q:%.2f, M:%.2f",BasicAnnually_,BasicHalfYear_,BasicQuarterly_,BasicMonthly_);
     
@@ -360,10 +362,15 @@
     }
     
     NSString *basicTotalA = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalA]];
-    NSLog(@"BasicTotal A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_basicTotalA,_basicTotalS,_basicTotalQ,_basicTotalM);
+    NSString *basicTotalS = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalS]];
+    NSString *basicTotalQ = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalQ]];
+    NSString *basicTotalM = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalM]];
     
-    basicPrem = [[basicTotalA stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"basicPrem:%.2f",basicPrem);
+    basicPremAnn = [[basicTotalA stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    basicPremHalf = [[basicTotalS stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    basicPremQuar = [[basicTotalQ stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    basicPremMonth = [[basicTotalM stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    NSLog(@"TAP A:%.2f, S:%.2f, Q:%.2f, M:%.2f",basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth);
 }
 
 -(void)calculateRiderPrem
@@ -379,6 +386,10 @@
     waiverRiderHalf = [[NSMutableArray alloc] init];
     waiverRiderQuar = [[NSMutableArray alloc] init];
     waiverRiderMonth = [[NSMutableArray alloc] init];
+    waiverRiderAnn2 = [[NSMutableArray alloc] init];
+    waiverRiderHalf2 = [[NSMutableArray alloc] init];
+    waiverRiderQuar2 = [[NSMutableArray alloc] init];
+    waiverRiderMonth2 = [[NSMutableArray alloc] init];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -387,12 +398,15 @@
     
     NSUInteger i;
     for (i=0; i<[riderCode count]; i++) {
+        
+        NSString *RidCode = [[NSString alloc] initWithFormat:@"%@",[riderCode objectAtIndex:i]];
+        
         //getpentacode
         const char *dbpath = [databasePath UTF8String];
         sqlite3_stmt *statement;
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
-            if ([[riderCode objectAtIndex:i] isEqualToString:@"C+"])
+            if ([RidCode isEqualToString:@"C+"])
             {
                 if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"Level"]) {
                     plnOptC = @"L";
@@ -407,14 +421,14 @@
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",plnOptC];
                 
             }
-            else if ([[riderCode objectAtIndex:i] isEqualToString:@"HMM"])
+            else if ([RidCode isEqualToString:@"HMM"])
             {
                 planOptHMM = [riderPlanOpt objectAtIndex:i];
                 deducHMM = [riderDeduct objectAtIndex:i];
                 pentaSQL = [[NSString alloc] initWithFormat:
                             @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HMM\" AND PlanOption=\"%@\" AND Deductible=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planOptHMM,deducHMM,[riderAge objectAtIndex:i],[riderAge objectAtIndex:i]];
             }
-            else if ([[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"])
+            else if ([RidCode isEqualToString:@"HSP_II"])
             {
                 if ([[riderPlanOpt objectAtIndex:i] isEqualToString:@"Standard"]) {
                     planHSPII = @"S";
@@ -426,33 +440,34 @@
                 pentaSQL = [[NSString alloc] initWithFormat:
                             @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HSP_II\" AND PlanOption=\"%@\"",planHSPII];
             }
-            else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"])
+            else if ([RidCode isEqualToString:@"MG_II"])
             {
                 planMGII = [riderPlanOpt objectAtIndex:i];
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_II\" AND PlanOption=\"%@\"",planMGII];
-                
-                
-            } else if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID40R"])
+            }
+            else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"ID20R"]||[RidCode isEqualToString:@"ID30R"]||[RidCode isEqualToString:@"ID40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
             {
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND PremPayOpt=\"%d\"",[riderCode objectAtIndex:i],self.requestMOP];
                 
-            } else if ([[riderCode objectAtIndex:i] isEqualToString:@"ICR"])
+            }
+            else if ([RidCode isEqualToString:@"ICR"])
             {
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"ICR\" AND Smoker=\"%@\"",[riderSmoker objectAtIndex:i]];
                 
-            } else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
+            }
+            else if ([RidCode isEqualToString:@"MG_IV"])
             {
                 planMGIV = [riderPlanOpt objectAtIndex:i];
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_IV\" AND PlanOption=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planMGIV,[riderAge objectAtIndex:i],[riderAge objectAtIndex:i]];
             }
-            else if ([[riderCode objectAtIndex:i] isEqualToString:@"CIWP"]) {
+            else if ([RidCode isEqualToString:@"CIWP"]||[RidCode isEqualToString:@"LCWP"]||[RidCode isEqualToString:@"PR"]||[RidCode isEqualToString:@"SP_STD"]||[RidCode isEqualToString:@"SP_PRE"]) {
                 continue;
             }
             else {
-                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",[riderCode objectAtIndex:i]];
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",RidCode];
             }
             
-            NSLog(@"%@",pentaSQL);
+//            NSLog(@"%@",pentaSQL);
             const char *query_stmt = [pentaSQL UTF8String];
             if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
             {
@@ -473,20 +488,20 @@
         age = [[riderAge objectAtIndex:i] intValue];
         sex = [[NSString alloc] initWithFormat:@"%@",[riderSex objectAtIndex:i]];
         //get rate
-        if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"ID40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE30R"])
+        if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"ID20R"]||[RidCode isEqualToString:@"ID30R"]||[RidCode isEqualToString:@"ID40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
         {
             [self getRiderRateAge:planCodeRider riderTerm:ridTerm];
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"CPA"]) {
+        else if ([RidCode isEqualToString:@"CPA"]) {
             [self getRiderRateClass:planCodeRider riderTerm:ridTerm];
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"PA"]||[[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"]) {
+        else if ([RidCode isEqualToString:@"PA"]||[RidCode isEqualToString:@"HSP_II"]) {
             [self getRiderRateAgeClass:planCodeRider riderTerm:ridTerm];
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"HB"]) {
+        else if ([RidCode isEqualToString:@"HB"]) {
             [self getRiderRateSex:planCodeRider riderTerm:ridTerm];
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"]||[[riderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[riderCode objectAtIndex:i] isEqualToString:@"HMM"]) {
+        else if ([RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"HMM"]) {
             [self getRiderRateAgeSexClass:planCodeRider riderTerm:ridTerm];
         }
         else {
@@ -506,19 +521,19 @@
         } else if ([riderHLP count] != 0) {
             riderHLoad = [[riderHLP objectAtIndex:i] doubleValue];
         }
-        NSLog(@"riderRate:%.2f, ridersum:%.3f, HL:%.3f",riderRate,ridSA,riderHLoad);
+        NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",[riderCode objectAtIndex:i],riderRate,ridSA,riderHLoad);
         
         double annFac;
         double halfFac;
         double quarterFac;
         double monthFac;
-        if ([[riderCode objectAtIndex:i] isEqualToString:@"PA"]) {
+        if ([RidCode isEqualToString:@"PA"]) {
             annFac = 1;
             halfFac = 0.5;
             quarterFac = 0.25;
             monthFac = ((double)1)/12;
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"HB"]) {
+        else if ([RidCode isEqualToString:@"HB"]) {
             annFac = 1;
             halfFac = 0.55;
             quarterFac = 0.3;
@@ -544,7 +559,7 @@
         double RiderHLMonthly = riderHLoad * (BasicSA/1000) * monthFac;
         NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
         
-        if ([[riderCode objectAtIndex:i] isEqualToString:@"ETPD"])
+        if ([RidCode isEqualToString:@"ETPD"])
         {
             double fsar = (65 - self.requestAge) * ridSA;
             annualRider = (riderRate *ridSA /100 *annFac) + (RiderHLAnnually /10 *ridSA /100 *annFac) + (fsar /1000 *OccpLoadA *annFac);
@@ -552,7 +567,7 @@
             quarterRider = (riderRate *ridSA /100 *quarterFac) + (RiderHLQuarterly /10 *ridSA /100 *quarterFac) + (fsar /1000 *OccpLoadQ *quarterFac);
             monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac) + (fsar /1000 *OccpLoadM *monthFac);
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"I20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I30R"]||[[riderCode objectAtIndex:i] isEqualToString:@"I40R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE20R"]||[[riderCode objectAtIndex:i] isEqualToString:@"IE30R"])
+        else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
         {
             double occLoadFactorA = OccpLoadA * ((ridTerm + 1)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm + 1)/2);
@@ -563,14 +578,14 @@
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"ICR"])
+        else if ([RidCode isEqualToString:@"ICR"])
         {
             annualRider = (riderRate *ridSA /1000 *annFac) + ((OccpLoadA *ridTerm) *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ((OccpLoadH *ridTerm) *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + ((OccpLoadQ *ridTerm) *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + ((OccpLoadM *ridTerm) *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"ID20R"])
+        else if ([RidCode isEqualToString:@"ID20R"])
         {
             double occLoadFactorA = OccpLoadA * ((ridTerm - 20)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm - 20)/2);
@@ -582,7 +597,7 @@
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
             
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"ID30R"])
+        else if ([RidCode isEqualToString:@"ID30R"])
         {
             double occLoadFactorA = OccpLoadA * ((ridTerm - 30)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm - 30)/2);
@@ -594,7 +609,7 @@
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
             
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"ID40R"])
+        else if ([RidCode isEqualToString:@"ID40R"])
         {
             double occLoadFactorA = OccpLoadA * ((ridTerm - 40)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm - 40)/2);
@@ -605,14 +620,14 @@
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[riderCode objectAtIndex:i] isEqualToString:@"MG_IV"]||[[riderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[riderCode objectAtIndex:i] isEqualToString:@"HMM"])
+        else if ([RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"HSP_II"]||[RidCode isEqualToString:@"HMM"])
         {
             annualRider = riderRate * (1 + RiderHLAnnually/100) * annFac;
             halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * halfFac;
             quarterRider = riderRate * (1 + RiderHLQuarterly/100) * quarterFac;
             monthlyRider = riderRate * (1 + RiderHLMonthly/100) * monthFac;
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"HB"])
+        else if ([RidCode isEqualToString:@"HB"])
         {
             int selectUnit = [[riderUnit objectAtIndex:i] intValue];
             annualRider = riderRate * (1 + RiderHLAnnually/100) * selectUnit * annFac;
@@ -620,7 +635,7 @@
             quarterRider = riderRate * (1 + RiderHLQuarterly/100) * selectUnit * quarterFac;
             monthlyRider = riderRate * (1 + RiderHLMonthly/100) * selectUnit * monthFac;
         }
-        else if ([[riderCode objectAtIndex:i] isEqualToString:@"PLCP"]||[[riderCode objectAtIndex:i] isEqualToString:@"PTR"])
+        else if ([RidCode isEqualToString:@"PLCP"]||[RidCode isEqualToString:@"PTR"])
         {
             double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * annFac;
             double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * halfFac;
@@ -653,10 +668,11 @@
         [monthRiderTot addObject:calRiderMonth];
         [annRiderTitle addObject:[riderDesc objectAtIndex:i]];
         [annRiderTerm addObject:[riderTerm objectAtIndex:i]];
-        NSLog(@"RiderTotal A:%@, S:%@, Q:%@, M:%@",[annualRiderTot objectAtIndex:i],[halfRiderTot objectAtIndex:i],[quarterRiderTot objectAtIndex:i],[monthRiderTot objectAtIndex:i]);
+        NSLog(@"RiderTotal(%@) A:%@, S:%@, Q:%@, M:%@",[riderCode objectAtIndex:i],calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
         
-        //for waiver
-        if (![[riderCode objectAtIndex:i] isEqualToString:@"LCPR"] || ![[riderCode objectAtIndex:i] isEqualToString:@"CIR"] || ![[riderCode objectAtIndex:i] isEqualToString:@"PR"] || ![[riderCode objectAtIndex:i] isEqualToString:@"LCWP"] || ![[riderCode objectAtIndex:i] isEqualToString:@"SP_STD"] || ![[riderCode objectAtIndex:i] isEqualToString:@"SP_PRE"] || ![[riderCode objectAtIndex:i] isEqualToString:@"CIWP"] || ![[riderCode objectAtIndex:i] isEqualToString:@"ICR"]) {
+        //for waiver CIWP
+        if (!([RidCode isEqualToString:@"LCPR"]) && !([RidCode isEqualToString:@"CIR"]) && !([RidCode isEqualToString:@"PR"]) && !([RidCode isEqualToString:@"LCWP"]) && !([RidCode isEqualToString:@"SP_STD"]) && !([RidCode isEqualToString:@"SP_PRE"]) && !([RidCode isEqualToString:@"CIWP"]) && !([RidCode isEqualToString:@"ICR"])) {
+            NSLog(@"waiver1 insert :%@",[riderCode objectAtIndex:i]);
             
             NSString *calWaiverAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
             NSString *calWaiverHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
@@ -670,8 +686,26 @@
             [waiverRiderHalf addObject:calWaiverHalf];
             [waiverRiderQuar addObject:calWaiverQuarter];
             [waiverRiderMonth addObject:calWaiverMonth];
-            NSLog(@"WaiverTotal A:%@, S:%@, Q:%@, M:%@",[waiverRiderAnn objectAtIndex:i],[waiverRiderHalf objectAtIndex:i],[waiverRiderQuar objectAtIndex:i],[waiverRiderMonth objectAtIndex:i]);
         }
+        
+        //for other waiver
+        if (!([RidCode isEqualToString:@"PLCP"]) && !([RidCode isEqualToString:@"CIWP"]) && !([RidCode isEqualToString:@"LCWP"]) && !([RidCode isEqualToString:@"SP_STD"]) && !([RidCode isEqualToString:@"SP_PRE"]) && !([RidCode isEqualToString:@"PR"]) && !([RidCode isEqualToString:@"PTR"])) {
+            NSLog(@"waiver2 insert :%@",[riderCode objectAtIndex:i]);
+            
+            NSString *calWaiverAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
+            NSString *calWaiverHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
+            NSString *calWaiverQuarter = [formatter stringFromNumber:[NSNumber numberWithDouble:quarterRider]];
+            NSString *calWaiverMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:monthlyRider]];
+            calWaiverAnn = [calWaiverAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            calWaiverHalf = [calWaiverHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            calWaiverQuarter = [calWaiverQuarter stringByReplacingOccurrencesOfString:@"," withString:@""];
+            calWaiverMonth = [calWaiverMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            [waiverRiderAnn2 addObject:calWaiverAnn];
+            [waiverRiderHalf2 addObject:calWaiverHalf];
+            [waiverRiderQuar2 addObject:calWaiverQuarter];
+            [waiverRiderMonth2 addObject:calWaiverMonth];
+        }
+        
     }
     
     annualRiderSum = 0;
@@ -739,7 +773,19 @@
         waiverQuarSum = waiverQuarSum + [[waiverRiderQuar objectAtIndex:m] doubleValue];
         waiverMonthSum = waiverMonthSum + [[waiverRiderMonth objectAtIndex:m] doubleValue];
     }
-    NSLog(@"AccRiderPrem A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnSum,waiverHalfSum,waiverQuarSum,waiverMonthSum);
+    NSLog(@"AccRiderPrem1 A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnSum,waiverHalfSum,waiverQuarSum,waiverMonthSum);
+    
+    double waiverAnnSum2 = 0;
+    double waiverHalfSum2 = 0;
+    double waiverQuarSum2 = 0;
+    double waiverMonthSum2 = 0;
+    for (NSUInteger m=0; m<[waiverRiderAnn2 count]; m++) {
+        waiverAnnSum2 = waiverAnnSum2 + [[waiverRiderAnn2 objectAtIndex:m] doubleValue];
+        waiverHalfSum2 = waiverHalfSum2 + [[waiverRiderHalf2 objectAtIndex:m] doubleValue];
+        waiverQuarSum2 = waiverQuarSum2 + [[waiverRiderQuar2 objectAtIndex:m] doubleValue];
+        waiverMonthSum2 = waiverMonthSum2 + [[waiverRiderMonth2 objectAtIndex:m] doubleValue];
+    }
+    NSLog(@"AccRiderPrem2 A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnSum2,waiverHalfSum2,waiverQuarSum2,waiverMonthSum2);
     
     NSMutableArray *waiverTitle = [[NSMutableArray alloc] init];
     NSMutableArray *waiverTerm = [[NSMutableArray alloc] init];
@@ -755,14 +801,13 @@
         sqlite3_stmt *statement;
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
-            if ([[riderCode objectAtIndex:i] isEqualToString:@"CIWP"]) {
+            if ([[riderCode objectAtIndex:i] isEqualToString:@"CIWP"]||[[riderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[riderCode objectAtIndex:i] isEqualToString:@"PR"]||[[riderCode objectAtIndex:i] isEqualToString:@"SP_STD"]||[[riderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]) {
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",[riderCode objectAtIndex:i]];
             }
             else {
                 continue;
             }
             
-            NSLog(@"%@",pentaSQL);
             const char *query_stmt = [pentaSQL UTF8String];
             if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
             {
@@ -797,7 +842,7 @@
         } else if ([riderHLP count] != 0) {
             riderHLoad = [[riderHLP objectAtIndex:i] doubleValue];
         }
-        NSLog(@"riderRate:%.2f, ridersum:%.3f, HL:%.3f",riderRate,ridSA,riderHLoad);
+        NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",[riderCode objectAtIndex:i],riderRate,ridSA,riderHLoad);
         
         double annFac = 1;
         double halfFac = 0.5125;
@@ -820,23 +865,41 @@
     
         if ([[riderCode objectAtIndex:i] isEqualToString:@"CIWP"])
         {
-            double waiverAnnPrem = ridSA/100 * (waiverAnnSum+basicPrem);
-            double waiverHalfPrem = ridSA/100 * (waiverHalfSum+basicPrem);
-            double waiverQuarPrem = ridSA/100 * (waiverQuarSum+basicPrem);
-            double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPrem);
-            NSLog(@"waiver1 A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+            double waiverAnnPrem = ridSA/100 * (waiverAnnSum+basicPremAnn);
+            double waiverHalfPrem = ridSA/100 * (waiverHalfSum+basicPremHalf) *2;
+            double waiverQuarPrem = ridSA/100 * (waiverQuarSum+basicPremQuar) *4;
+            double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPremMonth) *12;
+            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
-            annualRider = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100) * annFac;
-            halfYearRider = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100) * halfFac;
-            quarterRider = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100) * quarterFac;
-            monthlyRider = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100) * monthFac;
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
+            NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
+            
+            annualRider = annualRider_ * annFac;
+            halfYearRider = halfYearRider_ * halfFac;
+            quarterRider = quarterRider_ * quarterFac;
+            monthlyRider = monthlyRider_ * monthFac;
         }
         else if ([[riderCode objectAtIndex:i] isEqualToString:@"LCWP"]||[[riderCode objectAtIndex:i] isEqualToString:@"PR"]||[[riderCode objectAtIndex:i] isEqualToString:@"SP_STD"]||[[riderCode objectAtIndex:i] isEqualToString:@"SP_PRE"])
         {
-            annualRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadA + RiderHLAnnually/100) * annFac;
-            halfYearRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadH + RiderHLHalfYear/100) * halfFac;
-            quarterRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadQ + RiderHLQuarterly/100) * quarterFac;
-            monthlyRider = ridSA * (riderRate/100 + ridTerm/1000 * OccpLoadM + RiderHLMonthly/100) * monthFac;
+            double waiverAnnPrem = ridSA/100 * (waiverAnnSum2+basicPremAnn);
+            double waiverHalfPrem = ridSA/100 * (waiverHalfSum2+basicPremHalf) *2;
+            double waiverQuarPrem = ridSA/100 * (waiverQuarSum2+basicPremQuar) *4;
+            double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
+            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+            
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
+            NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
+            
+            annualRider = annualRider_ * annFac;
+            halfYearRider = halfYearRider_ * halfFac;
+            quarterRider = quarterRider_ * quarterFac;
+            monthlyRider = monthlyRider_ * monthFac;
         }
         
         NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
@@ -854,7 +917,7 @@
         [waiverRidHalfTol addObject:calRiderHalf];
         [waiverRidQuarTol addObject:calRiderQuarter];
         [waiverRidMonthTol addObject:calRiderMonth];
-        NSLog(@"RiderTotal A:%@, S:%@, Q:%@, M:%@",calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        NSLog(@"waiverTotal(%@) A:%@, S:%@, Q:%@, M:%@",[riderCode objectAtIndex:i],calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
     }
 
     NSUInteger a;
@@ -1028,7 +1091,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND Sex=\"%@\"",aaplan,aaterm,aaterm,sex];
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1064,7 +1127,7 @@
         }
         //-------------------
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1089,7 +1152,7 @@
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\"",aaplan,aaterm,aaterm,age,age,sex];
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1116,7 +1179,7 @@
                               " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\" AND occpClass = \"%d\"",
                               aaplan,aaterm,aaterm,age,age,sex, premH.storedOccpClass];
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1143,7 +1206,7 @@
                               " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND occpClass = \"%d\"",
                               aaplan,aaterm,aaterm,age,age, premH.storedOccpClass];
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1170,7 +1233,7 @@
                               " FromMortality=0 AND occpClass = \"%d\"",
                               aaplan,aaterm,aaterm, premH.storedOccpClass];
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {

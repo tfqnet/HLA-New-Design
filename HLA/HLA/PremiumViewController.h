@@ -66,7 +66,10 @@
 @property (nonatomic, assign,readwrite) double halfRiderSum;
 @property (nonatomic, assign,readwrite) double quarterRiderSum;
 @property (nonatomic, assign,readwrite) double monthRiderSum;
-@property (nonatomic, assign,readwrite) double basicPrem;
+@property (nonatomic, assign,readwrite) double basicPremAnn;
+@property (nonatomic, assign,readwrite) double basicPremHalf;
+@property (nonatomic, assign,readwrite) double basicPremQuar;
+@property (nonatomic, assign,readwrite) double basicPremMonth;
 
 //display in table prem
 @property (nonatomic,strong) NSMutableArray *annualRiderTot;
@@ -78,6 +81,10 @@
 @property (nonatomic,strong) NSMutableArray *waiverRiderQuar;
 @property (nonatomic,strong) NSMutableArray *waiverRiderHalf;
 @property (nonatomic,strong) NSMutableArray *waiverRiderMonth;
+@property (nonatomic,strong) NSMutableArray *waiverRiderAnn2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderQuar2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderHalf2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderMonth2;
 
 - (IBAction)doClose:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *doGenerate;

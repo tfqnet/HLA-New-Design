@@ -25,7 +25,7 @@
 @synthesize popOverController,requestSINo,payorH;
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo;
-@synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,payorBH;
 
 - (void)viewDidLoad
 {
@@ -178,6 +178,7 @@
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     main.IndexTab = 3;
     main.mainH = payorH;
+    main.mainBH = payorBH;
     [self presentModalViewController:main animated:YES];
 }
 

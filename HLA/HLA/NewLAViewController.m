@@ -37,7 +37,9 @@
 @synthesize dataInsert,laH,commDate,occuClass,IndexNo,laBH;
 @synthesize ProspectList=_ProspectList;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
-@synthesize LADOBField,LAOccpField;
+@synthesize LADOBField,LAOccpField,getSINo,dataInsert2;
+@synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
+@synthesize termCover,planCode;
 
 - (void)viewDidLoad
 {
@@ -67,7 +69,6 @@
     } else {
         requestSINo = laH.storedSINo;
     }
-    NSLog(@"%@",[self.requestSINo description]);
     
     NSLog(@"LA-SINo: %@",requestSINo);
     if (requestSINo) {
@@ -75,8 +76,14 @@
         if (SINo.length != 0) {
             [self getProspectData];
             [self getSavedField];
-            
             NSLog(@"will use existing data");
+        }
+        
+        [self checkingExistingSI];
+        if (getSINo.length != 0) {
+            [self getExistingBasic];
+            [self getTerm];
+            [self toogleExistingBasic];
         }
     } else {
         NSLog(@"SINo not exist!");
@@ -206,7 +213,7 @@
         [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
-            NSLog(@"stored SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
+            NSLog(@"storedLA SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
         }
     }
     else {
@@ -258,6 +265,25 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert setTag:1004];
         [alert show];
+    }
+}
+
+-(void)toogleExistingBasic
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setMaximumFractionDigits:2];
+    NSString *sumAss = [formatter stringFromNumber:[NSNumber numberWithDouble:getSumAssured]];
+    sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+    [self getPlanCodePenta];
+
+    dataInsert2 = [[NSMutableArray alloc] init];
+    BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
+    [dataInsert2 addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode]];
+    for (NSUInteger i=0; i< dataInsert.count; i++) {
+        ss = [dataInsert objectAtIndex:i];
+        NSLog(@"storedbasic:%@",ss.storedSINo);
     }
 }
 
@@ -340,7 +366,7 @@
 
 - (IBAction)goBack:(id)sender
 {
-    if (dataInsert.count != 0) {
+    if (dataInsert.count != 0 && dataInsert2.count == 0) {
         
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             SIHandler *ss = [dataInsert objectAtIndex:i];
@@ -350,16 +376,31 @@
             main.mainH = ss;
             main.mainBH = laBH;
             main.IndexTab = 3;
-//            [self presentModalViewController:main animated:YES];
             [self presentViewController:main animated:NO completion:nil];
         }
+    }
+    else if (dataInsert.count != 0 && dataInsert2.count != 0) {
+        
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            SIHandler *ss = [dataInsert objectAtIndex:i];
+            main.mainH = ss;
+        }
+        for (NSUInteger i=0; i< dataInsert2.count; i++) {
+            BasicPlanHandler *pp = [dataInsert2 objectAtIndex:i];
+            main.mainBH = pp;
+        }
+        
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.IndexTab = 3;
+        [self presentViewController:main animated:NO completion:nil];
     }
     else {
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         main.IndexTab = 3;
-//        [self presentModalViewController:main animated:YES];
         [self presentViewController:main animated:NO completion:nil];
 
     }
@@ -856,6 +897,26 @@
     }
 }
 
+-(void)checkingExistingSI
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT SINo FROM Trad_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                getSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            } else {
+                NSLog(@"error access Trad_Details");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 -(void)getProspectData
 {    
     sqlite3_stmt *statement;
@@ -874,6 +935,42 @@
                 OccpCodePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
             } else {
                 NSLog(@"error access prospect_profile");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getExistingBasic
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT SINo,PolicyTerm,BasicSA,PremiumPaymentOption,CashDividend,YearlyIncome,AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                getSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                getPolicyTerm = sqlite3_column_int(statement, 1);
+                getSumAssured = sqlite3_column_double(statement, 2);
+                MOP = sqlite3_column_int(statement, 3);
+                cashDividend = [[NSString alloc ] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
+                yearlyIncome = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
+                advanceYearlyIncome = sqlite3_column_int(statement, 6);
+                
+                const char *getHL2 = (const char*)sqlite3_column_text(statement, 7);
+                getHL = getHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getHL2];
+                getHLTerm = sqlite3_column_int(statement, 8);
+                
+                const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 9);
+                getTempHL = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
+                getTempHLTerm = sqlite3_column_int(statement, 10);
+                
+            } else {
+                NSLog(@"error access Trad_Details");
             }
             sqlite3_finalize(statement);
         }
@@ -987,6 +1084,48 @@
                 
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void) getTerm
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT MinTerm,MaxTerm,MinSA,MaxSA FROM Trad_Sys_Mtn WHERE PlanCode=\"HLAIB\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                int maxTerm  =  sqlite3_column_int(statement, 1);
+                termCover = maxTerm - age;
+            }
+            else {
+                NSLog(@"error access Trad_Mtn");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getPlanCodePenta
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"HLAIB\" AND PremPayOpt=\"%d\"",MOP];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                planCode =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            } else {
+                NSLog(@"error access PentaPlanCode");
             }
             sqlite3_finalize(statement);
         }

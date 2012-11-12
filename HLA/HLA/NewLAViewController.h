@@ -27,6 +27,7 @@
 }
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;
+@property (strong, nonatomic) NSMutableArray *dataInsert2;
 @property (nonatomic,strong) SIHandler *laH;
 @property (nonatomic,strong) BasicPlanHandler *laBH;
 //request from previous
@@ -53,6 +54,20 @@
 @property (nonatomic, copy) NSString *commencementDate;
 @property (nonatomic, assign,readwrite) int occuClass;
 @property (nonatomic, assign,readwrite) int IndexNo;
+
+@property (nonatomic,strong) NSString *getSINo;
+@property (nonatomic,assign,readwrite) int getPolicyTerm;
+@property (nonatomic,assign,readwrite) double getSumAssured;
+@property (nonatomic,copy) NSString *getHL;
+@property (nonatomic,copy) NSString *getTempHL;
+@property (nonatomic,assign,readwrite) int getTempHLTerm;
+@property (nonatomic,assign,readwrite) int getHLTerm;
+@property (nonatomic, assign,readwrite) int MOP;
+@property (nonatomic, copy) NSString *yearlyIncome;
+@property (nonatomic, copy) NSString *cashDividend;
+@property (nonatomic, assign,readwrite) int advanceYearlyIncome;
+@property (nonatomic, assign,readwrite) int termCover;
+@property (nonatomic,strong) NSString *planCode;
 
 //declare for store in DB
 @property (nonatomic, copy) NSString *sex;

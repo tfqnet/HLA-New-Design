@@ -26,7 +26,7 @@
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
-@synthesize DOBField,OccpField;
+@synthesize DOBField,OccpField,la2ndBH;
 
 - (void)viewDidLoad
 {
@@ -210,6 +210,7 @@
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     main.IndexTab = 3;
     main.mainH = la2ndH;
+    main.mainBH = la2ndBH;
     [self presentModalViewController:main animated:YES];
 }
 

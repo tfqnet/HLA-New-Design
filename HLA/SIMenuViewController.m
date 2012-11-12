@@ -141,6 +141,7 @@
         secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
         secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         secondLA.la2ndH = menuH;
+        secondLA.la2ndBH = menuBH;
         [self presentModalViewController:secondLA animated:YES];
         secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
     }
@@ -160,6 +161,7 @@
             secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
             secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             secondLA.la2ndH = menuH;
+            secondLA.la2ndBH = menuBH;
             [self presentModalViewController:secondLA animated:YES];
             secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
         }
@@ -179,6 +181,7 @@
         payorView.modalPresentationStyle = UIModalPresentationFormSheet;
         payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         payorView.payorH = menuH;
+        payorView.payorBH = menuBH;
         [self presentModalViewController:payorView animated:YES];
         payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
     }
@@ -194,11 +197,11 @@
             payorView.modalPresentationStyle = UIModalPresentationFormSheet;
             payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             payorView.payorH = menuH;
+            payorView.payorBH = menuBH;
             [self presentModalViewController:payorView animated:YES];
             payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
         }
     }
-
 }
 
 -(void)selectBasicPlan

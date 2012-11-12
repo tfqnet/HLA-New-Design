@@ -187,9 +187,21 @@
 @property (nonatomic, assign,readwrite) double quarterMedRiderSum;
 @property (nonatomic, assign,readwrite) double monthMedRiderSum;
 
-@property (nonatomic, assign,readwrite) double basicPrem;
+@property (nonatomic, assign,readwrite) double basicPremAnn;
+@property (nonatomic, assign,readwrite) double basicPremHalf;
+@property (nonatomic, assign,readwrite) double basicPremQuar;
+@property (nonatomic, assign,readwrite) double basicPremMonth;
 @property (nonatomic, assign,readwrite) double riderPrem;
 @property (nonatomic, assign,readwrite) double medRiderPrem;
+
+@property (nonatomic,strong) NSMutableArray *waiverRiderAnn;
+@property (nonatomic,strong) NSMutableArray *waiverRiderQuar;
+@property (nonatomic,strong) NSMutableArray *waiverRiderHalf;
+@property (nonatomic,strong) NSMutableArray *waiverRiderMonth;
+@property (nonatomic,strong) NSMutableArray *waiverRiderAnn2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderQuar2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderHalf2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderMonth2;
 
 - (IBAction)btnPTypePressed:(id)sender;
 - (IBAction)btnAddRiderPressed:(id)sender;

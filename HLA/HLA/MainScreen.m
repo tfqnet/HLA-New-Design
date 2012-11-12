@@ -17,6 +17,7 @@
 #import "CarouselViewController.h"
 #import "DemoHtml.h"
 #import "ReportViewController.h"
+#import "NewLAViewController.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -71,12 +72,14 @@
     [controllersToAdd addObject:SIListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
+    
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
     menuSIPage.menuH = mainH;
     menuSIPage.menuBH = mainBH;
     menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
 
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
@@ -91,14 +94,6 @@
     [controllersToAdd addObject:reportPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     */
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     /*

@@ -10,6 +10,7 @@
 #import <sqlite3.h>
 #import "ListingTbViewController.h"
 #import "SIHandler.h"
+#import "BasicPlanHandler.h"
 
 @interface PayorViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {
     NSString *databasePath;
@@ -24,6 +25,7 @@
 
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) SIHandler *payorH;
+@property (nonatomic,strong) BasicPlanHandler *payorBH;
 
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
