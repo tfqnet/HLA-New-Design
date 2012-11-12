@@ -240,6 +240,7 @@
     }
     else {
         NSString *msg;
+        [self checkingExisting2];
         if (useExist) {
             msg = @"Confirm changes?";
         } else {
@@ -371,7 +372,6 @@
         sex = nil;
         smoker = nil;
     }
-    useExist = NO;
     IndexNo = [aaIndex intValue];
     
     if (payorH.storedIndexNo == [aaIndex intValue]) {
@@ -604,6 +604,37 @@
     }
 }
 
+-(void)checkingExisting2
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT a.SINo, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",[self.requestSINo description]];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                SINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                clientID = sqlite3_column_int(statement, 1);
+                
+            } else {
+                NSLog(@"error access tbl_SI_Trad_LAPayor");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+    if (SINo.length != 0) {
+        useExist = YES;
+    } else {
+        useExist = NO;
+    }
+}
 
 -(void)getProspectData
 {
@@ -663,7 +694,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,clientID];
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {

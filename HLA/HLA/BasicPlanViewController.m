@@ -104,7 +104,7 @@
         UISegmentedControl *segName = [[UISegmentedControl alloc] init];
         
         if (newSegment) {
-            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
+            NSArray *buttons = [NSArray arrayWithObjects:@"75", @"No", nil];
             segName = [[UISegmentedControl alloc] initWithItems:buttons];
             [self setAdvanceIncomeSegment:segName];
             segName.frame = CGRectMake(342, 363, 287, 44);
@@ -117,7 +117,7 @@
             NSLog(@"segment default");
         }
         else {
-            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
+            NSArray *buttons = [NSArray arrayWithObjects:@"75", @"No", nil];
             segName = [[UISegmentedControl alloc] initWithItems:buttons];
             [self setAdvanceIncomeSegment:segName];
             segName.frame = CGRectMake(342, 363-45, 287, 44);
@@ -279,6 +279,13 @@
 
 - (IBAction)MOPSegmentPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if ([MOPSegment selectedSegmentIndex]==0) {
         MOP = 6;
     }
@@ -292,6 +299,13 @@
 
 - (IBAction)incomeSegmentPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (incomeSegment.selectedSegmentIndex == 0) {
         yearlyIncome = @"ACC";
     }
@@ -302,30 +316,51 @@
 
 - (IBAction)advanceIncomeSegmentPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (advanceIncomeSegment.selectedSegmentIndex == 0) {
-        advanceYearlyIncome = 0;
-    }
-    else if (advanceIncomeSegment.selectedSegmentIndex == 1) {
         advanceYearlyIncome = 60;
     }
-    else if (advanceIncomeSegment.selectedSegmentIndex == 2) {
+    else if (advanceIncomeSegment.selectedSegmentIndex == 1) {
         advanceYearlyIncome = 75;
+    }
+    else if (advanceIncomeSegment.selectedSegmentIndex == 2) {
+        advanceYearlyIncome = 0;
     }
 }
 
 -(void)otherAdvancePressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (advanceIncomeSegment.selectedSegmentIndex == 0) {
-        advanceYearlyIncome = 0;
+        advanceYearlyIncome = 75;
     }
     else if (advanceIncomeSegment.selectedSegmentIndex == 1) {
-        advanceYearlyIncome = 75;
+        advanceYearlyIncome = 0;
     }
     NSLog(@"value:%d",advanceYearlyIncome);
 }
 
 - (IBAction)cashDividendSegmentPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (cashDividendSegment.selectedSegmentIndex == 0) {
         cashDividend = @"ACC";
     } else if (cashDividendSegment.selectedSegmentIndex == 1) {
@@ -335,6 +370,13 @@
 
 - (IBAction)goBack:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (dataInsert.count != 0) {
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             BasicPlanHandler *ss = [dataInsert objectAtIndex:i];
@@ -358,6 +400,13 @@
 
 - (IBAction)doSavePlan:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
@@ -567,11 +616,11 @@
         cashDividendSegment.selectedSegmentIndex = 1;
     }
     
-    if (advanceYearlyIncome == 0) {
+    if (advanceYearlyIncome == 60) {
         advanceIncomeSegment.selectedSegmentIndex = 0;
-    } else if (advanceYearlyIncome == 60) {
-        advanceIncomeSegment.selectedSegmentIndex = 1;
     } else if (advanceYearlyIncome == 75) {
+        advanceIncomeSegment.selectedSegmentIndex = 1;
+    } else if (advanceYearlyIncome == 0) {
         advanceIncomeSegment.selectedSegmentIndex = 2;
     }
     

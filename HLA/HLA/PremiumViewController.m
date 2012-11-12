@@ -376,6 +376,7 @@
 -(void)calculateRiderPrem
 {
     NSMutableArray *annRiderTitle = [[NSMutableArray alloc] init];
+    NSMutableArray *annRiderCode = [[NSMutableArray alloc] init];
     NSMutableArray *annRiderTerm = [[NSMutableArray alloc] init];
     annualRiderTot = [[NSMutableArray alloc] init];
     halfRiderTot = [[NSMutableArray alloc] init];
@@ -668,6 +669,7 @@
         [monthRiderTot addObject:calRiderMonth];
         [annRiderTitle addObject:[riderDesc objectAtIndex:i]];
         [annRiderTerm addObject:[riderTerm objectAtIndex:i]];
+        [annRiderCode addObject:RidCode];
         NSLog(@"RiderTotal(%@) A:%@, S:%@, Q:%@, M:%@",[riderCode objectAtIndex:i],calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
         
         //for waiver CIWP
@@ -724,7 +726,7 @@
         //-------------- heng's part for SI Report
         NSString *QuerySQL =  [ NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
                                " \"Quarterly\",\"Monthly\") VALUES "
-                               " (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\") ",[riderCode objectAtIndex:a], annual, half, quarter, month ];
+                               " (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\") ",[annRiderCode objectAtIndex:a], annual, half, quarter, month ];
         
         sqlite3_stmt *statement;
         
@@ -788,6 +790,7 @@
     NSLog(@"AccRiderPrem2 A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnSum2,waiverHalfSum2,waiverQuarSum2,waiverMonthSum2);
     
     NSMutableArray *waiverTitle = [[NSMutableArray alloc] init];
+    NSMutableArray *waiverCode = [[NSMutableArray alloc] init];
     NSMutableArray *waiverTerm = [[NSMutableArray alloc] init];
     NSMutableArray *waiverRidAnnTol = [[NSMutableArray alloc] init];
     NSMutableArray *waiverRidHalfTol = [[NSMutableArray alloc] init];
@@ -913,6 +916,7 @@
         
         [waiverTitle addObject:[riderDesc objectAtIndex:i]];
         [waiverTerm addObject:[riderTerm objectAtIndex:i]];
+        [waiverCode addObject:[riderCode objectAtIndex:i]];
         [waiverRidAnnTol addObject:calRiderAnn];
         [waiverRidHalfTol addObject:calRiderHalf];
         [waiverRidQuarTol addObject:calRiderQuarter];
@@ -930,10 +934,10 @@
         NSString *month = [formatter stringFromNumber:[NSNumber numberWithDouble:[[waiverRidMonthTol objectAtIndex:a] doubleValue]]];
         
         //-------------- heng's part for SI Report
-        /*
+        
         NSString *QuerySQL =  [ NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
                                " \"Quarterly\",\"Monthly\") VALUES "
-                               " (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\") ",[riderCode objectAtIndex:a], annual, half, quarter, month ];
+                               " (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\") ",[waiverCode objectAtIndex:a], annual, half, quarter, month ];
         
         sqlite3_stmt *statement;
         
@@ -948,7 +952,7 @@
             }
             sqlite3_close(contactDB);
         }
-         */
+         
         //---------------
         
         if (htmlRider.length == 0) {

@@ -110,12 +110,15 @@
         cell.textLabel.text = [FilteredName objectAtIndex:indexPath.row];
     }
     
+    /*
     if (indexPath.row == selectedIndex) {
         cell.accessoryType= UITableViewCellAccessoryCheckmark;
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+    }*/
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     
     return cell;
 }

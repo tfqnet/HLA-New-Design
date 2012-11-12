@@ -226,8 +226,13 @@
             maxDisplayLabel.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
             break;
         case 2:
-            minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
-            maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
+            if (incomeRider) {
+                minDisplayLabel.text = [NSString stringWithFormat:@"Min GYI: %d",minSATerm];
+                maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %.f",maxRiderSA];
+            } else {
+                minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
+                maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
+            }
             break;
         case 3:
             minDisplayLabel.text = @"Min Unit: 1";
@@ -564,8 +569,8 @@
     double LSDHalfYear_ = [[LSDHalfYear2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double LSDQuarterly_ = [[LSDQuarterly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double LSDMonthly_ = [[LSDMonthly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"LSD A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_LSDAnnually,_LSDHalfYear,_LSDQuarterly,_LSDMonthly);
-    NSLog(@"LSD A:%@, S:%@, Q:%@, M:%@",LSDAnnually2,LSDHalfYear2,LSDQuarterly2,LSDMonthly2);
+//    NSLog(@"LSD A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_LSDAnnually,_LSDHalfYear,_LSDQuarterly,_LSDMonthly);
+//    NSLog(@"LSD A:%@, S:%@, Q:%@, M:%@",LSDAnnually2,LSDHalfYear2,LSDQuarterly2,LSDMonthly2);
     NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
     
     //calculate Total basic premium
@@ -1314,6 +1319,11 @@
     NSLog(@"medPrem:%.2f",medRiderPrem);
 }
 
+-(void)calculateIncomeRider
+{
+    
+}
+
 
 #pragma mark - Action
 
@@ -1351,6 +1361,13 @@
 
 - (IBAction)planBtnPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     NSUInteger i;
     for (i=0; i<[FLabelCode count]; i++) {
         
@@ -1376,6 +1393,13 @@
 
 - (IBAction)deducBtnPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     NSUInteger i;
     for (i=0; i<[FLabelCode count]; i++) {
         
@@ -1401,6 +1425,13 @@
 
 - (IBAction)doSaveRider:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     NSUInteger i;
     for (i=0; i<[FLabelCode count]; i++)
     {
@@ -1445,6 +1476,13 @@
 
 - (IBAction)goBack:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     main.modalPresentationStyle = UIModalPresentationFullScreen;
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -1456,6 +1494,7 @@
 
 - (IBAction)editPressed:(id)sender
 {
+    [self resignFirstResponder];
     if ([self.myTableView isEditing]) {
         [self.myTableView setEditing:NO animated:TRUE];
         deleteBtn.hidden = true;
@@ -1849,7 +1888,9 @@
             
             for (NSUInteger u=0; u<[LRiderCode count]; u++)
             {
-                if (![[LRiderCode objectAtIndex:u]isEqualToString:@"C+"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"CIR"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"MG_II"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"MG_IV"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"HB"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"HSP_II"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"HMM"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"CIWP"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"LCWP"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"PR"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"SP_STD"]||![[LRiderCode objectAtIndex:u]isEqualToString:@"SP_PRE"])
+                NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
+                
+                if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
                 {
                     riderCode = [LRiderCode objectAtIndex:u];
                     [self calculateSA];
@@ -2063,6 +2104,20 @@
             [self updateRider];
         }
     }
+}
+
+-(void)NegativeYield
+{
+    //if TPremiumPayable > totalGYI + maturityCSV then popup
+    
+    //calculate TPremiumPayable (basic+incomeRider)
+    
+    
+    
+    
+    //calculate total GYI
+    
+    //calculate maturity guatanteed csv
 }
 
 #pragma mark - Delegate
