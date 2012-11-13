@@ -58,6 +58,19 @@
 @property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedDBValueA;
 @property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedDBValueB;
 
+//for total sum Basic
+@property (nonatomic, assign) double BasicTotalPremiumPaid;
+@property (nonatomic, assign) double BasicMaturityValueA;
+@property (nonatomic, assign) double BasicMaturityValueB;
+@property (nonatomic, assign) double BasicTotalYearlyIncome;
+
+//for total entire policy
+@property (nonatomic, assign) double EntireTotalPremiumPaid;
+@property (nonatomic, assign) double EntireMaturityValueA;
+@property (nonatomic, assign) double EntireMaturityValueB;
+@property (nonatomic, assign) double EntireTotalYearlyIncome;
+
+
 @property (strong, nonatomic) DBController* db;
 @property (strong, nonatomic) DataTable * dataTable;
 

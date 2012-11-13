@@ -489,11 +489,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374344989.828736"
+         timestampString = "374434107.73726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2880"
-         endingLineNumber = "2880"
+         startingLineNumber = "3019"
+         endingLineNumber = "3019"
          landmarkName = "-InsertToSI_Temp_Trad_RideriLLus"
          landmarkType = "5">
       </FileBreakpoint>
@@ -502,11 +502,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374344989.828736"
+         timestampString = "374434107.73726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2924"
-         endingLineNumber = "2924"
+         startingLineNumber = "3063"
+         endingLineNumber = "3063"
          landmarkName = "-InsertToSI_Temp_Trad_RideriLLus"
          landmarkType = "5">
       </FileBreakpoint>
@@ -528,11 +528,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374397234.472614"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "783"
-         endingLineNumber = "783"
+         startingLineNumber = "809"
+         endingLineNumber = "809"
          landmarkName = "-InsertToSI_Temp_Trad_LA"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,11 +541,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374397234.472614"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "794"
-         endingLineNumber = "794"
+         startingLineNumber = "820"
+         endingLineNumber = "820"
          landmarkName = "-InsertToSI_Temp_Trad_LA"
          landmarkType = "5">
       </FileBreakpoint>
@@ -559,7 +559,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "333"
          endingLineNumber = "333"
-         landmarkName = "-calculateRiderPrem"
+         landmarkName = "-calculateTempPremium"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -606,12 +606,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "373987057.680526"
+         timestampString = "374400817.439923"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "733"
          endingLineNumber = "733"
-         landmarkName = "-getRiderRateSex:riderTerm:"
+         landmarkName = "-calculateRiderPrem"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -697,11 +697,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374344989.828736"
+         timestampString = "374434107.73726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2817"
-         endingLineNumber = "2817"
+         startingLineNumber = "2952"
+         endingLineNumber = "2952"
          landmarkName = "-InsertToSI_Temp_Trad_RideriLLus"
          landmarkType = "5">
       </FileBreakpoint>
@@ -710,11 +710,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374397234.472614"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1194"
-         endingLineNumber = "1194"
+         startingLineNumber = "1220"
+         endingLineNumber = "1220"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -723,11 +723,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374397234.472614"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1195"
-         endingLineNumber = "1195"
+         startingLineNumber = "1221"
+         endingLineNumber = "1221"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -736,11 +736,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374397234.472614"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1199"
-         endingLineNumber = "1199"
+         startingLineNumber = "1225"
+         endingLineNumber = "1225"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -749,11 +749,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374429442.647731"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1206"
-         endingLineNumber = "1206"
+         startingLineNumber = "1239"
+         endingLineNumber = "1239"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -762,11 +762,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374397234.472614"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "101"
-         endingLineNumber = "101"
+         startingLineNumber = "113"
+         endingLineNumber = "113"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -775,11 +775,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374126744.576204"
+         timestampString = "374378307.683037"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
+         startingLineNumber = "43"
+         endingLineNumber = "43"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -788,11 +788,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374380771.741847"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "66"
-         endingLineNumber = "66"
+         startingLineNumber = "76"
+         endingLineNumber = "76"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -801,11 +801,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374380771.741847"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "68"
-         endingLineNumber = "68"
+         startingLineNumber = "78"
+         endingLineNumber = "78"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -814,11 +814,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374344989.828736"
+         timestampString = "374434107.73726"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2785"
-         endingLineNumber = "2785"
+         startingLineNumber = "2920"
+         endingLineNumber = "2920"
          landmarkName = "-InsertToSI_Temp_Trad_RideriLLus"
          landmarkType = "5">
       </FileBreakpoint>
@@ -827,11 +827,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374158222.782394"
+         timestampString = "374380771.741847"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "70"
-         endingLineNumber = "70"
+         startingLineNumber = "80"
+         endingLineNumber = "80"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -840,11 +840,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374315555.468184"
+         timestampString = "374429442.647731"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1880"
-         endingLineNumber = "1880"
+         startingLineNumber = "1945"
+         endingLineNumber = "1945"
          landmarkName = "-InsertToSI_Temp_Trad_Rider"
          landmarkType = "5">
       </FileBreakpoint>
@@ -853,11 +853,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374344989.828736"
+         timestampString = "374429442.647731"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2507"
-         endingLineNumber = "2507"
+         startingLineNumber = "2620"
+         endingLineNumber = "2620"
          landmarkName = "-InsertToSI_Temp_Trad_Rider"
          landmarkType = "5">
       </FileBreakpoint>
@@ -866,11 +866,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374344989.828736"
+         timestampString = "374429442.647731"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2553"
-         endingLineNumber = "2553"
+         startingLineNumber = "2666"
+         endingLineNumber = "2666"
          landmarkName = "-InsertToSI_Temp_Trad_Rider"
          landmarkType = "5">
       </FileBreakpoint>
@@ -879,11 +879,50 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ReportViewController.m"
-         timestampString = "374344989.828736"
+         timestampString = "374429442.647731"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2377"
-         endingLineNumber = "2377"
+         startingLineNumber = "2478"
+         endingLineNumber = "2478"
+         landmarkName = "-InsertToSI_Temp_Trad_Rider"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/HLA/ReportViewController.m"
+         timestampString = "374429442.647731"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2192"
+         endingLineNumber = "2192"
+         landmarkName = "-InsertToSI_Temp_Trad_Rider"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/HLA/ReportViewController.m"
+         timestampString = "374429442.647731"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2193"
+         endingLineNumber = "2193"
+         landmarkName = "-InsertToSI_Temp_Trad_Rider"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/HLA/ReportViewController.m"
+         timestampString = "374429442.647731"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2217"
+         endingLineNumber = "2217"
          landmarkName = "-InsertToSI_Temp_Trad_Rider"
          landmarkType = "5">
       </FileBreakpoint>

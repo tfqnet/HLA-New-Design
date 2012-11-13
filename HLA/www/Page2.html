@@ -118,14 +118,13 @@
                                               for (var i = 0; i < result.rows.length; i++) {
                                               var row = result.rows.item(i);
 
-                                              
+                                              $('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1+""));
                                               
                                               //alert("aaa");
                                               $('#TotPremPaid1').html(formatCurrency(row.TotPremPaid1+""));
                                               $('#SurrenderValueHigh1').html(formatCurrency(row.SurrenderValueHigh1+""));
                                               $('#SurrenderValueLow1').html(formatCurrency(row.SurrenderValueLow1+""));
-                                              $('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1+""));
-
+                                              
                                               
                                               
                                               }
