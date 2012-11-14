@@ -13,7 +13,7 @@
 @end
 
 @implementation RiderPTypeTbViewController
-@synthesize ptype,seqNo,desc,requestSINo,selectedCode,selectedDesc,selectedSeqNo,SINoPlan;
+@synthesize ptype,seqNo,desc,requestSINo,selectedCode,selectedDesc,selectedSeqNo,SINoPlan,age;
 @synthesize delegate = _delegate;
 
 -(id)initWithString:(NSString *)stringCode {
@@ -56,13 +56,15 @@
     ptype = [[NSMutableArray alloc] init];
     seqNo = [[NSMutableArray alloc] init];
     desc = [[NSMutableArray alloc] init];
-    
+    age = [[NSMutableArray alloc] init];
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq WHERE a.SINo=\"%@\"",SINoPlan];
+                              @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB "
+                              "FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
+                              "LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -71,6 +73,7 @@
                 [ptype addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]];
                 [seqNo addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)]];
                 [desc addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)]];
+                [age addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)]];
             }
             sqlite3_finalize(statement);
         }
@@ -116,7 +119,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     selectedIndex = indexPath.row;
-    [_delegate PTypeController:self didSelectCode:self.selectedCode seqNo:self.selectedSeqNo desc:self.selectedDesc];
+    [_delegate PTypeController:self didSelectCode:self.selectedCode seqNo:self.selectedSeqNo desc:self.selectedDesc andAge:self.selectedAge];
     [tableView reloadData];
 }
 
@@ -133,6 +136,11 @@
 -(NSString *)selectedDesc
 {
     return [desc objectAtIndex:selectedIndex];
+}
+
+-(NSString *)selectedAge
+{
+    return [age objectAtIndex:selectedIndex];
 }
 
 #pragma mark - Memory Management

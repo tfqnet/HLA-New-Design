@@ -386,6 +386,7 @@
             main.mainH = basicH;
             main.mainBH = ss;
             main.IndexTab = 3;
+            main.showQuotation = @"YES";
             [self presentViewController:main animated:YES completion:nil];
         }
     } else {

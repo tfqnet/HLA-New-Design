@@ -18,6 +18,7 @@
     sqlite3 *contactDB;
     UITextField *activeField;
     UIPopoverController *popOverController;
+    UIPopoverController *_prospectPopover;
     ListingTbViewController *_ProspectList;
     BOOL Saved;
     BOOL useExist;
@@ -34,6 +35,9 @@
 @property (nonatomic,strong) id requestSINo;
 
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
+@property (nonatomic, retain) UIPopoverController *prospectPopover;
+@property (retain, nonatomic) IBOutlet UIScrollView *myScrollView;
+@property (nonatomic, retain) UIPopoverController *popOverController;
 
 //LA Field
 @property (retain, nonatomic) IBOutlet UITextField *LANameField;
@@ -94,9 +98,6 @@
 @property(nonatomic , retain) NSMutableArray *occCode;
 @property(nonatomic , assign,readwrite) int occLoading;
 @property(nonatomic , assign,readwrite) int occCPA_PA;
-
-@property (retain, nonatomic) IBOutlet UIScrollView *myScrollView;
-@property (nonatomic, retain) UIPopoverController *popOverController;
 
 @property(nonatomic , retain) NSString *NamePP;
 @property(nonatomic , retain) NSString *DOBPP;

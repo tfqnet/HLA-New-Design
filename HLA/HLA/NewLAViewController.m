@@ -40,6 +40,7 @@
 @synthesize LADOBField,LAOccpField,getSINo,dataInsert2;
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
 @synthesize termCover,planCode;
+@synthesize prospectPopover = _prospectPopover;
 
 - (void)viewDidLoad
 {
@@ -150,7 +151,7 @@
 
 -(void)getSavedField
 {
-    BOOL valid;
+    BOOL valid = TRUE;
     if (![NamePP isEqualToString:clientName]) {
         valid = FALSE;
     }
@@ -358,10 +359,10 @@
     if (_ProspectList == nil) {
         self.ProspectList = [[ListingTbViewController alloc] initWithStyle:UITableViewStylePlain];
         _ProspectList.delegate = self;
-        popOverController = [[UIPopoverController alloc] initWithContentViewController:_ProspectList];
+        self.prospectPopover = [[UIPopoverController alloc] initWithContentViewController:_ProspectList];
     }
     
-    [popOverController presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [self.prospectPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)goBack:(id)sender
@@ -1195,7 +1196,7 @@
         }
     }
     
-    [popOverController dismissPopoverAnimated:YES];
+    [self.prospectPopover dismissPopoverAnimated:YES];
     
 }
 

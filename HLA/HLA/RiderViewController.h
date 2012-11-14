@@ -79,6 +79,7 @@
 @property (nonatomic,copy) NSString *pTypeCode;
 @property (nonatomic, assign,readwrite) int PTypeSeq;
 @property (nonatomic,copy) NSString *pTypeDesc;
+@property (nonatomic, assign,readwrite) int pTypeAge;
 @property (nonatomic,copy) NSString *riderCode;
 @property (nonatomic,copy) NSString *riderDesc;
 
@@ -193,6 +194,10 @@
 @property (nonatomic, assign,readwrite) double basicPremMonth;
 @property (nonatomic, assign,readwrite) double riderPrem;
 @property (nonatomic, assign,readwrite) double medRiderPrem;
+@property (nonatomic, assign,readwrite) double incomeRiderPrem;
+@property (nonatomic, assign,readwrite) double basicCSVRate;
+@property (nonatomic, assign,readwrite) double basicGYIRate;
+@property (nonatomic, assign,readwrite) double riderCSVRate;
 
 @property (nonatomic,strong) NSMutableArray *waiverRiderAnn;
 @property (nonatomic,strong) NSMutableArray *waiverRiderQuar;
@@ -202,6 +207,13 @@
 @property (nonatomic,strong) NSMutableArray *waiverRiderQuar2;
 @property (nonatomic,strong) NSMutableArray *waiverRiderHalf2;
 @property (nonatomic,strong) NSMutableArray *waiverRiderMonth2;
+@property (nonatomic,strong) NSMutableArray *incomeRiderAnn;
+@property (nonatomic,strong) NSMutableArray *incomeRiderQuar;
+@property (nonatomic,strong) NSMutableArray *incomeRiderHalf;
+@property (nonatomic,strong) NSMutableArray *incomeRiderMonth;
+@property (nonatomic,strong) NSMutableArray *incomeRiderGYI;
+@property (nonatomic,strong) NSMutableArray *incomeRiderCSV;
+@property (nonatomic,strong) NSMutableArray *incomeRiderSA;
 
 - (IBAction)btnPTypePressed:(id)sender;
 - (IBAction)btnAddRiderPressed:(id)sender;

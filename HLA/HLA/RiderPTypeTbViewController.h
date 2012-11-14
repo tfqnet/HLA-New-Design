@@ -11,7 +11,7 @@
 
 @class RiderPTypeTbViewController;
 @protocol RiderPTypeTbViewControllerDelegate
--(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq desc:(NSString *)desc;
+-(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq desc:(NSString *)desc andAge:(NSString *)aage;
 @end
 
 @interface RiderPTypeTbViewController : UITableViewController {
@@ -26,9 +26,11 @@
 @property (readonly) NSString *selectedCode;
 @property (readonly) NSString *selectedSeqNo;
 @property (readonly) NSString *selectedDesc;
+@property (readonly) NSString *selectedAge;
 @property(nonatomic , retain) NSMutableArray *ptype;
 @property(nonatomic , retain) NSMutableArray *seqNo;
 @property(nonatomic , retain) NSMutableArray *desc;
+@property(nonatomic , retain) NSMutableArray *age;
 @property (nonatomic,strong) id requestSINo;
 
 -(id)initWithString:(NSString *)stringCode;
