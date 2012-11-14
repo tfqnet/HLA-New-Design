@@ -22,7 +22,7 @@
 @end
 
 @implementation SIMenuViewController
-@synthesize myTableView;
+@synthesize myTableView, SIshowQuotation;
 @synthesize RightView;
 @synthesize ListOfSubMenu,SelectedRow;
 @synthesize menuH,menuBH;
@@ -113,6 +113,7 @@
     else {
         [SelectedRow removeObject:@"1"];
         [SelectedRow removeObject:@"2"];
+        
 //        NSLog(@"LA not empty");
     }
     
@@ -125,8 +126,15 @@
     else {
         [SelectedRow removeObject:@"4"];
         [SelectedRow removeObject:@"5"];
+          NSLog(@"Plan not empty");
+    }
+    
+    if ([SIshowQuotation isEqualToString:@"NO"] || SIshowQuotation == NULL ) {
+        [SelectedRow addObject:@"6"];
+        //[SelectedRow removeObject:@"6"];
+    }
+    else {
         [SelectedRow removeObject:@"6"];
-//        NSLog(@"Plan not empty");
     }
 }
 
@@ -374,26 +382,92 @@
     }
     
     else if (indexPath.row == 6) { //quotation
-        ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
-        ReportPage.SINo = getSINo;
-        [self presentViewController:ReportPage animated:NO completion:^{
-            [ReportPage dismissViewControllerAnimated:NO completion:^{
+        
+        sqlite3_stmt *statement;
+        BOOL cont = FALSE;
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat:
+                                  @"SELECT * from SI_Store_Premium "];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    cont = TRUE;
+                    
+                } else {
+                    cont = FALSE;
+                    NSLog(@"error access SI_Store_Premium");
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+        
+        if (cont == TRUE) {
+            
+            
+            
+            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            spinner.center = CGPointMake(500, 350);
+            
+            spinner.hidesWhenStopped = YES;
+            [self.view addSubview:spinner];   
+            [spinner startAnimating];
+
+            //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
                 
-                //ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
-                //[self presentViewController:reportVC animated:YES completion:Nil];
-                BrowserViewController *controller = [[BrowserViewController alloc] init];
-                controller.title = @"Pages";
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                UINavigationController *container = [[UINavigationController alloc] init];
-                [container setNavigationBarHidden:YES animated:NO];
-                [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
-                [self presentModalViewController:container animated:TRUE];
-            }];
-        }];
+                ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+                ReportPage.SINo = getSINo;
+                [self presentViewController:ReportPage animated:NO completion:^{
+                    
+                    [ReportPage dismissViewControllerAnimated:NO completion:^{
+                        
+                        //ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
+                        //[self presentViewController:reportVC animated:YES completion:Nil];
+                        BrowserViewController *controller = [[BrowserViewController alloc] init];
+                        controller.title = @"Quotation";
+                        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                        UINavigationController *container = [[UINavigationController alloc] init];
+                        [container setNavigationBarHidden:YES animated:NO];
+                        [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+                        [self presentModalViewController:container animated:NO];
+                        
+                    }];
+                     
+                }];
+                
+                
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [spinner stopAnimating];
+                    
+                });
+                
+                
+            });
+            //dispatch_release(downloadQueue);
+             
+            
+            
+             
+            
+            
+            
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                          message:@"Please generate the premium first" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+            [alert show];
+        }
+        
     }
     
     [tableView reloadData];
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

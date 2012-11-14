@@ -9,6 +9,7 @@
 #import "ReportViewController.h"
 #import "DBController.h"
 #import "DataTable.h"
+#import "BrowserViewController.h"
 
 @interface ReportViewController ()
 
@@ -40,6 +41,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
  
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -345,7 +348,9 @@
     [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
     [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
     fileManager = Nil;
-  
+ 
+    
+    
 }
 
 - (void)viewDidUnload
@@ -755,7 +760,7 @@
         NSString *strEngYearlyIncome = @"";
         NSString *strBMYearlyIncome = @"";
         
-        if ([YearlyIncome isEqualToString:@"ACC"]) {
+        if (![YearlyIncome isEqualToString:@"ACC"]) {
             strEngYearlyIncome = @"(Yearly Income Pay Out)";
             strBMYearlyIncome = @"(Pendapatan Tahunan Dibayar)";
         }
@@ -770,8 +775,8 @@
                     " \"SurrenderValuePaidUpHigh\",\"SurrenderValuePaidUpLow\",\"GlncPaid\",\"SumTotPremPaid\",\"SurrenderValuePaidUpHigh2\", "
                     " \"SurrenderValuePaidUpLow2\",\"SumTotPremPaid2\",\"TotalYearlylncome\",\"SumTotalYearlyIncome\",\"SumTotalYearlyIncome2\", "
                     " \"TotalPremPaid2\",\"SurrenderValueHigh2\",\"SurrenderValueLow2\",\"TotalYearlyIncome2\") VALUES "
-                    " (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%.2f\",\"%.2f\", "
-                    " \"%.2f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%.2f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\") ", 
+                    " (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%.3f\",\"%.3f\", "
+                    " \"%.3f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%.3f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\") ", 
                     SINo, Name, @"HLAIB", @"HLA Income Builder", @"Participating Whole Life Plan with Guaranteed Yearly Income and",
                     @"Pelan Penyertaan Sepanjang Hayat dengan Pendapatan Tahunan Terjamin dan ", @"", strEngYearlyIncome, @"", strBMYearlyIncome,
                     @"", @"", @"Occ Loading (per 1k SA)", @"Caj Tambahan Perkerjaan (1k JAD)", 
@@ -802,42 +807,48 @@
     NSString *smoker;
     NSString *QuerySQL;
     
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-        getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND sequence = 1 ", SINo];
-        
-        if(sqlite3_prepare_v2(contactDB, [getCustomerCodeSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-            if (sqlite3_step(statement) == SQLITE_ROW) {
-                CustCode  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                
-                getFromCltProfileSQL  = [NSString stringWithFormat:@"Select Name, Smoker, sex, ALB from clt_profile where custcode  = \"%@\"",  CustCode];
-
-                if(sqlite3_prepare_v2(contactDB, [getFromCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+    for (int i = 1; i <2; i ++) {
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+            getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND sequence = %d ", SINo, i];
+            
+            if(sqlite3_prepare_v2(contactDB, [getCustomerCodeSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement) == SQLITE_ROW) {
+                    CustCode  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                     
-                    if (sqlite3_step(statement2) == SQLITE_ROW) {
-                        Name = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
-                        smoker = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)];
-                        sex = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)];
-                        Age = sqlite3_column_int(statement2, 3);
-                                                
-                        QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
-                                    "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
-                                    " VALUES (\"%@\",\"Life Assured\",\"LA\",\"1\",\"%@\",\"%d\", \"%@\", \"%@\", "
-                                    " \"Hayat yang Diinsuranskan\")", SINo, Name, Age, sex, smoker ]; 
-                              
-                        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
-                            if (sqlite3_step(statement3) == SQLITE_DONE) {
-                                //NSLog(@"done insert to temp_trad_LA");
+                    getFromCltProfileSQL  = [NSString stringWithFormat:@"Select Name, Smoker, sex, ALB from clt_profile where custcode  = \"%@\"",  CustCode];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [getFromCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+                        
+                        if (sqlite3_step(statement2) == SQLITE_ROW) {
+                            Name = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+                            smoker = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)];
+                            sex = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)];
+                            Age = sqlite3_column_int(statement2, 3);
+                            
+                            QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
+                                         "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
+                                         " VALUES (\"%@\",\"Life Assured\",\"LA\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+                                         " \"Hayat yang Diinsuranskan\")", SINo, i, Name, Age, sex, smoker ]; 
+                            
+                            if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
+                                if (sqlite3_step(statement3) == SQLITE_DONE) {
+                                    //NSLog(@"done insert to temp_trad_LA");
+                                }
+                                sqlite3_finalize(statement3);
                             }
-                            sqlite3_finalize(statement3);
                         }
+                        sqlite3_finalize(statement2);
                     }
-                    sqlite3_finalize(statement2);
                 }
+                sqlite3_finalize(statement);
             }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
+            sqlite3_close(contactDB);
+        } 
     }
+    
+    
+    
+        
 }
 
 -(void)InsertToSI_Temp_Trad_Details{
@@ -1362,9 +1373,9 @@
         //----------------- total premium paid end ----------
         
         //------------- current cash dividend
-        [CurrentCashDividendValueA addObject: [NSString stringWithFormat: @"%.2f", 
+        [CurrentCashDividendValueA addObject: [NSString stringWithFormat: @"%.3f", 
                                                BasicSA * [[CurrentCashDividendRatesA objectAtIndex: i - 1] doubleValue ] / 100 ]];
-        [CurrentCashDividendValueB addObject: [NSString stringWithFormat: @"%.2f", 
+        [CurrentCashDividendValueB addObject: [NSString stringWithFormat: @"%.3f", 
                                                 BasicSA * [[CurrentCashDividendRatesB objectAtIndex: i - 1] doubleValue ] / 100 ]];
         
         
@@ -1382,10 +1393,10 @@
             }
             else {
                 [AccuCashDividendValueA addObject: [NSString stringWithFormat: @"%.3f", 
-                                                     [[AccuCashDividendValueA objectAtIndex:i-2] doubleValue ] * (1 + CDInterestRateHigh) + 
+                                                     [[AccuCashDividendValueA objectAtIndex:i-2] doubleValue ] * (1.00 + CDInterestRateHigh) + 
                                                     [[CurrentCashDividendValueA objectAtIndex:i-1] doubleValue ] ] ];
                 [AccuCashDividendValueB addObject: [NSString stringWithFormat: @"%.3f", 
-                                                     [[AccuCashDividendValueB objectAtIndex:i-2] doubleValue ] * (1 + CDInterestRateLow) + 
+                                                     [[AccuCashDividendValueB objectAtIndex:i-2] doubleValue ] * (1.00 + CDInterestRateLow) + 
                                                           [[CurrentCashDividendValueB objectAtIndex:i-1] doubleValue ] ] ];
 
             }
@@ -1409,9 +1420,9 @@
             
             if (AdvanceYearlyIncome > 0 && i + Age >= AdvanceYearlyIncome) {
                 
-                [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.2f", 
+                [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.3f", 
                                     [[AccuYearlyIncomeValueA objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateHigh) ] ];
-                [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.2f", 
+                [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.3f", 
                                     [[AccuYearlyIncomeValueB objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateLow) ] ];
                 
             }
@@ -1421,11 +1432,11 @@
                     [AccuYearlyIncomeValueB addObject:[arrayYearlyIncome objectAtIndex:i -1]];
                 }
                 else {
-                    [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.2f", 
-                                    [[AccuYearlyIncomeValueA objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateHigh) 
+                    [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.3f", 
+                                    [[AccuYearlyIncomeValueA objectAtIndex:i-2] doubleValue] * (1.00 + CDInterestRateHigh) 
                                     + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ] ] ];
-                    [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.2f", 
-                                    [[AccuYearlyIncomeValueB objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateLow) 
+                    [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.3f", 
+                                    [[AccuYearlyIncomeValueB objectAtIndex:i-2] doubleValue] * (1.00 + CDInterestRateLow) 
                                     + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ] ] ];
                     
                 }
@@ -1443,10 +1454,10 @@
         //------ accu yearly income end ------
         
         //------------- t dividend payable on surrender
-        [tDividendValueA addObject: [NSString stringWithFormat: @"%.2f", 
-                                               BasicSA * [[tDividendRatesA objectAtIndex: i - 1] doubleValue ] / 100 ]];
-        [tDividendValueB addObject: [NSString stringWithFormat: @"%.2f", 
-                                               BasicSA * [[tDividendRatesB objectAtIndex: i - 1] doubleValue ] / 100 ]];
+        [tDividendValueA addObject: [NSString stringWithFormat: @"%.3f", 
+                                               BasicSA * [[tDividendRatesA objectAtIndex: i - 1] doubleValue ] / 100.00 ]];
+        [tDividendValueB addObject: [NSString stringWithFormat: @"%.3f", 
+                                               BasicSA * [[tDividendRatesB objectAtIndex: i - 1] doubleValue ] / 100.00 ]];
         
         
         //----------- t dividend payable on surrender end ----------
@@ -1501,8 +1512,8 @@
             [[tDividendValueB objectAtIndex:i - 1 ] doubleValue ];
         }
         
-        [TotalSurrenderValueA addObject: [NSString stringWithFormat:@"%.2f", dTotalSurrenderValueA ]];
-        [TotalSurrenderValueB addObject: [NSString stringWithFormat:@"%.2f", dTotalSurrenderValueB ]]; 
+        [TotalSurrenderValueA addObject: [NSString stringWithFormat:@"%.3f", dTotalSurrenderValueA ]];
+        [TotalSurrenderValueB addObject: [NSString stringWithFormat:@"%.3f", dTotalSurrenderValueB ]]; 
         
         [SummaryNonGuaranteedSurrenderValueA addObject:[TotalSurrenderValueA objectAtIndex:i-1]];
         [SummaryNonGuaranteedSurrenderValueB addObject:[TotalSurrenderValueB objectAtIndex:i-1]]; 
@@ -1664,9 +1675,9 @@
             QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Overall (\"SINO\", \"SurrenderValueHigh1\", "
                         " \"SurrenderValueLow1\",\"TotPremPaid1\",\"TotYearlyIncome1\", "
                         " \"SurrenderValuehigh2\",\"SurrenderValueLow2\",\"TotPremPaid2\",\"TotYearlyIncome2\") VALUES ( "
-                        " \"%@\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.2f\")", 
+                        " \"%@\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.3f\",\"%.2f\",\"%.2f\",\"%.2f\")", 
                             SINo, EntireMaturityValueA, EntireMaturityValueB, EntireTotalPremiumPaid,
-                        EntireTotalYearlyIncome,0.00,0.00,0.00,0.00];
+                        EntireTotalYearlyIncome,BasicMaturityValueA,BasicMaturityValueB,BasicTotalPremiumPaid,BasicTotalYearlyIncome];
                 
             
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -2196,26 +2207,51 @@
                                     
                                     double waiverRiderSA;
                                     
-                                    if ([tempRiderCode isEqualToString:@"CIWP"]) {
-                                        waiverRiderSA = [strBasicAnnually doubleValue ];
-                                        for (int g=0; g < IncomeRiderCode.count; g++) {
-                                            
-                                            waiverRiderSA = waiverRiderSA + [[aStrIncomeRiderAnnually objectAtIndex:g] doubleValue ];
-                                        }
+                                    waiverRiderSA = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                                    
+                                    for (int g=0; g < IncomeRiderCode.count; g++) {
                                         
-                                        for (int g=0; g < OtherRiderCode.count; g++) {
-                                            if (!([[IncomeRiderCode objectAtIndex:g ] isEqualToString:@"LCPR"] || [[IncomeRiderCode objectAtIndex:g ] isEqualToString:@"CIR"]  )) {
-                                                
+                                        waiverRiderSA = waiverRiderSA + 
+                                        [[[aStrIncomeRiderAnnually objectAtIndex:g] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                                    }
+                                    
+                                    if ([tempRiderCode isEqualToString:@"CIWP"]) {
+                                    
+                                        for (int q=0; q < OtherRiderCode.count; q++) {
+                                            if (!([[OtherRiderCode objectAtIndex:q ] isEqualToString:@"LCPR"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"CIR"]  ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PR"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"LCWP"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_STD"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_PRE"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"CIWP"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ICR"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_TW"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_TWP"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_EXC"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_MPP"])) {
+                                                waiverRiderSA = waiverRiderSA + 
+                                                [[[aStrOtherRiderAnnually objectAtIndex:q] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];   
                                             }
                                         }
                                     }
                                     else {
-                                        
+                                        for (int q=0; q < OtherRiderCode.count; q++) {
+                                            if (!([[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PLCP"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PR"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"LCWP"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_STD"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_PRE"] || 
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"CIWP"] ||
+                                                  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PTR"])) {
+                                                waiverRiderSA = waiverRiderSA + 
+                                                [[[aStrOtherRiderAnnually objectAtIndex:q] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];   
+                                            }
+                                        }    
                                     }
                                     
-                                    
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
-                                    [tempCol2 addObject:[NSString stringWithFormat:@"%.3f", arc4random() % 1000 + 100  ]];
+                                    [tempCol2 addObject:[NSString stringWithFormat:@"%.3f", waiverRiderSA *  tempRiderSA/100]];
                                     [tempCol3 addObject:[NSString stringWithFormat:@"-"]];
                                     [tempCol4 addObject:[NSString stringWithFormat:@"-"]];
                                 }
@@ -2454,9 +2490,9 @@
                                     
                                     
                                     
-                                    if (i <= 20) {
+                                    if ([tempRiderPlanOption isEqualToString:@"Increasing"] || [tempRiderPlanOption isEqualToString:@"Increasing_NCB"]  ) {
                                         
-                                        if ([tempRiderPlanOption isEqualToString:@"Increasing"] || [tempRiderPlanOption isEqualToString:@"Increasing_NCB"]  ) {
+                                        if (i < 20) {
                                             if (i == 0) {
                                                 CPlusSA = tempRiderSA;
                                             }
@@ -2467,7 +2503,9 @@
                                                 CPlusSA = CPlusSA;
                                             }
                                         }
-                                        
+                                        else {
+                                            CPlusSA = 0.00;
+                                        }
                                     }
                                     else {
                                         if ([tempRiderPlanOption isEqualToString:@"Level"] || [tempRiderPlanOption isEqualToString:@"Level_NCB"]  ) {
@@ -3357,11 +3395,51 @@
                     
                 }
                 else {
+                    
+                    // ----- GYI -----
+                    double GYIRate;
+                    if ([strIncRiderCode isEqualToString:@"ID20R"] ) {
+                        if (k +1 >= 21 &&  k +1 < 91 ) {
+                            GYIRate = 100.00;
+                        }
+                        else {
+                            GYIRate = 0.00;
+                        }
+                    }
+                    else if ([strIncRiderCode isEqualToString:@"ID30R"]) {
+                        if (k + 1 >= 31 && k + 1 < 91 ) {
+                            GYIRate = 100.00;
+                        }
+                        else {
+                            GYIRate = 0.00;
+                        }
+                    }
+                    else if ([strIncRiderCode isEqualToString:@"ID40R"]) {
+                        if (k + 1 >= 41 && k + 1 < 91 ) {
+                            GYIRate = 100.00;
+                        }
+                        else {
+                            GYIRate = 0.00;
+                        }
+                    }
+                    else {
+                        GYIRate = 0.00;
+                    }
+                    
+                    [YearlyIncomeEOF addObject:[NSString stringWithFormat:@"%.2f", GYIRate/100 * dRiderSA ]];
+                    
+                    
                     tempValueGYI = [[SummaryGuaranteedTotalGYI objectAtIndex:k] doubleValue ];
-                    tempValueGYI = tempValueGYI + 0.00;
+                    tempValueGYI = tempValueGYI + [[YearlyIncomeEOF objectAtIndex:k] doubleValue ];;
+                    
+                    //-------- end ----------
+                    
+                    // --- surrender value -----
+                    [SurrenderValue addObject: @"0.00"];
                     
                     tempSurrenderValue = [[SummaryGuaranteedSurrenderValue objectAtIndex:k] doubleValue ];
-                    tempSurrenderValue = tempSurrenderValue + 0.00;
+                    tempSurrenderValue = tempSurrenderValue + [[SurrenderValue objectAtIndex:k] doubleValue ];
+                    //----- end --------
                     
                     tempDBValueA = [[SummaryGuaranteedDBValueA objectAtIndex:k] doubleValue ];
                     tempDBValueA = tempDBValueA + 0.00;
@@ -3390,6 +3468,7 @@
                         tempCashDividendB = tempCashDividendB + [[AccuCashDividendValueB objectAtIndex:k] doubleValue ];
                     }
                     
+                    
                     if ([YearlyIncome isEqualToString:@"ACC" ]) {
                         
                         [AccuYearlyIncomeValueA addObject: [NSString stringWithFormat:@"%.3f", 
@@ -3406,9 +3485,14 @@
                         tempYearlyincomeB = tempYearlyincomeB + [[AccuYearlyIncomeValueB objectAtIndex:k] doubleValue ];
                     }
                     
+                    
                     // -------- continue to add remaining total surrender value after policy year > income rider's term
                     double dTotalSurrenderValueA;
                     double dTotalSurrenderValueB;
+                    
+                    [tDividendValueA addObject:[NSString stringWithFormat:@"0.00"]];
+                    [tDividendValueB addObject:[NSString stringWithFormat:@"0.00"]];
+                    
                     
                     if ([strIncRiderCode isEqualToString:@"ID20R"] || [strIncRiderCode isEqualToString:@"ID30R"] || [strIncRiderCode isEqualToString:@"ID40R"] ) {
                         if (k == 0) {
@@ -3445,7 +3529,6 @@
                     }
                     [TotalSurrenderValueA addObject: [NSString stringWithFormat: @"%.3f", dTotalSurrenderValueA ] ];   
                     [TotalSurrenderValueB addObject: [NSString stringWithFormat: @"%.3f", dTotalSurrenderValueB ] ];        
-                    // --- end -----------
                     
                     
     
@@ -3455,7 +3538,7 @@
                     tempTotalSurrenderB = [[SummaryNonGuaranteedSurrenderValueB objectAtIndex:k] doubleValue ];
                     tempTotalSurrenderB = tempTotalSurrenderB  + [[TotalSurrenderValueB objectAtIndex:k] doubleValue ];
                     
-                    //---------
+                    //----- end ----
                     double dDBValueA;
                     double dDbValueB;
                     

@@ -66,7 +66,7 @@
         },errorHandler,nullHandler);
         
         db.transaction(function(transaction) { //rider description
-            transaction.executeSql("SELECT RiderDesc FROM Trad_Rider_Profile where ltrim(rtrim(RiderCode)) = '" + IncomeRider + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT RiderDesc FROM Trad_Sys_Rider_Profile where ltrim(rtrim(RiderCode)) = '" + IncomeRider + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
                     //riderDesc = row.RiderDesc;
@@ -137,15 +137,15 @@
                     else if (parseInt(row.AdvanceYearlyIncome) == 75){
                         //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
                 	}
-                	$('#dateModified').html(row.DateModified);
+                	$('#dateModified').html(row.UpdatedAt);
                 	
-                	if ($.trim(row.CashDividend) == 'A')//payment description
+                	if ($.trim(row.CashDividend) == 'ACC')//payment description
                 	{
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
                 	
                 		//totalSurrenderValue
                 		//tpdBenefit
-                		if (parseInt(row.CashPayment) == 0)
+                		if (parseInt(row.YearlyIncome) == 'POF')
                 		{
                 			$('#totalSurrenderValue').html('(6)=(3)+(9)+(10)');
                 			$('#tpdBenefit').html('(7)=(4B)+(9)+(11)');
@@ -163,10 +163,10 @@
                 			//}
                 		}
                 	}
-                	else if (row.CashDividend == 'P')
+                	else if (row.CashDividend == 'POF')
                 	{
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
-                	    if (parseInt(row.CashPayment) == 0)
+                	    if (parseInt(row.YearlyIncome) == 'POF')
                 		{
                 		    $('#totalSurrenderValue').html('(6)=(3)+(9)');
                 			$('#tpdBenefit').html('(7)=(4B)+(10)');

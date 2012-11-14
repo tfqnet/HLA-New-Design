@@ -36,4 +36,5 @@
 @property (nonatomic, assign,readwrite) int clientID2;
 @property (nonatomic, copy) NSString *CustCode2;
 
+@property (nonatomic,strong) id SIshowQuotation;
 @end

@@ -91,12 +91,12 @@
                 	
                 	$('#dateModified').html(row.DateModified);
                 	
-                	if ($.trim(row.CashDividend) == 'A')//payment description
+                	if ($.trim(row.CashDividend) == 'ACC')//payment description
                 	{
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
                 		$('#col1').html('Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(9)</i>');
 
-                		if (parseInt(row.CashPayment) == 0)
+                		if (parseInt(row.YearlyIncome) == 'POF')
                 		{
                 			$('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(10)</i>');
                 			$('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(11)</i>');
@@ -114,10 +114,10 @@
                 			colType = 2;
                 		}
                 	}
-                	else if (row.CashDividend == 'P')
+                	else if (row.CashDividend == 'POF')
                 	{
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');                	    
-                	    if (parseInt(row.CashPayment) == 0)
+                	    if (parseInt(row.YearlyIncome) == 'POF')
                 		{
                 			$('#col1').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(9)</i>');
                 			$('#col2').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(10)</i>');

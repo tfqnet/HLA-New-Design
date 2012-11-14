@@ -118,14 +118,12 @@
                                               for (var i = 0; i < result.rows.length; i++) {
                                               var row = result.rows.item(i);
 
-                                              $('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1+""));
                                               
                                               //alert("aaa");
                                               $('#TotPremPaid1').html(formatCurrency(row.TotPremPaid1+""));
                                               $('#SurrenderValueHigh1').html(formatCurrency(row.SurrenderValueHigh1+""));
                                               $('#SurrenderValueLow1').html(formatCurrency(row.SurrenderValueLow1+""));
-                                              
-                                              
+                                              $('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1+""));
                                               
                                               }
                                               }                                   
@@ -396,6 +394,8 @@ Please ask for copy of sales illustration without advancement of future GYI if y
     <td></td>
     <td>Total Yearly Income </td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlylncome1">{TotalYearlyIncome1}</td>
 </tr>
+
+    
 </table>
 
 

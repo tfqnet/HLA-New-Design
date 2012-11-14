@@ -20,4 +20,5 @@
 @property (nonatomic,strong) SIHandler *mainH;
 @property (nonatomic,strong) BasicPlanHandler *mainBH;
 
+@property (nonatomic,strong) id showQuotation;
 @end

@@ -32,6 +32,9 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
+    
+    
+    
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor grayColor];
     
@@ -125,7 +128,9 @@
 #pragma mark SidebarViewControllerDelegate
 
 - (void)sidebarViewController:(SidebarViewController *)sidebarViewController didSelectObject:(NSObject *)object objectHTML:(NSObject *)objectHTML atIndexPath:(NSIndexPath *)indexPath {
-        
+     
+    
+    
     [self.navigationController setRevealedState:JTRevealedStateNo];
     
     BrowserViewController *controller = [[BrowserViewController alloc] init];
@@ -142,6 +147,8 @@
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
     browserController = nil;
+    
+    
 }
 
 - (NSIndexPath *)lastSelectedIndexPathForSidebarViewController:(SidebarViewController *)sidebarViewController {
