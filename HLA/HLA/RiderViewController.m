@@ -70,6 +70,7 @@
 @synthesize waiverRiderAnn,waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,incomeRiderGYI,incomeRiderSA,basicGYIRate,incomeRiderCSV;
 @synthesize incomeRiderAnn,incomeRiderHalf,incomeRiderMonth,incomeRiderQuar,incomeRiderPrem,basicCSVRate,riderCSVRate,pTypeAge;
+@synthesize inputSA;
 
 #pragma mark - Cycle View
 
@@ -634,6 +635,11 @@
     waiverRiderQuar2 = [[NSMutableArray alloc] init];
     waiverRiderMonth2 = [[NSMutableArray alloc] init];
     
+    annualMedRiderPrem = [[NSMutableArray alloc] init];
+    halfMedRiderPrem = [[NSMutableArray alloc] init];
+    quarterMedRiderPrem = [[NSMutableArray alloc] init];
+    monthMedRiderPrem = [[NSMutableArray alloc] init];
+    
     incomeRiderAnn = [[NSMutableArray alloc] init];
     incomeRiderHalf = [[NSMutableArray alloc] init];
     incomeRiderQuar = [[NSMutableArray alloc] init];
@@ -941,6 +947,15 @@
             NSLog(@"waiver2 insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
         }
         
+        //for medical rider
+        if ([RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"HSP_II"]||[RidCode isEqualToString:@"HMM"]||[RidCode isEqualToString:@"HB"]||[RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"]) {
+            [annualMedRiderPrem addObject:calRiderAnn];
+            [halfMedRiderPrem addObject:calRiderHalf];
+            [quarterMedRiderPrem addObject:calRiderQuarter];
+            [monthMedRiderPrem addObject:calRiderMonth];
+            NSLog(@"medical insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        }
+        
         //for income rider
         if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"]||[RidCode isEqualToString:@"ID20R"]||[RidCode isEqualToString:@"ID30R"]||[RidCode isEqualToString:@"ID40R"]) {
             
@@ -1217,194 +1232,30 @@
 
 -(void)calculateMedRiderPrem
 {
-    annualMedRiderPrem = [[NSMutableArray alloc] init];
-    halfMedRiderPrem = [[NSMutableArray alloc] init];
-    quarterMedRiderPrem = [[NSMutableArray alloc] init];
-    monthMedRiderPrem = [[NSMutableArray alloc] init];
-    
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    [formatter setCurrencySymbol:@""];
-    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
-    
-    NSUInteger i;
-    for (i=0; i<[LRiderCode count]; i++) {
+    if (annualMedRiderPrem.count != 0) {
         
-        NSString *RidCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:i]];
-        
-        //getpentacode
-        sqlite3_stmt *statement;
-        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-        {
-            if ([RidCode isEqualToString:@"HMM"])
-            {
-                planOptHMM = [LPlanOpt objectAtIndex:i];
-                deducHMM = [LDeduct objectAtIndex:i];
-                medPentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HMM\" AND PlanOption=\"%@\" AND Deductible=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planOptHMM,deducHMM,[LAge objectAtIndex:i],[LAge objectAtIndex:i]];
-            }
-            else if ([RidCode isEqualToString:@"HSP_II"])
-            {
-                if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Standard"]) {
-                    planHSPII = @"S";
-                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Deluxe"]) {
-                    planHSPII = @"D";
-                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Premier"]) {
-                    planHSPII = @"P";
-                }
-                medPentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HSP_II\" AND PlanOption=\"%@\"",planHSPII];
-            }
-            else if ([RidCode isEqualToString:@"MG_II"])
-            {
-                planMGII = [LPlanOpt objectAtIndex:i];
-                medPentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_II\" AND PlanOption=\"%@\"",planMGII];
-            }
-            else if ([RidCode isEqualToString:@"MG_IV"])
-            {
-                planMGIV = [LPlanOpt objectAtIndex:i];
-                medPentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_IV\" AND PlanOption=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planMGIV,[LAge objectAtIndex:i],[LAge objectAtIndex:i]];
-            }
-            else if ([RidCode isEqualToString:@"HB"]) {
-                medPentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",[LRiderCode objectAtIndex:i]];
-            }
-            else {
-                continue;
-            }
-            
-            if (sqlite3_prepare_v2(contactDB, [medPentaSQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-            {
-                if (sqlite3_step(statement) == SQLITE_ROW)
-                {
-                    medPlanCodeRider =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                    
-                } else {
-                    NSLog(@"error access PentaPlanCode");
-                }
-                sqlite3_finalize(statement);
-            }
-            sqlite3_close(contactDB);
+        annualMedRiderSum = 0;
+        halfMedRiderSum = 0;
+        quarterMedRiderSum = 0;
+        monthMedRiderSum = 0;
+        for (NSUInteger a=0; a<[annualMedRiderPrem count]; a++) {
+            annualMedRiderSum = annualMedRiderSum + [[annualMedRiderPrem objectAtIndex:a] doubleValue];
+            halfMedRiderSum = halfMedRiderSum + [[halfMedRiderPrem objectAtIndex:a] doubleValue];
+            quarterMedRiderSum = quarterMedRiderSum + [[quarterMedRiderPrem objectAtIndex:a] doubleValue];
+            monthMedRiderSum = monthMedRiderSum + [[monthMedRiderPrem objectAtIndex:a] doubleValue];
         }
-        
-        int ridTerm = [[LTerm objectAtIndex:i] intValue];
-        age = [[LAge objectAtIndex:i] intValue];
-        sex = [[NSString alloc] initWithFormat:@"%@",[LSex objectAtIndex:i]];
-        //getrate
-        if ([RidCode isEqualToString:@"HB"]) {
-            [self getRiderRateSex:medPlanCodeRider riderTerm:ridTerm];
-        }
-        else if ([RidCode isEqualToString:@"HSP_II"]) {
-            [self getRiderRateAgeClass:medPlanCodeRider riderTerm:ridTerm];
-        }
-        else if ([RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"HMM"]) {
-            [self getRiderRateAgeSexClass:medPlanCodeRider riderTerm:ridTerm];
-        }
-        else {
-            continue;
-        }
-        
-        double BasicSA = requestBasicSA;
-        double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
-        double riderHLoad;
-        if ([LRidHL1K count] != 0) {
-            riderHLoad = [[LRidHL1K objectAtIndex:i] doubleValue];
-        }
-        else if ([LRidHL100 count] != 0) {
-            riderHLoad = [[LRidHL100 objectAtIndex:i] doubleValue];
-        }
-        else if ([LRidHLP count] != 0) {
-            riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
-        }
-        NSLog(@"riderRate:%.2f, ridersum:%.3f, HL:%.3f",riderRate,ridSA,riderHLoad);
-        
-        double annFac;
-        double halfFac;
-        double quarterFac;
-        double monthFac;
-        if ([RidCode isEqualToString:@"PA"]) {
-            annFac = 1;
-            halfFac = 0.5;
-            quarterFac = 0.25;
-            monthFac = ((double)1)/12;
-        }
-        else if ([RidCode isEqualToString:@"HB"]) {
-            annFac = 1;
-            halfFac = 0.55;
-            quarterFac = 0.3;
-            monthFac = 0.1;
-        }
-        else {
-            annFac = 1;
-            halfFac = 0.5125;
-            quarterFac = 0.2625;
-            monthFac = 0.0875;
-        }
-        
-        //calculate rider health loading
-        double RiderHLAnnually = riderHLoad * (BasicSA/1000) * 1;
-        double RiderHLHalfYear = riderHLoad * (BasicSA/1000) * 0.5125;
-        double RiderHLQuarterly = riderHLoad * (BasicSA/1000) * 0.2625;
-        double RiderHLMonthly = riderHLoad * (BasicSA/1000) * 0.0875;
-        NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
-        
-        double annualRider;
-        double halfYearRider;
-        double quarterRider;
-        double monthlyRider;
-        
-        if ([RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"HSP_II"]||[RidCode isEqualToString:@"HMM"])
-        {
-            annualRider = riderRate * (1 + RiderHLAnnually/100) * annFac;
-            halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * halfFac;
-            quarterRider = riderRate * (1 + RiderHLQuarterly/100) * quarterFac;
-            monthlyRider = riderRate * (1 + RiderHLMonthly/100) * monthFac;
-        }
-        else if ([RidCode isEqualToString:@"HB"])
-        {
-            int selectUnit = [[LUnits objectAtIndex:i] intValue];
-            annualRider = riderRate * (1 + RiderHLAnnually/100) * selectUnit * annFac;
-            halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * selectUnit * halfFac;
-            quarterRider = riderRate * (1 + RiderHLQuarterly/100) * selectUnit * quarterFac;
-            monthlyRider = riderRate * (1 + RiderHLMonthly/100) * selectUnit * monthFac;
-        }
-        else {
-            annualRider = 0;
-            halfYearRider = 0;
-            quarterRider = 0;
-            monthlyRider = 0;
-        }
-        
-        NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
-        NSString *calRiderHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
-        NSString *calRiderQuarter = [formatter stringFromNumber:[NSNumber numberWithDouble:quarterRider]];
-        NSString *calRiderMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:monthlyRider]];
-        calRiderAnn = [calRiderAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
-        calRiderHalf = [calRiderHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
-        calRiderQuarter = [calRiderQuarter stringByReplacingOccurrencesOfString:@"," withString:@""];
-        calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
-        [annualMedRiderPrem addObject:calRiderAnn];
-        [halfMedRiderPrem addObject:calRiderHalf];
-        [quarterMedRiderPrem addObject:calRiderQuarter];
-        [monthMedRiderPrem addObject:calRiderMonth];
-        NSLog(@"MedicalRiderTotal(%@) A:%@ S:%@ Q:%@ M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        medRiderPrem = annualMedRiderSum;
+        NSLog(@"medPrem:%.2f",medRiderPrem);
     }
-    annualMedRiderSum = 0;
-    halfMedRiderSum = 0;
-    quarterMedRiderSum = 0;
-    monthMedRiderSum = 0;
-    NSUInteger a;
-    for (a=0; a<[annualMedRiderPrem count]; a++) {
-        annualMedRiderSum = annualMedRiderSum + [[annualMedRiderPrem objectAtIndex:a] doubleValue];
-        halfMedRiderSum = halfMedRiderSum + [[halfMedRiderPrem objectAtIndex:a] doubleValue];
-        quarterMedRiderSum = quarterMedRiderSum + [[quarterMedRiderPrem objectAtIndex:a] doubleValue];
-        monthMedRiderSum = monthMedRiderSum + [[monthMedRiderPrem objectAtIndex:a] doubleValue];
+    else {
+        NSLog(@"non exist medical rider!");
+        medRiderPrem = 0;
     }
-    medRiderPrem = annualMedRiderSum;
-    NSLog(@"medPrem:%.2f",medRiderPrem);
 }
 
 -(void)calculateIncomeRider
 {
     if (incomeRiderAnn.count > 0) {
-        NSLog(@"exist income rider!");
         double sumIncomeAnn = 0;
         double sumIncomeHalf = 0;
         double sumIncomeQuart = 0;
@@ -1521,7 +1372,6 @@
         halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
         quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
         monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
-            
     }
     else if ([riderCode isEqualToString:@"ID40R"])
     {
@@ -1534,7 +1384,68 @@
         quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
         monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
     }
-        
+    
+    double GYIRate;
+    if ([riderCode isEqualToString:@"ID20R"] ) {
+        if (age >= 21 && age < 91 ) {
+            GYIRate = 100.00;
+        }
+        else {
+            GYIRate = 0.00;
+        }
+    }
+    else if ([riderCode isEqualToString:@"ID30R"]) {
+        if (age >= 31 && age < 91 ) {
+            GYIRate = 100.00;
+        }
+        else {
+            GYIRate = 0.00;
+        }
+    }
+    else if ([riderCode isEqualToString:@"ID40R"]) {
+        if (age >= 41 && age < 91 ) {
+            GYIRate = 100.00;
+        }
+        else {
+            GYIRate = 0.00;
+        }
+    }
+    else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"IE20R"] ) {
+        if (age < 21) {
+            GYIRate = 100.00;
+        }
+        else {
+            GYIRate = 0.00;
+        }
+    }
+    else if ([riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"IE30R"]) {
+        if (age < 31) {
+            GYIRate = 100.00;
+        }
+        else {
+            GYIRate = 0.00;
+        }
+    }
+    else if ([riderCode isEqualToString:@"I40R"]) {
+        if (age < 41) {
+            GYIRate = 100.00;
+        }
+        else {
+            GYIRate = 0.00;
+        }
+    }
+    
+    NSString *gyi = [NSString stringWithFormat:@"%.2f",GYIRate];
+    NSString *ridSumA = [NSString stringWithFormat:@"%.2f",ridSA];
+    [incomeRiderGYI addObject:gyi];
+    [incomeRiderSA addObject:ridSumA];
+    NSLog(@"GYI:%@, SA:%@",gyi,ridSumA);
+    
+    //get CSV rate
+    [self getRiderCSV:riderCode];
+    NSString *csv = [NSString stringWithFormat:@"%.2f",riderCSVRate];
+    [incomeRiderCSV addObject:csv];
+    
     NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
     NSString *calRiderHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
     NSString *calRiderQuarter = [formatter stringFromNumber:[NSNumber numberWithDouble:quarterRider]];
@@ -1543,7 +1454,7 @@
     calRiderHalf = [calRiderHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
     calRiderQuarter = [calRiderQuarter stringByReplacingOccurrencesOfString:@"," withString:@""];
     calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
-    NSLog(@"incomeRiderTotal(%@) A:%@, S:%@, Q:%@, M:%@",riderCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+    NSLog(@"inputIncomeRiderTot(%@) A:%@, S:%@, Q:%@, M:%@",riderCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
 }
 
 
@@ -1705,13 +1616,29 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.modalPresentationStyle = UIModalPresentationFullScreen;
-    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.mainH = riderH;
-    main.mainBH = riderBH;
-    main.IndexTab = 3;
-    [self presentModalViewController:main animated:YES];
+    if (dataInsert.count != 0) {
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            BasicPlanHandler *ss = [dataInsert objectAtIndex:i];
+            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            main.modalPresentationStyle = UIModalPresentationFullScreen;
+            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            main.mainH = riderH;
+            main.mainBH = ss;
+            main.IndexTab = 3;
+            main.showQuotation = @"NO";
+            [self presentViewController:main animated:YES completion:nil];
+        }
+    }
+    else {
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.mainH = riderH;
+        main.mainBH = riderBH;
+        main.IndexTab = 3;
+        main.showQuotation = @"NO";
+        [self presentModalViewController:main animated:YES];
+    }
 }
 
 - (IBAction)editPressed:(id)sender
@@ -2100,9 +2027,8 @@
                         
                         for (NSUInteger i=0; i< dataInsert.count; i++) {
                             ss = [dataInsert objectAtIndex:i];
-                            NSLog(@"storedbasic:%@",ss.storedSINo);
+                            NSLog(@"storedbasicSA:%@",ss.storedbasicSA);
                         }
-                        
                     } else {
                         NSLog(@"BasicSA update Failed!");
                     }
@@ -2128,6 +2054,7 @@
                     {
                         if (RiderSA > maxRiderSA)
                         {
+                            NSLog(@"need to update riderSA - %@!",riderCode);
                             //update riderSA
                             sqlite3_stmt *statement;
                             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -2137,7 +2064,6 @@
                                 
                                 if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                                     if (sqlite3_step(statement) == SQLITE_DONE) {
-                                        [self getListingRider];
                                         NSLog(@"Update RiderSA success!");
                                     } else {
                                         NSLog(@"Update RiderSA failed!");
@@ -2146,7 +2072,6 @@
                                 }
                                 sqlite3_close(contactDB);
                             }
-                            NSLog(@"need to update riderSA!");
                         }
                     }
                 }
@@ -2389,7 +2314,6 @@
     NSLog(@"totalPlusGYI_CSV:%.2f",totalAll);
     
     if (TPremiumPayable > totalAll) {
-        NSLog(@"POPUP!");
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please note that the Guaranteed Benefit payout for selected plan maybe lesser than total premium outlay.\nChoose OK to proceed.\nChoose CANCEL to select other plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1003];
         [alert show];
@@ -2725,6 +2649,8 @@
     [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
     
+    inputSA = [sumField.text doubleValue];
+    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -2769,7 +2695,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
+            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -2828,24 +2754,21 @@
                 titleHL100.hidden = NO;
                 titleHLP.hidden = NO;
                 
-                if ([sumField.text intValue] > _maxRiderSA) {
+                if (inputSA > _maxRiderSA) {
                     NSLog(@"will delete %@",riderCode);
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert setTag:1002];
                     [alert show];
                 }
-                else {
+                
+                [self calculateRiderPrem];
+                [self calculateWaiver];
+                [self calculateMedRiderPrem];
                     
-                    [self calculateRiderPrem];
-                    [self calculateWaiver];
-                    [self calculateMedRiderPrem];
-                    
-                    if (medRiderPrem != 0) {
-                        [self MHIGuideLines];
-                    } else {
-                        NSLog(@"No medical rider!");
-                    }
-                    
+                if (medRiderPrem != 0) {
+                    [self MHIGuideLines];
+                } else {
+                    NSLog(@"No medical rider!");
                 }
             }
             
@@ -3653,6 +3576,7 @@
     HLTField.text = @"";
     incomeRider = NO;
     unitField.text = @"";
+    inputSA = 0;
     
     [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];

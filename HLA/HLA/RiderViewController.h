@@ -102,6 +102,7 @@
 @property (nonatomic, assign,readwrite) double maxRiderTerm;
 @property (nonatomic, assign,readwrite) double maxRiderSA;
 @property (nonatomic, assign,readwrite) double _maxRiderSA;
+@property (nonatomic, assign,readwrite) double inputSA;
 @property (nonatomic,strong) NSString *planOption;
 @property (nonatomic,strong) NSString *deductible;
 @property (nonatomic,strong) NSString *inputHL1KSA;
@@ -120,6 +121,10 @@
 @property (nonatomic, assign,readwrite) int storedMaxTerm;
 @property (nonatomic, assign,readwrite) int basicRate;
 @property (nonatomic, assign,readwrite) int LSDRate;
+
+//@property (nonatomic, assign,readwrite) double inputGYI;
+//@property (nonatomic, assign,readwrite) double inputCSV;
+//@property (nonatomic, assign,readwrite) double inputIncomeAnn;
 
 //setup tableview listing rider
 @property (retain, nonatomic) IBOutlet UITableView *myTableView;
