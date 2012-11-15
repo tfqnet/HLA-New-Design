@@ -70,7 +70,7 @@
 @synthesize waiverRiderAnn,waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,incomeRiderGYI,incomeRiderSA,basicGYIRate,incomeRiderCSV;
 @synthesize incomeRiderAnn,incomeRiderHalf,incomeRiderMonth,incomeRiderQuar,incomeRiderPrem,basicCSVRate,riderCSVRate,pTypeAge;
-@synthesize inputSA;
+@synthesize inputSA,inputCSV,inputGYI,inputIncomeAnn;
 
 #pragma mark - Cycle View
 
@@ -1435,16 +1435,9 @@
         }
     }
     
-    NSString *gyi = [NSString stringWithFormat:@"%.2f",GYIRate];
-    NSString *ridSumA = [NSString stringWithFormat:@"%.2f",ridSA];
-    [incomeRiderGYI addObject:gyi];
-    [incomeRiderSA addObject:ridSumA];
-    NSLog(@"GYI:%@, SA:%@",gyi,ridSumA);
-    
-    //get CSV rate
-    [self getRiderCSV:riderCode];
-    NSString *csv = [NSString stringWithFormat:@"%.2f",riderCSVRate];
-    [incomeRiderCSV addObject:csv];
+    inputGYI = GYIRate;    
+    [self getRiderCSV:riderCode];       //get CSV rate
+    inputCSV = riderCSVRate;
     
     NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
     NSString *calRiderHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
@@ -1454,6 +1447,7 @@
     calRiderHalf = [calRiderHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
     calRiderQuarter = [calRiderQuarter stringByReplacingOccurrencesOfString:@"," withString:@""];
     calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+    inputIncomeAnn = [calRiderAnn doubleValue];
     NSLog(@"inputIncomeRiderTot(%@) A:%@, S:%@, Q:%@, M:%@",riderCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
 }
 
@@ -1750,7 +1744,7 @@
         [self deleteRider];
     }
     else if (alertView.tag == 1003 && buttonIndex == 0) {
-        [self validateSaver];
+        [self saveRider];
     }
 }
 
@@ -1981,6 +1975,13 @@
     else if (([riderCode isEqualToString:@"HMM"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"HSP_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_IV"] && LRiderCode.count != 0)) {
         NSLog(@"go RoomBoard!");
         [self RoomBoard];
+    }
+    else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count != 0)) {
+        
+        NSLog(@"go Negative Yield!");
+        [self calculateIncomeRider];        //calculate existing income rider
+        [self calculateIncomeRiderInput];   //calculate entered income rider
+        [self NegativeYield];
     }
     else {
         [self checkingRider];
@@ -2265,8 +2266,9 @@
 
     //if TPremiumPayable > totalGYI + maturityCSV then popup
     
+    
     //--TPremiumPayable (basic+incomeRider)
-    double TPremiumPayable = basicPremAnn + incomeRiderPrem;
+    double TPremiumPayable = basicPremAnn + incomeRiderPrem + inputIncomeAnn;
     NSLog(@"TPremiumPayable:%.2f",TPremiumPayable);
     
     //--rider GYI & CSV
@@ -2298,16 +2300,23 @@
         _sumRiderCSV = _sumRiderCSV + [[arrRiderCSV objectAtIndex:n] doubleValue];
     }
     
+    //input rider GYI and CSV
+    double _inputSA = [sumField.text doubleValue];
+    double _inputGYI = (inputGYI/100) * _inputSA;
+    double _inputCSV = inputCSV * _inputSA / 1000;
+    
     //--GYI
     [self getBasicGYI];         //get basicGYI rate
     double _basicGYI = requestBasicSA * (basicGYIRate/100);
-    double totalGYI = _basicGYI + _sumRiderGYI;
+    
+    double totalGYI = _basicGYI + _sumRiderGYI + _inputGYI;
     NSLog(@"totalGYI:%.2f",totalGYI);
     
     //--CSV
     [self getBasicCSV];         //get basciCSV rate
     double _basicCSV = basicCSVRate * (requestBasicSA/1000);
-    double totalCSV = _basicCSV + _sumRiderCSV;
+    
+    double totalCSV = _basicCSV + _sumRiderCSV + _inputCSV;
     NSLog(@"totalCSV:%.2f",totalCSV);
     
     double totalAll = totalCSV + totalGYI;
@@ -2767,8 +2776,6 @@
                     
                 if (medRiderPrem != 0) {
                     [self MHIGuideLines];
-                } else {
-                    NSLog(@"No medical rider!");
                 }
             }
             

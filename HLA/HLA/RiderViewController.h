@@ -122,9 +122,9 @@
 @property (nonatomic, assign,readwrite) int basicRate;
 @property (nonatomic, assign,readwrite) int LSDRate;
 
-//@property (nonatomic, assign,readwrite) double inputGYI;
-//@property (nonatomic, assign,readwrite) double inputCSV;
-//@property (nonatomic, assign,readwrite) double inputIncomeAnn;
+@property (nonatomic, assign,readwrite) double inputGYI;
+@property (nonatomic, assign,readwrite) double inputCSV;
+@property (nonatomic, assign,readwrite) double inputIncomeAnn;
 
 //setup tableview listing rider
 @property (retain, nonatomic) IBOutlet UITableView *myTableView;
