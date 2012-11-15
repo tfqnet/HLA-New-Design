@@ -1091,6 +1091,17 @@ bool IsContinue = TRUE;
         return false;
     }
     
+    if(OccupCodeSelected == NULL){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Occupation is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
+        [alert show];
+        return false;
+    }
+    
     if([[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1157,16 +1168,7 @@ bool IsContinue = TRUE;
     }
     
     
-    if(OccupCodeSelected == NULL){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Occupation is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
+    
     
     if(![txtEmail.text isEqualToString:@""]){
         if( [self NSStringIsValidEmail:txtEmail.text] == FALSE){

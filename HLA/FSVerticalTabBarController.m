@@ -99,7 +99,7 @@
         
         
         if (selectedIndex == 0) {
-            [self presentViewController:selectedViewController animated:YES completion:Nil];
+            [self presentViewController:selectedViewController animated:NO completion:Nil];
         }
         /*
         else if (selectedIndex == 6) {

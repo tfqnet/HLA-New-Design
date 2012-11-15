@@ -149,7 +149,7 @@
                         col8Total = col8Total + parseFloat(formatCurrency(row.col8).replace(',',''));
 
                                    
-$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.col0_1 + '</td>' + '<td>' + replaceChar(row.col0_2) + '</td>' + '<td>' + replaceChar(row.col1) + '</td>' + '<td>' + formatCurrency(row.col2) + '</td>'  + '<td>' + row.col3 + '</td>' + '<td>' + row.col4 + '</td>' + '<td><span id=row' + i + 'col5>' + formatCurrency(row.col5) + '</span></td>' + '<td id=row1col6>' + formatCurrency(row.col6) + '</td>' + '<td id=row1col7>' + formatCurrency(row.col7) + '</td>' + '<td id=row1col8>' + formatCurrency(row.col8) + '</td>' + '</td>' + '<td>&nbsp;</td>' + '</tr>');
+$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.col0_1 + '</td>' + '<td>' + replaceChar(row.col0_2) + '</td>' + '<td>' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  + '<td>' + row.col3 + '</td>' + '<td>' + row.col4 + '</td>' + '<td><span id=row' + i + 'col5>' + formatCurrency(row.col5) + '</span></td>' + '<td id=row1col6>' + formatCurrency(row.col6) + '</td>' + '<td id=row1col7>' + formatCurrency(row.col7) + '</td>' + '<td id=row1col8>' + formatCurrency(row.col8) + '</td>' + '</td>' + '<td>&nbsp;</td>' + '</tr>');
                     }
                                    
 $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'  + '<td></td>' + '<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;">Total Premium<br/>Jumlah Bayaran Premium</td>' + '<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' + '<td>&nbsp;</td>' + '</tr>');
@@ -195,6 +195,20 @@ $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'
             returnVal = char;
         return returnVal;
     }
+
+	 function isIncomeRider(amt,rider){
+		//rider.replace(/^\s+|\s$/g,"")
+		//$.trim(rider)
+		var temp;
+		temp = $.trim(rider)
+		//alert(temp + "x")
+        if (temp == "HLA Income Builder" || temp == "Income 20 Rider" || temp == "Income 30 Rider" || temp == "Income 40 Rider" || temp == "Income D-20 Rider" || temp == "Income D-30 Rider" || temp == "Income D-40 Rider" || temp == "Income E-20 Rider" || temp == "Income E-30 Rider"){
+        	return amt + " *";
+        }
+        else
+        	return amt + "&nbsp;&nbsp;";
+    }
+	
 
 </script>
 </head>

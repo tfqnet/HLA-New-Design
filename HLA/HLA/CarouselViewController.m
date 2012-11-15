@@ -122,7 +122,7 @@ const int numberOfModule = 4;
     if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //setting
         setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:zzz animated:YES completion:Nil];
+        [self presentViewController:zzz animated:NO completion:Nil];
         //[self.navigationController pushViewController:zzz animated:YES];
     }
     
@@ -130,7 +130,7 @@ const int numberOfModule = 4;
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = 1;
-        [self presentViewController:zzz animated:YES completion:Nil];
+        [self presentViewController:zzz animated:NO completion:Nil];
         
     }
     
@@ -147,7 +147,7 @@ const int numberOfModule = 4;
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = 3;
-        [self presentViewController:zzz animated:YES completion:Nil];
+        [self presentViewController:zzz animated:NO completion:Nil];
         
     }
     

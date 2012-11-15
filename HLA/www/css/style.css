@@ -246,9 +246,6 @@
 
 
 
-
-
-
 #table-design1 {
 	
     border-collapse:collapse;
@@ -260,19 +257,64 @@
 #table-design1 td {
 	padding: 5px 5px 5px 5px;
 	text-align:left;
-         border: 1px solid black; 
+    border: 1px solid black;
+    vertical-align: text-top;
 }
+
+#table-design1 th.content {
+	width:88%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black; 
+}
+
+#table-design1 th.contentSmall {
+	width:12%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black; 
+}
+
+#table-design1 td.content {
+	width:88%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black;
+    vertical-align: text-top; 
+}
+
+#table-design1 td.contentSmall {
+	width:12%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black;
+    vertical-align: text-top;
+}
+
+
 #table-design2 {
 	
     border-collapse:collapse;
     border: 1px solid black;
     width: 40%;
 
-        
 }
 #table-design2 td {
 	padding: 5px 5px 5px 5px;
-	text-align:left;
+	text-align:center;
+         border: 1px solid black; 
+}
+
+#table-design2Wide {
+	
+    border-collapse:collapse;
+    border: 1px solid black;
+    width: 70%;
+
+}
+#table-design2Wide td {
+	padding: 5px 5px 5px 5px;
+	text-align:center;
          border: 1px solid black; 
 }
 

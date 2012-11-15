@@ -413,7 +413,13 @@
             spinner.center = CGPointMake(500, 350);
             
             spinner.hidesWhenStopped = YES;
-            [self.view addSubview:spinner];   
+            [self.view addSubview:spinner];
+            UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(460, 370, 110, 50) ];
+            spinnerLabel.text  = @"Please Wait...";
+            spinnerLabel.backgroundColor = [UIColor clearColor];
+            spinnerLabel.opaque = YES;
+            spinnerLabel.textColor = [UIColor whiteColor];
+            [self.view addSubview:spinnerLabel];
             [spinner startAnimating];
 
             //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
@@ -443,7 +449,9 @@
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [spinner stopAnimating];
-                    
+                    spinnerLabel.text = @"";
+                   UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+                    [v removeFromSuperview];
                 });
                 
                 

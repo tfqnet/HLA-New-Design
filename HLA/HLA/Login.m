@@ -153,7 +153,7 @@
             securityPage.FirstTimeLogin = 1;
             securityPage.modalPresentationStyle = UIModalPresentationPageSheet;
             securityPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentModalViewController:securityPage animated:YES];
+            [self presentModalViewController:securityPage animated:NO];
     
             
             
@@ -174,7 +174,7 @@
             */
            
             CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
-            [self presentViewController:carouselMenu animated:YES completion:Nil];
+            [self presentViewController:carouselMenu animated:NO completion:Nil];
             
             [self updateDateLogin];
             //            [self checkingLastLogout];
@@ -188,7 +188,7 @@
     ForgotPwd *forgotView = [self.storyboard instantiateViewControllerWithIdentifier:@"ForgotPwd"];
     forgotView.modalPresentationStyle = UIModalPresentationFormSheet;
     forgotView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:forgotView animated:YES];
+    [self presentModalViewController:forgotView animated:NO];
     forgotView.view.superview.bounds = CGRectMake(0, 0, 550, 600);
      
 }

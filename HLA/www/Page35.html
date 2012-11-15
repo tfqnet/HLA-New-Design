@@ -1,0 +1,2032 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var cashPayment = 0;
+    var colType = 0;
+    var pageNum = '8';
+    //var rider = "";
+    var page = gup("page");
+
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+    	//setPage()
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+        setPageDesc(page);
+    }
+        
+    function ListDBValues() {
+            
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        //Details
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                	}
+                	$('#dateModified').html(row.UpdatedAt);
+                	
+                	if ($.trim(row.CashDividend) == 'ACC')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                	else if (row.CashDividend == 'POF')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        return;
+    }
+</script> 
+</head>
+
+ 
+<body onload="onBodyLoad()">
+
+<body>
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+ 
+
+ 
+ 
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+<tr>
+<td width="75%"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="25%">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+</tr>
+</table>
+<span id="riderInPage" style="display:none"><b>Description of Rider(s) Benefits</b><br/><br/></span>
+
+
+
+<div id="pageLength" class="pageLength" style="position:relative;height:800px;">
+<table id="table-design1">
+<script>
+//$('#table-design1').css('display','none');
+//$('#table-design1 tr').css('display','table-row');
+</script> 
+<tr class="tblHeader" id="tblHeader" style="display:table-row;">
+<th class="contentSmall"><b>Riders</b></th>
+<th class="contentSmall" style="text-align:center;"><b>Coverage Period</b></th>
+<th class="content"><b>Description of Benefits</b></th>
+</tr>
+
+<!--c+ start-->
+<!--<tr class="c" id="c" style="display:table-row;">-->
+<tr class="C" id="C" style="display:table-row;">
+<td class="contentSmall">C+ secure (<span id="cPlanOption">{cPlanOption}</span>)</td>
+<td class="contentSmall" style="text-align:center;"><span id="CRiderTerm">{C+RiderTerm}</span></td>
+<td class="content">
+<u>Cancer Benefit</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The amount of Benefits as described in the table below shall be payable upon diagnosis of cancer covered of the Life Assured during the coverage period.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon admission of a claim, all future premiums shall be waived thereafter.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment Schedule:<br/><br/>
+<div style="margin-left: 18px;" class="paymentScheduleTable">
+<table class="table-design2Wide" id="table-design2Wide">
+<tr><td style="text-align:left;">Diagnosis</td><td style="text-align:left;">Amount Payable</td></tr>
+<tr><td style="text-align:left;">Very Early Cancers</td><td style="text-align:left;" id="cVeryEarlyTD">RM <span id="cVeryEarly">{cVeryEarly}</span></td></tr>
+<tr><td style="text-align:left;">Early Cancers</td><td style="text-align:left;" id="cEarlyTD">RM <span id="cEarly">{cEarly}</span></td></tr>
+<tr><td style="text-align:left;">Advanced Cancers</td><td style="text-align:left;" id="cAdvanceTD">RM <span id="cAdvance">{cAdvance}</span></td></tr>
+</table>
+</div>
+<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The amount payable in respect of each cancer stage shall be reduced by any prior payments for cancer of same organ or type and shall be<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limited to 300% of the Rider Sum Assured.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For Very Early Cancers and Early Cancers, multiple claims are allowed for the same category stage, subject to that the claim is for a different<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type of cancer affecting a different organ.<br/><br/>
+<u>Nursing Care Allowance</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should the Life Assured upon diagnosis by a registered Medical Practitioner to be suffering from Advanced Cancer, the Company shall upon<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receipt of proof of the said event, pays Policy Owner or his lawful assignee an annual payment equivalent to <span id="cNursingCareAllowance">RM {cNursingCareAllowance}</span> for a period of 2 years<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subject to the survival of Life Assured.<br/><br/>
+<u>Extension of Coverage for Advanced Cancer</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A period of 2 Policy Years shall be extended after the Expiry Date to cover Advanced Cancers if there were valid claims of either Very Early<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancers and/or Early Cancers of the same type or the same organ admitted prior to the Expiry Date.<br/><br/>
+
+<div id="cGuaranteedIncreasingSumAssured">
+<u>Guaranteed Increasing Sum Assured</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Rider's Sum Assured shall increase by 10% every 2 years with the first such increase staring on 2nd Anniversary of the Commencement Date of this<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>
+</div>
+
+<div id="cNoClaimBenefit">
+<u>No Claim Benefit</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date, the Company will pay the<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner a No Claim benefit equivalent to RM <span id="cNoClaimAmount">{cNoClaimAmount}</span><br/><br/>
+</div>
+
+<u>Premium</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/><br/>
+This rider does not cover the following occurrence:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pre-Existing Condition.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;All Cancers presenting or diagnosed within the Waiting Period of 90 days.<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;All Cancers which are histologically classified as being:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premalignant (for example cervical intraepithelial / CIN I, II, or III, essential thrombocythemia, polycythemia rubra vera) or having either<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;borderline malignancy / low malignant potential and/or;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Carcinoma in situ (except Ductal carcinoma in situ breast, Carcinoma in situ cervix and Carcinoma in situ colon).<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;All skin Cancers except malignant melanoma with thickness in excess of 1.5 mm thickness or metastatic skin Cancers.<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;All Cancers associated with HIV infection.<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Unreasonable failure to follow medical treatment.<br/>
+vii.&nbsp;&nbsp;&nbsp;All Cancers if Death of the Life Assured occurs within thirty (30) days following the date of diagnosis of Cancer.<br/>
+</td></tr>
+<!--c+ end-->
+
+
+ 
+<!--CCTR-Convertible Comprehensive Term Rider start--> 
+<tr class="CCTR" id="CCTR" style="display:table-row;">
+<td class="contentSmall">Convertible Comprehensive Term Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CCTRRiderTerm">{CCTRRiderTerm}</span></td>
+<td class="content">
+RM <span id="CCTRGYI">{CCTRGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD<br/>
+provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further<br/>
+evidence of insurability.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion.<br/>
+</td>
+</tr> 
+<!--CCTR-Convertible Comprehensive Term Rider end--> 
+ 
+
+<!--CIR-Critical Illness Rider start--> 
+<tr class="CIR" id="CIR" style="display:table-row;">
+<td class="contentSmall">Critical Illness Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CIRRiderTerm">{CIRRiderTerm}</span></td>
+<td class="content">
+RM <span id="CIRGYI">{CIRGYI}</span> is payable upon diagnosis of any of the 36 critical illnesses covered of the life assured during the coverage term.<br/>
+Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
+The following 36 critical illnesses are covered:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Stroke</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Loss of Speech</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Attack</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Brain Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Kidney Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Valve Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Cancer</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Terminal Illness</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coronary Artery By-Pass Surgery</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Due To Blood Transfusion</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Other Serious Coronary Artery Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Bacterial Meningitis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasty And Other Invasive Treatments For Major Coronary Artery Disease *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Head Trauma</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Liver Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Chronic Aplastic Anemia</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Fulminant Viral Hepatitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Motor Neuron Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Parkinson's Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Benign Brain Tumor</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Alzheimer's Disease/Irreversible Organic Degenerative Brain Disorders</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Paralysis/Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Muscular Dystrophy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Blindness /Total Loss Of Sight</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Surgery To Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Deafness/Total Loss Of Hearing</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Multiple Sclerosis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Burns</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Primary Pulmonary Arterial Hypertension</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Lung Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Medullary Cystic Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Encephalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Severe Cardiomyopathy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Organ / Bone Marrow Transplant</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Systemic Lupus Erythematosus With Lupus Nephritis</td>
+</tr>
+</table>
+
+<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coronary artery disease requiring surgery<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Heart attack<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnesses. The exceptions to this clause are coronary artery disease and AIDS.<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured within 28 days following the date of diagnosis of any of the critical illness.<br/>
+</td>
+</tr>
+<!--CIR-Critical Illness Rider end--> 
+
+
+<!--CIWP-Critical Illness WP Rider start--> 
+<tr class="CIWP" id="CIWP" style="display:table-row;">
+<td class="contentSmall">Critical Illness WP Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
+<td class="content">
+The rider Sum Assured will be paid to reduce future premium up to expiry date of the rider upon diagnosis of any of the 36 critical illnesses covered of the life<br/>
+assured during the coverage period.<br/>
+Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
+The following 36 critical illnesses are covered :<br/><br/>
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Stroke</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Loss of Speech</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Attack</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Brain Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Kidney Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Valve Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Cancer</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Terminal Illness</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coronary Artery By-Pass Surgery</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Due To Blood Transfusion</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Other Serious Coronary Artery Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Bacterial Meningitis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasty And Other Invasive Treatments For Major Coronary Artery Disease *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Head Trauma</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Liver Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Chronic Aplastic Anemia</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Fulminant Viral Hepatitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Motor Neuron Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Parkinson's Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Benign Brain Tumor</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Alzheimer's Disease/Irreversible Organic Degenerative Brain Disorders</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Paralysis/Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Muscular Dystrophy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Blindness /Total Loss Of Sight</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Surgery To Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Deafness/Total Loss Of Hearing</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Multiple Sclerosis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Burns</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Primary Pulmonary Arterial Hypertension</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Lung Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Medullary Cystic Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Encephalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Severe Cardiomyopathy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Organ / Bone Marrow Transplant</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Systemic Lupus Erythematosus With Lupus Nephritis</td>
+</tr>
+</table>
+<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coronary artery disease requiring surgery<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Heart attack<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnesses. The exceptions to this clause are coronary artery disease and AIDS.<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured within 28 days following the date of diagnosis of any of the critical illness.<br/>
+</td></tr>
+<!--CIWP-Critical Illness WP Rider end-->
+
+<!--CPA-Compprehensive Personal Accident Rider start-->
+<tr class="CPA" id="CPA" style="display:table-row;">
+<td class="contentSmall">Comprehensive Personal Accident Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CPARiderTerm">{CPARiderTerm}</span></td>
+<td class="content">
+The following benefits are payable upon death or disability of the life assured caused by an accident during the coverage period:<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total &amp; Permanent Disability due to accident - refer to schedule of indemnities<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temporary total disability - weekly indemnity of RM8 per 1,000 sum assured<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Temporary partial disability - weekly indemnity of RM2 per 1,000 sum assured<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medical fees &amp; expenses reimbursement - up to RM20 per 1,000 sum assured<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Double indemnity - sum assured payable is doubled if accidental death of Life Assured occurred while the Life Assured is on mechanically propelled Public<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conveyance over an established route on land, excluding Taxis<br/><br/>
+The Company will not pay any benefits under this rider for any loss, damage or other contingency occasioned by or through or in consequence, directly or<br/>
+indirectly, from:<br/><br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flying or taking part in any aerial activities except where traveling in an aircraft as a fare-paying passenger and not as aircrew nor for the purpose of any<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trade or technical operation in or on the aircraft;<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Self-inflicted injury, suicide or attempted suicide, provoked murder or assault or being under the influence of drugs / narcotics / alcohol of any kind;<br/>
+iii.&nbsp;&nbsp;&nbsp;Engaging in or taking part in professional or semi-professional sports;<br/>
+iv.&nbsp;&nbsp;&nbsp;Engaging in racing of any kind (other than on foot), mountain or rock climbing necessitating the use of ropes or guides, winter sports, underwater<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pastimes, water skiing, football, polo, hunting, show jumping, caving, pot-holing, boxing or wrestling;<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;War, invasion, act of foreign enemy, hostilities or warlike operations (whether war be declared or not), civil war, military or usurped power;<br/>
+vi.&nbsp;&nbsp;&nbsp;Direct participation in strikes, riots, rebellion, revolution, civil commotion or insurrection;<br/>
+
+vii.&nbsp;&nbsp;Active duty in the Armed Forces (whether voluntary or otherwise);<br/>
+viii.&nbsp;Sickness or disease of any kind caused by or infected by or in any way attributed to virus, parasite, bacteria or any micro-organism including where the<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virus, parasite, bacteria or micro-organism is introduced and/or caused by bites of insects or is sexually transmitted;<br/>
+ix.&nbsp;&nbsp;&nbsp;Any medical or surgical treatment (except those necessitated by injuries covered by this Policy);<br/>
+x.&nbsp;&nbsp;&nbsp;&nbsp;Committing or attempting to commit any unlawful act;<br/>
+xi.&nbsp;&nbsp;&nbsp;Any disease, sickness or congenital defects;<br/>
+xii.&nbsp;&nbsp;Any physical or mental defect or infirmity;<br/>
+xiii.&nbsp;Human Immune-deficiency Virus (HIV) and/or any HIV related illness including AIDS and/or any mutant derivations or variations thereof;<br/>
+xiv.&nbsp;Pregnancy, childbirth, miscarriage or any complications related to the same;<br/>
+xv.&nbsp;&nbsp;Any dental treatment not necessitated by injury covered under this Policy.<br/>
+<!--CPA-Compprehensive Personal Accident Rider end-->
+
+<!--ETPD-Entended TPD Rider start-->
+<tr class="ETPD" id="ETPD" style="display:table-row;">
+<td class="contentSmall">Extended TPD Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ETPDRiderTerm">{ETPDRiderTerm}</span></td>
+<td class="content">
+Upon TPD of the Life Assured during the coverage term and the Life Assured remained disabled, RM <span id="ETPDGYI">{ETPDGYI}</span> shall be payable annually up to age 65 or death of<br/>
+the Life Assured, whichever is earlier.The first payment is on the 1st anniversary subsequent to the commencement of TPD.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion.<br/>
+</td>
+</tr>
+<!--ETPD-Entended TPD Rider end-->
+
+<!--HB-Hospitalisation Benefit start-->
+<tr class="HB" id="HB" style="display:table-row;">
+<td class="contentSmall">Hospitalisation Benefit</td>
+<td class="contentSmall" style="text-align:center;"><span id="HBRiderTerm">{HBRiderTerm}</span></td>
+<td class="content">
+Hospitalisation benefit of RM <span id="HBBenefit">{HBBenefit}</span> per week is payable if the life assured hospitalized during the coverage period.<br/><br/>
+The said hospitalisation benefit shall not payable:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for more than the first 52 weeks or any longer period during which the Life Assured is continuously confined to hospital<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;in respect of the whole of any period of continuous confinement to hospital if any part of such period is within the first 30 days of the Effective Date<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or date of reinstatement of the policy at any time<br/>
+iii.&nbsp;&nbsp;&nbsp;confinement to hospital for any illness or injury occurring before payment of the first premium for policy<br/>
+iv.&nbsp;&nbsp;&nbsp;confinement to hospital which occurs after the anniversary of the Issue Date next following the attainment by the Life Assured of the age of 60 years<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;in respect of any period of confinement to hospital which occurs after the Expiry Date<br/>
+vi.&nbsp;&nbsp;&nbsp;confinement to hospital for an illness or injury directly or indirectly caused or accelerated by:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strike, riot, civil commotion, war (whether declared or not)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;engaging in aviation (except as an ordinary fare paying passenger on a regularly scheduled flight of a commercial airline)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;being under the influence of intoxicating liquor or any narcotic or drug<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attempted suicide, intentional self-injury, dueling, resisting lawful arrest by a lawful authority, or the due process of law<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;insanity<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(f)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;venereal disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(g)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;childbirth, pregnancy, miscarriage and their sequelae<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(h)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the existence of HIV or AIDS Related Complex<br/>
+</td>
+</tr>
+<!--HB-Hospitalisation Benefit end-->
+
+
+
+<!--HMM-HLA Major Medi start-->
+<tr class="HMM" id="HMM" style="display:table-row;">
+<td class="contentSmall">Major Medi Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="HMMRiderTerm">{HMMRiderTerm}</span></td>
+<td class="content">
+This policy provides for hospitalisation and surgical expenses, and outpatient treatment benefits incurred due to illness covered under the policy.<br/><br/>
+Refer to Schedule of Benefits in Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the attained age of the Life Assured. All<br/>
+payments of Benefits (with the exception of Daily Cash amount for hospitalization due to road accidents on a Malaysian Highway, Daily Cash allowance for each<br/>
+day confined in a Government Hospital, Outpatient Cancer Treatment, Outpatient Kidney Dialysis Treatment and Emergency Evacuation & Repatriation) as<br/>
+described in the Schedule Of Benefits are subject to deductible of RM 5000 per Disability. Deductibles mean amount of eligible expenses which the policyholder<br/>
+acts as his own insurer/ amount to be borne by policyholder.<br/>
+</td>
+</tr>
+<!--HMM-HLA Major Medi end-->
+
+<!--HSP_II-Hospital & Surgical PLus II start-->
+<tr class="HSP_II" id="HSP_II" style="display:table-row;">
+<td class="contentSmall">Hospital &amp; Surgical Plus<br/>II Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="HSP_IIRiderTerm">{HSP_IIRiderTerm}</span></td>
+<td class="content">
+This policy provides for hospitalisation and surgical expenses, and outpatient treatment benefits incurred due to illness covered under the policy.<br/><br/>
+Refer to Schedule of Benefits in Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the attained age of the Life Assured. All<br/>
+payments of Benefits (with the exception of Hospital Room & Board and Emergency Medical Evacuation & Repatriation) as described in the Schedule Of Benefits<br/>
+are subject to co-insurance amount of 10% of the amount of claim per Disability as admitted by the Company or the sum of RM300/-, whichever is the higher,<br/>
+subject to the absolute maximum sum of RM3,000 (inclusive of deductibles). The absolute maximum limit of RM3,000 shall not be applicable to a plan which<br/>
+provides for total annual benefits exceeding RM100,000. This co-insurance may be reviewed by the Company as its sole discretion from time to time.<br/>
+</td>
+</tr>
+<!--HSP_II-Hospital & Surgical PLus II end-->
+
+
+
+<!--I20R-Income 20 Rider start-->
+<tr class="I20R" id="I20R" style="display:table-row;">
+<td class="contentSmall">Income 20 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="I20RRiderTerm">{I20RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
+100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal<br/>
+Dividend (if any).<br/><br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="I20RGYI">{I20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--I20R-Income 20 Rider end-->
+
+
+<!--I30R-Income 30 Rider start-->
+<tr class="I30R" id="I30R" style="display:table-row;">
+<td class="contentSmall">Income 30 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="I30RRiderTerm">{I30RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
+100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal<br/>Dividend (if any).<br/><br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="I30RGYI">{I30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--I30R-Income 30 Rider end-->
+
+<!--I40R-Income 40 Rider start-->
+<tr class="I40R" id="I40R" style="display:table-row;">
+<td class="contentSmall">Income 40 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="I40RRiderTerm">{I40RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
+100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal<br/>
+Dividend (if any).<br/><br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="I40RGYI">{I40RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--I40R-Income 40 Rider end-->
+
+
+<!--ICR-Income Care Rider start-->
+<tr class="ICR" id="ICR" style="display:table-row;">
+<td class="contentSmall">Income Care Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ICRRiderTerm">{ICRRiderTerm}</span></td>
+<td class="content">
+Upon TPD or diagnosis of any 36 critical illness of the life assured during the coverage period and the life assured remained disabled, RM <span id=""ICRGYI>{ICRGYI}</span> shall be<br/>
+payable annually up to age 65 or death of the life assured, whichever is earlier. The following 36 critical illnesses are covered<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Stroke</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Loss of Speech</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Attack</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Brain Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Kidney Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Valve Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Cancer</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Terminal Illness</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coronary Artery By-Pass Surgery</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Due To Blood Transfusion</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Other Serious Coronary Artery Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Bacterial Meningitis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasty And Other Invasive Treatments For Major Coronary Artery Disease *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Head Trauma</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Liver Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Chronic Aplastic Anemia</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Fulminant Viral Hepatitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Motor Neuron Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Parkinson's Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Benign Brain Tumor</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Alzheimer's Disease/Irreversible Organic Degenerative Brain Disorders</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Paralysis/Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Muscular Dystrophy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Blindness /Total Loss Of Sight</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Surgery To Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Deafness/Total Loss Of Hearing</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Multiple Sclerosis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Burns</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Primary Pulmonary Arterial Hypertension</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Lung Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Medullary Cystic Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Encephalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Severe Cardiomyopathy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Organ / Bone Marrow Transplant</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Systemic Lupus Erythematosus With Lupus Nephritis</td>
+</tr>
+</table>
+<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI or TPD.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later.<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coronary artery disease requiring surgery<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Heart attack<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnesses. The exceptions to this clause are coronary artery disease and AIDS.<br/>
+</td>
+</tr>
+<!--ICR-Income Care Rider end-->
+
+
+<!--ID20R-Income D-20 Rider start-->
+<tr class="ID20R" id="ID20R" style="display:table-row;">
+<td class="contentSmall">Income D-20 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ID20RRiderTerm">{ID20RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or date of reinstatement of the policy at any time<br/>-->
+iii.&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend(if any)and<br/>
+iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
+<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% of outstanding Guaranteed Yearly Income or 36 times of Guaranteed Yearly Income or 4 times of Cash Surrender Value; whichever is the highest,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or date of reinstatement of the policy at any time<br/>-->
+iii.&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend(if any)and<br/>
+iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
+<br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="ID20RGYI">{ID20RGYI}</span> payable starting from end of year 21 up to age 90.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--ID20R-Income D-20 Rider end-->
+
+<!--ID30R-Income D-30 Rider start-->
+<tr class="ID30R" id="ID30R" style="display:table-row;">
+<td class="contentSmall">Income D-30 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ID30RRiderTerm">{ID30RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or date of reinstatement of the policy at any time<br/>-->
+iii.&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend(if any)and<br/>
+iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
+<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% of outstanding Guaranteed Yearly Income or 36 times of Guaranteed Yearly Income or 4 times of Cash Surrender Value; whichever is the highest,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or date of reinstatement of the policy at any time<br/>-->
+iii.&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend(if any)and<br/>
+iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
+<br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="ID30RGYI">{ID30RGYI}</span> payable starting from end of year 31 up to age 90.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--ID30R-Income D-30 Rider end-->
+
+<!--ID40R-Income D-40 Rider start-->
+<tr class="ID40R" id="ID40R" style="display:table-row;">
+<td class="contentSmall">Income D-40 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ID40RRiderTerm">{ID40RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or date of reinstatement of the policy at any time<br/>-->
+iii.&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend(if any)and<br/>
+iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
+<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% of outstanding Guaranteed Yearly Income or 36 times of Guaranteed Yearly Income or 4 times of Cash Surrender Value; whichever is the highest,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or date of reinstatement of the policy at any time<br/>-->
+iii.&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend(if any)and<br/>
+iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
+<br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="ID40RGYI">{ID40RGYI}</span> payable starting from end of year 41 up to age 90.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--ID40R-Income D-40 Rider end-->
+
+<!--IE20R-Income E-20 Rider start-->
+<tr class="IE20R" id="IE20R" style="display:table-row;">
+<td class="contentSmall">Income E-20 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="IE20RRiderTerm">{IE20RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
+100% of outstanding Guaranteed Yearly Income, 20 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+Guaranteed Yearly Income, 80 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and<br/>
+Special Terminal Dividend (if any).<br/><br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="IE20RGYI">{IE20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 10 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Income (if any), Accumulated Cash Dividend (if any) and<br/>
+Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--IE20R-Income E-20 Rider end-->
+
+<!--IE30R-Income E-30 Rider start-->
+<tr class="IE30R" id="IE30R" style="display:table-row;">
+<td class="contentSmall">Income E-30 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="IE30RRiderTerm">{IE30RRiderTerm}</span></td>
+<td class="content">
+<u><b>Death/TPD Benefit</u></b><br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
+100% of outstanding Guaranteed Yearly Income, 20 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+Guaranteed Yearly Income, 80 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and<br/>
+Special Terminal Dividend (if any).<br/><br/>
+TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
+<u><b>Guaranteed Yearly Income Benefit</u></b><br/>
+Guaranteed Yearly Income of RM<span id="IE30RGYI">{IE30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+<u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+advancement shall cease to be payable in order to offset the said advancement.<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+any payment.<br/><br/>
+<u><b>Maturity Benefit</u></b><br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 10 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Income (if any), Accumulated Cash Dividend (if any) and<br/>
+Terminal Dividend (if any) shall be payable.<br/>
+</td>
+</tr>
+<!--IE20R-Income E-20 Rider end-->
+
+
+<!--LCPR-Living Care Plus Rider start--> 
+<tr class="LCPR" id="LCPR" style="display:table-row;">
+<td class="contentSmall">Living Care Plus Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="LCPRRiderTerm">{LCPRRiderTerm}</span></td>
+<td class="content">
+RM <span id="LCPRGYI">{CIRGYI}</span> is payable upon the first occurrence death / TPD / diagnosis of any of the 36 critical illnesses of the life assured during the coverage period. TPD<br/>
+benefit will be paid in accordance to TPD provision.<br/>
+The following 36 critical illnesses are covered:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Stroke</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Loss of Speech</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Attack</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Brain Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Kidney Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Valve Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Cancer</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Terminal Illness</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coronary Artery By-Pass Surgery</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Due To Blood Transfusion</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Other Serious Coronary Artery Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Bacterial Meningitis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasty And Other Invasive Treatments For Major Coronary Artery Disease *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Head Trauma</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Liver Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Chronic Aplastic Anemia</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Fulminant Viral Hepatitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Motor Neuron Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Parkinson's Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Benign Brain Tumor</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Alzheimer's Disease/Irreversible Organic Degenerative Brain Disorders</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Paralysis/Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Muscular Dystrophy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Blindness /Total Loss Of Sight</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Surgery To Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Deafness/Total Loss Of Hearing</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Multiple Sclerosis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Burns</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Primary Pulmonary Arterial Hypertension</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Lung Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Medullary Cystic Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Encephalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Severe Cardiomyopathy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Organ / Bone Marrow Transplant</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Systemic Lupus Erythematosus With Lupus Nephritis</td>
+</tr>
+</table>
+<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI, Death or TPD.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coronary artery disease requiring surgery<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Heart attack<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnesses. The exceptions to this clause are coronary artery disease and AIDS.<br/>
+</td>
+</tr>
+<!--LCPR-Living Care Plus Rider end-->
+
+
+<!--MG_II-MedGlobalII start-->
+<tr class="MG_II" id="MG_II" style="display:table-row;">
+<td class="contentSmall">MedGlobal II</td>
+<td class="contentSmall" style="text-align:center;"><span id="MG_IIRiderTerm">{MG_IIRiderTerm}</span></td>
+<td class="content">
+This policy provides for hospitalisation and surgical expenses, and outpatient treatment benefits incurred due to illness covered under the policy.<br/><br/>
+Refer to Schedule of Benefits in Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the attained age of the Life Assured. All<br/>
+payments of Benefits (with the exception of Hospital Room &amp Board, Government Hospital Daily Cash, Malaysian Government Service Tax, Home Nursing Care<br/>
+and Emergency Medical Evacuation &amp Repatriation) as described in the Schedule Of Benefits are subject to co-insurance amount of 10% of the amount of claim<br/>
+per Disability as admitted by the Company or the sum of RM300/-, whichever is the higher, subject to the absolute maximum sum of RM3,000 (inclusive of<br/>
+deductibles). The absolute maximum limit of RM3,000 shall not be applicable to a plan which provides for total annual benefits exceeding RM100,000. This<br/>
+co-insurance may be reviewed by the Company as its sole discretion from time to time.<br/>
+</td>
+</tr>
+<!--MG_II-MedGlobalII end-->
+
+<!--MG_IV-MedGlobalIV Plus start-->
+<tr class="MG_IV" id="MG_IV" style="display:table-row;">
+<td class="contentSmall">MedGlobal IV Plus</td>
+<td class="contentSmall" style="text-align:center;"><span id="MG_IVRiderTerm">{MG_IVRiderTerm}</span></td>
+<td class="content">
+This policy provides for hospitalisation and surgical expenses, and outpatient treatment benefits incurred due to illness covered under the policy.<br/><br/>
+Refer to the Schedule of Benefits in the Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the attained age of the Life<br/>
+Assured.<br/>
+</td>
+</tr>
+<!--MG_IV-MedGlobalIV Plus end-->
+
+<!--PA-Personal Accident Rider start-->
+<tr class="PA" id="PA" style="display:table-row;">
+<td class="contentSmall">Personal Accident Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="PARiderTerm">{PARiderTerm}</span></td>
+<td class="content">
+
+The following benefits are payable upon death or disability of the life assured caused by an accident during the coverage period:<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Accidental Death - sum assured of this rider payable<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total &amp; Permanent Disability due to accident - refer to schedule of indemnities<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Double indemnity - sum assured payable is doubled if accidental death of Life Assured occurred while the Life Assured is on mechanically propelled Public<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conveyance over an established route on land, excluding Taxis<br/><br/>
+The Company will not pay any benefits under this rider for any loss, damage or other contingency occasioned by or through or in consequence, directly or<br/>
+indirectly, from:<br/><br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flying or taking part in any aerial activities except where traveling in an aircraft as a fare-paying passenger and not as aircrew nor for the purpose of any<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trade or technical operation in or on the aircraft;<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Self-inflicted injury, suicide or attempted suicide, provoked murder or assault or being under the influence of drugs / narcotics / alcohol of any kind;<br/>
+iii.&nbsp;&nbsp;&nbsp;Engaging in or taking part in professional or semi-professional sports;<br/>
+iv.&nbsp;&nbsp;&nbsp;Engaging in racing of any kind (other than on foot), mountain or rock climbing necessitating the use of ropes or guides, winter sports, underwater<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pastimes, water skiing, football, polo, hunting, show jumping, caving, pot-holing, boxing or wrestling;<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;War, invasion, act of foreign enemy, hostilities or warlike operations (whether war be declared or not), civil war, military or usurped power;<br/>
+vi.&nbsp;&nbsp;&nbsp;Direct participation in strikes, riots, rebellion, revolution, civil commotion or insurrection;<br/>
+
+vii.&nbsp;&nbsp;Active duty in the Armed Forces (whether voluntary or otherwise);<br/>
+viii.&nbsp;Sickness or disease of any kind caused by or infected by or in any way attributed to virus, parasite, bacteria or any micro-organism including where the<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virus, parasite, bacteria or micro-organism is introduced and/or caused by bites of insects or is sexually transmitted;<br/>
+ix.&nbsp;&nbsp;&nbsp;Any medical or surgical treatment (except those necessitated by injuries covered by this Policy);<br/>
+x.&nbsp;&nbsp;&nbsp;&nbsp;Committing or attempting to commit any unlawful act;<br/>
+xi.&nbsp;&nbsp;&nbsp;Any disease, sickness or congenital defects;<br/>
+xii.&nbsp;&nbsp;Any physical or mental defect or infirmity;<br/>
+xiii.&nbsp;Human Immune-deficiency Virus (HIV) and/or any HIV related illness including AIDS and/or any mutant derivations or variations thereof;<br/>
+xiv.&nbsp;Pregnancy, childbirth, miscarriage or any complications related to the same;<br/>
+xv.&nbsp;&nbsp;Any dental treatment not necessitated by injury covered under this Policy.<br/>
+
+</td>
+</tr>
+<!--PA-Personal Accident Rider end-->
+
+<!--LCWP-Living Care Waiver of Premium Payor Rider start--> 
+<tr class="LCWP" id="LCWP" style="display:table-row;">
+<td class="contentSmall">Living Care Waiver of<br/>Premium Payor Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
+<td class="content">
+
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
+of the payor during the coverage period.<br/>
+The following 36 critical illnesses are covered:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Stroke</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Loss of Speech</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Attack</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Brain Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Kidney Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Valve Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Cancer</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Terminal Illness</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coronary Artery By-Pass Surgery</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Due To Blood Transfusion</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Other Serious Coronary Artery Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Bacterial Meningitis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasty And Other Invasive Treatments For Major Coronary Artery Disease *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Head Trauma</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Liver Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Chronic Aplastic Anemia</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Fulminant Viral Hepatitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Motor Neuron Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Parkinson's Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Benign Brain Tumor</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Alzheimer's Disease/Irreversible Organic Degenerative Brain Disorders</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Paralysis/Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Muscular Dystrophy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Blindness /Total Loss Of Sight</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Surgery To Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Deafness/Total Loss Of Hearing</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Multiple Sclerosis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Burns</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Primary Pulmonary Arterial Hypertension</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Lung Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Medullary Cystic Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Encephalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Severe Cardiomyopathy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Organ / Bone Marrow Transplant</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Systemic Lupus Erythematosus With Lupus Nephritis</td>
+</tr>
+</table>
+<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI, Death or TPD.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coronary artery disease requiring surgery<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Heart attack<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnesses. The exceptions to this clause are coronary artery disease and AIDS.<br/>
+</td>
+</tr>
+<!--LCWP-Living Care Waiver of Premium Payor Rider end-->
+
+<!--PR-Waiver of Premium Payor Rider start--> 
+<tr class="PR" id="PR" style="display:table-row;">
+<td class="contentSmall">Waiver of Premium Payor Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
+<td class="content">
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the payor during the coverage period.<br/>
+<br/>
+The rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+</td>
+</tr>
+<!--PR-Waiver of Premium Payor Rider end-->
+
+<!--SP_PRE-WOP Spouse Rider (Premier) start--> 
+<tr class="SP_PRE" id="SP_PRE" style="display:table-row;">
+<td class="contentSmall">WOP Spouse Rider<br/>(Premier)</td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderTerm">{SP_PRERiderTerm}</span></td>
+<td class="content">
+
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
+of the 2nd life assured during the coverage period.<br/>
+The following 36 critical illnesses are covered:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Stroke</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Loss of Speech</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Attack</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Brain Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Kidney Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Valve Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Cancer</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Terminal Illness</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coronary Artery By-Pass Surgery</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Due To Blood Transfusion</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Other Serious Coronary Artery Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Bacterial Meningitis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasty And Other Invasive Treatments For Major Coronary Artery Disease *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Head Trauma</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Liver Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Chronic Aplastic Anemia</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Fulminant Viral Hepatitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Motor Neuron Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Parkinson's Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Benign Brain Tumor</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Alzheimer's Disease/Irreversible Organic Degenerative Brain Disorders</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Paralysis/Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Muscular Dystrophy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Blindness /Total Loss Of Sight</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Surgery To Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Deafness/Total Loss Of Hearing</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Multiple Sclerosis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Burns</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Primary Pulmonary Arterial Hypertension</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Lung Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Medullary Cystic Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Encephalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Severe Cardiomyopathy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Organ / Bone Marrow Transplant</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Systemic Lupus Erythematosus With Lupus Nephritis</td>
+</tr>
+</table>
+<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI, Death or TPD.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coronary artery disease requiring surgery<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Heart attack<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnesses. The exceptions to this clause are coronary artery disease and AIDS.<br/>
+</td>
+</tr>
+<!--SP_PRE-WOP Spouse Rider (Premier) end-->
+
+<!--SP_STD-WOP Spouse Rider (Standard) start--> 
+<tr class="SP_STD" id="SP_STD" style="display:table-row;">
+<td class="contentSmall">WOP Spouse Rider<br/>(Standard)</td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
+<td class="content">
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the 2nd life assured during the coverage<br/>
+period.<br/>
+<br/>
+The rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+</td>
+</tr>
+<!--SP_STD-WOP Spouse Rider (Standard) end-->
+
+<!--PLCP-Payor Living Care PLus Rider start--> 
+<tr class="PLCP" id="PLCP" style="display:table-row;">
+<td class="contentSmall">Payor Living Care PLus Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="PLCPRiderTerm">{PLCPRiderTerm}</span></td>
+<td class="content">
+RM <span id="PLCPGYI">{PLCPGYI}</span> is payable upon the first occurrence of death / TPD / diagnosis of any of the 36 critical illnesses of the payor during the coverage period.<br/>
+Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
+The following 36 critical illnesses are covered:<br/><br/>
+
+
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Stroke</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Loss of Speech</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Attack</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Brain Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Kidney Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Heart Valve Surgery</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Cancer</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Terminal Illness</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coronary Artery By-Pass Surgery</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Due To Blood Transfusion</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Other Serious Coronary Artery Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Bacterial Meningitis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasty And Other Invasive Treatments For Major Coronary Artery Disease *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Head Trauma</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Liver Failure</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Chronic Aplastic Anemia</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Fulminant Viral Hepatitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Motor Neuron Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Coma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Parkinson's Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Benign Brain Tumor</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Alzheimer's Disease/Irreversible Organic Degenerative Brain Disorders</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Paralysis/Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Muscular Dystrophy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Blindness /Total Loss Of Sight</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Surgery To Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Deafness/Total Loss Of Hearing</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Multiple Sclerosis</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Burns</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Primary Pulmonary Arterial Hypertension</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">End Stage Lung Disease</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Medullary Cystic Disease</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Encephalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Severe Cardiomyopathy</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Major Organ / Bone Marrow Transplant</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Systemic Lupus Erythematosus With Lupus Nephritis</td>
+</tr>
+</table>
+<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI, Death or TPD.<br/><br/>
+This rider does not cover the following occurrences:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Coronary artery disease requiring surgery<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Heart attack<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnesses. The exceptions to this clause are coronary artery disease and AIDS.<br/>
+</td>
+</tr>
+<!--PLCP-Payor Living Care PLus Rider end-->
+
+<!--PTR-Payor Term Rider start--> 
+<tr class="PTR" id="PTR" style="display:table-row;">
+<td class="contentSmall">PTR</td>
+<td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
+<td class="content">
+RM <span id="PTRGYI">{PTRGYI}</span> is payable upon  death / TPD (prior to age 65) of the payor during the coverage period.<br/>
+<br/>
+The rider does not cover the following occurrences:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+</td>
+</tr>
+<!--PTR-Payor Term Rider end-->
+
+</table><br/>
+</div>
+
+
+
+</div><br/><br/><br/>
+<table style="border-collapse:collapse;border:0px solid black;width:100%;" class="tblFooter">
+
+<tr>
+<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+
+
+
+</td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+</tr>
+</table>
+
+<script>
+
+	
+	$('#table-design1 tr').css('display','none');
+	//$('#table-design1 .tblHeader').css('display','table-row');
+	//$('#table-design1 .c').css('display','table-row');
+	//var page = gup("page");
+	//setPageDesc();
+	//alert(page)
+	//var rider;
+	db = openDatabase(shortName, version, displayName,maxSize);
+	listRiders();
+	db = null;
+
+	
+	//$('#table-design1 tr.c').css('display','none');
+	
+	//var zz;
+	//zz = "111";
+	//alert(zz)
+	function listRiders(){
+	//alert(zz)
+		var rider;
+		db.transaction(function(transaction) {//display rider row
+        	transaction.executeSql("Select * from SI_Temp_Pages where htmlName = '" + page + "'", [], function(transaction, result) {
+            	if (result != null && result.rows != null) {
+                	var row = result.rows.item(0);
+                	
+					if(row.riders.charAt(row.riders.length-1) == ";"){
+						rider = row.riders.slice(0, -1).split(";");
+					}
+					else{
+						rider = row.riders.split(";");
+					}
+                	
+                	
+            		//rider = row.riders.split(";");
+            		for(var i=0;i<rider.length;i++){
+            			temp = rider[i];
+            			if (temp == "C+"){
+            				temp = "C"
+            			}
+            			else if (temp == "tblHeader"){
+            				$('#riderInPage').css('display','inline');
+            			}
+            			
+            			$('#table-design1 tr.'+temp).css('display','table-row');
+            			//$('#table-design1 tr.MG_IV').css('display','table-row');
+            			//$('#table-design1 tr.MG_II').css('display','table-row');
+            			//$('#table-design1 tr.PA').css('display','table-row');
+            			//alert(temp)
+
+            			if (temp == "C"){
+            				temp = "C+"	
+            				$('#table-design2Wide tr').css('display','table-row');
+        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                						$('#CRiderTerm').html(row.RiderTerm);
+                						$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 50) / 100));
+                						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 150) / 100));
+                						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 250) / 100));
+                						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
+                						if (row.PlanOption == "Level"){
+                							$('#cPlanOption').html('Level Cover');
+                							$('#cGuaranteedIncreasingSumAssured').hide();
+                							$('#cNoClaimBenefit').hide();
+                						}
+                						else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
+                							$('#cPlanOption').html('Increasing Cover');
+                							$('#cNoClaimBenefit').hide();
+                						}
+                						else if (row.PlanOption == "Level_NCB"){
+                							$('#cPlanOption').html('Level Cover with NCB');
+                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							$('#cGuaranteedIncreasingSumAssured').hide();
+                						}
+                						else if (row.PlanOption == "Increasing_NCB"){
+                							$('#cPlanOption').html('Increasing Cover with NCB');
+                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							//$('#cGuaranteedIncreasingSumAssured').hide();
+                							$('#cVeryEarlyTD').html('50% of Rider Sum Assured');
+                							$('#cEarlyTD').html('150% of Rider Sum Assured');
+                							$('#cAdvanceTD').html('250% of Rider Sum Assured');
+                							$('#cNursingCareAllowance').html('25% of Rider Sum Assured');
+                						}
+            					}
+        					},errorHandler);        				
+            			}
+            			if (temp == "HB"){
+        					transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                						$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
+            					}
+        					},errorHandler);        				
+            			}
+            			else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP"){
+            				$('#illness tr').css('display','table-row');
+            			}
+            		}
+            		
+            		for (var j=0;j<rider.length;j++){
+        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                					//alert(row.RiderTerm)
+                					$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
+                					$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
+            					}
+        					},errorHandler);
+            		}
+            		
+            		
+            	}
+        	},errorHandler);
+    	},errorHandler,nullHandler);
+    	
+    	return;
+    }
+
+
+
+
+
+
+</script> 
+
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>
+<script>
+
+
+</script>

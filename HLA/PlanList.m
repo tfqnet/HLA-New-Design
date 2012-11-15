@@ -73,6 +73,7 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
     
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16 ];
     return cell;
 }
 

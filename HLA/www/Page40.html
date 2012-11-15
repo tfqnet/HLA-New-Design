@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="CSS/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script>
+    var db;
+    var IncomeRider = 'ID20R';
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var riderDesc = '';
+    //var cashPayment = 0;
+    
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+        //calcTotal();
+    }
+    
+        function ListDBValues() {
+        
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        //HLA Income Builder
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        //$('#TotPremPaid').html(formatCurrency(row.TotPremPaid));
+                        //$('#SurrenderValueHigh').html(formatCurrency(row.SurrenderValueHigh));
+                        //$('#SurrenderValueLow').html(formatCurrency(row.SurrenderValueLow));
+                        //$('#TotalYearlyIncome').html(formatCurrency(row.TotalYearlyIncome));
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                        
+                        
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder</i>');
+                    	//$('#advanceYearlyDesc').hide();
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 60&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 60</i>');
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                        //$('#advanceYearlyIncome').html('Illustration of HLA Income Builder - Advance Yearly Income at age 75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Income Builder - Pendahuluan Pendapatan Tahunan pada umur 75</i>');
+                	}
+                	$('#dateModified').html(row.UpdatedAt);
+                	
+                	if ($.trim(row.CashDividend) == 'ACC')//payment description
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		//totalSurrenderValue
+                		//tpdBenefit
+                		if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                			//$('#totalSurrenderValue').html('(6)=(3)+(9)+(10)');
+                			//$('#tpdBenefit').html('(7)=(4B)+(9)+(11)');
+                			//$('#accumulationYearlyIncome').hide(); //~ description
+                			//$('#premiumPaymentOption').hide(); //# description
+                		}
+                		else
+                		{
+                			//$('#totalSurrenderValue').html('(6)=(3)+(9)+(10)+(11)');
+                			//$('#tpdBenefit').html('(7)=(4B)+(9)+(10)+(12)');
+                			//$('#cashPayment1').html('~');
+                			//$('#cashPayment2').html('~');
+                			//if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			//	$('#premiumPaymentOption').hide(); //# description
+                			//}
+                		}
+                	}
+                	else if (row.CashDividend == 'POF')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		    //$('#totalSurrenderValue').html('(6)=(3)+(9)');
+                			//$('#tpdBenefit').html('(7)=(4B)+(10)');
+                			//$('#accumulationYearlyIncome').hide(); //~ description
+                			//$('#premiumPaymentOption').hide(); //# description
+                		}
+                		else
+                		{
+                		    //$('#totalSurrenderValue').html('(6)=(3)+(9)+(10)');
+                			//$('#tpdBenefit').html('(7)=(4B)+(9)+(11)');
+                			//$('#cashPayment1').html('~');
+                			//$('#cashPayment2').html('~');
+                			//if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			//	$('#premiumPaymentOption').hide(); //# description
+                			//}
+                		}
+                	}
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+            
+        return;
+    }
+    
+</script>
+</head>
+ 
+<body onload="onBodyLoad(),setPage()">
+ 
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+<tr>
+<td width="75%"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="25%">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+</tr>
+</table><br/>
+<b>Notes:</b><br/><br/>
+
+1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is not a contract of insurance. Please refer to the policy contract for the the full terms and conditions of this plan.<br/>
+2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The basic policy benefits will never be less than and the basic policy premium will never be more than those illustrated in Set A.<br/>
+3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set B illustrates the benefits and premiums payable based on the investment strategy for this type of plan and the Company's current practices and assessment of future experience in a high (Scenario A) /<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low (Scenario B) interest rate scenarios.<br/>
+4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Cash Dividend illustrated are for illustration purposes only and are NOT GUARANTEED. The Company retains the full rights and discretion in determining dividends.<br/>
+5.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Cash Dividend will be determined annually by the Company.<br/>
+6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The actual Cash Dividend that would be declared may be more or less, depending on the operation and investment results experience by the Company.<br/>
+7.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Terminal Dividend payable on Surrender/ Maturity will be determined annually by the Company. It is payable on the termination of the policy due to surrender or maturity.<br/>
+8.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Special Terminal Dividend payable on Death/ TPD will be determined annually by the Company after the 1st policy year. It is payable on the termination of the policy due to death or TPD.<br/>
+9.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Terminal Dividend and Special Terminal Dividend are greatly influenced by the capital appreciation of assets together with operating results and overall investment return experienced by the Company with respect to<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this type of plan. It will only be paid if the net returns earned by us support such a dividend.<br/>
+10.&nbsp;&nbsp;&nbsp;The actual Terminal Dividend and Special Terminal Dividend payable may be higher or lower than illustrated. For the purpose of this illustration, the Terminal Dividend and Special Terminal Dividend shown are assumed.<br/>
+11.&nbsp;&nbsp;&nbsp;These dividends included in the illustration have not been declared in the past. These dividends are included based on the Company's expectations of better earnings in the future.<br/>
+12.&nbsp;&nbsp;&nbsp;The Cash Dividends and Yearly Income left with the Company are illustrated to be accumulated at 5.50% (Scenario A) / 3.50% (Scenario B) per annum. The actual interest rate used for accumulation may be more or less<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;depending on the Company's investment experience. The Cash Dividends and Yearly Income left with the Company is accumulated at 5.50% for current year.<br/>
+13.&nbsp;&nbsp;&nbsp;Since Cash Dividend, Terminal Dividend and Special Terminal Dividend may vary depending on the Company's investment returns, the illustrations show the possible level of benefits you may expect on two<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;investment scenarios:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scenario A = Assumes the participating fund earns 6.50% every year<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scenario B = Assumes the participating fund earns 4.50% every year<br/>
+14.&nbsp;&nbsp;The investment return rates earned in the previous three years and the expected investment return rate from for the current year is as follows:<br/><br/>
+<div style="margin-left: 18px;" class="investmentReturnTbl">
+<table id="table-design2">
+<tr><td>Year</td><td>Investment Return</td></tr>
+<tr><td>2009/2010</td><td>10.2%</td></tr>
+<tr><td>2010/2011</td><td>8.1%</td></tr>
+<tr><td>2011/2012</td><td>5.5%</td></tr>
+<tr><td>2012/2013</td><td>6.4% *</td></tr>
+</table>
+</div>
+<br/>
+* expected investment return rate<br/><br/>
+The policyholder should be aware that past performance is not an accurate guide to future performance, which may be different.<br/><br/>
+
+<br/><br/>
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+
+<tr>
+<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+
+
+
+</td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+</tr>
+</table>
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>

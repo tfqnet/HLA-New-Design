@@ -119,11 +119,12 @@
                                               var row = result.rows.item(i);
 
                                               
-                                              //alert("aaa");
+                                              //alert(row.TotYearlyIncome1);
                                               $('#TotPremPaid1').html(formatCurrency(row.TotPremPaid1+""));
                                               $('#SurrenderValueHigh1').html(formatCurrency(row.SurrenderValueHigh1+""));
                                               $('#SurrenderValueLow1').html(formatCurrency(row.SurrenderValueLow1+""));
-                                              $('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1+""));
+                                              //$('#TotalYearlyIncome1').html(formatCurrency(row.TotYearlyIncome1+""));
+                                              $('#tyiM').html(formatCurrency(row.TotYearlyIncome1+""));
                                               
                                               }
                                               }                                   
@@ -174,6 +175,43 @@
                                               if (parseInt(row.AdvanceYearlyIncome) == 0){
                                               $('#premiumPaymentOption').hide(); //# description
                                               }
+	else{
+                				$('.futureGYIAge').html(row.AdvanceYearlyIncome);         				
+                				if (parseInt(row.PremiumPaymentOption) == 6){
+                					if (row.AdvanceYearlyIncome == 60){
+                						//alert(formatCurrency(row.BasicSA.replace(",","")))
+                						//alert(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18))
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18));
+                						$('.futureGYIPercent').html('60.0');
+                					}
+                					else if (row.AdvanceYearlyIncome == 75){
+								
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 12.75));
+                						$('.futureGYIPercent').html('85.0');
+                					}
+                				}
+                				else if (parseInt(row.PremiumPaymentOption) == 9){
+                					if (row.AdvanceYearlyIncome == 60){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18.75));
+                						$('.futureGYIPercent').html('62.5');
+                					}
+                					else if (row.AdvanceYearlyIncome == 75){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 13.5));
+                						$('.futureGYIPercent').html('90.0');
+                					}
+                				}
+                				else if (parseInt(row.PremiumPaymentOption) == 12){
+                					if (row.AdvanceYearlyIncome == 60){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 19.5));
+                						$('.futureGYIPercent').html('65.0');
+                					}
+                					else if (row.AdvanceYearlyIncome == 75){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 14.25));
+                						$('.futureGYIPercent').html('95.0');
+                					}
+                				}
+                			}
+
                                               }
                                               }
                                               else if (row.CashDividend == 'POF')
@@ -195,6 +233,40 @@
                                               if (parseInt(row.AdvanceYearlyIncome) == 0){
                                               $('#premiumPaymentOption').hide(); //# description
                                               }
+	else{
+                				$('.futureGYIAge').html(row.AdvanceYearlyIncome);         				
+                				if (parseInt(row.PremiumPaymentOption) == 6){
+                					if (row.AdvanceYearlyIncome == 60){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18));
+                						$('.futureGYIPercent').html('60.0');
+                					}
+                					else if (row.AdvanceYearlyIncome == 75){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 12.75));
+                						$('.futureGYIPercent').html('85.0');
+                					}
+                				}
+                				else if (parseInt(row.PremiumPaymentOption) == 9){
+                					if (row.AdvanceYearlyIncome == 60){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18.75));
+                						$('.futureGYIPercent').html('62.5');
+                					}
+                					else if (row.AdvanceYearlyIncome == 75){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 13.5));
+                						$('.futureGYIPercent').html('90.0');
+                					}
+                				}
+                				else if (parseInt(row.PremiumPaymentOption) == 12){
+                					if (row.AdvanceYearlyIncome == 60){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 19.5));
+                						$('.futureGYIPercent').html('65.0');
+                					}
+                					else if (row.AdvanceYearlyIncome == 75){
+                						$('.futureGYIAmount').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 14.25));
+                						$('.futureGYIPercent').html('95.0');
+                					}
+                				}
+                			}
+
                                               }
                                               }
                                               
@@ -356,8 +428,8 @@ The illustration of premium above take into consideration the premium of the bas
 <i>~ Termasuk Pendapatan Tahunan Terjamin Terkumpul.</i><br/>
 </span>
 <span id="premiumPaymentOption">
-# Advancement of all future GYI at age 75 of RM12,750.00 (85% of all future GYI yet to fall due) is aasume to be paid out.<br/>
-<i># Pendahuluan semua Pendapatan Tahunan Terjamin masa depan pada umur 75 yang berjumlah RM12,750 (85% dari semua PTT masa depan yang bekum genap tempoh) dianggap akan dibayar.</i><br/>
+# Advancement of all future GYI at age <span class="futureGYIAge">{futureGYIAge}</span> of RM<span class="futureGYIAmount">{futureGYIAmount}</span> (<span class="futureGYIPercent">{futureGYIPercent}</span>% of all future GYI yet to fall due) is aasume to be paid out.<br/>
+<i># Pendahuluan semua Pendapatan Tahunan Terjamin masa depan pada umur <span class="futureGYIAge">{futureGYIAge}</span> yang berjumlah RM<span class="futureGYIAmount">{futureGYIAmount}</span> (<span class="futureGYIPercent">{futureGYIPercent}</span>% dari semua PTT masa depan yang bekum genap tempoh) dianggap akan dibayar.</i><br/>
 </span>
 <span id="advanceYearlyDesc">
 Please ask for copy of sales illustration without advancement of future GYI if you do not require this benefit.<br/>
@@ -392,9 +464,12 @@ Please ask for copy of sales illustration without advancement of future GYI if y
 <tr>
     <td>Total Yearly Income</td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlylncome">{TotalYearlyIncome}</td>
     <td></td>
-    <td>Total Yearly Income </td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="TotalYearlylncome1">{TotalYearlyIncome1}</td>
+    <td>Total Yearly Income </td><td><i>Jumlah Pendapatan Tahunan</i></td><td>: RM</td><td id="tyiM">{TotalYearlyIncome1}</td>
+    
+    
 </tr>
 
+    
     
 </table>
 

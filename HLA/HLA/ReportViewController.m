@@ -136,7 +136,7 @@
     
     sqlStmt = @"Delete from SI_Temp_Pages where PageNum NOT in ('1', '2', '3') ";
     DBID = [_db ExecuteINSERT:sqlStmt];
-    
+    /*
     for (row in _dataTable.rows) //income rider
     {
         if ([[row objectAtIndex:0] isEqualToString:@"I20R"]){
@@ -308,7 +308,296 @@
             
         }
     }
+    */
     
+    for (row in _dataTable.rows) //income rider
+    {
+        if ([[row objectAtIndex:0] isEqualToString:@"I20R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page4_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page4_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+        else if ([[row objectAtIndex:0] isEqualToString:@"I30R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page5_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page5_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+        else if ([[row objectAtIndex:0] isEqualToString:@"I40R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page6_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page6_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+        else if ([[row objectAtIndex:0] isEqualToString:@"ID20R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page7_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page7_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+        else if ([[row objectAtIndex:0] isEqualToString:@"ID30R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page8_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page8_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+        else if ([[row objectAtIndex:0] isEqualToString:@"ID40R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page9_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page9_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+        else if ([[row objectAtIndex:0] isEqualToString:@"IE20R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page10_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page10_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+        else if ([[row objectAtIndex:0] isEqualToString:@"IE30R"]){
+            iRiderCount++;
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page11_1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page11_2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+        }
+    }
+    
+    //summary page
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page12.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    for (row in _dataTable.rows) //income rider
+    {
+        if ([[row objectAtIndex:0] isEqualToString:@"I20R"] || [[row objectAtIndex:0] isEqualToString:@"I30R"] || [[row objectAtIndex:0] isEqualToString:@"I40R"] || [[row objectAtIndex:0] isEqualToString:@"ID20R"] || [[row objectAtIndex:0] isEqualToString:@"ID30R"] || [[row objectAtIndex:0] isEqualToString:@"ID40R"] || [[row objectAtIndex:0] isEqualToString:@"IE20R"] || [[row objectAtIndex:0] isEqualToString:@"IE30R"])
+            //|| [[row objectAtIndex:0] isEqualToString:@"LCWP"] || [[row objectAtIndex:0] isEqualToString:@"SP_PRE"] || [[row objectAtIndex:0] isEqualToString:@"PLCP"]
+            NSLog(@"");
+        else
+        {
+            riderCount++;
+            if (riderCount % 3 == 1){
+                pageNum++;
+                riderCountStart++;
+                
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('%@',%d,'%@')",[desc stringByAppendingString:[NSString stringWithFormat:@"%d.html",riderCountStart]],pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+            }
+            //int a;
+            //a = 4 % 3;
+            //NSLog(@"%d",a);
+            //NSLog(@"%@",[row objectAtIndex:0]);
+            
+        }
+    }
+    
+    //description of basic plan, 2 pages
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page30.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page31.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    //rider benefits
+    riderCount = 0; //reset rider count
+    int descRiderCountStart = 100; //start of rider description page
+    int riderInPageCount = 0; //number of rider in a page, maximum 3
+    NSString *riderInPage = @""; //rider in a page, write to db
+    //NSString *riderInPage1 = @"";
+    NSString *curRider; //current rider
+    NSString *prevRider; //previous rider
+    NSString *headerTitle = @"tblHeader;";
+    
+    
+    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM SI_Trad_Rider_Details_all Where SINo = '%@'",siNo];
+    //NSLog(@"%@",sqlStmt);
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
+    
+    for (row in _dataTable.rows) //income rider
+    {
+        riderCount++;
+        curRider = [row objectAtIndex:0];
+        
+        //NSLog(@"%@",curRider);
+        
+        if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"] || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"] || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] || [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"]){
+            riderInPageCount++;
+            prevRider = curRider;
+            
+            riderInPage = [riderInPage stringByAppendingString:curRider];
+            riderInPage = [riderInPage stringByAppendingString:@";"];
+            if (riderInPageCount == 3){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                if(riderCount == 1)
+                    riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            
+            if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
+                NSLog(@"%@",riderInPage);
+            }
+        }
+        else{
+            if (riderInPageCount == 2){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                if(riderCount == 1)
+                    riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] || [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
+                prevRider = [prevRider stringByAppendingString:@";"];
+                curRider = [prevRider stringByAppendingString:curRider];
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            //NSLog(@"%@",curRider);
+            pageNum++;
+            if(riderCount == 1)
+                curRider = [headerTitle stringByAppendingString:curRider];
+            descRiderCountStart++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",curRider,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            //NSLog(@"%@",sqlStmt);
+        }
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page40.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page41.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page42.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+
+    // malay version here page201.html ---> page 220
+    
+    //------- end ---------
     
     NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
     //NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -775,8 +1064,8 @@
                     " \"SurrenderValuePaidUpHigh\",\"SurrenderValuePaidUpLow\",\"GlncPaid\",\"SumTotPremPaid\",\"SurrenderValuePaidUpHigh2\", "
                     " \"SurrenderValuePaidUpLow2\",\"SumTotPremPaid2\",\"TotalYearlylncome\",\"SumTotalYearlyIncome\",\"SumTotalYearlyIncome2\", "
                     " \"TotalPremPaid2\",\"SurrenderValueHigh2\",\"SurrenderValueLow2\",\"TotalYearlyIncome2\") VALUES "
-                    " (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%.3f\",\"%.3f\", "
-                    " \"%.3f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%.3f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\") ", 
+                    " (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%.3f\",\"%.8f\", "
+                    " \"%.9f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%.3f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\") ", 
                     SINo, Name, @"HLAIB", @"HLA Income Builder", @"Participating Whole Life Plan with Guaranteed Yearly Income and",
                     @"Pelan Penyertaan Sepanjang Hayat dengan Pendapatan Tahunan Terjamin dan ", @"", strEngYearlyIncome, @"", strBMYearlyIncome,
                     @"", @"", @"Occ Loading (per 1k SA)", @"Caj Tambahan Perkerjaan (1k JAD)", 
@@ -1267,7 +1556,7 @@
         EntireTotalYearlyIncome = EntireTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex: i-1] doubleValue ];
         
         [SummaryGuaranteedTotalGYI addObject:[[arrayYearlyIncome objectAtIndex:i-1] stringByReplacingOccurrencesOfString:@"#" withString:@"" ]];
-        [SurrenderValue addObject:[NSString stringWithFormat:@"%.3f", [[SurrenderRates objectAtIndex:i-1] doubleValue ] * BasicSA/1000 ]];
+        [SurrenderValue addObject:[NSString stringWithFormat:@"%.9f", [[SurrenderRates objectAtIndex:i-1] doubleValue ] * BasicSA/1000 ]];
         [SummaryGuaranteedSurrenderValue addObject:[SurrenderValue objectAtIndex:i-1]];
         [DBValue addObject:[NSString stringWithFormat:@"%.0f", BasicSA * [[DBRates objectAtIndex:i-1] doubleValue ]/100 ]];
         [DBValueEnd addObject:[NSString stringWithFormat:@"%.3f", BasicSA * [[DBRatesEnd objectAtIndex:i-1] doubleValue ]/100 ]];
@@ -1373,9 +1662,9 @@
         //----------------- total premium paid end ----------
         
         //------------- current cash dividend
-        [CurrentCashDividendValueA addObject: [NSString stringWithFormat: @"%.3f", 
+        [CurrentCashDividendValueA addObject: [NSString stringWithFormat: @"%.8f", 
                                                BasicSA * [[CurrentCashDividendRatesA objectAtIndex: i - 1] doubleValue ] / 100 ]];
-        [CurrentCashDividendValueB addObject: [NSString stringWithFormat: @"%.3f", 
+        [CurrentCashDividendValueB addObject: [NSString stringWithFormat: @"%.9f", 
                                                 BasicSA * [[CurrentCashDividendRatesB objectAtIndex: i - 1] doubleValue ] / 100 ]];
         
         
@@ -1392,10 +1681,10 @@
                 [AccuCashDividendValueB addObject:[CurrentCashDividendValueB objectAtIndex:i-1]];
             }
             else {
-                [AccuCashDividendValueA addObject: [NSString stringWithFormat: @"%.3f", 
+                [AccuCashDividendValueA addObject: [NSString stringWithFormat: @"%.8f", 
                                                      [[AccuCashDividendValueA objectAtIndex:i-2] doubleValue ] * (1.00 + CDInterestRateHigh) + 
                                                     [[CurrentCashDividendValueA objectAtIndex:i-1] doubleValue ] ] ];
-                [AccuCashDividendValueB addObject: [NSString stringWithFormat: @"%.3f", 
+                [AccuCashDividendValueB addObject: [NSString stringWithFormat: @"%.9f", 
                                                      [[AccuCashDividendValueB objectAtIndex:i-2] doubleValue ] * (1.00 + CDInterestRateLow) + 
                                                           [[CurrentCashDividendValueB objectAtIndex:i-1] doubleValue ] ] ];
 
@@ -1420,9 +1709,9 @@
             
             if (AdvanceYearlyIncome > 0 && i + Age >= AdvanceYearlyIncome) {
                 
-                [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.3f", 
+                [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.8f", 
                                     [[AccuYearlyIncomeValueA objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateHigh) ] ];
-                [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.3f", 
+                [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.9f", 
                                     [[AccuYearlyIncomeValueB objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateLow) ] ];
                 
             }
@@ -1432,10 +1721,10 @@
                     [AccuYearlyIncomeValueB addObject:[arrayYearlyIncome objectAtIndex:i -1]];
                 }
                 else {
-                    [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.3f", 
+                    [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.8f", 
                                     [[AccuYearlyIncomeValueA objectAtIndex:i-2] doubleValue] * (1.00 + CDInterestRateHigh) 
                                     + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ] ] ];
-                    [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.3f", 
+                    [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.9f", 
                                     [[AccuYearlyIncomeValueB objectAtIndex:i-2] doubleValue] * (1.00 + CDInterestRateLow) 
                                     + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ] ] ];
                     
@@ -1454,9 +1743,9 @@
         //------ accu yearly income end ------
         
         //------------- t dividend payable on surrender
-        [tDividendValueA addObject: [NSString stringWithFormat: @"%.3f", 
+        [tDividendValueA addObject: [NSString stringWithFormat: @"%.8f", 
                                                BasicSA * [[tDividendRatesA objectAtIndex: i - 1] doubleValue ] / 100.00 ]];
-        [tDividendValueB addObject: [NSString stringWithFormat: @"%.3f", 
+        [tDividendValueB addObject: [NSString stringWithFormat: @"%.9f", 
                                                BasicSA * [[tDividendRatesB objectAtIndex: i - 1] doubleValue ] / 100.00 ]];
         
         
@@ -1472,8 +1761,8 @@
         //----------- spe TD end ----------
      
         //----------- total surrender value ----------
-        double dTotalSurrenderValueA = 0;
-        double dTotalSurrenderValueB = 0;
+        double dTotalSurrenderValueA = 0.00;
+        double dTotalSurrenderValueB = 0.00;
         
         if ([YearlyIncome isEqualToString:@"ACC"] && [CashDividend isEqualToString:@"ACC"] ) {
             dTotalSurrenderValueA = [[SurrenderValue objectAtIndex:i-1] doubleValue ] + 
@@ -1512,11 +1801,12 @@
             [[tDividendValueB objectAtIndex:i - 1 ] doubleValue ];
         }
         
-        [TotalSurrenderValueA addObject: [NSString stringWithFormat:@"%.3f", dTotalSurrenderValueA ]];
-        [TotalSurrenderValueB addObject: [NSString stringWithFormat:@"%.3f", dTotalSurrenderValueB ]]; 
+        [TotalSurrenderValueA addObject: [NSString stringWithFormat:@"%.8f", dTotalSurrenderValueA ]];
+        [TotalSurrenderValueB addObject: [NSString stringWithFormat:@"%.9f", dTotalSurrenderValueB ]]; 
         
         [SummaryNonGuaranteedSurrenderValueA addObject:[TotalSurrenderValueA objectAtIndex:i-1]];
         [SummaryNonGuaranteedSurrenderValueB addObject:[TotalSurrenderValueB objectAtIndex:i-1]]; 
+        
         
         if (i == PolicyTerm) {
             BasicMaturityValueA = [[SummaryNonGuaranteedSurrenderValueA objectAtIndex:PolicyTerm - 1] doubleValue ];
@@ -1675,7 +1965,7 @@
             QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Overall (\"SINO\", \"SurrenderValueHigh1\", "
                         " \"SurrenderValueLow1\",\"TotPremPaid1\",\"TotYearlyIncome1\", "
                         " \"SurrenderValuehigh2\",\"SurrenderValueLow2\",\"TotPremPaid2\",\"TotYearlyIncome2\") VALUES ( "
-                        " \"%@\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.2f\",\"%.3f\",\"%.2f\",\"%.2f\",\"%.2f\")", 
+                        " \"%@\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\")", 
                             SINo, EntireMaturityValueA, EntireMaturityValueB, EntireTotalPremiumPaid,
                         EntireTotalYearlyIncome,BasicMaturityValueA,BasicMaturityValueB,BasicTotalPremiumPaid,BasicTotalYearlyIncome];
                 
@@ -3039,8 +3329,8 @@
                     EntireTotalYearlyIncome = EntireTotalYearlyIncome + [[YearlyIncomeEOF objectAtIndex:j-1 ] doubleValue ];
                     
                     //-----Surrender Value -------
-                    [SurrenderValue addObject: [NSString stringWithFormat:@"%.3f", 
-                                                [[SurrenderRates objectAtIndex:j-1] doubleValue ] * dRiderSA/1000 ]];
+                    [SurrenderValue addObject: [NSString stringWithFormat:@"%.9f", 
+                                                [[SurrenderRates objectAtIndex:j-1] doubleValue ] * dRiderSA/1000.00 ]];
                     
                     
                     //----- DB    ----------------
@@ -3114,17 +3404,17 @@
                     [aValueEnd addObject: [NSString stringWithFormat:@"%d", TotalADEnd] ];
                     
                     //------ current year dividend
-                    [CurrentCashDividendValueA addObject:[NSString stringWithFormat:@"%.2f", 
-                                                          [[CurrentCashDividendRatesA objectAtIndex:j-1] doubleValue ]/100 * dRiderSA ]];    
-                    [CurrentCashDividendValueB addObject:[NSString stringWithFormat:@"%.2f", 
-                                                          [[CurrentCashDividendRatesB objectAtIndex:j-1] doubleValue ]/100 * dRiderSA ]];    
+                    [CurrentCashDividendValueA addObject:[NSString stringWithFormat:@"%.8f", 
+                                                          [[CurrentCashDividendRatesA objectAtIndex:j-1] doubleValue ]/100.00 * dRiderSA ]];    
+                    [CurrentCashDividendValueB addObject:[NSString stringWithFormat:@"%.9f", 
+                                                          [[CurrentCashDividendRatesB objectAtIndex:j-1] doubleValue ]/100.00 * dRiderSA ]];    
                     // --- accu cash dividend
                     if ([CashDividend isEqualToString:@"ACC"]) {
                         
                         if (j > iTerm) {
-                            [AccuCashDividendValueA addObject: [NSString stringWithFormat:@"%.3f",  
+                            [AccuCashDividendValueA addObject: [NSString stringWithFormat:@"%.8f",  
                                                                 [[AccuCashDividendValueA objectAtIndex:j - 2] doubleValue ] * (1 + 0.055) ]];
-                            [AccuCashDividendValueB addObject: [NSString stringWithFormat:@"%.3f",  
+                            [AccuCashDividendValueB addObject: [NSString stringWithFormat:@"%.9f",  
                                                                 [[AccuCashDividendValueB objectAtIndex:j - 2] doubleValue ] * (1 + 0.035) ]];
                             
                             
@@ -3135,10 +3425,10 @@
                                 [AccuCashDividendValueB addObject:[CurrentCashDividendValueB objectAtIndex:j-1]];
                             }
                             else {
-                                [AccuCashDividendValueA addObject: [NSString stringWithFormat:@"%.3f", 
+                                [AccuCashDividendValueA addObject: [NSString stringWithFormat:@"%.8f", 
                                                                     [[CurrentCashDividendValueA objectAtIndex:j-1] doubleValue ] + 
                                                                     [[AccuCashDividendValueA objectAtIndex:j - 2] doubleValue ] * (1 + 0.055) ]];
-                                [AccuCashDividendValueB addObject: [NSString stringWithFormat:@"%.3f", 
+                                [AccuCashDividendValueB addObject: [NSString stringWithFormat:@"%.9f", 
                                                                     [[CurrentCashDividendValueB objectAtIndex:j-1] doubleValue ] + 
                                                                     [[AccuCashDividendValueB objectAtIndex:j - 2] doubleValue ] * (1 + 0.035) ]];
                             }
@@ -3160,10 +3450,10 @@
                                 [AccuYearlyIncomeValueB addObject:[YearlyIncomeEOF objectAtIndex:j-1]];
                             }
                             else {
-                                [AccuYearlyIncomeValueA addObject: [NSString stringWithFormat:@"%.3f", 
+                                [AccuYearlyIncomeValueA addObject: [NSString stringWithFormat:@"%.8f", 
                                                                     [[YearlyIncomeEOF objectAtIndex:j-1] doubleValue ] + 
                                                                     [[AccuYearlyIncomeValueA objectAtIndex:j - 2] doubleValue ] * (1 + 0.055) ]];
-                                [AccuYearlyIncomeValueB addObject: [NSString stringWithFormat:@"%.3f", 
+                                [AccuYearlyIncomeValueB addObject: [NSString stringWithFormat:@"%.9f", 
                                                                     [[YearlyIncomeEOF objectAtIndex:j-1] doubleValue ] + 
                                                                     [[AccuYearlyIncomeValueB objectAtIndex:j - 2] doubleValue ] * (1 + 0.035) ]];
                             }
@@ -3175,8 +3465,8 @@
                     }
                     
                     // ---- TD
-                    [tDividendValueA addObject:[NSString stringWithFormat:@"%.3f", [[tDividendRatesA objectAtIndex:j-1] doubleValue ]/100 * dRiderSA ]];
-                    [tDividendValueB addObject:[NSString stringWithFormat:@"%.3f", [[tDividendRatesB objectAtIndex:j-1] doubleValue ]/100 * dRiderSA ]];
+                    [tDividendValueA addObject:[NSString stringWithFormat:@"%.8f", [[tDividendRatesA objectAtIndex:j-1] doubleValue ]/100 * dRiderSA ]];
+                    [tDividendValueB addObject:[NSString stringWithFormat:@"%.9f", [[tDividendRatesB objectAtIndex:j-1] doubleValue ]/100 * dRiderSA ]];
                     
                     // --- spe
                     
@@ -3262,8 +3552,8 @@
                                 [[tDividendValueB objectAtIndex:j-1] doubleValue ];
                             }
                         }
-                    [TotalSurrenderValueA addObject: [NSString stringWithFormat: @"%.3f", dTotalSurrenderValueA ] ];   
-                    [TotalSurrenderValueB addObject: [NSString stringWithFormat: @"%.3f", dTotalSurrenderValueB ] ];        
+                    [TotalSurrenderValueA addObject: [NSString stringWithFormat: @"%.8f", dTotalSurrenderValueA ] ];   
+                    [TotalSurrenderValueB addObject: [NSString stringWithFormat: @"%.9f", dTotalSurrenderValueB ] ];        
                     
                     // --- Total Db value
                     double dDBValueA = 0.00;

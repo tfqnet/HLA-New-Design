@@ -271,7 +271,7 @@ bool PostcodeContinue = TRUE;
          self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
      }
     
-    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
     
 }
 - (IBAction)btnOccup:(id)sender {
@@ -878,6 +878,30 @@ PostcodeContinue = TRUE;
         return false;
     }
     
+    if(OccupCodeSelected == NULL){
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Occupation is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [self resignFirstResponder];
+        [self.view endEditing:TRUE];
+        
+        [alert show];
+        return false;
+    }
+    
+    if(![txtEmail.text isEqualToString:@""]){
+        if( [self NSStringIsValidEmail:txtEmail.text] == FALSE){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"You have entered an invalid email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [txtEmail becomeFirstResponder];
+            
+            [alert show];
+            return FALSE;
+        }
+    }
+    
+    
     if([[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -943,28 +967,7 @@ PostcodeContinue = TRUE;
         return  FALSE;
     }
     
-    if(OccupCodeSelected == NULL){
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Occupation is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [self resignFirstResponder];
-        [self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
     
-        if(![txtEmail.text isEqualToString:@""]){
-        if( [self NSStringIsValidEmail:txtEmail.text] == FALSE){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"You have entered an invalid email." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    
-            [txtEmail becomeFirstResponder];
-            
-            [alert show];
-            return FALSE;
-        }
-    }
     
     return true;
 }

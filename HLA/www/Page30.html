@@ -23,10 +23,107 @@
     //var cashPayment = 0;
     var colType = 0;
     var pageNum = '8';
-</script> 
+        
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+    }
+        
+    function ListDBValues() {
+            
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        //Details
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                	}
+                	$('#dateModified').html(row.UpdatedAt);
+                	$('#advYearlyIncome').html(row.PremiumPaymentOption);
+                	$('#guaranteedYearlyIncome').html(formatCurrency(row.BasicSA));
+                	
+                	if ($.trim(row.CashDividend) == 'ACC')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                	else if (row.CashDividend == 'POF')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        return;
+    }
+</script>
 </head>
  
-<body onload="onBodyLoad(),setPage()">
+<body onload="onBodyLoad(), setPage()">
  
 <!-- Begin Wrapper -->
 <div id="wrapper">
@@ -51,59 +148,97 @@
 
 <b>Description of Basic Plan Benefits</b><br/><br/>
 
-This is a participating whole life plan up to age 90 with Guaranteed Yearly Income and limited premium payment term of 6 years. The Guaranteed Yearly Income is payable from<br/>
-end of year 1 until maturity at age 90.<br/>
+This is a participating whole life plan up to age 90 with Guaranteed Yearly Income and limited premium payment term of <span id="advYearlyIncome">{advYearlyIncome}</span> years. The Guaranteed Yearly Income is payable from<br/>
+end of year 1 until maturity at age 90.<br/><br/>
 
 <u><b>Death Benefit</b></u><br/>
 In the event of Death of Life Assured, the Death benefit equivalent to the sum of:<br/>
-(i) 100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
-(ii) Accumulated Guaranteed Yearly Income (if any),<br/>
-(iii) Accumulated Cash Dividend (if any) and<br/>
-(iv) Special Terminal Dividend (if any)<br/>
-shall be payable.<br/>
+(i)&nbsp;&nbsp;&nbsp;&nbsp;100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
+(ii)&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+(iii)&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend (if any) and<br/>
+(iv)&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any)<br/>
+shall be payable.<br/><br/>
 <u><b>Total and Permanent Disability Benefit</b></u><br/>
-In the event of TPD (prior to attaining age 65) of the Life Assured, the TPD benefit equivalent to the sum of:<br/>
-(i) 100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
-(ii) Accumulated Guaranteed Yearly Income (if any),<br/>
-(iii) Accumulated Cash Dividend (if any) and<br/>
-(iv) Special Terminal Dividend (if any)<br/>
-shall be payable.<br/>
+In the event of TPD (natural causes) (prior to attaining age 65) of the Life Assured, the TPD (natural causes) benefit equivalent to the sum of:<br/>
+(i)&nbsp;&nbsp;&nbsp;&nbsp;100% of outstanding Guaranteed Yearly Income or 9 times of Guaranteed Yearly Income or Cash Surrender Value; whichever is the highest,<br/>
+(ii)&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+(iii)&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend (if any) and<br/>
+(iv)&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any)<br/>
+shall be payable.<br/><br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit equivalent to the sum of:<br/>
+(i)&nbsp;&nbsp;&nbsp;&nbsp;400% of outstanding Guaranteed Yearly Income or 36 times of Guaranteed Yearly Income or 4 times of Cash Surrender Value; whichever is the highest,<br/>
+(ii)&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+(iii)&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend (if any) and<br/>
+(iv)&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any)<br/>
+shall be payable.<br/><br/>
+
+
+
+<!--
 Upon accidental TPD, an additional amount equivalent to 300% of the Guaranteed TPD benefit shall be payable.<br/>
 TPD Benefit will be paid in accordance to TPD provision as below:<br/>
+-->
+TPD Benefit will be paid in accordance to TPD provision as below:<br/><br/>
+
+
+<div style="margin-left: 20px;">
 <table id="table-design2" >
 <tr><td>Attained Age upon TPD</td><td>TPD Benefit Limit per Life</td></tr>
-<tr><td>Less than 7</td><td>RM 100,000</td></tr>
-<tr><td>7 to less than 15</td><td>RM 500,000</td></tr>
-<tr><td>15 to less than 65</td><td>RM 3,500,000</td></tr>
-</table><br/>
+<tr><td style="text-align:left;">Less than 7</td><td>RM 100,000</td></tr>
+<tr><td style="text-align:left;">7 to less than 15</td><td>RM 500,000</td></tr>
+<tr><td style="text-align:left;">15 to less than 65</td><td>RM 3,500,000</td></tr>
+</table>
+</div>
+<br/>Total TPD Benefits per Life payable under all policies insuring the Life Assured shall not exceed the TPD Benefit Limit per Life stated above.<br/>
+The Total TPD Benefit per Life refers to TPD coverage of all in force policies for <u>each Life Assured</u> at the point of claim event.
+<br/><br/>
 <u><b>Guaranteed Yearly Income</b></u><br/>
-This plan provides Guaranteed Yearly Income of RM500.00 starting from end of year 1 up to age 90.<br/>
+This plan provides Guaranteed Yearly Income of RM<span id="guaranteedYearlyIncome">{guaranteedYearlyIncome}</span> starting from end of year 1 up to age 90.<br/><br/>
 
-Total TPD Benefit payable under all policies insuring the Life Assured shall not exceed the TPD Benefit Limit per Life stated above.<br/>
-TPD Benefit per Life means TPD coverage of all in-force policies for each Life Assured at the point of claim event.<br/>
+
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
-i) Policy Owner may advance the next 5 years GYI upon happening of events as listed below; starting from the policy year where the first GYI is payable and provided that the policy has acquired sufficient Net Cash<br/>
-Surrender Value<br/>
-- Marriage<br/>
-- Child Birth<br/>
-- Children's university admission<br/>
-- Children's graduation/convocation<br/>
-- Children's wedding<br/>
-- Purchase of new house<br/>
-- Starting of a business<br/>
-- Business Disruption<br/>
-- Policy Owner/ Parents/ Children admitted to hospital<br/>
-- Parent/children death<br/>
-- Policy owner diagnosed with critical illness<br/>
-- Policy owner suffers temporary total disablement due to illness or accident.<br/>
+i)&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner may advance the next 5 years GYI upon happening of events as listed below; starting from the policy year where the first GYI is payable and provided that the policy has acquired sufficient Net Cash<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Surrender Value<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Marriage<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Child Birth<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Children's university admission<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Children's graduation/convocation<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Children's wedding<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Purchase of new house<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Starting of a business<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Business Disruption<br/>
+<!--
+-&nbsp;&nbsp;&nbsp;Policy Owner/ Parents/ Children admitted to hospital<br/>
+-&nbsp;&nbsp;&nbsp;Parent/children death<br/>
+-&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
+-&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/>
+-->
+<!--
 The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
-</div>
-<div class="footer">This sales illustration consists of 57 pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
-information printed on each and every page. Illustrasi Jualan ini mengandungi 57 muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal<br/>
-pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.<br/>
-<b>Win MP (Trad) Version 6.5 (Agency) - Last Updated 20 Jul 2012 - E&OE</b> <br/> Level
-3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
-</div>
+-->
+<br/>
+
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+
+<tr>
+<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+
+
+
+</td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+</tr>
+</table>
+
+
+
+
 <!-- End Footer -->
  
 <!-- End Wrapper -->

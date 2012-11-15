@@ -137,7 +137,7 @@ NSString *SelectedString;
     }    
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16 ];
     return cell;
 
 }
