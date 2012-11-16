@@ -89,7 +89,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {   
     if (indexPath.row == 0) {
-         UserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"UserProfile"];
+         UserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingUserProfile"];
         
         
         

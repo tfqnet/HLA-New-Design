@@ -141,6 +141,14 @@
         sqlite3_close(contactDB);
     }
     
+    if (SINO.count == 0) {
+        [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        outletEdit.enabled = FALSE;
+    }
+    else {
+        [outletEdit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+        outletEdit.enabled = TRUE;
+    }
     
     //    UITableView *tableView =  [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
     
@@ -719,6 +727,15 @@
         else {
             NSLog(@"cannot open DB");
         }
+        
+        if (SINO.count == 0) {
+            outletEdit.enabled = FALSE;
+            [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        }
+        else {
+            [outletEdit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            outletEdit.enabled = TRUE;
+        }
     
     [myTableView reloadData];
     }
@@ -729,6 +746,15 @@
         [self.myTableView setEditing:NO animated:TRUE];
         outletDelete.hidden = true;
         [outletEdit setTitle:@"Delete" forState:UIControlStateNormal ];
+        
+        if (SINO.count == 0) {
+            outletEdit.enabled = FALSE;
+            [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        }
+        else {
+            [outletEdit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            outletEdit.enabled = TRUE;
+        }
     }
     else{
         [self.myTableView setEditing:YES animated:TRUE]; 
@@ -816,6 +842,9 @@
             
             [self.myTableView reloadData]; 
         }
+        
+        
+        
         
     }
 

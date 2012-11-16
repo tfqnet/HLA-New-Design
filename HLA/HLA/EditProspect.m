@@ -87,7 +87,7 @@ bool IsContinue = TRUE;
     NSString *docsDir = [dirPaths objectAtIndex:0];
     
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    txtRemark.layer.borderWidth = 3.0f;
+    txtRemark.layer.borderWidth = 1.0f;
     txtRemark.layer.borderColor = [[UIColor grayColor] CGColor];
     
     [txtHomePostCode addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
@@ -1370,11 +1370,12 @@ bool IsContinue = TRUE;
         [_delegate FinishEdit];
     }
     
+    /*
     UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Edit Prospect Profile" 
                                     message:@"Prospect record successfully updated." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
     SuccessAlert.tag = 2;
     [SuccessAlert show];
-    
+    */
     /*
     ProspectListing *ListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
     [ListingPage ReloadTableData];
@@ -1437,7 +1438,7 @@ bool IsContinue = TRUE;
     self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
     ContactTypePicker.hidden = true;
 }
-
+/*
 - (IBAction)btnCancel:(id)sender {
     //[self dismissModalViewControllerAnimated:YES];
     
@@ -1463,7 +1464,7 @@ bool IsContinue = TRUE;
 
     
 }
-
+*/
 - (IBAction)btnSave:(id)sender {
     [self.view endEditing:YES];
     [self resignFirstResponder];
@@ -1472,7 +1473,28 @@ bool IsContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+    if ([strChanges isEqualToString:@"Yes"]) {
+        
+        UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to save all the changes ?" 
+                                                       delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", Nil];
+        Alert.tag = 1003;
+        [Alert show];
+    } 
+    else {
+        [self dismissModalViewControllerAnimated:YES];
+        
+    }
     
+    IsContinue = TRUE;
+    /*
+    ProspectListing *ListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
+    [ListingPage ReloadTableData];
+    [ListingPage.tableView reloadData];
+    */
+    
+}
+
+-(void)SaveChanges{
     if ([self Validation] == TRUE) {
         
         sqlite3_stmt *statement;
@@ -1520,15 +1542,8 @@ bool IsContinue = TRUE;
             NSLog(@"Error Open");
         }
         
-        
+        [self dismissModalViewControllerAnimated:NO];
     }
-    
-    IsContinue = TRUE;
-    /*
-    ProspectListing *ListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
-    [ListingPage ReloadTableData];
-    [ListingPage.tableView reloadData];
-    */
     
 }
 
@@ -1700,7 +1715,7 @@ bool IsContinue = TRUE;
         case 1: 
         {
             
-            if (alertView.tag == 1) {
+            if (alertView.tag == 1) { //delete mode
                 
                 const char *dbpath = [databasePath UTF8String];
                 
@@ -1757,6 +1772,9 @@ bool IsContinue = TRUE;
                 sqlite3_close(contactDB);    
                 }
 
+            }
+            else if (alertView.tag == 1003) { //save changes
+                [self SaveChanges];
             }
                        
         }

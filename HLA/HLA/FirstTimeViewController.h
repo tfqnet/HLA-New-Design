@@ -10,7 +10,7 @@
 #import <sqlite3.h>
 #import "SecurityQuesTbViewController.h"
 
-@interface FirstTimeViewController : UIViewController<UITextFieldDelegate,SecurityQuesTbViewControllerDelegate>{
+@interface FirstTimeViewController : UIViewController<UITextFieldDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -23,23 +23,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtOldPassword;
 @property (weak, nonatomic) IBOutlet UITextField *txtNewPassword;
 @property (weak, nonatomic) IBOutlet UITextField *txtConfirmPassword;
-@property (weak, nonatomic) IBOutlet UILabel *lblQues1;
-@property (weak, nonatomic) IBOutlet UILabel *lblQues2;
-@property (weak, nonatomic) IBOutlet UILabel *lblQues3;
-@property (weak, nonatomic) IBOutlet UITextField *txtAnswer1;
-@property (weak, nonatomic) IBOutlet UITextField *txtAnswer2;
-@property (weak, nonatomic) IBOutlet UITextField *txtAnswer3;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *btnCancel;
 - (IBAction)ActionCancel:(id)sender;
 - (IBAction)btnSave:(id)sender;
-@property (weak, nonatomic) IBOutlet UITextField *txtAgentCode;
-@property (weak, nonatomic) IBOutlet UITextField *txtAgentName;
-@property (weak, nonatomic) IBOutlet UITextField *txtAgentContactNo;
-@property (weak, nonatomic) IBOutlet UITextField *txtLeaderCode;
-@property (weak, nonatomic) IBOutlet UITextField *txtLeaderName;
-@property (weak, nonatomic) IBOutlet UITextField *txtRegistrationNo;
-@property (weak, nonatomic) IBOutlet UITextField *txtEmail;
-@property (weak, nonatomic) IBOutlet UILabel *lblStatus;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *outletSave;
 
@@ -51,7 +37,6 @@
 @property (nonatomic,copy) NSString *questTwoCode;
 @property (nonatomic,copy) NSString *questThreeCode;
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
-@property (weak, nonatomic) IBOutlet UIButton *btnNext;
-- (IBAction)ActionNext:(id)sender;
+- (IBAction)btnNext:(id)sender;
 
 @end

@@ -85,7 +85,6 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
-- (IBAction)btnCancel:(id)sender;
 - (IBAction)btnSave:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
 @property (weak, nonatomic) IBOutlet UIButton *outletType2;
@@ -106,6 +105,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtPrefix3;
 @property (weak, nonatomic) IBOutlet UITextField *txtPrefix4;
 @property (weak, nonatomic) IBOutlet UITextField *txtPrefix5;
+
 
 
 @end

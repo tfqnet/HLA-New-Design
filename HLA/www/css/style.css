@@ -9,6 +9,8 @@
 	background-repeat: no-repeat;
 	height: auto;
 	background-color:#f9f9f9;
+    -webkit-touch-callout: none;
+   -webkit-user-select: none; 
 } 
 	
 	#wrapper {

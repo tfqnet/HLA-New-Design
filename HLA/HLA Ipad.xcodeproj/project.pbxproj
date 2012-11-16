@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
 		C4660E63161F118B00BA4AFE /* ColorHexCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660E62161F118B00BA4AFE /* ColorHexCode.m */; };
 		C4660EB61625047800BA4AFE /* delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4660EA11625047800BA4AFE /* delete_button.png */; };
 		C4660EB71625047800BA4AFE /* exit_btnB_144.png in Resources */ = {isa = PBXBuildFile; fileRef = C4660EA21625047800BA4AFE /* exit_btnB_144.png */; };
@@ -182,6 +183,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
+		C418112716561D87006A05B9 /* SettingUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserProfile.m; sourceTree = "<group>"; };
 		C4660E61161F118B00BA4AFE /* ColorHexCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorHexCode.h; sourceTree = "<group>"; };
 		C4660E62161F118B00BA4AFE /* ColorHexCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorHexCode.m; sourceTree = "<group>"; };
 		C4660EA11625047800BA4AFE /* delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_button.png; sourceTree = "<group>"; };
@@ -428,6 +431,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C41811251655E614006A05B9 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				C418112616561D87006A05B9 /* SettingUserProfile.h */,
+				C418112716561D87006A05B9 /* SettingUserProfile.m */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
 		C4660EE71625995600BA4AFE /* iCarousel */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +516,7 @@
 		C4E9D19A1612C64900016053 /* HLA */ = {
 			isa = PBXGroup;
 			children = (
+				C41811251655E614006A05B9 /* Setting */,
 				C4F8302B162FCECC00EF8FAA /* html */,
 				C4F8300A162FA82C00EF8FAA /* Report */,
 				C4E7B384161B10F200066CBF /* SI Listing */,
@@ -1062,6 +1075,7 @@
 				C4EF087316496A5A000444BA /* pages.m in Sources */,
 				C4EF087616496B13000444BA /* SidebarViewController.m in Sources */,
 				C4EF087916496B43000444BA /* BrowserViewController.m in Sources */,
+				C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

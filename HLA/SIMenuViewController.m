@@ -386,11 +386,16 @@
         sqlite3_stmt *statement;
         BOOL cont = FALSE;
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-        {
-            NSString *querySQL = [NSString stringWithFormat:
-                                  @"SELECT * from SI_Store_Premium "];
+        {  
+           // NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
             
-            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
+                        "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
+                        "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+                        "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
+            
+            
+            if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
                 if (sqlite3_step(statement) == SQLITE_ROW)
                 {
@@ -467,7 +472,7 @@
         }
         else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                          message:@"Please generate the premium first" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+                                                          message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
             [alert show];
         }
         

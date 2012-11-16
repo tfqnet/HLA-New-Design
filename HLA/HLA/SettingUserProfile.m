@@ -1,35 +1,28 @@
 //
-//  UserProfile.m
+//  SettingUserProfile.m
 //  HLA Ipad
 //
-//  Created by Md. Nazmus Saadat on 9/28/12.
+//  Created by Md. Nazmus Saadat on 11/16/12.
 //  Copyright (c) 2012 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "UserProfile.h"
-#import "ChangePassword.h"
-#import "SecurityQuestion.h"
+#import "SettingUserProfile.h"
 #import "Login.h"
 #import "AppDelegate.h"
 
-@interface UserProfile ()
+@interface SettingUserProfile ()
 
 @end
 
-@implementation UserProfile
-@synthesize outletCancel;
-@synthesize outletSave;
-@synthesize lblAgentLoginID,FirstTimeLogin;
-@synthesize lblStatus;
-@synthesize ScrollView;
-@synthesize txtAgentCode;
-@synthesize txtAgentName;
+@implementation SettingUserProfile
+@synthesize lblAgentLoginID, username, code, name, contactNo ;
+@synthesize txtAgentCode, leaderCode, leaderName, registerNo, email;
+@synthesize txtAgentName, idRequest, indexNo;
 @synthesize txtAgentContactNo;
 @synthesize txtLeaderCode;
 @synthesize txtLeaderName;
-@synthesize txtBizRegNo;
-@synthesize txtEmail, ChangePwdPassword, ChangePwdUsername;
-@synthesize email,leaderCode,leaderName,contactNo,code, username, name, registerNo, idRequest, indexNo;
+@synthesize txtEmail;
+@synthesize txtBixRegNo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -43,21 +36,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+	// Do any additional setup after loading the view.
+    
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     
-    outletSave.hidden = TRUE;
-    if (FirstTimeLogin == 1) {
-        //outletCancel.enabled = false;
-    }
-    else {
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         
         self.indexNo = zzz.indexNo;
         self.idRequest = zzz.userRequest;
         
-        //outletCancel.enabled = true;
-    }
+        
+    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -71,18 +60,15 @@
 
 - (void)viewDidUnload
 {
-    [self setScrollView:nil];
+    [self setLblAgentLoginID:nil];
     [self setTxtAgentCode:nil];
     [self setTxtAgentName:nil];
     [self setTxtAgentContactNo:nil];
     [self setTxtLeaderCode:nil];
     [self setTxtLeaderName:nil];
-    [self setLblAgentLoginID:nil];
-    [self setLblStatus:nil];
-    [self setOutletCancel:nil];
-    [self setTxtBizRegNo:nil];
+    [self setTxtBixRegNo:nil];
     [self setTxtEmail:nil];
-    [self setOutletSave:nil];
+    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -94,12 +80,6 @@
     
     return NO;
 }
-
-
-
-
-
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -125,33 +105,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-}
-
--(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{   
-    if (FirstTimeLogin == 1) {
-        if (alertView.tag == 1) {
-            Login *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
-            LoginPage.modalPresentationStyle = UIModalPresentationFullScreen;
-            LoginPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentModalViewController:LoginPage animated:YES ];
-            
-            [self dismissModalViewControllerAnimated:YES];
-            
-        }
-    }
-    
-    /*
-    else {
-        [self updateUserData];
-    }
-     */
-    /*
-    if (alertView.tag == 1) {
-        NSLog(@"dsadasdasdas");
-        [self dismissModalViewControllerAnimated:YES ];
-    }
-     */
 }
 
 -(void)viewExisting
@@ -195,7 +148,7 @@
                 txtAgentContactNo.text = contactNo;
                 txtLeaderCode.text = leaderCode;
                 txtLeaderName.text = leaderName;
-                txtBizRegNo.text = registerNo;
+                txtBixRegNo.text = registerNo;
                 txtEmail.text = email;
                 
                 
@@ -208,21 +161,18 @@
     }
 }
 
--(void)keyboardDidShow:(NSNotificationCenter *)notification
-{/*
-    self.ScrollView.frame = CGRectMake(0, 0, 1024, 748-352);
-    self.ScrollView.contentSize = CGSizeMake(1024, 748);
-    
-    CGRect textFieldRect = [activeField frame];
-    textFieldRect.origin.y += 10;
-    [self.ScrollView scrollRectToVisible:textFieldRect animated:YES];
-  */
-}
-
--(void)keyboardDidHide:(NSNotificationCenter *)notification
-{/*
-    self.ScrollView.frame = CGRectMake(0, 0, 1024, 748);
-  */
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{   /*
+        if (alertView.tag == 1) {
+            Login *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
+            LoginPage.modalPresentationStyle = UIModalPresentationFullScreen;
+            LoginPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentModalViewController:LoginPage animated:YES ];
+            
+            [self dismissModalViewControllerAnimated:YES];
+            
+        }
+     */
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -231,19 +181,36 @@
     return YES;
 }
 
+-(void)keyboardDidShow:(NSNotificationCenter *)notification
+{/*
+  self.ScrollView.frame = CGRectMake(0, 0, 1024, 748-352);
+  self.ScrollView.contentSize = CGSizeMake(1024, 748);
+  
+  CGRect textFieldRect = [activeField frame];
+  textFieldRect.origin.y += 10;
+  [self.ScrollView scrollRectToVisible:textFieldRect animated:YES];
+  */
+}
+
+-(void)keyboardDidHide:(NSNotificationCenter *)notification
+{/*
+  self.ScrollView.frame = CGRectMake(0, 0, 1024, 748);
+  */
+}
+
 -(void)updateUserData
 {
     if([self Validation] == TRUE){
         const char *dbpath = [databasePath UTF8String];
         sqlite3_stmt *statement;
-        sqlite3_stmt *statement2;
+        
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
             
-             NSString *querySQL = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\",AgentName= \"%@\",AgentContactNo= \"%@\",ImmediateLeaderCode= \"%@\",ImmediateLeaderName= \"%@\",BusinessRegNumber = \"%@\",AgentEmail= \"%@\" WHERE IndexNo=\"%d\"",
-             txtAgentCode.text,txtAgentName.text,txtAgentContactNo.text,txtLeaderCode.text,txtLeaderName.text,txtBizRegNo.text,txtEmail.text,self.indexNo];
-             
+            NSString *querySQL = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\",AgentName= \"%@\",AgentContactNo= \"%@\",ImmediateLeaderCode= \"%@\",ImmediateLeaderName= \"%@\",BusinessRegNumber = \"%@\",AgentEmail= \"%@\" WHERE IndexNo=\"%d\"",
+                                  txtAgentCode.text,txtAgentName.text,txtAgentContactNo.text,txtLeaderCode.text,txtLeaderName.text,txtBixRegNo.text,txtEmail.text,self.indexNo];
+            
             
             
             const char *query_stmt = [querySQL UTF8String];
@@ -252,35 +219,18 @@
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-                    if (FirstTimeLogin == 1) {
-                        NSString *FinalSQL = [NSString stringWithFormat:@"UPDATE User_Profile SET AgentPassword= \"%@\", FirstLogin = 0 WHERE IndexNo=\"%d\"", self.ChangePwdPassword ,self.indexNo];
-                        
-                        
-                        if (sqlite3_prepare_v2(contactDB, [FinalSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK){
-                            
-                            if (sqlite3_step(statement2) == SQLITE_DONE)
-                            {
-                                UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                                  message:@"Registration successful! Please re-login with the new password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
-                                success.tag = 1;
-                                [success show];
-                            }
-                            
-                            sqlite3_finalize(statement2);
-                        }    
-                    }
-                    else {
+                    
                         UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
                                                                           message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
                         success.tag = 1;
                         [success show];
-                    }
                     
-                   
+                    
+                    
                     
                 } else {
-                    lblStatus.text = @"Failed to update!";
-                    lblStatus.textColor = [UIColor redColor];
+                    //lblStatus.text = @"Failed to update!";
+                    //lblStatus.textColor = [UIColor redColor];
                     
                 }
                 sqlite3_finalize(statement);
@@ -308,11 +258,11 @@
     }
     
     if ([txtAgentName.text isEqualToString:@""] || [txtAgentName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length == 0 ) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Agent Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Agent Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
         [txtAgentName becomeFirstResponder];
-            return FALSE;
+        return FALSE;
         
         
     }
@@ -323,7 +273,7 @@
         
         for (int i=0; i<strToBeTest.length; i++) {
             int str1=(int)[strToBeTest characterAtIndex:i];
-        
+            
             if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91)){
                 valid = TRUE;
                 
@@ -340,7 +290,7 @@
             return false;
         }
     }
-
+    
     if(![[txtAgentContactNo.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@"" ]){
         if (txtAgentContactNo.text.length > 11) {
             
@@ -384,7 +334,7 @@
             [txtEmail becomeFirstResponder];
             return FALSE;
         }
-            
+        
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -409,11 +359,10 @@
 }
 
 
-- (IBAction)btnCancel:(id)sender {
-    //[self dismissModalViewControllerAnimated:YES ];
-    [self.view endEditing:TRUE];
-    [self resignFirstResponder];
-    [self updateUserData ];
+
+
+- (IBAction)btnClose:(id)sender {
+    [self dismissModalViewControllerAnimated:YES ];
 }
 
 - (IBAction)btnSave:(id)sender {
@@ -421,6 +370,4 @@
     [self resignFirstResponder];
     [self updateUserData ];
 }
-
-
 @end

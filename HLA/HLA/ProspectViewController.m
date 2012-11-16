@@ -86,7 +86,7 @@ bool PostcodeContinue = TRUE;
     NSString *docsDir = [dirPaths objectAtIndex:0];
     
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    txtRemark.layer.borderWidth = 3.0f;
+    txtRemark.layer.borderWidth = 1.0f;
     txtRemark.layer.borderColor = [[UIColor grayColor] CGColor];
     
     [txtHomePostCode addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
