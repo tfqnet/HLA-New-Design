@@ -216,10 +216,11 @@
 
 - (IBAction)doSave:(id)sender
 {
+//    NSLog(@"smoker:%@",smoker);
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
     
     if (nameField.text.length <= 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (OccpCode.length == 0) {
@@ -273,7 +274,7 @@
         }
         nameField.text = @"";
         [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         DOBField.text = @"";
         ageField.text = @"";
         OccpField.text = @"";
@@ -369,6 +370,7 @@
         sex = nil;
         smoker = nil;
     }
+    smoker = @"N";
     IndexNo = [aaIndex intValue];
     
     if (la2ndH.storedIndexNo == IndexNo) {
@@ -386,7 +388,7 @@
         }
         NSLog(@"sex:%@",sex);
         
-        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         DOBField.text = [[NSString alloc] initWithFormat:@"%@",aaDOB];
         DOB = aaDOB;
         [self calculateAge];

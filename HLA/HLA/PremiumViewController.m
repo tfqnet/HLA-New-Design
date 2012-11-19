@@ -523,19 +523,20 @@
         } else if ([riderHLP count] != 0) {
             riderHLoad = [[riderHLP objectAtIndex:i] doubleValue];
         }
-        NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",[riderCode objectAtIndex:i],riderRate,ridSA,riderHLoad);
+        NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",RidCode,riderRate,ridSA,riderHLoad);
         
         double annFac;
         double halfFac;
         double quarterFac;
         double monthFac;
+        /*
         if ([RidCode isEqualToString:@"PA"]) {
             annFac = 1;
             halfFac = 0.5;
             quarterFac = 0.25;
             monthFac = ((double)1)/12;
         }
-        else if ([RidCode isEqualToString:@"HB"]) {
+        else */if ([RidCode isEqualToString:@"HB"]) {
             annFac = 1;
             halfFac = 0.55;
             quarterFac = 0.3;
@@ -547,12 +548,14 @@
             quarterFac = 0.2625;
             monthFac = 0.0875;
         }
+        NSLog(@"factorann (%@):%.4f, half:%.4f, quar:%.4f, month:%.4f",RidCode,annFac,halfFac,quarterFac,monthFac);
         
         //calculate occupationLoading
         double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
         double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
         double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
         double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
+        NSLog(@"OccpLoad A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
         
         //calculate rider health loading
         double RiderHLAnnually = riderHLoad * (BasicSA/1000) * annFac;

@@ -103,6 +103,10 @@
     }
     
     NSString *itemDesc = [desc objectAtIndex:indexPath.row];
+    if ([[ptype objectAtIndex:indexPath.row] isEqualToString:@"PY"]) {
+        itemDesc = [itemDesc substringWithRange:NSMakeRange(0, 5)];
+    }
+    
 	cell.textLabel.text = itemDesc;
     
 	if (indexPath.row == selectedIndex) {

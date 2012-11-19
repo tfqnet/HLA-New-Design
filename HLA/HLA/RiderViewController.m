@@ -70,7 +70,7 @@
 @synthesize waiverRiderAnn,waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,incomeRiderGYI,incomeRiderSA,basicGYIRate,incomeRiderCSV;
 @synthesize incomeRiderAnn,incomeRiderHalf,incomeRiderMonth,incomeRiderQuar,incomeRiderPrem,basicCSVRate,riderCSVRate,pTypeAge;
-@synthesize inputSA,inputCSV,inputGYI,inputIncomeAnn;
+@synthesize inputSA,inputCSV,inputGYI,inputIncomeAnn,secondLARidCode;
 
 #pragma mark - Cycle View
 
@@ -136,16 +136,20 @@
     titleUnit.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     CGRect frame5=CGRectMake(353,411, 62, 50);
+    titleClass.text = @"Occ \nClass";
     titleClass.frame = frame5;
     titleClass.textAlignment = UITextAlignmentCenter;
     titleClass.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleClass.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    titleClass.numberOfLines = 2;
 
     CGRect frame6=CGRectMake(415,411, 62, 50);
+    titleLoad.text = @"Occp \nLoading";
     titleLoad.frame = frame6;
     titleLoad.textAlignment = UITextAlignmentCenter;
     titleLoad.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleLoad.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    titleLoad.numberOfLines = 2;
     
     CGRect frame7=CGRectMake(477,411, 84, 50);
     titleHL1K.frame = frame7;
@@ -418,8 +422,13 @@
         double maxRiderTerm2 = fmax(requestMOP,storedMaxTerm);
 //        double maxRiderTerm2 = fmax(requestCoverTerm,storedMaxTerm);
         maxRiderTerm = fmin(maxRiderTerm1,maxRiderTerm2);
+        NSLog(@"maxTerm1:%.f, maxTerm2:%.f, maxTerm:%.f",maxRiderTerm1,maxRiderTerm2,maxRiderTerm);
         
         if (maxRiderTerm < minTerm) {
+            maxRiderTerm = maxTerm;
+        }
+        
+        if (([riderCode isEqualToString:@"PLCP"] || [riderCode isEqualToString:@"PTR"]) && maxRiderTerm > maxTerm) {
             maxRiderTerm = maxTerm;
         }
     }
@@ -499,7 +508,11 @@
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
-    
+    else if ([riderCode isEqualToString:@"PTR"]) {
+        _maxRiderSA = fmin(dblPseudoBSA3,500000);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
+    }
     else {
         _maxRiderSA = maxSATerm;
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
@@ -781,13 +794,14 @@
         double halfFac;
         double quarterFac;
         double monthFac;
+        /*
         if ([RidCode isEqualToString:@"PA"]) {
             annFac = 1;
             halfFac = 0.5;
             quarterFac = 0.25;
             monthFac = ((double)1)/12;
         }
-        else if ([RidCode isEqualToString:@"HB"]) {
+        else */ if ([RidCode isEqualToString:@"HB"]) {
             annFac = 1;
             halfFac = 0.55;
             quarterFac = 0.3;
@@ -1736,6 +1750,7 @@
 
         [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];        
         [self.myTableView reloadData];
+        [self getListingRider];
         
         deleteBtn.enabled = FALSE;
         [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
@@ -1746,6 +1761,29 @@
     else if (alertView.tag == 1003 && buttonIndex == 0) {
         [self saveRider];
     }
+    else if (alertView.tag == 1004 && buttonIndex == 0)
+    {
+        sqlite3_stmt *statement;
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,secondLARidCode];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_DONE)
+                {
+                    NSLog(@"rider delete!");
+                    
+                    [self getListingRider];
+                } else {
+                    NSLog(@"rider delete Failed!");
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+    }
+    
 }
 
 #pragma mark - validate
@@ -2338,9 +2376,15 @@
             PtypeChange = YES;
         }
     }
+    if ([code isEqualToString:@"PY"]) {
+        NSString *dd = [desc substringWithRange:NSMakeRange(0, 5)];
+        pTypeDesc = [[NSString alloc] initWithFormat:@"%@",dd];
+    } else {
+        pTypeDesc = [[NSString alloc] initWithFormat:@"%@",desc];
+    }
+    
     pTypeCode = [[NSString alloc] initWithFormat:@"%@",code];
     PTypeSeq = [seq intValue];
-    pTypeDesc = [[NSString alloc] initWithFormat:@"%@",desc];
     pTypeAge = [aage intValue];
     
     [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
@@ -2654,6 +2698,10 @@
 
 -(void)saveRider
 {
+    if (([pTypeCode isEqualToString:@"LA"]) && (PTypeSeq == 2)) {
+        [self check2ndLARider];
+    }
+    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
@@ -2671,8 +2719,6 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Saved Rider!");
-                [self getListingRider];
-                
             } else {
                 NSLog(@"Failed Save Rider!");
                 
@@ -2683,6 +2729,15 @@
         }
         sqlite3_close(contactDB);
     }
+
+    if (secondLARidCode.length != 0) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1004];
+        [alert show];
+        
+    }
+    [self getListingRider];
 }
 
 -(void)getListingRider
@@ -2751,6 +2806,10 @@
                 titleHL1K.hidden = YES;
                 titleHL100.hidden = YES;
                 titleHLP.hidden = YES;
+                editBtn.hidden = YES;
+                deleteBtn.hidden = true;
+                [self.myTableView setEditing:NO animated:TRUE];
+                [editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
             } else {
                 myTableView.hidden = NO;
                 titleRidCode.hidden = NO;
@@ -2762,6 +2821,7 @@
                 titleHL1K.hidden = NO;
                 titleHL100.hidden = NO;
                 titleHLP.hidden = NO;
+                editBtn.hidden = NO;
                 
                 if (inputSA > _maxRiderSA) {
                     NSLog(@"will delete %@",riderCode);
@@ -2957,6 +3017,24 @@
     }
 }
 
+-(void)check2ndLARider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",SINoPlan,pTypeCode, PTypeSeq];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                secondLARidCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 //---
 
 -(void)getRiderRateSex:(NSString *)aaplan riderTerm:(int)aaterm
@@ -3107,7 +3185,6 @@
 }
 
 //----
-
 
 -(void)getOccpCatCode
 {
@@ -3336,7 +3413,11 @@
     CGRect frame6=CGRectMake(415,0, 62, 50);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
-    label6.text= [NSString stringWithFormat:@"%d",occLoad];
+    if (occLoad == 0) {
+        label6.text= @"STD";
+    } else {
+        label6.text= [NSString stringWithFormat:@"%d",occLoad];
+    }
     label6.textAlignment = UITextAlignmentCenter;
     [cell.contentView addSubview:label6];
     

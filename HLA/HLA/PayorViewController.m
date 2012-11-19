@@ -215,6 +215,7 @@
 
 - (IBAction)doSave:(id)sender
 {
+//    NSLog(@"smoker:%@",smoker);
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
     
     if (nameField.text.length <= 0) {
@@ -276,7 +277,7 @@
         }
         nameField.text = @"";
         [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         DOBField.text = @"";
         ageField.text = @"";
         OccpField.text= @"";
@@ -373,6 +374,7 @@
         smoker = nil;
     }
     IndexNo = [aaIndex intValue];
+    smoker = @"N";
     
     if (payorH.storedIndexNo == [aaIndex intValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"This Payor has already been attached to the plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -389,7 +391,7 @@
         }
         NSLog(@"sex:%@",sex);
         
-        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         DOBField.text = [[NSString alloc] initWithFormat:@"%@",aaDOB];
         DOB = aaDOB;
         [self calculateAge];

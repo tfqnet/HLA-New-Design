@@ -456,7 +456,7 @@
         
         LANameField.text = @"";
         [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         LADOBField.text = @"";
         LAAgeField.text = @"";
         [self.btnCommDate setTitle:@"" forState:UIControlStateNormal];
@@ -1140,7 +1140,7 @@
 -(void)listing:(ListingTbViewController *)inController didSelectIndex:(NSString *)aaIndex andName:(NSString *)aaName andDOB:(NSString *)aaDOB andGender:(NSString *)aaGender andOccpCode:(NSString *)aaCode
 {
     if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
-        smoker = nil;
+        smoker = @"N";
         requestSINo = nil;
         SINo = nil;
     }
@@ -1160,7 +1160,7 @@
     else {
         LANameField.text = aaName;
         sex = aaGender;
-        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         
         if ([sex isEqualToString:@"M"]) {
             sexSegment.selectedSegmentIndex = 0;
