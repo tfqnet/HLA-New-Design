@@ -1772,7 +1772,14 @@
         [self deleteRider];
     }
     else if (alertView.tag == 1003 && buttonIndex == 0) {
-        [self saveRider];
+        [self checkingRider];
+        if (existRidCode.length == 0) {
+            
+            [self saveRider];
+        } else {
+            
+            [self updateRider];
+        }
     }
     else if (alertView.tag == 1004 && buttonIndex == 0)
     {
@@ -2056,10 +2063,10 @@
     else {
         [self checkingRider];
         if (existRidCode.length == 0) {
-            NSLog(@"will save rider");
+            
             [self saveRider];
         } else {
-            NSLog(@"will update rider");
+            
             [self updateRider];
         }
     }
@@ -2076,7 +2083,7 @@
             
             double varSA = medRiderPrem/minus * requestBasicSA + 0.5;
             NSString *newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
-            NSLog(@"newBasicSA:%@",newBasicSA);
+            NSLog(@":UPDATE newBasicSA:%@",newBasicSA);
             requestBasicSA = varSA;
             /*
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
@@ -2119,13 +2126,11 @@
                     
                     double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                     double RiderSA = (medRiderPrem/minus) * riderSA;
-                    NSLog(@"newRiderSA(%@):%.2f",ridCode,RiderSA);
-                    
                     if (riderSA > 0)
                     {
                         if (RiderSA > maxRiderSA)
                         {
-                            NSLog(@"need to update riderSA - %@!",riderCode);
+                            NSLog(@":UPDATE newRiderSA(%@):%.2f",riderCode,RiderSA);
                             //update riderSA
                             sqlite3_stmt *statement;
                             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -2151,7 +2156,6 @@
                 }
             }
             
-            
             [self calculateBasicPremium];
             [self getListingRider];     //get stored rider
             [self calculateRiderPrem];  //calculate riderPrem
@@ -2166,7 +2170,7 @@
                 if (minus > 0) {
                     varSA = medRiderPrem/minus * requestBasicSA + 0.5;
                     newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
-                    NSLog(@"newBasicSA2:%@",newBasicSA);
+                    NSLog(@":UPDATE newBasicSA2:%@",newBasicSA);
                     requestBasicSA = varSA;
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
@@ -2209,13 +2213,11 @@
                             
                             double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                             double RiderSA = (medRiderPrem/minus) * riderSA;
-                            NSLog(@"newRiderSA:%.2f",RiderSA);
-                            
                             if (riderSA > 0)
                             {
                                 if (RiderSA > maxRiderSA)
                                 {
-                                    NSLog(@"need to update riderSA - %@!",riderCode);
+                                    NSLog(@":UPDATE newRiderSA2(%@):%.2f",riderCode,RiderSA);
                                     //update riderSA
                                     sqlite3_stmt *statement;
                                     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -2246,7 +2248,6 @@
                     [self calculateRiderPrem];  //calculate riderPrem
                     [self calculateWaiver];     //calculate waiverPrem
                     [self calculateMedRiderPrem];       //calculate medicalPrem
-                    
                 }
             }
             
@@ -2497,11 +2498,12 @@
 
 -(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq desc:(NSString *)desc andAge:(NSString *)aage
 {
-    if (pTypeDesc != NULL) {
-        if (![desc isEqualToString:pTypeDesc]) {
-            PtypeChange = YES;
-        }
+    if (riderCode != NULL) {
+        [self.btnAddRider setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
+        riderCode = [[NSString alloc] init];
+        [self clearField];
     }
+    
     if ([code isEqualToString:@"PY"]) {
         NSString *dd = [desc substringWithRange:NSMakeRange(0, 5)];
         pTypeDesc = [[NSString alloc] initWithFormat:@"%@",dd];
@@ -2972,7 +2974,7 @@
                 
                 //some code here--
                 for (int z=0; z<LSumAssured.count; z++) {
-                    NSLog(@"valueDB RiderSA(%@):%@",[LRiderCode objectAtIndex:z],[LSumAssured objectAtIndex:z]);
+                    NSLog(@"VALUEDB RiderSA(%@):%@",[LRiderCode objectAtIndex:z],[LSumAssured objectAtIndex:z]);
                 }
             }
             
@@ -3013,7 +3015,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode,SumAssured,RiderTerm,Units FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",SINoPlan,riderCode,pTypeCode, PTypeSeq];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",SINoPlan,riderCode,pTypeCode, PTypeSeq];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
