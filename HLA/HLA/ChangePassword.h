@@ -30,5 +30,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblmsg;
 @property (nonatomic, retain) UIPopoverController *PasswordTipPopover;
 @property (nonatomic, retain) PasswordTips *PasswordTips;
+- (IBAction)btnTips:(id)sender;
 
 @end
