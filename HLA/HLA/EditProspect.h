@@ -17,7 +17,7 @@
 - (void)FinishEdit;
 @end
 
-@interface EditProspect : UIViewController<OccupationListDelegate, ContactTypeClassDelegate, SIDateDelegate>{
+@interface EditProspect : UIViewController<OccupationListDelegate, ContactTypeClassDelegate, SIDateDelegate, UITextViewDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;

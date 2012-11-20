@@ -685,7 +685,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <items>
                                             <navigationItem title="User Profile" id="3iO-jj-0Ql">
-                                                <barButtonItem key="rightBarButtonItem" title="Next" id="c72-9x-k1h">
+                                                <barButtonItem key="rightBarButtonItem" title="Finish" id="c72-9x-k1h">
                                                     <connections>
                                                         <action selector="btnCancel:" destination="381-AA-ICO" id="iIr-Qt-LJB"/>
                                                     </connections>
@@ -2191,11 +2191,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <sections/>
                     </tableView>
                     <navigationItem key="navigationItem" title="Prospect Listing" id="7hB-27-9V7">
-                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="Y00-Fd-FLN">
-                            <connections>
-                                <action selector="btnRefresh:" destination="fU6-Z7-tEp" id="Uex-L1-HFZ"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add New" id="vNF-PS-wyt">
                             <connections>
                                 <action selector="btnAddNew:" destination="fU6-Z7-tEp" id="Znd-j0-dlu"/>

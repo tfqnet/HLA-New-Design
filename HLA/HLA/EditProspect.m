@@ -113,6 +113,15 @@ bool IsContinue = TRUE;
     [txtPrefix3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtPrefix4 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtPrefix5 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
+    [segGender addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventValueChanged];
+    [outletDOB addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
+    [outletType1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
+    [outletType2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
+    [outletType3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
+    [outletType4 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
+    [outletType5 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
+    
+    txtRemark.delegate = self;
     
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
@@ -173,6 +182,10 @@ bool IsContinue = TRUE;
      [outletType5 setTitle:zzz forState:UIControlStateNormal]; 
      }
      
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView{
+    strChanges = @"Yes";
 }
 
 - (void)viewDidUnload
@@ -270,6 +283,12 @@ bool IsContinue = TRUE;
     txtContact3.text = @"";
     txtContact4.text = @"";
     txtContact5.text = @"";
+    
+    txtPrefix1.text = @"";
+    txtPrefix2.text = @"";
+    txtPrefix3.text = @"";
+    txtPrefix4.text = @"";
+    txtPrefix5.text = @"";
     
     outletType1.titleLabel.text = @"";
     outletType2.titleLabel.text = @"";
@@ -1409,6 +1428,7 @@ bool IsContinue = TRUE;
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
     OccupCodeSelected = OccupCode;
+    strChanges = @"Yes";
 }
 
 - (void)OccupDescSelected:(NSString *)color {

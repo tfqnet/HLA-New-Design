@@ -328,11 +328,12 @@
     [self presentModalViewController:_ProspectViewController animated:YES];
     _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768); 
 }
+/*
 - (IBAction)btnRefresh:(id)sender {
     //[self.tableView reloadData];
     [self ReloadTableData];
 }
-
+*/
 -(void) ReloadTableData{
     
     

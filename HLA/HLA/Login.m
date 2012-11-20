@@ -185,12 +185,43 @@
 
 - (void)forgotPassword:(id)sender
 {
-    ForgotPwd *forgotView = [self.storyboard instantiateViewControllerWithIdentifier:@"ForgotPwd"];
-    forgotView.modalPresentationStyle = UIModalPresentationFormSheet;
-    forgotView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:forgotView animated:NO];
-    forgotView.view.superview.bounds = CGRectMake(0, 0, 550, 600);
-     
+    sqlite3_stmt *statement;
+    
+    if (txtUsername.text.length <= 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"User ID is required" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+        [alert show];
+    }
+    else {
+        if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat: @"SELECT * FROM User_Profile WHERE AgentLoginID=\"%@\" ", txtUsername.text];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+                if (sqlite3_step(statement) == SQLITE_ROW){
+                    ForgotPwd *forgotView = [self.storyboard instantiateViewControllerWithIdentifier:@"ForgotPwd"];
+                    forgotView.modalPresentationStyle = UIModalPresentationFormSheet;
+                    forgotView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    forgotView.LoginID = txtUsername.text;
+                    [self presentModalViewController:forgotView animated:NO];
+                    forgotView.view.superview.bounds = CGRectMake(0, 0, 550, 600);
+                    
+                    
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                        message:@"User ID is not exist" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+                    [alert show];
+                }
+                sqlite3_finalize(statement);
+            }
+           
+            sqlite3_close(contactDB);
+        }    
+        
+        
+    }
+        
 }
 
 -(void)isFirstTimeLogin

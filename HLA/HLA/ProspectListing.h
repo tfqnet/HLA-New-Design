@@ -26,6 +26,6 @@
 @property (nonatomic, assign) bool isFiltered;
 - (IBAction)btnAddNew:(id)sender;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-- (IBAction)btnRefresh:(id)sender;
+
 -(void) ReloadTableData;
 @end

@@ -16,7 +16,7 @@
 @synthesize lblStatusOne;
 @synthesize lblStatusTwo;
 @synthesize lblSelectQues;
-@synthesize txtAnswer;
+@synthesize txtAnswer, LoginID;
 @synthesize questCode,questDesc, answer, password, popOverConroller ;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -135,7 +135,7 @@
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT AgentPassword from User_Profile"];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT AgentPassword from User_Profile WHERE agentLoginID = \"%@\"", LoginID];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {

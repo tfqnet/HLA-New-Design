@@ -15,6 +15,7 @@
     NSString *databasePath;
     sqlite3 *contactDB;
 }
+@property (nonatomic,strong) id LoginID;
 @property (weak, nonatomic) IBOutlet UILabel *lblSelectQues;
 @property (weak, nonatomic) IBOutlet UITextField *txtAnswer;
 - (IBAction)btnRetrieve:(id)sender;
