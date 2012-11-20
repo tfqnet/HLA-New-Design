@@ -26,7 +26,7 @@
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
-@synthesize DOBField,OccpField,la2ndBH;
+@synthesize DOBField,OccpField,la2ndBH,deleteBtn;
 
 - (void)viewDidLoad
 {

@@ -25,7 +25,7 @@
 @synthesize popOverController,requestSINo,payorH;
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo;
-@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,payorBH;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,payorBH,deleteBtn;
 
 - (void)viewDidLoad
 {

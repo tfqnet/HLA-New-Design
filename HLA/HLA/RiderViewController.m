@@ -175,9 +175,16 @@
     [self getLSDRate];
     NSLog(@"basicRate:%d,lsdRate:%d,pa_cpa:%d",basicRate,LSDRate,occLoad);
     
-    [self calculateBasicPremium];
+    [self calculateBasicPremium];   //calculate basicPrem
     
-    [self getListingRider];
+    [self getListingRider];     //get stored rider
+    [self calculateRiderPrem];  //calculate riderPrem
+    [self calculateWaiver];     //calculate waiverPrem
+    [self calculateMedRiderPrem];       //calculate medicalPrem
+    if (medRiderPrem != 0) {
+        [self MHIGuideLines];
+    }
+    
     myTableView.rowHeight = 50;
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.opaque = NO;
@@ -454,6 +461,7 @@
 
 -(void)calculateSA
 {
+    NSLog(@"requestNewSA:%.2f",requestBasicSA);
     double dblPseudoBSA = self.requestBasicSA / 0.05;
     double dblPseudoBSA2 = dblPseudoBSA * 0.1;
     double dblPseudoBSA3 = dblPseudoBSA * 5;
@@ -788,7 +796,7 @@
         } else if ([LRidHLP count] != 0) {
             riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
         }
-        NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",[LRiderCode objectAtIndex:i],riderRate,ridSA,riderHLoad);
+        NSLog(@"~riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",[LRiderCode objectAtIndex:i],riderRate,ridSA,riderHLoad);
         
         double annFac;
         double halfFac;
@@ -1226,7 +1234,6 @@
         }
     
         NSUInteger a;
-        NSLog(@"exist waiver count:%d",[waiverRidAnnTol count]);
         for (a=0; a<[waiverRidAnnTol count]; a++) {
             
             annualRiderSum = annualRiderSum + [[waiverRidAnnTol objectAtIndex:a] doubleValue];
@@ -1750,7 +1757,13 @@
 
         [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];        
         [self.myTableView reloadData];
-        [self getListingRider];
+        [self getListingRider];     //get stored rider
+        [self calculateRiderPrem];  //calculate riderPrem
+        [self calculateWaiver];     //calculate waiverPrem
+        [self calculateMedRiderPrem];       //calculate medicalPrem
+        if (medRiderPrem != 0) {
+            [self MHIGuideLines];
+        }
         
         deleteBtn.enabled = FALSE;
         [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
@@ -1773,8 +1786,19 @@
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
                     NSLog(@"rider delete!");
-                    
-                    [self getListingRider];
+                } else {
+                    NSLog(@"rider delete Failed!");
+                }
+                sqlite3_finalize(statement);
+            }
+            
+            NSString *querySQL2 = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_DONE)
+                {
+                    NSLog(@"rider delete!");
                 } else {
                     NSLog(@"rider delete Failed!");
                 }
@@ -1782,6 +1806,14 @@
             }
             sqlite3_close(contactDB);
         }
+        [self getListingRider];     //get stored rider
+        [self calculateRiderPrem];  //calculate riderPrem
+        [self calculateWaiver];     //calculate waiverPrem
+        [self calculateMedRiderPrem];       //calculate medicalPrem
+        if (medRiderPrem != 0) {
+            [self MHIGuideLines];
+        }
+
     }
     
 }
@@ -2040,15 +2072,15 @@
     NSLog(@"totalPrem:%.2f ,medicDouble:%.2f",totalPrem,medicDouble);
     if (medicDouble > totalPrem) {
         double minus = totalPrem - medRiderPrem;
-        
         if (minus > 0) {
             
             double varSA = medRiderPrem/minus * requestBasicSA + 0.5;
             NSString *newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
             NSLog(@"newBasicSA:%@",newBasicSA);
-            
+            requestBasicSA = varSA;
+            /*
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
-            [alert show];
+            [alert show];*/
             
             //update basicSA to varSA
             sqlite3_stmt *statement;
@@ -2058,7 +2090,7 @@
                 
                 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
-                        NSLog(@"BasicSA update!");
+                        NSLog(@"BasicSA update-MHI Guideline!");
                         
                         dataInsert = [[NSMutableArray alloc] init];
                         BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
@@ -2087,9 +2119,9 @@
                     
                     double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                     double RiderSA = (medRiderPrem/minus) * riderSA;
-                    NSLog(@"newRiderSA:%.2f",RiderSA);
+                    NSLog(@"newRiderSA(%@):%.2f",ridCode,RiderSA);
                     
-                    if ([[LSumAssured objectAtIndex:u] intValue] > 0)
+                    if (riderSA > 0)
                     {
                         if (RiderSA > maxRiderSA)
                         {
@@ -2119,12 +2151,106 @@
                 }
             }
             
-            /*
-             [self calculateBasicPremium];
-             [self calculateRiderPrem];
-             double newPrem = basicPrem + riderPrem + medRiderPrem;
-             NSLog(@"%.2f",newPrem);
-             */
+            
+            [self calculateBasicPremium];
+            [self getListingRider];     //get stored rider
+            [self calculateRiderPrem];  //calculate riderPrem
+            [self calculateWaiver];     //calculate waiverPrem
+            [self calculateMedRiderPrem];       //calculate medicalPrem
+            
+            totalPrem = basicPremAnn + riderPrem;
+            medicDouble = medRiderPrem * 2;
+            NSLog(@"newTotalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medicDouble);
+            if (medicDouble > totalPrem) {
+                minus = totalPrem - medRiderPrem;
+                if (minus > 0) {
+                    varSA = medRiderPrem/minus * requestBasicSA + 0.5;
+                    newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
+                    NSLog(@"newBasicSA2:%@",newBasicSA);
+                    requestBasicSA = varSA;
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
+                    [alert show];
+                    
+                    //update basicSA to varSA
+                    sqlite3_stmt *statement;
+                    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK) {
+                        NSString *querySQL = [NSString stringWithFormat:
+                                              @"UPDATE Trad_Details SET BasicSA=\"%@\" WHERE SINo=\"%@\"",newBasicSA, SINoPlan];
+                        
+                        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                            if (sqlite3_step(statement) == SQLITE_DONE) {
+                                NSLog(@"BasicSA update!");
+                                
+                                dataInsert = [[NSMutableArray alloc] init];
+                                BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
+                                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:requestAge andOccpCode:requestOccpCode andCovered:requestCoverTerm andBasicSA:newBasicSA andBasicHL:riderBH.storedbasicHL andMOP:requestMOP andPlanCode:requestPlanCode]];
+                                
+                                for (NSUInteger i=0; i< dataInsert.count; i++) {
+                                    ss = [dataInsert objectAtIndex:i];
+                                    NSLog(@"storedbasicSA:%@",ss.storedbasicSA);
+                                }
+                            } else {
+                                NSLog(@"BasicSA update Failed!");
+                            }
+                            sqlite3_finalize(statement);
+                        }
+                        sqlite3_close(contactDB);
+                    }
+                    
+                    for (NSUInteger u=0; u<[LRiderCode count]; u++)
+                    {
+                        NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
+                        
+                        if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
+                        {
+                            riderCode = [LRiderCode objectAtIndex:u];
+                            [self calculateSA];
+                            
+                            double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
+                            double RiderSA = (medRiderPrem/minus) * riderSA;
+                            NSLog(@"newRiderSA:%.2f",RiderSA);
+                            
+                            if (riderSA > 0)
+                            {
+                                if (RiderSA > maxRiderSA)
+                                {
+                                    NSLog(@"need to update riderSA - %@!",riderCode);
+                                    //update riderSA
+                                    sqlite3_stmt *statement;
+                                    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                                    {
+                                        NSString *updatetSQL = [NSString stringWithFormat:
+                                                                @"UPDATE Trad_Rider_Details SET SumAssured=\"%.2f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",maxRiderSA,SINoPlan,riderCode,pTypeCode, PTypeSeq];
+                                        
+                                        if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                            if (sqlite3_step(statement) == SQLITE_DONE) {
+                                                NSLog(@"Update RiderSA success!");
+                                            } else {
+                                                NSLog(@"Update RiderSA failed!");
+                                            }
+                                            sqlite3_finalize(statement);
+                                        }
+                                        sqlite3_close(contactDB);
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    
+                    [self calculateBasicPremium];
+                    [self getListingRider];     //get stored rider
+                    [self calculateRiderPrem];  //calculate riderPrem
+                    [self calculateWaiver];     //calculate waiverPrem
+                    [self calculateMedRiderPrem];       //calculate medicalPrem
+                    
+                }
+            }
+            
+             
         } else {
             NSLog(@"value minus not greater than 0");
         }
@@ -2737,7 +2863,26 @@
         [alert show];
         
     }
-    [self getListingRider];
+    
+    [self getListingRider];     //get stored rider
+    
+    if (inputSA > _maxRiderSA) {
+        NSLog(@"will delete %@",riderCode);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1002];
+        [alert show];
+    }
+    else {
+    
+        [self calculateRiderPrem];  //calculate riderPrem
+        [self calculateWaiver];     //calculate waiverPrem
+        [self calculateMedRiderPrem];       //calculate medicalPrem
+        if (medRiderPrem != 0) {
+            [self MHIGuideLines];
+        }
+    }
+    
+    
 }
 
 -(void)getListingRider
@@ -2793,6 +2938,7 @@
                 [LSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
                 [LSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
                 [LAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
+                
             }
             
             if ([LRiderCode count] == 0) {
@@ -2823,19 +2969,10 @@
                 titleHLP.hidden = NO;
                 editBtn.hidden = NO;
                 
-                if (inputSA > _maxRiderSA) {
-                    NSLog(@"will delete %@",riderCode);
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                    [alert setTag:1002];
-                    [alert show];
-                }
                 
-                [self calculateRiderPrem];
-                [self calculateWaiver];
-                [self calculateMedRiderPrem];
-                    
-                if (medRiderPrem != 0) {
-                    [self MHIGuideLines];
+                //some code here--
+                for (int z=0; z<LSumAssured.count; z++) {
+                    NSLog(@"valueDB RiderSA(%@):%@",[LRiderCode objectAtIndex:z],[LSumAssured objectAtIndex:z]);
                 }
             }
             
@@ -2904,11 +3041,16 @@
         if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                [self getListingRider];
-                NSLog(@"Update Rider success!");
-                
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider record sucessfully updated." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
+                
+                [self getListingRider];     //get stored rider
+                [self calculateRiderPrem];  //calculate riderPrem
+                [self calculateWaiver];     //calculate waiverPrem
+                [self calculateMedRiderPrem];       //calculate medicalPrem
+                if (medRiderPrem != 0) {
+                    [self MHIGuideLines];
+                }
                 
             } else {
                 NSLog(@"Update Rider failed!");
@@ -3337,7 +3479,13 @@
             {
                 NSLog(@"rider delete!");
                 [self clearField];
-                [self getListingRider];
+                [self getListingRider];     //get stored rider
+                [self calculateRiderPrem];  //calculate riderPrem
+                [self calculateWaiver];     //calculate waiverPrem
+                [self calculateMedRiderPrem];       //calculate medicalPrem
+                if (medRiderPrem != 0) {
+                    [self MHIGuideLines];
+                }
                 
             } else {
                 NSLog(@"rider delete Failed!");
@@ -3665,6 +3813,7 @@
     incomeRider = NO;
     unitField.text = @"";
     inputSA = 0;
+    secondLARidCode = nil;
     
     [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
