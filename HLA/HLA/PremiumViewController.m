@@ -227,11 +227,31 @@
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Half-Yearly</font></td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Quarterly</font></td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Monthly</font></td></tr>"
-            "<tr><td>Basic</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
-            "<tr><td>Occupation Loading</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
-            "<tr><td>Health Loading</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
-            "<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
-            "<tr><td>Sub-Total</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>"
+            "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Basic</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td></tr>"
+            "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Occupation Loading</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td></tr>"
+            "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Health Loading</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td></tr>"
+            "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td></tr>"
+            "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Sub-Total</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
         "</tr>",BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
     
     NSString *htmlTail = nil;
@@ -248,7 +268,11 @@
         
         htmlTail = [[NSString alloc] initWithFormat:
                     @"<tr><td colspan='5'>&nbsp;</td></tr>"
-                    "<tr><td>Total</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
+                    "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Total</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td></tr>"
                     "</table></body></html>",annualSUM,halfSUM,quarterSUM,monthSUM];
         
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlRider];
@@ -259,7 +283,11 @@
         
         htmlTail = [[NSString alloc] initWithFormat:
                     @"<tr><td colspan='5'>&nbsp;</td></tr>"
-                    "<tr><td>Total</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td></tr>"
+                    "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Total</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                        "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td></tr>"
                     "</table></body></html>",basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
         
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlTail];
@@ -671,7 +699,8 @@
         [halfRiderTot addObject:calRiderHalf];
         [quarterRiderTot addObject:calRiderQuarter];
         [monthRiderTot addObject:calRiderMonth];
-        [annRiderTitle addObject:[riderDesc objectAtIndex:i]];
+//        [annRiderTitle addObject:[riderDesc objectAtIndex:i]];
+        [annRiderTitle addObject:RidCode];
         [annRiderTerm addObject:[riderTerm objectAtIndex:i]];
         [annRiderCode addObject:RidCode];
         NSLog(@"RiderTotal(%@) A:%@, S:%@, Q:%@, M:%@",[riderCode objectAtIndex:i],calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
@@ -749,11 +778,21 @@
         if (htmlRider.length == 0) {
             htmlRider = [[NSString alloc]initWithFormat:
                          @"<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-                         "<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>"
+                         "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "</tr>",title,annual,half,quarter,month];
         } else {
             
-            htmlRider = [htmlRider stringByAppendingFormat:@"<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>""</tr>",title,annual,half,quarter,month];
+            htmlRider = [htmlRider stringByAppendingFormat:
+                         @"<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                         "</tr>",title,annual,half,quarter,month];
         }
         annualRiderSum = annualRiderSum + [[annualRiderTot objectAtIndex:a] doubleValue];
         halfRiderSum = halfRiderSum + [[halfRiderTot objectAtIndex:a] doubleValue];
@@ -918,7 +957,8 @@
         calRiderQuarter = [calRiderQuarter stringByReplacingOccurrencesOfString:@"," withString:@""];
         calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
         
-        [waiverTitle addObject:[riderDesc objectAtIndex:i]];
+//        [waiverTitle addObject:[riderDesc objectAtIndex:i]];
+        [waiverTitle addObject:[riderCode objectAtIndex:i]];
         [waiverTerm addObject:[riderTerm objectAtIndex:i]];
         [waiverCode addObject:[riderCode objectAtIndex:i]];
         [waiverRidAnnTol addObject:calRiderAnn];
@@ -962,11 +1002,21 @@
         if (htmlRider.length == 0) {
             htmlRider = [[NSString alloc]initWithFormat:
                          @"<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-                         "<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>"
+                         "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "</tr>",title,annual,half,quarter,month];
         } else {
             
-            htmlRider = [htmlRider stringByAppendingFormat:@"<tr><td>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td><td align='right'>%@</td>""</tr>",title,annual,half,quarter,month];
+            htmlRider = [htmlRider stringByAppendingFormat:
+                         @"<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                         "</tr>",title,annual,half,quarter,month];
         }
         
         annualRiderSum = annualRiderSum + [[waiverRidAnnTol objectAtIndex:a] doubleValue];

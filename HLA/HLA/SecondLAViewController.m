@@ -44,6 +44,7 @@
     PAField.enabled = NO;
     DOBField.enabled = NO;
     OccpField.enabled = NO;
+    self.deleteBtn.hidden = YES;
     
     useExist = NO;
     
@@ -55,6 +56,7 @@
         if (SINo.length != 0) {
             [self getProspectData];
             [self getSavedField];
+            self.deleteBtn.hidden = NO;
         }
     }
 }
@@ -534,6 +536,7 @@
         }
         sqlite3_close(contactDB);
     }
+    self.deleteBtn.hidden = NO;
 }
 
 -(void)updateRunCustCode
@@ -606,6 +609,7 @@
 -(void)checkingExisting2
 {
     sqlite3_stmt *statement;
+    NSString *tempSINo;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
@@ -615,17 +619,18 @@
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                SINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                tempSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 clientID = sqlite3_column_int(statement, 1);
             } else {
                 NSLog(@"error access Trad_LAPayor");
+                useExist = NO;
             }
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
     }
     
-    if (SINo.length != 0) {
+    if (tempSINo.length != 0) {
         useExist = YES;
     } else {
         useExist = NO;
@@ -748,6 +753,8 @@
         }
         sqlite3_close(contactDB);
     }
+    self.deleteBtn.hidden = YES;
+    useExist = NO;
 }
 
 -(void)checkingRider
@@ -822,6 +829,7 @@
     [self setOccpField:nil];
     [self setDOBField:nil];
     [self setOccpField:nil];
+    [self setDeleteBtn:nil];
     [super viewDidUnload];
 }
 

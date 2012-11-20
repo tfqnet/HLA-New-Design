@@ -36,6 +36,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *PAField;
 @property (strong, nonatomic) IBOutlet UITextField *DOBField;
 @property (strong, nonatomic) IBOutlet UITextField *OccpField;
+@property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
 
 
 @property (nonatomic, assign,readwrite) int IndexNo;

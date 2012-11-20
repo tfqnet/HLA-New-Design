@@ -36,6 +36,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *occpLoadField;
 @property (retain, nonatomic) IBOutlet UITextField *CPAField;
 @property (retain, nonatomic) IBOutlet UITextField *PAField;
+@property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
 
 @property (nonatomic, assign,readwrite) int IndexNo;
 @property (nonatomic, copy) NSString *sex;
