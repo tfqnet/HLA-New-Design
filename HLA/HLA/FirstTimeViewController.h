@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "SecurityQuesTbViewController.h"
+#import "PasswordTips.h"
 
 @interface FirstTimeViewController : UIViewController<UITextFieldDelegate>{
     NSString *databasePath;
@@ -18,6 +19,8 @@
     BOOL selectOne;
     BOOL selectTwo;
     BOOL selectThree;
+    UIPopoverController *_PasswordTipPopover;
+    PasswordTips *_PasswordTips;
 }
 @property (nonatomic, assign,readwrite) int userID;
 @property (weak, nonatomic) IBOutlet UITextField *txtOldPassword;
@@ -38,5 +41,10 @@
 @property (nonatomic,copy) NSString *questThreeCode;
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
 - (IBAction)btnNext:(id)sender;
+- (IBAction)btnTips:(id)sender;
+
+@property (nonatomic, retain) UIPopoverController *PasswordTipPopover;
+@property (nonatomic, retain) PasswordTips *PasswordTips;
+
 
 @end

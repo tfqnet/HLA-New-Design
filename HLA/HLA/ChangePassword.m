@@ -22,7 +22,8 @@
 @synthesize passwordDB;
 @synthesize lblmsg;
 @synthesize userID;
-
+@synthesize PasswordTipPopover = _PasswordTipPopover;
+@synthesize PasswordTips = _PasswordTips;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

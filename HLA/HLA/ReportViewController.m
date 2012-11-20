@@ -501,7 +501,7 @@
     NSString *headerTitle = @"tblHeader;";
     
     
-    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM SI_Trad_Rider_Details_all Where SINo = '%@'",siNo];
+    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@'",siNo];
     //NSLog(@"%@",sqlStmt);
     _dataTable = [_db  ExecuteQuery:sqlStmt];
     
@@ -4035,7 +4035,19 @@
                     [OtherRiderTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)]];
                     [OtherRiderDesc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)]];
                     [OtherRiderSA addObject: [NSString stringWithFormat:@"%d", sqlite3_column_int(statement2, 3)]];
-                    [OtherRiderPlanOption addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)]];
+                    
+                                    
+                    
+                    if ([[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)] isEqualToString:@"(null)" ]   ) {
+                        [OtherRiderPlanOption addObject:@""]; 
+                        
+                    }
+                    else {
+                        [OtherRiderPlanOption addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)]];
+                        
+                    }
+                    
+                    
                     
                 }
             }

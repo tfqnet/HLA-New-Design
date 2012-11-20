@@ -22,6 +22,8 @@
 @synthesize txtNewPassword;
 @synthesize txtConfirmPassword;
 @synthesize btnCancel, popOverConroller, questOneCode, questTwoCode,questThreeCode;
+@synthesize PasswordTipPopover = _PasswordTipPopover;
+@synthesize PasswordTips = _PasswordTips;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -386,8 +388,6 @@
                                                                     message:@"Old password doest not match !" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
                 }
-                
-                
             }
             else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with the confirmed password!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -395,9 +395,13 @@
                 
             }
         }
-        
-        
     }
-    
+}
+
+- (IBAction)btnTips:(id)sender {
+    self.PasswordTips = [self.storyboard instantiateViewControllerWithIdentifier:@"Tip"];
+    self.PasswordTipPopover = [[UIPopoverController alloc] initWithContentViewController:_PasswordTips];
+    [self.PasswordTipPopover setPopoverContentSize:CGSizeMake(950, 350)];    
+    [self.PasswordTipPopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 @end

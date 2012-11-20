@@ -110,6 +110,7 @@
 		C4F08D5B161DA491008BCC1A /* ContactTypeClass.h in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D59161DA491008BCC1A /* ContactTypeClass.h */; };
 		C4F08D5C161DA491008BCC1A /* ContactTypeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */; };
 		C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5F161DBDBB008BCC1A /* SIDate.m */; };
+		C4F45DF1165B38A20035CAA9 /* PasswordTips.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F45DF0165B38A20035CAA9 /* PasswordTips.m */; };
 		C4F82FEE16296F6700EF8FAA /* IMG_0039.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEB16296F6700EF8FAA /* IMG_0039.png */; };
 		C4F82FEF16296F6700EF8FAA /* IMG_0040.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEC16296F6700EF8FAA /* IMG_0040.png */; };
 		C4F82FF016296F6700EF8FAA /* IMG_0041.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FED16296F6700EF8FAA /* IMG_0041.png */; };
@@ -325,6 +326,8 @@
 		C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTypeClass.m; sourceTree = "<group>"; };
 		C4F08D5E161DBDBB008BCC1A /* SIDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDate.h; sourceTree = "<group>"; };
 		C4F08D5F161DBDBB008BCC1A /* SIDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIDate.m; sourceTree = "<group>"; };
+		C4F45DEF165B38A20035CAA9 /* PasswordTips.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordTips.h; sourceTree = "<group>"; };
+		C4F45DF0165B38A20035CAA9 /* PasswordTips.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordTips.m; sourceTree = "<group>"; };
 		C4F82FEB16296F6700EF8FAA /* IMG_0039.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0039.png; sourceTree = "<group>"; };
 		C4F82FEC16296F6700EF8FAA /* IMG_0040.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0040.png; sourceTree = "<group>"; };
 		C4F82FED16296F6700EF8FAA /* IMG_0041.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0041.png; sourceTree = "<group>"; };
@@ -634,6 +637,8 @@
 				C4F08D5F161DBDBB008BCC1A /* SIDate.m */,
 				EF33ACEE162D42B2006BB4C6 /* PlanList.h */,
 				EF33ACEF162D42B3006BB4C6 /* PlanList.m */,
+				C4F45DEF165B38A20035CAA9 /* PasswordTips.h */,
+				C4F45DF0165B38A20035CAA9 /* PasswordTips.m */,
 			);
 			name = PopOver;
 			sourceTree = "<group>";
@@ -1076,6 +1081,7 @@
 				C4EF087616496B13000444BA /* SidebarViewController.m in Sources */,
 				C4EF087916496B43000444BA /* BrowserViewController.m in Sources */,
 				C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */,
+				C4F45DF1165B38A20035CAA9 /* PasswordTips.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

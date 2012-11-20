@@ -210,7 +210,7 @@
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                        message:@"User ID is not exist" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+                                message:@"Username does not exist. Unable to retrieve password." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
                     [alert show];
                 }
                 sqlite3_finalize(statement);
