@@ -255,7 +255,7 @@
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Half-Yearly</font></td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Quarterly</font></td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Monthly</font></td></tr>"
-            "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Basic</font></td>"
+            "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Basic Plan</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"

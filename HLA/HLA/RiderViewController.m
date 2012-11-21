@@ -64,13 +64,19 @@
 @synthesize annualMedRiderPrem,halfMedRiderPrem,quarterMedRiderPrem,monthMedRiderPrem,annualMedRiderSum,halfMedRiderSum,quarterMedRiderSum,monthMedRiderSum;
 @synthesize riderPrem,medRiderPrem,medPentaSQL,OccpCat,CombNo,RBBenefit,RBLimit,RBGroup,medRiderCode;
 @synthesize arrCombNo,AllCombNo,medPlanOpt,arrRBBenefit;
-@synthesize RiderList = _RiderList;
-@synthesize RiderListPopover = _RiderListPopover;
+
 @synthesize dataInsert,LSex,sex,age,_maxRiderSA;
 @synthesize waiverRiderAnn,waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,incomeRiderGYI,incomeRiderSA,basicGYIRate,incomeRiderCSV;
 @synthesize incomeRiderAnn,incomeRiderHalf,incomeRiderMonth,incomeRiderQuar,incomeRiderPrem,basicCSVRate,riderCSVRate,pTypeAge;
 @synthesize inputSA,inputCSV,inputGYI,inputIncomeAnn,secondLARidCode;
+@synthesize RiderList = _RiderList;
+@synthesize RiderListPopover = _RiderListPopover;
+@synthesize planPopover = _planPopover;
+@synthesize deducPopover = _deducPopover;
+@synthesize planList = _planList;
+@synthesize deductList = _deductList;
+@synthesize planCondition,deducCondition;
 
 #pragma mark - Cycle View
 
@@ -191,6 +197,16 @@
     myTableView.backgroundView = nil;
     [self.view addSubview:myTableView];
     
+    [editBtn setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+    [editBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    editBtn.titleLabel.shadowColor = [UIColor lightGrayColor];
+    editBtn.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    [deleteBtn setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+    [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    deleteBtn.titleLabel.shadowColor = [UIColor lightGrayColor];
+    deleteBtn.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
     [super viewDidLoad];
 }
 
@@ -289,6 +305,9 @@
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLCH"]]) {
             planLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
             plan = YES;
+            
+            planCondition = [FCondition objectAtIndex:i];
+            
         }
         
         cpaLabel.textColor = [UIColor grayColor];
@@ -302,6 +321,8 @@
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"DEDUC"]]) {
             unitLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
             deduc = YES;
+            
+            deducCondition = [FCondition objectAtIndex:i];
         }
         
         occpLabel.textColor = [UIColor grayColor];
@@ -329,6 +350,8 @@
     if (term) {
         termLabel.textColor = [UIColor blackColor];
         termField.enabled = YES;
+        termField.textColor = [UIColor blackColor];
+        
     } else {
         termLabel.textColor = [UIColor grayColor];
         termField.enabled = NO;
@@ -345,7 +368,19 @@
     if (plan) {
         planLabel.textColor = [UIColor blackColor];
         planBtn.enabled = YES;
-    } else {
+        
+        //auto display default plan value
+        if (!_planList) {
+            self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
+            _planList.delegate = self;
+            _planList.requestSA = self.requestBasicSA;
+        }
+        [self.planBtn setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
+        planOption = [[NSString alloc] initWithFormat:@"%@",_planList.selectedItemDesc];
+        NSLog(@"plan:%@",planOption);
+        
+    }
+    else {
         planLabel.textColor = [UIColor grayColor];
         planBtn.enabled = NO;
         planLabel.text = @"PA Class";
@@ -362,6 +397,18 @@
         unitLabel.textColor = [UIColor blackColor];
         unitField.hidden = YES;
         deducBtn.hidden = NO;
+        
+        //auto display default deduc value
+        if (!_deductList) {
+            self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition];
+            _deductList.delegate = self;
+            _deductList.requestSA = self.requestBasicSA;
+            _deductList.requestOption = planOption;
+        }
+        [self.deducBtn setTitle:_deductList.selectedItemDesc forState:UIControlStateNormal];
+        deductible = [[NSString alloc] initWithFormat:@"%@",_deductList.selectedItemDesc];
+        NSLog(@"deduc:%@",deductible);
+        
     }
     
     if (!unit && !deduc) {
@@ -1515,28 +1562,37 @@
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
-    
+    /*
     NSUInteger i;
     for (i=0; i<[FLabelCode count]; i++) {
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLOP"]] ||
                 [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLCH"]]) {
-            if(![popOverConroller isPopoverVisible]) {
-                pressedPlan = YES;
-                RiderFormTbViewController *popView = [[RiderFormTbViewController alloc] init];
-                popView.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
-                popView.requestSA = self.requestBasicSA;
-                popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
-                popView.delegate = self;
-                
-                [popOverConroller setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-                [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            } else {
-                [popOverConroller dismissPopoverAnimated:YES];
-                pressedPlan = NO;
+            
+            if (_planList == nil) {
+//                self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
+                self.planList = [[RiderPlanTb alloc] initWithString:[FCondition objectAtIndex:i]];
+                _planList.delegate = self;
+                _planList.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
+                _planList.requestSA = self.requestBasicSA;
+                self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
             }
+                
+            [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+            [self.planPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
     }
+     */
+    
+    self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
+    self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
+    _planList.delegate = self;
+    _planList.requestCondition = [NSString stringWithFormat:@"%@",planCondition];
+    _planList.requestSA = self.requestBasicSA;
+    self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
+    
+    [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+    [self.planPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)deducBtnPressed:(id)sender
@@ -1548,27 +1604,36 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+    /*
     NSUInteger i;
     for (i=0; i<[FLabelCode count]; i++) {
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"DEDUC"]]) {
-            if(![popOverConroller isPopoverVisible]){
-                pressedDeduc = YES;
-                RiderFormTbViewController *popView = [[RiderFormTbViewController alloc] init];
-                popView.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
-                popView.requestSA = self.requestBasicSA;
-                popView.requestOption = planOption;
-                popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
-                popView.delegate = self;
-                
-                [popOverConroller setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-                [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            } else {
-                [popOverConroller dismissPopoverAnimated:YES];
-                pressedDeduc = NO;
+            
+            if (_deductList == nil) {
+            
+                self.deductList = [[RiderDeducTb alloc] initWithStyle:UITableViewStylePlain];
+                _deductList.delegate = self;
+                _deductList.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
+                _deductList.requestSA = self.requestBasicSA;
+                _deductList.requestOption = planOption;
+                self.deducPopover = [[UIPopoverController alloc] initWithContentViewController:_deductList];
             }
+        
+            [self.deducPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+            [self.deducPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
-    }
+    }*/
+    
+    self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition];
+    _deductList.delegate = self;
+    _deductList.requestCondition = [NSString stringWithFormat:@"%@",deducCondition];
+    _deductList.requestSA = self.requestBasicSA;
+    _deductList.requestOption = planOption;
+    self.deducPopover = [[UIPopoverController alloc] initWithContentViewController:_deductList];
+    
+    [self.deducPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+    [self.deducPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)doSaveRider:(id)sender
@@ -2276,11 +2341,11 @@
                 medRiderCode = [LRiderCode objectAtIndex:i];
                 medPlanOpt = [LPlanOpt objectAtIndex:i];
                 
-                [self getListCombNo];
+                [self getListCombNo];   //get combNo for all saved rider
                 NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
                 [arrCombNo addObject:tempCombNo];
                 
-                [self getListRBBenefit];
+                [self getListRBBenefit];        //get existing benefit
                 NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
                 [arrRBBenefit addObject:tempBenefit];
                 
@@ -2292,32 +2357,28 @@
         }
         
         //start combine validate
-        //calculate existing benefit
+        //--calculate existing benefit
         double allBenefit = 0;
         for (NSUInteger x=0; x<arrRBBenefit.count; x++) {
             allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:x] doubleValue];
         }
         NSLog(@"total listBenefit:%.f",allBenefit);
         
-        //get selected CombNo
-        [self getCombNo];
+        [self getCombNo];       //--get selected CombNo
         NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
         [arrCombNo addObject:tempCombNo];
         
-        //sort combNo
-        NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];
+        NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];     //--sort combNo
         [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
         
-        //combine all CombNo
-        NSString *newComb =[[NSString alloc] init];
+        NSString *newComb =[[NSString alloc] init];     //--combine all CombNo
         for ( NSUInteger y=0; y<arrCombNo.count; y++) {
-            newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:y]];
+            newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:y]];        
         }
         AllCombNo = [newComb intValue];
         NSLog(@"newComb:%@",newComb);
         
-        //get selected RBBenefit and calculate
-        [self getRBBenefit];
+        [self getRBBenefit];        //--get selected RBBenefit and calculate all bnefit
         allBenefit = allBenefit + RBBenefit;
         NSLog(@"total allBenefit:%.f",allBenefit);
         
@@ -2328,9 +2389,14 @@
             if (RBGroup == 1) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
-            } else {
+                
+                [self roomBoardDefaultPlan];
+            }
+            else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                
+                [self roomBoardDefaultPlan];
             }
         } else {
             NSLog(@"will continue save!");
@@ -2411,9 +2477,12 @@
             if (RBGroup == 1) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
-            } else {
+                [self roomBoardDefaultPlan];
+            }
+            else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                [self roomBoardDefaultPlan];
             }
         } else {
             NSLog(@"will update data");
@@ -2491,6 +2560,26 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please note that the Guaranteed Benefit payout for selected plan maybe lesser than total premium outlay.\nChoose OK to proceed.\nChoose CANCEL to select other plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1003];
         [alert show];
+    }
+}
+
+-(void)roomBoardDefaultPlan
+{
+    if ([riderCode isEqualToString:@"HMM"]) {
+        [self.planBtn setTitle:@"HMM_150" forState:UIControlStateNormal];
+        planOption = @"HMM_150";
+    }
+    else if ([riderCode isEqualToString:@"HSP_II"]) {
+        [self.planBtn setTitle:@"Standard" forState:UIControlStateNormal];
+        planOption = @"Standard";
+    }
+    else if ([riderCode isEqualToString:@"MG_II"]) {
+        [self.planBtn setTitle:@"MG_II_100" forState:UIControlStateNormal];
+        planOption = @"MG_II_100";
+    }
+    else if ([riderCode isEqualToString:@"MG_IV"]) {
+        [self.planBtn setTitle:@"MGIVP_150" forState:UIControlStateNormal];
+        planOption = @"MGIVP_150";
     }
 }
 
@@ -2613,35 +2702,37 @@
     }
 }
 
--(void) RiderFormController:(RiderFormTbViewController *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
+-(void)PlanView:(RiderPlanTb *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
 {
-    if (pressedPlan) {
-        if ([atcRidCode count] != 0)
-        {
-            NSUInteger k;
-            for (k=0; k<[atcRidCode count]; k++) {
-                if ([riderCode isEqualToString:@"HMM"] && [[atcPlanChoice objectAtIndex:k] isEqualToString:itemdesc]) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                    [alert show];
-                    [self.planBtn setTitle:@"" forState:UIControlStateNormal];
-                } else {
-                    [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
-                    planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
-                }
+    NSLog(@"selectPlan:%@",itemdesc);
+    if ([atcRidCode count] != 0)
+    {
+        NSUInteger k;
+        for (k=0; k<[atcRidCode count]; k++) {
+            if ([riderCode isEqualToString:@"HMM"] && [[atcPlanChoice objectAtIndex:k] isEqualToString:itemdesc]) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                [self.planBtn setTitle:@"" forState:UIControlStateNormal];
+            } else {
+                [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
+                planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
             }
-        } else {
-            [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
-            planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
         }
+    } else {
+        [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
+        planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
+        
     }
-    else if (pressedDeduc) {
-        [self.deducBtn setTitle:itemdesc forState:UIControlStateNormal];
-        deductible = [[NSString alloc] initWithFormat:@"%@",itemdesc];
-    }
+    [self.planPopover dismissPopoverAnimated:YES];
+}
 
-    [popOverConroller dismissPopoverAnimated:YES];
-    pressedPlan = NO;
-    pressedDeduc = NO;
+-(void)deductView:(RiderDeducTb *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
+{
+    NSLog(@"selectDeduc:%@",itemdesc);
+    [self.deducBtn setTitle:itemdesc forState:UIControlStateNormal];
+    deductible = [[NSString alloc] initWithFormat:@"%@",itemdesc];
+    
+    [self.deducPopover dismissPopoverAnimated:YES];
 }
 
 
@@ -3529,6 +3620,7 @@
     label1.frame=frame;
     label1.text= [LRiderCode objectAtIndex:indexPath.row];
     label1.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
     
     CGRect frame2=CGRectMake(100,0, 129, 50);
@@ -3537,6 +3629,7 @@
     NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LSumAssured objectAtIndex:indexPath.row] doubleValue]]];
     label2.text= num;
     label2.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
     CGRect frame3=CGRectMake(229,0, 62, 50);
@@ -3544,6 +3637,7 @@
     label3.frame=frame3;
     label3.text= [LTerm objectAtIndex:indexPath.row];
     label3.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
     
     CGRect frame4=CGRectMake(291,0, 62, 50);
@@ -3551,6 +3645,7 @@
     label4.frame=frame4;
     label4.text= [LUnits objectAtIndex:indexPath.row];
     label4.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
     
     CGRect frame5=CGRectMake(353,0, 62, 50);
@@ -3558,6 +3653,7 @@
     label5.frame=frame5;
     label5.text= [NSString stringWithFormat:@"%d",occClass];
     label5.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label5];
     
     CGRect frame6=CGRectMake(415,0, 62, 50);
@@ -3569,6 +3665,7 @@
         label6.text= [NSString stringWithFormat:@"%d",occLoad];
     }
     label6.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label6];
     
     CGRect frame7=CGRectMake(477,0, 84, 50);
@@ -3582,6 +3679,7 @@
     }
     label7.text= hl1k;
     label7.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label7];
     
     CGRect frame8=CGRectMake(561,0, 84, 50);
@@ -3595,6 +3693,7 @@
     }
     label8.text= hl100;
     label8.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label8];
     
     CGRect frame9=CGRectMake(645,0, 84, 50);
@@ -3608,6 +3707,7 @@
     }
     label9.text=hlp;
     label9.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label9];
     
     if (indexPath.row % 2 == 0) {
@@ -3678,7 +3778,8 @@
             deleteBtn.enabled = FALSE;
         }
         else {
-            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+//            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             deleteBtn.enabled = TRUE;
         }
     }
@@ -3702,7 +3803,8 @@
             deleteBtn.enabled = FALSE;
         }
         else {
-            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+//            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             deleteBtn.enabled = TRUE;
         }
     }
@@ -3816,6 +3918,7 @@
     unitField.text = @"";
     inputSA = 0;
     secondLARidCode = nil;
+    _planList = nil;
     
     [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];

@@ -158,7 +158,8 @@
 		EF059856161A9373004A9095 /* PremiumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059854161A9373004A9095 /* PremiumViewController.m */; };
 		EF059859161A9406004A9095 /* RiderPTypeTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF059857161A9406004A9095 /* RiderPTypeTbViewController.m */; };
 		EF05985C161A9428004A9095 /* RiderListTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05985A161A9428004A9095 /* RiderListTbViewController.m */; };
-		EF05985F161A943A004A9095 /* RiderFormTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05985D161A943A004A9095 /* RiderFormTbViewController.m */; };
+		EF1343BD165C7CD600BF69B3 /* RiderDeducTb.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1343BC165C7CD600BF69B3 /* RiderDeducTb.m */; };
+		EF1343C1165C7CFD00BF69B3 /* RiderPlanTb.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
@@ -396,8 +397,10 @@
 		EF059858161A9406004A9095 /* RiderPTypeTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderPTypeTbViewController.h; sourceTree = "<group>"; };
 		EF05985A161A9428004A9095 /* RiderListTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderListTbViewController.m; sourceTree = "<group>"; };
 		EF05985B161A9428004A9095 /* RiderListTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderListTbViewController.h; sourceTree = "<group>"; };
-		EF05985D161A943A004A9095 /* RiderFormTbViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderFormTbViewController.m; sourceTree = "<group>"; };
-		EF05985E161A943A004A9095 /* RiderFormTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderFormTbViewController.h; sourceTree = "<group>"; };
+		EF1343BB165C7CD600BF69B3 /* RiderDeducTb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderDeducTb.h; sourceTree = "<group>"; };
+		EF1343BC165C7CD600BF69B3 /* RiderDeducTb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderDeducTb.m; sourceTree = "<group>"; };
+		EF1343BF165C7CFD00BF69B3 /* RiderPlanTb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderPlanTb.h; sourceTree = "<group>"; };
+		EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderPlanTb.m; sourceTree = "<group>"; };
 		EF28C317161BE224009585CC /* SIMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMenuViewController.h; path = ../SIMenuViewController.h; sourceTree = "<group>"; };
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
 		EF28C321161C11C2009585CC /* SIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIHandler.h; path = ../SIHandler.h; sourceTree = "<group>"; };
@@ -846,8 +849,10 @@
 				EF059857161A9406004A9095 /* RiderPTypeTbViewController.m */,
 				EF05985B161A9428004A9095 /* RiderListTbViewController.h */,
 				EF05985A161A9428004A9095 /* RiderListTbViewController.m */,
-				EF05985E161A943A004A9095 /* RiderFormTbViewController.h */,
-				EF05985D161A943A004A9095 /* RiderFormTbViewController.m */,
+				EF1343BF165C7CFD00BF69B3 /* RiderPlanTb.h */,
+				EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */,
+				EF1343BB165C7CD600BF69B3 /* RiderDeducTb.h */,
+				EF1343BC165C7CD600BF69B3 /* RiderDeducTb.m */,
 			);
 			name = Rider;
 			sourceTree = "<group>";
@@ -1058,7 +1063,6 @@
 				EF059856161A9373004A9095 /* PremiumViewController.m in Sources */,
 				EF059859161A9406004A9095 /* RiderPTypeTbViewController.m in Sources */,
 				EF05985C161A9428004A9095 /* RiderListTbViewController.m in Sources */,
-				EF05985F161A943A004A9095 /* RiderFormTbViewController.m in Sources */,
 				C4E7B388161B119E00066CBF /* SIListing.m in Sources */,
 				C4E7B38B161B147800066CBF /* siListingSortBy.m in Sources */,
 				EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */,
@@ -1086,6 +1090,8 @@
 				C4EF087916496B43000444BA /* BrowserViewController.m in Sources */,
 				C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */,
 				C4F45DF1165B38A20035CAA9 /* PasswordTips.m in Sources */,
+				EF1343BD165C7CD600BF69B3 /* RiderDeducTb.m in Sources */,
+				EF1343C1165C7CFD00BF69B3 /* RiderPlanTb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

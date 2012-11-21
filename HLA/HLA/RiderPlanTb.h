@@ -1,27 +1,28 @@
 //
-//  RiderFormTbViewController.h
-//  HLA
+//  RiderPlanTb.h
+//  HLA Ipad
 //
-//  Created by shawal sapuan on 9/4/12.
+//  Created by shawal sapuan on 11/21/12.
 //  Copyright (c) 2012 InfoConnect Sdn Bhd. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 
-@class RiderFormTbViewController;
-@protocol RiderFormTbViewControllerDelegate
--(void)RiderFormController:(RiderFormTbViewController *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc;
+@class RiderPlanTb;
+@protocol RiderPlanTbDelegate
+-(void)PlanView:(RiderPlanTb *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc;
 @end
 
-@interface RiderFormTbViewController : UITableViewController {
+@interface RiderPlanTb : UITableViewController {
     NSString *databasePath;
     sqlite3 *contactDB;
     NSUInteger selectedIndex;
-    id <RiderFormTbViewControllerDelegate> _delegate;
+    id <RiderPlanTbDelegate> _delegate;
 }
 
-@property (nonatomic,strong) id <RiderFormTbViewControllerDelegate> delegate;
+
+@property (nonatomic,strong) id <RiderPlanTbDelegate> delegate;
 @property (readonly) NSString *selectedItem;
 @property (readonly) NSString *selectedItemDesc;
 @property(nonatomic , retain) NSMutableArray *itemValue;
@@ -29,8 +30,7 @@
 
 @property (nonatomic,strong) id requestCondition;
 @property (nonatomic, assign,readwrite) int requestSA;
-@property (nonatomic,strong) id requestOption;
 
-
+-(id)initWithString:(NSString *)stringCode;
 
 @end

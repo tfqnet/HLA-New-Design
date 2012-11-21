@@ -10,18 +10,23 @@
 #import <sqlite3.h>
 #import "RiderPTypeTbViewController.h"
 #import "RiderListTbViewController.h"
-#import "RiderFormTbViewController.h"
 #import "BasicPlanHandler.h"
 #import "SIHandler.h"
+#import "RiderPlanTb.h"
+#import "RiderDeducTb.h"
 
-@interface RiderViewController : UIViewController <RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,RiderFormTbViewControllerDelegate,UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface RiderViewController : UIViewController <RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,RiderDeducTbDelegate,RiderPlanTbDelegate>
 {
     NSString *databasePath;
     sqlite3 *contactDB;
     UIPopoverController *popOverConroller;
     UIPopoverController *_RiderListPopover;
+    UIPopoverController *_planPopover;
+    UIPopoverController *_deducPopover;
     RiderPTypeTbViewController *listPType;
     RiderListTbViewController *_RiderList;
+    RiderPlanTb *_planList;
+    RiderDeducTb *_deductList;
     BOOL term;
     BOOL sumA;
     BOOL plan;
@@ -41,6 +46,8 @@
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 
 @property (nonatomic, retain) RiderListTbViewController *RiderList;
+@property (nonatomic, retain) RiderPlanTb *planList;
+@property (nonatomic, retain) RiderDeducTb *deductList;
 
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestSINo;
@@ -51,6 +58,8 @@
 @property (nonatomic, assign,readwrite) int requestMOP;
 
 @property (nonatomic, retain) UIPopoverController *RiderListPopover;
+@property (nonatomic, retain) UIPopoverController *planPopover;
+@property (nonatomic, retain) UIPopoverController *deducPopover;
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
 @property (retain, nonatomic) IBOutlet UIButton *btnPType;
 @property (retain, nonatomic) IBOutlet UIButton *btnAddRider;
@@ -94,6 +103,8 @@
 
 @property (nonatomic,strong) NSString *SINoPlan;
 @property (nonatomic,strong) NSString *planCode;
+@property (nonatomic,strong) NSString *planCondition;
+@property (nonatomic,strong) NSString *deducCondition;
 @property (nonatomic, assign,readwrite) int expAge;
 @property (nonatomic, assign,readwrite) int minSATerm;
 @property (nonatomic, assign,readwrite) int maxSATerm;

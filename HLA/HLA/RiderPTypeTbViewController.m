@@ -108,6 +108,7 @@
     }
     
 	cell.textLabel.text = itemDesc;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     
 	if (indexPath.row == selectedIndex) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
