@@ -106,9 +106,13 @@
     
     [self InsertToSI_Temp_Trad_Overall];
     
+    
+    
     NSString *siNo = @"";
     NSString *databaseName = @"hladb.sqlite";
+    NSString *databaseName1 = @"0000000000000001.db";
     NSString *masterName = @"Databases.db";
+    
     
     
     self.db = [DBController sharedDatabaseController:databaseName];
@@ -600,7 +604,7 @@
     //------- end ---------
     
     NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    //NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
     
     NSString *WebSQLSubdir;
@@ -610,18 +614,55 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     if (IsAtLeastiOSVersion(@"6.0")){
+        /*
         WebSQLSubdir = @"WebKit/LocalStorage";
         WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
         WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+         */
+        NSString *viewerPlist = [library stringByAppendingPathComponent:@"viewer.plist"];
+        BOOL plistExist = [fileManager fileExistsAtPath:viewerPlist];
+        if (!plistExist){
+            NSLog(@"not exist!");
+            NSString *viewerPlistFromDoc = [documents stringByAppendingPathComponent:@"viewer.plist"];
+            [fileManager copyItemAtPath:viewerPlistFromDoc toPath:viewerPlist error:nil];
+            
+            databaseName = @"hladb.sqlite";//actual
+            databaseName1 = @"hladb.sqlite";//dummy
+            WebSQLSubdir = @"Caches";
+            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+            
+            
+            
+        }
+        else{
+            NSLog(@"exist!");
+            
+            databaseName = @"hladb.sqlite";//actual
+            databaseName1 = @"hladb.sqlite";//dummy
+            WebSQLSubdir = @"WebKit/LocalStorage";
+            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+            
+            
+        }
+        
     }
     else{
+        /*
+        WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
+        WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+        WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+         */
+        databaseName = @"hladb.sqlite";//actual
+        databaseName1 = @"hladb.sqlite";//dummy
         WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
         WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
         WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
     }
     
     NSString *masterFile = [WebSQLPath stringByAppendingPathComponent:masterName];
-    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName];
+    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName1];
     
     [fileManager removeItemAtPath:databaseFile error:nil];
     [fileManager removeItemAtPath:masterFile error:nil];
@@ -1096,6 +1137,8 @@
     NSString *smoker;
     NSString *QuerySQL;
     
+    NSLog(@"insert to SI Temp Trad LA --- start");
+    
     for (int i = 1; i <2; i ++) {
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
             getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND sequence = %d ", SINo, i];
@@ -1136,7 +1179,7 @@
     }
     
     
-    
+    NSLog(@"insert to SI_Temp_Trad_LA --- End");
         
 }
 
@@ -1146,6 +1189,7 @@
     NSString *RiderSQL;
     NSString *SelectSQL = @"";
     
+        
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
              /*   
             double annually =arc4random() % 5000 + 500;
@@ -1187,7 +1231,8 @@
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                         
-                        
+                        NSLog(@"insert to SI_Temp_Trad_Details --- start");
+                    
                         
                     }
                     sqlite3_finalize(statement); 
@@ -1287,6 +1332,9 @@
             sqlite3_close(contactDB);
         }
     }
+    
+    NSLog(@"insert to SI_Temp_Trad_Details --- End");
+    
 }
 
 -(void)InsertToSI_Temp_Trad_Basic{
@@ -1328,6 +1376,8 @@
     NSMutableArray *TotalSurrenderValueB = [[NSMutableArray alloc] init ];
     NSMutableArray *TotalDBValueA = [[NSMutableArray alloc] init ];
     NSMutableArray *TotalDBValueB = [[NSMutableArray alloc] init ];
+    
+    NSLog(@"insert to SI_Temp_Trad_Basic --- start");
     
     
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
@@ -1953,9 +2003,15 @@
             sqlite3_close(contactDB);
         }
     } 
+    
+    NSLog(@"insert to SI_Temp_Trad_Basic --- End");
+    
 }
 
 -(void)InsertToSI_Temp_Trad_Overall{
+    
+    NSLog(@"insert to SI_Temp_Trad_Overall --- start");
+    
     
     sqlite3_stmt *statement;
     NSString *QuerySQL;
@@ -1978,7 +2034,8 @@
             
             sqlite3_close(contactDB);
         }
-     
+    NSLog(@"insert to SI_Temp_Trad_Overall --- End");
+    
 }
 
 -(void)InsertToSI_Temp_Trad_Summary{
@@ -1991,6 +2048,8 @@
     NSMutableArray *arrayYearlyIncome = [[NSMutableArray alloc] init ];
     NSMutableArray *aValue = [[NSMutableArray alloc] init ];
     NSMutableArray *aValueEnd = [[NSMutableArray alloc] init ];
+    
+    NSLog(@"insert to SI_Temp_Trad_Summary --- start");
     
     
     int inputAge;
@@ -2225,6 +2284,9 @@
             sqlite3_close(contactDB);
         }
     } 
+    
+    NSLog(@"insert to SI_Temp_Trad_Summary --- End");
+    
 }
 
 -(void)InsertToSI_Temp_Trad_Rider{
@@ -2233,6 +2295,7 @@
     NSString *QuerySQL;
     NSMutableArray *TotalRiderSurrenderValue = [[NSMutableArray alloc] init ];
     
+    NSLog(@"insert to SI_Temp_Trad_Rider --- start");
     
     
     if (OtherRiderCode.count > 0) {
@@ -3116,7 +3179,10 @@
             }
                 
         }
-    }  
+    } 
+    
+    NSLog(@"insert to SI_Temp_Trad_Rider --- End");
+    
       
 }
 
@@ -3132,6 +3198,9 @@
     }
       */  
 
+    NSLog(@"insert to SI_Temp_Trad_RideriLLus --- start");
+    
+    
     if (IncomeRiderCode.count > 0 ) {
         
         for (int i=0; i<IncomeRiderCode.count; i++) {
@@ -3963,6 +4032,9 @@
             
         }
     }
+    
+    NSLog(@"insert to SI_Temp_Trad_RideriLLus --- End");
+    
 }
 
 

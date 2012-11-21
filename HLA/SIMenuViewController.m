@@ -440,11 +440,14 @@
                         //[self presentViewController:reportVC animated:YES completion:Nil];
                         BrowserViewController *controller = [[BrowserViewController alloc] init];
                         controller.title = @"Quotation";
+                        
                         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
                         UINavigationController *container = [[UINavigationController alloc] init];
                         [container setNavigationBarHidden:YES animated:NO];
                         [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
                         [self presentModalViewController:container animated:NO];
+                        
+                        
                         
                     }];
                      

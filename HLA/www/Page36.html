@@ -1,0 +1,2183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var cashPayment = 0;
+    var colType = 0;
+    var pageNum = '8';
+    //var rider = "";
+    var page = gup("page");
+
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+    	//setPage()
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+        setPageDesc(page);
+    }
+        
+    function ListDBValues() {
+            
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        //Details
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                	}
+                	$('#dateModified').html(row.UpdatedAt);
+                	
+                	if ($.trim(row.CashDividend) == 'ACC')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                	else if (row.CashDividend == 'POF')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        
+		db.transaction(function(transaction) {//display rider row
+        	transaction.executeSql("Select * from SI_Temp_Pages where htmlName = '" + page + "'", [], function(transaction, result) {
+            	if (result != null && result.rows != null) {
+                	var row = result.rows.item(0);
+                	
+					if(row.riders.charAt(row.riders.length-1) == ";"){
+						rider = row.riders.slice(0, -1).split(";");
+					}
+					else{
+						rider = row.riders.split(";");
+					}
+                	
+                	
+            		//rider = row.riders.split(";");
+            		for(var i=0;i<rider.length;i++){
+            			temp = rider[i];
+            			if (temp == "C+"){
+            				temp = "C"
+            			}
+            			else if (temp == "tblHeader"){
+            				$('#riderInPage').css('display','inline');
+            			}
+            			
+            			$('#table-design1 tr.'+temp).css('display','table-row');
+            			//$('#table-design1 tr.MG_IV').css('display','table-row');
+            			//$('#table-design1 tr.MG_II').css('display','table-row');
+            			//$('#table-design1 tr.PA').css('display','table-row');
+            			//alert(temp)
+
+            			if (temp == "C"){
+            				temp = "C+"	
+            				$('#table-design2Wide tr').css('display','table-row');
+        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                						$('#CRiderTerm').html(row.RiderTerm);
+                						$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 50) / 100));
+                						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 150) / 100));
+                						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 250) / 100));
+                						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 25) / 100));
+                						if (row.PlanOption == "L"){
+                							$('#cPlanOption').html('Level Cover');
+                							$('#cGuaranteedIncreasingSumAssured').hide();
+                							$('#cNoClaimBenefit').hide();
+                						}
+                						else if (row.PlanOption == "I"){ //wideTable value? nursing care allowance?
+                							$('#cPlanOption').html('Increasing Cover');
+                							$('#cNoClaimBenefit').hide();
+                						}
+                						else if (row.PlanOption == "B"){
+                							$('#cPlanOption').html('Level Cover with NCB');
+                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							$('#cGuaranteedIncreasingSumAssured').hide();
+                						}
+                						else if (row.PlanOption == "N"){
+                							$('#cPlanOption').html('Increasing Cover with NCB');
+                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							//$('#cGuaranteedIncreasingSumAssured').hide();
+                							$('#cVeryEarlyTD').html('50% of Rider Sum Assured');
+                							$('#cEarlyTD').html('150% of Rider Sum Assured');
+                							$('#cAdvanceTD').html('250% of Rider Sum Assured');
+                							$('#cNursingCareAllowance').html('25% of Rider Sum Assured');
+                						}
+            					}
+        					},errorHandler);        				
+            			}
+            			if (temp == "HB"){
+        					transaction.executeSql("Select Units from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                						$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
+            					}
+        					},errorHandler);        				
+            			}
+            			else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP"){
+            				$('#illness tr').css('display','table-row');
+            			}
+            		}
+            		
+            		for (var j=0;j<rider.length;j++){
+        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                					//alert(row.RiderTerm)
+                					$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
+                					$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SA+""));
+            					}
+        					},errorHandler);
+            		}
+            		
+            		
+            	}
+        	},errorHandler);
+    	},errorHandler,nullHandler);
+        
+        
+        return;
+    }
+</script> 
+</head>
+
+ 
+<body onload="onBodyLoad()">
+
+<body>
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+ 
+
+ 
+ 
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+<tr>
+<td width="75%"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="25%">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+</tr>
+</table>
+<span id="riderInPage" style="display:none"><b>Penerangan Faedah Rider</b><br/><br/></span>
+
+
+
+<div id="pageLength" class="pageLength" style="position:relative;height:800px;">
+<table id="table-design1">
+<script>
+//$('#table-design1').css('display','none');
+//$('#table-design1 tr').css('display','table-row');
+</script> 
+<tr class="tblHeader" id="tblHeader" style="display:table-row;">
+<th class="contentSmall"><b>Riders</b></th>
+<th class="contentSmall" style="text-align:center;"><b>Tempoh Diinsuranskan</b></th>
+<th class="content"><b>Huraian Faedah</b></th>
+</tr>
+
+<tr class="C" id="C" style="display:table-row;">
+<td class="contentSmall">C+ secure (<span id="cPlanOption">{cPlanOption}</span>)</td>
+<td class="contentSmall" style="text-align:center;"><span id="CRiderTerm">{C+RiderTerm}</span></td>
+<td class="content">
+<u>Faedah Kanser</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah Faedah seperti yang dinyatakan dalam jadual di bawah akan dibayar apabila Hayat Diinsuranskan didiagnosis dengan kanser yang di<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bawah perlindungan pelan ini dalam tempoh diinsuranskan.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apabila tuntutan dimohon, semua premium yang perlu dibayar pada masa hadapan akan diabaikan kemudian dari ini.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jadual Pampasan::<br/><br/>
+<div style="margin-left: 18px;">
+<table id="table-design2Wide">
+<tr><td style="text-align:left;">Diagnosis</td><td style="text-align:left;">Jumlah Pampasan</td></tr>
+<tr><td style="text-align:left;">Kanser Peringkat Pra Awal</td><td style="text-align:left;" id="cVeryEarlyTD">RM <span id="cVeryEarly">{cVeryEarly}</span></td></tr>
+<tr><td style="text-align:left;">Kanser Peringkat Awal</td><td style="text-align:left;" id="cEarlyTD">RM <span id="cEarly">{cEarly}</span></td></tr>
+<tr><td style="text-align:left;">Kanser Peringkat Lanjut</td><td style="text-align:left;" id="cAdvanceTD">RM <span id="cAdvance">{cAdvance}</span></td></tr>
+</table>
+</div>
+<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah pampasan terhadap setiap peringkat kanser akan dikurangkan oleh sebarang pembayaran terdahulu untuk kanser pada organ yang sama<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atau jenis kanser yang sama dan jumlah pampasan adalah setakat 300% daripada Jumlah Rider Diinsuranskan.<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bagi Peringkat Pra Awal Kanser dan Peringkat Awal Kanser, beberapa tuntutan adalah dibenarkan untuk peringkat kategori yang sama, tertakluk<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kepada tuntutan tersebut adalah bagi jenis kanser berlainan yang menjejaskan organ berlainan.<br/><br/>
+<u>Faedah Elaun untuk Perkhidmatan Jururawat</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Setelah Hayat Diinsuranskan didiagnosis menghidapi Kanser Peringkat Lanjut oleh Pengamal Perubatan yang berdaftar, Syarikat akan membayar<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi atau pemegang serah haknya yang sah pembayaran tahunan bersamaan dengan RM <span>5,000.00</span> bagi tempoh 2 tahun jika Hayat<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diinsuranskan masih hidup apabila Syarikat menerima bukti kejadian tersebut.<br/><br/>
+<u>Pelanjutan Perlindungan untuk Kanser Peringkat Lanjut</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tempoh 2 Tahun Polisi akan dilanjutkan selepas Tarikh Tamat Tempoh untuk melindungi Hayat Diinsuranskan akibat Kanser Peringkat Lanjut jika<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;terdapat tuntutan sah terhadap Kanser Peringkat Pra Awal dan/atau Kanser Peringkat Awal bagi jenis sama atau pada organ yang sama sebelum<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tarikh Tamat Tempoh.<br/><br/>
+
+
+
+<div id="cGuaranteedIncreasingSumAssured">
+<u>Jumlah Diinsuranskan Meningkat Terjamin</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah Rider Diinsuranskan akan meningkat bersamaan dengan 10% bagi setiap 2 tahun dengan peningkatan pertama tersebut bermula pada<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ulang tahun ke-2 bagi Tarikh Permulaan Polisi ini dan peningkatan yang terakhir pada Ulang tahun ke-20 Polisi ini dan kekal sama kemudian dari ini.<br/><br/>
+</div>
+
+<div id="cNoClaimBenefit">
+<u>Faedah Tanpa Tuntutan</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selagi Hayat Diinsuranskan masih hidup pada Tarikh Tamat Tempoh Polisi ini dengan syarat tiada tuntutan yang dimohon sebelum tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tersebut, Syarikat akan membayar Pemunya Polisi Faedah Tanpa Tuntutan bersamaan dengan RM <span id="cNoClaimAmount">{cNoClaimAmount}</span><br/><br/>
+</div>
+
+
+
+<u>Premium</u><br>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premium adalah tidak terjamin dan tertakluk kepada semakan semula Syarikat pada bila-bila masa dan dari semasa ke semasa dengan memberi<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notis secara bertulis sekurang-kurangnya 90 hari kepada anda.<br/><br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit Pra-wujud<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Semua Kanser yang dialami atau didiagnosis dalam Tempoh Menunggu selama 90 hari.<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Semua Kanser yang diklasifikasikan mengikut histologi sebagai:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pramalignan (sebagai contoh intraepitelial serviks / CIN I, II, atau III, trombositemia perlu, rubra vera polisitemia) atau menghadapi sama<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ada malignansi pinggiran / potensi malignan rendah dan/atau;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Karsinoma in situ (kecuali Karsinoma duktal in situ payu dara, Karsinoma in situ serviks dan Karsinoma in situ kolon).<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Semua Kanser kulit kecuali melanoma malignan yang melebihi kedalaman 1.5 mm atau Kanser kulit metastatik.<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Semua Kanser berkaitan jangkitan HIV.<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Kegagalan yang tidak munasabah untuk mengikuti rawatan perubatan.<br/>
+vii.&nbsp;&nbsp;&nbsp;Semua Kanser jika Hayat Diinsuranskan meninggal dunia dalam tempoh tiga puluh (30) hari selepas tarikh didiagnosis dengan Kanser.<br/>
+</td></tr>
+<!--c+ end--> 
+
+
+ 
+<!--CCTR-Convertible Comprehensive Term Rider start--> 
+<tr class="CCTR" id="CCTR" style="display:table-row;">
+<td class="contentSmall">Convertible Comprehensive Term Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CCTRRiderTerm">{CCTRRiderTerm}</span></td>
+<td class="content">
+RM <span id="CCTRGYI">{CCTRGYI}</span> akan dibayar apabila hayat diinsuranskan meninggal dunia / mengalami TPD (sebelum umur 65 tahun) dalam tempoh diinsuranskan. Dalam<br/>
+tempoh rider dan sebelum mencecah umur 60 tahun, hayat diinsuranskan boleh menukar polisi ini kepada pelan sepanjang hayat atau endowmen tanpa<br/>
+mengemukakan sebarang bukti boleh insurans.<br/>
+Faedah TPD akan dibayar berdasarkan Peruntukan TPD.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula, mengikut<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mana-mana yang terkemudian.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+</td>
+</tr> 
+<!--CCTR-Convertible Comprehensive Term Rider end-->
+
+
+<!--CIR-Critical Illness Rider start--> 
+<tr class="CIR" id="CIR" style="display:table-row;">
+<td class="contentSmall">Critical Illness Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CIRRiderTerm">{CIRRiderTerm}</span></td>
+<td class="content">
+RM <span id="CIRGYI">{CIRGYI}</span> akan dibayar apabila didiagnosis dengan mana-mana 36 penyakit kritikal yang melindungi hayat diinsuranskan dalam tempoh diinsuranskan.<br/>
+Premium tidak terjamin dan tertakluk kepada semakan semula Syarikat pada bila-bila masa dan dari semasa ke semasa dengan memberikan notis bertulis<br/>
+sekurang-kurangnya 90 hari kepada anda.<br/>
+Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan jumlah bayaran sekali gus ketika kejadian<br/>
+Penyakit Kritikal.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kejadian arteri koronari atau penyakit jantung iskemia yang berlaku sebelum Tarikh Penyertaan atau mana-mana tarikh pengembalian semula, mengikut<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mana-mana yang terkemudian<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal yang pertama kali dapat dilihat dengan jelas dalam tempoh 30 hari dari Tarikh Penyertaan atau mana-mana tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian<br/>
+iii.&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal seperti yang ditetapkan di bawah dalam tempoh 60 hari dari Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasti dan rawatan invasif lain bagi penyakit arteri koronari<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kanser<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari yang memerlukan pembedahan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serangan sakit jantung<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari serius yang lain<br/>
+iv.&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Pengecualian kepada fasal ini ialah penyakit arteri koronari dan AIDS.<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Hayat diinsuranskan meninggal dunia dalam tempoh 28 hari selepas tarikh didiagnosis dengan mana-mana penyakit kritikal.<br/>
+</td>
+</tr>
+<!--CIR-Critical Illness Rider end-->
+
+
+<!--CIWP-Critical Illness WP Rider start--> 
+<tr class="CIWP" id="CIWP" style="display:table-row;">
+<td class="contentSmall">Critical Illness WP Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
+<td class="content">
+Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider setelah didiagnosis dengan<br/>
+mana-mana 36 penyakit kritikal yang melindungi hayat diinsuranskan dalam tempoh diinsuranskan. Premium tidak terjamin dan tertakluk kepada semakan<br/>
+semula Syarikat pada bila-bila masa dan dari semasa ke semasa dengan memberikan notis bertulis sekurang-kurangnya 90 hari kepada anda.<br/>
+Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan faedah akan dibayar ketika kejadian<br/>
+Penyakit Kritikal.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kejadian arteri koronari atau penyakit jantung iskemia yang berlaku sebelum Tarikh Penyertaan atau mana-mana tarikh pengembalian semula, mengikut<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mana-mana yang terkemudian<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal yang pertama kali dapat dilihat dengan jelas dalam tempoh 30 hari dari Tarikh Penyertaan atau mana-mana tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian<br/>
+iii.&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal seperti yang ditetapkan di bawah dalam tempoh 60 hari dari Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasti dan rawatan invasif lain bagi penyakit arteri koronari<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kanser<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari yang memerlukan pembedahan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serangan sakit jantung<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari serius yang lain<br/>
+iv.&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Pengecualian kepada fasal ini ialah penyakit arteri koronari dan AIDS.<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Hayat diinsuranskan meninggal dunia dalam tempoh 28 hari selepas tarikh didiagnosis dengan mana-mana penyakit kritikal.<br/>
+</td></tr>
+<!--CIWP-Critical Illness WP Rider end-->
+
+<!--CPA-Compprehensive Personal Accident Rider start-->
+<tr class="CPA" id="CPA" style="display:table-row;">
+<td class="contentSmall">Comprehensive Personal Accident Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CPARiderTerm">{CPARiderTerm}</span></td>
+<td class="content">
+Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau mengalami hilang upaya akibat kemalangan dalam tempoh diinsuranskan:<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh &amp; Kekal akibat kemalangan - rujuk jadual indeminiti<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang upaya menyeluruh sementara - indeminiti mingguan sebanyak RM8 bagi setiap 1,000 jumlah diinsuranskan<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang upaya separa sementara - indeminiti mingguan sebanyak RM2 bagi setiap 1,000 jumlah diinsuranskan<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembayaran balik yuran &amp; perbelanjaan perubatan - sehingga RM20 bagi setiap 1,000 jumlah diinsuranskan<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indeminiti berganda - jumlah diinsuranskan yang akan dibayar digandakan jika Hayat Diinsuranskan meninggal dunia akibat kemalangan yang berlaku<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ketika Hayat Diinsuranskan di dalam Kenderaan Awam bergerak secara mekanikal dalam laluan darat yang ditetapkan, tidak termasuk Teksi<br/><br/>
+Syarikat tidak akan membayar sebarang faedah bawah rider ini bagi sebarang kerugian, kerosakan atau keadaan luar jangkaan oleh atau melalui atau<br/>
+diakibatkan, secara langsung atau tidak, daripada:<br/><br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penerbangan atau mengambil bahagian dalam sebarang aktiviti penerbangan melainkan ketika menerbang dalam pesawat sebagai penumpang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;membayar tambang dan bukan sebagai anak kapal terbang dan bukan untuk tujuan untuk melakukan sebarang perdagangan atau operasi teknikal dalam<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atau atas pesawat;<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Kecederaan diri yang disengajakan, membunuh diri atau cuba untuk membunuh diri, pembunuhan atau serangan yang diprovokasi atau bawah pengaruh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sebarang dadah/narkotik/alkohol;<br/>
+iii.&nbsp;&nbsp;&nbsp;Terlibat dalam atau mengambil bahagian dalam sukan professional atau semi-profesional;<br/>
+iv.&nbsp;&nbsp;&nbsp;Terlibat dalam sebarang perlumbaan (selain daripada perlumbaan yang menggunakan kaki), pendakian gunung atau batuan yang menggunakan tali atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pemandu jalan, sukan musim sejuk, kegiatan bawah air, ski air, bola sepak, polo, pemburuan, pertandingan lompat kuda, penerokaan gua,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penerokaan gua bawah tanah, peninjuan atau bergusti;<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Peperangan, pencerobohan, tindakan musuh asing, permusuhan atau operasi semacam peperangan (sama ada perang diisytiharkan atau tidak), perang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saudara, kegiatan ketenteraan atau rampasan kuasa;
+vi.&nbsp;&nbsp;&nbsp;Terlibat langsung dalam mogokan, rusuhan, pemberontakan, revolusi, kegemparan awam atau penderhakaan;<br/>
+vii.&nbsp;&nbsp;Terlibat langsung dalam mogokan, rusuhan, pemberontakan, revolusi, kegemparan awam atau penderhakaan;<br/>
+
+viii.&nbsp;Sebarang kesakitan atau penyakit yang disebabkan atau dijangkiti oleh atau menerusi sebarang kaedah yang berpunca daripada virus, parasit, bakteria<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atau sebarang mikro-organisma termasuk virus, parasit, bakteria atau mikro-organisma yang dikenali dan/atau berpunca daripada gigitan serangga atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmisi melalui seks;
+ix.&nbsp;&nbsp;&nbsp;Sebarang rawatan atau pembedahan (kecuali rawatan yang diperlukan untuk merawati kecederaan yang dilindungi bawah Polisi ini);<br/>
+x.&nbsp;&nbsp;&nbsp;&nbsp;Melakukan atau cuba melakukan sebarang kegiatan yang menyalahi undang-undang;<br/>
+xi.&nbsp;&nbsp;&nbsp;Sebarang penyakit, kesakitan atau kecacatan kongenital;<br/>
+xii.&nbsp;&nbsp;Sebarang kecacatan atau keuzuran fizikal atau mental;<br/>
+xiii.&nbsp;Human Immune-deficiency Virus (HIV) dan/atau sebarang penyakit yang berkaitan dengan HIV, termasuk AIDS dan/atau sebarang perkembangan mutan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atau variasi-variasi darinya;
+xiv.&nbsp;Kehamilan, kelahiran anak, keguguran atau sebarang komplikasi yang berkaitan dengan yang sama;<br/>
+xv.&nbsp;&nbsp;Sebarang rawatan gigi yang tidak diperlukan untuk merawati kecederaan yang dilindungi bawah Polisi ini.<br/>
+<!--CPA-Compprehensive Personal Accident Rider end-->
+
+<!--ETPD-Entended TPD Rider start-->
+<tr class="ETPD" id="ETPD" style="display:table-row;">
+<td class="contentSmall">Extended TPD Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ETPDRiderTerm">{ETPDRiderTerm}</span></td>
+<td class="content">
+Apabila Hayat Diinsuranskan mengalami TPD dalam tempoh diinsuranskan dan Hayat Diinsuranskan masih mengalami hilang upaya, RM <span id="ETPDGYI">{ETPDGYI}</span> akan dibayar<br/>
+setiap tahun sehingga umur 65 tahun atau Hayat Diinsuranskan meninggal dunia, mengikut mana-mana yang terdahulu.Pembayaran pertama adalah pada ulang<br/>
+tahun pertama selepas bermulanya TPD.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+</td>
+</tr>
+<!--ETPD-Entended TPD Rider end-->
+
+<!--HB-Hospitalisation Benefit start-->
+<tr class="HB" id="HB" style="display:table-row;">
+<td class="contentSmall">Hospitalisation Benefit</td>
+<td class="contentSmall" style="text-align:center;"><span id="HBRiderTerm">{HBRiderTerm}</span></td>
+<td class="content">
+Faedah Hospitalisasi sebanyak RM <span id="HBBenefit">{HBBenefit}</span> setiap minggu akan dibayar jika hayat diinsuranskan dimasukkan ke hospital dalam tempoh diinsuranskan.<br/><br/>
+Faedah penghospitalan tersebut tidak akan dibayar:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bagi tempoh lebih daripada 52 minggu pertama atau apa-apa tempoh yang lebih panjang semasa Hayat Diinsuranskan dimasukkan ke hospital secara<br/>
+berterusan<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;berhubung dengan keseluruhan apa-apa tempoh dimasukkan ke hospital secara berterusan jika mana-mana bahagian dari tempoh tersebut adalah dalam<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tempoh 30 hari pertama dari Tarikh Berkuat kuasa atau tarikh pengembalian semula polisi pada bila-bila masa<br/>
+iii.&nbsp;&nbsp;&nbsp;kemasukan ke hospital disebabkan apa-apa penyakit atau kecederaan yang berlaku sebelum pembayaran premium pertama untuk polisi<br/>
+iv.&nbsp;&nbsp;&nbsp;kemasukan ke hospital yang berlaku selepas ulang tahun Tarikh Penyertaan yang berikutnya apabila Hayat Diinsuranskan mencecah umur 60 tahun<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;berhubung dengan apa-apa tempoh kemasukan ke hospital yang berlaku selepas Tarikh Tamat Tempoh<br/>
+vi.&nbsp;&nbsp;&nbsp;kemasukan ke hospital disebabkan penyakit atau kecederaan yang secara langsung atau tidak langsung berpunca daripada:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mogok, rusuhan, kekecohan awam, perang (sama ada diisytiharkan atau tidak diisytiharkan)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;terlibat dalam penerbangan (kecuali sebagai penumpang biasa yang membayar tambang dalam mana-mana penerbangan komersil berjadual tetap)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;di bawah pengaruh arak yang memabukkan atau apa-apa narkotik atau dadah<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cubaan membunuh diri, kecederaan diri yang disengajakan, bertanding, melawan daripada ditangkap secara sah oleh pihak berkuasa<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;undang-undang, atau proses undang-undang yang dikenakan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tidak siuman<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(f)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penyakit venereal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(g)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kelahiran, kehamilan, keguguran dan keadaan sampingannya<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(h)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dengan adanya HIV atau Kompleks berkaitan AIDS<br/>
+</td>
+</tr>
+<!--HB-Hospitalisation Benefit end-->
+
+
+
+<!--HMM-HLA Major Medi start-->
+<tr class="HMM" id="HMM" style="display:table-row;">
+<td class="contentSmall">Major Medi Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="HMMRiderTerm">{HMMRiderTerm}</span></td>
+<td class="content">
+Polisi ini memperuntukkan perbelanjaan penghospitalan &amp; pembedahan dan faedah rawatan pesakit luar disebabkan oleh penyakit yang di bawah perlindungan<br/>
+polisi ini.<br/><br/>
+Rujuk kepada Jadual Faedah di dalam Risalah Pendedahan Produk untuk butiran. Premium adalah tidak terjamin dan bergantung kepada umur tercapai Hayat<br/>
+Diinsuranskan. Semua bayaran faedah-faedah (kecuali Tunai Harian Penghospitalan disebabkan oleh Kemalangan Jalan Raya di Lebuhraya Malaysia, Elaun Tunai<br/>
+Harian untuk setiap penginapan bermalam di Hospital Kerajaan, Rawatan Kanser Pesakit Luar, Rawatan Dialisis Buah Pinggang Pesakit Luar dan Perkhidmatan<br/>
+Bantuan Perubatan &amp; Kecemasan) seperti mana yang dinyatakan dalam Jadual Faedah adalah tertakluk kepada penolakan sebanyak RM 5000 untuk Mana-mana<br/>
+Satu Hilang Upaya. Penolakan bermakna jumlah perbelanjaan yang layak di mana pemegang polisi bertindak sebagai pihak penanggung insurans sendiri / jumlah<br/>
+ditanggung oleh diri pemegang polisi.<br/>
+</td>
+</tr>
+<!--HMM-HLA Major Medi end-->
+
+<!--HSP_II-Hospital & Surgical PLus II start-->
+<tr class="HSP_II" id="HSP_II" style="display:table-row;">
+<td class="contentSmall">Hospital &amp; Surgical Plus<br/>II Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="HSP_IIRiderTerm">{HSP_IIRiderTerm}</span></td>
+<td class="content">
+Polisi ini memperuntukkan perbelanjaan penghospitalan &amp; pembedahan dan faedah rawatan pesakit luar disebabkan oleh penyakit yang di bawah perlindungan<br/>
+polisi ini.<br/><br/>
+Rujuk kepada Jadual Faedah di dalam Risalah Pendedahan Produk untuk butiran. Premium adalah tidak terjamin dan bergantung kepada umur tercapai Hayat<br/>
+Diinsuranskan. Semua bayaran faedah (kecuali Bilik &amp; Sajian Hospital dan Pemindahan &amp; Repatriasi Kecemasan Perubatan) seperti disenaraikan dalam Jadual<br/>
+Faedah adalah tertakluk kepada 10% daripada amaun tuntutan setiap ketidakupayaan yang diterima oleh Syarikat bagi amaun insurans bersama atau sejumlah<br/>
+RM300, yang mana lebih tinggi, tertakluk kepada had mutlak maksimum RM3,000 (termasuk bayaran yang boleh dipotong). Had mutlak maksimum tersebut<br/>
+tidak terpakai kepada Insurans Bersama untuk polisi yang membayar jumlah faedah tahunan melebihi RM100,000. Insurans Bersama ini mungkin dikaji semula<br/>
+oleh Syarikat dari masa ke semasa.<br/>
+</td>
+</tr>
+<!--HSP_II-Hospital & Surgical PLus II end-->
+
+
+
+<!--I20R-Income 20 Rider start-->
+<tr class="I20R" id="I20R" style="display:table-row;">
+<td class="contentSmall">Income 20 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="I20RRiderTerm">{I20RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)<br/>
+Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai<br/>
+Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="I20RGYI">{I20RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika<br/>
+ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--I20R-Income 20 Rider end-->
+
+
+<!--I30R-Income 30 Rider start-->
+<tr class="I30R" id="I30R" style="display:table-row;">
+<td class="contentSmall">Income 30 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="I30RRiderTerm">{I30RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)<br/>
+Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai<br/>
+Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="I30RGYI">{I30RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika<br/>
+ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--I30R-Income 30 Rider end-->
+
+<!--I40R-Income 40 Rider start-->
+<tr class="I40R" id="I40R" style="display:table-row;">
+<td class="contentSmall">Income 40 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="I40RRiderTerm">{I40RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)<br/>
+Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai<br/>
+Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="I40RGYI">{I40RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika<br/>
+ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--I40R-Income 40 Rider end-->
+
+
+<!--ICR-Income Care Rider start-->
+<tr class="ICR" id="ICR" style="display:table-row;">
+<td class="contentSmall">Income Care Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ICRRiderTerm">{ICRRiderTerm}</span></td>
+<td class="content">
+Apabila Hayat Diinsuranskan mengalami TPD atau didiagnosis dengan mana-mana 36 penyakit kritikal dalam tempoh diinsuranskan dan hayat diinsuranskan<br/>
+masih mengalami hilang upaya, RM <span id=""ICRGYI>{ICRGYI}</span> akan dibayar setiap tahun sehingga umur 65 tahun atau hayat diinsuranskan meninggal dunia, mengikut<br/>
+mana-mana yang terdahulu.<br/>
+Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan faedah akan dibayar ketika kejadian<br/>
+Penyakit Kritikal.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kejadian arteri koronari atau penyakit jantung iskemia yang berlaku sebelum Tarikh Penyertaan atau mana-mana tarikh pengembalian semula, mengikut<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mana-mana yang terkemudian<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal yang pertama kali dapat dilihat dengan jelas dalam tempoh 30 hari dari Tarikh Penyertaan atau mana-mana tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian<br/>
+iii.&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal seperti yang ditetapkan di bawah dalam tempoh 60 hari dari Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasti dan rawatan invasif lain bagi penyakit arteri koronari<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kanser<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari yang memerlukan pembedahan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serangan sakit jantung<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari serius yang lain<br/>
+iv.&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Pengecualian kepada fasal ini ialah penyakit arteri koronari dan AIDS.<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Hayat diinsuranskan meninggal dunia dalam tempoh 28 hari selepas tarikh didiagnosis dengan mana-mana penyakit kritikal.<br/>
+</td>
+</tr>
+<!--ICR-Income Care Rider end-->
+
+
+<!--ID20R-Income D-20 Rider start-->
+<tr class="ID20R" id="ID20R" style="display:table-row;">
+<td class="contentSmall">Income D-20 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ID20RRiderTerm">{ID20RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% daripada Pendapatan Tahunan Terjamin belum jelas atau 9 kali Pendapatan Tahunan Terjamin atau Nilai Serahan Tunai; yang mana tertinggi,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
+<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% daripada Pendapatan Tahunan Terjamin belum jelas atau 36 kali Pendapatan Tahunan Terjamin atau 4 kali Nilai Serahan Tunai; yang mana<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tertinggi,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
+<br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="ID20RGYI">{ID20RGYI}</span> akan dibayar bermula dari akhir tahun ke-21 sehingga umur 90.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal<br/>
+(jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--ID20R-Income D-20 Rider end-->
+
+<!--ID30R-Income D-30 Rider start-->
+<tr class="ID30R" id="ID30R" style="display:table-row;">
+<td class="contentSmall">Income D-30 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ID30RRiderTerm">{ID30RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% daripada Pendapatan Tahunan Terjamin belum jelas atau 9 kali Pendapatan Tahunan Terjamin atau Nilai Serahan Tunai; yang mana tertinggi,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
+<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% daripada Pendapatan Tahunan Terjamin belum jelas atau 36 kali Pendapatan Tahunan Terjamin atau 4 kali Nilai Serahan Tunai; yang mana<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tertinggi,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
+<br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="ID30RGYI">{ID30RGYI}</span> akan dibayar bermula dari akhir tahun ke-21 sehingga umur 90.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal<br/>
+(jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--ID30R-Income D-30 Rider end-->
+
+<!--ID40R-Income D-40 Rider start-->
+<tr class="ID40R" id="ID40R" style="display:table-row;">
+<td class="contentSmall">Income D-40 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ID40RRiderTerm">{ID40RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% daripada Pendapatan Tahunan Terjamin belum jelas atau 9 kali Pendapatan Tahunan Terjamin atau Nilai Serahan Tunai; yang mana tertinggi,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
+<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% daripada Pendapatan Tahunan Terjamin belum jelas atau 36 kali Pendapatan Tahunan Terjamin atau 4 kali Nilai Serahan Tunai; yang mana<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tertinggi,<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
+<br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="ID40RGYI">{ID40RGYI}</span> akan dibayar bermula dari akhir tahun ke-21 sehingga umur 90.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal<br/>
+(jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--ID40R-Income D-40 Rider end-->
+
+<!--IE20R-Income E-20 Rider start-->
+<tr class="IE20R" id="IE20R" style="display:table-row;">
+<td class="contentSmall">Income E-20 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="IE20RRiderTerm">{IE20RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, 20 kali Pendapatan Tahunan Terjamin, Pendapatan<br/>
+Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, 80 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin<br/>
+Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="IE20RGYI">{IE20RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul<br/>
+(jika ada) dan Dividen Terminal (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--IE20R-Income E-20 Rider end-->
+
+<!--IE30R-Income E-30 Rider start-->
+<tr class="IE30R" id="IE30R" style="display:table-row;">
+<td class="contentSmall">Income E-30 Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="IE30RRiderTerm">{IE30RRiderTerm}</span></td>
+<td class="content">
+<u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang<br/>
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, 20 kali Pendapatan Tahunan Terjamin, Pendapatan<br/>
+Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, 80 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin<br/>
+Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
+Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
+<u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
+Pendapatan Tahunan Terjamin yang berjumlah RM<span id="IE30RGYI">{IE30RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
+<u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak-anak diterima ke universiti<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamat pengajian/ Konvokasi anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan anak-anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembelian kediaman baru<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permulaan perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gangguan kepada perniagaan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+ada) sebelum membuat apa-apa bayaran.<br/><br/>
+<u><b>Faedah Matang</u></b><br/>
+Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul<br/>
+(jika ada) dan Dividen Terminal (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+</td>
+</tr>
+<!--IE30R-Income E-30 Rider end-->
+
+
+<!--LCPR-Living Care Plus Rider start--> 
+<tr class="LCPR" id="LCPR" style="display:table-row;">
+<td class="contentSmall">Living Care Plus Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="LCPRRiderTerm">{LCPRRiderTerm}</span></td>
+<td class="content">
+RM <span id="LCPRGYI">{CIRGYI}</span> akan dibayar apabila pertama kali hayat diinsuranskan meninggal dunia / mengalami TPD / didiagnosis dengan mana-mana 36 penyakit kritikal<br/>
+dalam tempoh diinsuranskan. Faedah TPD akan dibayar berdasarkan Peruntukan TPD.<br/>
+Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan jumlah bayaran sekali gus ketika kejadian<br/>
+Penyakit Kritikal, Kematian atau TPD.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Kejadian arteri koronari atau penyakit jantung iskemia yang berlaku sebelum Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal selain yang ditetapkan menurut perkara (iii) di bawah dalam tempoh 30 hari dari Tarikh Penyertaan atau mana-mana tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal seperti yang ditetapkan di bawah dalam tempoh 60 hari dari Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasti dan rawatan invasif lain bagi penyakit arteri koronari<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kanser<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari yang memerlukan pembedahan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serangan sakit jantung<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari serius yang lain<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Pengecualian kepada fasal ini ialah penyakit arteri koronari dan AIDS.<br/>
+</td>
+</tr>
+<!--LCPR-Living Care Plus Rider end-->
+
+
+<!--MG_II-MedGlobalII start-->
+<tr class="MG_II" id="MG_II" style="display:table-row;">
+<td class="contentSmall">MedGlobal II</td>
+<td class="contentSmall" style="text-align:center;"><span id="MG_IIRiderTerm">{MG_IIRiderTerm}</span></td>
+<td class="content">
+Rujuk kepada Jadual Faedah di dalam Risalah Pendedahan Produk untuk butiran. Premium adalah tidak terjamin dan bergantung kepada umur tercapai Hayat<br/>
+Diinsuranskan. Semua bayaran faedah-faedah (kecuali Bilik Hospital dan Makan, Tunai Harian Hospital Kerajaan, Cukai Perkhidmatan Kerajaan, Pemindahan<br/>
+Kecemasan dan Penghantaran Balik dan Rawatan Pemulihan Jagaan Di Rumah) seperti mana yang dinyatakan dalam Jadual Faedah adalah tertakluk kepada<br/>
+klausa insurans bersama sebanyak 10% dari amaun tuntutan untuk Mana-mana Satu Hilang Upaya yang diluluskan oleh pihak Syarikat atau amaun RM300, yang<br/>
+mana lebih tinggi, dan tertakluk kepada had mutlak maksimum RM3,000 (termasuk bayaran yang boleh dipotong). Insurans Bersama ini mungkin dikaji semula
+oleh Syarikat dari masa ke semasa.<br/>
+</td>
+</tr>
+<!--MG_II-MedGlobalII end-->
+
+<!--MG_IV-MedGlobalIV Plus start-->
+<tr class="MG_IV" id="MG_IV" style="display:table-row;">
+<td class="contentSmall">MedGlobal IV Plus</td>
+<td class="contentSmall" style="text-align:center;"><span id="MG_IVRiderTerm">{MG_IVRiderTerm}</span></td>
+<td class="content">
+Polisi ini memperuntukkan perbelanjaan penghospitalan &amp; pembedahan dan faedah rawatan pesakit luar disebabkan oleh penyakit yang di bawah perlindungan<br/>
+polisi ini.<br/>
+Rujuk kepada Jadual Faedah di dalam Risalah Pendedahan Produk untuk butiran. Premium adalah tidak terjamin dan bergantung kepada umur tercapai Hayat<br/>
+Diinsuranskan.<br/>
+</td>
+</tr>
+<!--MG_IV-MedGlobalIV Plus end-->
+
+<!--PA-Personal Accident Rider start-->
+<tr class="PA" id="PA" style="display:table-row;">
+<td class="contentSmall">Personal Accident Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="PARiderTerm">{PARiderTerm}</span></td>
+<td class="content">
+
+Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau mengalami hilang upaya akibat kemalangan dalam tempoh diinsuranskan:<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian akibat Kemalangan - jumlah diinsuranskan daripada rider yang akan dibayar<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh &amp; Kekal akibat kemalangan - rujuk jadual indeminiti<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indeminiti berganda - jumlah diinsuranskan yang akan dibayar digandakan jika Hayat Diinsuranskan meninggal dunia akibat kemalangan berlaku ketika<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hayat Diinsuranskan di dalam Kenderaan Awam bergerak secara mekanikal dalam laluan darat yang ditetapkan, tidak termasuk Teksi<br/><br/>
+Syarikat tidak akan membayar sebarang faedah bawah rider ini bagi sebarang kerugian, kerosakan atau keadaan luar jangkaan oleh atau melalui atau<br/>
+diakibatkan, secara langsung atau tidak, daripada:<br/><br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penerbangan atau mengambil bahagian dalam sebarang aktiviti penerbangan melainkan ketika menerbang dalam pesawat sebagai penumpang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;membayar tambang dan bukan sebagai anak kapal terbang dan bukan untuk tujuan untuk melakukan sebarang perdagangan atau operasi teknikal dalam<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atau atas pesawat;<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Kecederaan diri yang disengajakan, membunuh diri atau cuba untuk membunuh diri, pembunuhan atau serangan yang diprovokasi atau bawah pengaruh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sebarang dadah/narkotik/alkohol;<br/>
+iii.&nbsp;&nbsp;&nbsp;Terlibat dalam atau mengambil bahagian dalam sukan professional atau semi-profesional;<br/>
+iv.&nbsp;&nbsp;&nbsp;Terlibat dalam sebarang perlumbaan (selain daripada perlumbaan yang menggunakan kaki), pendakian gunung atau batuan yang menggunakan tali atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pemandu jalan, sukan musim sejuk, kegiatan bawah air, ski air, bola sepak, polo, pemburuan, pertandingan lompat kuda, penerokaan gua,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penerokaan gua bawah tanah, peninjuan atau bergusti;<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;Peperangan, pencerobohan, tindakan musuh asing, permusuhan atau operasi semacam peperangan (sama ada perang diisytiharkan atau tidak), perang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saudara, kegiatan ketenteraan atau rampasan kuasa;
+vi.&nbsp;&nbsp;&nbsp;Terlibat langsung dalam mogokan, rusuhan, pemberontakan, revolusi, kegemparan awam atau penderhakaan;<br/>
+vii.&nbsp;&nbsp;Terlibat langsung dalam mogokan, rusuhan, pemberontakan, revolusi, kegemparan awam atau penderhakaan;<br/>
+
+viii.&nbsp;Sebarang kesakitan atau penyakit yang disebabkan atau dijangkiti oleh atau menerusi sebarang kaedah yang berpunca daripada virus, parasit, bakteria<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atau sebarang mikro-organisma termasuk virus, parasit, bakteria atau mikro-organisma yang dikenali dan/atau berpunca daripada gigitan serangga atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmisi melalui seks;
+ix.&nbsp;&nbsp;&nbsp;Sebarang rawatan atau pembedahan (kecuali rawatan yang diperlukan untuk merawati kecederaan yang dilindungi bawah Polisi ini);<br/>
+x.&nbsp;&nbsp;&nbsp;&nbsp;Melakukan atau cuba melakukan sebarang kegiatan yang menyalahi undang-undang;<br/>
+xi.&nbsp;&nbsp;&nbsp;Sebarang penyakit, kesakitan atau kecacatan kongenital;<br/>
+xii.&nbsp;&nbsp;Sebarang kecacatan atau keuzuran fizikal atau mental;<br/>
+xiii.&nbsp;Human Immune-deficiency Virus (HIV) dan/atau sebarang penyakit yang berkaitan dengan HIV, termasuk AIDS dan/atau sebarang perkembangan mutan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;atau variasi-variasi darinya;
+xiv.&nbsp;Kehamilan, kelahiran anak, keguguran atau sebarang komplikasi yang berkaitan dengan yang sama;<br/>
+xv.&nbsp;&nbsp;Sebarang rawatan gigi yang tidak diperlukan untuk merawati kecederaan yang dilindungi bawah Polisi ini.<br/>
+
+</td>
+</tr>
+<!--PA-Personal Accident Rider end-->
+
+<!--LCWP-Living Care Waiver of Premium Payor Rider start--> 
+<tr class="LCWP" id="LCWP" style="display:table-row;">
+<td class="contentSmall">Living Care Waiver of<br/>Premium Payor Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
+<td class="content">
+
+Jumlah rider diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila pembayar meninggal dunia /<br/>
+mengalami TPD / didiagnosis dengan mana-mana 36 penyakit kritikal yang melindungi pembayar dalam tempoh diinsuranskan.<br/>
+Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan jumlah bayaran sekali gus ketika kejadian<br/>
+Penyakit Kritikal, Kematian atau TPD.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Kejadian arteri koronari atau penyakit jantung iskemia yang berlaku sebelum Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal selain yang ditetapkan menurut perkara (iii) di bawah dalam tempoh 30 hari dari Tarikh Penyertaan atau mana-mana tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal seperti yang ditetapkan di bawah dalam tempoh 60 hari dari Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasti dan rawatan invasif lain bagi penyakit arteri koronari<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kanser<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari yang memerlukan pembedahan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serangan sakit jantung<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari serius yang lain<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Pengecualian kepada fasal ini ialah penyakit arteri koronari dan AIDS.<br/>
+</td>
+</tr>
+<!--LCWP-Living Care Waiver of Premium Payor Rider end-->
+
+<!--PR-Waiver of Premium Payor Rider start--> 
+<tr class="PR" id="PR" style="display:table-row;">
+<td class="contentSmall">Waiver of Premium Payor Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
+<td class="content">
+Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila pembayar meninggal dunia /<br/>
+mengalami TPD dalam tempoh diinsuranskan.<br/>
+<br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+</td>
+</tr>
+<!--PR-Waiver of Premium Payor Rider end--> 
+
+<!--SP_PRE-WOP Spouse Rider (Premier) start--> 
+<tr class="SP_PRE" id="SP_PRE" style="display:table-row;">
+<td class="contentSmall">WOP Spouse Rider<br/>(Premier)</td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderTerm">{SP_PRERiderTerm}</span></td>
+<td class="content">
+
+Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila hayat diinsuranskan yang<br/>
+kedua meninggal dunia / mengalami TPD / didiagnosis dengan mana-mana 36 penyakit kritikal yang melindungi hayat diinsuranskan yang kedua dalam tempoh<br/>
+diinsuranskan.<br/>
+Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan jumlah bayaran sekali gus ketika kejadian<br/>
+Penyakit Kritikal, Kematian atau TPD.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Kejadian arteri koronari atau penyakit jantung iskemia yang berlaku sebelum Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal selain yang ditetapkan menurut perkara (iii) di bawah dalam tempoh 30 hari dari Tarikh Penyertaan atau mana-mana tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal seperti yang ditetapkan di bawah dalam tempoh 60 hari dari Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasti dan rawatan invasif lain bagi penyakit arteri koronari<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kanser<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari yang memerlukan pembedahan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serangan sakit jantung<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari serius yang lain<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Pengecualian kepada fasal ini ialah penyakit arteri koronari dan AIDS.<br/>
+</td>
+</tr>
+<!--SP_PRE-WOP Spouse Rider (Premier) end-->
+
+<!--SP_STD-WOP Spouse Rider (Standard) start--> 
+<tr class="SP_STD" id="SP_STD" style="display:table-row;">
+<td class="contentSmall">WOP Spouse Rider<br/>(Standard)</td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
+<td class="content">
+Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila hayat diinsuranskan yang<br/>
+kedua meninggal dunia / mengalami TPD dalam tempoh diinsuranskan.<br/>
+<br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+</td>
+</tr>
+<!--SP_STD-WOP Spouse Rider (Standard) end-->
+
+<!--PLCP-Payor Living Care PLus Rider start--> 
+<tr class="PLCP" id="PLCP" style="display:table-row;">
+<td class="contentSmall">Payor Living Care PLus Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="PLCPRiderTerm">{PLCPRiderTerm}</span></td>
+<td class="content">
+RM <span id="PLCPGYI">{PLCPGYI}</span> akan dibayar apabila pertama kali pembayar meninggal dunia / mengalami TPD / didiagnosis dengan mana-mana 36 penyakit kritikal dalam<br/>
+tempoh diinsuranskan. Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan jumlah bayaran sekali gus ketika kejadian<br/>
+Penyakit Kritikal, Kematian atau TPD.<br/><br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Kejadian arteri koronari atau penyakit jantung iskemia yang berlaku sebelum Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian<br>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal selain yang ditetapkan menurut perkara (iii) di bawah dalam tempoh 30 hari dari Tarikh Penyertaan atau mana-mana tarikh<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian<br/>
+v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis penyakit kritikal seperti yang ditetapkan di bawah dalam tempoh 60 hari dari Tarikh Penyertaan atau mana-mana tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasti dan rawatan invasif lain bagi penyakit arteri koronari<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kanser<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari yang memerlukan pembedahan<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serangan sakit jantung<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penyakit arteri koronari serius yang lain<br/>
+vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Pengecualian kepada fasal ini ialah penyakit arteri koronari dan AIDS.<br/>
+</td>
+</tr>
+<!--PLCP-Payor Living Care PLus Rider end-->
+
+<!--PTR-Payor Term Rider start--> 
+<tr class="PTR" id="PTR" style="display:table-row;">
+<td class="contentSmall">PTR</td>
+<td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
+<td class="content">
+RM <span id="PTRGYI">{PTRGYI}</span> akan dibayar apabila pembayar meninggal dunia / mengalami TPD (sebelum umur 65 tahun) dalam tempoh diinsuranskan.<br/>
+<br/>
+Rider ini tidak melindungi kejadian berikut:<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian.<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada membuat penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+</td>
+</tr>
+<!--PTR-Payor Term Rider end-->
+
+</table><br/>
+</div>
+
+
+
+</div><br/><br/><br/>
+<table style="border-collapse:collapse;border:0px solid black;width:100%;" class="tblFooter">
+
+<tr>
+<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+
+
+
+</td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+</tr>
+</table>
+
+<script>
+
+	
+	$('#table-design1 tr').css('display','none');
+	//$('#table-design1 .tblHeader').css('display','table-row');
+	//$('#table-design1 .c').css('display','table-row');
+	//var page = gup("page");
+	//setPageDesc();
+	//alert(page)
+	//var rider;
+	//db = openDatabase(shortName, version, displayName,maxSize);
+	//listRiders();
+	//db = null;
+
+	
+	//$('#table-design1 tr.c').css('display','none');
+	
+	//var zz;
+	//zz = "111";
+	//alert(zz)
+	function listRiders(){
+	//alert(zz)
+		var rider;
+		db.transaction(function(transaction) {//display rider row
+        	transaction.executeSql("Select * from SI_Temp_Pages where htmlName = '" + page + "'", [], function(transaction, result) {
+            	if (result != null && result.rows != null) {
+                	var row = result.rows.item(0);
+                	
+					if(row.riders.charAt(row.riders.length-1) == ";"){
+						rider = row.riders.slice(0, -1).split(";");
+					}
+					else{
+						rider = row.riders.split(";");
+					}
+                	
+                	
+            		//rider = row.riders.split(";");
+            		for(var i=0;i<rider.length;i++){
+            			temp = rider[i];
+            			if (temp == "C+"){
+            				temp = "C"
+            			}
+            			else if (temp == "tblHeader"){
+            				$('#riderInPage').css('display','inline');
+            			}
+            			
+            			$('#table-design1 tr.'+temp).css('display','table-row');
+            			//$('#table-design1 tr.MG_IV').css('display','table-row');
+            			//$('#table-design1 tr.MG_II').css('display','table-row');
+            			//$('#table-design1 tr.PA').css('display','table-row');
+            			//alert(temp)
+
+            			if (temp == "C"){
+            				temp = "C+"	
+            				$('#table-design2Wide tr').css('display','table-row');
+        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                						$('#CRiderTerm').html(row.RiderTerm);
+                						$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 50) / 100));
+                						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 150) / 100));
+                						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 250) / 100));
+                						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 25) / 100));
+                						if (row.PlanOption == "L"){
+                							$('#cPlanOption').html('Level Cover');
+                							$('#cGuaranteedIncreasingSumAssured').hide();
+                							$('#cNoClaimBenefit').hide();
+                						}
+                						else if (row.PlanOption == "I"){ //wideTable value? nursing care allowance?
+                							$('#cPlanOption').html('Increasing Cover');
+                							$('#cNoClaimBenefit').hide();
+                						}
+                						else if (row.PlanOption == "B"){
+                							$('#cPlanOption').html('Level Cover with NCB');
+                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							$('#cGuaranteedIncreasingSumAssured').hide();
+                						}
+                						else if (row.PlanOption == "N"){
+                							$('#cPlanOption').html('Increasing Cover with NCB');
+                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							//$('#cGuaranteedIncreasingSumAssured').hide();
+                							$('#cVeryEarlyTD').html('50% of Rider Sum Assured');
+                							$('#cEarlyTD').html('150% of Rider Sum Assured');
+                							$('#cAdvanceTD').html('250% of Rider Sum Assured');
+                							$('#cNursingCareAllowance').html('25% of Rider Sum Assured');
+                						}
+            					}
+        					},errorHandler);        				
+            			}
+            			if (temp == "HB"){
+        					transaction.executeSql("Select Units from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                						$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
+            					}
+        					},errorHandler);        				
+            			}
+            			else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP"){
+            				$('#illness tr').css('display','table-row');
+            			}
+            		}
+            		
+            		for (var j=0;j<rider.length;j++){
+        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
+            					if (result != null && result.rows != null) {
+                					var row = result.rows.item(0);
+                					//alert(row.RiderTerm)
+                					$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
+                					$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SA+""));
+            					}
+        					},errorHandler);
+            		}
+            		
+            		
+            	}
+        	},errorHandler);
+    	},errorHandler,nullHandler);
+    	
+    	return;
+    }
+
+
+
+
+
+
+</script>
+
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>
+<script>
+
+
+</script>

@@ -27,7 +27,11 @@
 - (id)init {
     self = [super init];
     return self;
+    
+    
 }
+
+
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
@@ -42,11 +46,14 @@
     
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(revealRightSidebar:)];
     
+    
     self.navigationItem.revealSidebarDelegate = self;
     
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" 
                                                                   style:UIBarButtonItemStyleBordered target:self action:@selector(CloseButtonAction)];
     self.navigationItem.rightBarButtonItem = barButton;
+    
+    
     
 }
 
@@ -55,7 +62,17 @@
     [super viewDidUnload];
     self.leftSidebarViewController = nil;
 }
-
+/*
+-(void)viewWillAppear:(BOOL)animated{
+    CDVViewController* browserController_page = [CDVViewController new];
+    browserController_page.wwwFolderName = @"www";
+    browserController_page.startPage = @"Page1.html";//(NSString *)objectHTML;
+    browserController_page.view.frame = CGRectMake(0, 0, 768, 1000);
+    [self.view addSubview:browserController_page.view];
+    browserController_page = nil;
+    
+}
+*/
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
 // Doesn't support rotating to other orientation at this moment
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -98,11 +115,15 @@
     }
     controller.view.frame = CGRectMake(0, viewFrame.origin.y, 270, viewFrame.size.height);
     controller.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
+    
+    
     return controller.view;
 }
 
 
 - (void)didChangeRevealedStateForViewController:(UIViewController *)viewController {
+    
+    
     if (viewController.revealedState == JTRevealedStateNo) {
         self.view.userInteractionEnabled = YES;
     } else {
@@ -118,6 +139,8 @@
 #pragma mark UITableViewDatasource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    
     return 1;
 }
 

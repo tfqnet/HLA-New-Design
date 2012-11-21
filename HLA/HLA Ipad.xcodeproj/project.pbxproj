@@ -111,6 +111,7 @@
 		C4F08D5C161DA491008BCC1A /* ContactTypeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */; };
 		C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5F161DBDBB008BCC1A /* SIDate.m */; };
 		C4F45DF1165B38A20035CAA9 /* PasswordTips.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F45DF0165B38A20035CAA9 /* PasswordTips.m */; };
+		C4F45DF3165C6C430035CAA9 /* viewer.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4F45DF2165C6C430035CAA9 /* viewer.plist */; };
 		C4F82FEE16296F6700EF8FAA /* IMG_0039.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEB16296F6700EF8FAA /* IMG_0039.png */; };
 		C4F82FEF16296F6700EF8FAA /* IMG_0040.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEC16296F6700EF8FAA /* IMG_0040.png */; };
 		C4F82FF016296F6700EF8FAA /* IMG_0041.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FED16296F6700EF8FAA /* IMG_0041.png */; };
@@ -328,6 +329,7 @@
 		C4F08D5F161DBDBB008BCC1A /* SIDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIDate.m; sourceTree = "<group>"; };
 		C4F45DEF165B38A20035CAA9 /* PasswordTips.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordTips.h; sourceTree = "<group>"; };
 		C4F45DF0165B38A20035CAA9 /* PasswordTips.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordTips.m; sourceTree = "<group>"; };
+		C4F45DF2165C6C430035CAA9 /* viewer.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = viewer.plist; sourceTree = "<group>"; };
 		C4F82FEB16296F6700EF8FAA /* IMG_0039.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0039.png; sourceTree = "<group>"; };
 		C4F82FEC16296F6700EF8FAA /* IMG_0040.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0040.png; sourceTree = "<group>"; };
 		C4F82FED16296F6700EF8FAA /* IMG_0041.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0041.png; sourceTree = "<group>"; };
@@ -700,6 +702,7 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
 				EFCDDA04164B4C3100F2FB10 /* hladb.sqlite */,
 			);
@@ -1009,6 +1012,7 @@
 				EFABB36E16475A430069502B /* redBtn.png in Resources */,
 				C4EF084D1648DC5C000444BA /* iphone_delete_button.png in Resources */,
 				EFCDDA05164B4C3100F2FB10 /* hladb.sqlite in Resources */,
+				C4F45DF3165C6C430035CAA9 /* viewer.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
