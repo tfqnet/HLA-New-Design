@@ -21,6 +21,16 @@ function setPage(){
                 }
             },errorHandler);
         },errorHandler,nullHandler);
+    
+    db.transaction(function(transaction) {
+                   transaction.executeSql("Select AgentName,AgentCode from Agent_profile LIMIT 1", [], function(transaction, result) {
+                                          if (result != null && result.rows != null) {
+                                          var row = result.rows.item(0); 
+                                          $('#agentName').html(row.AgentName);
+                                          $('#agentCode').html(row.AgentCode);
+                                          }
+                                          },errorHandler);
+                   },errorHandler,nullHandler);
 }
 
 function setPageDesc(page){
@@ -47,6 +57,16 @@ function setPageDesc(page){
                 }
             },errorHandler);
         },errorHandler,nullHandler);
+    
+    db.transaction(function(transaction) {
+                   transaction.executeSql("Select AgentName,AgentCode from Agent_profile LIMIT 1", [], function(transaction, result) {
+                                          if (result != null && result.rows != null) {
+                                          var row = result.rows.item(0); 
+                                          $('#agentName').html(row.AgentName);
+                                          $('#agentCode').html(row.AgentCode);
+                                          }
+                                          },errorHandler);
+                   },errorHandler,nullHandler);
 }
 
 function writeInvestmentScenarios(){

@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var cashPayment = 0;
+    var colType = 0;
+    var pageNum = '8';
+        
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+    }
+        
+    function ListDBValues() {
+    //$('.advanceYearlyIncome').hide();
+    //$('#advanceYearlyIncomeSpacing').html('<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>')        
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        
+//<tr>
+//<td style="text-align:center;" id="premiumPaymentTerm">{premiumPaymentTerm}</td>
+//<td style="text-align:center;" id="attainedAge">{attainedAge}</td>
+//<td style="text-align:center;" id="amountPayable">{amountPayable}<br/>(<span id="guaranteedPercent">{guaranteedPercent}</span>% of all future GYI yet to fall due)</td>
+//<td style="text-align:center;" id="guaranteedDeath">{guaranteedDeath}</td>
+//<td style="text-align:center;" id="guaranteedMaturity">{guaranteedMaturity}</td>
+//</tr>
+		//Details
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+        				$('.advanceYearlyIncome').hide();
+        				$('#advanceYearlyIncomeSpacing').html('<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>');
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 60){
+
+        				transaction.executeSql("select * from SI_Temp_Trad_Basic order by seqNo desc limit 1", [], function(transaction, result) {
+            				if (result != null && result.rows != null) {
+                				var row = result.rows.item(0);
+                				$('#guaranteedDeath').html(row.col4);
+                    			$('#guaranteedMaturity').html(row.col3);
+            				}
+        				},errorHandler);
+
+
+                    	if (parseInt(row.PremPayOpt) == 6){
+                    		$('#premiumPaymentTerm').html(row.PremPayOpt);
+                    		$('#attainedAge').html(row.AdvanceYearlyIncome);
+                    		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18));
+                    		$('#guaranteedPercent').html('60.0');
+                    		//$('#guaranteedDeath').html();
+                    		//$('#guaranteedMaturity').html();
+                    	}
+                    	else if (parseInt(row.PremPayOpt) == 9){
+                    		$('#premiumPaymentTerm').html(row.PremPayOpt);
+                    		$('#attainedAge').html(row.AdvanceYearlyIncome);
+                    		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18.75));
+                    		$('#guaranteedPercent').html('62.5');
+                    		//$('#guaranteedDeath').html();
+                    		//$('#guaranteedMaturity').html();
+                    	}
+                    	if (parseInt(row.PremPayOpt) == 12){
+                    		$('#premiumPaymentTerm').html(row.PremPayOpt);
+                    		$('#attainedAge').html(row.AdvanceYearlyIncome);
+                    		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 19.5));
+                    		$('#guaranteedPercent').html('65.0');
+                    		//$('#guaranteedDeath').html();
+                    		//$('#guaranteedMaturity').html();
+                    	}
+                    }
+                    else if (parseInt(row.AdvanceYearlyIncome) == 75){
+                    
+        				transaction.executeSql("select * from SI_Temp_Trad_Basic order by seqNo desc limit 1", [], function(transaction, result) {
+            				if (result != null && result.rows != null) {
+                				var row = result.rows.item(0);
+                				$('#guaranteedDeath').html(row.col4);
+                    			$('#guaranteedMaturity').html(row.col3);
+            				}
+        				},errorHandler);
+                    
+                    	if (parseInt(row.PremiumPaymentOption) == 6){
+                    		$('#premiumPaymentTerm').html(row.PremiumPaymentOption);
+                    		$('#attainedAge').html(row.AdvanceYearlyIncome);
+                    		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 12.5));
+                    		$('#guaranteedPercent').html('85.0');
+                    		//$('#guaranteedDeath').html();
+                    		//$('#guaranteedMaturity').html();
+                    	}
+                    	else if (parseInt(row.PremiumPaymentOption) == 9){
+                    		$('#premiumPaymentTerm').html(row.PremiumPaymentOption);
+                    		$('#attainedAge').html(row.AdvanceYearlyIncome);
+                    		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 13.5));
+                    		$('#guaranteedPercent').html('90.0');
+                    		//$('#guaranteedDeath').html();
+                    		//$('#guaranteedMaturity').html();
+                    	}
+                    	if (parseInt(row.PremiumPaymentOption) == 12){
+                    		$('#premiumPaymentTerm').html(row.PremiumPaymentOption);
+                    		$('#attainedAge').html(row.AdvanceYearlyIncome);
+                    		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 14.25));
+                    		$('#guaranteedPercent').html('95.0');
+                    		//$('#guaranteedDeath').html();
+                    		//$('#guaranteedMaturity').html();
+                    	}
+                	}
+                	$('#dateModified').html(row.UpdatedAt);
+                	
+                	if ($.trim(row.CashDividend) == 'ACC')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                	else if (row.CashDividend == 'POF')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        return;
+    }
+</script>
+
+</head>
+ 
+<body onload="onBodyLoad(), setPage()">
+ 
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+
+<!--<p>Basic PlanPelan Asas: HLA Income Builder &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Yearly Income Pay Out) (Cash Dividend Pay Out) (Pendapatan Tahunan Dibayar)(Dividen Tunai Dibayar)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Life Assured Hayat Diinsuranskan: Mat</p>
+-->
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Kematian Ibu bapa/ Anak<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang seterusnya serta merta berikutan pendahuluan tersebut<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika ada) sebelum membuat apa-apa bayaran.<br/><br/>
+
+<div class="advanceYearlyIncome">
+(ii)&nbsp;&nbsp;&nbsp;Pemunya Polisi boleh mendahulukan semua PTT masa depan pada umur 60 atau 75 sekiranya PTT pertama telah dibayar dan polisi ini telah berkuat kuasa selama 10 tahun dan juga<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tertakluk kepada kecukupan Nilai Serahan Tunai Bersih polisi tersebut. Amaun yang akan dibayar kepada Pemunya Polisi adalah seperti yang berikut. Setelah PTT didahulukan, semua<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pembayaran PTT masa depan akan dihentikan dan Faedah Kematian/ TPD Terjamin serta Faedah Matang Terjamin akan dilaraskan seperti di bawah. Selain daripada itu, Nilai Serahan<br/>
+Tunai, Dividen Tunai, Dividen Terminal dan Dividen Terminal Istimewa akan dilaraskan.<br/>
+<br/>
+<div style="margin-left: 20px;">
+<table id="table-design2Wide" >
+<tr>
+<td>Tempoh Pembayaran Premium</td>
+<td>Umur tercapai apabila membuat pendahuluan</td>
+<td>Amaun yang akan dibayar</td>
+<td>Faedah Kematian/TPD Terjamin</td>
+<td>Faedah Matang Terjamin</td>
+</tr>
+<tr>
+<td style="text-align:center;" id="premiumPaymentTerm">{premiumPaymentTerm}</td>
+<td style="text-align:center;" id="attainedAge">{attainedAge}</td>
+<td style="text-align:center;"><span id="amountPayable">{amountPayable}</span><br/>(<span id="guaranteedPercent">{guaranteedPercent}</span>% dari semua PTT masa depan yang belum genap tempoh)</td>
+<td style="text-align:center;" id="guaranteedDeath">{guaranteedDeath}</td>
+<td style="text-align:center;" id="guaranteedMaturity">{guaranteedMaturity}</td>
+</tr>
+</table>
+</div>
+<br/>
+</div>
+
+<script>
+//alert('a')
+
+</script>
+
+
+
+
+
+<u><b>Faedah Matang</u></b><br/>
+Polisi ini akan matang apabila Hayat Diinsuranskan masih hidup pada akhir tempoh polisi (umur 90). Faedah Matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan<br/>
+Terjamin, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika ada) akan dibayar.<br/>
+
+
+<div id="advanceYearlyIncomeSpacing">
+
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<!--
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+-->
+</div>
+
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+
+<tr>
+<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+
+
+
+</td>
+<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+</tr>
+</table>
+
+
+
+
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>

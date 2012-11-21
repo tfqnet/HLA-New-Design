@@ -31,7 +31,11 @@
     
 }
 
-
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    
+    
+    return self;
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
@@ -46,6 +50,13 @@
     
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(revealRightSidebar:)];
     
+    CDVViewController* browserController_page = [CDVViewController new];
+    browserController_page.wwwFolderName = @"www";
+    browserController_page.startPage = @"Page1.html";//(NSString *)objectHTML;
+    browserController_page.view.frame = CGRectMake(0, 0, 768, 1000);
+    [self.view addSubview:browserController_page.view];
+    browserController_page = nil;
+    
     
     self.navigationItem.revealSidebarDelegate = self;
     
@@ -53,8 +64,14 @@
                                                                   style:UIBarButtonItemStyleBordered target:self action:@selector(CloseButtonAction)];
     self.navigationItem.rightBarButtonItem = barButton;
     
+    NSLog(@"before");
+    //[self performSelector:@selector(presentModal) withObject:Nil afterDelay:3.0];
     
     
+}
+
+-(void)presentModal{
+    //NSLog(@"sssss");
 }
 
 - (void)viewDidUnload

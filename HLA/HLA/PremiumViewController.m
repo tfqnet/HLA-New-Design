@@ -9,6 +9,7 @@
 #import "PremiumViewController.h"
 #import "MainScreen.h"
 #import "ReportViewController.h"
+#import "BrowserViewController.h"
 
 @interface PremiumViewController ()
 
@@ -67,32 +68,22 @@
     doGenerate.hidden = TRUE;
     
     
-    
-    //for ios6 start, will also clear out ios5.1
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    
-    NSString *viewerPlistFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"viewer.plist"];
-    NSString *viewerPlistFromDoc = [documents stringByAppendingPathComponent:@"viewer.plist"];
-    BOOL plistExist = [fileManager fileExistsAtPath:viewerPlistFromDoc];
-    if (!plistExist)
-        [fileManager copyItemAtPath:viewerPlistFromApp toPath:viewerPlistFromDoc error:nil];
-    
-    //databaseName = @"0000000000000001.sqlite";//actual
-    NSString *databaseName1 = @"hladb.sqlite";//dummy
-    NSString *WebSQLSubdir1 = @"Caches";
-    NSString *WebSQLPath1 = [library stringByAppendingPathComponent:WebSQLSubdir1];
-    NSString *WebSQLDb1 = [WebSQLPath1 stringByAppendingPathComponent:@"file__0"];
-    
-    
-    NSString *masterFile = [WebSQLPath1 stringByAppendingPathComponent:@"Databases.db"];
-    NSString *databaseFile = [WebSQLDb1 stringByAppendingPathComponent:databaseName1];
-    
-    [fileManager removeItemAtPath:databaseFile error:nil];
-    [fileManager removeItemAtPath:masterFile error:nil];
-    //for ios6 end
-
+    //----- meng chiong part --------
+    if (IsAtLeastiOSVersion(@"6.0")){
+        NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *viewerPlist = [library stringByAppendingPathComponent:@"viewer.plist"];
+        BOOL plistExist = [fileManager fileExistsAtPath:viewerPlist];
+        if (!plistExist){
+            CDVViewController* browserController_page = [CDVViewController new];
+            browserController_page.wwwFolderName = @"www";
+            browserController_page.startPage = @"dummy.html";//(NSString *)objectHTML;
+            browserController_page.view.frame = CGRectMake(0, 0, 0, 0);
+            [self.view addSubview:browserController_page.view];
+            browserController_page = nil;
+        }
+    }
+    //------ end ---------
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

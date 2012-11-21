@@ -80,7 +80,7 @@
         },errorHandler,nullHandler);
         
         db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     var row = result.rows.item(0);

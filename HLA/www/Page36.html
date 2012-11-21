@@ -78,7 +78,7 @@
         
         //Details
         db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     var row = result.rows.item(0);
@@ -153,42 +153,42 @@
             			if (temp == "C"){
             				temp = "C+"	
             				$('#table-design2Wide tr').css('display','table-row');
-        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
             					if (result != null && result.rows != null) {
                 					var row = result.rows.item(0);
                 						$('#CRiderTerm').html(row.RiderTerm);
-                						$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 50) / 100));
-                						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 150) / 100));
-                						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 250) / 100));
-                						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 25) / 100));
-                						if (row.PlanOption == "L"){
+                						$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 50) / 100));
+                						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 150) / 100));
+                						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 250) / 100));
+                						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
+                						if (row.PlanOption == "Level"){
                 							$('#cPlanOption').html('Level Cover');
                 							$('#cGuaranteedIncreasingSumAssured').hide();
                 							$('#cNoClaimBenefit').hide();
                 						}
-                						else if (row.PlanOption == "I"){ //wideTable value? nursing care allowance?
+                						else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
                 							$('#cPlanOption').html('Increasing Cover');
                 							$('#cNoClaimBenefit').hide();
                 						}
-                						else if (row.PlanOption == "B"){
+                						else if (row.PlanOption == "Level_NCB"){
                 							$('#cPlanOption').html('Level Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							$('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
                 							$('#cGuaranteedIncreasingSumAssured').hide();
                 						}
-                						else if (row.PlanOption == "N"){
+                						else if (row.PlanOption == "Increasing_NCB"){
                 							$('#cPlanOption').html('Increasing Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							$('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
                 							//$('#cGuaranteedIncreasingSumAssured').hide();
-                							$('#cVeryEarlyTD').html('50% of Rider Sum Assured');
-                							$('#cEarlyTD').html('150% of Rider Sum Assured');
-                							$('#cAdvanceTD').html('250% of Rider Sum Assured');
-                							$('#cNursingCareAllowance').html('25% of Rider Sum Assured');
+                							$('#cVeryEarlyTD').html('50% daripada jumlah diinsuranskan rider');
+                							$('#cEarlyTD').html('150% daripada jumlah diinsuranskan rider');
+                							$('#cAdvanceTD').html('250% daripada jumlah diinsuranskan rider');
+                							$('#cNursingCareAllowance').html('25% daripada jumlah diinsuranskan rider');
                 						}
             					}
         					},errorHandler);        				
             			}
-            			if (temp == "HB"){
-        					transaction.executeSql("Select Units from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+            			if (temp == "HB"){ 
+        					transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
             					if (result != null && result.rows != null) {
                 					var row = result.rows.item(0);
                 						$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
@@ -201,12 +201,12 @@
             		}
             		
             		for (var j=0;j<rider.length;j++){
-        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
-            					if (result != null && result.rows != null) {
+        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+            					if (result.rows.length > 0) {
                 					var row = result.rows.item(0);
                 					//alert(row.RiderTerm)
                 					$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
-                					$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SA+""));
+                					$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
             					}
         					},errorHandler);
             		}
@@ -662,7 +662,7 @@ iv.&nbsp;&nbsp;&nbsp;Terlibat dalam sebarang perlumbaan (selain daripada perlumb
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pemandu jalan, sukan musim sejuk, kegiatan bawah air, ski air, bola sepak, polo, pemburuan, pertandingan lompat kuda, penerokaan gua,<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penerokaan gua bawah tanah, peninjuan atau bergusti;<br/>
 v.&nbsp;&nbsp;&nbsp;&nbsp;Peperangan, pencerobohan, tindakan musuh asing, permusuhan atau operasi semacam peperangan (sama ada perang diisytiharkan atau tidak), perang<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saudara, kegiatan ketenteraan atau rampasan kuasa;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saudara, kegiatan ketenteraan atau rampasan kuasa;<br/>
 vi.&nbsp;&nbsp;&nbsp;Terlibat langsung dalam mogokan, rusuhan, pemberontakan, revolusi, kegemparan awam atau penderhakaan;<br/>
 vii.&nbsp;&nbsp;Terlibat langsung dalam mogokan, rusuhan, pemberontakan, revolusi, kegemparan awam atau penderhakaan;<br/>
 

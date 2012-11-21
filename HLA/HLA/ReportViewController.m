@@ -125,7 +125,7 @@
     //NSLog(@"%@",siNo);
     
     //sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM SI_Trad_Rider_Details Where SINo = '%@'",siNo];
-    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@'",siNo];
+    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ORDER BY RiderCode ASC",siNo];
     
     _dataTable = [_db  ExecuteQuery:sqlStmt];
     
@@ -505,7 +505,7 @@
     NSString *headerTitle = @"tblHeader;";
     
     
-    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@'",siNo];
+    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ORDER BY RiderCode ASC ",siNo];
     //NSLog(@"%@",sqlStmt);
     _dataTable = [_db  ExecuteQuery:sqlStmt];
     
@@ -600,6 +600,118 @@
     }
 
     // malay version here page201.html ---> page 220
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page50.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page51.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    riderCount = 0; //reset rider count
+    descRiderCountStart = 200; //start of rider description page
+    riderInPageCount = 0; //number of rider in a page, maximum 3
+    riderInPage = @""; //rider in a page, write to db
+    //NSString *riderInPage1 = @"";
+    curRider = @""; //current rider
+    prevRider = @""; //previous rider
+    headerTitle = @"tblHeader;";
+    
+    for (row in _dataTable.rows) //income rider
+    {
+        riderCount++;
+        curRider = [row objectAtIndex:0];
+        
+        //NSLog(@"%@",curRider);
+        
+        if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"] || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"] || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] || [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"]){
+            riderInPageCount++;
+            prevRider = curRider;
+            
+            riderInPage = [riderInPage stringByAppendingString:curRider];
+            riderInPage = [riderInPage stringByAppendingString:@";"];
+            if (riderInPageCount == 3){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                if(riderCount == 1)
+                    riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            
+            if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
+                NSLog(@"%@",riderInPage);
+            }
+        }
+        else{
+            if (riderInPageCount == 2){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                if(riderCount == 1)
+                    riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] || [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
+                prevRider = [prevRider stringByAppendingString:@";"];
+                curRider = [prevRider stringByAppendingString:curRider];
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            //NSLog(@"%@",curRider);
+            pageNum++;
+            if(riderCount == 1)
+                curRider = [headerTitle stringByAppendingString:curRider];
+            descRiderCountStart++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",curRider,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            //NSLog(@"%@",sqlStmt);
+        }
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page60.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page61.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page62.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
     
     //------- end ---------
     

@@ -19,6 +19,33 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    //for ios6 start, will also clear out ios5.1
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+    
+    NSString *viewerPlistFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"viewer.plist"];
+    NSString *viewerPlistFromDoc = [documents stringByAppendingPathComponent:@"viewer.plist"];
+    BOOL plistExist = [fileManager fileExistsAtPath:viewerPlistFromDoc];
+    if (!plistExist)
+        [fileManager copyItemAtPath:viewerPlistFromApp toPath:viewerPlistFromDoc error:nil];
+    
+    //databaseName = @"0000000000000001.sqlite";//actual
+    NSString *databaseName1 = @"hladb.sqlite";//dummy
+    NSString *WebSQLSubdir1 = @"Caches";
+    NSString *WebSQLPath1 = [library stringByAppendingPathComponent:WebSQLSubdir1];
+    NSString *WebSQLDb1 = [WebSQLPath1 stringByAppendingPathComponent:@"file__0"];
+    
+    
+    NSString *masterFile = [WebSQLPath1 stringByAppendingPathComponent:@"Databases.db"];
+    NSString *databaseFile = [WebSQLDb1 stringByAppendingPathComponent:databaseName1];
+    
+    [fileManager removeItemAtPath:databaseFile error:nil];
+    [fileManager removeItemAtPath:masterFile error:nil];
+    fileManager = Nil;
+    //for ios6 end
+
     return YES;
 }
 							

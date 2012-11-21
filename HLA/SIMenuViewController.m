@@ -429,6 +429,7 @@
 
             //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+            //dispatch_async(downloadQueue, ^{
                 
                 ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
                 ReportPage.SINo = getSINo;
@@ -438,6 +439,7 @@
                         
                         //ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
                         //[self presentViewController:reportVC animated:YES completion:Nil];
+                        /*
                         BrowserViewController *controller = [[BrowserViewController alloc] init];
                         controller.title = @"Quotation";
                         
@@ -445,8 +447,11 @@
                         UINavigationController *container = [[UINavigationController alloc] init];
                         [container setNavigationBarHidden:YES animated:NO];
                         [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
-                        [self presentModalViewController:container animated:NO];
                         
+                        
+                        
+                        [self presentModalViewController:container animated:NO];
+                        */
                         
                         
                     }];
@@ -458,6 +463,20 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [spinner stopAnimating];
                     spinnerLabel.text = @"";
+                    NSLog(@"stop");
+                    
+                    BrowserViewController *controller = [[BrowserViewController alloc] init];
+                    controller.title = @"Quotation";
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    UINavigationController *container = [[UINavigationController alloc] init];
+                    [container setNavigationBarHidden:YES animated:NO];
+                    [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+                    
+                    
+                    
+                    [self presentModalViewController:container animated:YES];
+                    
                    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
                     [v removeFromSuperview];
                 });
