@@ -64,7 +64,7 @@
                                                                   style:UIBarButtonItemStyleBordered target:self action:@selector(CloseButtonAction)];
     self.navigationItem.rightBarButtonItem = barButton;
     
-    NSLog(@"before");
+    //NSLog(@"before");
     //[self performSelector:@selector(presentModal) withObject:Nil afterDelay:3.0];
     
     

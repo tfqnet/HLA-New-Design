@@ -112,6 +112,7 @@
 		C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5F161DBDBB008BCC1A /* SIDate.m */; };
 		C4F45DF1165B38A20035CAA9 /* PasswordTips.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F45DF0165B38A20035CAA9 /* PasswordTips.m */; };
 		C4F45DF3165C6C430035CAA9 /* viewer.plist in Resources */ = {isa = PBXBuildFile; fileRef = C4F45DF2165C6C430035CAA9 /* viewer.plist */; };
+		C4F45DFF165D0C8B0035CAA9 /* SettingSecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F45DFE165D0C8B0035CAA9 /* SettingSecurityQuestion.m */; };
 		C4F82FEE16296F6700EF8FAA /* IMG_0039.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEB16296F6700EF8FAA /* IMG_0039.png */; };
 		C4F82FEF16296F6700EF8FAA /* IMG_0040.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FEC16296F6700EF8FAA /* IMG_0040.png */; };
 		C4F82FF016296F6700EF8FAA /* IMG_0041.png in Resources */ = {isa = PBXBuildFile; fileRef = C4F82FED16296F6700EF8FAA /* IMG_0041.png */; };
@@ -331,6 +332,8 @@
 		C4F45DEF165B38A20035CAA9 /* PasswordTips.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordTips.h; sourceTree = "<group>"; };
 		C4F45DF0165B38A20035CAA9 /* PasswordTips.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordTips.m; sourceTree = "<group>"; };
 		C4F45DF2165C6C430035CAA9 /* viewer.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = viewer.plist; sourceTree = "<group>"; };
+		C4F45DFD165D0C8B0035CAA9 /* SettingSecurityQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingSecurityQuestion.h; sourceTree = "<group>"; };
+		C4F45DFE165D0C8B0035CAA9 /* SettingSecurityQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingSecurityQuestion.m; sourceTree = "<group>"; };
 		C4F82FEB16296F6700EF8FAA /* IMG_0039.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0039.png; sourceTree = "<group>"; };
 		C4F82FEC16296F6700EF8FAA /* IMG_0040.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0040.png; sourceTree = "<group>"; };
 		C4F82FED16296F6700EF8FAA /* IMG_0041.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMG_0041.png; sourceTree = "<group>"; };
@@ -444,6 +447,8 @@
 			children = (
 				C418112616561D87006A05B9 /* SettingUserProfile.h */,
 				C418112716561D87006A05B9 /* SettingUserProfile.m */,
+				C4F45DFD165D0C8B0035CAA9 /* SettingSecurityQuestion.h */,
+				C4F45DFE165D0C8B0035CAA9 /* SettingSecurityQuestion.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1092,6 +1097,7 @@
 				C4F45DF1165B38A20035CAA9 /* PasswordTips.m in Sources */,
 				EF1343BD165C7CD600BF69B3 /* RiderDeducTb.m in Sources */,
 				EF1343C1165C7CFD00BF69B3 /* RiderPlanTb.m in Sources */,
+				C4F45DFF165D0C8B0035CAA9 /* SettingSecurityQuestion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

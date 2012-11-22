@@ -11,6 +11,7 @@
 #import "UserProfile.h"
 #import "SecurityQuestion.h"
 #import "AppDelegate.h"
+#import "SettingSecurityQuestion.h"
 
 @interface setting ()
 
@@ -112,12 +113,11 @@
      
      /*
     else if (indexPath.row == 1) {
-        SecurityQuestion *SecurityQuesView = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
-        SecurityQuesView.modalPresentationStyle = UIModalPresentationFormSheet;
+        SettingSecurityQuestion *SecurityQuesView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingSecurityQuestion"];
+        SecurityQuesView.modalPresentationStyle = UIModalPresentationFullScreen;
         SecurityQuesView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        SecurityQuesView.userID = self.indexNo;
         [self presentModalViewController:SecurityQuesView animated:YES];
-        SecurityQuesView.view.superview.frame = CGRectMake(350, 50, 600, 600); 
+        //SecurityQuesView.view.superview.frame = CGRectMake(150, 50, 700, 600); 
     }
    */
     else if (indexPath.row == 1) {
