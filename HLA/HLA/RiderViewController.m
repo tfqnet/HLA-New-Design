@@ -3613,6 +3613,16 @@
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
     
+    [[cell.contentView viewWithTag:1001] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1002] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1003] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1004] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1005] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1006] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1007] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1008] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1009] removeFromSuperview ];
+    
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
     CGRect frame=CGRectMake(-30,0, 130, 50);
@@ -3620,6 +3630,7 @@
     label1.frame=frame;
     label1.text= [LRiderCode objectAtIndex:indexPath.row];
     label1.textAlignment = UITextAlignmentCenter;
+    label1.tag = 1001;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
     
@@ -3629,6 +3640,7 @@
     NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LSumAssured objectAtIndex:indexPath.row] doubleValue]]];
     label2.text= num;
     label2.textAlignment = UITextAlignmentCenter;
+    label2.tag = 1002;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
@@ -3637,6 +3649,7 @@
     label3.frame=frame3;
     label3.text= [LTerm objectAtIndex:indexPath.row];
     label3.textAlignment = UITextAlignmentCenter;
+    label3.tag = 1003;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
     
@@ -3645,6 +3658,7 @@
     label4.frame=frame4;
     label4.text= [LUnits objectAtIndex:indexPath.row];
     label4.textAlignment = UITextAlignmentCenter;
+    label4.tag = 1004;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
     
@@ -3653,6 +3667,7 @@
     label5.frame=frame5;
     label5.text= [NSString stringWithFormat:@"%d",occClass];
     label5.textAlignment = UITextAlignmentCenter;
+    label5.tag = 1005;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label5];
     
@@ -3665,6 +3680,7 @@
         label6.text= [NSString stringWithFormat:@"%d",occLoad];
     }
     label6.textAlignment = UITextAlignmentCenter;
+    label6.tag = 1006;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label6];
     
@@ -3679,6 +3695,7 @@
     }
     label7.text= hl1k;
     label7.textAlignment = UITextAlignmentCenter;
+    label7.tag = 1007;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label7];
     
@@ -3693,6 +3710,7 @@
     }
     label8.text= hl100;
     label8.textAlignment = UITextAlignmentCenter;
+    label8.tag = 1008;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label8];
     
@@ -3707,6 +3725,7 @@
     }
     label9.text=hlp;
     label9.textAlignment = UITextAlignmentCenter;
+    label9.tag = 1009;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label9];
     
