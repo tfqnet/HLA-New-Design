@@ -50,7 +50,7 @@
     //Create view controllers
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
     
-    //--edited by bob
+    //--edited by bob,not working!
     NSLog(@"tab:%d",self.IndexTab);
     if (self.IndexTab != 3) {
         NSLog(@"clear!");

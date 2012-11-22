@@ -105,6 +105,8 @@
 @property(nonatomic , retain) NSString *GenderPP;
 @property(nonatomic , retain) NSString *OccpCodePP;
 
+@property (retain, nonatomic) NSMutableArray *arrExistRiderCode;
+
 - (IBAction)sexSegmentPressed:(id)sender;
 - (IBAction)smokerSegmentPressed:(id)sender;
 - (IBAction)doSaveLA:(id)sender;

@@ -39,7 +39,7 @@
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 @synthesize LADOBField,LAOccpField,getSINo,dataInsert2;
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
-@synthesize termCover,planCode;
+@synthesize termCover,planCode,arrExistRiderCode;
 @synthesize prospectPopover = _prospectPopover;
 
 - (void)viewDidLoad
@@ -858,8 +858,6 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        
-        //CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo
         NSString *querySQL = [NSString stringWithFormat:
             @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\"  WHERE id=\"%d\"",LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo,clientID];
         NSLog(@"%@",querySQL);
@@ -867,8 +865,29 @@
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                
-                if (age < 16) {
+                if (DiffClient) {
+                    NSLog(@"diffClient!");
+                    
+                    [self checkExistRider];
+                    if (arrExistRiderCode.count > 0) {
+                        [self deleteRider];
+                    }
+                    
+                    if (age < 16) {
+                        [self checking2ndLA];
+                        if (CustCode2.length != 0) {
+                            [self delete2ndLA];
+                        }
+                    }
+                    
+                    if (age > 18) {
+                        [self checkingPayor];
+                        if (payorSINo.length != 0) {
+                            [self deletePayor];
+                        }
+                    }
+                }
+                else if (age < 16) {
                     [self checking2ndLA];
                     if (CustCode2.length != 0) {
                         
@@ -933,8 +952,7 @@
                 commDate = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
                 clientID = sqlite3_column_int(statement, 9);
                 IndexNo = sqlite3_column_int(statement, 10);
-                
-//                NSLog(@"sex:%@",sex);
+                NSLog(@"id:%d",clientID);
             
             } else {
                 NSLog(@"error access tbl_SI_Trad_LAPayor");
@@ -965,7 +983,8 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 tempSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                clientID = sqlite3_column_int(statement, 9);
+                clientID = sqlite3_column_int(statement, 1);
+                NSLog(@"id:%d",clientID);
                 
             } else {
                 NSLog(@"error access tbl_SI_Trad_LAPayor");
@@ -1219,6 +1238,48 @@
     }
 }
 
+-(void)checkExistRider
+{
+    arrExistRiderCode = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                [arrExistRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)deleteRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"All rider delete!");
+                
+            } else {
+                NSLog(@"rider delete Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 
 #pragma mark - delegate
 
@@ -1226,8 +1287,8 @@
 {
     if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
         smoker = @"N";
-        requestSINo = nil;  //reset to add new SI/client
-        SINo = nil;
+//        requestSINo = nil;  //reset to add new SI/client
+//        SINo = nil;
         DiffClient = YES;
     }
     useExist = NO;

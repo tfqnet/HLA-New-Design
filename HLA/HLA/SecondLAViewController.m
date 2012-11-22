@@ -293,6 +293,12 @@
             [self updateData];
         }
     }
+    else if (alertView.tag == 1005 && buttonIndex == 0) {
+        [self closeScreen];
+    }
+    else if (alertView.tag == 1006 && buttonIndex == 0) {
+        [self closeScreen];
+    }
 }
 
 -(void)calculateAge
@@ -362,6 +368,17 @@
         ANB = 1;
     }
     NSLog(@"msgAge:%@",msgAge);
+}
+
+-(void)closeScreen
+{
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    main.modalPresentationStyle = UIModalPresentationFullScreen;
+    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    main.IndexTab = 3;
+    main.mainH = la2ndH;
+    main.mainBH = la2ndBH;
+    [self presentModalViewController:main animated:YES];
 }
 
 #pragma mark - delegate
@@ -524,6 +541,7 @@
                 [self updateRunCustCode];
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert setTag:1005];
                 [SuccessAlert show];
                 
             } else {
@@ -702,6 +720,7 @@
                 NSLog(@"SI update!");
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert setTag:1006];
                 [SuccessAlert show];
                 
             } else {
