@@ -10,6 +10,15 @@
 #import "Login.h"
 #import "SIHandler.h"
 #import "DemoHtml.h"
+#import "MainScreen.h"
+#import "BasicPlanHandler.h"
+#import "SIMenuViewController.h"
+#import "NewLAViewController.h"
+#import "PayorViewController.h"
+#import "SecondLAViewController.h"
+#import "BasicPlanViewController.h"
+#import "RiderViewController.h"
+#import "PremiumViewController.h"
 
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
@@ -81,8 +90,6 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
-    
-    
     if (selectedIndex != _selectedIndex && selectedIndex < [self.viewControllers count])
     {
         [self.view endEditing:YES];
@@ -92,11 +99,8 @@
         id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
         [activeInstance performSelector:@selector(dismissKeyboard)];
         
-        
         // add new view controller to hierarchy
         UIViewController *selectedViewController = [self.viewControllers objectAtIndex:selectedIndex];
-        
-        
         
         if (selectedIndex == 0) {
             [self presentViewController:selectedViewController animated:NO completion:Nil];
@@ -107,51 +111,81 @@
         }
         */
         else {
-            
-            if (selectedIndex == 2) { //prospect profile
-                SIHandler *SIH = [[SIHandler alloc] init ];
-                NSLog(@"%d", SIH.storedIndexNo);
+            //--edited by bob,still not working!
+            if (selectedIndex != 3) { //prospect profile
                 
+                MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+                main.mainBH = nil;
+                main.mainH = nil;
+                NSLog(@"Index:%d", main.mainH.storedIndexNo);
+                
+                if (_selectedIndex == 3) {
+                    NSLog(@"empty!");
+                    UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
+                    [previousViewController.view removeFromSuperview];
+                    [previousViewController removeFromParentViewController];
+                }
+                
+                /*
+                SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+                menuSIPage.menuBH = [[BasicPlanHandler alloc] init];
+                menuSIPage.menuH = [[SIHandler alloc] init];
+                
+                NewLAViewController *newLA = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+                newLA.laBH = [[BasicPlanHandler alloc] init];
+                newLA.laH = [[SIHandler alloc] init];
+                
+                SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
+                secondLA.la2ndBH = [[BasicPlanHandler alloc] init];
+                secondLA.la2ndH = [[SIHandler alloc] init];
+                
+                PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
+                payorView.payorBH = [[BasicPlanHandler alloc] init];
+                payorView.payorH = [[SIHandler alloc] init];
+                
+                BasicPlanViewController *basic = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
+                basic.basicH = [[SIHandler alloc] init];
+                
+                RiderViewController *rider = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
+                rider.riderBH = [[BasicPlanHandler alloc] init];
+                rider.riderH = [[SIHandler alloc] init];
+                
+                PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+                premView.premBH = [[BasicPlanHandler alloc] init];
+                premView.premH = [[SIHandler alloc] init];
+                */
             }
         
-                
-            
-        [self addChildViewController:selectedViewController];
-        selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
+            [self addChildViewController:selectedViewController];
+            selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
                                                        0,
                                                        self.view.bounds.size.width-self.tabBarWidth,
                                                        self.view.bounds.size.height);
-        selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-        [self.view addSubview:selectedViewController.view];
+            selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+            [self.view addSubview:selectedViewController.view];
          
-                   
-            
-        // remove previously selected view controller (if any)
-        if (-1 < _selectedIndex && _selectedIndex < INT_MAX)
-        {
-            UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
-            [previousViewController.view removeFromSuperview];
-            [previousViewController removeFromParentViewController];
-        }
+            // remove previously selected view controller (if any)
+            if (-1 < _selectedIndex && _selectedIndex < INT_MAX)
+            {
+                UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
+                [previousViewController.view removeFromSuperview];
+                [previousViewController removeFromParentViewController];
+            }
 
-            
-            
-            
-        // set new selected index
-        _selectedIndex = selectedIndex;
+            // set new selected index
+            _selectedIndex = selectedIndex;
         
-        // update tab bar
-        if (selectedIndex < [self.tabBar.items count])
-        {
-            self.tabBar.selectedItem = [self.tabBar.items objectAtIndex:selectedIndex];
-        }
+            // update tab bar
+            if (selectedIndex < [self.tabBar.items count])
+            {
+                self.tabBar.selectedItem = [self.tabBar.items objectAtIndex:selectedIndex];
+            }   
         
-        // inform delegate
-        if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
-        {
-            [self.delegate tabBarController:self didSelectViewController:selectedViewController];
-        }
-        
+            // inform delegate
+            if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
+            {
+                [self.delegate tabBarController:self didSelectViewController:selectedViewController];
+            }
         }
     }
 }
@@ -174,7 +208,6 @@
     }
     return self;
 }
-
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -225,7 +258,6 @@
 #pragma mark <UITableViewDelegate>
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (indexPath.row == 4) {
         
         UIAlertView *alert = [[UIAlertView alloc] 
@@ -234,11 +266,8 @@
                               delegate: self
                               cancelButtonTitle: NSLocalizedString(@"No",nil)
                               otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
-        
         [alert show ];
-        
     }
-    
     else {
         [self setSelectedIndex:indexPath.row];
     }
@@ -248,7 +277,6 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         [self updateDateLogout];
-        
     }
 }
 
@@ -291,7 +319,6 @@
         }
         sqlite3_close(contactDB);
     }
-    
 }
 
 
@@ -312,8 +339,8 @@
     }
 }
 
-
-- (BOOL)disablesAutomaticKeyboardDismissal {
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
     return NO;
 }
 

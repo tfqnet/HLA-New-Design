@@ -341,7 +341,7 @@
     else {
         //prompt save
         NSString *msg;
-        [self checkingExisting];
+        [self checkingExisting2];
         
         if (useExist) {
             msg = @"Confirm changes?";
@@ -465,6 +465,12 @@
         LACPAField.text = @"";
         LAPAField.text = @"";
     }
+    else if (alertView.tag==1006 && buttonIndex == 0) {
+        [self closeScreen];
+    }
+    else if (alertView.tag==1007 && buttonIndex == 0) {
+        [self closeScreen];
+    }
 }
 
 -(void)calculateAge
@@ -548,6 +554,48 @@
         ANB = 1;
     }
     NSLog(@"msgAge:%@",msgAge);
+}
+
+-(void)closeScreen
+{
+    if (dataInsert.count != 0 && dataInsert2.count == 0) {
+        
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            SIHandler *ss = [dataInsert objectAtIndex:i];
+            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            main.modalPresentationStyle = UIModalPresentationFullScreen;
+            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            main.mainH = ss;
+            main.mainBH = laBH;
+            main.IndexTab = 3;
+            [self presentViewController:main animated:NO completion:nil];
+        }
+    }
+    else if (dataInsert.count != 0 && dataInsert2.count != 0) {
+        
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            SIHandler *ss = [dataInsert objectAtIndex:i];
+            main.mainH = ss;
+        }
+        for (NSUInteger i=0; i< dataInsert2.count; i++) {
+            BasicPlanHandler *pp = [dataInsert2 objectAtIndex:i];
+            main.mainBH = pp;
+        }
+        
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.IndexTab = 3;
+        [self presentViewController:main animated:NO completion:nil];
+    }
+    else {
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.IndexTab = 3;
+        [self presentViewController:main animated:NO completion:nil];
+        
+    }
 }
 
 
@@ -778,6 +826,7 @@
                 NSLog(@"Done LA2");
 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert setTag:1006];
                 [SuccessAlert show];
             } else {
                 NSLog(@"Failed LA2");
@@ -809,17 +858,15 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
+        
+        //CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo
         NSString *querySQL = [NSString stringWithFormat:
-            @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,clientID];
+            @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\"  WHERE id=\"%d\"",LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo,clientID];
         NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert show];
-                
-                statusLabel.text = @"";
                 
                 if (age < 16) {
                     [self checking2ndLA];
@@ -838,6 +885,12 @@
                         [alert show];
                     }
                 }
+                
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert setTag:1007];
+                [SuccessAlert show];
+                
+                statusLabel.text = @"";
             } else {
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -885,6 +938,7 @@
             
             } else {
                 NSLog(@"error access tbl_SI_Trad_LAPayor");
+                useExist = NO;
             }
             sqlite3_finalize(statement);
         }
@@ -892,6 +946,37 @@
     }
     
     if (SINo.length != 0) {
+        useExist = YES;
+    } else {
+        useExist = NO;
+    }
+}
+
+-(void)checkingExisting2
+{
+    sqlite3_stmt *statement;
+    NSString *tempSINo;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT a.SINo, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                tempSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                clientID = sqlite3_column_int(statement, 9);
+                
+            } else {
+                NSLog(@"error access tbl_SI_Trad_LAPayor");
+                useExist = NO;
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+    if (tempSINo.length != 0) {
         useExist = YES;
     } else {
         useExist = NO;
@@ -1141,8 +1226,9 @@
 {
     if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
         smoker = @"N";
-        requestSINo = nil;
+        requestSINo = nil;  //reset to add new SI/client
         SINo = nil;
+        DiffClient = YES;
     }
     useExist = NO;
     statusLabel.text = @"";

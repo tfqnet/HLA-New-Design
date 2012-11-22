@@ -67,7 +67,7 @@
     [self calculatePremium];
     doGenerate.hidden = TRUE;
     
-    
+    /*
     //----- meng chiong part --------
     if (IsAtLeastiOSVersion(@"6.0")){
         NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
@@ -84,6 +84,7 @@
         }
     }
     //------ end ---------
+     */
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

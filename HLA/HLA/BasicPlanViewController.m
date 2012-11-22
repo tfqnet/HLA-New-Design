@@ -408,6 +408,8 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+//    NSString *SAInput = [yearlyIncomeField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
@@ -560,6 +562,30 @@
     }
 }
 
+-(void)closeScreen
+{
+    if (dataInsert.count != 0) {
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            BasicPlanHandler *ss = [dataInsert objectAtIndex:i];
+            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            main.modalPresentationStyle = UIModalPresentationFullScreen;
+            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            main.mainH = basicH;
+            main.mainBH = ss;
+            main.IndexTab = 3;
+            main.showQuotation = @"NO";
+            [self presentViewController:main animated:YES completion:nil];
+        }
+    } else {
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.mainH = basicH;
+        main.IndexTab = 3;
+        [self presentViewController:main animated:YES completion:nil];
+    }
+}
+
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 1001 && buttonIndex == 0) {
@@ -583,6 +609,13 @@
     else if (alertView.tag==1003 && buttonIndex == 0) {
         [self checkingSave];
     }
+    else if (alertView.tag==1004 && buttonIndex == 0) {
+        [self closeScreen];
+    }
+    else if (alertView.tag==1005 && buttonIndex == 0) {
+        [self closeScreen];
+    }
+    
 }
 
 
@@ -759,11 +792,13 @@
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
     */
     
+//    NSString *SAInput = [yearlyIncomeField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@)", SINoPlan,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")"];
+        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@)", SINoPlan,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")"];
 //        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -780,6 +815,7 @@
                 }
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert setTag:1004];
                 [SuccessAlert show];
                 
             } else {
@@ -796,16 +832,17 @@
 
 -(void)updateBasicPlan
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+//    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+//    NSString *SAInput = [yearlyIncomeField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
     
     sqlite3_stmt *statement;
-    
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET PolicyTerm=\"%@\", BasicSA=\"%@\", PremiumPaymentOption=\"%d\", CashDividend=\"%@\", YearlyIncome=\"%@\", AdvanceYearlyIncome=\"%d\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", TempHL1KSA=\"%@\", TempHL1KSATerm=\"%d\", UpdatedAt=\"%@\" WHERE SINo=\"%@\"",termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome,advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], dateString, SINoPlan];
-        
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET PolicyTerm=\"%@\", BasicSA=\"%@\", PremiumPaymentOption=\"%d\", CashDividend=\"%@\", YearlyIncome=\"%@\", AdvanceYearlyIncome=\"%d\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", TempHL1KSA=\"%@\", TempHL1KSATerm=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome,advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")", SINoPlan];
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -822,6 +859,7 @@
                 }
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert setTag:1005];
                 [SuccessAlert show];
                 
             } else {

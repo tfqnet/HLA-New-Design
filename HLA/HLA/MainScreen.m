@@ -50,6 +50,14 @@
     //Create view controllers
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
     
+    //--edited by bob
+    NSLog(@"tab:%d",self.IndexTab);
+    if (self.IndexTab != 3) {
+        NSLog(@"clear!");
+        self.mainBH = nil;
+        self.mainH = nil;
+    }
+    
     CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
     carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Home" image:[UIImage imageNamed:@"btn_home.png"] tag: 0];
     [controllersToAdd addObject:carouselPage];
@@ -66,7 +74,6 @@
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
     ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];    
-    
     SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
     SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:SIListingPage];
@@ -144,7 +151,6 @@
     else {
         return YES;
     }
-    
 }
 
 @end

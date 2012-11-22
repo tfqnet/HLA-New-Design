@@ -12,6 +12,7 @@
 #import "setting.h"
 #import "MainScreen.h"
 #import "Login.h"
+#import "NewLAViewController.h"
 
 const int numberOfModule = 4;
 
@@ -144,10 +145,22 @@ const int numberOfModule = 4;
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 3) {
+        /*
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = 3;
-        [self presentViewController:zzz animated:NO completion:Nil];
+        [self presentViewController:zzz animated:NO completion:Nil];*/
+        
+        //--edited by bob
+        NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+        MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        MainScreenPage.IndexTab = 3;
+        NewLAPage.modalPresentationStyle = UIModalPresentationPageSheet;
+        
+        [self presentViewController:MainScreenPage animated:YES completion:^(){
+            [MainScreenPage presentModalViewController:NewLAPage animated:NO];
+            NewLAPage.view.superview.bounds =  CGRectMake(-300, 0, 1024, 748);
+        }];
         
     }
     
