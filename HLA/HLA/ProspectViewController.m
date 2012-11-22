@@ -103,6 +103,7 @@ bool PostcodeContinue = TRUE;
     //ContactType = [[NSArray alloc] init];
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
+    //outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     
 }
 

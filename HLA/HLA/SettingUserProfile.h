@@ -37,9 +37,12 @@
 @property (nonatomic, copy) NSString *leaderName;
 @property (nonatomic, copy) NSString *registerNo;
 @property (nonatomic, copy) NSString *email;
+@property (weak, nonatomic) IBOutlet UIButton *outletSave;
 
 - (IBAction)btnClose:(id)sender;
 - (IBAction)btnSave:(id)sender;
+- (IBAction)btnDone:(id)sender;
+
 
 
 

@@ -13,7 +13,7 @@
 @end
 
 @implementation PasswordTips
-//@synthesize delegate = _delegate;
+@synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,4 +41,11 @@
 	return YES;
 }
 
+- (IBAction)btnClose:(id)sender {
+        [_delegate CloseWindow];
+        NSLog(@"close");
+        
+    
+    
+}
 @end

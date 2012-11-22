@@ -15,6 +15,7 @@
 @end
 
 @implementation SettingUserProfile
+@synthesize outletSave;
 @synthesize lblAgentLoginID, username, code, name, contactNo ;
 @synthesize txtAgentCode, leaderCode, leaderName, registerNo, email;
 @synthesize txtAgentName, idRequest, indexNo;
@@ -54,7 +55,7 @@
     //NSLog(@"receive User:%@",[self.idRequest description]);
     //NSLog(@"receive Index:%d",self.indexNo);
     
-    
+    outletSave.hidden = YES;
     lblAgentLoginID.text = [NSString stringWithFormat:@"%@",[self.idRequest description]];
 }
 
@@ -69,6 +70,7 @@
     [self setTxtBixRegNo:nil];
     [self setTxtEmail:nil];
     
+    [self setOutletSave:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -366,6 +368,12 @@
 }
 
 - (IBAction)btnSave:(id)sender {
+    [self.view endEditing:TRUE];
+    [self resignFirstResponder];
+    [self updateUserData ];
+}
+
+- (IBAction)btnDone:(id)sender {
     [self.view endEditing:TRUE];
     [self resignFirstResponder];
     [self updateUserData ];

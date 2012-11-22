@@ -24,6 +24,7 @@
 @synthesize btnCancel, popOverConroller, questOneCode, questTwoCode,questThreeCode;
 @synthesize PasswordTipPopover = _PasswordTipPopover;
 @synthesize PasswordTips = _PasswordTips;
+@synthesize lblPasswordTips;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +45,11 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
 
+    UITapGestureRecognizer *gestureQTwo = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(ShowPasswordTips:)];
+    gestureQTwo.numberOfTapsRequired = 1;
+    [lblPasswordTips addGestureRecognizer:gestureQTwo];
+    lblPasswordTips.hidden = TRUE;
+    
     outletSave.hidden = TRUE;
 }
 
@@ -55,6 +61,7 @@
     [self setBtnCancel:nil];
     [self setMyScrollView:nil];
     [self setOutletSave:nil];
+    [self setLblPasswordTips:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -398,10 +405,29 @@
     }
 }
 
-- (IBAction)btnTips:(id)sender {
+-(void)ShowPasswordTips:(id)sender {
     self.PasswordTips = [self.storyboard instantiateViewControllerWithIdentifier:@"Tip"];
     self.PasswordTipPopover = [[UIPopoverController alloc] initWithContentViewController:_PasswordTips];
     [self.PasswordTipPopover setPopoverContentSize:CGSizeMake(950, 350)];    
     [self.PasswordTipPopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
+
+- (IBAction)btnTips:(id)sender {
+    if (_PasswordTips == Nil) {
+        self.PasswordTips = [self.storyboard instantiateViewControllerWithIdentifier:@"Tip"];
+        _PasswordTips.delegate = self;
+        self.PasswordTipPopover = [[UIPopoverController alloc] initWithContentViewController:_PasswordTips];
+        
+    }
+    [self.PasswordTipPopover setPopoverContentSize:CGSizeMake(950, 350)];    
+    [self.PasswordTipPopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+}
+
+-(void)CloseWindow{
+    //NSLog(@"received");
+    [self.PasswordTipPopover dismissPopoverAnimated:YES];
+}
+
+
 @end

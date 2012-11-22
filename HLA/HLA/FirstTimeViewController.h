@@ -11,7 +11,7 @@
 #import "SecurityQuesTbViewController.h"
 #import "PasswordTips.h"
 
-@interface FirstTimeViewController : UIViewController<UITextFieldDelegate>{
+@interface FirstTimeViewController : UIViewController<UITextFieldDelegate, PasswordTipDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -45,6 +45,7 @@
 
 @property (nonatomic, retain) UIPopoverController *PasswordTipPopover;
 @property (nonatomic, retain) PasswordTips *PasswordTips;
+@property (weak, nonatomic) IBOutlet UILabel *lblPasswordTips;
 
 
 @end

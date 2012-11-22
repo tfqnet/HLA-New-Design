@@ -65,6 +65,11 @@
     lblQuesTwo.hidden = TRUE;
     lblQuestThree.hidden = TRUE;
     
+    outletQues1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    outletQues2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    outletQues3.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    
+    
     outletSave.hidden = TRUE;
     if (FirstTimeLogin == 1) {
         //outletCancel.enabled = false;
@@ -378,20 +383,22 @@
 
 -(void)securityQuest:(SecurityQuesTbViewController *)inController didSelectQuest:(NSString *)code desc:(NSString *)desc
 {
+    NSString *space = @" ";
+    
     if (selectOne) {
         questOneCode = [[NSString alloc] initWithFormat:@"%@",code];
         lblQuesOne.text = [[NSString alloc] initWithFormat:@"%@",desc];
-        [outletQues1 setTitle:lblQuesOne.text forState:UIControlStateNormal ];
+        [outletQues1 setTitle: [space stringByAppendingString: lblQuesOne.text]  forState:UIControlStateNormal ];
     }
     else if (selectTwo) {
         questTwoCode = [[NSString alloc] initWithFormat:@"%@",code];
         lblQuesTwo.text = [[NSString alloc] initWithFormat:@"%@",desc];
-        [outletQues2 setTitle:lblQuesTwo.text forState:UIControlStateNormal ];
+        [outletQues2 setTitle:[space stringByAppendingString: lblQuesTwo.text] forState:UIControlStateNormal ];
     }
     else if (selectThree) {
         questThreeCode = [[NSString alloc] initWithFormat:@"%@",code];
         lblQuestThree.text = [[NSString alloc] initWithFormat:@"%@",desc];
-        [outletQues3 setTitle:lblQuestThree.text forState:UIControlStateNormal ];
+        [outletQues3 setTitle:[space stringByAppendingString: lblQuestThree.text] forState:UIControlStateNormal ];
     }
     [popOverConroller dismissPopoverAnimated:YES];
     selectOne = NO;

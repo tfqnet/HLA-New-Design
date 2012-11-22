@@ -138,6 +138,7 @@ bool IsContinue = TRUE;
     outletDelete.titleLabel.shadowColor = [UIColor lightGrayColor];
     outletDelete.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
+    
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
 }

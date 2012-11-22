@@ -10,7 +10,7 @@
 #import <sqlite3.h>
 #import "PasswordTips.h"
 
-@interface ChangePassword : UIViewController{
+@interface ChangePassword : UIViewController<PasswordTipDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UIPopoverController *_PasswordTipPopover;
@@ -18,18 +18,21 @@
 }
 
 @property (nonatomic, assign,readwrite) int userID;
-
+@property (nonatomic, retain) UIPopoverController *PasswordTipPopover;
+@property (nonatomic, retain) PasswordTips *PasswordTips;
 @property (weak, nonatomic) IBOutlet UITextField *txtOldPwd;
 @property (weak, nonatomic) IBOutlet UITextField *txtNewPwd;
 @property (weak, nonatomic) IBOutlet UITextField *txtConfirmPwd;
 - (IBAction)btnChange:(id)sender;
 - (IBAction)btnCancel:(id)sender;
+- (IBAction)btnDone:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *outletSave;
+@property (weak, nonatomic) IBOutlet UILabel *lblMsg;
 
 
 @property (nonatomic, copy) NSString *passwordDB;
-@property (weak, nonatomic) IBOutlet UILabel *lblmsg;
-@property (nonatomic, retain) UIPopoverController *PasswordTipPopover;
-@property (nonatomic, retain) PasswordTips *PasswordTips;
+
+
 - (IBAction)btnTips:(id)sender;
 
 @end

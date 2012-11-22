@@ -19,8 +19,9 @@
 @synthesize txtOldPwd;
 @synthesize txtNewPwd;
 @synthesize txtConfirmPwd;
+@synthesize outletSave;
+@synthesize lblMsg;
 @synthesize passwordDB;
-@synthesize lblmsg;
 @synthesize userID;
 @synthesize PasswordTipPopover = _PasswordTipPopover;
 @synthesize PasswordTips = _PasswordTips;
@@ -49,7 +50,8 @@
     
     self.userID = zzz.indexNo;
     [self validateExistingPwd];
-
+    outletSave.hidden = YES;
+    lblMsg.hidden = TRUE;
 }
 
 - (void)viewDidUnload
@@ -57,7 +59,8 @@
     [self setTxtOldPwd:nil];
     [self setTxtNewPwd:nil];
     [self setTxtConfirmPwd:nil];
-    [self setLblmsg:nil];
+    [self setOutletSave:nil];
+    [self setLblMsg:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -141,8 +144,8 @@
                 [alert show];
                 
             } else {
-                lblmsg.text = @"Failed to update!";
-                lblmsg.textColor = [UIColor redColor];
+                lblMsg.text = @"Failed to update!";
+                lblMsg.textColor = [UIColor redColor];
                 
             }
             sqlite3_finalize(statement);
@@ -226,6 +229,74 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (IBAction)btnDone:(id)sender {
+    bool valid;
+    
+    /* 
+     if (txtOldPwd.text.length <= 0 || txtNewPwd.text.length <= 0 || txtConfirmPwd.text.length <= 0) {
+     
+     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please fill up all field!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+     [alert show];
+     
+     } 
+     */
+    if ([txtOldPwd.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length <= 0 ) {
+        
+        valid = FALSE;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtOldPwd becomeFirstResponder];
+        
+    }
+    else { 
+        if ([txtNewPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
+            valid = FALSE;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            [txtNewPwd becomeFirstResponder];
+        }
+        else {
+            if ([txtConfirmPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
+                valid = FALSE;
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                [txtConfirmPwd becomeFirstResponder];
+                
+            }
+            else {
+                valid = TRUE;
+                
+            }
+        }
+    }
+    
+    if(valid == TRUE) {
+        
+        if (txtNewPwd.text.length < 6 || txtNewPwd.text.length > 20 ) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                                            message:@"New Password must be at least 6 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            [txtNewPwd becomeFirstResponder];
+            
+        }
+        else {
+            if ([txtNewPwd.text isEqualToString:txtConfirmPwd.text]) {
+                [self validatePassword]; 
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                txtOldPwd.text = @"";
+                txtNewPwd.text = @"";
+                txtConfirmPwd.text = @"";
+            }   
+            
+        }
+        
+        
+    }
+}
+
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 01) {     
@@ -237,10 +308,20 @@
     }
 }
 - (IBAction)btnTips:(id)sender {
-    self.PasswordTips = [self.storyboard instantiateViewControllerWithIdentifier:@"Tip"];
-    self.PasswordTipPopover = [[UIPopoverController alloc] initWithContentViewController:_PasswordTips];
+    if (_PasswordTips == Nil) {
+        self.PasswordTips = [self.storyboard instantiateViewControllerWithIdentifier:@"Tip"];
+        _PasswordTips.delegate = self;
+        self.PasswordTipPopover = [[UIPopoverController alloc] initWithContentViewController:_PasswordTips];
+        
+    }
     [self.PasswordTipPopover setPopoverContentSize:CGSizeMake(950, 350)];    
     [self.PasswordTipPopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
+
+-(void)CloseWindow{
+    //NSLog(@"received");
+    [self.PasswordTipPopover dismissPopoverAnimated:YES];
+}
+ 
 @end

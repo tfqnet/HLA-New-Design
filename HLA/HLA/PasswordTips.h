@@ -7,15 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-/*
-@protocol PasswordTipDelegate
-    
-@end
-*/
-@interface PasswordTips : UIViewController{
-  //  id<PasswordTipDelegate> _delegate;
-}
 
-//@property (nonatomic, strong) id<PasswordTipDelegate> delegate;
+@protocol PasswordTipDelegate
+- (void)CloseWindow;    
+@end
+
+@interface PasswordTips : UIViewController{
+    id<PasswordTipDelegate> _delegate;
+}
+@property (nonatomic, strong) id<PasswordTipDelegate> delegate;
+- (IBAction)btnClose:(id)sender;
+
+
 
 @end
