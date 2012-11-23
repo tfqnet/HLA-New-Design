@@ -54,8 +54,6 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    //passing value
-    
     ageClient = basicH.storedAge;
     requestSINo = basicH.storedSINo;
     requestOccpCode = basicH.storedOccpCode;
@@ -74,6 +72,7 @@
     }
     
     newSegment = YES;
+    [self toggleSegment];
     
     healthLoadingView.alpha = 0;
     showHL = NO;
@@ -81,7 +80,6 @@
     SINoPlan = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     termField.enabled = NO;
     [self getTermRule];
-    
     
     if (requestSINo) {
         [self checkingExisting];
@@ -110,7 +108,8 @@
             segName.frame = CGRectMake(342, 363, 287, 44);
             segName.segmentedControlStyle = UISegmentedControlStylePlain;
             segName.momentary = NO;
-            segName.selectedSegmentIndex = 0;
+            segName.selectedSegmentIndex = 1;
+            segName.tag = 2001;
             [segName addTarget:self action:@selector(otherAdvancePressed:)
               forControlEvents:UIControlEventValueChanged];
             [self.view addSubview:segName];
@@ -123,7 +122,11 @@
             segName.frame = CGRectMake(342, 363-45, 287, 44);
             segName.segmentedControlStyle = UISegmentedControlStylePlain;
             segName.momentary = NO;
-            segName.selectedSegmentIndex = 0;
+            if (advanceYearlyIncome == 75) {
+                segName.selectedSegmentIndex = 0;
+            } else if (advanceYearlyIncome == 0) {
+                segName.selectedSegmentIndex = 1;
+            }
             [segName addTarget:self action:@selector(otherAdvancePressed:)
               forControlEvents:UIControlEventValueChanged];
             [self.view addSubview:segName];
@@ -131,41 +134,6 @@
         }
     }
 }
-/*
--(void)loadView
-{
-    if (ageClient > 50 && ageClient <=65)
-    {
-        UISegmentedControl *segName = [[UISegmentedControl alloc] init];
-        
-        if (newSegment) {
-            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
-            segName = [[UISegmentedControl alloc] initWithItems:buttons];
-            [self setAdvanceIncomeSegment:segName];
-            segName.frame = CGRectMake(342, 363, 287, 44);
-            segName.segmentedControlStyle = UISegmentedControlStylePlain;
-            segName.momentary = NO;
-            segName.selectedSegmentIndex = 0;
-            [segName addTarget:self action:@selector(otherAdvancePressed:)
-              forControlEvents:UIControlEventValueChanged];
-            [self.view addSubview:segName];
-            NSLog(@"segment default");
-        }
-        else {
-            NSArray *buttons = [NSArray arrayWithObjects:@"No", @"75", nil];
-            segName = [[UISegmentedControl alloc] initWithItems:buttons];
-            [self setAdvanceIncomeSegment:segName];
-            segName.frame = CGRectMake(342, 363-45, 287, 44);
-            segName.segmentedControlStyle = UISegmentedControlStylePlain;
-            segName.momentary = NO;
-            segName.selectedSegmentIndex = 0;
-            [segName addTarget:self action:@selector(otherAdvancePressed:)
-              forControlEvents:UIControlEventValueChanged];
-            [self.view addSubview:segName];
-            NSLog(@"segment keyboard");
-        }
-    }
-}*/
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -175,7 +143,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self toggleSegment];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -190,6 +157,7 @@
 {
 	[super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    newSegment = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -203,6 +171,7 @@
     self.myScrollView.contentSize = CGSizeMake(1024, 704);
     
     newSegment = NO;
+    [[self.view viewWithTag:2001] removeFromSuperview];
     [self toggleSegment];
     
     CGRect textFieldRect = [activeField frame];
@@ -650,12 +619,20 @@
         cashDividendSegment.selectedSegmentIndex = 1;
     }
     
-    if (advanceYearlyIncome == 60) {
-        advanceIncomeSegment.selectedSegmentIndex = 0;
-    } else if (advanceYearlyIncome == 75) {
-        advanceIncomeSegment.selectedSegmentIndex = 1;
-    } else if (advanceYearlyIncome == 0) {
-        advanceIncomeSegment.selectedSegmentIndex = 2;
+    if (ageClient > 50 && ageClient <=65) {
+        if (advanceYearlyIncome == 75) {
+            advanceIncomeSegment.selectedSegmentIndex = 0;
+        } else if (advanceYearlyIncome == 0) {
+            advanceIncomeSegment.selectedSegmentIndex = 1;
+        }
+    } else {
+        if (advanceYearlyIncome == 60) {
+            advanceIncomeSegment.selectedSegmentIndex = 0;
+        } else if (advanceYearlyIncome == 75) {
+            advanceIncomeSegment.selectedSegmentIndex = 1;
+        } else if (advanceYearlyIncome == 0) {
+            advanceIncomeSegment.selectedSegmentIndex = 2;
+        }
     }
     
     if (getHL.length != 0) {
@@ -842,7 +819,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET PolicyTerm=\"%@\", BasicSA=\"%@\", PremiumPaymentOption=\"%d\", CashDividend=\"%@\", YearlyIncome=\"%@\", AdvanceYearlyIncome=\"%d\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", TempHL1KSA=\"%@\", TempHL1KSATerm=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome,advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")", SINoPlan];
-//        NSLog(@"%@",querySQL);
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)

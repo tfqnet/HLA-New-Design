@@ -125,35 +125,6 @@
                     [previousViewController.view removeFromSuperview];
                     [previousViewController removeFromParentViewController];
                 }
-                
-                /*
-                SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
-                menuSIPage.menuBH = [[BasicPlanHandler alloc] init];
-                menuSIPage.menuH = [[SIHandler alloc] init];
-                
-                NewLAViewController *newLA = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
-                newLA.laBH = [[BasicPlanHandler alloc] init];
-                newLA.laH = [[SIHandler alloc] init];
-                
-                SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-                secondLA.la2ndBH = [[BasicPlanHandler alloc] init];
-                secondLA.la2ndH = [[SIHandler alloc] init];
-                
-                PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
-                payorView.payorBH = [[BasicPlanHandler alloc] init];
-                payorView.payorH = [[SIHandler alloc] init];
-                
-                BasicPlanViewController *basic = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
-                basic.basicH = [[SIHandler alloc] init];
-                
-                RiderViewController *rider = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
-                rider.riderBH = [[BasicPlanHandler alloc] init];
-                rider.riderH = [[SIHandler alloc] init];
-                
-                PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-                premView.premBH = [[BasicPlanHandler alloc] init];
-                premView.premH = [[SIHandler alloc] init];
-                */
             }
         
             [self addChildViewController:selectedViewController];

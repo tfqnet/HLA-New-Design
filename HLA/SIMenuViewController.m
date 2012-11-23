@@ -89,11 +89,19 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-  
-//    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-//    main.mainBH = nil;
-//    main.mainH = nil;
-
+    NSLog(@"menu disappear!");
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    main.mainBH = nil;
+    main.mainH = nil;
+    self.menuBH = nil;
+    self.menuH = nil;
+    LAEmpty = YES;
+    PlanEmpty = YES;
+    [SelectedRow addObject:@"1" ];
+    [SelectedRow addObject:@"2" ];
+    [SelectedRow addObject:@"4" ];
+    [SelectedRow addObject:@"5" ];
+    [SelectedRow addObject:@"6" ];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -126,7 +134,7 @@
     else {
         [SelectedRow removeObject:@"4"];
         [SelectedRow removeObject:@"5"];
-          NSLog(@"Plan not empty");
+//          NSLog(@"Plan not empty");
     }
     
     if ([SIshowQuotation isEqualToString:@"NO"] || SIshowQuotation == NULL ) {
@@ -394,7 +402,6 @@
                         "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
                         "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
             
-            
             if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
                 if (sqlite3_step(statement) == SQLITE_ROW)
@@ -411,8 +418,6 @@
         }
         
         if (cont == TRUE) {
-            
-            
             
             UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
             spinner.center = CGPointMake(500, 350);
@@ -448,17 +453,12 @@
                         [container setNavigationBarHidden:YES animated:NO];
                         [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
                         
-                        
-                        
                         [self presentModalViewController:container animated:NO];
                         */
-                        
                         
                     }];
                      
                 }];
-                
-                
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [spinner stopAnimating];
@@ -473,8 +473,6 @@
                     [container setNavigationBarHidden:YES animated:NO];
                     [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
                     
-                    
-                    
                     [self presentModalViewController:container animated:YES];
                     
                    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
@@ -484,20 +482,12 @@
                 
             });
             //dispatch_release(downloadQueue);
-             
-            
-            
-             
-            
-            
-            
         }
         else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                           message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
             [alert show];
         }
-        
     }
     
     [tableView reloadData];
@@ -545,6 +535,8 @@
     [self setPayorSINo:nil];
     [self setCustCode2:nil];
     [self setGetbasicSA:nil];
+    [self setMenuBH:nil];
+    [self setMenuH:nil];
     [super viewDidUnload];
 }
 

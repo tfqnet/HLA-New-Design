@@ -876,14 +876,18 @@
                     if (age < 16) {
                         [self checking2ndLA];
                         if (CustCode2.length != 0) {
-                            [self delete2ndLA];
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured's details will be deleted due to life Assured age is less than 16" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                            [alert setTag:1002];
+                            [alert show];
                         }
                     }
                     
                     if (age > 18) {
                         [self checkingPayor];
                         if (payorSINo.length != 0) {
-                            [self deletePayor];
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor's details will be deleted due to life Assured age is greater or equal to 18" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                            [alert setTag:1003];
+                            [alert show];
                         }
                     }
                 }
