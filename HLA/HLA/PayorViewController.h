@@ -63,7 +63,6 @@
 @property(nonatomic , retain) NSString *GenderPP;
 @property(nonatomic , retain) NSString *OccpCodePP;
 
-- (IBAction)doClosePayor:(id)sender;
 - (IBAction)doSelectProspect:(id)sender;
 - (IBAction)sexSegmentChange:(id)sender;
 - (IBAction)smokerSegmentChange:(id)sender;

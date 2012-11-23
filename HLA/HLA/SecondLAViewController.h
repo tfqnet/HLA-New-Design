@@ -66,7 +66,6 @@
 - (IBAction)doSelectProspect:(id)sender;
 - (IBAction)sexSegmentChange:(id)sender;
 - (IBAction)smokerSegmentChange:(id)sender;
-- (IBAction)doCloseView:(id)sender;
 - (IBAction)doSave:(id)sender;
 - (IBAction)doDelete:(id)sender;
 

@@ -111,7 +111,6 @@
 - (IBAction)smokerSegmentPressed:(id)sender;
 - (IBAction)doSaveLA:(id)sender;
 - (IBAction)selectProspect:(id)sender;
-- (IBAction)goBack:(id)sender;
 - (IBAction)btnCommDatePressed:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;

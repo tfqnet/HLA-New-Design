@@ -78,7 +78,6 @@
 - (IBAction)incomeSegmentPressed:(id)sender;
 - (IBAction)advanceIncomeSegmentPressed:(id)sender;
 - (IBAction)cashDividendSegmentPressed:(id)sender;
-- (IBAction)goBack:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

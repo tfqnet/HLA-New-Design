@@ -337,37 +337,6 @@
     }
 }
 
-- (IBAction)goBack:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if (dataInsert.count != 0) {
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            BasicPlanHandler *ss = [dataInsert objectAtIndex:i];
-            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            main.modalPresentationStyle = UIModalPresentationFullScreen;
-            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainH = basicH;
-            main.mainBH = ss;
-            main.IndexTab = 3;
-            main.showQuotation = @"NO";
-            [self presentViewController:main animated:YES completion:nil];
-        }
-    } else {
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.mainH = basicH;
-        main.IndexTab = 3;
-        [self presentViewController:main animated:YES completion:nil];
-    }
-}
-
 - (IBAction)doSavePlan:(id)sender
 {
     [self resignFirstResponder];

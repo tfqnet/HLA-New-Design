@@ -205,17 +205,6 @@
     }
 }
 
-- (IBAction)doCloseView:(id)sender
-{
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.modalPresentationStyle = UIModalPresentationFullScreen;
-    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.IndexTab = 3;
-    main.mainH = la2ndH;
-    main.mainBH = la2ndBH;
-    [self presentModalViewController:main animated:YES];
-}
-
 - (IBAction)doSave:(id)sender
 {
 //    NSLog(@"smoker:%@",smoker);
@@ -236,6 +225,10 @@
     }
     else if (smoker.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if (age <= 16) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else {
@@ -283,6 +276,7 @@
         OccpLoadField.text = @"";
         CPAField.text = @"";
         PAField.text = @"";
+        [self closeScreen];
     }
     else if (alertView.tag==1004 && buttonIndex == 0) {
         
@@ -349,23 +343,19 @@
         msgAge = [[NSString alloc] initWithFormat:@"%d",newALB];
         age = newALB;
         ANB = newANB;
+        
+        if (age < 16) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        }
     }
     else if (yearN == yearB)
     {
-        if (monthN > monthB) {
-            newALB = monthN - monthB;
-            msgAge = [[NSString alloc] initWithFormat:@"%d months",newALB];
-            
-        } else if (monthN == monthB && dayB<dayN) {
-            newALB = dayN - dayB;
-            msgAge = [[NSString alloc] initWithFormat:@"%d days",newALB];
-            if (newALB < 30) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-            }
-        }
         age = 0;
         ANB = 1;
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
     }
     NSLog(@"msgAge:%@",msgAge);
 }

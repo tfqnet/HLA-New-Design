@@ -173,17 +173,6 @@
 
 #pragma mark - action
 
-- (IBAction)doClosePayor:(id)sender 
-{
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.modalPresentationStyle = UIModalPresentationFullScreen;
-    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.IndexTab = 3;
-    main.mainH = payorH;
-    main.mainBH = payorBH;
-    [self presentModalViewController:main animated:YES];
-}
-
 - (IBAction)doSelectProspect:(id)sender
 {
     if (_ProspectList == nil) {
@@ -237,7 +226,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
-    else if (age <= 0) {
+    else if (age <= 16) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
@@ -286,6 +275,7 @@
         occpLoadField.text = @"";
         CPAField.text = @"";
         PAField.text = @"";
+        [self closeScreen];
     }
     else if (alertView.tag==2003 && buttonIndex == 0) {
         

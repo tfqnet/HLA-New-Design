@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
     <dependencies>
-        <deployment defaultVersion="1296" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
         <!--First Time View Controller-->
@@ -3339,13 +3339,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Back" id="l9h-Yq-hfO">
-                                        <connections>
-                                            <action selector="goBack:" destination="deM-cN-3fE" id="M7j-Oy-9Qv"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem width="606" style="plain" systemItem="fixedSpace" id="Gpy-4t-p09"/>
-                                    <barButtonItem title="Save" id="dmj-fR-NIE">
+                                    <barButtonItem width="637" style="plain" systemItem="fixedSpace" id="Gpy-4t-p09"/>
+                                    <barButtonItem title="Done" id="dmj-fR-NIE">
                                         <connections>
                                             <action selector="doSaveLA:" destination="deM-cN-3fE" id="Nxm-lW-44e"/>
                                         </connections>
@@ -3632,13 +3627,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Back" id="hVd-6R-DGe">
-                                        <connections>
-                                            <action selector="goBack:" destination="tj9-Su-5O4" id="cou-qD-d5O"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem width="596" style="plain" systemItem="fixedSpace" id="Qh0-e0-Cys"/>
-                                    <barButtonItem title="Save" id="NbK-L1-k9O">
+                                    <barButtonItem width="634" style="plain" systemItem="fixedSpace" id="Qh0-e0-Cys"/>
+                                    <barButtonItem title="Done" id="NbK-L1-k9O">
                                         <connections>
                                             <action selector="doSavePlan:" destination="tj9-Su-5O4" id="2sN-Y6-rjy"/>
                                         </connections>
@@ -3691,7 +3681,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select to Add/Edit/Delete :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="SfK-6C-esV">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select Rider :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="SfK-6C-esV">
                                 <rect key="frame" x="20" y="153" width="264" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
@@ -3947,7 +3937,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Back" id="68z-26-Sr6">
+                                    <barButtonItem title="Close" id="68z-26-Sr6">
                                         <connections>
                                             <action selector="goBack:" destination="K0R-bN-fny" id="oF1-EL-LlR"/>
                                         </connections>
@@ -4241,13 +4231,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Back" id="llO-f6-OGG">
-                                        <connections>
-                                            <action selector="doClosePayor:" destination="j7k-dN-13W" id="sx1-Ob-XcD"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem width="599" style="plain" systemItem="fixedSpace" id="mT0-bS-suS"/>
-                                    <barButtonItem title="Save" id="Ppm-TX-Wib">
+                                    <barButtonItem width="630" style="plain" systemItem="fixedSpace" id="mT0-bS-suS"/>
+                                    <barButtonItem title="Done" id="Ppm-TX-Wib">
                                         <connections>
                                             <action selector="doSave:" destination="j7k-dN-13W" id="F8Y-in-cUW"/>
                                         </connections>
@@ -4455,13 +4440,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Back" id="mZy-hC-Knu">
-                                        <connections>
-                                            <action selector="doCloseView:" destination="rlg-OJ-3hy" id="lM3-Wc-es8"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem width="586" style="plain" systemItem="fixedSpace" id="FKC-Te-a5H"/>
-                                    <barButtonItem title="Save" id="gdm-0R-7Cj">
+                                    <barButtonItem width="616" style="plain" systemItem="fixedSpace" id="FKC-Te-a5H"/>
+                                    <barButtonItem title="Done" id="gdm-0R-7Cj">
                                         <connections>
                                             <action selector="doSave:" destination="rlg-OJ-3hy" id="5Mm-kz-Q1A"/>
                                         </connections>
@@ -4773,7 +4753,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <relationship kind="action" name="btnShowHealthLoadingPressed:"/>
                 <relationship kind="action" name="cashDividendSegmentPressed:"/>
                 <relationship kind="action" name="doSavePlan:"/>
-                <relationship kind="action" name="goBack:"/>
                 <relationship kind="action" name="incomeSegmentPressed:"/>
                 <relationship kind="outlet" name="HLField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="HLTermField" candidateClass="UITextField"/>
@@ -4947,7 +4926,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <relationships>
                 <relationship kind="action" name="btnCommDatePressed:"/>
                 <relationship kind="action" name="doSaveLA:"/>
-                <relationship kind="action" name="goBack:"/>
                 <relationship kind="action" name="selectProspect:"/>
                 <relationship kind="action" name="sexSegmentPressed:"/>
                 <relationship kind="action" name="smokerSegmentPressed:"/>
@@ -4974,7 +4952,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <class className="PayorViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/PayorViewController.h"/>
             <relationships>
-                <relationship kind="action" name="doClosePayor:"/>
                 <relationship kind="action" name="doDelete:"/>
                 <relationship kind="action" name="doSave:"/>
                 <relationship kind="action" name="doSelectProspect:"/>
@@ -5168,7 +5145,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <class className="SecondLAViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SecondLAViewController.h"/>
             <relationships>
-                <relationship kind="action" name="doCloseView:"/>
                 <relationship kind="action" name="doDelete:"/>
                 <relationship kind="action" name="doSave:"/>
                 <relationship kind="action" name="doSelectProspect:"/>

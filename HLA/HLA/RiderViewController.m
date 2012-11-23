@@ -599,7 +599,7 @@
     double BasicHalfYear_ = [[BasicHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicQuarterly_ = [[BasicQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicMonthly_ = [[BasicMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"Basic A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_BasicAnnually,_BasicHalfYear,_BasicQuarterly,_BasicQuarterly);
+//    NSLog(@"Basic A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_BasicAnnually,_BasicHalfYear,_BasicQuarterly,_BasicQuarterly);
     
     //calculate occupationLoading
     double _OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 1;
@@ -614,7 +614,7 @@
     double OccpLoadH_ = [[OccpLoadH stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double OccpLoadQ_ = [[OccpLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double OccpLoadM_ = [[OccpLoadM stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"OccpLoad A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_OccpLoadA,_OccpLoadH,_OccpLoadQ,_OccpLoadM);
+//    NSLog(@"OccpLoad A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_OccpLoadA,_OccpLoadH,_OccpLoadQ,_OccpLoadM);
     
     //calculate basic health loading
     double _BasicHLAnnually = BasicHLoad * (BasicSA/1000) * 1;
@@ -629,7 +629,7 @@
     double BasicHLHalfYear_ = [[BasicHLHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLQuarterly_ = [[BasicHLQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLMonthly_ = [[BasicHLMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"BasicHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_BasicHLAnnually,_BasicHLHalfYear,_BasicHLQuarterly,_BasicHLMonthly);
+//    NSLog(@"BasicHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_BasicHLAnnually,_BasicHLHalfYear,_BasicHLQuarterly,_BasicHLMonthly);
     
     //calculate LSD
     double _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
@@ -655,7 +655,7 @@
     double LSDMonthly_ = [[LSDMonthly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
 //    NSLog(@"LSD A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_LSDAnnually,_LSDHalfYear,_LSDQuarterly,_LSDMonthly);
 //    NSLog(@"LSD A:%@, S:%@, Q:%@, M:%@",LSDAnnually2,LSDHalfYear2,LSDQuarterly2,LSDMonthly2);
-    NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
+//    NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
     
     //calculate Total basic premium
     double _basicTotalA;
@@ -721,7 +721,6 @@
     [formatter setCurrencySymbol:@""];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
 
-    
     NSUInteger i;
     for (i=0; i<[LRiderCode count]; i++) {
         
@@ -880,7 +879,7 @@
         double RiderHLHalfYear = riderHLoad * (BasicSA/1000) * halfFac;
         double RiderHLQuarterly = riderHLoad * (BasicSA/1000) * quarterFac;
         double RiderHLMonthly = riderHLoad * (BasicSA/1000) * monthFac;
-        NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
+//        NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
         
         double annualRider;
         double halfYearRider;
@@ -893,7 +892,6 @@
             halfYearRider = (riderRate *ridSA /100 *halfFac) + (RiderHLHalfYear /10 *ridSA /100 *halfFac) + (fsar /1000 *OccpLoadH *halfFac);
             quarterRider = (riderRate *ridSA /100 *quarterFac) + (RiderHLQuarterly /10 *ridSA /100 *quarterFac) + (fsar /1000 *OccpLoadQ *quarterFac);
             monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac) + (fsar /1000 *OccpLoadM *monthFac);
-
         }
         else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
         {
@@ -923,7 +921,6 @@
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
-            
         }
         else if ([RidCode isEqualToString:@"ID30R"])
         {
@@ -935,7 +932,6 @@
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
-            
         }
         else if ([RidCode isEqualToString:@"ID40R"])
         {
@@ -1003,7 +999,7 @@
             [waiverRiderHalf addObject:calRiderHalf];
             [waiverRiderQuar addObject:calRiderQuarter];
             [waiverRiderMonth addObject:calRiderMonth];
-            NSLog(@"waiver1 insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+//            NSLog(@"waiver1 insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
         }
         
         //for other waiver
@@ -1013,7 +1009,7 @@
             [waiverRiderHalf2 addObject:calRiderHalf];
             [waiverRiderQuar2 addObject:calRiderQuarter];
             [waiverRiderMonth2 addObject:calRiderMonth];
-            NSLog(@"waiver2 insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+//            NSLog(@"waiver2 insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
         }
         
         //for medical rider
@@ -1088,7 +1084,7 @@
             NSString *ridSumA = [NSString stringWithFormat:@"%.2f",ridSA];
             [incomeRiderGYI addObject:gyi];
             [incomeRiderSA addObject:ridSumA];
-            NSLog(@"GYI:%@, SA:%@",gyi,ridSumA);
+            NSLog(@"GYI(%@):%@, SA:%@",RidCode,gyi,ridSumA);
             
             //get CSV rate
             [self getRiderCSV:RidCode];
@@ -1200,7 +1196,7 @@
             } else if ([LRidHLP count] != 0) {
                 riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
             }
-            NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",RidCode,riderRate,ridSA,riderHLoad);
+            NSLog(@"waiverRate(%@):%.2f, waiverSum:%.3f, HL:%.3f",RidCode,riderRate,ridSA,riderHLoad);
         
             double annFac = 1;
             double halfFac = 0.5125;
@@ -1212,14 +1208,14 @@
             double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
             double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
             double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
-            NSLog(@"RiderOccpL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
+//            NSLog(@"RiderOccpL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
         
             //calculate rider health loading
             double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * annFac;
             double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * halfFac;
             double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * quarterFac;
             double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * monthFac;
-            NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
+//            NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
         
             double annualRider;
             double halfYearRider;
@@ -1231,13 +1227,13 @@
                 double waiverHalfPrem = ridSA/100 * (waiverHalfSum+basicPremHalf) *2;
                 double waiverQuarPrem = ridSA/100 * (waiverQuarSum+basicPremQuar) *4;
                 double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPremMonth) *12;
-                NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+//                NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
                 double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
                 double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
                 double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
                 double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
-                NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
+//                NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
                 annualRider = annualRider_ * annFac;
                 halfYearRider = halfYearRider_ * halfFac;
@@ -1250,13 +1246,13 @@
                 double waiverHalfPrem = ridSA/100 * (waiverHalfSum2+basicPremHalf) *2;
                 double waiverQuarPrem = ridSA/100 * (waiverQuarSum2+basicPremQuar) *4;
                 double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
-                NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+//                NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
                 double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
                 double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
                 double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
                 double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
-                NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
+//                NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
                 annualRider = annualRider_ * annFac;
                 halfYearRider = halfYearRider_ * halfFac;
@@ -1287,7 +1283,7 @@
             halfRiderSum = halfRiderSum + [[waiverRidHalfTol objectAtIndex:a] doubleValue];
             quarterRiderSum = quarterRiderSum + [[waiverRidQuarTol objectAtIndex:a] doubleValue];
             monthRiderSum = monthRiderSum + [[waiverRidMonthTol objectAtIndex:a] doubleValue];
-            NSLog(@"allWaiverSum A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRiderSum,halfRiderSum,quarterRiderSum,monthRiderSum);
+            NSLog(@"allRiderSum A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRiderSum,halfRiderSum,quarterRiderSum,monthRiderSum);
         }
         riderPrem = annualRiderSum;
         double totalPrem = riderPrem + basicPremAnn;
@@ -1402,8 +1398,8 @@
     double RiderHLHalfYear = riderHLoad * (BasicSA/1000) * halfFac;
     double RiderHLQuarterly = riderHLoad * (BasicSA/1000) * quarterFac;
     double RiderHLMonthly = riderHLoad * (BasicSA/1000) * monthFac;
-    NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
-        
+//    NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
+    
     double annualRider;
     double halfYearRider;
     double quarterRider;
@@ -1759,7 +1755,7 @@
         msg = [NSString stringWithFormat:@"Delete Rider:%@",[LRiderCode objectAtIndex:value]];
     }
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
     [alert setTag:1001];
     [alert show];
 }
@@ -2139,8 +2135,10 @@
 
 -(void)MHIGuideLines
 {
-    double totalPrem = basicPremAnn + riderPrem;
-    double medicDouble = medRiderPrem * 2;
+    double totalPrem;
+    double medicDouble;
+    totalPrem = basicPremAnn + riderPrem;
+    medicDouble = medRiderPrem * 2;
     NSLog(@"totalPrem:%.2f ,medicDouble:%.2f",totalPrem,medicDouble);
     if (medicDouble > totalPrem) {
         double minus = totalPrem - medRiderPrem;
@@ -2148,7 +2146,7 @@
             
             double varSA = medRiderPrem/minus * requestBasicSA + 0.5;
             NSString *newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
-            NSLog(@":UPDATE newBasicSA:%@",newBasicSA);
+            NSLog(@":1-UPDATE newBasicSA:%@",newBasicSA);
             requestBasicSA = varSA;
             /*
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
@@ -2191,12 +2189,12 @@
                     
                     double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                     double RiderSA = (medRiderPrem/minus) * riderSA;
+                    NSLog(@"newRiderSA:%.2f",RiderSA);
                     if (riderSA > 0)
                     {
                         if (RiderSA > maxRiderSA)
                         {
-                            NSLog(@":UPDATE newRiderSA(%@):%.2f",riderCode,RiderSA);
-                            //update riderSA
+                            NSLog(@":1-UPDATE newRiderSA(%@):%.2f",riderCode,RiderSA);
                             sqlite3_stmt *statement;
                             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
                             {
@@ -2235,7 +2233,7 @@
                 if (minus > 0) {
                     varSA = medRiderPrem/minus * requestBasicSA + 0.5;
                     newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
-                    NSLog(@":UPDATE newBasicSA2:%@",newBasicSA);
+                    NSLog(@":2-UPDATE newBasicSA:%@",newBasicSA);
                     requestBasicSA = varSA;
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
@@ -2278,11 +2276,12 @@
                             
                             double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                             double RiderSA = (medRiderPrem/minus) * riderSA;
+                            NSLog(@"newRiderSA:%.2f",RiderSA);
                             if (riderSA > 0)
                             {
                                 if (RiderSA > maxRiderSA)
                                 {
-                                    NSLog(@":UPDATE newRiderSA2(%@):%.2f",riderCode,RiderSA);
+                                    NSLog(@":2-UPDATE newRiderSA(%@):%.2f",riderCode,RiderSA);
                                     //update riderSA
                                     sqlite3_stmt *statement;
                                     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -3613,15 +3612,15 @@
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
     
-    [[cell.contentView viewWithTag:1001] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1002] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1003] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1004] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1005] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1006] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1007] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1008] removeFromSuperview ];
-    [[cell.contentView viewWithTag:1009] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2001] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2002] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2003] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2004] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2005] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2006] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2007] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2008] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2009] removeFromSuperview ];
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
@@ -3630,7 +3629,7 @@
     label1.frame=frame;
     label1.text= [LRiderCode objectAtIndex:indexPath.row];
     label1.textAlignment = UITextAlignmentCenter;
-    label1.tag = 1001;
+    label1.tag = 2001;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
     
@@ -3640,7 +3639,7 @@
     NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LSumAssured objectAtIndex:indexPath.row] doubleValue]]];
     label2.text= num;
     label2.textAlignment = UITextAlignmentCenter;
-    label2.tag = 1002;
+    label2.tag = 2002;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
@@ -3649,7 +3648,7 @@
     label3.frame=frame3;
     label3.text= [LTerm objectAtIndex:indexPath.row];
     label3.textAlignment = UITextAlignmentCenter;
-    label3.tag = 1003;
+    label3.tag = 2003;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
     
@@ -3658,7 +3657,7 @@
     label4.frame=frame4;
     label4.text= [LUnits objectAtIndex:indexPath.row];
     label4.textAlignment = UITextAlignmentCenter;
-    label4.tag = 1004;
+    label4.tag = 2004;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
     
@@ -3667,7 +3666,7 @@
     label5.frame=frame5;
     label5.text= [NSString stringWithFormat:@"%d",occClass];
     label5.textAlignment = UITextAlignmentCenter;
-    label5.tag = 1005;
+    label5.tag = 2005;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label5];
     
@@ -3680,7 +3679,7 @@
         label6.text= [NSString stringWithFormat:@"%d",occLoad];
     }
     label6.textAlignment = UITextAlignmentCenter;
-    label6.tag = 1006;
+    label6.tag = 2006;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label6];
     
@@ -3695,7 +3694,7 @@
     }
     label7.text= hl1k;
     label7.textAlignment = UITextAlignmentCenter;
-    label7.tag = 1007;
+    label7.tag = 2007;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label7];
     
@@ -3710,7 +3709,7 @@
     }
     label8.text= hl100;
     label8.textAlignment = UITextAlignmentCenter;
-    label8.tag = 1008;
+    label8.tag = 2008;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label8];
     
@@ -3725,7 +3724,7 @@
     }
     label9.text=hlp;
     label9.textAlignment = UITextAlignmentCenter;
-    label9.tag = 1009;
+    label9.tag = 2009;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label9];
     

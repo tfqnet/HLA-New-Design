@@ -365,48 +365,6 @@
     [self.prospectPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
-- (IBAction)goBack:(id)sender
-{
-    if (dataInsert.count != 0 && dataInsert2.count == 0) {
-        
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            SIHandler *ss = [dataInsert objectAtIndex:i];
-            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            main.modalPresentationStyle = UIModalPresentationFullScreen;
-            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainH = ss;
-            main.mainBH = laBH;
-            main.IndexTab = 3;
-            [self presentViewController:main animated:NO completion:nil];
-        }
-    }
-    else if (dataInsert.count != 0 && dataInsert2.count != 0) {
-        
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            SIHandler *ss = [dataInsert objectAtIndex:i];
-            main.mainH = ss;
-        }
-        for (NSUInteger i=0; i< dataInsert2.count; i++) {
-            BasicPlanHandler *pp = [dataInsert2 objectAtIndex:i];
-            main.mainBH = pp;
-        }
-        
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.IndexTab = 3;
-        [self presentViewController:main animated:NO completion:nil];
-    }
-    else {
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.IndexTab = 3;
-        [self presentViewController:main animated:NO completion:nil];
-
-    }
-}
-
 - (IBAction)btnCommDatePressed:(id)sender
 {
     if(![popOverController isPopoverVisible]) {
