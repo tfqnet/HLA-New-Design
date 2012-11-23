@@ -10,10 +10,12 @@
 #import <sqlite3.h>
 #import "SIHandler.h"
 #import "BasicPlanHandler.h"
+#import "BrowserViewController.h"
 
-@interface PremiumViewController : UIViewController {
+@interface PremiumViewController : UIViewController<BrowserDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
+     BrowserViewController *_Browser;
 }
 
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
@@ -89,5 +91,7 @@
 - (IBAction)doClose:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *doGenerate;
 - (IBAction)btnGenerate:(id)sender;
+- (IBAction)btnQuotation:(id)sender;
+@property (nonatomic, retain) BrowserViewController *Browser;
 
 @end

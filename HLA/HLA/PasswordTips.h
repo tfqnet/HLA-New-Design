@@ -16,7 +16,7 @@
     id<PasswordTipDelegate> _delegate;
 }
 @property (nonatomic, strong) id<PasswordTipDelegate> delegate;
-- (IBAction)btnClose:(id)sender;
+- (IBAction)BarButtonClose:(id)sender;
 
 
 

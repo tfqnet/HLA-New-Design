@@ -28,7 +28,7 @@
 @synthesize premBH,premH,age,riderSex,sex,waiverRiderAnn,waiverRiderHalf,waiverRiderQuar,waiverRiderMonth;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar;
 @synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2;
-
+@synthesize Browser = _Browser;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -67,6 +67,8 @@
     [self calculatePremium];
     doGenerate.hidden = TRUE;
     
+    
+    
     /*
     //----- meng chiong part --------
     if (IsAtLeastiOSVersion(@"6.0")){
@@ -91,6 +93,8 @@
 {
 	return YES;
 }
+
+
 
 - (IBAction)doClose:(id)sender
 {
@@ -1412,6 +1416,98 @@
     }];
 }
 
+- (IBAction)btnQuotation:(id)sender {
+    if (_Browser == Nil) {
+        self.Browser = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
+        _Browser.delegate = self;
+    }
+    
+    sqlite3_stmt *statement;
+    BOOL cont = FALSE;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {  
+        // NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
+        
+        NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
+                              "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
+                              "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+                              "A.sino = \"%@\" AND \"seq\" = 1 ", requestSINo];
+        
+        if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                cont = TRUE;
+                
+            } else {
+                cont = FALSE;
+                NSLog(@"error access SI_Store_Premium");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+    if (cont == TRUE) {
+        
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.center = CGPointMake(400, 350);
+        
+        spinner.hidesWhenStopped = YES;
+        [self.view addSubview:spinner];
+        UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+        spinnerLabel.text  = @" Please Wait...";
+        spinnerLabel.backgroundColor = [UIColor blackColor];
+        spinnerLabel.opaque = YES;
+        spinnerLabel.textColor = [UIColor whiteColor];
+        [self.view addSubview:spinnerLabel];
+        [spinner startAnimating];
+        
+        
+        //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+            //dispatch_async(downloadQueue, ^{
+            
+            ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+            ReportPage.SINo = requestSINo;
+            [self presentViewController:ReportPage animated:NO completion:Nil];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [spinner stopAnimating];
+                spinnerLabel.text = @"";
+                
+                [ReportPage dismissViewControllerAnimated:NO completion:Nil];
+                BrowserViewController *controller = [[BrowserViewController alloc] init];
+                controller.title = @"Quotation";
+                
+                _Browser.title = @"Quotation";
+                _Browser.premH = premH;
+                _Browser.premBH = premBH;
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_Browser];
+                UINavigationController *container = [[UINavigationController alloc] init];
+                [container setNavigationBarHidden:YES animated:NO];
+                [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+                
+                [self presentModalViewController:container animated:YES];
+                
+                
+                
+                UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+                [v removeFromSuperview];
+            });
+            
+            
+        });
+        
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+        [alert show];
+    }
+    
+}
+
 -(void)deleteSIStorePremium{
     sqlite3_stmt *statement;
     
@@ -1422,12 +1518,16 @@
                 
             }
             
+            sqlite3_finalize(statement);
         }
             
-    
+        sqlite3_close(contactDB);
     }    
     
-    
-    
+}
+
+-(void)CloseWindow{
+    NSLog(@"received");
+    [self dismissModalViewControllerAnimated:YES];
 }
 @end

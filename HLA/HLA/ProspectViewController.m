@@ -21,6 +21,8 @@
 @synthesize txtPrefix3;
 @synthesize txtPrefix4;
 @synthesize txtPrefix5;
+@synthesize lblOfficeAddr;
+@synthesize lblPostCode;
 @synthesize outletType1;
 @synthesize pickerToolbar;
 @synthesize outletContactType;
@@ -80,7 +82,7 @@ bool PostcodeContinue = TRUE;
 {
     [super viewDidLoad];
 	
-    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"ipad_bg_4.jpg"]];
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg8.jpg"]];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -224,6 +226,8 @@ bool PostcodeContinue = TRUE;
     [self setTxtPrefix3:nil];
     [self setTxtPrefix4:nil];
     [self setTxtPrefix5:nil];
+    [self setLblOfficeAddr:nil];
+    [self setLblPostCode:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -1216,6 +1220,14 @@ PostcodeContinue = TRUE;
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
     OccupCodeSelected = OccupCode;
+    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"]) {
+        lblOfficeAddr.text = @"Office Address";
+        lblPostCode.text = @"Postcode";
+    }
+    else {
+        lblOfficeAddr.text = @"Office Address*";
+        lblPostCode.text = @"Postcode*";
+    }
     
 }
 

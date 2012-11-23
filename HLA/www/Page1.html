@@ -176,6 +176,9 @@ $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'
     }
 
     function formatCurrency(num) {
+        if(num == '-'){
+            return ('-');
+        }
         num = num.toString().replace(/\$|\,/g, '');
         if (isNaN(num)) num = "0";
         sign = (num == (num = Math.abs(num)));

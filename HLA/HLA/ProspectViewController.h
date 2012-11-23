@@ -106,6 +106,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtPrefix3;
 @property (weak, nonatomic) IBOutlet UITextField *txtPrefix4;
 @property (weak, nonatomic) IBOutlet UITextField *txtPrefix5;
+@property (weak, nonatomic) IBOutlet UILabel *lblOfficeAddr;
+@property (weak, nonatomic) IBOutlet UILabel *lblPostCode;
 
 
 @end

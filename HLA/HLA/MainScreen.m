@@ -64,11 +64,11 @@
     */
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect\nListing" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
+    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];
     
     SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
-    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
+    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:SIListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     

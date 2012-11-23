@@ -47,6 +47,32 @@
         //calcTotal();
     }
 
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+    
+    function CurrencyNoCents(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = num.toString();
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+
+    
     function ListDBValues() {
         
         if (!window.openDatabase) {
@@ -60,7 +86,7 @@
                     var row;
                     for (var i = 0; i < result.rows.length; i++) {
                         var row = result.rows.item(i);
-                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + row.col3 + '</td><td>' + row.col4 + '</td><td>' + row.col5 + '</td><td>' + row.col6 + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + row.col10 + '</td><td>' + row.col11+ '</td></tr>');
+                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + row.col2 + '</td><td>' + CurrencyNoCents(row.col3) + '</td><td>' + CurrencyNoCents(row.col4) + '</td><td>' + CurrencyNoCents(row.col5) + '</td><td>' + CurrencyNoCents(row.col6) + '</td><td>' + CurrencyNoCents(row.col7) + '</td><td>' + CurrencyNoCents(row.col8) + '</td><td>' + CurrencyNoCents(row.col9) + '</td><td>' + CurrencyNoCents(row.col10) + '</td><td>' + CurrencyNoCents(row.col11) + '</td></tr>');
                     }
                 }
             },errorHandler);

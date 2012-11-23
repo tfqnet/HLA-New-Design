@@ -11,6 +11,8 @@
 #import "UINavigationItem+JTRevealSidebarV2.h"
 #import "SidebarViewController.h"
 #import "JTRevealSidebarV2Delegate.h"
+#import "MainScreen.h"
+
 
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
 #import <QuartzCore/QuartzCore.h>
@@ -21,6 +23,8 @@
 
 @implementation BrowserViewController
 @synthesize leftSelectedIndexPath, leftSidebarViewController;
+@synthesize delegate = _delegate;
+@synthesize premH, premBH;
 //@synthesize leftSidebarViewController;
 //@synthesize leftSelectedIndexPath;
 
@@ -196,7 +200,23 @@
 }
 
 -(void)CloseButtonAction{
-    [self dismissViewControllerAnimated:YES completion:Nil];
+    /*
+    if (_delegate != Nil) {
+        NSLog(@"close");
+        [_delegate CloseWindow];
+        [self dismissViewControllerAnimated:YES completion:Nil];
+    }
+    */
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.mainH = premH;
+        main.mainBH = premBH;
+        main.IndexTab = 3;
+        main.showQuotation = @"YES";
+        [self presentModalViewController:main animated:YES];
+    
+
 }
 
 @end

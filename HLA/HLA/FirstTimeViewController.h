@@ -46,6 +46,7 @@
 @property (nonatomic, retain) UIPopoverController *PasswordTipPopover;
 @property (nonatomic, retain) PasswordTips *PasswordTips;
 @property (weak, nonatomic) IBOutlet UILabel *lblPasswordTips;
+@property (weak, nonatomic) IBOutlet UIButton *outletTips;
 
 
 @end

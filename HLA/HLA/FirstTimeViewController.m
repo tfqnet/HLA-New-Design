@@ -9,6 +9,7 @@
 #import "FirstTimeViewController.h"
 #import "UserProfile.h"
 #import "SecurityQuestion.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface FirstTimeViewController ()
 
@@ -25,6 +26,7 @@
 @synthesize PasswordTipPopover = _PasswordTipPopover;
 @synthesize PasswordTips = _PasswordTips;
 @synthesize lblPasswordTips;
+@synthesize outletTips;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +53,13 @@
     lblPasswordTips.hidden = TRUE;
     
     outletSave.hidden = TRUE;
+    
+    outletTips.backgroundColor = [UIColor clearColor];
+    [outletTips setOpaque:NO ];
+    [outletTips setBackgroundImage:[UIImage imageNamed:@"f-spot-question-mark.png"] 
+                          forState:UIControlStateNormal];
+    
+    
 }
 
 - (void)viewDidUnload
@@ -62,6 +71,7 @@
     [self setMyScrollView:nil];
     [self setOutletSave:nil];
     [self setLblPasswordTips:nil];
+    [self setOutletTips:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

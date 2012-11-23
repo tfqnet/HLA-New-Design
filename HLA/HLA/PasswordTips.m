@@ -41,11 +41,9 @@
 	return YES;
 }
 
-- (IBAction)btnClose:(id)sender {
-        [_delegate CloseWindow];
-        NSLog(@"close");
-        
-    
+
+- (IBAction)BarButtonClose:(id)sender {
+    [_delegate CloseWindow];
     
 }
 @end

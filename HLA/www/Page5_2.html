@@ -44,7 +44,33 @@
         db = openDatabase(shortName, version, displayName,maxSize);
         ListDBValues();
     }
-        
+    
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+    
+    function CurrencyNoCents(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = num.toString();
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+    
+    
     function ListDBValues() {
             
         if (!window.openDatabase) {
@@ -166,17 +192,17 @@
                     var row = result.rows.item(i);
                     //alert(colType)
                     if (colType == 1){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
                     else if (colType == 2){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>');
                     	
                     }
                     else if (colType == 3){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td><td>' + '-' + '</td><td>' + '</td></tr>');
                     }
                     else if (colType == 4){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
                     
                     //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col12 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col18 + '</td><td>' + row.col19 + '</td><td>' + row.col20 + '</td><td>' + row.col21 + '</td></tr>');

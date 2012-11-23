@@ -139,10 +139,10 @@
     
     if ([SIshowQuotation isEqualToString:@"NO"] || SIshowQuotation == NULL ) {
         [SelectedRow addObject:@"6"];
-        //[SelectedRow removeObject:@"6"];
+        
     }
     else {
-        [SelectedRow removeObject:@"6"];
+        //[SelectedRow removeObject:@"6"];
     }
 }
 

@@ -16,6 +16,8 @@
 @end
 
 @implementation EditProspect
+@synthesize lblOfficeAddr;
+@synthesize lblPostCode;
 @synthesize txtPrefix1,strChanges;
 @synthesize txtPrefix2;
 @synthesize txtPrefix3;
@@ -81,7 +83,7 @@ bool IsContinue = TRUE;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"ipad_bg_4.jpg"]];
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg8.jpg"]];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -235,6 +237,8 @@ bool IsContinue = TRUE;
     [self setTxtPrefix3:nil];
     [self setTxtPrefix4:nil];
     [self setTxtPrefix5:nil];
+    [self setLblOfficeAddr:nil];
+    [self setLblPostCode:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -1430,6 +1434,15 @@ bool IsContinue = TRUE;
 - (void)OccupCodeSelected:(NSString *)OccupCode{
     OccupCodeSelected = OccupCode;
     strChanges = @"Yes";
+    
+    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"]) {
+        lblOfficeAddr.text = @"Office Address";
+        lblPostCode.text = @"Postcode";
+    }
+    else {
+        lblOfficeAddr.text = @"Office Address*";
+        lblPostCode.text = @"Postcode*";
+    }
 }
 
 - (void)OccupDescSelected:(NSString *)color {
@@ -1925,5 +1938,8 @@ bool IsContinue = TRUE;
 
 - (BOOL)disablesAutomaticKeyboardDismissal {
     return NO;
+}
+- (IBAction)btnCancel:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
 }
 @end
