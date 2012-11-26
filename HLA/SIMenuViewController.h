@@ -11,12 +11,15 @@
 #import "SIHandler.h"
 #import "BasicPlanHandler.h"
 
+
 @interface SIMenuViewController : UIViewController {
     NSString *databasePath;
     sqlite3 *contactDB;
     BOOL LAEmpty;
     BOOL PlanEmpty;
+    
 }
+
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *RightView;

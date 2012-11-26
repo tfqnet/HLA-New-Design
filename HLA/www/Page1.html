@@ -144,10 +144,12 @@
                                               //alert(row.col0_1);
                                    
 //$('#table-data > tbody').append
-                        col5Total = col5Total + parseFloat(formatCurrency(row.col5).replace(',',''));
-                        col6Total = col6Total + parseFloat(formatCurrency(row.col6).replace(',',''));
-                        col7Total = col7Total + parseFloat(formatCurrency(row.col7).replace(',',''));
-                        col8Total = col8Total + parseFloat(formatCurrency(row.col8).replace(',',''));
+                                   
+                                   
+                        col5Total = col5Total + parseFloat(formatCurrency(row.col5).replace(',','').replace('-', '0'));
+                        col6Total = col6Total + parseFloat(formatCurrency(row.col6).replace(',','').replace('-', '0'));
+                        col7Total = col7Total + parseFloat(formatCurrency(row.col7).replace(',','').replace('-', '0'));
+                        col8Total = col8Total + parseFloat(formatCurrency(row.col8).replace(',','').replace('-', '0'));
 
                                    
 //$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.col0_1 + '</td>' + '<td>' + replaceChar(row.col0_2) + '</td>' + '<td>' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  + '<td>' + row.col3 + '</td>' + '<td>' + row.col4 + '</td>' + '<td><span id=row' + i + 'col5>' + formatCurrency(row.col5) + '</span></td>' + '<td id=row1col6>' + formatCurrency(row.col6) + '</td>' + '<td id=row1col7>' + formatCurrency(row.col7) + '</td>' + '<td id=row1col8>' + formatCurrency(row.col8) + '</td>' + '</td>' + '<td>&nbsp;</td>' + '</tr>');

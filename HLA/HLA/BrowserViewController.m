@@ -12,6 +12,7 @@
 #import "SidebarViewController.h"
 #import "JTRevealSidebarV2Delegate.h"
 #import "MainScreen.h"
+#import "PremiumViewController.h"
 
 
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
@@ -57,7 +58,7 @@
     CDVViewController* browserController_page = [CDVViewController new];
     browserController_page.wwwFolderName = @"www";
     browserController_page.startPage = @"Page1.html";//(NSString *)objectHTML;
-    browserController_page.view.frame = CGRectMake(0, 0, 768, 1000);
+    browserController_page.view.frame = CGRectMake(0, 0, 768, 1020);
     [self.view addSubview:browserController_page.view];
     browserController_page = nil;
     
@@ -173,7 +174,7 @@
 
 - (void)sidebarViewController:(SidebarViewController *)sidebarViewController didSelectObject:(NSObject *)object objectHTML:(NSObject *)objectHTML atIndexPath:(NSIndexPath *)indexPath {
      
-    
+    PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
     
     [self.navigationController setRevealedState:JTRevealedStateNo];
     
@@ -182,14 +183,15 @@
     controller.leftSidebarViewController = sidebarViewController;
     controller.leftSelectedIndexPath = indexPath;
     sidebarViewController.sidebarDelegate = controller;
+    controller.delegate = premView;
     [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
     
     browserController = [CDVViewController new];
     browserController.wwwFolderName = @"www";
-    
     browserController.startPage = (NSString *)objectHTML;
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
+    
     browserController = nil;
     
     
@@ -200,6 +202,21 @@
 }
 
 -(void)CloseButtonAction{
+    //NSLog(@"%d", [self.view subviews].count);
+    
+    if ([self.view subviews].count > 1) {
+        
+        
+        //[_delegate CloseWindow];
+        [self.presentingViewController dismissModalViewControllerAnimated:YES];
+        
+        
+    }
+    else {
+        [_delegate CloseWindow];
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    
     /*
     if (_delegate != Nil) {
         NSLog(@"close");
@@ -207,16 +224,19 @@
         [self dismissViewControllerAnimated:YES completion:Nil];
     }
     */
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    /*
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         main.mainH = premH;
         main.mainBH = premBH;
         main.IndexTab = 3;
         main.showQuotation = @"YES";
-        [self presentModalViewController:main animated:YES];
+        //[self presentModalViewController:main animated:YES];
+        [self presentViewController:main animated:YES completion:Nil]; 
+      */ 
     
-
+    
 }
 
 @end

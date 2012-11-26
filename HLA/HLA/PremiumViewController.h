@@ -12,10 +12,13 @@
 #import "BasicPlanHandler.h"
 #import "BrowserViewController.h"
 
+
+
 @interface PremiumViewController : UIViewController<BrowserDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
      BrowserViewController *_Browser;
+    
 }
 
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;

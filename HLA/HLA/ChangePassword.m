@@ -272,24 +272,38 @@
     
     if(valid == TRUE) {
         
-        if (txtNewPwd.text.length < 6 || txtNewPwd.text.length > 20 ) {
+        if (txtNewPwd.text.length < 6 ) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
                                                             message:@"New Password must be at least 6 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            txtNewPwd.text = @"";
+            txtConfirmPwd.text = @"";
             [alert show];
             [txtNewPwd becomeFirstResponder];
             
         }
         else {
-            if ([txtNewPwd.text isEqualToString:txtConfirmPwd.text]) {
-                [self validatePassword]; 
-            }
-            else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                [alert show];
-                txtOldPwd.text = @"";
+            if (txtNewPwd.text.length > 20) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                                                message:@"New Password cannot be more than 20 characters long." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 txtNewPwd.text = @"";
                 txtConfirmPwd.text = @"";
-            }   
+                [alert show];
+                [txtNewPwd becomeFirstResponder];
+            }
+            else {
+                if ([txtNewPwd.text isEqualToString:txtConfirmPwd.text]) {
+                    [self validatePassword]; 
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    txtOldPwd.text = @"";
+                    txtNewPwd.text = @"";
+                    txtConfirmPwd.text = @"";
+                }
+            }
+            
+               
             
         }
         

@@ -29,6 +29,7 @@
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar;
 @synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2;
 @synthesize Browser = _Browser;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -107,6 +108,16 @@
     main.showQuotation = @"YES";
     [self presentModalViewController:main animated:YES];
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    
+    self.view.superview.bounds = CGRectMake(-42, 20, 1024, 748);
+    
+    //[self.presentedViewController dismissModalViewControllerAnimated:YES ];
+    
+
+}
+
 
 #pragma mark - Calculation
 
@@ -1477,20 +1488,20 @@
                 spinnerLabel.text = @"";
                 
                 [ReportPage dismissViewControllerAnimated:NO completion:Nil];
-                BrowserViewController *controller = [[BrowserViewController alloc] init];
-                controller.title = @"Quotation";
+    
+                    
+                    BrowserViewController *controller = [[BrowserViewController alloc] init];
+                    controller.title = @"Quotation";
+                    controller.delegate = self;
+                controller.premH = premH;
+                controller.premBH = premBH;
                 
-                _Browser.title = @"Quotation";
-                _Browser.premH = premH;
-                _Browser.premBH = premBH;
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_Browser];
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
                 UINavigationController *container = [[UINavigationController alloc] init];
                 [container setNavigationBarHidden:YES animated:NO];
                 [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
                 
                 [self presentModalViewController:container animated:YES];
-                
-                
                 
                 UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
                 [v removeFromSuperview];
@@ -1528,6 +1539,6 @@
 
 -(void)CloseWindow{
     NSLog(@"received");
-    [self dismissModalViewControllerAnimated:YES];
+    [self.presentingViewController dismissModalViewControllerAnimated:YES ];
 }
 @end

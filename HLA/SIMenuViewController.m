@@ -29,6 +29,7 @@
 @synthesize getAge,getSINo,getOccpCode,getbasicSA;
 @synthesize payorCustCode,payorSINo,CustCode2,clientID2;
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -259,6 +260,7 @@
         premView.premH = menuH;
         [self presentModalViewController:premView animated:YES];
         premView.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
+        
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Error!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -390,7 +392,12 @@
     }
     
     else if (indexPath.row == 6) { //quotation
+        NewLAViewController *newLA = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+        [self.RightView addSubview:newLA.view];
+        [self addChildViewController:newLA];
+        newLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
         
+        /*
         sqlite3_stmt *statement;
         BOOL cont = FALSE;
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -444,17 +451,7 @@
                         
                         //ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
                         //[self presentViewController:reportVC animated:YES completion:Nil];
-                        /*
-                        BrowserViewController *controller = [[BrowserViewController alloc] init];
-                        controller.title = @"Quotation";
                         
-                        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                        UINavigationController *container = [[UINavigationController alloc] init];
-                        [container setNavigationBarHidden:YES animated:NO];
-                        [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
-                        
-                        [self presentModalViewController:container animated:NO];
-                        */
                         
                     }];
                      
@@ -488,10 +485,12 @@
                                                           message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
             [alert show];
         }
+         */
     }
     
     [tableView reloadData];
 }
+
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
