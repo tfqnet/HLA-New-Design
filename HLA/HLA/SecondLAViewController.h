@@ -68,5 +68,6 @@
 - (IBAction)smokerSegmentChange:(id)sender;
 - (IBAction)doSave:(id)sender;
 - (IBAction)doDelete:(id)sender;
+- (IBAction)doClose:(id)sender;
 
 @end

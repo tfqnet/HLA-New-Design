@@ -313,7 +313,14 @@
 {
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
     
-    if (LANameField.text.length <= 0) {   
+    /*
+    if (LANameField.text.length <= 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Leave this page?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No",nil];
+        [alert setTag:1008];
+        [alert show];
+    }
+    else */
+    if (LANameField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
@@ -382,6 +389,11 @@
 	}
 }
 
+- (IBAction)doClose:(id)sender
+{
+    [self closeScreen];
+}
+
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag==1001 && buttonIndex == 0) {
@@ -427,6 +439,9 @@
         [self closeScreen];
     }
     else if (alertView.tag==1007 && buttonIndex == 0) {
+        [self closeScreen];
+    }
+    else if (alertView.tag == 1008 && buttonIndex == 0) {
         [self closeScreen];
     }
 }

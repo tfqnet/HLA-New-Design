@@ -251,6 +251,11 @@
     [alert show];
 }
 
+- (IBAction)doClose:(id)sender
+{
+    [self closeScreen];
+}
+
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag==2001 && buttonIndex == 0) {

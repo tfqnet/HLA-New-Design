@@ -184,12 +184,14 @@
     [self calculateBasicPremium];   //calculate basicPrem
     
     [self getListingRider];     //get stored rider
+    
     [self calculateRiderPrem];  //calculate riderPrem
     [self calculateWaiver];     //calculate waiverPrem
     [self calculateMedRiderPrem];       //calculate medicalPrem
     if (medRiderPrem != 0) {
         [self MHIGuideLines];
     }
+    
     
     myTableView.rowHeight = 50;
     myTableView.backgroundColor = [UIColor clearColor];
@@ -488,6 +490,7 @@
     }
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"] || [riderCode isEqualToString:@"IE20R"] || [riderCode isEqualToString:@"IE30R"] ) //edited by heng
     {
+        maxRiderTerm = maxTerm;
         termField.text = [NSString stringWithFormat:@"%d",maxTerm];
         termField.textColor = [UIColor darkGrayColor];
     }
@@ -508,12 +511,10 @@
 
 -(void)calculateSA
 {
-    NSLog(@"requestNewSA:%.2f",requestBasicSA);
     double dblPseudoBSA = self.requestBasicSA / 0.05;
     double dblPseudoBSA2 = dblPseudoBSA * 0.1;
     double dblPseudoBSA3 = dblPseudoBSA * 5;
     double dblPseudoBSA4 = dblPseudoBSA * 2;
-    
 //    NSLog(@"dblPseudoBSA:%.f, dblPseudoBSA3:%.f",maxRiderSA,dblPseudoBSA3);
     
     if ([riderCode isEqualToString:@"CCTR"])
@@ -528,7 +529,6 @@
         _maxRiderSA = fmin(dblPseudoBSA2,120000);
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
-        NSLog(@"maxEtpd:%.f",maxRiderSA);
     }
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
     {
@@ -573,6 +573,7 @@
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
+//    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
 }
 
 -(void)calculateBasicPremium
@@ -1018,7 +1019,7 @@
             [halfMedRiderPrem addObject:calRiderHalf];
             [quarterMedRiderPrem addObject:calRiderQuarter];
             [monthMedRiderPrem addObject:calRiderMonth];
-            NSLog(@"medical insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+//            NSLog(@"medical insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
         }
         
         //for income rider
@@ -1379,8 +1380,7 @@
     double ridSA = [sumField.text doubleValue];
     double PolicyTerm = requestCoverTerm;
     double riderHLoad = [HLField.text doubleValue];
-   
-    NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",riderCode,riderRate,ridSA,riderHLoad);
+//    NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",riderCode,riderRate,ridSA,riderHLoad);
     
     double annFac = 1;
     double halfFac = 0.5125;
@@ -2137,20 +2137,25 @@
 {
     double totalPrem;
     double medicDouble;
+    double minus;
+    double varSA;
+    double riderSA;
+    double RiderSA;
+    bool pop = false;
+    
     totalPrem = basicPremAnn + riderPrem;
     medicDouble = medRiderPrem * 2;
-    NSLog(@"totalPrem:%.2f ,medicDouble:%.2f",totalPrem,medicDouble);
+    NSLog(@"~totalPrem:%.2f, medicalPrem:%.2f, medicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+    
     if (medicDouble > totalPrem) {
-        double minus = totalPrem - medRiderPrem;
+        minus = totalPrem - medRiderPrem;
         if (minus > 0) {
             
-            double varSA = medRiderPrem/minus * requestBasicSA + 0.5;
-            NSString *newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
-            NSLog(@":1-UPDATE newBasicSA:%@",newBasicSA);
-            requestBasicSA = varSA;
-            /*
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
-            [alert show];*/
+            varSA = medRiderPrem/minus * requestBasicSA + 0.5;
+            NSString *newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
+            NSLog(@":1-UPDATE newBasicSA:%.f",varSA);
+            requestBasicSA = [newBasicSA doubleValue];
+            pop = true;
             
             //update basicSA to varSA
             sqlite3_stmt *statement;
@@ -2160,7 +2165,6 @@
                 
                 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
-                        NSLog(@"BasicSA update-MHI Guideline!");
                         
                         dataInsert = [[NSMutableArray alloc] init];
                         BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
@@ -2178,6 +2182,7 @@
                 sqlite3_close(contactDB);
             }
             
+            //update riderSA
             for (NSUInteger u=0; u<[LRiderCode count]; u++)
             {
                 NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
@@ -2186,31 +2191,37 @@
                 {
                     riderCode = [LRiderCode objectAtIndex:u];
                     [self calculateSA];
+                    riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                     
-                    double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
-                    double RiderSA = (medRiderPrem/minus) * riderSA;
-                    NSLog(@"newRiderSA:%.2f",RiderSA);
                     if (riderSA > 0)
                     {
+                        RiderSA = (medRiderPrem/minus) * riderSA;
+                        NSLog(@"1-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%.f",riderCode,RiderSA,riderSA,maxRiderSA);
+                        
+                        double newSA;
                         if (RiderSA > maxRiderSA)
                         {
-                            NSLog(@":1-UPDATE newRiderSA(%@):%.2f",riderCode,RiderSA);
-                            sqlite3_stmt *statement;
-                            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-                            {
-                                NSString *updatetSQL = [NSString stringWithFormat:
-                                                        @"UPDATE Trad_Rider_Details SET SumAssured=\"%.2f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",maxRiderSA,SINoPlan,riderCode,pTypeCode, PTypeSeq];
-                                
-                                if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                                    if (sqlite3_step(statement) == SQLITE_DONE) {
-                                        NSLog(@"Update RiderSA success!");
-                                    } else {
-                                        NSLog(@"Update RiderSA failed!");
-                                    }
-                                    sqlite3_finalize(statement);
+                            newSA = maxRiderSA;
+                        } else {
+                            newSA = RiderSA;
+                        }
+                        
+                        NSLog(@":1-UPDATE newRiderSA(%@):%.2f",riderCode,newSA);
+                        sqlite3_stmt *statement;
+                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                        {
+                            NSString *updatetSQL = [NSString stringWithFormat:
+                                    @"UPDATE Trad_Rider_Details SET SumAssured=\"%.f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",newSA,SINoPlan,riderCode,pTypeCode, PTypeSeq];
+                            
+                            if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                if (sqlite3_step(statement) == SQLITE_DONE) {
+                                    //                                        NSLog(@"Update RiderSA success!");
+                                } else {
+                                    NSLog(@"Update RiderSA failed!");
                                 }
-                                sqlite3_close(contactDB);
+                                sqlite3_finalize(statement);
                             }
+                            sqlite3_close(contactDB);
                         }
                     }
                 }
@@ -2225,20 +2236,22 @@
             [self calculateWaiver];     //calculate waiverPrem
             [self calculateMedRiderPrem];       //calculate medicalPrem
             
+            //--second cycle--//
+            
             totalPrem = basicPremAnn + riderPrem;
             medicDouble = medRiderPrem * 2;
-            NSLog(@"newTotalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medicDouble);
+            NSLog(@"~newTotalPrem:%.2f, newMedicalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+            
             if (medicDouble > totalPrem) {
                 minus = totalPrem - medRiderPrem;
                 if (minus > 0) {
+                    
                     varSA = medRiderPrem/minus * requestBasicSA + 0.5;
-                    newBasicSA = [NSString stringWithFormat:@"%.2f",varSA];
-                    NSLog(@":2-UPDATE newBasicSA:%@",newBasicSA);
-                    requestBasicSA = varSA;
-                    
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
-                    [alert show];
-                    
+                    newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
+                    NSLog(@":2-UPDATE newBasicSA:%.f",varSA);
+                    requestBasicSA = [newBasicSA doubleValue];
+                    pop = true;
+        
                     //update basicSA to varSA
                     sqlite3_stmt *statement;
                     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK) {
@@ -2247,7 +2260,6 @@
                         
                         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                             if (sqlite3_step(statement) == SQLITE_DONE) {
-                                NSLog(@"BasicSA update!");
                                 
                                 dataInsert = [[NSMutableArray alloc] init];
                                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
@@ -2265,6 +2277,7 @@
                         sqlite3_close(contactDB);
                     }
                     
+                    //update riderSA
                     for (NSUInteger u=0; u<[LRiderCode count]; u++)
                     {
                         NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
@@ -2273,33 +2286,40 @@
                         {
                             riderCode = [LRiderCode objectAtIndex:u];
                             [self calculateSA];
+                            riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                             
-                            double riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
-                            double RiderSA = (medRiderPrem/minus) * riderSA;
-                            NSLog(@"newRiderSA:%.2f",RiderSA);
                             if (riderSA > 0)
                             {
+                                RiderSA = (medRiderPrem/minus) * riderSA;
+                                NSLog(@"2-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%.f",riderCode,RiderSA,riderSA,maxRiderSA);
+                                
+                                double newSA;
                                 if (RiderSA > maxRiderSA)
                                 {
-                                    NSLog(@":2-UPDATE newRiderSA(%@):%.2f",riderCode,RiderSA);
-                                    //update riderSA
-                                    sqlite3_stmt *statement;
-                                    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-                                    {
-                                        NSString *updatetSQL = [NSString stringWithFormat:
-                                                                @"UPDATE Trad_Rider_Details SET SumAssured=\"%.2f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",maxRiderSA,SINoPlan,riderCode,pTypeCode, PTypeSeq];
-                                        
-                                        if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                                            if (sqlite3_step(statement) == SQLITE_DONE) {
-                                                NSLog(@"Update RiderSA success!");
-                                            } else {
-                                                NSLog(@"Update RiderSA failed!");
-                                            }
-                                            sqlite3_finalize(statement);
-                                        }
-                                        sqlite3_close(contactDB);
-                                    }
+                                    newSA = maxRiderSA;
+                                } else {
+                                    newSA = RiderSA;
                                 }
+                                
+                                NSLog(@":2-UPDATE newRiderSA(%@):%.2f",riderCode,newSA);
+                                //update riderSA
+                                sqlite3_stmt *statement;
+                                if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                                {
+                                    NSString *updatetSQL = [NSString stringWithFormat:
+                                        @"UPDATE Trad_Rider_Details SET SumAssured=\"%.f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",newSA,SINoPlan,riderCode,pTypeCode, PTypeSeq];
+                                    
+                                    if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                        if (sqlite3_step(statement) == SQLITE_DONE) {
+                                            //                                                NSLog(@"Update RiderSA success!");
+                                        } else {
+                                            NSLog(@"Update RiderSA failed!");
+                                        }
+                                        sqlite3_finalize(statement);
+                                    }
+                                    sqlite3_close(contactDB);
+                                }
+
                             }
                         }
                         else {
@@ -2315,11 +2335,17 @@
                 }
             }
             
-             
-        } else {
+            if (pop) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
+                [alert show];
+            }
+           
+        }
+        else {
             NSLog(@"value minus not greater than 0");
         }
-    } else {
+    }
+    else {
         NSLog(@"value medicDouble less than totalPrem");
     }
 }
@@ -2492,45 +2518,50 @@
 
 -(void)NegativeYield
 {
+    //if TPremiumPayable > totalGYI + maturityCSV then popup
+    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
-
-    //if TPremiumPayable > totalGYI + maturityCSV then popup
-    
     
     //--TPremiumPayable (basic+incomeRider)
     double TPremiumPayable = basicPremAnn + incomeRiderPrem + inputIncomeAnn;
+    NSLog(@"basicPrem:%.2f, existIncomePrem:%.2f, inputIncomePrem:%.2f",basicPremAnn,incomeRiderPrem,inputIncomeAnn);
     NSLog(@"TPremiumPayable:%.2f",TPremiumPayable);
     
     //--rider GYI & CSV
-    NSMutableArray *arrRiderGYI = [[NSMutableArray alloc] init];
-    NSMutableArray *arrRiderCSV = [[NSMutableArray alloc] init];
-    for (NSUInteger m=0; m<incomeRiderSA.count; m++) {
-        
-        double _GYI = [[incomeRiderGYI objectAtIndex:m] doubleValue];
-        double _riderSA = [[incomeRiderSA objectAtIndex:m] doubleValue];
-        double _riderGYI = (_GYI/100) * _riderSA;
-        NSString *strCalGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_riderGYI]];
-        strCalGYI = [strCalGYI stringByReplacingOccurrencesOfString:@"," withString:@""];
-        [arrRiderGYI addObject:strCalGYI];
-        NSLog(@"storedGYI:%.2f, calGYI:%@",_GYI,strCalGYI);
-        
-        double _csv = [[incomeRiderCSV objectAtIndex:m] doubleValue];
-        double _riderCSV = _csv * _riderSA / 1000;
-        NSString *strCalCSV = [formatter stringFromNumber:[NSNumber numberWithDouble:_riderCSV]];
-        strCalCSV = [strCalCSV stringByReplacingOccurrencesOfString:@"," withString:@""];
-        [arrRiderCSV addObject:strCalCSV];
-        NSLog(@"storedCSV:%.2f, calCSV:%@",_csv,strCalCSV);
-    }
     double _sumRiderGYI = 0;
-    for (int h=0; h<arrRiderGYI.count; h++) {
-        _sumRiderGYI = _sumRiderGYI + [[arrRiderGYI objectAtIndex:h] doubleValue];
-    }
     double _sumRiderCSV = 0;
-    for (int n=0; n<arrRiderCSV.count; n++) {
-        _sumRiderCSV = _sumRiderCSV + [[arrRiderCSV objectAtIndex:n] doubleValue];
+    if (incomeRiderAnn.count != 0) {
+    
+        NSMutableArray *arrRiderGYI = [[NSMutableArray alloc] init];
+        NSMutableArray *arrRiderCSV = [[NSMutableArray alloc] init];
+        for (NSUInteger m=0; m<incomeRiderSA.count; m++) {
+        
+            double _GYI = [[incomeRiderGYI objectAtIndex:m] doubleValue];
+            double _riderSA = [[incomeRiderSA objectAtIndex:m] doubleValue];
+            double _riderGYI = (_GYI/100) * _riderSA;
+            NSString *strCalGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_riderGYI]];
+            strCalGYI = [strCalGYI stringByReplacingOccurrencesOfString:@"," withString:@""];
+            [arrRiderGYI addObject:strCalGYI];
+            NSLog(@"storedGYI:%.2f, calGYI:%@",_GYI,strCalGYI);
+        
+            double _csv = [[incomeRiderCSV objectAtIndex:m] doubleValue];
+            double _riderCSV = _csv * _riderSA / 1000;
+            NSString *strCalCSV = [formatter stringFromNumber:[NSNumber numberWithDouble:_riderCSV]];
+            strCalCSV = [strCalCSV stringByReplacingOccurrencesOfString:@"," withString:@""];
+            [arrRiderCSV addObject:strCalCSV];
+            NSLog(@"storedCSV:%.2f, calCSV:%@",_csv,strCalCSV);
+        }
+        
+        for (int h=0; h<arrRiderGYI.count; h++) {
+            _sumRiderGYI = _sumRiderGYI + [[arrRiderGYI objectAtIndex:h] doubleValue];
+        }
+        
+        for (int n=0; n<arrRiderCSV.count; n++) {
+            _sumRiderCSV = _sumRiderCSV + [[arrRiderCSV objectAtIndex:n] doubleValue];
+        }
     }
     
     //input rider GYI and CSV
@@ -2538,14 +2569,17 @@
     double _inputGYI = (inputGYI/100) * _inputSA;
     double _inputCSV = inputCSV * _inputSA / 1000;
     
-    //--GYI
+    NSLog(@"sumRiderGYI:%.2f, inputRiderGYI:%.2f",_sumRiderGYI,_inputGYI);
+    NSLog(@"sumRiderCSV:%.2f, inputRiderGYI:%.2f",_sumRiderCSV,_inputCSV);
+    
+    //--basic GYI
     [self getBasicGYI];         //get basicGYI rate
     double _basicGYI = requestBasicSA * (basicGYIRate/100);
     
     double totalGYI = _basicGYI + _sumRiderGYI + _inputGYI;
     NSLog(@"totalGYI:%.2f",totalGYI);
     
-    //--CSV
+    //--basic CSV
     [self getBasicCSV];         //get basciCSV rate
     double _basicCSV = basicCSVRate * (requestBasicSA/1000);
     
@@ -2768,7 +2802,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d advOption=\"N\" AND PremPayOpt=%d",requestAge,requestAge,requestMOP];
+                @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"N\" AND PremPayOpt=%d",requestAge,requestAge,requestMOP];
         
         NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -3030,7 +3064,6 @@
                 [LSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
                 [LSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
                 [LAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
-                
             }
             
             if ([LRiderCode count] == 0) {
@@ -3063,9 +3096,10 @@
                 
                 
                 //some code here--
+                /*
                 for (int z=0; z<LSumAssured.count; z++) {
                     NSLog(@"VALUEDB RiderSA(%@):%@",[LRiderCode objectAtIndex:z],[LSumAssured objectAtIndex:z]);
-                }
+                }*/
             }
             
             [self.myTableView reloadData];
@@ -3326,7 +3360,7 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\"",aaplan,aaterm,aaterm,age,age,sex];
-        
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {

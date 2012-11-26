@@ -112,6 +112,7 @@
 - (IBAction)doSaveLA:(id)sender;
 - (IBAction)selectProspect:(id)sender;
 - (IBAction)btnCommDatePressed:(id)sender;
+- (IBAction)doClose:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
