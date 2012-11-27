@@ -9,10 +9,10 @@
 #import "BasicPlanHandler.h"
 
 @implementation BasicPlanHandler
-@synthesize storedSINo,storedAge,storedOccpCode,storedCovered,storedPlanCode,storedMOP,storedbasicSA,storedbasicHL;
+@synthesize storedSINo,storedAge,storedOccpCode,storedCovered,storedPlanCode,storedMOP,storedbasicSA,storedbasicHL,storedAdvance;
 
 
--(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode
+-(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
 {
     self = [super init];
     if(self) {
@@ -24,6 +24,7 @@
         self.storedbasicHL = aaBasicHL;
         self.storedMOP = aaMOP;
         self.storedPlanCode = aaPlanCode;
+        self.storedAdvance = aaAdvance;
     }
     return self;
 }

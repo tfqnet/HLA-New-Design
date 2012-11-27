@@ -18,8 +18,9 @@
 @property (nonatomic, retain) NSString *storedbasicHL;
 @property (nonatomic ,assign ,readwrite) int storedMOP;
 @property (nonatomic, retain) NSString *storedPlanCode;
+@property (nonatomic ,assign ,readwrite) int storedAdvance;
 
--(id) initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode;
+-(id) initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance;
 
 
 @end

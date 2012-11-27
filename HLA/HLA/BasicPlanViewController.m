@@ -623,7 +623,7 @@
     
     dataInsert = [[NSMutableArray alloc] init];
     BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-    [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode]];
+    [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"storedbasic:%@",ss.storedSINo);
@@ -754,7 +754,7 @@
                 
                 dataInsert = [[NSMutableArray alloc] init];
                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode]];
+                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
                 for (NSUInteger i=0; i< dataInsert.count; i++) {
                     ss = [dataInsert objectAtIndex:i];
                     NSLog(@"storedbasic:%@",ss.storedSINo);
@@ -798,7 +798,7 @@
                 
                 dataInsert = [[NSMutableArray alloc] init];
                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode]];
+                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
                 for (NSUInteger i=0; i< dataInsert.count; i++) {
                     ss = [dataInsert objectAtIndex:i];
                     NSLog(@"storedbasic:%@",ss.storedSINo);

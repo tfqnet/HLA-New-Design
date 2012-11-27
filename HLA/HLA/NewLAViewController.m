@@ -281,7 +281,7 @@
 
     dataInsert2 = [[NSMutableArray alloc] init];
     BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-    [dataInsert2 addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode]];
+    [dataInsert2 addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"storedbasic:%@",ss.storedSINo);

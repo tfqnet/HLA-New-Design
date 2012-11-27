@@ -656,7 +656,8 @@
     double LSDMonthly_ = [[LSDMonthly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
 //    NSLog(@"LSD A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_LSDAnnually,_LSDHalfYear,_LSDQuarterly,_LSDMonthly);
 //    NSLog(@"LSD A:%@, S:%@, Q:%@, M:%@",LSDAnnually2,LSDHalfYear2,LSDQuarterly2,LSDMonthly2);
-//    NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
+    NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
+
     
     //calculate Total basic premium
     double _basicTotalA;
@@ -843,7 +844,7 @@
         } else if ([LRidHLP count] != 0) {
             riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
         }
-        NSLog(@"~riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",[LRiderCode objectAtIndex:i],riderRate,ridSA,riderHLoad);
+//        NSLog(@"~riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",[LRiderCode objectAtIndex:i],riderRate,ridSA,riderHLoad);
         
         double annFac;
         double halfFac;
@@ -1499,7 +1500,8 @@
         }
     }
     
-    inputGYI = GYIRate;    
+    inputGYI = GYIRate;
+    NSLog(@"inputGYI:%.2f",inputGYI);
     [self getRiderCSV:riderCode];       //get CSV rate
     inputCSV = riderCSVRate;
     
@@ -2121,6 +2123,12 @@
         [self calculateIncomeRiderInput];   //calculate entered income rider
         [self NegativeYield];
     }
+    else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count == 0)) {
+        
+        NSLog(@"go Negative Yield2 - empty listing!");
+        [self calculateIncomeRiderInput];
+        [self NegativeYield];
+    }
     else {
         [self checkingRider];
         if (existRidCode.length == 0) {
@@ -2151,10 +2159,11 @@
         minus = totalPrem - medRiderPrem;
         if (minus > 0) {
             
-            varSA = medRiderPrem/minus * requestBasicSA + 0.5;
+            varSA = medRiderPrem/minus * requestBasicSA + ((double)0.5);
             NSString *newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
             NSLog(@":1-UPDATE newBasicSA:%.f",varSA);
             requestBasicSA = [newBasicSA doubleValue];
+            [self getLSDRate];
             pop = true;
             
             //update basicSA to varSA
@@ -2168,7 +2177,7 @@
                         
                         dataInsert = [[NSMutableArray alloc] init];
                         BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                        [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:requestAge andOccpCode:requestOccpCode andCovered:requestCoverTerm andBasicSA:newBasicSA andBasicHL:riderBH.storedbasicHL andMOP:requestMOP andPlanCode:requestPlanCode]];
+                        [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:requestAge andOccpCode:requestOccpCode andCovered:requestCoverTerm andBasicSA:newBasicSA andBasicHL:riderBH.storedbasicHL andMOP:requestMOP andPlanCode:requestPlanCode andAdvance:riderBH.storedAdvance]];
                         
                         for (NSUInteger i=0; i< dataInsert.count; i++) {
                             ss = [dataInsert objectAtIndex:i];
@@ -2190,18 +2199,19 @@
                 if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
                 {
                     riderCode = [LRiderCode objectAtIndex:u];
-                    [self calculateSA];
+//                    [self calculateSA];
+                    [self getRiderTermRule];
                     riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                     
                     if (riderSA > 0)
                     {
                         RiderSA = (medRiderPrem/minus) * riderSA;
-                        NSLog(@"1-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%.f",riderCode,RiderSA,riderSA,maxRiderSA);
+                        NSLog(@"1-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%d",riderCode,RiderSA,riderSA,maxSATerm);
                         
                         double newSA;
-                        if (RiderSA > maxRiderSA)
+                        if (RiderSA > maxSATerm)
                         {
-                            newSA = maxRiderSA;
+                            newSA = maxSATerm;
                         } else {
                             newSA = RiderSA;
                         }
@@ -2250,6 +2260,7 @@
                     newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
                     NSLog(@":2-UPDATE newBasicSA:%.f",varSA);
                     requestBasicSA = [newBasicSA doubleValue];
+                    [self getLSDRate];
                     pop = true;
         
                     //update basicSA to varSA
@@ -2263,7 +2274,7 @@
                                 
                                 dataInsert = [[NSMutableArray alloc] init];
                                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:requestAge andOccpCode:requestOccpCode andCovered:requestCoverTerm andBasicSA:newBasicSA andBasicHL:riderBH.storedbasicHL andMOP:requestMOP andPlanCode:requestPlanCode]];
+                                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:requestAge andOccpCode:requestOccpCode andCovered:requestCoverTerm andBasicSA:newBasicSA andBasicHL:riderBH.storedbasicHL andMOP:requestMOP andPlanCode:requestPlanCode andAdvance:riderBH.storedAdvance]];
                                 
                                 for (NSUInteger i=0; i< dataInsert.count; i++) {
                                     ss = [dataInsert objectAtIndex:i];
@@ -2285,18 +2296,19 @@
                         if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
                         {
                             riderCode = [LRiderCode objectAtIndex:u];
-                            [self calculateSA];
+//                            [self calculateSA];
+                            [self getRiderTermRule];
                             riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                             
                             if (riderSA > 0)
                             {
                                 RiderSA = (medRiderPrem/minus) * riderSA;
-                                NSLog(@"2-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%.f",riderCode,RiderSA,riderSA,maxRiderSA);
+                                NSLog(@"2-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%d",riderCode,RiderSA,riderSA,maxSATerm);
                                 
                                 double newSA;
-                                if (RiderSA > maxRiderSA)
+                                if (RiderSA > maxSATerm)
                                 {
-                                    newSA = maxRiderSA;
+                                    newSA = maxSATerm;
                                 } else {
                                     newSA = RiderSA;
                                 }
@@ -2332,6 +2344,12 @@
                     [self calculateRiderPrem];  //calculate riderPrem
                     [self calculateWaiver];     //calculate waiverPrem
                     [self calculateMedRiderPrem];       //calculate medicalPrem
+                    
+                    //--third cycle--//
+                    
+                    totalPrem = basicPremAnn + riderPrem;
+                    medicDouble = medRiderPrem * 2;
+                    NSLog(@"~newTotalPrem:%.2f, newMedicalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
                 }
             }
             
@@ -2528,7 +2546,6 @@
     //--TPremiumPayable (basic+incomeRider)
     double TPremiumPayable = basicPremAnn + incomeRiderPrem + inputIncomeAnn;
     NSLog(@"basicPrem:%.2f, existIncomePrem:%.2f, inputIncomePrem:%.2f",basicPremAnn,incomeRiderPrem,inputIncomeAnn);
-    NSLog(@"TPremiumPayable:%.2f",TPremiumPayable);
     
     //--rider GYI & CSV
     double _sumRiderGYI = 0;
@@ -2570,7 +2587,7 @@
     double _inputCSV = inputCSV * _inputSA / 1000;
     
     NSLog(@"sumRiderGYI:%.2f, inputRiderGYI:%.2f",_sumRiderGYI,_inputGYI);
-    NSLog(@"sumRiderCSV:%.2f, inputRiderGYI:%.2f",_sumRiderCSV,_inputCSV);
+    NSLog(@"sumRiderCSV:%.2f, inputRiderCSV:%.2f",_sumRiderCSV,_inputCSV);
     
     //--basic GYI
     [self getBasicGYI];         //get basicGYI rate
@@ -2587,12 +2604,22 @@
     NSLog(@"totalCSV:%.2f",totalCSV);
     
     double totalAll = totalCSV + totalGYI;
-    NSLog(@"totalPlusGYI_CSV:%.2f",totalAll);
+    NSLog(@"totalPlusGYI_CSV:%.2f, TPremiumPayable:%.2f",totalAll,TPremiumPayable);
     
     if (TPremiumPayable > totalAll) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please note that the Guaranteed Benefit payout for selected plan maybe lesser than total premium outlay.\nChoose OK to proceed.\nChoose CANCEL to select other plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1003];
         [alert show];
+    }
+    else {
+        [self checkingRider];
+        if (existRidCode.length == 0) {
+            
+            [self saveRider];
+        } else {
+            
+            [self updateRider];
+        }
     }
 }
 
@@ -2774,12 +2801,18 @@
 -(void)getBasicCSV
 {
     sqlite3_stmt *statement;
+    NSString *querySQL;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT Rate FROM Trad_Sys_Basic_CSV WHERE Age=%d AND PolYear=%d AND PremPayOpt=%d AND AdvOption=\"N\"",requestAge,requestCoverTerm,requestMOP];
+        if (riderBH.storedAdvance > 0) {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT Rate FROM Trad_Sys_Basic_CSV WHERE Age=%d AND PolYear=%d AND PremPayOpt=%d AND AdvOption=\"%d\"",requestAge,requestCoverTerm,requestMOP,riderBH.storedAdvance];
+        } else {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT Rate FROM Trad_Sys_Basic_CSV WHERE Age=%d AND PolYear=%d AND PremPayOpt=%d AND AdvOption=\"N\"",requestAge,requestCoverTerm,requestMOP];
+        }
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -2799,18 +2832,24 @@
 -(void)getBasicGYI
 {
     sqlite3_stmt *statement;
+    NSString *querySQL;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-                @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"N\" AND PremPayOpt=%d",requestAge,requestAge,requestMOP];
+        if (riderBH.storedAdvance > 0) {
+            querySQL = [NSString stringWithFormat:
+                        @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"%d\" AND PremPayOpt=%d",requestAge,requestAge,riderBH.storedAdvance,requestMOP];
+        } else {
+            querySQL = [NSString stringWithFormat:
+                        @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"N\" AND PremPayOpt=%d",requestAge,requestAge,requestMOP];
+        }
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 basicGYIRate =  sqlite3_column_double(statement, 0);
-                NSLog(@"basicGYIRate:%.2f",basicCSVRate);
+                NSLog(@"basicGYIRate:%.2f",basicGYIRate);
                 
             } else {
                 NSLog(@"error access trad_sys_Basic_GYI");
@@ -2827,15 +2866,15 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"Select rate from Trad_Sys_Rider_CSV where PlanCode=\"%@\" AND PremPayOpt=%d AND Age=%d ",code,requestMOP, age];
+            @"Select rate from Trad_Sys_Rider_CSV where PlanCode=\"%@\" AND PremPayOpt=%d AND Age=%d ORDER by PolYear desc",code,requestMOP, age];
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 riderCSVRate =  sqlite3_column_double(statement, 0);
-                NSLog(@"riderCSVRate:%.2f",basicCSVRate);
+                NSLog(@"riderCSVRate:%.2f",riderCSVRate);
                 
             } else {
                 NSLog(@"error access Trad_Sys_Rider_CSV");
@@ -3263,13 +3302,14 @@
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     [formatter setMaximumFractionDigits:2];
     NSString *sumAss = [formatter stringFromNumber:[NSNumber numberWithDouble:requestBasicSA]];
+    sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT LSD FROM Trad_Sys_LSD_HLAIB WHERE PremPayOpt=\"%d\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",self.requestMOP,sumAss,sumAss];
-        
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

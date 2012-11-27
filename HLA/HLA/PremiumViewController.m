@@ -70,7 +70,7 @@
     
     
     
-    /*
+    
     //----- meng chiong part --------
     if (IsAtLeastiOSVersion(@"6.0")){
         NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
@@ -87,7 +87,7 @@
         }
     }
     //------ end ---------
-     */
+     
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -1094,7 +1094,7 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT LSD FROM Trad_Sys_LSD_HLAIB WHERE PremPayOpt=\"%d\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",self.requestMOP,[self.requestBasicSA description],[self.requestBasicSA description]];
-        
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
