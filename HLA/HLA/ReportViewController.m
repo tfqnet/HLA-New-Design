@@ -15,8 +15,8 @@
 
 @end
 
-double CIWPAnnual, CIWPSemiAnnual, CIWPQuarterly, CIWPMonthly;
-BOOL UpdateCIWP;
+//double CIWPAnnual, CIWPSemiAnnual, CIWPQuarterly, CIWPMonthly;
+NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQuarterly, *gWaiverMonthly;
 
 @implementation ReportViewController
 @synthesize SINo, PolicyTerm, BasicSA, PremiumPaymentOption, AdvanceYearlyIncome,OtherRiderCode,OtherRiderDesc,OtherRiderTerm,sex;
@@ -52,6 +52,12 @@ BOOL UpdateCIWP;
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
+    UpdateTradDetail = [[NSMutableArray alloc] init ];
+    gWaiverAnnual = [[NSMutableArray alloc] init ];
+    gWaiverSemiAnnual = [[NSMutableArray alloc] init ];
+    gWaiverQuarterly = [[NSMutableArray alloc] init ];
+    gWaiverMonthly = [[NSMutableArray alloc] init ];
     
     aStrIncomeRiderAnnually = [[NSMutableArray alloc] init ];
     aStrOtherRiderAnnually = [[NSMutableArray alloc] init ];
@@ -1352,7 +1358,7 @@ BOOL UpdateCIWP;
             QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                         "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
                         " VALUES ( "
-                        " \"%@\",\"1\",\"DATA\",\"HLA Income Builder\",\"\",\"0\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"2\" "
+                        " \"%@\",\"1\",\"DATA\",\"HLA Income Builder\",\"\",\"0\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
                         ")", SINo, BasicSA,PolicyTerm,PremiumPaymentOption,strAnnually, strSemiAnnually, strQuarterly, strMonthly];
             
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1399,16 +1405,16 @@ BOOL UpdateCIWP;
             sqlite3_finalize(statement);
         }
         
-            // special case for ciwp
-            if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"CIWP" ]) {
-                UpdateCIWP = TRUE;
+            // special case for CIWP and LCWP
+            if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"CIWP" ] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"LCWP" ]) {
+                [UpdateTradDetail addObject:[OtherRiderCode objectAtIndex:a]];
                 
                 RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
-                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
+                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\") VALUES ( "
+                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\", \"%@\" "
                             ")", SINo, [[OtherRiderDesc objectAtIndex:a] stringByAppendingString:[ NSString stringWithFormat:@"(%@%%)", [OtherRiderSA objectAtIndex:a]]],
                             [OtherRiderPlanOption objectAtIndex:a], @"-", [OtherRiderTerm objectAtIndex:a], [OtherRiderTerm objectAtIndex:a], @"-", 
-                            @"-", @"-", @"-"];
+                            @"-", @"-", @"-", [OtherRiderCode objectAtIndex:a] ];
                 
                 if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -1418,9 +1424,9 @@ BOOL UpdateCIWP;
                 }
                 
                 RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
-                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
-                            ")", SINo, @"-Annual",@"-", @"500.00", @"", @"", strAnnually, @"-", @"-", @"-"];
+                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\") VALUES ( "
+                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\", \"%@\" "
+                            ")", SINo, @"-Annual",@"-", @"500.00", @"", @"", strAnnually, @"-", @"-", @"-", [OtherRiderCode objectAtIndex:a]];
                 
                 if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -1430,9 +1436,9 @@ BOOL UpdateCIWP;
                 }
                 
                 RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
-                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
-                            ")", SINo, @"-Semi-annual",@"-", @"400.00", @"", @"", @"-", strSemiAnnually, @"-", @"-"];
+                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\") VALUES ( "
+                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\", \"%@\" "
+                            ")", SINo, @"-Semi-annual",@"-", @"400.00", @"", @"", @"-", strSemiAnnually, @"-", @"-", [OtherRiderCode objectAtIndex:a]];
                 if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                         
@@ -1441,9 +1447,9 @@ BOOL UpdateCIWP;
                 }
                 
                 RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
-                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
-                            ")", SINo, @"-Quarterly",@"-", @"300.00", @"", @"", @"-", @"-", strQuarterly, @"-"];
+                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\") VALUES ( "
+                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\", \"%@\" "
+                            ")", SINo, @"-Quarterly",@"-", @"300.00", @"", @"", @"-", @"-", strQuarterly, @"-", [OtherRiderCode objectAtIndex:a]];
                 if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                         
@@ -1452,9 +1458,9 @@ BOOL UpdateCIWP;
                 }
                 
                 RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
-                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
-                            ")", SINo, @"-Monthly",@"-", @"200.00", @"", @"", @"-", @"-", @"-", strMonthly];
+                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\") VALUES ( "
+                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\", \"%@\" "
+                            ")", SINo, @"-Monthly",@"-", @"200.00", @"", @"", @"-", @"-", @"-", strMonthly, [OtherRiderCode objectAtIndex:a]];
                 if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                         
@@ -1519,10 +1525,10 @@ BOOL UpdateCIWP;
         
             RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                     "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
-                    " \"%@\",\"5\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"%d\" "
+                    " \"%@\",\"5\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
                     ")", SINo, [IncomeRiderDesc objectAtIndex:a],@"", [IncomeRiderSA objectAtIndex:a],
                     [IncomeRiderTerm objectAtIndex:a], PremiumPaymentOption ,strAnnually, strSemiAnnually, 
-                    strQuarterly, strMonthly, 2];
+                    strQuarterly, strMonthly];
         
             if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                 if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -2132,7 +2138,7 @@ BOOL UpdateCIWP;
         if (a <= 20 || (a > 20 && a % 5  == 0) || (a == PolicyTerm && a%5 != 0) ) {
         
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-            if (Age > 0){
+            if (Age >= 0){
             
                 inputAge = Age + a;
                 
@@ -2844,10 +2850,22 @@ BOOL UpdateCIWP;
                                     [tempCol3 addObject:[NSString stringWithFormat:@"-"]];
                                     [tempCol4 addObject:[NSString stringWithFormat:@"-"]];
                                     
+                                    /*
                                     CIWPAnnual = waiverRiderSA *  tempRiderSA/100.00;
                                     CIWPSemiAnnual = waiverRiderSASemiAnnual *  tempRiderSA/100.00;
                                     CIWPQuarterly = waiverRiderSAQuarterly *  tempRiderSA/100.00;
                                     CIWPMonthly = waiverRiderSAMonthly *  tempRiderSA/100.00;
+                                     */
+                                    if (i == 1) {
+                                        [gWaiverAnnual addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSA *  tempRiderSA/100.00] ];
+                                        [gWaiverSemiAnnual addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSASemiAnnual *  tempRiderSA/100.00] ];
+                                        [gWaiverQuarterly addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSAQuarterly *  tempRiderSA/100.00] ];
+                                        [gWaiverMonthly addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSAMonthly *  tempRiderSA/100.00] ];
+                                        
+                                    }
+                                    
+
+                                    
                                 }
                                 
                                 else if ([tempRiderCode isEqualToString:@"PTR"]) {
@@ -4285,64 +4303,65 @@ BOOL UpdateCIWP;
 
 -(void)UpdateToSI_Temp_Trad_Details{
     
-    if (UpdateCIWP == TRUE) {
-        NSLog(@"Update CIWP start");
+    if (UpdateTradDetail.count > 0) {
+        NSLog(@"Update Trad Detail start");
         sqlite3_stmt *statement;
         NSString *QuerySQL = @"";
         
-        NSLog(@"%8f", CIWPAnnual);
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        //[formatter setMaximumFractionDigits:3];
-        [formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
-        NSString *SAAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:CIWPAnnual]];
-        NSString *SASemiAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:CIWPSemiAnnual]];
-        NSString *SAQuaterly = [formatter stringFromNumber:[NSNumber numberWithFloat:CIWPQuarterly]];
-        NSString *SAMonthly = [formatter stringFromNumber:[NSNumber numberWithFloat:CIWPMonthly]];
-        
-        
-        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-            QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Annual\" ", 
-                        SAAnnual];
+        for (int i = 0; i< UpdateTradDetail.count; i++) {
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+            //[formatter setMaximumFractionDigits:3];
+            [formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
+            NSString *SAAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverAnnual objectAtIndex:i] doubleValue ]]];
+            NSString *SASemiAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverSemiAnnual objectAtIndex:i] doubleValue ]]];
+            NSString *SAQuaterly = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverQuarterly objectAtIndex:i] doubleValue ]]];
+            NSString *SAMonthly = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverMonthly objectAtIndex:i] doubleValue ]]];
             
-            if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                if (sqlite3_step(statement) == SQLITE_DONE) {
-                }    
-                sqlite3_finalize(statement);
+            
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Annual\" AND col11 = \"%@\" ", 
+                            SAAnnual, [UpdateTradDetail objectAtIndex:i ]];
+                
+                if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                    }    
+                    sqlite3_finalize(statement);
+                }
+                
+                QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Semi-annual\" AND col11 = \"%@\" ", 
+                            SASemiAnnual, [UpdateTradDetail objectAtIndex:i ]];
+                
+                if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                    }    
+                    sqlite3_finalize(statement);
+                }   
+                
+                QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Quarterly\" AND col11 = \"%@\" ", 
+                            SAQuaterly, [UpdateTradDetail objectAtIndex:i ]];
+                
+                if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                    }    
+                    sqlite3_finalize(statement);
+                }
+                
+                
+                QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Monthly\" AND col11 = \"%@\" ", 
+                            SAMonthly, [UpdateTradDetail objectAtIndex:i ]];
+                
+                if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                    }    
+                    sqlite3_finalize(statement);
+                }
+                
+                sqlite3_close(contactDB);
             }
-            
-            QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Semi-annual\" ", 
-                        SASemiAnnual];
-            
-            if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                if (sqlite3_step(statement) == SQLITE_DONE) {
-                }    
-                sqlite3_finalize(statement);
-            }   
-            
-            QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Quarterly\" ", 
-                        SAQuaterly];
-            
-            if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                if (sqlite3_step(statement) == SQLITE_DONE) {
-                }    
-                sqlite3_finalize(statement);
-            }
-            
-            
-            QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Monthly\" ", 
-                        SAMonthly];
-            
-            if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-                if (sqlite3_step(statement) == SQLITE_DONE) {
-                }    
-                sqlite3_finalize(statement);
-            }
-            
-            sqlite3_close(contactDB);
         }
         
-        NSLog(@"Update CIWP end");
+        NSLog(@"Update Trad Detail end");
     }
     
         

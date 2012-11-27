@@ -75,12 +75,19 @@
 
 
 - (IBAction)btnRetrieve:(id)sender {
-    if (txtAnswer.text.length <= 0 ) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please fill answer field!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    
+    if ([lblSelectQues.text isEqualToString:@"Select your question" ]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please select your security question" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-        
     }
     else {
+        
+        if (txtAnswer.text.length <= 0 ) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please fill answer field!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        
+        }
+        else {
         if ([txtAnswer.text isEqualToString:answer]) {
             
             [self retrievePassword];
@@ -111,7 +118,7 @@
             
         }
     }
-
+    }
 }
 
 -(void)retrievePwd:(RetreivePwdTbViewController *)inController didSelectQuest:(NSString *)code desc:(NSString *)desc ans:(NSString *)ans

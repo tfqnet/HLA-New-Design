@@ -45,6 +45,9 @@
     }
     
     function CurrencyNoCents(num) {
+        if(num == '-'){
+            return ('-');
+        }
         num = num.toString().replace(/\$|\,/g, '');
         if (isNaN(num)) num = "0";
         sign = (num == (num = Math.abs(num)));
