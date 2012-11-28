@@ -53,10 +53,6 @@
     
     NSLog(@"%@",databasePath);
     
-    char as_string[4];
-    int nu = sprintf(as_string, "%03d",9);
-    NSLog(@"%3d",nu);
-    
     LANameField.enabled = NO;
     sexSegment.enabled = NO;
     LAAgeField.enabled = NO;
@@ -776,8 +772,12 @@
     
     int runningNoSI = SILastNo + 1;
     int runningNoCust = CustLastNo + 1;
-    SINo = [[NSString alloc] initWithFormat:@"SI%@-000%d",currentdate,runningNoSI];
-    CustCode = [[NSString alloc] initWithFormat:@"CL%@-000%d",currentdate,runningNoCust];
+    
+    NSString *fooSI = [NSString stringWithFormat:@"%04d", runningNoSI];
+    NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
+    
+    SINo = [[NSString alloc] initWithFormat:@"SI%@-%@",currentdate,fooSI];
+    CustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)

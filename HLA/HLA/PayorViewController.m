@@ -508,8 +508,10 @@
     NSString *dateStr = [dateFormatter stringFromDate:[NSDate date]];
     
     int runningNoCust = CustLastNo + 1;
+    NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
+    
     SINo = [self.requestSINo description];
-    CustCode = [[NSString alloc] initWithFormat:@"CL%@-000%d",currentdate,runningNoCust];
+    CustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
