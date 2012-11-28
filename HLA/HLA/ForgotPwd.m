@@ -83,7 +83,7 @@
     else {
         
         if (txtAnswer.text.length <= 0 ) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please fill answer field!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please enter the answer for your security question." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
         
         }

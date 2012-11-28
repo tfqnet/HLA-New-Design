@@ -305,6 +305,16 @@
         [txtAgentCode becomeFirstResponder];
         return FALSE;
         
+    }else {
+        if (txtAgentCode.text.length < 8) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Invalid Agent Code length. Agent Code length should be 8 characters long"
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            [txtAgentCode becomeFirstResponder];
+            return FALSE;
+        }
     }
     
     if ([txtAgentName.text isEqualToString:@""] || [txtAgentName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length == 0 ) {

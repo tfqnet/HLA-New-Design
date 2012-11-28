@@ -1493,8 +1493,8 @@
                     BrowserViewController *controller = [[BrowserViewController alloc] init];
                     controller.title = @"Quotation";
                     controller.delegate = self;
-                controller.premH = premH;
-                controller.premBH = premBH;
+                //controller.premH = premH;
+                //controller.premBH = premBH;
                 
                 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
                 UINavigationController *container = [[UINavigationController alloc] init];

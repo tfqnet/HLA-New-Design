@@ -174,7 +174,7 @@
             */
            
             CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
-            [self presentViewController:carouselMenu animated:NO completion:Nil];
+            [self presentViewController:carouselMenu animated:YES completion:Nil];
             
             [self updateDateLogin];
             //            [self checkingLastLogout];
@@ -279,7 +279,7 @@
                 txtPassword.text = @"";
                 
             } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Password. Please check your password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Username or Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
                 [alert show];
                 
             }

@@ -36,6 +36,7 @@ const int numberOfModule = 4;
 {
     [super viewDidLoad];
     outletCarousel.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg11.jpg"]];
+    self.view.backgroundColor = [UIColor clearColor];
     outletCarousel.dataSource = self;
     outletCarousel.delegate = self;
     outletCarousel.type = iCarouselTypeRotary;

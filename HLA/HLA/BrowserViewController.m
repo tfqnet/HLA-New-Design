@@ -55,12 +55,16 @@
     
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(revealRightSidebar:)];
     
+    
+    
     CDVViewController* browserController_page = [CDVViewController new];
     browserController_page.wwwFolderName = @"www";
     browserController_page.startPage = @"Page1.html";//(NSString *)objectHTML;
-    browserController_page.view.frame = CGRectMake(0, 0, 768, 1000);
+    browserController_page.view.frame = CGRectMake(0, 0, 758, 1000);
     [self.view addSubview:browserController_page.view];
     browserController_page = nil;
+    
+    
     
     
     self.navigationItem.revealSidebarDelegate = self;
@@ -191,6 +195,8 @@
     browserController.startPage = (NSString *)objectHTML;
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
+
+    
     
     browserController = nil;
     
