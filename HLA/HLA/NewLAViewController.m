@@ -53,6 +53,10 @@
     
     NSLog(@"%@",databasePath);
     
+    char as_string[4];
+    int nu = sprintf(as_string, "%03d",9);
+    NSLog(@"%3d",nu);
+    
     LANameField.enabled = NO;
     sexSegment.enabled = NO;
     LAAgeField.enabled = NO;

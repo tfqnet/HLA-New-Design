@@ -76,7 +76,7 @@
 @synthesize deducPopover = _deducPopover;
 @synthesize planList = _planList;
 @synthesize deductList = _deductList;
-@synthesize planCondition,deducCondition;
+@synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm;
 
 #pragma mark - Cycle View
 
@@ -710,12 +710,13 @@
     quarterMedRiderPrem = [[NSMutableArray alloc] init];
     monthMedRiderPrem = [[NSMutableArray alloc] init];
     
+    incomeRiderCode = [[NSMutableArray alloc] init];
+    incomeRiderTerm = [[NSMutableArray alloc] init];
     incomeRiderAnn = [[NSMutableArray alloc] init];
     incomeRiderHalf = [[NSMutableArray alloc] init];
     incomeRiderQuar = [[NSMutableArray alloc] init];
     incomeRiderMonth = [[NSMutableArray alloc] init];
     incomeRiderSA = [[NSMutableArray alloc] init];
-    incomeRiderGYI = [[NSMutableArray alloc] init];
     incomeRiderCSV = [[NSMutableArray alloc] init];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -1026,67 +1027,14 @@
         //for income rider
         if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"]||[RidCode isEqualToString:@"ID20R"]||[RidCode isEqualToString:@"ID30R"]||[RidCode isEqualToString:@"ID40R"]) {
             
+            [incomeRiderCode addObject:RidCode];
+            [incomeRiderTerm addObject:[NSString stringWithFormat:@"%d",ridTerm]];
+            [incomeRiderSA addObject:[NSString stringWithFormat:@"%.2f",ridSA]];
             [incomeRiderAnn addObject:calRiderAnn];
             [incomeRiderHalf addObject:calRiderHalf];
             [incomeRiderQuar addObject:calRiderQuarter];
             [incomeRiderMonth addObject:calRiderMonth];
             NSLog(@"income insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
-            
-            double GYIRate;
-            if ([RidCode isEqualToString:@"ID20R"] ) {
-                if (age >= 21 && age < 91 ) {
-                    GYIRate = 100.00;
-                }
-                else {
-                    GYIRate = 0.00;
-                }
-            }
-            else if ([RidCode isEqualToString:@"ID30R"]) {
-                if (age >= 31 && age < 91 ) {
-                    GYIRate = 100.00;
-                }
-                else {
-                    GYIRate = 0.00;
-                }
-            }
-            else if ([RidCode isEqualToString:@"ID40R"]) {
-                if (age >= 41 && age < 91 ) {
-                    GYIRate = 100.00;
-                }
-                else {
-                    GYIRate = 0.00;
-                }
-            }
-            else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"IE20R"] ) {
-                if (age < 21) {
-                    GYIRate = 100.00;
-                }
-                else {
-                    GYIRate = 0.00;
-                }
-            }
-            else if ([RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"IE30R"]) {
-                if (age < 31) {
-                    GYIRate = 100.00;
-                }
-                else {
-                    GYIRate = 0.00;
-                }
-            }
-            else if ([RidCode isEqualToString:@"I40R"]) {
-                if (age < 41) {
-                    GYIRate = 100.00;
-                }
-                else {
-                    GYIRate = 0.00;
-                }
-            }
-            
-            NSString *gyi = [NSString stringWithFormat:@"%.2f",GYIRate];
-            NSString *ridSumA = [NSString stringWithFormat:@"%.2f",ridSA];
-            [incomeRiderGYI addObject:gyi];
-            [incomeRiderSA addObject:ridSumA];
-            NSLog(@"GYI(%@):%@, SA:%@",RidCode,gyi,ridSumA);
             
             //get CSV rate
             [self getRiderCSV:RidCode];
@@ -1450,58 +1398,6 @@
         monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
     }
     
-    double GYIRate;
-    if ([riderCode isEqualToString:@"ID20R"] ) {
-        if (age >= 21 && age < 91 ) {
-            GYIRate = 100.00;
-        }
-        else {
-            GYIRate = 0.00;
-        }
-    }
-    else if ([riderCode isEqualToString:@"ID30R"]) {
-        if (age >= 31 && age < 91 ) {
-            GYIRate = 100.00;
-        }
-        else {
-            GYIRate = 0.00;
-        }
-    }
-    else if ([riderCode isEqualToString:@"ID40R"]) {
-        if (age >= 41 && age < 91 ) {
-            GYIRate = 100.00;
-        }
-        else {
-            GYIRate = 0.00;
-        }
-    }
-    else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"IE20R"] ) {
-        if (age < 21) {
-            GYIRate = 100.00;
-        }
-        else {
-            GYIRate = 0.00;
-        }
-    }
-    else if ([riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"IE30R"]) {
-        if (age < 31) {
-            GYIRate = 100.00;
-        }
-        else {
-            GYIRate = 0.00;
-        }
-    }
-    else if ([riderCode isEqualToString:@"I40R"]) {
-        if (age < 41) {
-            GYIRate = 100.00;
-        }
-        else {
-            GYIRate = 0.00;
-        }
-    }
-    
-    inputGYI = GYIRate;
-    NSLog(@"inputGYI:%.2f",inputGYI);
     [self getRiderCSV:riderCode];       //get CSV rate
     inputCSV = riderCSVRate;
     
@@ -2544,56 +2440,195 @@
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
     
     //--TPremiumPayable (basic+incomeRider)
-    double TPremiumPayable = basicPremAnn + incomeRiderPrem + inputIncomeAnn;
+    double TPremiumPayable = (basicPremAnn + incomeRiderPrem + inputIncomeAnn) * requestMOP;
     NSLog(@"basicPrem:%.2f, existIncomePrem:%.2f, inputIncomePrem:%.2f",basicPremAnn,incomeRiderPrem,inputIncomeAnn);
     
     //--rider GYI & CSV
+    incomeRiderGYI = [[NSMutableArray alloc] init];
+    NSMutableArray *RiderGYI = [[NSMutableArray alloc] init];
+    NSMutableArray *InputRiderGYI = [[NSMutableArray alloc] init];
+    NSMutableArray *RiderCSV = [[NSMutableArray alloc] init];
+    NSMutableArray *BasicGYI = [[NSMutableArray alloc] init];
+    
     double _sumRiderGYI = 0;
     double _sumRiderCSV = 0;
-    if (incomeRiderAnn.count != 0) {
-    
-        NSMutableArray *arrRiderGYI = [[NSMutableArray alloc] init];
-        NSMutableArray *arrRiderCSV = [[NSMutableArray alloc] init];
-        for (NSUInteger m=0; m<incomeRiderSA.count; m++) {
+    if (incomeRiderCode.count != 0) {
         
-            double _GYI = [[incomeRiderGYI objectAtIndex:m] doubleValue];
+        for (NSUInteger m=0; m<incomeRiderCode.count; m++) {
+            
+            int CovPrd = [[incomeRiderTerm objectAtIndex:m] intValue];
+            NSString *RidCode = [incomeRiderCode objectAtIndex:m];
             double _riderSA = [[incomeRiderSA objectAtIndex:m] doubleValue];
-            double _riderGYI = (_GYI/100) * _riderSA;
-            NSString *strCalGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_riderGYI]];
-            strCalGYI = [strCalGYI stringByReplacingOccurrencesOfString:@"," withString:@""];
-            [arrRiderGYI addObject:strCalGYI];
-            NSLog(@"storedGYI:%.2f, calGYI:%@",_GYI,strCalGYI);
-        
+            
+            for (int n=1; n<=CovPrd; n++) {     //get gyi value for each income rider
+                double GYIRate;
+                double _GYI;
+                if ([RidCode isEqualToString:@"ID20R"] ) {
+                    if (CovPrd >= 21 && CovPrd < 91 ) {
+                        GYIRate = 100.00;
+                    }
+                    else {
+                        GYIRate = 0.00;
+                    }
+                }
+                else if ([RidCode isEqualToString:@"ID30R"]) {
+                    if (CovPrd >= 31 && CovPrd < 91 ) {
+                        GYIRate = 100.00;
+                    }
+                    else {
+                        GYIRate = 0.00;
+                    }
+                }
+                else if ([RidCode isEqualToString:@"ID40R"]) {
+                    if (CovPrd >= 41 && CovPrd < 91 ) {
+                       GYIRate = 100.00;
+                    }
+                    else {
+                        GYIRate = 0.00;
+                    }
+                }
+                else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"IE20R"] ) {
+                    if (CovPrd < 21) {
+                        GYIRate = 100.00;
+                    }
+                    else {
+                        GYIRate = 0.00;
+                    }
+                }
+                else if ([RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"IE30R"]) {
+                    if (CovPrd < 31) {
+                        GYIRate = 100.00;
+                    }
+                    else {
+                        GYIRate = 0.00;
+                    }
+                }
+                else if ([RidCode isEqualToString:@"I40R"]) {
+                    if (CovPrd < 41) {
+                        GYIRate = 100.00;
+                    }
+                    else {
+                        GYIRate = 0.00;
+                    }
+                }
+                            
+                _GYI = _riderSA * (GYIRate/100);
+                NSString *strGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_GYI]];
+                strGYI = [strGYI stringByReplacingOccurrencesOfString:@"," withString:@""];
+                [RiderGYI addObject:strGYI];
+            }
+                
+            double _sumGYI;
+            for (int j=0; j<RiderGYI.count; j++) {      //sum all gyi
+                _sumGYI = _sumGYI + [[RiderGYI objectAtIndex:j] doubleValue];
+            }
+                
+            NSString *strGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_sumGYI]];
+            strGYI = [strGYI stringByReplacingOccurrencesOfString:@"," withString:@""];
+            [incomeRiderGYI addObject:strGYI];
+
             double _csv = [[incomeRiderCSV objectAtIndex:m] doubleValue];
             double _riderCSV = _csv * _riderSA / 1000;
             NSString *strCalCSV = [formatter stringFromNumber:[NSNumber numberWithDouble:_riderCSV]];
             strCalCSV = [strCalCSV stringByReplacingOccurrencesOfString:@"," withString:@""];
-            [arrRiderCSV addObject:strCalCSV];
-            NSLog(@"storedCSV:%.2f, calCSV:%@",_csv,strCalCSV);
+            [RiderCSV addObject:strCalCSV];
         }
         
-        for (int h=0; h<arrRiderGYI.count; h++) {
-            _sumRiderGYI = _sumRiderGYI + [[arrRiderGYI objectAtIndex:h] doubleValue];
+        for (int h=0; h<incomeRiderGYI.count; h++) {
+            _sumRiderGYI = _sumRiderGYI + [[incomeRiderGYI objectAtIndex:h] doubleValue];
         }
         
-        for (int n=0; n<arrRiderCSV.count; n++) {
-            _sumRiderCSV = _sumRiderCSV + [[arrRiderCSV objectAtIndex:n] doubleValue];
+        for (int n=0; n<RiderCSV.count; n++) {
+            _sumRiderCSV = _sumRiderCSV + [[RiderCSV objectAtIndex:n] doubleValue];
         }
     }
     
     //input rider GYI and CSV
+    int inputTerm = [termField.text intValue];
     double _inputSA = [sumField.text doubleValue];
-    double _inputGYI = (inputGYI/100) * _inputSA;
-    double _inputCSV = inputCSV * _inputSA / 1000;
     
-    NSLog(@"sumRiderGYI:%.2f, inputRiderGYI:%.2f",_sumRiderGYI,_inputGYI);
+    for (int n=1; n<=inputTerm; n++) {
+        double GYIRate;
+        double _GYI;
+        if ([riderCode isEqualToString:@"ID20R"] ) {
+            if (inputTerm >= 21 && inputTerm < 91 ) {
+                GYIRate = 100.00;
+            }
+            else {
+                GYIRate = 0.00;
+            }
+        }
+        else if ([riderCode isEqualToString:@"ID30R"]) {
+            if (inputTerm >= 31 && inputTerm < 91 ) {
+                GYIRate = 100.00;
+            }
+            else {
+                GYIRate = 0.00;
+            }
+        }
+        else if ([riderCode isEqualToString:@"ID40R"]) {
+            if (inputTerm >= 41 && inputTerm < 91 ) {
+                GYIRate = 100.00;
+            }
+            else {
+                GYIRate = 0.00;
+            }
+        }
+        else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"IE20R"] ) {
+            if (inputTerm < 21) {
+                GYIRate = 100.00;
+            }
+            else {
+                GYIRate = 0.00;
+            }
+        }
+        else if ([riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"IE30R"]) {
+            if (inputTerm < 31) {
+                GYIRate = 100.00;
+            }
+            else {
+                GYIRate = 0.00;
+            }
+        }
+        else if ([riderCode isEqualToString:@"I40R"]) {
+            if (inputTerm < 41) {
+                GYIRate = 100.00;
+            }
+            else {
+                GYIRate = 0.00;
+            }
+        }
+             
+        _GYI = _inputSA * (GYIRate/100);
+        NSString *strGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_GYI]];
+        strGYI = [strGYI stringByReplacingOccurrencesOfString:@"," withString:@""];
+        [InputRiderGYI addObject:strGYI];
+    }
+    double _sumInputGYI= 0;
+    for (int k=0; k<InputRiderGYI.count; k++) {
+        _sumInputGYI = _sumInputGYI + [[InputRiderGYI objectAtIndex:k] doubleValue];
+    }
+    double _inputCSV = inputCSV * _inputSA / 1000;
+    NSLog(@"sumRiderGYI:%.2f, inputRiderGYI:%.2f",_sumRiderGYI,_sumInputGYI);
     NSLog(@"sumRiderCSV:%.2f, inputRiderCSV:%.2f",_sumRiderCSV,_inputCSV);
     
     //--basic GYI
-    [self getBasicGYI];         //get basicGYI rate
-    double _basicGYI = requestBasicSA * (basicGYIRate/100);
+    for (int k=1; k<=requestCoverTerm; k++) {
+        int newAge = k + requestAge;
+        [self getBasicGYI:newAge];      //get basicGYI rate
+        double _basicGYI = requestBasicSA * (basicGYIRate/100);
+
+        NSString *strGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicGYI]];
+        strGYI = [strGYI stringByReplacingOccurrencesOfString:@"," withString:@""];
+        [BasicGYI addObject:strGYI];
+    }
+
+    double _sumBasicGYI = 0;
+    for (int h=0; h<BasicGYI.count; h++) {
+        _sumBasicGYI = _sumBasicGYI + [[BasicGYI objectAtIndex:h] doubleValue];
+    }
     
-    double totalGYI = _basicGYI + _sumRiderGYI + _inputGYI;
+    double totalGYI = _sumBasicGYI + _sumRiderGYI + _sumInputGYI;
     NSLog(@"totalGYI:%.2f",totalGYI);
     
     //--basic CSV
@@ -2829,7 +2864,7 @@
     }
 }
 
--(void)getBasicGYI
+-(void)getBasicGYI:(int)aAge
 {
     sqlite3_stmt *statement;
     NSString *querySQL;
@@ -2837,10 +2872,10 @@
     {
         if (riderBH.storedAdvance > 0) {
             querySQL = [NSString stringWithFormat:
-                        @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"%d\" AND PremPayOpt=%d",requestAge,requestAge,riderBH.storedAdvance,requestMOP];
+                        @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"%d\" AND PremPayOpt=%d",aAge,aAge,riderBH.storedAdvance,requestMOP];
         } else {
             querySQL = [NSString stringWithFormat:
-                        @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"N\" AND PremPayOpt=%d",requestAge,requestAge,requestMOP];
+                        @"Select rate from trad_sys_Basic_GYI WHERE FromAge<=%d AND ToAge>=%d AND advOption=\"N\" AND PremPayOpt=%d",aAge,aAge,requestMOP];
         }
         
 //        NSLog(@"%@",querySQL);
@@ -2849,7 +2884,7 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 basicGYIRate =  sqlite3_column_double(statement, 0);
-                NSLog(@"basicGYIRate:%.2f",basicGYIRate);
+//                NSLog(@"basicGYIRate:%.2f",basicGYIRate);
                 
             } else {
                 NSLog(@"error access trad_sys_Basic_GYI");
