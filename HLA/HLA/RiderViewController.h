@@ -231,8 +231,6 @@
 @property (nonatomic,strong) NSMutableArray *incomeRiderGYI;
 @property (nonatomic,strong) NSMutableArray *incomeRiderCSV;
 @property (nonatomic,strong) NSMutableArray *incomeRiderSA;
-@property (nonatomic,strong) NSMutableArray *incomeRiderCode;
-@property (nonatomic,strong) NSMutableArray *incomeRiderTerm;
 
 - (IBAction)btnPTypePressed:(id)sender;
 - (IBAction)btnAddRiderPressed:(id)sender;
