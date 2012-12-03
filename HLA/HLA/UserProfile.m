@@ -306,9 +306,9 @@
         return FALSE;
         
     }else {
-        if (txtAgentCode.text.length < 8) {
+        if (txtAgentCode.text.length != 8) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Invalid Agent Code length. Agent Code length should be 8 characters long"
+                                                            message:@"Invalid Agent Code length. Agent Code length should be exact 8 characters long"
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             
@@ -384,6 +384,17 @@
         [txtAgentContactNo becomeFirstResponder];
         return false;
     }
+    
+    if (![[txtLeaderCode.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+        if (txtLeaderCode.text.length != 8) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Invalid Immediate Leader Code length. Immediate Leader Code length should be 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            [txtAgentContactNo becomeFirstResponder];
+            return false;
+        }
+    }    
+    
     
     if (![[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
         if( [self NSStringIsValidEmail:txtEmail.text] == FALSE ){

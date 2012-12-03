@@ -252,7 +252,10 @@
 
 -(void)calculatedPrem
 {
+    
+    
     if (menuBH.storedSINo) {
+    
         PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
         premView.modalPresentationStyle = UIModalPresentationFormSheet;
         premView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

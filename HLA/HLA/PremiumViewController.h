@@ -91,6 +91,8 @@
 @property (nonatomic,strong) NSMutableArray *waiverRiderHalf2;
 @property (nonatomic,strong) NSMutableArray *waiverRiderMonth2;
 
+@property (weak, nonatomic) IBOutlet UILabel *lblMessage;
+
 - (IBAction)doClose:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *doGenerate;
 - (IBAction)btnGenerate:(id)sender;

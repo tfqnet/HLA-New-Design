@@ -252,7 +252,7 @@
 
 
 
-<div id="pageLength" class="pageLength" style="position:relative;height:800px;">
+<div id="pageLength" class="pageLength" style="position:relative;height:870px;">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -2023,7 +2023,9 @@ ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secar
 
 
 
-</div><br/><br/><br/>
+</div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        
+    
 <table style="border-collapse:collapse;border:0px solid black;width:100%;" class="tblFooter">
 
 <tr>
@@ -2097,7 +2099,7 @@ Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Pet
             			if (temp == "C"){
             				temp = "C+"	
             				$('#table-design2Wide tr').css('display','table-row');
-        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
             					if (result != null && result.rows != null) {
                 					var row = result.rows.item(0);
                 						$('#CRiderTerm').html(row.RiderTerm);
@@ -2105,23 +2107,23 @@ Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Pet
                 						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 150) / 100));
                 						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 250) / 100));
                 						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SA).replace(",","")) * 25) / 100));
-                						if (row.PlanOption == "L"){
+                						if (row.PlanOption == "Level"){
                 							$('#cPlanOption').html('Level Cover');
                 							$('#cGuaranteedIncreasingSumAssured').hide();
                 							$('#cNoClaimBenefit').hide();
                 						}
-                						else if (row.PlanOption == "I"){ //wideTable value? nursing care allowance?
+                						else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
                 							$('#cPlanOption').html('Increasing Cover');
                 							$('#cNoClaimBenefit').hide();
                 						}
-                						else if (row.PlanOption == "B"){
+                						else if (row.PlanOption == "Level_NCB"){
                 							$('#cPlanOption').html('Level Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							$('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
                 							$('#cGuaranteedIncreasingSumAssured').hide();
                 						}
-                						else if (row.PlanOption == "N"){
+                						else if (row.PlanOption == "Increasing_NCB"){
                 							$('#cPlanOption').html('Increasing Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
+                							$('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
                 							//$('#cGuaranteedIncreasingSumAssured').hide();
                 							$('#cVeryEarlyTD').html('50% of Rider Sum Assured');
                 							$('#cEarlyTD').html('150% of Rider Sum Assured');
@@ -2132,7 +2134,7 @@ Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Pet
         					},errorHandler);        				
             			}
             			if (temp == "HB"){
-        					transaction.executeSql("Select Units from SI_Trad_Rider_Details_all where RiderCode = '" + temp + "'", [], function(transaction, result) {
+        					transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
             					if (result != null && result.rows != null) {
                 					var row = result.rows.item(0);
                 						$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
@@ -2145,7 +2147,7 @@ Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Pet
             		}
             		
             		for (var j=0;j<rider.length;j++){
-        					transaction.executeSql("Select * from SI_Trad_Rider_Details_all where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
+        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
             					if (result != null && result.rows != null) {
                 					var row = result.rows.item(0);
                 					//alert(row.RiderTerm)

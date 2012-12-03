@@ -10,7 +10,7 @@
 
 @implementation AppDelegate
 @synthesize indexNo;
-@synthesize userRequest;
+@synthesize userRequest, MhiMessage;
 
 @synthesize window = _window;
 
@@ -45,7 +45,7 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     [fileManager removeItemAtPath:masterFile error:nil];
     fileManager = Nil;
     //for ios6 end
-
+    
     return YES;
 }
 							

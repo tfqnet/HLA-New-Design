@@ -169,7 +169,7 @@ const int numberOfModule = 4;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
+    if (buttonIndex == 0) {
         [self updateDateLogout];
         
     }
@@ -222,8 +222,8 @@ const int numberOfModule = 4;
                           initWithTitle: NSLocalizedString(@"Exit",nil)
                           message: NSLocalizedString(@"Are you sure you want to exit?",nil)
                           delegate: self
-                          cancelButtonTitle: NSLocalizedString(@"No",nil)
-                          otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+                          cancelButtonTitle: NSLocalizedString(@"Yes",nil)
+                          otherButtonTitles: NSLocalizedString(@"no",nil), nil];
     
     [alert show ];
 }

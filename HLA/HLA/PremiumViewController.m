@@ -10,12 +10,15 @@
 #import "MainScreen.h"
 #import "ReportViewController.h"
 #import "BrowserViewController.h"
+#import "AppDelegate.h"
+#import "RiderViewController.h"
 
 @interface PremiumViewController ()
 
 @end
 
 @implementation PremiumViewController
+@synthesize lblMessage;
 @synthesize doGenerate;
 @synthesize WebView;
 @synthesize requestBasicSA,requestBasicHL,requestMOP,requestTerm,requestPlanCode,requestSINo,requestAge,requestOccpCode;
@@ -37,7 +40,7 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    
+
     requestSINo = premBH.storedSINo;
     requestTerm = premBH.storedCovered;
     requestOccpCode = premBH.storedOccpCode;
@@ -46,6 +49,29 @@
     requestAge = premBH.storedAge;
     requestBasicSA = premBH.storedbasicSA;
     requestBasicHL = premBH.storedbasicHL;
+
+    
+    // ----------- edited by heng
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    if (![zzz.MhiMessage isEqualToString:@""]) {
+        
+        NSString *RevisedSumAssured = zzz.MhiMessage;
+        
+        if (requestBasicSA > RevisedSumAssured ) {
+            lblMessage.text = @"";
+            lblMessage.hidden = TRUE;
+            
+        }else {
+            lblMessage.text = [NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",RevisedSumAssured];
+            lblMessage.hidden = FALSE;
+        }
+        
+    }
+    else {
+        lblMessage.hidden = TRUE;
+    }
+    // ------------- end -------------
+    
     
     NSLog(@"Prem-SINo:%@, MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@ sex:%@",requestSINo,self.requestMOP,self.requestTerm,self.requestBasicSA,self.requestBasicHL,[self.requestOccpCode description],premH.storedSex);
     
@@ -65,7 +91,10 @@
         NSLog(@"rider not exist!");
     }
     
+    
     [self calculatePremium];
+    
+        
     doGenerate.hidden = TRUE;
     
     
@@ -258,8 +287,8 @@
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
         @"<html><body><table border='1' width='70%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
         "<tr><td width='32%%' align='center' style='height:45px; background-color:#4F81BD;'>&nbsp;</td>"
-            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Annually</font></td>"
-            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Half-Yearly</font></td>"
+            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Annual</font></td>"
+            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Semi-Annual</font></td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Quarterly</font></td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Monthly</font></td></tr>"
             "<tr><td style='height:35px;'><font face='TreBuchet MS' size='3'>Basic Plan</font></td>"
@@ -526,6 +555,7 @@
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_IV\" AND PlanOption=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planMGIV,[riderAge objectAtIndex:i],[riderAge objectAtIndex:i]];
             }
             else if ([RidCode isEqualToString:@"CIWP"]||[RidCode isEqualToString:@"LCWP"]||[RidCode isEqualToString:@"PR"]||[RidCode isEqualToString:@"SP_STD"]||[RidCode isEqualToString:@"SP_PRE"]) {
+                sqlite3_close(contactDB);
                 continue;
             }
             else {
@@ -886,6 +916,7 @@
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",[riderCode objectAtIndex:i]];
             }
             else {
+                sqlite3_close(contactDB);
                 continue;
             }
             
@@ -1406,6 +1437,7 @@
     [self setMonthRiderTot:nil];
     [self setRequestOccpCode:nil];
     [self setDoGenerate:nil];
+    [self setLblMessage:nil];
     [super viewDidUnload];
 }
 

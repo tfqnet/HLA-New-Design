@@ -105,7 +105,7 @@ bool PostcodeContinue = TRUE;
     //ContactType = [[NSArray alloc] init];
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
-    //outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     
 }
 
@@ -326,6 +326,8 @@ bool PostcodeContinue = TRUE;
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    _OccupationList = Nil;
     
     if ([self Validation] == TRUE) {
         
@@ -934,7 +936,7 @@ PostcodeContinue = TRUE;
     
     
     if([[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
+        if ([self OptionalOccp] == FALSE) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [txtOfficeAddr1 becomeFirstResponder];
@@ -955,7 +957,7 @@ PostcodeContinue = TRUE;
     
     if (PostcodeContinue == TRUE) {
         if([txtOfficePostcode.text isEqualToString:@""]){
-            if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
+            if ([self OptionalOccp] == FALSE) {
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1220,7 +1222,7 @@ PostcodeContinue = TRUE;
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
     OccupCodeSelected = OccupCode;
-    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"]) {
+    if ([self OptionalOccp] == TRUE) {
         lblOfficeAddr.text = @"Office Address";
         lblPostCode.text = @"Postcode";
     }
@@ -1229,12 +1231,43 @@ PostcodeContinue = TRUE;
         lblPostCode.text = @"Postcode*";
     }
     
+    
 }
+
+- (void)OccupDescSelected:(NSString *)color {
+    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:color]forState:UIControlStateNormal];
+    [self.OccupationListPopover dismissPopoverAnimated:YES];
+    
+    [self.view endEditing:YES];
+    [self resignFirstResponder];
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+}
+
+-(BOOL)OptionalOccp{
+    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"] 
+        || [OccupCodeSelected isEqualToString:@"OCC01109"] || [OccupCodeSelected isEqualToString:@"OCC01179"]
+        || [OccupCodeSelected isEqualToString:@"OCC01865"] || [OccupCodeSelected isEqualToString:@"OCC02229"]
+        || [OccupCodeSelected isEqualToString:@"OCC00570"] || [OccupCodeSelected isEqualToString:@"OCC01596"]
+        || [OccupCodeSelected isEqualToString:@"OCC02147"] || [OccupCodeSelected isEqualToString:@"OCC02148"]
+        || [OccupCodeSelected isEqualToString:@"OCC02149"] || [OccupCodeSelected isEqualToString:@"OCC02321"]) {
+        return TRUE;    
+    }
+    else {
+        return FALSE;
+    }
+    
+}
+
 
 - (IBAction)ActionCancel:(id)sender {
     if (_delegate != Nil) {
         [_delegate FinishInsert ];
     }
+    
+    _OccupationList = Nil;
     
     [self resignFirstResponder];
     [self.view endEditing:YES];
@@ -1422,8 +1455,9 @@ PostcodeContinue = TRUE;
         [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
     //}
     */
+    
     [self resignFirstResponder];
-    [self.view endEditing:TRUE];
+    [self.view endEditing:YES];
     
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
@@ -1444,12 +1478,6 @@ PostcodeContinue = TRUE;
     
 }
 
-- (void)OccupDescSelected:(NSString *)color {
-    [outletOccup setTitle:color forState:UIControlStateNormal];
-    [self.OccupationListPopover dismissPopoverAnimated:YES];
-    [self resignFirstResponder];
-    [self.view endEditing:TRUE];
-}
 
 
 - (IBAction)btnContact2:(id)sender {

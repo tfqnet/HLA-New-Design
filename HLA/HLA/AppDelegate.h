@@ -13,5 +13,6 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, assign,readwrite) int indexNo;
 @property (nonatomic,strong) id userRequest;
+@property (nonatomic,strong) id MhiMessage;
 
 @end

@@ -14,6 +14,7 @@
 #import "SIHandler.h"
 #import "MainScreen.h"
 #import "BasicPlanHandler.h"
+#import "AppDelegate.h"
 
 
 @interface BasicPlanViewController ()
@@ -351,11 +352,16 @@
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
+    //AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    
     if (requestSINo.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1001];
         [alert show];
     }
+    
+    
+     
     else if (yearlyIncomeField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];

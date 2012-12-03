@@ -23,10 +23,10 @@ function setPage(){
         },errorHandler,nullHandler);
     
     db.transaction(function(transaction) {
-                   transaction.executeSql("Select AgentName,AgentCode from Agent_profile LIMIT 1", [], function(transaction, result) {
+                   transaction.executeSql("Select AgentLoginID,AgentCode from Agent_profile LIMIT 1", [], function(transaction, result) {
                                           if (result != null && result.rows != null) {
                                           var row = result.rows.item(0); 
-                                          $('#agentName').html(row.AgentName);
+                                          $('#agentName').html(row.AgentLoginID);
                                           $('#agentCode').html(row.AgentCode);
                                           }
                                           },errorHandler);
@@ -59,10 +59,10 @@ function setPageDesc(page){
         },errorHandler,nullHandler);
     
     db.transaction(function(transaction) {
-                   transaction.executeSql("Select AgentName,AgentCode from Agent_profile LIMIT 1", [], function(transaction, result) {
+                   transaction.executeSql("Select AgentLoginID,AgentCode from Agent_profile LIMIT 1", [], function(transaction, result) {
                                           if (result != null && result.rows != null) {
                                           var row = result.rows.item(0); 
-                                          $('#agentName').html(row.AgentName);
+                                          $('#agentName').html(row.AgentLoginID);
                                           $('#agentCode').html(row.AgentCode);
                                           }
                                           },errorHandler);

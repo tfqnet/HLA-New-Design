@@ -235,8 +235,8 @@
                               initWithTitle: NSLocalizedString(@"Log Out",nil)
                               message: NSLocalizedString(@"Are you sure you want to log out?",nil)
                               delegate: self
-                              cancelButtonTitle: NSLocalizedString(@"No",nil)
-                              otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+                              cancelButtonTitle: NSLocalizedString(@"Yes",nil)
+                              otherButtonTitles: NSLocalizedString(@"No",nil), nil];
         [alert show ];
     }
     else {
@@ -246,7 +246,7 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
+    if (buttonIndex == 0) {
         [self updateDateLogout];
     }
 }

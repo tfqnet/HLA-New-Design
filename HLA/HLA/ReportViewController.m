@@ -464,14 +464,23 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         }
     }
     
-    //summary page
-    pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page12.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
-    DBID = [_db ExecuteINSERT:sqlStmt];
-    if (DBID <= 0){
-        NSLog(@"Error inserting data into database.");
-    }
     
+      
+      /*  
+        //summary page
+    if ([_dataTable.rows containsObject:@"I20R" ] == TRUE || [_dataTable.rows containsObject:@"I30R" ] == TRUE || [_dataTable.rows containsObject:@"I40R" ] == TRUE || [_dataTable.rows containsObject:@"IE20R" ] == TRUE
+        ||[_dataTable.rows containsObject:@"IE30R"  ] == TRUE ||[_dataTable.rows containsObject:@"ID20R" ] == TRUE ||[_dataTable.rows containsObject:@"ID30R" ] == TRUE ||[_dataTable.rows containsObject:@"ID40R" ] == TRUE) {
+        
+        pageNum++;
+        sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page12.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+        DBID = [_db ExecuteINSERT:sqlStmt];
+        if (DBID <= 0){
+            NSLog(@"Error inserting data into database.");
+        }
+        
+        
+    }
+    */
     for (row in _dataTable.rows) //income rider
     {
         if ([[row objectAtIndex:0] isEqualToString:@"I20R"] || [[row objectAtIndex:0] isEqualToString:@"I30R"] || [[row objectAtIndex:0] isEqualToString:@"I40R"] || [[row objectAtIndex:0] isEqualToString:@"ID20R"] || [[row objectAtIndex:0] isEqualToString:@"ID30R"] || [[row objectAtIndex:0] isEqualToString:@"ID40R"] || [[row objectAtIndex:0] isEqualToString:@"IE20R"] || [[row objectAtIndex:0] isEqualToString:@"IE30R"])
@@ -496,6 +505,21 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             //NSLog(@"%@",[row objectAtIndex:0]);
             
         }
+    }
+    
+    //summary page
+    for (row in _dataTable.rows){
+        if ([[row objectAtIndex:0] isEqualToString:@"I20R"] || [[row objectAtIndex:0] isEqualToString:@"I30R"] || [[row objectAtIndex:0] isEqualToString:@"I40R"] || [[row objectAtIndex:0] isEqualToString:@"ID20R"] || [[row objectAtIndex:0] isEqualToString:@"ID30R"] || [[row objectAtIndex:0] isEqualToString:@"ID40R"] || [[row objectAtIndex:0] isEqualToString:@"IE20R"] || [[row objectAtIndex:0] isEqualToString:@"IE30R"])
+        {
+            pageNum++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page12.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            break;
+        }
+        
     }
     
     //description of basic plan, 2 pages
@@ -731,6 +755,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         NSLog(@"Error inserting data into database.");
     }
     
+    
     //------- end ---------
     
     NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
@@ -927,6 +952,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             sqlite3_finalize(statement);
         }
+        
+        sqlite3_close(contactDB);
     }    
     
 }
@@ -1206,9 +1233,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 }
                 
             }
-            
+            sqlite3_finalize(statement);
         }
-        
+        sqlite3_close(contactDB);  
     }    
 }
 
@@ -2261,8 +2288,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSMutableArray *aValue = [[NSMutableArray alloc] init ];
     NSMutableArray *aValueEnd = [[NSMutableArray alloc] init ];
     
+
+       
     NSLog(@"insert to SI_Temp_Trad_Summary --- start");
-    
     
     int inputAge;
     double IncomeRiderPlusIncomeBuilder;

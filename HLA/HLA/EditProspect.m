@@ -83,6 +83,7 @@ bool IsContinue = TRUE;
 {
     [super viewDidLoad];
     
+    
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg8.jpg"]];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -142,7 +143,7 @@ bool IsContinue = TRUE;
     
     
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
-    
+    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)picker;
@@ -461,7 +462,9 @@ bool IsContinue = TRUE;
                 NSString *OccpDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                 //txtOccup.text = OccpDesc;
                 OccupCodeSelected = pp.ProspectOccupationCode;
-                [outletOccup setTitle:OccpDesc forState:UIControlStateNormal];
+                //[outletOccup setTitle:OccpDesc forState:UIControlStateNormal];
+                [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:OccpDesc]forState:UIControlStateNormal];
+                
             }
             sqlite3_finalize(statement);
         }
@@ -1153,7 +1156,7 @@ bool IsContinue = TRUE;
     
     
     if([[txtOfiiceAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
+        if ([self OptionalOccp] == FALSE) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1174,7 +1177,7 @@ bool IsContinue = TRUE;
     
     if (IsContinue == TRUE) {
         if([txtOfficePostCode.text isEqualToString:@""]){
-            if (!([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"])) {
+            if ([self OptionalOccp] == FALSE) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 
@@ -1435,7 +1438,7 @@ bool IsContinue = TRUE;
     OccupCodeSelected = OccupCode;
     strChanges = @"Yes";
     
-    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"]) {
+    if ([self OptionalOccp] == TRUE ) {
         lblOfficeAddr.text = @"Office Address";
         lblPostCode.text = @"Postcode";
     }
@@ -1443,14 +1446,36 @@ bool IsContinue = TRUE;
         lblOfficeAddr.text = @"Office Address*";
         lblPostCode.text = @"Postcode*";
     }
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
 }
 
 - (void)OccupDescSelected:(NSString *)color {
-    [outletOccup setTitle:color forState:UIControlStateNormal];
+    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:color]forState:UIControlStateNormal];
+    
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
     
     [self.OccupationListPopover dismissPopoverAnimated:YES];
+    
+}
+
+-(BOOL)OptionalOccp{
+    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"] 
+        || [OccupCodeSelected isEqualToString:@"OCC01109"] || [OccupCodeSelected isEqualToString:@"OCC01179"]
+        || [OccupCodeSelected isEqualToString:@"OCC01865"] || [OccupCodeSelected isEqualToString:@"OCC02229"]
+        || [OccupCodeSelected isEqualToString:@"OCC00570"] || [OccupCodeSelected isEqualToString:@"OCC01596"]
+        || [OccupCodeSelected isEqualToString:@"OCC02147"] || [OccupCodeSelected isEqualToString:@"OCC02148"]
+        || [OccupCodeSelected isEqualToString:@"OCC02149"] || [OccupCodeSelected isEqualToString:@"OCC02321"]) {
+        return TRUE;    
+    }
+    else {
+        return FALSE;
+    }
     
 }
 
@@ -1507,12 +1532,16 @@ bool IsContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+    _OccupationList = Nil;
+    
     if ([strChanges isEqualToString:@"Yes"]) {
-        
+        /*
         UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to save all the changes ?" 
                                                        delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", Nil];
         Alert.tag = 1003;
         [Alert show];
+         */
+        [self SaveChanges];
     } 
     else {
         [self dismissModalViewControllerAnimated:YES];
@@ -1939,7 +1968,28 @@ bool IsContinue = TRUE;
 - (BOOL)disablesAutomaticKeyboardDismissal {
     return NO;
 }
+
 - (IBAction)btnCancel:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+ 
+    
+    //[self dismissModalViewControllerAnimated:YES];
+    if ([strChanges isEqualToString:@"Yes"]) {
+        
+        UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to discard all the changes ?" 
+                                                       delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", Nil];
+        Alert.tag = 1003;
+        [Alert show];
+    } 
+    else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    
 }
 @end

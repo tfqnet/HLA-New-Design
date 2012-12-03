@@ -220,14 +220,14 @@
     else {
         
         LANameField.text = NamePP;
-        sex = GenderPP;
+        //sex = GenderPP;
         
-        if ([sex isEqualToString:@"M"]) {
+        if ([GenderPP isEqualToString:@"M"]) {
             sexSegment.selectedSegmentIndex = 0;
         } else {
             sexSegment.selectedSegmentIndex = 1;
         }
-        NSLog(@"sex:%@",sex);
+        NSLog(@"sex:%@",GenderPP);
         
         if ([smoker isEqualToString:@"Y"]) {
             smokerSegment.selectedSegmentIndex = 0;
@@ -237,13 +237,13 @@
         NSLog(@"smoker:%@",smoker);
         
         LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-        DOB = DOBPP;
+        //DOB = DOBPP;
         [self calculateAge];
         LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
         
         [btnCommDate setTitle:commDate forState:UIControlStateNormal];
         
-        occuCode = OccpCodePP;
+        //occuCode = OccpCodePP;
         [self getOccLoadExist];
         LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
         if (occLoading == 0) {
@@ -263,7 +263,8 @@
 //            statusLabel.text = @"Data changed. Please resave!";
 //            statusLabel.textColor = [UIColor redColor];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data change. Do you want to apply to this SI ?"
+                                                       delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No",nil];
         [alert setTag:1004];
         [alert show];
     }
@@ -419,9 +420,77 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
         } else {
+            //---------
+            sex = GenderPP;
+            DOB = DOBPP;
+            occuCode = OccpCodePP;
+            [self calculateAge];
+            [self getOccLoadExist];
+            
+            if (occLoading == 0) {
+                LAOccLoadingField.text = @"STD";
+            } else {
+                LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+            }
+            
+            if (occCPA_PA > 4) {
+                LACPAField.text = @"D";
+                LAPAField.text = @"D";
+            } else {
+                LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+                LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            }
+            //-------------------
             [self updateData];
+            
         }        
     }
+    else if (alertView.tag==1004 && buttonIndex == 1) { // added by heng
+        LANameField.text = clientName;
+        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+        [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
+        
+        if ([sex isEqualToString:@"M"]) {
+            sexSegment.selectedSegmentIndex = 0;
+        } else {
+            sexSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",sex);
+        
+        if ([smoker isEqualToString:@"Y"]) {
+            smokerSegment.selectedSegmentIndex = 0;
+        } else {
+            smokerSegment.selectedSegmentIndex = 1;
+        }
+        NSLog(@"smoker:%@",smoker);
+        
+        [self getOccLoadExist];
+        LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        
+        if (occLoading == 0) {
+            LAOccLoadingField.text = @"STD";
+        } else {
+            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+        
+        if (occCPA_PA > 4) {
+            LACPAField.text = @"D";
+            LAPAField.text = @"D";
+        } else {
+            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        dataInsert = [[NSMutableArray alloc] init];
+        SIHandler *ss = [[SIHandler alloc] init];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            ss = [dataInsert objectAtIndex:i];
+            NSLog(@"storedLA SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
+        }
+        
+    }    
     else if (alertView.tag==1005 && buttonIndex == 0) {
         
         LANameField.text = @"";

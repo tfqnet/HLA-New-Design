@@ -177,8 +177,9 @@
 #pragma mark SidebarViewControllerDelegate
 
 - (void)sidebarViewController:(SidebarViewController *)sidebarViewController didSelectObject:(NSObject *)object objectHTML:(NSObject *)objectHTML atIndexPath:(NSIndexPath *)indexPath {
-     
-    PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+    
+    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+    [v removeFromSuperview];
     
     [self.navigationController setRevealedState:JTRevealedStateNo];
     
@@ -187,19 +188,24 @@
     controller.leftSidebarViewController = sidebarViewController;
     controller.leftSelectedIndexPath = indexPath;
     sidebarViewController.sidebarDelegate = controller;
-    controller.delegate = premView;
     [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
+    controller.delegate = _delegate;
+    
+    /*
+    [self.navigationController setRevealedState:JTRevealedStateNo];
+    self.title = (NSString *)object;
+    self.leftSidebarViewController = sidebarViewController;
+    self.leftSelectedIndexPath = indexPath;
+    sidebarViewController.sidebarDelegate = self;
+    */
     
     browserController = [CDVViewController new];
     browserController.wwwFolderName = @"www";
     browserController.startPage = (NSString *)objectHTML;
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
-
-    
-    
+    //[self.view addSubview:browserController.view];
     browserController = nil;
-    
     
 }
 
@@ -212,10 +218,8 @@
     
     if ([self.view subviews].count > 1) {
         
-        
-        //[_delegate CloseWindow];
-        [self.presentingViewController dismissModalViewControllerAnimated:YES];
-        
+        [_delegate CloseWindow];
+        [self dismissModalViewControllerAnimated:YES];
         
     }
     else {

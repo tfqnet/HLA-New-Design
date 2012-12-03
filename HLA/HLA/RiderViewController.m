@@ -10,7 +10,7 @@
 #import "BasicPlanViewController.h"
 #import "NewLAViewController.h"
 #import "ColorHexCode.h"
-
+#import "AppDelegate.h"
 #import "MainScreen.h"
 
 @interface RiderViewController ()
@@ -85,6 +85,11 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
+    //--------- edited by heng
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    zzz.MhiMessage = @"";
+    //-----------
     
     requestSINo = riderBH.storedSINo;
     requestAge = riderBH.storedAge;
@@ -208,6 +213,8 @@
     [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     deleteBtn.titleLabel.shadowColor = [UIColor lightGrayColor];
     deleteBtn.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    
     
     [super viewDidLoad];
 }
@@ -787,6 +794,7 @@
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_IV\" AND PlanOption=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",planMGIV,[LAge objectAtIndex:i],[LAge objectAtIndex:i]];
             }
             else if ([RidCode isEqualToString:@"CIWP"]||[RidCode isEqualToString:@"LCWP"]||[RidCode isEqualToString:@"PR"]||[RidCode isEqualToString:@"SP_STD"]||[RidCode isEqualToString:@"SP_PRE"]) {
+                sqlite3_close(contactDB);
                 continue;
             }
             else {
@@ -1110,6 +1118,7 @@
                     pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",RidCode];
                 }
                 else {
+                    sqlite3_close(contactDB);
                     continue;
                 }
             
@@ -1124,6 +1133,9 @@
                     }
                     sqlite3_finalize(statement);
                 }
+                sqlite3_close(contactDB);
+            }
+            else {
                 sqlite3_close(contactDB);
             }
         
@@ -1532,8 +1544,8 @@
 
 - (IBAction)doSaveRider:(id)sender
 {
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
+    //[self resignFirstResponder];
+    //[self.view endEditing:YES];
     
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
@@ -2017,12 +2029,28 @@
         NSLog(@"go Negative Yield!");
         [self calculateIncomeRider];        //calculate existing income rider
         [self calculateIncomeRiderInput];   //calculate entered income rider
+        [self checkingRider];
+        if (existRidCode.length == 0) {
+            
+            [self saveRider];
+        } else {
+            
+            [self updateRider];
+        }
         [self NegativeYield];
     }
     else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count == 0)) {
         
         NSLog(@"go Negative Yield2 - empty listing!");
         [self calculateIncomeRiderInput];
+        [self checkingRider];
+        if (existRidCode.length == 0) {
+            
+            [self saveRider];
+        } else {
+            
+            [self updateRider];
+        }
         [self NegativeYield];
     }
     else {
@@ -2250,8 +2278,16 @@
             }
             
             if (pop) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
-                [alert show];
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                //zzz.MhiMessage = [NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA];
+                zzz.MhiMessage = newBasicSA;
+                
+                //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
+                //[alert show];
+            }else {
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                zzz.MhiMessage = @"";
+                
             }
            
         }
@@ -3117,7 +3153,7 @@
                 const char *aaTerm = (const char *)sqlite3_column_text(statement, 2);
                 [LTerm addObject:aaTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaTerm]];
                 
-                const char *zzplan = (const char *) sqlite3_column_text(statement, 3);
+                const char *zzplan = (const char *) sqlite3_column_text(statement, 3); 
                 [LPlanOpt addObject:zzplan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzplan]];
                 
                 const char *aaUnit = (const char *)sqlite3_column_text(statement, 4);
@@ -3910,6 +3946,49 @@
             deleteBtn.enabled = TRUE;
         }
     }
+    else {
+        //[btnAddRider setTitle:[LRiderCode objectAtIndex:indexPath.row] forState:UIControlStateNormal ];
+        RiderListTbViewController *zzz = [[RiderListTbViewController alloc] init ];
+        [self RiderListController:zzz didSelectCode:[LRiderCode objectAtIndex:indexPath.row] desc:[self getRiderDesc:[LRiderCode objectAtIndex:indexPath.row]]];
+        sumField.text = [LSumAssured objectAtIndex:indexPath.row];
+        termField.text = [LTerm objectAtIndex:indexPath.row];
+        unitField.text = [LUnits objectAtIndex:indexPath.row];
+        
+        
+        if (  ![[LPlanOpt objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            [planBtn setTitle:[LPlanOpt objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+        }
+        
+        if (  ![[LDeduct objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            [deducBtn setTitle:[LDeduct objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+        }
+    }
+}
+
+-(NSString *)getRiderDesc:(NSString *) TempRiderCode{
+    
+    sqlite3_stmt *statement;
+    NSString *returnValue = @"";
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT RiderDesc FROM Trad_Sys_Rider_Profile WHERE RiderCode=\"%@\" ", TempRiderCode];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                returnValue = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];;
+                
+            } else {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+    return returnValue;
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
