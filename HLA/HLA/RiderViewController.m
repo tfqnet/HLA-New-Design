@@ -1489,13 +1489,17 @@
         }
     }
      */
+    if (_planList == Nil) {
+        
+        self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
+        self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
+    }
+        
+        _planList.delegate = self;
+        _planList.requestCondition = [NSString stringWithFormat:@"%@",planCondition];
+        _planList.requestSA = self.requestBasicSA;
+        self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
     
-    self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
-    self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
-    _planList.delegate = self;
-    _planList.requestCondition = [NSString stringWithFormat:@"%@",planCondition];
-    _planList.requestSA = self.requestBasicSA;
-    self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
     
     [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
     [self.planPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -4124,7 +4128,7 @@
     unitField.text = @"";
     inputSA = 0;
     secondLARidCode = nil;
-    _planList = nil;
+    //_planList = nil;
     
     [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];

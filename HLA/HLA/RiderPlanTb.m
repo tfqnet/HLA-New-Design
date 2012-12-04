@@ -12,6 +12,7 @@
 
 @end
 
+
 @implementation RiderPlanTb
 @synthesize selectedItem,itemDesc,itemValue,selectedItemDesc;
 @synthesize delegate = _delegate;
@@ -24,7 +25,6 @@
         NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *docsDir = [dirPaths objectAtIndex:0];
         databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-        
         
         requestCondition = [NSString stringWithFormat:@"%@",stringCode];
         [self getRiderCondition];
@@ -108,6 +108,7 @@
     
 	cell.textLabel.text = [itemDesc objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    
 	if (indexPath.row == selectedIndex) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
@@ -125,6 +126,7 @@
 {
     selectedIndex = indexPath.row;
     [_delegate PlanView:self didSelectItem:self.selectedItem desc:self.selectedItemDesc];
+    [tableView reloadData];
 }
 
 -(NSString *)selectedItem

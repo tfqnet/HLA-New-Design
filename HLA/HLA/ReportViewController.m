@@ -1826,14 +1826,14 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             else if (i + Age == AdvanceYearlyIncome) {
                 
-                [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%.2f#", BasicSA * ([[rates objectAtIndex:1] doubleValue] / 100) ]];
+                [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%.2f", BasicSA * ([[rates objectAtIndex:1] doubleValue] / 100) ]];
             }
             else   {
                 [arrayYearlyIncome addObject:@"0.00"];
             }
         }
         else {
-            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d", BasicSA]];
+            [arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d.00", BasicSA]];
         }
         
         BasicTotalYearlyIncome = BasicTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ]; 
@@ -1925,8 +1925,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         }
         
         for (int j =0; j<IncomeRiderCode.count; j++) {
-            if ( i <= [[IncomeRiderTerm objectAtIndex:j] intValue ]   ) {
-                sumIncomeRider = sumIncomeRider + 
+            //if ( i <= [[IncomeRiderTerm objectAtIndex:j] intValue ]   ) {
+            if ( i <= PremiumPaymentOption   ) {
+            sumIncomeRider = sumIncomeRider + 
                 [[[aStrIncomeRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];  
                 
             }
@@ -1934,6 +1935,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         for (int j =0; j<OtherRiderCode.count; j++) {
             if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
+            
                 sumOtherRider = sumOtherRider +
                 [[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];  
             }
@@ -2327,10 +2329,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     */
     double GYI;
     if (IncomeRiderCode.count > 0) {
-      GYI =[[IncomeRiderSA objectAtIndex:0] doubleValue ] + BasicSA ;   
+      GYI =[[IncomeRiderSA objectAtIndex:0] doubleValue ] + (double)(BasicSA/1.00);   
     }
     else {
-        GYI = BasicSA;
+        GYI = (double)BasicSA / 1.00;
     }
         
     for (int i =1; i <=PolicyTerm; i++) {
