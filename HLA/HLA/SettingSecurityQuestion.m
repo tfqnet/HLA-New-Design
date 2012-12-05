@@ -166,6 +166,23 @@
 
 
 - (IBAction)btnQues1:(id)sender {
+    if(![popOverConroller isPopoverVisible]){
+        
+        selectOne = YES;
+		SecurityQuesTbViewController *popView = [[SecurityQuesTbViewController alloc] init];
+        if (popOverConroller == Nil) {
+            popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
+            popView.delegate = self;
+            
+        }
+		
+		[popOverConroller setPopoverContentSize:CGSizeMake(530.0f, 400.0f)];
+        [popOverConroller presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	}
+    else{
+		[popOverConroller dismissPopoverAnimated:YES];
+        selectOne = NO;
+	}
     
 }
 
@@ -176,10 +193,12 @@
 - (IBAction)btnQues3:(id)sender {
 }
 
-- (IBAction)btnSave:(id)sender {
-}
 
 - (IBAction)ActionClose:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (IBAction)doSave:(id)sender {
+    
 }
 @end

@@ -170,7 +170,7 @@
     if ([txtOldPwd.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length <= 0 ) {
         
         valid = FALSE;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtOldPwd becomeFirstResponder];
         
@@ -178,14 +178,14 @@
     else { 
         if ([txtNewPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
             valid = FALSE;
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [txtNewPwd becomeFirstResponder];
         }
         else {
             if ([txtConfirmPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
                 valid = FALSE;
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 [txtConfirmPwd becomeFirstResponder];
                 
@@ -211,7 +211,7 @@
                 [self validatePassword]; 
             }
             else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 txtOldPwd.text = @"";
                 txtNewPwd.text = @"";
@@ -243,7 +243,7 @@
     if ([txtOldPwd.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length <= 0 ) {
         
         valid = FALSE;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Old password is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtOldPwd becomeFirstResponder];
         
@@ -251,14 +251,14 @@
     else { 
         if ([txtNewPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
             valid = FALSE;
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New password is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [txtNewPwd becomeFirstResponder];
         }
         else {
             if ([txtConfirmPwd.text stringByReplacingOccurrencesOfString:@" " withString:@""  ].length <= 0) {
                 valid = FALSE;
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Confirm password is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 [txtConfirmPwd becomeFirstResponder];
                 
@@ -295,7 +295,7 @@
                     [self validatePassword]; 
                 }
                 else {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"New Password did not match with confirmed password." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert show];
                     txtOldPwd.text = @"";
                     txtNewPwd.text = @"";

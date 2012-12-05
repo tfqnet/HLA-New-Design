@@ -42,7 +42,8 @@
 - (IBAction)btnQues2:(id)sender;
 
 - (IBAction)btnQues3:(id)sender;
-- (IBAction)btnSave:(id)sender;
+
 - (IBAction)ActionClose:(id)sender;
+- (IBAction)doSave:(id)sender;
 
 @end

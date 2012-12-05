@@ -69,6 +69,7 @@
 @synthesize delegate = _delegate;
 
 bool PostcodeContinue = TRUE;
+int temp;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -1215,6 +1216,17 @@ PostcodeContinue = TRUE;
         [self.view endEditing:YES];
         [self dismissModalViewControllerAnimated:YES];
     }
+    else {
+        if (buttonIndex == 0) {
+            if ( alertView.tag == 2000 && temp == 1) {
+                [txtHomePostCode becomeFirstResponder];
+            }
+            else if ( alertView.tag = 2001 && temp == 2) {
+                [txtOfficePostcode becomeFirstResponder];
+            }
+        }
+        
+    }
 
 }
 
@@ -1384,7 +1396,9 @@ PostcodeContinue = TRUE;
                 
                 if (gotRow == false) {
                     UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for residence" 
-                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    temp = 1;
+                    NoPostcode.tag = 2000;
                     txtHomePostCode.text = @"";
                     txtHomeState.text = @"";
                     txtHomeTown.text = @"";
@@ -1447,10 +1461,13 @@ PostcodeContinue = TRUE;
                         gotRow = true;
                          PostcodeContinue = TRUE;
                     }
+                    sqlite3_finalize(statement);
                     
                     if (gotRow == false) {
                         UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office" 
-                                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                                                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        temp = 2;
+                        NoPostcode.tag = 2001;
                         txtOfficePostcode.text = @"";
                         txtOfficeState.text = @"";
                         txtOfficeTown.text = @"";
@@ -1459,6 +1476,8 @@ PostcodeContinue = TRUE;
                         [NoPostcode show];   
                          PostcodeContinue = FALSE;
                     }
+                    
+                    sqlite3_close(contactDB);
                 }
                 
                 

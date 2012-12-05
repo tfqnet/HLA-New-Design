@@ -1465,6 +1465,7 @@ int zzz;
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
+     
 }
 
 - (void)OccupDescSelected:(NSString *)color {
@@ -1573,6 +1574,8 @@ int zzz;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+    self.myScrollView.frame = CGRectMake(0, 20, 1024, 748);
+    
     _OccupationList = Nil;
     
     
@@ -1586,7 +1589,8 @@ int zzz;
         [self SaveChanges];
     } 
     else {
-        [self dismissModalViewControllerAnimated:YES];
+        [self SaveChanges];
+        //[self dismissModalViewControllerAnimated:YES];
         
     }
     

@@ -269,8 +269,27 @@
             break;
         case 2:
             if (incomeRider) {
+                NSString *strMaxRiderSA = [NSString stringWithFormat:@"%.2f", maxRiderSA];
+                NSRange rangeofDot = [ strMaxRiderSA rangeOfString:@"."];
+                NSString *ValueToDisplay = @"";
+                
+                if (rangeofDot.location != NSNotFound) {
+                    NSString *substring = [strMaxRiderSA substringFromIndex:rangeofDot.location ];
+                    
+                    if (substring.length == 3 && [substring isEqualToString:@".00"]) {
+                        ValueToDisplay = [strMaxRiderSA substringToIndex:rangeofDot.location ];
+                    }
+                    else {
+                        ValueToDisplay = strMaxRiderSA;
+                    }
+                }
+                else {
+                    ValueToDisplay = strMaxRiderSA;
+                }
                 minDisplayLabel.text = [NSString stringWithFormat:@"Min GYI: %d",minSATerm];
-                maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %.f",maxRiderSA];
+                //maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %.2f",maxRiderSA];
+                maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %@",ValueToDisplay];
+                
             } else {
                 minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
                 maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
@@ -530,14 +549,14 @@
     if ([riderCode isEqualToString:@"CCTR"])
     {
         _maxRiderSA = dblPseudoBSA3;
-        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
         
     }
     else if ([riderCode isEqualToString:@"ETPD"])
     {
         _maxRiderSA = fmin(dblPseudoBSA2,120000);
-        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
     else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
@@ -546,41 +565,41 @@
         [self getGYI];
         double BasicSA_GYI = self.requestBasicSA * GYI;
         _maxRiderSA = fmin(BasicSA_GYI,9999999);
-        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
     else if ([riderCode isEqualToString:@"CPA"]) {
         if (riderH.storedOccpClass == 1 || riderH.storedOccpClass == 2) {
             if (dblPseudoBSA < 100000) {
                 _maxRiderSA = fmin(dblPseudoBSA3,200000);
-                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
                 maxRiderSA = [a_maxRiderSA doubleValue];
             }
             else if (dblPseudoBSA >= 100000) {
                 _maxRiderSA = fmin(dblPseudoBSA4,1000000);
-                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
                 maxRiderSA = [a_maxRiderSA doubleValue];
             }
         }
         else if (riderH.storedOccpClass == 3 || riderH.storedOccpClass == 4) {
             _maxRiderSA = fmin(dblPseudoBSA3,100000);
-            NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+            NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
             maxRiderSA = [a_maxRiderSA doubleValue];
         }
     }
     else if ([riderCode isEqualToString:@"PA"]) {
         _maxRiderSA = fmin(dblPseudoBSA3,1000000);
-        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
     else if ([riderCode isEqualToString:@"PTR"]) {
         _maxRiderSA = fmin(dblPseudoBSA3,500000);
-        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
     else {
         _maxRiderSA = maxSATerm;
-        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.f",_maxRiderSA];
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
 //    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
@@ -4019,7 +4038,7 @@
             HLField.text = [LRidHL1K objectAtIndex:indexPath.row];
         }
     
-        if (  ![[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+        if (  ![[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
             HLTField.text = [LRidHLTerm objectAtIndex:indexPath.row];
         }
         

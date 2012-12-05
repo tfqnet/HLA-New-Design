@@ -85,7 +85,7 @@ const int numberOfModule = 4;
         //[button setTitle:[NSString stringWithFormat:@"Setting", index] forState:UIControlStateNormal];    
         //NSString *filename = [NSString stringWithFormat:@"btn_setting_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"Settings.jpg"] forState:UIControlStateNormal];  
+        [button setBackgroundImage:[UIImage imageNamed:@"icon_settings.png"] forState:UIControlStateNormal];  
     }
     else if (index % numberOfModule == 1) {
         //[button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];

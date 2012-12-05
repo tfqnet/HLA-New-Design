@@ -112,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "375870775.980185"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "332"
-         endingLineNumber = "332"
+         startingLineNumber = "333"
+         endingLineNumber = "333"
          landmarkName = "-btnSave:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,11 +125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "375870775.980185"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "333"
-         endingLineNumber = "333"
+         startingLineNumber = "334"
+         endingLineNumber = "334"
          landmarkName = "-btnSave:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -164,11 +164,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "376303685.59192"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1003"
-         endingLineNumber = "1003"
+         startingLineNumber = "1004"
+         endingLineNumber = "1004"
          landmarkName = "-GetLastID"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,11 +177,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "376303685.59192"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "989"
-         endingLineNumber = "989"
+         startingLineNumber = "990"
+         endingLineNumber = "990"
          landmarkName = "@implementation ProspectViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -203,11 +203,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EditProspect.m"
-         timestampString = "376378913.106886"
+         timestampString = "376384765.929862"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1603"
-         endingLineNumber = "1603"
+         startingLineNumber = "1607"
+         endingLineNumber = "1607"
          landmarkName = "-SaveChanges"
          landmarkType = "5">
       </FileBreakpoint>
@@ -242,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "375345723.935917"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "279"
-         endingLineNumber = "279"
+         startingLineNumber = "280"
+         endingLineNumber = "280"
          landmarkName = "-btnDOB:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -268,11 +268,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "376304460.634832"
+         timestampString = "376393021.948342"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1488"
-         endingLineNumber = "1488"
+         startingLineNumber = "1507"
+         endingLineNumber = "1507"
          landmarkName = "-btnContact1:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -281,11 +281,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "375870775.980185"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "346"
-         endingLineNumber = "346"
+         startingLineNumber = "347"
+         endingLineNumber = "347"
          landmarkName = "-btnSave:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -294,11 +294,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EditProspect.m"
-         timestampString = "376379391.47632"
+         timestampString = "376384765.929862"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1819"
-         endingLineNumber = "1819"
+         startingLineNumber = "1823"
+         endingLineNumber = "1823"
          landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -307,11 +307,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "376304460.634832"
+         timestampString = "376393021.948342"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1325"
-         endingLineNumber = "1325"
+         startingLineNumber = "1337"
+         endingLineNumber = "1337"
          landmarkName = "-keyboardDidHide:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -346,11 +346,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "375345723.935917"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "104"
-         endingLineNumber = "104"
+         startingLineNumber = "105"
+         endingLineNumber = "105"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -554,11 +554,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "376364088.652059"
+         timestampString = "376391943.756439"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "564"
-         endingLineNumber = "564"
+         startingLineNumber = "583"
+         endingLineNumber = "583"
          landmarkName = "-calculateSA"
          landmarkType = "5">
       </FileBreakpoint>
@@ -567,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "376364088.652059"
+         timestampString = "376391943.756439"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "521"
-         endingLineNumber = "521"
+         startingLineNumber = "540"
+         endingLineNumber = "540"
          landmarkName = "@implementation RiderViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -983,11 +983,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectViewController.m"
-         timestampString = "375345723.935917"
+         timestampString = "376392324.860526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
+         startingLineNumber = "93"
+         endingLineNumber = "93"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1100,11 +1100,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "376368780.192214"
+         timestampString = "376391943.756439"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "3985"
-         endingLineNumber = "3985"
+         startingLineNumber = "4004"
+         endingLineNumber = "4004"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1113,11 +1113,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "376368780.192214"
+         timestampString = "376391943.756439"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1591"
-         endingLineNumber = "1591"
+         startingLineNumber = "1610"
+         endingLineNumber = "1610"
          landmarkName = "-doSaveRider:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1139,11 +1139,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "376368780.192214"
+         timestampString = "376391943.756439"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2967"
-         endingLineNumber = "2967"
+         startingLineNumber = "2986"
+         endingLineNumber = "2986"
          landmarkName = "-getRiderCSV:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1152,11 +1152,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EditProspect.m"
-         timestampString = "376379391.47632"
+         timestampString = "376384765.929862"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1828"
-         endingLineNumber = "1828"
+         startingLineNumber = "1832"
+         endingLineNumber = "1832"
          landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1165,12 +1165,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EditProspect.m"
-         timestampString = "376379391.47632"
+         timestampString = "376384765.929862"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1672"
-         endingLineNumber = "1672"
+         startingLineNumber = "1676"
+         endingLineNumber = "1676"
          landmarkName = "-EditTextFieldDidChange:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/HLA/RiderViewController.m"
+         timestampString = "376391943.756439"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "289"
+         endingLineNumber = "289"
+         landmarkName = "-textFieldShouldBeginEditing:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
