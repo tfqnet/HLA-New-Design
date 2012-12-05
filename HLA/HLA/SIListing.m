@@ -39,6 +39,7 @@
 @synthesize Popover = _Popover;
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
+//@synthesize NewLAViewController =_NewLAViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -646,7 +647,6 @@
                 }
                 else {
                     Sorting = [Sorting stringByAppendingFormat:@",A.SINO"];
-                    
                 }
             }
             
@@ -1030,4 +1030,22 @@
     outletGender.enabled = FALSE;
     _SortBy = Nil;
 }
+
+- (IBAction)btnAddNewSI:(id)sender {
+
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    main.modalPresentationStyle = UIModalPresentationFullScreen;
+    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    main.IndexTab = 3;
+    [self presentViewController:main animated:NO completion:nil];
+    
+//    if (_NewLAViewController == Nil) {
+//       self.NewLAViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+//    }
+//    _NewLAViewController.modalPresentationStyle = UIModalPresentationPageSheet;
+//    _NewLAViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//    [self presentModalViewController:_NewLAViewController animated:YES];
+//    _NewLAViewController.view.superview.frame = CGRectMake(100, 0, 970, 768);//50, 0, 970, 768
+}
+
 @end

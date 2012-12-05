@@ -20,6 +20,7 @@
     UIPopoverController *_Popover;
     SIDate *_SIDate;
     UIPopoverController *_SIDatePopover;
+//    NewLAViewController *_NewLAViewController;
 }
 
 @property (nonatomic, retain) siListingSortBy *SortBy;
@@ -29,6 +30,7 @@
 @property (nonatomic, copy) NSString *DBDateFrom;
 @property (nonatomic, copy) NSString *DBDateTo;
 @property (nonatomic, copy) NSString *OrderBy;
+//@property (nonatomic, retain) NewLAViewController *NewLAViewController;
 @property (retain, nonatomic) NSMutableArray *SINO;
 @property (retain, nonatomic) NSMutableArray *DateCreated;
 @property (retain, nonatomic) NSMutableArray *Name;
@@ -70,6 +72,9 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *outletGender;
 @property (weak, nonatomic) IBOutlet UIButton *outletEdit;
 - (IBAction)btnReset:(id)sender;
+
+//added for Add New SI Listing button by Juliana
+- (IBAction)btnAddNewSI:(id)sender;
 
 
 @end
