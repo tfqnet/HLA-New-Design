@@ -76,7 +76,7 @@
 @synthesize deducPopover = _deducPopover;
 @synthesize planList = _planList;
 @synthesize deductList = _deductList;
-@synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm;
+@synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm;
 
 #pragma mark - Cycle View
 
@@ -190,10 +190,12 @@
     
     [self getListingRider];     //get stored rider
     
+    
     [self calculateRiderPrem];  //calculate riderPrem
     [self calculateWaiver];     //calculate waiverPrem
     [self calculateMedRiderPrem];       //calculate medicalPrem
-    if (medRiderPrem != 0) {
+    
+     if (medRiderPrem != 0) {
         [self MHIGuideLines];
     }
     
@@ -227,6 +229,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1044,10 +1047,12 @@
             [incomeRiderMonth addObject:calRiderMonth];
             NSLog(@"income insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
             
+            /* edited by heng to avoid negative yield
             //get CSV rate
             [self getRiderCSV:RidCode];
             NSString *csv = [NSString stringWithFormat:@"%.2f",riderCSVRate];
             [incomeRiderCSV addObject:csv];
+             */
         }
     }
     
@@ -1410,8 +1415,9 @@
         monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadFactorM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
     }
     
-    [self getRiderCSV:riderCode];       //get CSV rate
-    inputCSV = riderCSVRate;
+    //edited by heng to avoid negative yield
+    //[self getRiderCSV:riderCode];       //get CSV rate 
+    //inputCSV = riderCSVRate;
     
     NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
     NSString *calRiderHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
@@ -1423,6 +1429,7 @@
     calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
     inputIncomeAnn = [calRiderAnn doubleValue];
     NSLog(@"inputIncomeRiderTot(%@) A:%@, S:%@, Q:%@, M:%@",riderCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+         
 }
 
 
@@ -1551,9 +1558,15 @@
     //[self resignFirstResponder];
     //[self.view endEditing:YES];
     
+    
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    [myTableView setEditing:FALSE]; 
+    [self.myTableView setEditing:NO animated:TRUE];
+    deleteBtn.hidden = true;
+    [editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
     
     NSUInteger i;
     for (i=0; i<[FLabelCode count]; i++)
@@ -1595,6 +1608,7 @@
         NSLog(@"validate - 4th save");
         [self validateSaver];
     }
+     
 }
 
 - (IBAction)goBack:(id)sender
@@ -1876,6 +1890,15 @@
     float riderFraction = num - riderSumA;
     NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:riderFraction]];
     
+    NSRange rangeofDot = [sumField.text rangeOfString:@"."];
+    NSString *substring = @"";
+    
+    if (rangeofDot.location != NSNotFound) {
+        substring = [sumField.text substringFromIndex:rangeofDot.location ];
+        
+    }
+    
+    
     if (sumField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -1905,7 +1928,8 @@
         [alert show];
         sumField.text = @"";
     }
-    else if (!(incomeRider) && msg.length > 4) {
+    //else if (!(incomeRider) && msg.length > 4) {
+    else if (!(incomeRider) && substring.length > 3) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         sumField.text = @"";
@@ -2041,7 +2065,8 @@
             
             [self updateRider];
         }
-        [self NegativeYield];
+         
+        //[self NegativeYield];
     }
     else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count == 0)) {
         
@@ -2055,7 +2080,8 @@
             
             [self updateRider];
         }
-        [self NegativeYield];
+         
+        //[self NegativeYield];
     }
     else {
         [self checkingRider];
@@ -3113,13 +3139,14 @@
         [alert show];
     }
     else {
-    
+        
         [self calculateRiderPrem];  //calculate riderPrem
         [self calculateWaiver];     //calculate waiverPrem
         [self calculateMedRiderPrem];       //calculate medicalPrem
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
+         
     }
     
     
@@ -3139,12 +3166,13 @@
     LSmoker = [[NSMutableArray alloc] init];
     LSex = [[NSMutableArray alloc] init];
     LAge = [[NSMutableArray alloc] init];
+    LRidHLTerm = [[NSMutableArray alloc] init ]; // added by heng
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
+            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -3178,6 +3206,10 @@
                 [LSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
                 [LSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
                 [LAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
+                
+                const char *ridTerm = (const char *)sqlite3_column_text(statement, 12);
+                [LRidHLTerm addObject:ridTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridTerm]]; //added by heng
+                
             }
             
             if ([LRiderCode count] == 0) {
@@ -3408,7 +3440,7 @@
         NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",SINoPlan,pTypeCode, PTypeSeq];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
-            while (sqlite3_step(statement) == SQLITE_ROW)
+            if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 secondLARidCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
             }
@@ -3952,12 +3984,28 @@
     }
     else {
         //[btnAddRider setTitle:[LRiderCode objectAtIndex:indexPath.row] forState:UIControlStateNormal ];
+        
         RiderListTbViewController *zzz = [[RiderListTbViewController alloc] init ];
         [self RiderListController:zzz didSelectCode:[LRiderCode objectAtIndex:indexPath.row] desc:[self getRiderDesc:[LRiderCode objectAtIndex:indexPath.row]]];
-        sumField.text = [LSumAssured objectAtIndex:indexPath.row];
+        NSRange rangeofDot = [[LSumAssured objectAtIndex:indexPath.row ] rangeOfString:@"."];
+        NSString *SumToDisplay = @"";
+    
+        if (rangeofDot.location != NSNotFound) {
+            NSString *substring = [[LSumAssured objectAtIndex:indexPath.row] substringFromIndex:rangeofDot.location ];
+            if (substring.length == 2 && [substring isEqualToString:@".0"]) {
+                SumToDisplay = [[LSumAssured objectAtIndex:indexPath.row] substringToIndex:rangeofDot.location ];
+            }
+            else {
+                SumToDisplay = [LSumAssured objectAtIndex:indexPath.row];
+            }
+        }
+        else {
+            SumToDisplay = [LSumAssured objectAtIndex:indexPath.row];
+        }
+        
+        sumField.text = SumToDisplay;
         termField.text = [LTerm objectAtIndex:indexPath.row];
         unitField.text = [LUnits objectAtIndex:indexPath.row];
-        
         
         if (  ![[LPlanOpt objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
             [planBtn setTitle:[LPlanOpt objectAtIndex:indexPath.row] forState:UIControlStateNormal];
@@ -3966,6 +4014,16 @@
         if (  ![[LDeduct objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
             [deducBtn setTitle:[LDeduct objectAtIndex:indexPath.row] forState:UIControlStateNormal];
         }
+        
+        if (  ![[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = [LRidHL1K objectAtIndex:indexPath.row];
+        }
+    
+        if (  ![[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLTField.text = [LRidHLTerm objectAtIndex:indexPath.row];
+        }
+        
+        
     }
 }
 

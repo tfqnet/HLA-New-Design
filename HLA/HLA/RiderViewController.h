@@ -152,6 +152,7 @@
 @property(nonatomic , retain) NSMutableArray *LSmoker;
 @property(nonatomic , retain) NSMutableArray *LSex;
 @property(nonatomic , retain) NSMutableArray *LAge;
+@property(nonatomic , retain) NSMutableArray *LRidHLTerm;
 @property (retain, nonatomic) IBOutlet UILabel *titleRidCode;
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
 @property (retain, nonatomic) IBOutlet UILabel *titleTerm;

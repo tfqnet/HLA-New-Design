@@ -13,6 +13,7 @@
 #import "MainScreen.h"
 #import "Login.h"
 #import "NewLAViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 const int numberOfModule = 4;
 
@@ -70,32 +71,39 @@ const int numberOfModule = 4;
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    /*
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    [gradientLayer setFrame:button.frame];
+    [button.layer addSublayer:gradientLayer];
+     */
+    
     button.frame = CGRectMake(0, 0, 400.0f, 400.0f);
+    
     //[button setTitle:[NSString stringWithFormat:@"%i", index] forState:UIControlStateNormal];
     if (index % numberOfModule == 0) {
         //[button setTitle:[NSString stringWithFormat:@"Setting", index] forState:UIControlStateNormal];    
         //NSString *filename = [NSString stringWithFormat:@"btn_setting_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"btn_setting_home"] forState:UIControlStateNormal];  
+        [button setBackgroundImage:[UIImage imageNamed:@"Settings.jpg"] forState:UIControlStateNormal];  
     }
     else if (index % numberOfModule == 1) {
         //[button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_prospect_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"btn_prospect_home"] forState:UIControlStateNormal];  
+        [button setBackgroundImage:[UIImage imageNamed:@"Propsect2.jpg"] forState:UIControlStateNormal];  
     }
     else if (index % numberOfModule == 2) {
         //[button setTitle:[NSString stringWithFormat:@"SI Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_brochure_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"btn_brochure_home" ] forState:UIControlStateNormal];  
+        [button setBackgroundImage:[UIImage imageNamed:@"eBrochure2.jpg" ] forState:UIControlStateNormal];  
     }
     else if (index % numberOfModule == 3) {
         //[button setTitle:[NSString stringWithFormat:@"New SI", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_SI_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"btn_SI_home" ] forState:UIControlStateNormal];  
+        [button setBackgroundImage:[UIImage imageNamed:@"SI.jpg" ] forState:UIControlStateNormal];  
     }
     /*
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -223,7 +231,7 @@ const int numberOfModule = 4;
                           message: NSLocalizedString(@"Are you sure you want to exit?",nil)
                           delegate: self
                           cancelButtonTitle: NSLocalizedString(@"Yes",nil)
-                          otherButtonTitles: NSLocalizedString(@"no",nil), nil];
+                          otherButtonTitles: NSLocalizedString(@"No",nil), nil];
     
     [alert show ];
 }

@@ -162,10 +162,12 @@
                                    
                     $('#col0_1_E').html(result.rows.item(1).col0_1);
                     $('#col0_2_E').html(result.rows.item(1).col0_2);
-                    $('#col0_1_M').html(result.rows.item(2).col0_1);
-                    $('#col0_2_M').html(result.rows.item(2).col0_2);
+                                  
+                    $('#col0_1_M').html("<i>" + result.rows.item(2).col0_1 + "</i>");
+                    $('#col0_2_M').html("<i>" + result.rows.item(2).col0_2 + "</i>");
                                    
                     var row;
+                                   
                     
                     for (var i = 1; i < 2; i++) {
                         for (var j = 1; j < 13; j++) {//row header
@@ -173,7 +175,7 @@
                             //alert(eval('row.col' + j))
                             $('#col' + j + '_E').html(eval('row.col' + j));
                             row = result.rows.item(i+1);
-                            $('#col' + j + '_M').html(eval('row.col' + j));
+                            $('#col' + j + '_M').html("<i>" + eval('row.col' + j) + "</i>");
                         }
                         //$('#col0_2_M').html(result.rows.item(2).col0_2);
                         //$('#table-data > tbody').append('<tr><td>1</td><td>32</td><td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>');
@@ -251,29 +253,29 @@
 
 <tr>
 
-<th id="col0_1_M" class="contentSmall">Tahun Polisi</th>
+<th id="col0_1_M" class="contentSmall"><i>Tahun Polisi</i></th>
 
-<th id="col0_2_M" class="contentSmall">Umur Hayat Diinsuranskan pada Akhir Tahun</th>
+<th id="col0_2_M" class="contentSmall"><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
 
-<th id="col1_M" class="contentSmall">Premium Tahunan (Permulaan Tahun)</th>
+<th id="col1_M" class="contentSmall"><i>Premium Tahunan (Permulaan Tahun)</i></th>
 
-<th id="col2_M" class="contentSmall">Nilai Penyerahan (Akhir Tahun)</th>
+<th id="col2_M" class="contentSmall"><i>Nilai Penyerahan (Akhir Tahun)</i></th>
 
-<th id="col3_M" class="contentSmall">Faedah Kematian/HUMK</th>
+<th id="col3_M" class="contentSmall"><i>Faedah Kematian/HUMK</i></th>
 
 <th id="col4_M" class="contentSmall">-</th>
 
-<th id="col5_M" class="contentSmall">Premium Tahunan (Permulaan Tahun)</th>
+<th id="col5_M" class="contentSmall"><i>Premium Tahunan (Permulaan Tahun)</i></th>
 
-<th id="col6_M" class="contentSmall">Nilai Penyerahan (Akhir Tahun)</th>
+<th id="col6_M" class="contentSmall"><i>Nilai Penyerahan (Akhir Tahun)</i></th>
 
-<th id="col7_M" class="contentSmall">Faedah Kematian/HUMK</th>
+<th id="col7_M" class="contentSmall"><i>Faedah Kematian/HUMK</i></th>
 
-<th id="col8_M" class="contentSmall">Faedah Penyakit Kritikal</th>
+<th id="col8_M" class="contentSmall"><i>Faedah Penyakit Kritikal</i></th>
 
-<th id="col9_M" class="contentSmall">Premium Tahunan (Permulaan Tahun)</th>
+<th id="col9_M" class="contentSmall"><i>Premium Tahunan (Permulaan Tahun)</i></th>
 
-<th id="col10_M" class="contentSmall">Faedah Penyakit Kritikal</th>
+<th id="col10_M" class="contentSmall"><i>Faedah Penyakit Kritikal</i></th>
 
 <th id="col11_M" class="contentSmall">-</th>
 

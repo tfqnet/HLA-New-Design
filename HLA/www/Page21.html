@@ -161,8 +161,8 @@
                                    
                     $('#col0_1_E').html(result.rows.item(1).col0_1);
                     $('#col0_2_E').html(result.rows.item(1).col0_2);
-                    $('#col0_1_M').html(result.rows.item(2).col0_1);
-                    $('#col0_2_M').html(result.rows.item(2).col0_2);
+                    $('#col0_1_M').html(result.rows.item(2).col0_1.italics());
+                    $('#col0_2_M').html(result.rows.item(2).col0_2.italics());
                                    
                     var row;
                     
@@ -172,7 +172,7 @@
                             //alert(eval('row.col' + j))
                             $('#col' + j + '_E').html(eval('row.col' + j));
                             row = result.rows.item(i+1);
-                            $('#col' + j + '_M').html(eval('row.col' + j));
+                            $('#col' + j + '_M').html(eval('row.col' + j).italics());
                         }
                         //$('#col0_2_M').html(result.rows.item(2).col0_2);
                         //$('#table-data > tbody').append('<tr><td>1</td><td>32</td><td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>');

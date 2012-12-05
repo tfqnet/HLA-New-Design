@@ -69,6 +69,7 @@
 @synthesize SIDatePopover = _SIDatePopover;
 
 bool IsContinue = TRUE;
+int zzz;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -93,8 +94,8 @@ bool IsContinue = TRUE;
     txtRemark.layer.borderWidth = 1.0f;
     txtRemark.layer.borderColor = [[UIColor grayColor] CGColor];
     
-    [txtHomePostCode addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
-    [txtOfficePostCode addTarget:self action:@selector(OfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtHomePostCode addTarget:self action:@selector(EditTextFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtOfficePostCode addTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtEmail addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtExactDuties addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtHomeAddr1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
@@ -453,10 +454,22 @@ bool IsContinue = TRUE;
 -(void) PopulateOccupCode{
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
+    
+    if ([self OptionalOccp:pp.ProspectOccupationCode] == FALSE) {
+        lblOfficeAddr.text = @"Office Address*";
+        lblPostCode.text = @"Postcode*";
+    }
+    else {
+        lblOfficeAddr.text = @"Office Address";
+        lblPostCode.text = @"Postcode";
+    }
+    
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+        
         NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc FROM Adm_Occp where status = 1 and OccpCode = \"%@\"", pp.ProspectOccupationCode];
-        const char *query_stmt = [querySQL UTF8String];
-        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        NSLog(@"%@", querySQL);
+        //const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW){
                 NSString *OccpDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
@@ -826,7 +839,7 @@ bool IsContinue = TRUE;
         if ([txtPrefix2.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 2 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [outletType2 becomeFirstResponder];
+            [txtPrefix2 becomeFirstResponder];
             
             [alert show];
             return false;
@@ -900,7 +913,7 @@ bool IsContinue = TRUE;
         if ([txtPrefix3.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 3 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [outletType3 becomeFirstResponder];
+            [txtPrefix3 becomeFirstResponder];
             
             [alert show];
             return false;
@@ -963,7 +976,7 @@ bool IsContinue = TRUE;
         if ([txtPrefix4.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 4 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [outletType4 becomeFirstResponder];
+            [txtPrefix4 becomeFirstResponder];
             
             [alert show];
             return false;
@@ -1037,8 +1050,8 @@ bool IsContinue = TRUE;
         if ([txtPrefix5.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 5 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtPrefix5  becomeFirstResponder];
+            //[self.view endEditing:TRUE];
             
             [alert show];
             return false;
@@ -1156,7 +1169,7 @@ bool IsContinue = TRUE;
     
     
     if([[txtOfiiceAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        if ([self OptionalOccp] == FALSE) {
+        if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1177,7 +1190,7 @@ bool IsContinue = TRUE;
     
     if (IsContinue == TRUE) {
         if([txtOfficePostCode.text isEqualToString:@""]){
-            if ([self OptionalOccp] == FALSE) {
+            if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 
@@ -1438,7 +1451,7 @@ bool IsContinue = TRUE;
     OccupCodeSelected = OccupCode;
     strChanges = @"Yes";
     
-    if ([self OptionalOccp] == TRUE ) {
+    if ([self OptionalOccp:OccupCodeSelected] == TRUE ) {
         lblOfficeAddr.text = @"Office Address";
         lblPostCode.text = @"Postcode";
     }
@@ -1464,19 +1477,47 @@ bool IsContinue = TRUE;
     
 }
 
--(BOOL)OptionalOccp{
-    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"] 
-        || [OccupCodeSelected isEqualToString:@"OCC01109"] || [OccupCodeSelected isEqualToString:@"OCC01179"]
-        || [OccupCodeSelected isEqualToString:@"OCC01865"] || [OccupCodeSelected isEqualToString:@"OCC02229"]
-        || [OccupCodeSelected isEqualToString:@"OCC00570"] || [OccupCodeSelected isEqualToString:@"OCC01596"]
-        || [OccupCodeSelected isEqualToString:@"OCC02147"] || [OccupCodeSelected isEqualToString:@"OCC02148"]
-        || [OccupCodeSelected isEqualToString:@"OCC02149"] || [OccupCodeSelected isEqualToString:@"OCC02321"]) {
+-(BOOL)OptionalOccp:(NSString *)OccupationCode{
+    sqlite3_stmt *statement;
+    BOOL valid = FALSE;
+    
+    if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK){
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT \"OccpCatCode\" from Adm_OccpCat_Occp WHERE OccpCode = \"%@\" ", OccupationCode];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String ], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW){
+                NSString *cat = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                
+                if ([[cat stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@"EMP"]) {
+                    valid = FALSE;
+                }
+                else {
+                    valid = TRUE;
+                }
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        else {
+            valid = FALSE;
+        }
+        
+        sqlite3_close(contactDB);
+    }
+    /*
+    if (   [OccupationCode isEqualToString:@"OCC02317"] || [OccupationCode isEqualToString:@"OCC02229"] 
+        || [OccupationCode isEqualToString:@"OCC01109"] || [OccupationCode isEqualToString:@"OCC01179"]
+        || [OccupationCode isEqualToString:@"OCC01865"] || [OccupationCode isEqualToString:@"OCC02229"]
+        || [OccupationCode isEqualToString:@"OCC00570"] || [OccupationCode isEqualToString:@"OCC01596"]
+        || [OccupationCode isEqualToString:@"OCC02147"] || [OccupationCode isEqualToString:@"OCC02148"]
+        || [OccupationCode isEqualToString:@"OCC02149"] || [OccupationCode isEqualToString:@"OCC02321"]) {
         return TRUE;    
     }
     else {
         return FALSE;
     }
-    
+    */
+    return valid;
 }
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
@@ -1534,6 +1575,7 @@ bool IsContinue = TRUE;
     
     _OccupationList = Nil;
     
+    
     if ([strChanges isEqualToString:@"Yes"]) {
         /*
         UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to save all the changes ?" 
@@ -1558,6 +1600,7 @@ bool IsContinue = TRUE;
 }
 
 -(void)SaveChanges{
+    
     if ([self Validation] == TRUE) {
         
         sqlite3_stmt *statement;
@@ -1610,7 +1653,7 @@ bool IsContinue = TRUE;
     
 }
 
--(void)textFieldDidChange:(id) sender
+-(void)EditTextFieldDidChange:(id) sender
 {
 
     BOOL gotRow = false;
@@ -1648,7 +1691,7 @@ bool IsContinue = TRUE;
                 if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
                 {
                     
-                    while (sqlite3_step(statement) == SQLITE_ROW){
+                    if (sqlite3_step(statement) == SQLITE_ROW){
                         NSString *Town = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                         NSString *State = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                         NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)]; 
@@ -1660,12 +1703,15 @@ bool IsContinue = TRUE;
                         gotRow = true;
                         IsContinue = TRUE;
                     }
+                    sqlite3_finalize(statement);
                     
                 }
                 
                 if (gotRow == false) {
                     UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Residence address" 
-                                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    NoPostcode.tag = 2000;
+                    zzz = 1;
                     txtHomePostCode.text = @"";
                     txtHomeState.text = @"";
                     txtHomeTown.text = @"";
@@ -1675,14 +1721,16 @@ bool IsContinue = TRUE;
                     IsContinue = FALSE;
                     
                 }
+                sqlite3_close(contactDB);
             }
             
         }    
     
     
+    
 }
 
--(void)OfficePostcodeDidChange:(id) sender
+-(void)EditOfficePostcodeDidChange:(id) sender
 {
     
     BOOL gotRow = false;
@@ -1718,7 +1766,7 @@ bool IsContinue = TRUE;
                 const char *query_stmt = [querySQL UTF8String];
                 if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
                 {
-                    while (sqlite3_step(statement) == SQLITE_ROW){
+                    if (sqlite3_step(statement) == SQLITE_ROW){
                         NSString *OfficeTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                         NSString *OfficeState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                         NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
@@ -1730,21 +1778,26 @@ bool IsContinue = TRUE;
                         gotRow = true;
                         IsContinue = TRUE;
                     }
+                    sqlite3_finalize(statement);
                     
                     if (gotRow == false) {
-                        UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
-                                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        UIAlertView *NoOfficePostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
+                                                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        NoOfficePostcode.tag = 3000;
+                        zzz = 2;
+                        [txtOfficePostCode becomeFirstResponder];
                         txtOfficePostCode.text = @"";
                         txtOfficeState.text = @"";
                         txtOfficeTown.text = @"";
                         txtOfficeCountry.text = @"";
                         SelectedOfficeStateCode = @"";
-                        [NoPostcode show];   
+                        [NoOfficePostcode show];   
                         IsContinue = FALSE;
+                        
                     }
                 }
                 
-                
+            sqlite3_close(contactDB);
             } 
 
         }
@@ -1771,6 +1824,16 @@ bool IsContinue = TRUE;
                 [self resignFirstResponder];
                 [self.view endEditing:YES];
                 [self dismissModalViewControllerAnimated:YES];
+            }
+            
+              
+            else if (alertView.tag = 3000 && zzz == 2) {
+                
+                [txtOfficePostCode becomeFirstResponder];
+            }
+            else if (alertView.tag = 2000 && zzz == 1) {
+
+                [txtHomePostCode becomeFirstResponder];
             }
         }
             break;
@@ -1829,6 +1892,7 @@ bool IsContinue = TRUE;
                             [SuccessAlert show];    
                             
                         }
+                        sqlite3_finalize(statement2);
                         
                     }
                     

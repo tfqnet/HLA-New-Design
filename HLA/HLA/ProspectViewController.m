@@ -486,13 +486,11 @@ PostcodeContinue = TRUE;
         return false;
     }
     
-    
-    
     if(outletType1.titleLabel.text != NULL) {
         if ([txtPrefix1.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 1 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [outletType1 becomeFirstResponder];
+            [txtPrefix1 becomeFirstResponder];
             //[self.view endEditing:TRUE];
             
             [alert show];
@@ -578,8 +576,8 @@ PostcodeContinue = TRUE;
         if ([txtPrefix2.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 2 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtPrefix2 becomeFirstResponder];
+            //[self.view endEditing:TRUE];
             
             [alert show];
             return false;
@@ -653,8 +651,8 @@ PostcodeContinue = TRUE;
         if ([txtPrefix3.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 3 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtPrefix3 becomeFirstResponder];
+            //[self.view endEditing:TRUE];
             
             [alert show];
             return false;
@@ -728,8 +726,8 @@ PostcodeContinue = TRUE;
         if ([txtPrefix4.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 4 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtPrefix4 becomeFirstResponder];
+            //[self.view endEditing:TRUE];
             
             [alert show];
             return false;
@@ -803,8 +801,8 @@ PostcodeContinue = TRUE;
         if ([txtPrefix5.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Prefix for contact no 5 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+            [txtPrefix5 becomeFirstResponder];
+            //[self.view endEditing:TRUE];
             
             [alert show];
             return false;
@@ -1247,6 +1245,34 @@ PostcodeContinue = TRUE;
 }
 
 -(BOOL)OptionalOccp{
+    
+    sqlite3_stmt *statement;
+    BOOL valid = FALSE;
+    
+    if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK){
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT \"OccpCatCode\" from Adm_OccpCat_Occp WHERE OccpCode = \"%@\" ", OccupCodeSelected];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String ], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW){
+                NSString *cat = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                
+                if ([[cat stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@"EMP"]) {
+                    valid = FALSE;
+                }
+                else {
+                    valid = TRUE;
+                }
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        else {
+            valid = FALSE;
+        }
+        
+        sqlite3_close(contactDB);
+    }
+    /*
     if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"] 
         || [OccupCodeSelected isEqualToString:@"OCC01109"] || [OccupCodeSelected isEqualToString:@"OCC01179"]
         || [OccupCodeSelected isEqualToString:@"OCC01865"] || [OccupCodeSelected isEqualToString:@"OCC02229"]
@@ -1258,6 +1284,8 @@ PostcodeContinue = TRUE;
     else {
         return FALSE;
     }
+     */
+    return valid;
     
 }
 
@@ -1351,7 +1379,7 @@ PostcodeContinue = TRUE;
                         gotRow = true;
                          PostcodeContinue = TRUE;
                     }
-                    
+                    sqlite3_finalize(statement);
                 }
                 
                 if (gotRow == false) {
@@ -1365,6 +1393,8 @@ PostcodeContinue = TRUE;
                     [NoPostcode show];   
                      PostcodeContinue = FALSE;
                 }
+                
+                sqlite3_close(contactDB);
             }
             
         }
