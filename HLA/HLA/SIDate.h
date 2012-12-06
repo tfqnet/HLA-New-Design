@@ -15,6 +15,8 @@
 @interface SIDate : UIViewController{
     id<SIDateDelegate> _delegate;
 }
+
+@property (nonatomic, copy) NSString *ProspectDOB;
 @property (nonatomic, strong) id<SIDateDelegate> delegate;
 - (IBAction)ActionDate:(id)sender;
 @property (weak, nonatomic) IBOutlet UIDatePicker *outletDate;

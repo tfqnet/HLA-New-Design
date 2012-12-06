@@ -572,6 +572,7 @@ int zzz;
         
         self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
         _SIDate.delegate = self;
+        _SIDate.ProspectDOB = pp.ProspectDOB;
         self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
     }
     
@@ -1577,7 +1578,7 @@ int zzz;
     self.myScrollView.frame = CGRectMake(0, 20, 1024, 748);
     
     _OccupationList = Nil;
-    
+    _SIDate = Nil;
     
     if ([strChanges isEqualToString:@"Yes"]) {
         /*
@@ -2046,6 +2047,7 @@ int zzz;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
  
+    _SIDate = nil;
     
     //[self dismissModalViewControllerAnimated:YES];
     if ([strChanges isEqualToString:@"Yes"]) {

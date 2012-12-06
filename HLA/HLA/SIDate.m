@@ -15,7 +15,7 @@
 @implementation SIDate
 @synthesize outletDate = _outletDate;
 @synthesize delegate = _delegate;
-
+@synthesize ProspectDOB;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,7 +29,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+    
+    if (ProspectDOB != NULL ) {
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSDate *zzz = [dateFormatter dateFromString:ProspectDOB];
+        [_outletDate setDate:zzz animated:YES ];
+         
+    }
 }
 
 - (void)viewDidUnload
@@ -45,6 +53,7 @@
 }
 
 - (IBAction)ActionDate:(id)sender {
+    
     if (_delegate != Nil) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];

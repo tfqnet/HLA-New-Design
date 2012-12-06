@@ -299,7 +299,7 @@
             sqlite3_finalize(statement);
                 
         }
-        
+       sqlite3_close(contactDB); 
     }
 }
 
