@@ -29,6 +29,7 @@
 @synthesize titleHLP;
 @synthesize editBtn;
 @synthesize deleteBtn;
+@synthesize titleHLPTerm;
 @synthesize myTableView;
 @synthesize termLabel;
 @synthesize sumLabel;
@@ -123,11 +124,12 @@
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
     CGRect frame=CGRectMake(0,411, 100, 50);
-    titleRidCode.text = @"Rider \nCode";
+    titleRidCode.text = @"Rider Code";
     titleRidCode.frame = frame;
     titleRidCode.textAlignment = UITextAlignmentCenter;
     titleRidCode.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleRidCode.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    //titleRidCode.numberOfLines = 2;
     
     CGRect frame2=CGRectMake(100,411, 129, 50);
     titleSA.frame = frame2;
@@ -163,23 +165,31 @@
     titleLoad.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleLoad.numberOfLines = 2;
     
-    CGRect frame7=CGRectMake(477,411, 84, 50);
+    CGRect frame7=CGRectMake(477,411, 63, 50);
     titleHL1K.frame = frame7;
     titleHL1K.textAlignment = UITextAlignmentCenter;
     titleHL1K.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHL1K.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame8=CGRectMake(561,411, 84, 50);
+    CGRect frame8=CGRectMake(540,411, 63, 50);
     titleHL100.frame = frame8;
     titleHL100.textAlignment = UITextAlignmentCenter;
     titleHL100.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHL100.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame9=CGRectMake(645,411, 84, 50);
+    CGRect frame9=CGRectMake(603,411, 63, 50);
     titleHLP.frame = frame9;
     titleHLP.textAlignment = UITextAlignmentCenter;
     titleHLP.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHLP.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame10=CGRectMake(666,411, 64, 50);
+    titleHLPTerm.text = @"HL %\nTerm";
+    titleHLPTerm.frame = frame10;
+    titleHLPTerm.textAlignment = UITextAlignmentCenter;
+    titleHLPTerm.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    titleHLPTerm.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    titleHLPTerm.numberOfLines = 2;
     
     [self getBasicPentaRate];
     [self getOccLoad];
@@ -402,11 +412,11 @@
         planBtn.enabled = YES;
         
         //auto display default plan value
-        if (!_planList) {
+        //if (!_planList) {
             self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
             _planList.delegate = self;
             _planList.requestSA = self.requestBasicSA;
-        }
+        //}
         [self.planBtn setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
         planOption = [[NSString alloc] initWithFormat:@"%@",_planList.selectedItemDesc];
         NSLog(@"plan:%@",planOption);
@@ -1518,17 +1528,16 @@
         }
     }
      */
-    if (_planList == Nil) {
+    //if (_planList == Nil) {
         
         self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
         self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
-    }
+    //}
         
         _planList.delegate = self;
         _planList.requestCondition = [NSString stringWithFormat:@"%@",planCondition];
         _planList.requestSA = self.requestBasicSA;
         self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
-    
     
     [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
     [self.planPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -2897,13 +2906,7 @@
         [self toggleForm];
         [self getRiderTermRule];
     }
-    /*
-    if (!([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"HSP"] || [riderCode isEqualToString:@"HSP_II"] || [riderCode isEqualToString:@"MG"]
-          || [riderCode isEqualToString:@"MG_II"] || [riderCode isEqualToString:@"MG_IV"]))  {
-        [termField becomeFirstResponder];
-        
-    }
-    */
+    
     if ([sumField isFirstResponder] == TRUE) {
             
             if (incomeRider) {
@@ -3342,6 +3345,8 @@
                 titleHLP.hidden = YES;
                 editBtn.hidden = YES;
                 deleteBtn.hidden = true;
+                titleHLPTerm.hidden = YES;
+                
                 [self.myTableView setEditing:NO animated:TRUE];
                 [editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
             } else {
@@ -3356,7 +3361,7 @@
                 titleHL100.hidden = NO;
                 titleHLP.hidden = NO;
                 editBtn.hidden = NO;
-                
+                titleHLPTerm.hidden = NO;
                 
                 //some code here--
                 /*
@@ -3919,6 +3924,7 @@
     [[cell.contentView viewWithTag:2007] removeFromSuperview ];
     [[cell.contentView viewWithTag:2008] removeFromSuperview ];
     [[cell.contentView viewWithTag:2009] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2010] removeFromSuperview ];
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
@@ -3981,7 +3987,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label6];
     
-    CGRect frame7=CGRectMake(477,0, 84, 50);
+    CGRect frame7=CGRectMake(477,0, 63, 50);
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
     NSString *hl1k;
@@ -3996,7 +4002,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label7];
     
-    CGRect frame8=CGRectMake(561,0, 84, 50);
+    CGRect frame8=CGRectMake(540,0, 63, 50);
     UILabel *label8=[[UILabel alloc]init];
     label8.frame=frame8;
     NSString *hl100;
@@ -4011,7 +4017,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label8];
     
-    CGRect frame9=CGRectMake(645,0, 84, 50);
+    CGRect frame9=CGRectMake(603,0, 63, 50);
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
     NSString *hlp;
@@ -4026,6 +4032,21 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label9];
     
+    CGRect frame10=CGRectMake(666,0, 63, 50);
+    UILabel *label10=[[UILabel alloc]init];
+    label10.frame=frame10;
+    NSString *hlpTerm;
+    if ([[LRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+        hlpTerm = @"";
+    } else {
+        hlpTerm = [LRidHLPTerm objectAtIndex:indexPath.row];
+    }
+    label10.text=hlpTerm;
+    label10.textAlignment = UITextAlignmentCenter;
+    label10.tag = 2010;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label10];
+    
     if (indexPath.row % 2 == 0) {
         label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
@@ -4036,6 +4057,7 @@
         label7.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label8.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label9.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label10.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -4046,6 +4068,7 @@
         label7.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label8.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label9.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label10.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     else {
         label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
@@ -4057,6 +4080,7 @@
         label7.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label8.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label9.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label10.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -4067,6 +4091,7 @@
         label7.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label8.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label9.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label10.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -4138,6 +4163,10 @@
     
         if (  ![[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
             HLTField.text = [LRidHLTerm objectAtIndex:indexPath.row];
+        }
+        
+        if (  ![[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = [LRidHL100 objectAtIndex:indexPath.row];
         }
         
         if (  ![[LRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
@@ -4283,6 +4312,7 @@
     [self setTitleHLP:nil];
     [self setEditBtn:nil];
     [self setDeleteBtn:nil];
+    [self setTitleHLPTerm:nil];
     [super viewDidUnload];
 }
 

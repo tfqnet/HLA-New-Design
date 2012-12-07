@@ -165,6 +165,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleHLP;
 @property (strong, nonatomic) IBOutlet UIButton *editBtn;
 @property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
+@property (strong, nonatomic) IBOutlet UILabel *titleHLPTerm;
+
 
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;
