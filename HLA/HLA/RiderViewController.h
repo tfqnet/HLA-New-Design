@@ -149,6 +149,7 @@
 @property(nonatomic , retain) NSMutableArray *LRidHL1K;
 @property(nonatomic , retain) NSMutableArray *LRidHL100;
 @property(nonatomic , retain) NSMutableArray *LRidHLP;
+@property(nonatomic , retain) NSMutableArray *LRidHLPTerm;
 @property(nonatomic , retain) NSMutableArray *LSmoker;
 @property(nonatomic , retain) NSMutableArray *LSex;
 @property(nonatomic , retain) NSMutableArray *LAge;

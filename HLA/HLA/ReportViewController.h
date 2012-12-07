@@ -12,7 +12,7 @@
 @class DataTable,DBController;
 @interface ReportViewController : UIViewController
 {
-    NSString *databasePath;
+    NSString *databasePath, *RatesDatabasePath;
     sqlite3 *contactDB;
 }
 @property (nonatomic,strong) id SINo;

@@ -1032,12 +1032,23 @@
 }
 
 - (IBAction)btnAddNewSI:(id)sender {
-
+    /*
     MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     main.modalPresentationStyle = UIModalPresentationFullScreen;
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     main.IndexTab = 3;
-    [self presentViewController:main animated:NO completion:nil];
+    */
+    NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+    MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    MainScreenPage.IndexTab = 3;
+    NewLAPage.modalPresentationStyle = UIModalPresentationPageSheet;
+    
+    [self presentViewController:MainScreenPage animated:YES completion:^(){
+        [MainScreenPage presentModalViewController:NewLAPage animated:NO];
+        NewLAPage.view.superview.bounds =  CGRectMake(-300, 0, 1024, 748);
+    }];
+    
+    //[self presentViewController:main animated:NO completion:nil];
     
 //    if (_NewLAViewController == Nil) {
 //       self.NewLAViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];

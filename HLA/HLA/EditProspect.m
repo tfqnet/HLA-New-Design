@@ -18,6 +18,7 @@
 @implementation EditProspect
 @synthesize lblOfficeAddr;
 @synthesize lblPostCode;
+@synthesize outletDone;
 @synthesize txtPrefix1,strChanges;
 @synthesize txtPrefix2;
 @synthesize txtPrefix3;
@@ -68,7 +69,7 @@
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
 
-bool IsContinue = TRUE;
+bool IsContinue = TRUE, shouldIgnore;
 int zzz;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -95,6 +96,7 @@ int zzz;
     txtRemark.layer.borderColor = [[UIColor grayColor] CGColor];
     
     [txtHomePostCode addTarget:self action:@selector(EditTextFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+    
     [txtOfficePostCode addTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtEmail addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtExactDuties addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
@@ -124,7 +126,7 @@ int zzz;
     [outletType3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
     [outletType4 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
     [outletType5 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
-    
+        [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     txtRemark.delegate = self;
     
     
@@ -241,6 +243,7 @@ int zzz;
     [self setTxtPrefix5:nil];
     [self setLblOfficeAddr:nil];
     [self setLblPostCode:nil];
+    [self setOutletDone:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -435,7 +438,7 @@ int zzz;
             sqlite3_finalize(statement);
             [self PopulateOccupCode];
             [self PopulateState];
-            [self PopulateOfficeState];
+            
             
         }
         sqlite3_close(contactDB);
@@ -455,19 +458,10 @@ int zzz;
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     
-    if ([self OptionalOccp:pp.ProspectOccupationCode] == FALSE) {
-        lblOfficeAddr.text = @"Office Address*";
-        lblPostCode.text = @"Postcode*";
-    }
-    else {
-        lblOfficeAddr.text = @"Office Address";
-        lblPostCode.text = @"Postcode";
-    }
-    
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         
         NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc FROM Adm_Occp where status = 1 and OccpCode = \"%@\"", pp.ProspectOccupationCode];
-        NSLog(@"%@", querySQL);
+        
         //const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -482,6 +476,23 @@ int zzz;
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);   
+    }
+    
+    if ([self OptionalOccp:pp.ProspectOccupationCode] == FALSE) {
+        lblOfficeAddr.text = @"Office Address*";
+        lblPostCode.text = @"Postcode*";
+        [self PopulateOfficeState];
+    }
+    else {
+        lblOfficeAddr.text = @"Office Address";
+        lblPostCode.text = @"Postcode";
+        txtOfficeState.text = @"";
+        txtOfficeTown.text = @"";
+        txtOfficeCountry.text = @"";
+        txtOfficePostCode.text = @"";
+        txtOfiiceAddr1.text= @"";
+        txtOfficeAddr2.text = @"";
+        txtOfficeAddr3.text = @"";
     }
 }
 
@@ -1200,6 +1211,11 @@ int zzz;
                 [alert show];
                 return false;        
             }
+            else {
+                txtOfficeState.text = @"";
+                txtOfficeTown.text = @"";
+                txtOfficeCountry.text = @"";
+            }
             
         }
     }
@@ -1580,6 +1596,8 @@ int zzz;
     _OccupationList = Nil;
     _SIDate = Nil;
     
+    shouldIgnore = TRUE;
+    
     if ([strChanges isEqualToString:@"Yes"]) {
         /*
         UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to save all the changes ?" 
@@ -1653,14 +1671,19 @@ int zzz;
             NSLog(@"Error Open");
         }
         
+        
         [self dismissModalViewControllerAnimated:NO];
     }
     
 }
 
+-(void)EditTextFieldBegin:(id)sender{
+    //outletDone.enabled = FALSE;
+}
+
 -(void)EditTextFieldDidChange:(id) sender
 {
-
+    
     BOOL gotRow = false;
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -1707,6 +1730,7 @@ int zzz;
                         SelectedStateCode = Statecode;
                         gotRow = true;
                         IsContinue = TRUE;
+                        //outletDone.enabled = YES;
                     }
                     sqlite3_finalize(statement);
                     
@@ -1722,8 +1746,11 @@ int zzz;
                     txtHomeTown.text = @"";
                     txtHomeCountry.text = @"";
                     SelectedStateCode = @"";
-                    [NoPostcode show];   
+                        [NoPostcode show];   
                     IsContinue = FALSE;
+                    
+                    
+                    
                     
                 }
                 sqlite3_close(contactDB);
@@ -1737,13 +1764,12 @@ int zzz;
 
 -(void)EditOfficePostcodeDidChange:(id) sender
 {
-    
-    BOOL gotRow = false;
-    const char *dbpath = [databasePath UTF8String];
-    sqlite3_stmt *statement;
-    
-    txtOfficePostCode.text = [txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]; 
-    
+        BOOL gotRow = false;
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement;
+        
+        txtOfficePostCode.text = [txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]; 
+        
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
         NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
@@ -1763,7 +1789,7 @@ int zzz;
             txtOfficeCountry.text = @"";
             SelectedOfficeStateCode = @"";
             IsContinue = FALSE;    
-    
+            
         }
         else {
             if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
@@ -1787,7 +1813,7 @@ int zzz;
                     
                     if (gotRow == false) {
                         UIAlertView *NoOfficePostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
-                                                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                                                                                  delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                         NoOfficePostcode.tag = 3000;
                         zzz = 2;
                         [txtOfficePostCode becomeFirstResponder];
@@ -1796,18 +1822,21 @@ int zzz;
                         txtOfficeTown.text = @"";
                         txtOfficeCountry.text = @"";
                         SelectedOfficeStateCode = @"";
+                        
                         [NoOfficePostcode show];   
                         IsContinue = FALSE;
                         
                     }
                 }
                 
-            sqlite3_close(contactDB);
+                sqlite3_close(contactDB);
             } 
-
+            
         }
+        
     
-    }
+    
+}
 
 -(void)detectChanges:(id) sender{
     strChanges = @"Yes";

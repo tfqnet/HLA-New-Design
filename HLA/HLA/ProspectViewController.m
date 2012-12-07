@@ -966,6 +966,15 @@ PostcodeContinue = TRUE;
                 [alert show];
                 return false;   
             }
+            else {
+                txtOfficePostcode.text = @"";
+                txtOfficeState.text = @"";
+                txtOfficeCountry.text = @"";
+                txtOfficeTown.text = @"";
+                txtOfficeAddr1.text = @"";
+                txtOfficeAddr2.text = @"";
+                txtOfficeAddr3.text = @"";
+            }
             
         }
     }

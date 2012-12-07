@@ -12,6 +12,7 @@
 @interface Login : UIViewController
 {
     NSString *databasePath;
+    NSString *RatesDatabasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
 }

@@ -108,6 +108,7 @@
 - (IBAction)btnCancel:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *lblOfficeAddr;
 @property (weak, nonatomic) IBOutlet UILabel *lblPostCode;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *outletDone;
 
 
 

@@ -76,7 +76,7 @@
 @synthesize deducPopover = _deducPopover;
 @synthesize planList = _planList;
 @synthesize deductList = _deductList;
-@synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm;
+@synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm, LRidHLPTerm;
 
 #pragma mark - Cycle View
 
@@ -123,6 +123,7 @@
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
     CGRect frame=CGRectMake(0,411, 100, 50);
+    titleRidCode.text = @"Rider \nCode";
     titleRidCode.frame = frame;
     titleRidCode.textAlignment = UITextAlignmentCenter;
     titleRidCode.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
@@ -1484,6 +1485,8 @@
     [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
     [self.RiderListPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
+    
+    
 }
 
 - (IBAction)planBtnPressed:(id)sender
@@ -1604,6 +1607,7 @@
             inputHL100SATerm = [HLTField.text intValue];
         } else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLPT"]]) {
             inputHLPercentageTerm = [HLTField.text intValue];
+            
         }
     }
     
@@ -1837,7 +1841,7 @@
 
 -(void)validateTerm
 {
-    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
     BOOL HL1kTerm = NO;
     BOOL HL100kTerm = NO;
@@ -1881,7 +1885,7 @@
         [alert show];
     }
     else if ([termField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Rider Term must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Rider Term must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (sumA) {
@@ -1968,12 +1972,23 @@
 
 -(void)validateUnit
 {
+    NSRange rangeofDot = [unitField.text rangeOfString:@"."];
+
     if (unitField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Unit is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        unitField.text = @"";
+        [unitField becomeFirstResponder];
     } else if ([unitField.text intValue] > 4) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Unit must be in the range of 1 - 4" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        unitField.text = @"";
+        [unitField becomeFirstResponder];
+    } else if (rangeofDot.location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        unitField.text = @"";
+        [unitField becomeFirstResponder];
     } else {
         NSLog(@"validate - 3rd save");
         [self validateSaver];
@@ -2786,7 +2801,9 @@
     
     [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
     [popOverConroller dismissPopoverAnimated:YES];
-//    NSLog(@"RIDERVC pType:%@, seq:%d, desc:%@",pTypeCode,PTypeSeq,pTypeDesc);
+   //NSLog(@"dasdasdadas RIDERVC pType:%@, seq:%d, desc:%@",pTypeCode,PTypeSeq,pTypeDesc);
+    [self getListingRider];
+    [myTableView reloadData];
 }
 
 -(void)RiderListController:(RiderListTbViewController *)inController didSelectCode:(NSString *)code desc:(NSString *)desc
@@ -2880,6 +2897,61 @@
         [self toggleForm];
         [self getRiderTermRule];
     }
+    /*
+    if (!([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"HSP"] || [riderCode isEqualToString:@"HSP_II"] || [riderCode isEqualToString:@"MG"]
+          || [riderCode isEqualToString:@"MG_II"] || [riderCode isEqualToString:@"MG_IV"]))  {
+        [termField becomeFirstResponder];
+        
+    }
+    */
+    if ([sumField isFirstResponder] == TRUE) {
+            
+            if (incomeRider) {
+                        
+                NSString *strMaxRiderSA = [NSString stringWithFormat:@"%.2f", maxRiderSA];
+                NSRange rangeofDot = [ strMaxRiderSA rangeOfString:@"."];
+                NSString *ValueToDisplay = @"";
+                
+                if (rangeofDot.location != NSNotFound) {
+                    NSString *substring = [strMaxRiderSA substringFromIndex:rangeofDot.location ];
+                    
+                    if (substring.length == 3 && [substring isEqualToString:@".00"]) {
+                        ValueToDisplay = [strMaxRiderSA substringToIndex:rangeofDot.location ];
+                    }
+                    else {
+                        ValueToDisplay = strMaxRiderSA;
+                    }
+                }
+                else {
+                    ValueToDisplay = strMaxRiderSA;
+                }
+                minDisplayLabel.text = [NSString stringWithFormat:@"Min GYI: %d",minSATerm];
+                //maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %.2f",maxRiderSA];
+                maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %@",ValueToDisplay];
+                
+            } else {
+                minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
+                maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
+            }
+        
+    }
+    else {
+        minDisplayLabel.text = @"";
+        maxDisplayLabel.text = @""; 
+        
+        if (!([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"HSP"] || [riderCode isEqualToString:@"HSP_II"] || [riderCode isEqualToString:@"MG"]
+              || [riderCode isEqualToString:@"MG_II"] || [riderCode isEqualToString:@"MG_IV"]))  {
+            //[termField becomeFirstResponder];
+            
+        }
+        else {
+            minDisplayLabel.text = @"";
+            maxDisplayLabel.text = @""; 
+            //[unitField becomeFirstResponder];
+        }
+            
+    }
+    
 }
 
 -(void)PlanView:(RiderPlanTb *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
@@ -3124,7 +3196,7 @@
     {
         NSString *insertSQL = [NSString stringWithFormat:
         @"INSERT INTO Trad_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, PlanOption, Units, Deductible, HL1KSA, HL1KSATerm, HL100SA, HL100SATerm, HLPercentage, HLPercentageTerm, CreatedAt) VALUES"
-        "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\")", SINoPlan,riderCode, pTypeCode, PTypeSeq, termField.text, sumField.text, planOption, unitField.text, deductible, inputHL1KSA, inputHL1KSATerm, inputHL100SA, inputHL100SATerm, inputHLPercentage, inputHL100SATerm, dateString];
+        "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\")", SINoPlan,riderCode, pTypeCode, PTypeSeq, termField.text, sumField.text, planOption, unitField.text, deductible, inputHL1KSA, inputHL1KSATerm, inputHL100SA, inputHL100SATerm, inputHLPercentage, inputHLPercentageTerm, dateString]; 
 
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -3186,12 +3258,36 @@
     LSex = [[NSMutableArray alloc] init];
     LAge = [[NSMutableArray alloc] init];
     LRidHLTerm = [[NSMutableArray alloc] init ]; // added by heng
+    LRidHLPTerm = [[NSMutableArray alloc] init ]; // added by heng
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
+        NSString *querySQL = @"";
+        if ([pTypeCode isEqualToString:@"PY"]) {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
+                        "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm FROM Trad_Rider_Details a, "
+                        "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+                        "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'PY' ",SINoPlan];
+        }
+        else {
+            if (PTypeSeq == 2) {
+                querySQL = [NSString stringWithFormat:
+                            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
+                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm FROM Trad_Rider_Details a, "
+                            "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+                            "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND  b.Sequence = '2' ",SINoPlan];
+            }
+            else {
+                querySQL = [NSString stringWithFormat:
+                            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
+                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm FROM Trad_Rider_Details a, "
+                            "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+                            "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND b.Sequence = '1' ",SINoPlan];
+            }
+        }
+        
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -3229,6 +3325,8 @@
                 const char *ridTerm = (const char *)sqlite3_column_text(statement, 12);
                 [LRidHLTerm addObject:ridTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridTerm]]; //added by heng
                 
+                const char *ridPTerm = (const char *)sqlite3_column_text(statement, 13);
+                [LRidHLPTerm addObject:ridPTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridPTerm]]; //added by heng
             }
             
             if ([LRiderCode count] == 0) {
@@ -3326,8 +3424,8 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *updatetSQL = [NSString stringWithFormat:
-                               @"UPDATE Trad_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", Units=\"%@\", Deductible=\"%@\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", HL100SA=\"%@\", HL100SATerm=\"%d\", HLPercentage=\"%@\", HLPercentageTerm=\"%d\", CreatedAt=\"%@\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",termField.text, sumField.text, planOption, unitField.text, deductible, inputHL1KSA, inputHL1KSATerm, inputHL100SA, inputHL100SATerm, inputHLPercentage, inputHL100SATerm, dateString,SINoPlan,riderCode,pTypeCode, PTypeSeq];
+        NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
+                               @"UPDATE Trad_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", Units=\"%@\", Deductible=\"%@\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", HL100SA=\"%@\", HL100SATerm=\"%d\", HLPercentage=\"%@\", HLPercentageTerm=\"%d\", CreatedAt=\"%@\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",termField.text, sumField.text, planOption, unitField.text, deductible, inputHL1KSA, inputHL1KSATerm, inputHL100SA, inputHL100SATerm, inputHLPercentage, inputHLPercentageTerm, dateString,SINoPlan,riderCode,pTypeCode, PTypeSeq];
             
         if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -4042,6 +4140,14 @@
             HLTField.text = [LRidHLTerm objectAtIndex:indexPath.row];
         }
         
+        if (  ![[LRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = [LRidHLP objectAtIndex:indexPath.row];
+        }
+        
+        if (  ![[LRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+            HLTField.text = [LRidHLPTerm objectAtIndex:indexPath.row];
+        }
+         
         
     }
 }

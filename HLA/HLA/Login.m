@@ -42,6 +42,7 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"HLA_Rates.sqlite"]];
     [self makeDBCopy];
     
     
@@ -106,13 +107,33 @@
 	NSError *error;
     
     success = [fileManager fileExistsAtPath:databasePath];
-    if (success) return;
-    
-	NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"hladb.sqlite"];
-    success = [fileManager copyItemAtPath:defaultDBPath toPath:databasePath error:&error];
+    //if (success) return;
     if (!success) {
-        NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
-	}
+        NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"hladb.sqlite"];
+        success = [fileManager copyItemAtPath:defaultDBPath toPath:databasePath error:&error];
+        if (!success) {
+            NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
+        }
+    }
+    else {
+        
+        if([fileManager fileExistsAtPath:RatesDatabasePath] == FALSE ){
+            NSString *RatesDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"HLA_Rates.sqlite"];
+            success = [fileManager copyItemAtPath:RatesDBPath toPath:RatesDatabasePath error:&error];
+            if (!success) {
+                NSAssert1(0, @"Failed to create writable Rates database file with message '%@'.", [error localizedDescription]);
+            }
+        }
+        else {
+            return;
+        }
+         
+        
+    }
+    
+	
+    
+    
 }
 
 - (IBAction)btnLogin:(id)sender {

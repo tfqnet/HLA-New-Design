@@ -555,7 +555,7 @@
         } else if (monthN == monthB && dayN < dayB) {
             newALB = ALB - 1;
         } else if (monthN == monthB && dayN == dayB) { //edited by heng
-            newALB = ALB - 1;  //edited by heng
+            newALB = ALB ;  //edited by heng
         } else {
             newALB = ALB;
             
@@ -685,9 +685,15 @@
 -(void)getRunningSI
 {
     sqlite3_stmt *statement;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT LastNo,LastUpdated FROM Adm_TrnTypeNo WHERE TrnTypeCode=\"SI\""];
+        NSString *querySQL = [NSString stringWithFormat: 
+                              @"SELECT LastNo,LastUpdated FROM Adm_TrnTypeNo WHERE TrnTypeCode=\"SI\" AND LastUpdated like \"%%%@%%\"", dateString];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -700,7 +706,9 @@
                 NSLog(@"LastSINo:%d SIDate:%@",SILastNo,SIDate);
                 
             } else {
-                NSLog(@"error check logout");
+                //NSLog(@"error check logout");
+                SILastNo = 0;
+                SIDate = dateString;
             }
             sqlite3_finalize(statement);
         }
@@ -727,7 +735,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                    @"UPDATE Adm_TrnTypeNo SET LastNo= \"%d\",LastUpdated= \"%@\" WHERE TrnTypeCode=\"SI\"",newLastNo,dateString];
+                    @"UPDATE Adm_TrnTypeNo SET LastNo= \"%d\",LastUpdated=\"%@\" WHERE TrnTypeCode=\"SI\"",newLastNo, dateString];
 
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -864,7 +872,8 @@
         }
         
         NSString *insertSQL2 = [NSString stringWithFormat:
-                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
+                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", 
+                                CustCode, LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
         NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -905,7 +914,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\"  WHERE id=\"%d\"",LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo,clientID];
+            @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", DateCreated = \"%@\"  WHERE id=\"%d\"",
+                              LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,clientID];
         NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {

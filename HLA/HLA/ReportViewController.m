@@ -52,6 +52,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"HLA_Rates.sqlite"]];
     
     UpdateTradDetail = [[NSMutableArray alloc] init ];
     gWaiverAnnual = [[NSMutableArray alloc] init ];
@@ -3531,10 +3532,94 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             int iTerm = [[IncomeRiderTerm objectAtIndex:i] intValue ];
             
                 int inputAge = 0;
+                
+                if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
+                    //------- surrender value
+                    QuerySQL = [NSString stringWithFormat: @"Select \"rate\" from trad_sys_Rider_CSV where  "
+                                "\"plancode\" = \"%@\" AND \"PremPayOpt\" = \"%d\" AND \"Age\" = \"%d\" ORDER by \"polyear\" asc ", strIncRiderCode, PremiumPaymentOption, Age];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        while (sqlite3_step(statement) == SQLITE_ROW) {
+                            [SurrenderRates addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    else {
+                        NSLog(@"wrong statement");
+                    }
+                    
+                      //-------  cash dividend high
+                    QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_CD where  "
+                                "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"H\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        while (sqlite3_step(statement) == SQLITE_ROW) {
+                            [CurrentCashDividendRatesA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    
+                    //-------  cash dividend low
+                    QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_CD where  "
+                                "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"L\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        while (sqlite3_step(statement) == SQLITE_ROW) {
+                            [CurrentCashDividendRatesB addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    
+                    //------TD high
+                    QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_TD where  "
+                                "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"H\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        while (sqlite3_step(statement) == SQLITE_ROW) {
+                            [tDividendRatesA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    
+                    //------TD low
+                    QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_TD where  "
+                                "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"L\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        while (sqlite3_step(statement) == SQLITE_ROW) {
+                            [tDividendRatesB addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    
+                    //------spe high
+                    QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_speTD where  "
+                                "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"H\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        while (sqlite3_step(statement) == SQLITE_ROW) {
+                            [speRatesA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    
+                    //------spe low
+                    QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_speTD where  "
+                                "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"L\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
+                    
+                    if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                        while (sqlite3_step(statement) == SQLITE_ROW) {
+                            [speRatesB addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    sqlite3_close(contactDB);
+                }
+                
+                    NSLog(@"getting rates for csv done");
             
-                
                 if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-                
+                    /*
                     //------- surrender value
                     QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_CSV where  "
                                 "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
@@ -3545,7 +3630,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         }
                         sqlite3_finalize(statement);
                     }
-                
+                     */
                     //------- DB 
                     QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_DB where  "
                                 "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
@@ -3569,7 +3654,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         [DBRatesEnd addObject:[DBRatesEnd objectAtIndex:DBRatesEnd.count - 1]];
                         sqlite3_finalize(statement);
                     }
-                    
+                    /*
                     //-------  cash dividend high
                     QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_CD where  "
                                 "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"H\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
@@ -3635,10 +3720,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         }
                         sqlite3_finalize(statement);
                     }
-                    
+                    */
                     sqlite3_close(contactDB);
                 }
-            
+                
+                NSLog(@"getting rates done");
                     
             
                 for (int j =1; j <= [[IncomeRiderTerm objectAtIndex:i] intValue ]; j++) {
@@ -3978,6 +4064,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     [TotalDBValueA addObject:[NSString stringWithFormat:@"%.3f", dDBValueA]];
                     [TotalDBValueB addObject:[NSString stringWithFormat:@"%.3f", dDbValueB]];
                 }
+            
+            NSLog(@"income rider table done");
                 
             for (int k=0; k < PolicyTerm; k++) {
                 double tempValueGYI;
@@ -4252,12 +4340,13 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 }
                 //NSLog(@"%.3f", EntireMaturityValueA);
             }
+                        NSLog(@"income rider for summary calculation done");
             
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 for (int a= 1; a<=[[IncomeRiderTerm objectAtIndex:i] intValue]; a++) {
                     
                     if (a <= 20 || (a > 20 && a % 5  == 0) || (a == a<=[[IncomeRiderTerm objectAtIndex:i] intValue] && a%5 != 0) ) {
-                    
-                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                        
                         if (Age > 0){
                             
                             inputAge = Age + a;
@@ -4300,8 +4389,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                         " \"%@\",\"%d\",\"%@\",\"DATA\",\"%d\",\"%d\",\"%d\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%@\",\"%@\",\"%.0f\", "
                                         "\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\",\"%@\",\"%@\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\")", 
                                         SINo, a, [IncomeRiderCode objectAtIndex:i],i,a,inputAge, [AnnualPremium objectAtIndex:a - 1], [YearlyIncomeEOF objectAtIndex:a-1],
-                                         round( [[SurrenderValue objectAtIndex:a-1] doubleValue ]) ,
-                                         round( [[DBValue objectAtIndex:a-1] doubleValue ]), round( [[DBValueEnd objectAtIndex:a-1] doubleValue ]),
+                                        round( [[SurrenderValue objectAtIndex:a-1] doubleValue ]) ,
+                                        round( [[DBValue objectAtIndex:a-1] doubleValue ]), round( [[DBValueEnd objectAtIndex:a-1] doubleValue ]),
                                         [aValue objectAtIndex:a-1],[aValueEnd objectAtIndex:a-1],
                                         round([[TotalSurrenderValueA objectAtIndex:a-1] doubleValue ]), round([[TotalSurrenderValueB objectAtIndex:a-1] doubleValue ]),
                                         round([[TotalDBValueA objectAtIndex:a-1] doubleValue ]), round([[TotalDBValueB objectAtIndex:a-1] doubleValue ]),
@@ -4318,11 +4407,14 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 }
                                 sqlite3_finalize(statement); 
                             }
+                            
+                            
                         }
-                        sqlite3_close(contactDB);
-                    }
                     }
                 }
+                sqlite3_close(contactDB);
+            }
+                
             
         }
     }
