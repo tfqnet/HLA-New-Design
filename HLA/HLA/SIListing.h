@@ -45,6 +45,7 @@
 @property (retain, nonatomic) NSMutableArray *FilteredPlanName;
 @property (retain, nonatomic) NSMutableArray *FilteredBasicSA;
 @property (retain, nonatomic) NSMutableArray *FilteredSIStatus;
+@property (retain, nonatomic) NSMutableArray *FilteredCustomerCode;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtSINO;
 @property (weak, nonatomic) IBOutlet UITextField *txtLAName;

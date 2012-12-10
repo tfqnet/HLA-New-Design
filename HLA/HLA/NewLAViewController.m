@@ -263,8 +263,8 @@
 //            statusLabel.text = @"Data changed. Please resave!";
 //            statusLabel.textColor = [UIColor redColor];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data change. Do you want to apply to this SI ?"
-                                                       delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No",nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to "
+                              "apply changes to this SI?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No",nil];
         [alert setTag:1004];
         [alert show];
     }

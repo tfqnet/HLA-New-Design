@@ -69,7 +69,7 @@
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
 
-bool IsContinue = TRUE, shouldIgnore;
+bool IsContinue = TRUE;
 int zzz;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -438,7 +438,7 @@ int zzz;
             sqlite3_finalize(statement);
             [self PopulateOccupCode];
             [self PopulateState];
-            
+            [self PopulateOfficeState];
             
         }
         sqlite3_close(contactDB);
@@ -481,11 +481,12 @@ int zzz;
     if ([self OptionalOccp:pp.ProspectOccupationCode] == FALSE) {
         lblOfficeAddr.text = @"Office Address*";
         lblPostCode.text = @"Postcode*";
-        [self PopulateOfficeState];
+        
     }
     else {
         lblOfficeAddr.text = @"Office Address";
         lblPostCode.text = @"Postcode";
+        /*
         txtOfficeState.text = @"";
         txtOfficeTown.text = @"";
         txtOfficeCountry.text = @"";
@@ -493,6 +494,7 @@ int zzz;
         txtOfiiceAddr1.text= @"";
         txtOfficeAddr2.text = @"";
         txtOfficeAddr3.text = @"";
+         */
     }
 }
 
@@ -1191,11 +1193,13 @@ int zzz;
             return false;
         }
         else {
+            /*
             txtOfficeTown.text = @"";
             txtOfficeState.text = @"";
             txtOfficePostCode.text = @"";
             txtOfficeCountry.text = @"";
             SelectedOfficeStateCode = @"";
+             */
         }
         
     }
@@ -1596,8 +1600,6 @@ int zzz;
     _OccupationList = Nil;
     _SIDate = Nil;
     
-    shouldIgnore = TRUE;
-    
     if ([strChanges isEqualToString:@"Yes"]) {
         /*
         UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Are you sure you want to save all the changes ?" 
@@ -1691,6 +1693,16 @@ int zzz;
     
     txtHomePostCode.text =[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] ;
     
+    if ([txtHomePostCode.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                        message:@"Home postcode is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        alert.tag = 2001;
+        [alert show];
+        zzz = 1;
+        return;
+    }
+        
+    
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
         NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
@@ -1770,6 +1782,16 @@ int zzz;
         
         txtOfficePostCode.text = [txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]; 
         
+    if ([txtOfficePostCode.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
+                                                                  delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        alert.tag = 3001;
+        [alert show];
+        zzz = 2;
+        return;
+    }
+            
+    
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
         NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
@@ -1861,11 +1883,11 @@ int zzz;
             }
             
               
-            else if (alertView.tag = 3000 && zzz == 2) {
+            else if ((alertView.tag == 3000 && zzz == 2) || (alertView.tag == 3001 && zzz == 2)) {
                 
                 [txtOfficePostCode becomeFirstResponder];
             }
-            else if (alertView.tag = 2000 && zzz == 1) {
+            else if ((alertView.tag == 2000 && zzz == 1) || (alertView.tag == 2001 && zzz == 1) ) {
 
                 [txtHomePostCode becomeFirstResponder];
             }

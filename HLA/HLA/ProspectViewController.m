@@ -69,7 +69,7 @@
 @synthesize delegate = _delegate;
 
 bool PostcodeContinue = TRUE;
-int temp;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -269,6 +269,11 @@ int temp;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [outletDOB setTitle:dateString forState:UIControlStateNormal];
     
     if (_SIDate == Nil) {
          
@@ -939,17 +944,18 @@ PostcodeContinue = TRUE;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [txtOfficeAddr1 becomeFirstResponder];
-            //[self.view endEditing:TRUE];
             
             [alert show];
             return false;
         }
         else {
+            /*
             txtOfficeTown.text = @"";
             txtOfficeState.text = @"";
             txtOfficePostcode.text = @"";
             txtOfficeCountry.text = @"";
             SelectedOfficeStateCode = @"";
+             */
         }
         
     }
@@ -967,6 +973,7 @@ PostcodeContinue = TRUE;
                 return false;   
             }
             else {
+                /*
                 txtOfficePostcode.text = @"";
                 txtOfficeState.text = @"";
                 txtOfficeCountry.text = @"";
@@ -974,6 +981,7 @@ PostcodeContinue = TRUE;
                 txtOfficeAddr1.text = @"";
                 txtOfficeAddr2.text = @"";
                 txtOfficeAddr3.text = @"";
+                 */
             }
             
         }
@@ -1227,10 +1235,10 @@ PostcodeContinue = TRUE;
     }
     else {
         if (buttonIndex == 0) {
-            if ( alertView.tag == 2000 && temp == 1) {
+            if ( alertView.tag == 2000 || alertView.tag == 2001 ) {
                 [txtHomePostCode becomeFirstResponder];
             }
-            else if ( alertView.tag = 2001 && temp == 2) {
+            else if ( alertView.tag == 3000 || alertView.tag == 3001) {
                 [txtOfficePostcode becomeFirstResponder];
             }
         }
@@ -1360,6 +1368,15 @@ PostcodeContinue = TRUE;
     
     txtHomePostCode.text = [txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     
+    if ([txtHomePostCode.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Home postcode is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        alert.tag = 2001;
+        [alert show];
+        //zzz = 1;
+        return;
+    }
+    
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
         NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
@@ -1406,7 +1423,7 @@ PostcodeContinue = TRUE;
                 if (gotRow == false) {
                     UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for residence" 
                                                                         delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                    temp = 1;
+                    
                     NoPostcode.tag = 2000;
                     txtHomePostCode.text = @"";
                     txtHomeState.text = @"";
@@ -1431,6 +1448,15 @@ PostcodeContinue = TRUE;
     sqlite3_stmt *statement;
     
     txtOfficePostcode.text = [txtOfficePostcode.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    if ([txtOfficePostcode.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
+                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        alert.tag = 3001;
+        [alert show];
+        //zzz = 2;
+        return;
+    }
     
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
@@ -1475,8 +1501,8 @@ PostcodeContinue = TRUE;
                     if (gotRow == false) {
                         UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office" 
                                                                             delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                        temp = 2;
-                        NoPostcode.tag = 2001;
+                        
+                        NoPostcode.tag = 3000;
                         txtOfficePostcode.text = @"";
                         txtOfficeState.text = @"";
                         txtOfficeTown.text = @"";
@@ -1488,8 +1514,6 @@ PostcodeContinue = TRUE;
                     
                     sqlite3_close(contactDB);
                 }
-                
-                
             }
         }
     

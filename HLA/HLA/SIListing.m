@@ -33,7 +33,7 @@
 @synthesize outletDateTo;
 @synthesize txtSINO,CustomerCode;
 @synthesize txtLAName, SINO,FilteredBasicSA,FilteredDateCreated,FilteredName;
-@synthesize FilteredSINO,FilteredPlanName,FilteredSIStatus,SIStatus;
+@synthesize FilteredSINO,FilteredPlanName,FilteredSIStatus,SIStatus,FilteredCustomerCode;
 @synthesize BasicSA,Name,PlanName, DateCreated;
 @synthesize SortBy = _SortBy;
 @synthesize Popover = _Popover;
@@ -395,6 +395,34 @@
          [cell.contentView addSubview:label6];
          */
         
+        if (indexPath.row % 2 == 0) {
+            label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label5.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            
+            label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            
+        }
+        else {
+            label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label2.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label5.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            
+            label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            
+        }
     }
     //[cell setSelected:NO animated:NO];
     
@@ -658,12 +686,12 @@
                 SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
             }
             
-            NSLog(@"%@", SIListingSQL);
+            //NSLog(@"%@", SIListingSQL);
             
             const char *SelectSI = [SIListingSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
                 
-                
+                /*
                 SINO = nil;
                 DateCreated = nil;
                 Name = nil;
@@ -679,15 +707,15 @@
                 BasicSA = [[NSMutableArray alloc] init ];
                 SIStatus = [[NSMutableArray alloc] init ];
                 CustomerCode = [[NSMutableArray alloc] init ]; 
+                */
                 
-                /*
                  FilteredSINO = [[NSMutableArray alloc] init ];
                  FilteredDateCreated = [[NSMutableArray alloc] init ];
                  FilteredName = [[NSMutableArray alloc] init ];
                  FilteredPlanName = [[NSMutableArray alloc] init ];
                  FilteredBasicSA = [[NSMutableArray alloc] init ];
                  FilteredSIStatus = [[NSMutableArray alloc] init ];
-                 */
+                 FilteredCustomerCode = [[NSMutableArray alloc] init ];
                 
                 
                 while (sqlite3_step(statement) == SQLITE_ROW){
@@ -698,14 +726,15 @@
                     NSString *ItemBasicSA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
                     NSString *ItemStatus = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
                     NSString *ItemCustomerCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
-                    /*
+                    
                      [FilteredSINO addObject:SINumber];
                      [FilteredDateCreated addObject:ItemDateCreated ];
                      [FilteredName addObject:ItemName ];
                      [FilteredPlanName addObject:ItemPlanName ];
                      [FilteredBasicSA addObject:ItemBasicSA ];
                      [FilteredSIStatus addObject:ItemStatus];
-                     */
+                    [FilteredCustomerCode addObject:ItemCustomerCode];
+                     /*
                     [SINO addObject:SINumber];
                     [DateCreated addObject:ItemDateCreated ];
                     [Name addObject:ItemName ];
@@ -713,6 +742,7 @@
                     [BasicSA addObject:ItemBasicSA ];
                     [SIStatus addObject:ItemStatus];
                     [CustomerCode addObject:ItemCustomerCode];
+                      */
                 }
                 
                 sqlite3_finalize(statement);
@@ -728,11 +758,13 @@
             NSLog(@"cannot open DB");
         }
         
+        isFilter = TRUE;
         if (SINO.count == 0) {
             outletEdit.enabled = FALSE;
             [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
         }
         else {
+            
             [outletEdit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
             outletEdit.enabled = TRUE;
         }
@@ -941,11 +973,13 @@
     
     if (SortBySelected.count > 0) {
         outletGender.enabled = true;
+        outletGender.selectedSegmentIndex = 0;
         
     }
     else {
         outletGender.enabled = false;
         outletGender.selected = false;
+        outletGender.selectedSegmentIndex = -1;
     }
     
     
@@ -980,10 +1014,6 @@
         }
     }
    
-    
-    
-    
-    
 }
 - (IBAction)btnSortBy:(id)sender {
     if (_SortBy == nil) {
@@ -1029,6 +1059,9 @@
     outletGender.selectedSegmentIndex = -1;
     outletGender.enabled = FALSE;
     _SortBy = Nil;
+    isFilter = FALSE;
+    
+    [myTableView reloadData];
 }
 
 - (IBAction)btnAddNewSI:(id)sender {

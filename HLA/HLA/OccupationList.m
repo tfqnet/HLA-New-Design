@@ -58,7 +58,8 @@ NSString *SelectedString;
                 [_OccupCode addObject:OccpCode];
             }
         }
-        
+    
+        sqlite3_close(contactDB);
     }
     
     UISearchBar *zzz = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 200, 50) ];

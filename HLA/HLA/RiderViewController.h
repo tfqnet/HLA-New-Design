@@ -18,6 +18,7 @@
 @interface RiderViewController : UIViewController <RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,RiderDeducTbDelegate,RiderPlanTbDelegate>
 {
     NSString *databasePath;
+    NSString *RatesDatabasePath;
     sqlite3 *contactDB;
     UIPopoverController *popOverConroller;
     UIPopoverController *_RiderListPopover;

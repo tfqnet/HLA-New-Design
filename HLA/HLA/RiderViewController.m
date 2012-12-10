@@ -86,6 +86,7 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"HLA_Rates.sqlite"]];
     
     //--------- edited by heng
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
@@ -172,6 +173,7 @@
     titleHL1K.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     CGRect frame8=CGRectMake(540,411, 63, 50);
+    
     titleHL100.frame = frame8;
     titleHL100.textAlignment = UITextAlignmentCenter;
     titleHL100.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
@@ -1077,12 +1079,12 @@
             [incomeRiderMonth addObject:calRiderMonth];
             NSLog(@"income insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
             
-            /* edited by heng to avoid negative yield
+            
             //get CSV rate
             [self getRiderCSV:RidCode];
             NSString *csv = [NSString stringWithFormat:@"%.2f",riderCSVRate];
             [incomeRiderCSV addObject:csv];
-             */
+             
         }
     }
     
@@ -1446,8 +1448,8 @@
     }
     
     //edited by heng to avoid negative yield
-    //[self getRiderCSV:riderCode];       //get CSV rate 
-    //inputCSV = riderCSVRate;
+    [self getRiderCSV:riderCode];       //get CSV rate 
+    inputCSV = riderCSVRate;
     
     NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
     NSString *calRiderHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
@@ -1917,10 +1919,10 @@
     
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     
-    float num = [sumField.text floatValue];
-    int riderSumA = num;
-    float riderFraction = num - riderSumA;
-    NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:riderFraction]];
+    //float num = [sumField.text floatValue];
+    //int riderSumA = num;
+    //float riderFraction = num - riderSumA;
+    //NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:riderFraction]];
     
     NSRange rangeofDot = [sumField.text rangeOfString:@"."];
     NSString *substring = @"";
@@ -1955,7 +1957,7 @@
         [alert show];
         sumField.text = @"";
     }
-    else if (incomeRider && msg.length > 4) {
+    else if (incomeRider && substring.length > 3) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Guaranteed Yearly Income only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         sumField.text = @"";
@@ -1994,7 +1996,7 @@
         unitField.text = @"";
         [unitField becomeFirstResponder];
     } else if (rangeofDot.location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Unit must be in the range of 1-4 and no decimal allowed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         unitField.text = @"";
         [unitField becomeFirstResponder];
@@ -2109,7 +2111,7 @@
             [self updateRider];
         }
          
-        //[self NegativeYield];
+        [self NegativeYield];
     }
     else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count == 0)) {
         
@@ -2124,7 +2126,7 @@
             [self updateRider];
         }
          
-        //[self NegativeYield];
+        [self NegativeYield];
     }
     else {
         [self checkingRider];
@@ -2939,18 +2941,15 @@
         
     }
     else {
-        minDisplayLabel.text = @"";
-        maxDisplayLabel.text = @""; 
-        
-        if (!([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"HSP"] || [riderCode isEqualToString:@"HSP_II"] || [riderCode isEqualToString:@"MG"]
-              || [riderCode isEqualToString:@"MG_II"] || [riderCode isEqualToString:@"MG_IV"]))  {
-            //[termField becomeFirstResponder];
-            
+        //minDisplayLabel.text = @"";
+        //maxDisplayLabel.text = @""; 
+        if ([termField isFirstResponder] == TRUE) {
+            minDisplayLabel.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
+            maxDisplayLabel.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
         }
         else {
             minDisplayLabel.text = @"";
             maxDisplayLabel.text = @""; 
-            //[unitField becomeFirstResponder];
         }
             
     }
@@ -3058,7 +3057,7 @@
 -(void)getRiderCSV:(NSString *)code
 {
     sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
             @"Select rate from Trad_Sys_Rider_CSV where PlanCode=\"%@\" AND PremPayOpt=%d AND Age=%d ORDER by PolYear desc",code,requestMOP, age];
@@ -3228,7 +3227,10 @@
     
     if (inputSA > _maxRiderSA) {
         NSLog(@"will delete %@",riderCode);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" 
+                                                        message:@"Rider Sum Assured must be less than or equal to 1000000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
         [alert setTag:1002];
         [alert show];
     }
