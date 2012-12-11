@@ -420,7 +420,7 @@
         [alert show];
     }
     else if ([tempHLTermField.text intValue] > termCover) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater thann %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
     else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
@@ -445,8 +445,8 @@
         
         float num = [yearlyIncomeField.text floatValue];
         int basicSumA = num;
-        float basicFraction = num - basicSumA;
-        NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:basicFraction]];
+        //float basicFraction = num - basicSumA;
+        //NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:basicFraction]];
         
         float numHL = [HLField.text floatValue];
         int HLValue = numHL;
@@ -458,7 +458,16 @@
         float tempHLFraction = numTempHL - tempHLValue;
         NSString *msg3 = [formatter stringFromNumber:[NSNumber numberWithFloat:tempHLFraction]];
         
-        if (msg.length > 4) {
+        NSRange rangeofDot = [yearlyIncomeField.text rangeOfString:@"."];
+        NSString *substring = @"";
+        
+        if (rangeofDot.location != NSNotFound) {
+            substring = [yearlyIncomeField.text substringFromIndex:rangeofDot.location ];
+            
+        }
+        
+        if (substring.length > 3) {
+            
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
         }

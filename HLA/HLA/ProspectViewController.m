@@ -282,6 +282,7 @@ bool PostcodeContinue = TRUE;
          self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
      }
     
+    [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
     
 }

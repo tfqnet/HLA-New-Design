@@ -77,7 +77,7 @@
 @synthesize deducPopover = _deducPopover;
 @synthesize planList = _planList;
 @synthesize deductList = _deductList;
-@synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm, LRidHLPTerm;
+@synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm, LRidHLPTerm, LRidHL100Term;
 
 #pragma mark - Cycle View
 
@@ -173,11 +173,12 @@
     titleHL1K.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     CGRect frame8=CGRectMake(540,411, 63, 50);
-    
+    titleHL100.text = @"HL(SA)\nterm";
     titleHL100.frame = frame8;
     titleHL100.textAlignment = UITextAlignmentCenter;
     titleHL100.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHL100.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    titleHL100.numberOfLines = 2;
     
     CGRect frame9=CGRectMake(603,411, 63, 50);
     titleHLP.frame = frame9;
@@ -336,14 +337,17 @@
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"SUMA"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"SUAS"]]) {
             sumLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            
             sumA = YES;
         }
+        
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"GYIRM"]]) {
             sumLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
             sumA = YES;
             incomeRider = YES;
         }
+        
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLOP"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLCH"]]) {
@@ -2909,6 +2913,10 @@
         [self getRiderTermRule];
     }
     
+    if ([riderCode isEqualToString: @"HMM"]) {
+        sumLabel.text = @"Sum Assured (RM)";
+    }
+    
     if ([sumField isFirstResponder] == TRUE) {
             
             if (incomeRider) {
@@ -3264,6 +3272,7 @@
     LAge = [[NSMutableArray alloc] init];
     LRidHLTerm = [[NSMutableArray alloc] init ]; // added by heng
     LRidHLPTerm = [[NSMutableArray alloc] init ]; // added by heng
+    LRidHL100Term = [[NSMutableArray alloc] init ]; // added by heng
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -3272,7 +3281,7 @@
         if ([pTypeCode isEqualToString:@"PY"]) {
             querySQL = [NSString stringWithFormat:
                         @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
-                        "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm FROM Trad_Rider_Details a, "
+                        "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm FROM Trad_Rider_Details a, "
                         "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
                         "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'PY' ",SINoPlan];
         }
@@ -3280,14 +3289,14 @@
             if (PTypeSeq == 2) {
                 querySQL = [NSString stringWithFormat:
                             @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
-                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm FROM Trad_Rider_Details a, "
+                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm FROM Trad_Rider_Details a, "
                             "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
                             "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND  b.Sequence = '2' ",SINoPlan];
             }
             else {
                 querySQL = [NSString stringWithFormat:
                             @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
-                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm FROM Trad_Rider_Details a, "
+                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm FROM Trad_Rider_Details a, "
                             "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
                             "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND b.Sequence = '1' ",SINoPlan];
             }
@@ -3332,6 +3341,9 @@
                 
                 const char *ridPTerm = (const char *)sqlite3_column_text(statement, 13);
                 [LRidHLPTerm addObject:ridPTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridPTerm]]; //added by heng
+                
+                const char *ridHL100Term = (const char *)sqlite3_column_text(statement, 14);
+                [LRidHL100Term addObject:ridHL100Term == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL100Term]]; //added by heng
             }
             
             if ([LRiderCode count] == 0) {
@@ -3993,9 +4005,22 @@
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
     NSString *hl1k;
+    /*
     if ([[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
         hl1k = @"";
     } else {
+        hl1k = [LRidHL1K objectAtIndex:indexPath.row];
+    }
+     */
+    if ([[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
+        [[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+        hl1k = @"";
+    }
+    else if([[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
+            ![[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]){
+        hl1k = [LRidHL100 objectAtIndex:indexPath.row];
+    }
+        else {
         hl1k = [LRidHL1K objectAtIndex:indexPath.row];
     }
     label7.text= hl1k;
@@ -4003,7 +4028,7 @@
     label7.tag = 2007;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label7];
-    
+    /*
     CGRect frame8=CGRectMake(540,0, 63, 50);
     UILabel *label8=[[UILabel alloc]init];
     label8.frame=frame8;
@@ -4018,7 +4043,36 @@
     label8.tag = 2008;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label8];
+    */
     
+    CGRect frame8=CGRectMake(540,0, 63, 50);
+    UILabel *label8=[[UILabel alloc]init];
+    label8.frame=frame8;
+    NSString *hl100;
+    /*
+    if ([[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+        hl100 = @"";
+    } else {
+        hl100 = [LRidHLTerm objectAtIndex:indexPath.row];
+    }
+     */
+    if ([[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
+        [[LRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+        hl100 = @"";
+    }
+    else if([[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
+            ![[LRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]){
+        hl100 = [LRidHL100Term objectAtIndex:indexPath.row];
+    }
+    else {
+        hl100 = [LRidHLTerm objectAtIndex:indexPath.row];
+    }
+    label8.text= hl100;
+    label8.textAlignment = UITextAlignmentCenter;
+    label8.tag = 2008;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label8];
+     
     CGRect frame9=CGRectMake(603,0, 63, 50);
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
@@ -4169,6 +4223,10 @@
         
         if (  ![[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
             HLField.text = [LRidHL100 objectAtIndex:indexPath.row];
+        }
+        
+        if (  ![[LRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+            HLTField.text = [LRidHL100Term objectAtIndex:indexPath.row];
         }
         
         if (  ![[LRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {

@@ -42,6 +42,7 @@
 @synthesize termCover,planCode,arrExistRiderCode;
 @synthesize prospectPopover = _prospectPopover;
 
+id temp;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -313,7 +314,7 @@
 - (IBAction)doSaveLA:(id)sender
 {
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
-    
+           
     /*
     if (LANameField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Leave this page?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No",nil];
@@ -327,6 +328,11 @@
     }
     else if (smoker.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+
+    else if ([btnCommDate.titleLabel.text isEqualToString:@"(null)"] || [btnCommDate.titleLabel.text isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Commencement date is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (AgeLess) {
@@ -374,7 +380,9 @@
 }
 
 - (IBAction)btnCommDatePressed:(id)sender
-{
+{   
+    temp = btnCommDate.titleLabel.text;
+    
     if(![popOverController isPopoverVisible]) {
         date2 = YES;
         DateViewController *datePick = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
@@ -382,12 +390,13 @@
         datePick.delegate = self;
 		
 		[popOverController setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(0, 0, 550, 600) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [popOverController presentPopoverFromRect:CGRectMake(223, 337, 300, 255) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
         popOverController.delegate = self;
 	}
     else {
 		[popOverController dismissPopoverAnimated:YES];
 	}
+        
 }
 
 - (IBAction)doClose:(id)sender
@@ -441,9 +450,20 @@
                 LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
             }
             //-------------------
-            [self updateData];
             
+        
+            [self calculateAge];
+            if (AgeLess) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                [alert setTag:1005];
+                [alert show];
+            }
+            else {
+                [self updateData];
+            }
         }        
+        
+        
     }
     else if (alertView.tag==1004 && buttonIndex == 1) { // added by heng
         LANameField.text = clientName;
@@ -489,6 +509,7 @@
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"storedLA SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
         }
+        
         
     }    
     else if (alertView.tag==1005 && buttonIndex == 0) {
@@ -1409,6 +1430,17 @@
 
 -(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB
 {
+    
+    
+    /*
+    if ([btnCommDate.titleLabel.text isEqualToString:@""]) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+        
+        [btnCommDate setTitle:dateString forState:UIControlStateNormal];
+    }
+   */ 
     if (date1) {
         LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
         LAAgeField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
@@ -1418,11 +1450,21 @@
         [popOverController dismissPopoverAnimated:YES];
         date1 = NO;
     } else if (date2) {
-        [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
-        commDate = aDate;
+        if (aDate == NULL) {
+            [btnCommDate setTitle:temp forState:UIControlStateNormal];
+            commDate = temp;
+        }
+        else {
+            [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
+            commDate = aDate;
+        }
+        
         [popOverController dismissPopoverAnimated:YES];
         date2 = NO;
     }
+    
+    
+    
     
 }
 

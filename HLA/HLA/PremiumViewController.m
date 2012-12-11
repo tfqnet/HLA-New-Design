@@ -29,8 +29,8 @@
 @synthesize annualRiderTot,halfRiderTot,quarterRiderTot,monthRiderTot;
 @synthesize htmlRider,occLoad,annualRider,halfYearRider,quarterRider,monthlyRider,annualRiderSum,halfRiderSum,monthRiderSum,quarterRiderSum;
 @synthesize premBH,premH,age,riderSex,sex,waiverRiderAnn,waiverRiderHalf,waiverRiderQuar,waiverRiderMonth;
-@synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar;
-@synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2;
+@synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,ReportHMMRates;
+@synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2,ReportAge,ReportRates;
 @synthesize Browser = _Browser;
 
 - (void)viewDidLoad
@@ -115,6 +115,7 @@
             browserController_page = nil;
         }
     }
+    
     //------ end ---------
      
 }
@@ -597,7 +598,7 @@
             [self getRiderRateSex:planCodeRider riderTerm:ridTerm];
         }
         else if ([RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"HMM"]) {
-            [self getRiderRateAgeSexClass:planCodeRider riderTerm:ridTerm];
+            [self getRiderRateAgeSexClass:planCodeRider riderTerm:ridTerm code:RidCode];
         }
         else {
             [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
@@ -724,6 +725,16 @@
             halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * halfFac;
             quarterRider = riderRate * (1 + RiderHLQuarterly/100) * quarterFac;
             monthlyRider = riderRate * (1 + RiderHLMonthly/100) * monthFac;
+            
+            // For report part ----------
+            /*
+            for (int a = 0; a<ReportHMMRates.count; a++) {
+                double annualRates = [[ReportHMMRates objectAtIndex:a] doubleValue ] * (1 + RiderHLAnnually/100) * annFac;
+                [ReportRates addObject:[NSString stringWithFormat:@"%.9f", annualRates]];
+                
+            }
+            */
+            // report part end -----------
         }
         else if ([RidCode isEqualToString:@"HB"])
         {
@@ -1292,7 +1303,7 @@
     }
 }
 
--(void)getRiderRateAgeSexClass:(NSString *)aaplan riderTerm:(int)aaterm
+-(void)getRiderRateAgeSexClass:(NSString *)aaplan riderTerm:(int)aaterm code:(NSString *)strRiderCode
 {
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -1315,6 +1326,31 @@
             }
             sqlite3_finalize(statement);
         }
+        
+        //----------- for report part  ----------- added by heng
+        if ([strRiderCode isEqualToString:@"HMM"]) {
+            ReportHMMRates = [[NSMutableArray alloc] init ];
+            ReportAge = [[NSMutableArray alloc] init ];
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT Rate, \"FromAge\" FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                        " FromMortality=0 AND Sex=\"%@\" AND occpClass = \"%d\" ORDER BY fromage",
+                        aaplan,aaterm,aaterm,sex, premH.storedOccpClass];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    [ReportHMMRates addObject:[NSString stringWithFormat:@"%.3f", sqlite3_column_double(statement, 0)]];
+                    [ReportAge addObject:[NSString stringWithFormat:@"%d", sqlite3_column_int(statement, 1)]];
+                } 
+                sqlite3_finalize(statement);
+            }
+        }
+        else {
+            
+        }
+            
+        //----------- report part end -------------------------
         sqlite3_close(contactDB);
     }
 }

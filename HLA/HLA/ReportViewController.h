@@ -21,7 +21,7 @@
 @property (nonatomic,strong) id CustCode;
 @property (nonatomic,strong) id Name;
 @property (nonatomic,strong) id strBasicAnnually, strBasicSemiAnnually, strBasicQuarterly, strBasicMonthly;
-@property (nonatomic,strong) id sex;
+@property (nonatomic,strong) id sex, OccpClass;
 //@property (nonatomic,strong) id strIncomeRiderAnnually;
 @property (retain, nonatomic) NSMutableArray *aStrIncomeRiderAnnually;
 @property (retain, nonatomic) NSMutableArray *aStrOtherRiderAnnually;
@@ -47,6 +47,7 @@
 @property (retain, nonatomic) NSMutableArray *OtherRiderDesc;
 @property (retain, nonatomic) NSMutableArray *OtherRiderSA;
 @property (retain, nonatomic) NSMutableArray *OtherRiderPlanOption;
+@property (retain, nonatomic) NSMutableArray *OtherRiderDeductible;
 
 //summary
 @property (retain, nonatomic) NSMutableArray *SummaryGuaranteedTotalGYI;

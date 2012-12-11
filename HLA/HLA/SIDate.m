@@ -70,4 +70,8 @@
 - (IBAction)btnClose:(id)sender {
     [_delegate CloseWindow];
 }
+
+- (IBAction)btnDone:(id)sender {
+    [_delegate CloseWindow];
+}
 @end

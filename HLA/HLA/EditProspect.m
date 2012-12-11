@@ -127,6 +127,7 @@ int zzz;
     [outletType4 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
     [outletType5 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
         [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    [txtOfficePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     txtRemark.delegate = self;
     
     
@@ -193,6 +194,7 @@ int zzz;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
     strChanges = @"Yes";
+
 }
 
 - (void)viewDidUnload
@@ -438,7 +440,9 @@ int zzz;
             sqlite3_finalize(statement);
             [self PopulateOccupCode];
             [self PopulateState];
-            [self PopulateOfficeState];
+            if (![txtOfiiceAddr1.text isEqualToString:@""]) {
+                [self PopulateOfficeState];
+            }
             
         }
         sqlite3_close(contactDB);
@@ -589,6 +593,7 @@ int zzz;
         self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
     }
     
+    [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
@@ -1742,7 +1747,7 @@ int zzz;
                         SelectedStateCode = Statecode;
                         gotRow = true;
                         IsContinue = TRUE;
-                        //outletDone.enabled = YES;
+                        outletDone.enabled = YES;
                     }
                     sqlite3_finalize(statement);
                     
@@ -1760,9 +1765,6 @@ int zzz;
                     SelectedStateCode = @"";
                         [NoPostcode show];   
                     IsContinue = FALSE;
-                    
-                    
-                    
                     
                 }
                 sqlite3_close(contactDB);
@@ -1783,15 +1785,28 @@ int zzz;
         txtOfficePostCode.text = [txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]; 
         
     if ([txtOfficePostCode.text isEqualToString:@""]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
-                                                                  delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        alert.tag = 3001;
-        [alert show];
-        zzz = 2;
-        return;
+        
+        if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
+                                                           delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            alert.tag = 3001;
+            [alert show];
+            zzz = 2;
+            return;
+        }
+        else {
+            txtOfficePostCode.text = @"";
+            txtOfficeState.text = @"";
+            txtOfficeTown.text = @"";
+            txtOfficeCountry.text = @"";
+            SelectedOfficeStateCode = @"";
+            txtOfiiceAddr1.text = @"";
+            txtOfficeAddr2.text = @"";
+            txtOfficeAddr3.text = @"";
+        }
+        
     }
-            
-    
+     
         BOOL valid;
         NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
         NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
@@ -1830,6 +1845,7 @@ int zzz;
                         SelectedOfficeStateCode = Statecode;
                         gotRow = true;
                         IsContinue = TRUE;
+                        outletDone.enabled = TRUE;
                     }
                     sqlite3_finalize(statement);
                     
@@ -1850,14 +1866,10 @@ int zzz;
                         
                     }
                 }
-                
                 sqlite3_close(contactDB);
             } 
             
         }
-        
-    
-    
 }
 
 -(void)detectChanges:(id) sender{
@@ -1957,7 +1969,7 @@ int zzz;
 
             }
             else if (alertView.tag == 1003) { //save changes
-                [self SaveChanges];
+                //[self SaveChanges];
             }
                        
         }

@@ -21,5 +21,6 @@
 - (IBAction)ActionDate:(id)sender;
 @property (weak, nonatomic) IBOutlet UIDatePicker *outletDate;
 - (IBAction)btnClose:(id)sender;
+- (IBAction)btnDone:(id)sender;
 
 @end

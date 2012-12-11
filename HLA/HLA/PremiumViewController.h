@@ -99,4 +99,8 @@
 - (IBAction)btnQuotation:(id)sender;
 @property (nonatomic, retain) BrowserViewController *Browser;
 
+@property(nonatomic , retain) NSMutableArray *ReportHMMRates;
+@property(nonatomic , retain) NSMutableArray *ReportAge;
+@property(nonatomic , retain) NSMutableArray *ReportRates;
+
 @end
