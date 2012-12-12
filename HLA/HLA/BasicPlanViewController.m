@@ -352,18 +352,34 @@
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
-    //AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    NSRange rangeofDotSUM = [yearlyIncomeField.text rangeOfString:@"."];
+    NSString *substringSUM = @"";
+    NSRange rangeofDotHL = [HLField.text rangeOfString:@"."];
+    NSString *substringHL = @"";
+    NSRange rangeofDotTempHL = [tempHLField.text rangeOfString:@"."];
+    NSString *substringTempHL = @"";
+    
+    if (rangeofDotSUM.location != NSNotFound) {
+        substringSUM = [yearlyIncomeField.text substringFromIndex:rangeofDotSUM.location ];
+    }
+    if (rangeofDotHL.location != NSNotFound) {
+        substringHL = [HLField.text substringFromIndex:rangeofDotHL.location ];
+    }
+    if (rangeofDotTempHL.location != NSNotFound) {
+        substringTempHL = [tempHLField.text substringFromIndex:rangeofDotTempHL.location ];
+    }
     
     if (requestSINo.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1001];
         [alert show];
     }
-    
-    
-     
     else if (yearlyIncomeField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if (substringSUM.length > 3) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if ([yearlyIncomeField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
@@ -391,6 +407,14 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Cash Dividend option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
+    else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Health input for (per 1k SA)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if (substringHL.length > 3) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
     else if ([HLField.text intValue] >= 10000) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -401,6 +425,26 @@
     }
     else if ([HLTermField.text intValue] > 0 && HLField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([HLTermField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) into Health input for (per 1k SA) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if ([HLTermField.text intValue] > termCover) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([tempHLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Temporary Health input for (per 1k SA)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if (substringTempHL.length > 3) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (Per 1k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if ([tempHLTermField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Temporary Health input for (per 1k SA) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if ([tempHLField.text intValue] >= 10000) {
@@ -415,71 +459,16 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (per 1k SA) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
-    else if ([HLTermField.text intValue] > termCover) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
     else if ([tempHLTermField.text intValue] > termCover) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
-    else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Health input for (per 1k SA)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if ([HLTermField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) into Health input for (per 1k SA) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if ([tempHLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Temporary Health input for (per 1k SA)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if ([tempHLTermField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Temporary Health input for (per 1k SA) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
     else {
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
         
         float num = [yearlyIncomeField.text floatValue];
         int basicSumA = num;
-        //float basicFraction = num - basicSumA;
-        //NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:basicFraction]];
         
-        float numHL = [HLField.text floatValue];
-        int HLValue = numHL;
-        float HLFraction = numHL - HLValue;
-        NSString *msg2 = [formatter stringFromNumber:[NSNumber numberWithFloat:HLFraction]];
-        
-        float numTempHL = [tempHLField.text floatValue];
-        int tempHLValue = numTempHL;
-        float tempHLFraction = numTempHL - tempHLValue;
-        NSString *msg3 = [formatter stringFromNumber:[NSNumber numberWithFloat:tempHLFraction]];
-        
-        NSRange rangeofDot = [yearlyIncomeField.text rangeOfString:@"."];
-        NSString *substring = @"";
-        
-        if (rangeofDot.location != NSNotFound) {
-            substring = [yearlyIncomeField.text substringFromIndex:rangeofDot.location ];
-            
-        }
-        
-        if (substring.length > 3) {
-            
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Desired Yearly Income only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert show];
-        }
-        else if (msg2.length > 4) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert show];
-        }
-        else if (msg3.length > 4) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (Per 1k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert show];
-        }
-        else if ((MOP == 9 && basicSumA < 1000 && ageClient >= 66 && ageClient <= 70)||
+        if ((MOP == 9 && basicSumA < 1000 && ageClient >= 66 && ageClient <= 70)||
             (MOP == 9 && basicSumA >= 1000 && ageClient >= 68 && ageClient <= 70)||
             (MOP == 12 && basicSumA < 1000 && ageClient >= 59 && ageClient <= 70)||
             (MOP == 12 && basicSumA >= 1000 && ageClient >= 61 && ageClient <= 70))

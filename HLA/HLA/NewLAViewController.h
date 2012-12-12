@@ -26,6 +26,7 @@
     BOOL date2;
     BOOL AgeLess;
     BOOL DiffClient;
+    BOOL AgeChanged;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;
