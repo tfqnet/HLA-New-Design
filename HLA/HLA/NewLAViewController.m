@@ -65,6 +65,7 @@ id temp;
     useExist = NO;
     date1 = NO;
     date2 = NO;
+    AgeChanged = NO;
     
     if (requestSINo) {
         self.laH = [[SIHandler alloc] init];
@@ -163,6 +164,7 @@ id temp;
     
     if (![DOB isEqualToString:DOBPP]) {
         valid = FALSE;
+        AgeChanged = YES;
     }
     
     if (![occuCode isEqualToString:OccpCodePP]) {
@@ -459,11 +461,18 @@ id temp;
                 [alert show];
             }
             else {
+                if (AgeChanged) {
+                    [self checkExistRider];
+                    if (arrExistRiderCode.count > 0) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                        [alert setTag:1009];
+                        [alert show];
+                    }
+                }
+                
                 [self updateData];
             }
-        }        
-        
-        
+        }
     }
     else if (alertView.tag==1004 && buttonIndex == 1) { // added by heng
         LANameField.text = clientName;
@@ -533,6 +542,9 @@ id temp;
     }
     else if (alertView.tag == 1008 && buttonIndex == 0) {
         [self closeScreen];
+    }
+    else if (alertView.tag == 1009 && buttonIndex == 0) {
+        [self deleteRider];
     }
 }
 
@@ -616,7 +628,7 @@ id temp;
         age = 0;
         ANB = 1;
     }
-    NSLog(@"msgAge:%@",msgAge);
+//    NSLog(@"msgAge:%@",msgAge);
 }
 
 -(void)closeScreen
@@ -937,7 +949,7 @@ id temp;
         NSString *querySQL = [NSString stringWithFormat:
             @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", DateCreated = \"%@\"  WHERE id=\"%d\"",
                               LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,clientID];
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -947,9 +959,10 @@ id temp;
                     
                     [self checkExistRider];
                     if (arrExistRiderCode.count > 0) {
-                        [self deleteRider];
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                        [alert setTag:1009];
+                        [alert show];
                     }
-                    
                     if (age < 16) {
                         [self checking2ndLA];
                         if (CustCode2.length != 0) {
@@ -958,7 +971,6 @@ id temp;
                             [alert show];
                         }
                     }
-                    
                     if (age > 18) {
                         [self checkingPayor];
                         if (payorSINo.length != 0) {
@@ -968,6 +980,7 @@ id temp;
                         }
                     }
                 }
+                
                 else if (age < 16) {
                     [self checking2ndLA];
                     if (CustCode2.length != 0) {

@@ -211,7 +211,19 @@
     
      if (medRiderPrem != 0) {
         [self MHIGuideLines];
-    }
+     } else {
+         for (int p=0; p<LRiderCode.count; p++) {
+             
+             riderCode = [LRiderCode objectAtIndex:p];
+             [self calculateSA];
+             double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
+             if (riderSA > maxRiderSA) {
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                 [alert setTag:1002];
+                 [alert show];
+             }
+         }
+     }
     
     
     myTableView.rowHeight = 50;
@@ -505,8 +517,8 @@
 
 -(void)calculateTerm
 {
-    int period = expAge - self.requestAge;
-    int period2 = 80 - self.requestAge;
+    int period = expAge - self.pTypeAge;
+    int period2 = 80 - self.pTypeAge;
     double age1 = fmin(period2,60);
     
     if ([riderCode isEqualToString:@"CIWP"])
@@ -2105,31 +2117,13 @@
         
         NSLog(@"go Negative Yield!");
         [self calculateIncomeRider];        //calculate existing income rider
-        [self calculateIncomeRiderInput];   //calculate entered income rider
-        [self checkingRider];
-        if (existRidCode.length == 0) {
-            
-            [self saveRider];
-        } else {
-            
-            [self updateRider];
-        }
-         
+        [self calculateIncomeRiderInput];   //calculate entered income rider         
         [self NegativeYield];
     }
     else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count == 0)) {
         
         NSLog(@"go Negative Yield2 - empty listing!");
         [self calculateIncomeRiderInput];
-        [self checkingRider];
-        if (existRidCode.length == 0) {
-            
-            [self saveRider];
-        } else {
-            
-            [self updateRider];
-        }
-         
         [self NegativeYield];
     }
     else {
@@ -4241,8 +4235,8 @@
     }
 }
 
--(NSString *)getRiderDesc:(NSString *) TempRiderCode{
-    
+-(NSString *)getRiderDesc:(NSString *) TempRiderCode
+{    
     sqlite3_stmt *statement;
     NSString *returnValue = @"";
     
