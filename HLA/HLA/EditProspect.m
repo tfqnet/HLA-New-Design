@@ -126,8 +126,8 @@ int zzz;
     [outletType3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
     [outletType4 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
     [outletType5 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
-        [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
-    [txtOfficePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    [txtOfficePostCode addTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     txtRemark.delegate = self;
     
     
@@ -144,7 +144,6 @@ int zzz;
     [outletDelete setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     outletDelete.titleLabel.shadowColor = [UIColor lightGrayColor];
     outletDelete.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    
     
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -280,6 +279,7 @@ int zzz;
     txtOfficeAddr2.text = pp.OfficeAddress2;
     txtOfficeAddr3.text = pp.OfficeAddress3;
     txtExactDuties.text = pp.ExactDuties;
+    
     
     if ([pp.ProspectGender isEqualToString:@"M"]) {
         gender = @"M";
@@ -440,10 +440,15 @@ int zzz;
             sqlite3_finalize(statement);
             [self PopulateOccupCode];
             [self PopulateState];
-            if (![txtOfiiceAddr1.text isEqualToString:@""]) {
+            
+            
+            if (![[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"" ]) {
+                
                 [self PopulateOfficeState];
             }
-            
+            else{
+                txtOfficeState.text = @"";
+            }
         }
         sqlite3_close(contactDB);
         
@@ -524,6 +529,7 @@ int zzz;
 
 
 -(void) PopulateOfficeState{
+    
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
@@ -531,15 +537,18 @@ int zzz;
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
-            while (sqlite3_step(statement) == SQLITE_ROW){
+            if (sqlite3_step(statement) == SQLITE_ROW){
+                
                 NSString *StateName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                 txtOfficeState.text = StateName;
                 SelectedOfficeStateCode = pp.OfficeAddressState;
                 
             }
+            
             sqlite3_finalize(statement);
             
         }
+        
         sqlite3_close(contactDB);
     }
 }
@@ -1263,28 +1272,27 @@ int zzz;
 -(void) GetLastID{
     
     sqlite3_stmt *statement3;
-    NSString *lastID;
-    NSString *contactCode;
+    NSString *lastID = @"";
+    NSString *contactCode = @"";
     
     //delete record first 
     [self DeleteRecord];
     
-    
-    
     for (int a=0; a<5; a++) {
         
         switch (a) {
+                
             case 0:
-                if (outletType1.titleLabel.text == @"Mobile") {
+                if ([outletType1.titleLabel.text isEqualToString:@"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType1.titleLabel.text == @"Home") {
+                else if ([outletType1.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType1.titleLabel.text == @"Fax") {
+                else if ([outletType1.titleLabel.text isEqualToString:@"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType1.titleLabel.text == @"Office") {
+                else if ([outletType1.titleLabel.text isEqualToString:@"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1294,16 +1302,16 @@ int zzz;
                 break;
 
             case 1:
-                if (outletType2.titleLabel.text == @"Mobile") {
+                if ([outletType2.titleLabel.text isEqualToString:@"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType2.titleLabel.text == @"Home") {
+                else if ([outletType2.titleLabel.text isEqualToString:@"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType2.titleLabel.text == @"Fax") {
+                else if ([outletType2.titleLabel.text isEqualToString:@"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType2.titleLabel.text == @"Office") {
+                else if ([outletType2.titleLabel.text isEqualToString:@"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1313,16 +1321,16 @@ int zzz;
 
                 break;
             case 2:
-                if (outletType3.titleLabel.text == @"Mobile") {
+                if ([outletType3.titleLabel.text isEqualToString:@"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType3.titleLabel.text == @"Home") {
+                else if ([outletType3.titleLabel.text isEqualToString:@"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType3.titleLabel.text == @"Fax") {
+                else if ([outletType3.titleLabel.text isEqualToString:@"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType3.titleLabel.text == @"Office") {
+                else if ([outletType3.titleLabel.text isEqualToString:@"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1332,16 +1340,16 @@ int zzz;
 
                 break;
             case 3:
-                if (outletType4.titleLabel.text == @"Mobile") {
+                if ([outletType4.titleLabel.text isEqualToString:@"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType4.titleLabel.text == @"Home") {
+                else if ([outletType4.titleLabel.text isEqualToString:@"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType4.titleLabel.text == @"Fax") {
+                else if ([outletType4.titleLabel.text isEqualToString:@"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType4.titleLabel.text == @"Office") {
+                else if ([outletType4.titleLabel.text isEqualToString:@"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1351,16 +1359,16 @@ int zzz;
 
                 break;
             case 4:
-                if (outletType5.titleLabel.text == @"Mobile") {
+                if ([outletType5.titleLabel.text isEqualToString:@"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType5.titleLabel.text == @"Home") {
+                else if ([outletType5.titleLabel.text isEqualToString:@"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType5.titleLabel.text == @"Fax") {
+                else if ([outletType5.titleLabel.text isEqualToString:@"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType5.titleLabel.text == @"Office") {
+                else if ([outletType5.titleLabel.text isEqualToString:@"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1684,8 +1692,17 @@ int zzz;
 }
 
 -(void)EditTextFieldBegin:(id)sender{
-    //outletDone.enabled = FALSE;
+        outletDone.enabled = FALSE;
+    
 }
+
+-(void)OfficeEditTextFieldBegin:(id)sender{
+    if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
+        outletDone.enabled = FALSE;
+    }
+    
+}
+
 
 -(void)EditTextFieldDidChange:(id) sender
 {
@@ -1714,10 +1731,9 @@ int zzz;
         if (!valid) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Residence post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+                                                            message:@"Residence post code must be in numeric" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
+            alert.tag = 2001;
             [alert show];
             
             txtHomePostCode.text = @"";
@@ -1813,10 +1829,9 @@ int zzz;
         if (!valid) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Office post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [self resignFirstResponder];
-            [self.view endEditing:TRUE];
+                                                            message:@"Office post code must be in numeric" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
+            alert.tag = 3001;
             [alert show];
             
             txtOfficePostCode.text = @"";
@@ -1894,11 +1909,11 @@ int zzz;
             }
             
               
-            else if ((alertView.tag == 3000 && zzz == 2) || (alertView.tag == 3001 && zzz == 2)) {
+            else if ((alertView.tag == 3000)  || (alertView.tag == 3001)) {
                 
                 [txtOfficePostCode becomeFirstResponder];
             }
-            else if ((alertView.tag == 2000 && zzz == 1) || (alertView.tag == 2001 && zzz == 1) ) {
+            else if ((alertView.tag == 2000) || (alertView.tag == 2001) ) {
 
                 [txtHomePostCode becomeFirstResponder];
             }
@@ -2067,6 +2082,7 @@ int zzz;
     if ([ContactTypeTracker isEqualToString:@"1" ]) {
         [outletType1 setTitle:ContactTypeString forState:UIControlStateNormal ];
         [self.ContactTypePopover dismissPopoverAnimated:YES];
+        
     }
     else if ([ContactTypeTracker isEqualToString:@"2" ]) {
         [outletType2 setTitle:ContactTypeString forState:UIControlStateNormal ];

@@ -800,7 +800,7 @@
 
     if (alertView.tag == 1) {
         
-        if (buttonIndex == 1) {
+        if (buttonIndex == 0) {
             NSArray *visibleCells = [myTableView visibleCells];
             NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
             NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
@@ -868,8 +868,6 @@
                 
             }
             
-            
-            
             [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
             
             [self.myTableView reloadData]; 
@@ -910,8 +908,8 @@
                               initWithTitle: NSLocalizedString(@"Delete SI",nil)
                               message: deleteMsg
                               delegate: self
-                              cancelButtonTitle: NSLocalizedString(@"No",nil)
-                              otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+                              cancelButtonTitle: NSLocalizedString(@"Yes",nil)
+                              otherButtonTitles: NSLocalizedString(@"No",nil), nil];
         alert.tag = 1;
         [alert show];
 
@@ -922,8 +920,8 @@
                               initWithTitle: NSLocalizedString(@"Delete SI",nil)
                               message: deleteMsg
                               delegate: self
-                              cancelButtonTitle: NSLocalizedString(@"No",nil)
-                              otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+                              cancelButtonTitle: NSLocalizedString(@"Yes",nil)
+                              otherButtonTitles: NSLocalizedString(@"No",nil), nil];
         alert.tag = 1;
         [alert show];
     }

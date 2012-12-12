@@ -1035,16 +1035,16 @@ PostcodeContinue = TRUE;
         switch (a) {
             case 0:
                 
-                if (outletType1.titleLabel.text == @"Mobile") {
+                if ([outletType1.titleLabel.text isEqualToString:@"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType1.titleLabel.text == @"Home") {
+                else if ([outletType1.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType1.titleLabel.text == @"Fax") {
+                else if ([outletType1.titleLabel.text isEqualToString: @"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType1.titleLabel.text == @"Office") {
+                else if ([outletType1.titleLabel.text isEqualToString: @"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1054,16 +1054,16 @@ PostcodeContinue = TRUE;
                 break;
             
             case 1:
-                if (outletType2.titleLabel.text == @"Mobile") {
+                if ([outletType2.titleLabel.text isEqualToString: @"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType2.titleLabel.text == @"Home") {
+                else if ([outletType2.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType2.titleLabel.text == @"Fax") {
+                else if ([outletType2.titleLabel.text isEqualToString: @"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType2.titleLabel.text == @"Office") {
+                else if ([outletType2.titleLabel.text isEqualToString: @"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1072,16 +1072,16 @@ PostcodeContinue = TRUE;
                 break;
             
             case 2:
-                if (outletType3.titleLabel.text == @"Mobile") {
+                if ([outletType3.titleLabel.text isEqualToString: @"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType3.titleLabel.text == @"Home") {
+                else if ([outletType3.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType3.titleLabel.text == @"Fax") {
+                else if ([outletType3.titleLabel.text isEqualToString: @"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType3.titleLabel.text == @"Office") {
+                else if ([outletType3.titleLabel.text isEqualToString: @"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {

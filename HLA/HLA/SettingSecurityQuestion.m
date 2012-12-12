@@ -101,8 +101,8 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-  self.ScrollView.frame = CGRectMake(0, 0, 1024, 748-352);
-  self.ScrollView.contentSize = CGSizeMake(1024, 500);
+  self.ScrollView.frame = CGRectMake(0, 0, 700, 748-352);
+  self.ScrollView.contentSize = CGSizeMake(700, 500);
   
   CGRect textFieldRect = [activeField frame];
   textFieldRect.origin.y += 10;
@@ -112,7 +112,7 @@
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
-  self.ScrollView.frame = CGRectMake(0, 0, 1024, 500);
+  self.ScrollView.frame = CGRectMake(0, 0, 700, 500);
 }
 
 -(void) loadExisting{
@@ -254,7 +254,7 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    self.ScrollView.frame = CGRectMake(0, 20, 1024, 748);
+    self.ScrollView.frame = CGRectMake(0, 0, 700, 748);
     
     if( [self validation] == TRUE ){
         [self DeleteOldData]; //delete old security question data first if any
@@ -316,7 +316,27 @@
 }
 
 -(BOOL)validation{
+
+    if ([outletQues1.titleLabel.text isEqualToString:outletQues2.titleLabel.text]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You cannot have 2 same security question !" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
     
+    if ([outletQues2.titleLabel.text isEqualToString:outletQues3.titleLabel.text]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You cannot have 2 same security question !" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
+    
+    if ([outletQues3.titleLabel.text isEqualToString:outletQues1.titleLabel.text]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"You cannot have 2 same security question !" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        return false;
+    }
 
     if([txtAnswer1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ].length < 1){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"

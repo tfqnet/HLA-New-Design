@@ -36,8 +36,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    //ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Security Question", @"Change Password", nil ];
-    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Change Password", nil ];
+    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Security Question", @"Change Password", nil ];
+    //ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"User Profile", @"Change Password", nil ];
     [self.view addSubview:myTableView];
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.backgroundView = nil;
@@ -112,7 +112,7 @@
      
      
      
-    /* 
+    
     else if (indexPath.row == 1) {
         SettingSecurityQuestion *SecurityQuesView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingSecurityQuestion"];
         SecurityQuesView.modalPresentationStyle = UIModalPresentationPageSheet;
@@ -120,8 +120,8 @@
         [self presentModalViewController:SecurityQuesView animated:YES];
         SecurityQuesView.view.superview.frame = CGRectMake(150, 50, 700, 748); 
     }
-   */
-    else if (indexPath.row == 1) {
+   
+    else if (indexPath.row == 2) {
         //ChangePassword* zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePwd"];
         //zzz.userID = self.indexNo;
         
