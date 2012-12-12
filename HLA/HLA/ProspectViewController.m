@@ -1263,7 +1263,7 @@ PostcodeContinue = TRUE;
 }
 
 - (void)OccupDescSelected:(NSString *)color {
-    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:color]forState:UIControlStateNormal];
+    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", color]forState:UIControlStateNormal];
     [self.OccupationListPopover dismissPopoverAnimated:YES];
     
     [self.view endEditing:YES];

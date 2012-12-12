@@ -727,13 +727,31 @@
             monthlyRider = riderRate * (1 + RiderHLMonthly/100) * monthFac;
             
             // For report part ----------
-            /*
-            for (int a = 0; a<ReportHMMRates.count; a++) {
-                double annualRates = [[ReportHMMRates objectAtIndex:a] doubleValue ] * (1 + RiderHLAnnually/100) * annFac;
-                [ReportRates addObject:[NSString stringWithFormat:@"%.9f", annualRates]];
+            
+            NSString *querySQL = @"INSERT INTO ";
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
                 
+                for (int a = 0; a<ReportHMMRates.count; a++) {
+                    double annualRates = [[ReportHMMRates objectAtIndex:a] doubleValue ] * (1 + RiderHLAnnually/100) * annFac;
+                    [ReportRates addObject:[NSString stringWithFormat:@"%.9f", annualRates]];
+                    
+                    
+                }
+                
+                if (sqlite3_step(statement) == SQLITE_DONE)
+                {
+                    
+                    
+                }
+                sqlite3_finalize(statement);
             }
-            */
+            sqlite3_close(contactDB);
+            
+            
+        
+            
             // report part end -----------
         }
         else if ([RidCode isEqualToString:@"HB"])

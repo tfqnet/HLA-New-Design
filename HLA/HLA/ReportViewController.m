@@ -3235,7 +3235,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 else if ([tempRiderCode isEqualToString:@"CIWP"] || [tempRiderCode isEqualToString:@"SP_PRE"] || [tempRiderCode isEqualToString:@"SP_STD"] ||
                                          [tempRiderCode isEqualToString:@"PR"] || [tempRiderCode isEqualToString:@"LCWP"]) {
                                     
-                                    [tempCol1 addObject:[NSString stringWithFormat:@"0.00", tempPremium]];
+                                    //[tempCol1 addObject:[NSString stringWithFormat:@"0.00", tempPremium]];
+                                    [tempCol1 addObject:[NSString stringWithFormat:@"0.00"]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"0"]];
                                     [tempCol3 addObject:[NSString stringWithFormat:@"-"]];
                                     [tempCol4 addObject:[NSString stringWithFormat:@"-"]];

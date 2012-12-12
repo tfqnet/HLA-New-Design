@@ -679,7 +679,7 @@
             }
             
             if ([Sorting isEqualToString:@""]) {
-                SIListingSQL = [SIListingSQL stringByAppendingFormat:@"", Sorting ];
+                //SIListingSQL = [SIListingSQL stringByAppendingFormat:@"", Sorting ];
                 
             }
             else {

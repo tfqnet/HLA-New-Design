@@ -474,7 +474,7 @@ int zzz;
                 //txtOccup.text = OccpDesc;
                 OccupCodeSelected = pp.ProspectOccupationCode;
                 //[outletOccup setTitle:OccpDesc forState:UIControlStateNormal];
-                [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:OccpDesc]forState:UIControlStateNormal];
+                [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", OccpDesc]forState:UIControlStateNormal];
                 
             }
             sqlite3_finalize(statement);
@@ -1495,11 +1495,10 @@ int zzz;
 }
 
 - (void)OccupDescSelected:(NSString *)color {
-    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:color]forState:UIControlStateNormal];
+    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", color] forState:UIControlStateNormal];
     
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
-    
     [self.OccupationListPopover dismissPopoverAnimated:YES];
     
 }
