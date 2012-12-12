@@ -727,7 +727,7 @@
             monthlyRider = riderRate * (1 + RiderHLMonthly/100) * monthFac;
             
             // For report part ----------
-            
+            /*
             NSString *querySQL = @"INSERT INTO ";
             
             if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -748,7 +748,7 @@
                 sqlite3_finalize(statement);
             }
             sqlite3_close(contactDB);
-            
+            */
             
         
             

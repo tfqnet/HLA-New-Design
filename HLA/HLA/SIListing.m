@@ -64,31 +64,31 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(0,230, 200, 50);
+    CGRect frame=CGRectMake(0,234, 200, 50);
     lblSINO.frame = frame;
     lblSINO.textAlignment = UITextAlignmentCenter;
     lblSINO.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblSINO.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame2=CGRectMake(200,230, 200, 50);
+    CGRect frame2=CGRectMake(200,234, 200, 50);
     lblDateCreated.frame = frame2;
     lblDateCreated.textAlignment = UITextAlignmentCenter;
         lblDateCreated.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblDateCreated.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame3=CGRectMake(400,230, 200, 50);
+    CGRect frame3=CGRectMake(400,234, 200, 50);
     lblName.frame = frame3;
     lblName.textAlignment = UITextAlignmentCenter;
     lblName.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblName.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame4=CGRectMake(600,230, 200, 50);
+    CGRect frame4=CGRectMake(600,234, 200, 50);
     lblPlan.frame = frame4;
     lblPlan.textAlignment = UITextAlignmentCenter;
     lblPlan.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblPlan.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame5=CGRectMake(800,230, 150, 50);
+    CGRect frame5=CGRectMake(800,234, 150, 50);
     lblBasicSA.frame = frame5;
     lblBasicSA.textAlignment = UITextAlignmentCenter;
     lblBasicSA.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
