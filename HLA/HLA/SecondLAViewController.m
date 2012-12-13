@@ -26,7 +26,7 @@
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
-@synthesize DOBField,OccpField,la2ndBH,deleteBtn;
+@synthesize DOBField,OccpField,la2ndBH,deleteBtn,getCommDate;
 
 - (void)viewDidLoad
 {
@@ -47,7 +47,7 @@
     self.deleteBtn.hidden = YES;
     
     useExist = NO;
-    
+    getCommDate = [[NSString alloc] initWithFormat:@"%@",la2ndH.storedCommDate];
     requestSINo = la2ndH.storedSINo;
     NSLog(@"2ndLA-SINo:%@",requestSINo);
     
@@ -302,6 +302,7 @@
 
 -(void)calculateAge
 {
+    /*
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     [dateFormatter setDateFormat:@"yyyy"];
@@ -309,7 +310,12 @@
     [dateFormatter setDateFormat:@"MM"];
     NSString *currentMonth = [dateFormatter stringFromDate:[NSDate date]];
     [dateFormatter setDateFormat:@"dd"];
-    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]]; */
+    
+    NSArray *curr = [getCommDate componentsSeparatedByString: @"/"];
+    NSString *currentDay = [curr objectAtIndex:0];
+    NSString *currentMonth = [curr objectAtIndex:1];
+    NSString *currentYear = [curr objectAtIndex:2];
     
     NSArray *foo = [DOB componentsSeparatedByString: @"/"];
     NSString *birthDay = [foo objectAtIndex: 0];
@@ -846,6 +852,7 @@
     [self setDOBField:nil];
     [self setOccpField:nil];
     [self setDeleteBtn:nil];
+    [self setGetCommDate:nil];
     [super viewDidUnload];
 }
 

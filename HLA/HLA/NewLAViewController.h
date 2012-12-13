@@ -27,6 +27,7 @@
     BOOL AgeLess;
     BOOL DiffClient;
     BOOL AgeChanged;
+    BOOL JobChanged;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;
@@ -57,7 +58,6 @@
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, copy) NSString *occuCode;
 @property (nonatomic, copy) NSString *occuDesc;
-@property (nonatomic, copy) NSString *commencementDate;
 @property (nonatomic, assign,readwrite) int occuClass;
 @property (nonatomic, assign,readwrite) int IndexNo;
 

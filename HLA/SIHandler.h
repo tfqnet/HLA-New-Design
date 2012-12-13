@@ -16,8 +16,9 @@
 @property (nonatomic ,assign ,readwrite) int storedOccpClass;
 @property (nonatomic, retain) NSString *storedSex;
 @property (nonatomic ,assign ,readwrite) int storedIndexNo;
+@property (nonatomic, retain) NSString *storedCommDate;
 
--(id) initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo;
+-(id) initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate;
 
 
 @end

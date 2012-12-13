@@ -33,7 +33,7 @@
 @synthesize statusLabel;
 @synthesize sex,smoker,age,SINo,SIDate,SILastNo,CustCode,ANB,CustDate,CustLastNo,DOB,jobDesc;
 @synthesize occDesc,occCode,occLoading,payorSINo,occCPA_PA;
-@synthesize popOverController,requestSINo,clientName,occuCode,commencementDate,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
+@synthesize popOverController,requestSINo,clientName,occuCode,occuDesc,clientID,clientID2,CustCode2,payorCustCode;
 @synthesize dataInsert,laH,commDate,occuClass,IndexNo,laBH;
 @synthesize ProspectList=_ProspectList;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
@@ -66,6 +66,7 @@ id temp;
     date1 = NO;
     date2 = NO;
     AgeChanged = NO;
+    JobChanged = NO;
     
     if (requestSINo) {
         self.laH = [[SIHandler alloc] init];
@@ -169,6 +170,7 @@ id temp;
     
     if (![occuCode isEqualToString:OccpCodePP]) {
         valid = FALSE;
+        JobChanged = YES;
     }
     
 //    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,occuCode);
@@ -214,7 +216,7 @@ id temp;
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"storedLA SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
@@ -317,16 +319,10 @@ id temp;
 {
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
            
-    /*
-    if (LANameField.text.length <= 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Leave this page?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No",nil];
-        [alert setTag:1008];
-        [alert show];
-    }
-    else */
     if (LANameField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        [LANameField becomeFirstResponder];
     }
     else if (smoker.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -430,7 +426,12 @@ id temp;
         if (smoker.length == 0) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
-        } else {
+        }
+        else if ([OccpCodePP isEqualToString:@"OCC01975"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        }
+        else {
             //---------
             sex = GenderPP;
             DOB = DOBPP;
@@ -461,11 +462,11 @@ id temp;
                 [alert show];
             }
             else {
-                if (AgeChanged) {
+                if (AgeChanged||JobChanged) {
                     [self checkExistRider];
                     if (arrExistRiderCode.count > 0) {
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                        [alert setTag:1009];
+                        [alert setTag:1007];
                         [alert show];
                     }
                 }
@@ -513,7 +514,7 @@ id temp;
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"storedLA SI:%@ sex:%@",ss.storedSINo,ss.storedSex);
@@ -537,13 +538,7 @@ id temp;
     else if (alertView.tag==1006 && buttonIndex == 0) {
         [self closeScreen];
     }
-    else if (alertView.tag==1007 && buttonIndex == 0) {
-        [self closeScreen];
-    }
-    else if (alertView.tag == 1008 && buttonIndex == 0) {
-        [self closeScreen];
-    }
-    else if (alertView.tag == 1009 && buttonIndex == 0) {
+    else if (alertView.tag == 1007 && buttonIndex == 0) {
         [self deleteRider];
     }
 }
@@ -552,17 +547,24 @@ id temp;
 {
     AgeLess = NO;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        
+    
+    /*
     [dateFormatter setDateFormat:@"yyyy"];
     NSString *currentYear = [dateFormatter stringFromDate:[NSDate date]];
     [dateFormatter setDateFormat:@"MM"];
     NSString *currentMonth = [dateFormatter stringFromDate:[NSDate date]];
     [dateFormatter setDateFormat:@"dd"];
     NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];
+     */
     
 //    NSString *birthYear = [DOB substringFromIndex:[DOB length]-4];
 //    NSString *birthMonth = [DOB substringWithRange:NSMakeRange(3, 2)];
 //    NSString *birthDay = [DOB substringWithRange:NSMakeRange(0, 2)];
+    
+    NSArray *curr = [commDate componentsSeparatedByString: @"/"];
+    NSString *currentDay = [curr objectAtIndex:0];
+    NSString *currentMonth = [curr objectAtIndex:1];
+    NSString *currentYear = [curr objectAtIndex:2];
     
     NSArray *foo = [DOB componentsSeparatedByString: @"/"];
     NSString *birthDay = [foo objectAtIndex: 0];
@@ -927,7 +929,7 @@ id temp;
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
+        [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"stored %@",ss.storedSINo);
@@ -960,7 +962,7 @@ id temp;
                     [self checkExistRider];
                     if (arrExistRiderCode.count > 0) {
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                        [alert setTag:1009];
+                        [alert setTag:1007];
                         [alert show];
                     }
                     if (age < 16) {
@@ -1000,7 +1002,7 @@ id temp;
                 }
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:1007];
+                [SuccessAlert setTag:1006];
                 [SuccessAlert show];
                 
                 statusLabel.text = @"";
@@ -1012,7 +1014,7 @@ id temp;
             
             dataInsert = [[NSMutableArray alloc] init];
             SIHandler *ss = [[SIHandler alloc] init];
-            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo]];
+            [dataInsert addObject:[[SIHandler alloc] initWithSI:SINo andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
             for (NSUInteger i=0; i< dataInsert.count; i++) {
                 ss = [dataInsert objectAtIndex:i];
                 NSLog(@"stored SI%@, sex:%@",ss.storedSINo,ss.storedSex);
@@ -1381,8 +1383,6 @@ id temp;
 {
     if ([NSString stringWithFormat:@"%d",IndexNo] != NULL) {
         smoker = @"N";
-//        requestSINo = nil;  //reset to add new SI/client
-//        SINo = nil;
         DiffClient = YES;
     }
     useExist = NO;
@@ -1391,6 +1391,10 @@ id temp;
     IndexNo = [aaIndex intValue];
     
     NSLog(@"view new client");
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    commDate = [dateFormatter stringFromDate:[NSDate date]];
+    
     DOB = aaDOB;
     [self calculateAge];
     if (age > 70) {
@@ -1412,10 +1416,6 @@ id temp;
         
         LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
         LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-                
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        commDate = [dateFormatter stringFromDate:[NSDate date]];
         [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
         
         occuCode = aaCode;
@@ -1472,13 +1472,12 @@ id temp;
             commDate = aDate;
         }
         
+        [self calculateAge];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+        
         [popOverController dismissPopoverAnimated:YES];
         date2 = NO;
     }
-    
-    
-    
-    
 }
 
 
@@ -1518,7 +1517,6 @@ id temp;
     [self setRequestSINo:nil];
     [self setClientName:nil];
     [self setOccuCode:nil];
-    [self setCommencementDate:nil];
     [self setOccuDesc:nil];
     [self setPayorSINo:nil];
     [self setBtnCommDate:nil];
