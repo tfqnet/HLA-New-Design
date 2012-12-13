@@ -575,6 +575,19 @@ int zzz;
 	[super viewDidDisappear:animated];
 }
 
+-(void)EditTextFieldBegin:(id)sender{
+    
+    outletDone.enabled = FALSE;
+    
+}
+
+-(void)OfficeEditTextFieldBegin:(id)sender{
+    
+    if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
+        outletDone.enabled = FALSE;
+    }
+    
+}
 
 - (IBAction)btnDOB:(id)sender {
     /*
@@ -1691,17 +1704,7 @@ int zzz;
     
 }
 
--(void)EditTextFieldBegin:(id)sender{
-        outletDone.enabled = FALSE;
-    
-}
 
--(void)OfficeEditTextFieldBegin:(id)sender{
-    if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
-        outletDone.enabled = FALSE;
-    }
-    
-}
 
 
 -(void)EditTextFieldDidChange:(id) sender
@@ -1731,7 +1734,7 @@ int zzz;
         if (!valid) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Residence post code must be in numeric" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Home Post Code must be in numeric" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             
             alert.tag = 2001;
             [alert show];
@@ -1769,7 +1772,7 @@ int zzz;
                 }
                 
                 if (gotRow == false) {
-                    UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Residence address" 
+                    UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Home Address" 
                                                                         delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                     NoPostcode.tag = 2000;
                     zzz = 1;
@@ -1786,8 +1789,6 @@ int zzz;
             }
             
         }    
-    
-    
     
 }
 
@@ -2126,6 +2127,8 @@ int zzz;
     [activeInstance performSelector:@selector(dismissKeyboard)];
  
     _SIDate = nil;
+    
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
     
     //[self dismissModalViewControllerAnimated:YES];
     if ([strChanges isEqualToString:@"Yes"]) {

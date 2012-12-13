@@ -30,7 +30,7 @@
 @synthesize htmlRider,occLoad,annualRider,halfYearRider,quarterRider,monthlyRider,annualRiderSum,halfRiderSum,monthRiderSum,quarterRiderSum;
 @synthesize premBH,premH,age,riderSex,sex,waiverRiderAnn,waiverRiderHalf,waiverRiderQuar,waiverRiderMonth;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,ReportHMMRates;
-@synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2,ReportAge,ReportRates;
+@synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2,ReportFromAge,ReportToAge;
 @synthesize Browser = _Browser;
 
 - (void)viewDidLoad
@@ -725,34 +725,33 @@
             halfYearRider = riderRate * (1 + RiderHLHalfYear/100) * halfFac;
             quarterRider = riderRate * (1 + RiderHLQuarterly/100) * quarterFac;
             monthlyRider = riderRate * (1 + RiderHLMonthly/100) * monthFac;
-            
-            // For report part ----------
-            /*
-            NSString *querySQL = @"INSERT INTO ";
-            
-            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-            {
-                
-                for (int a = 0; a<ReportHMMRates.count; a++) {
-                    double annualRates = [[ReportHMMRates objectAtIndex:a] doubleValue ] * (1 + RiderHLAnnually/100) * annFac;
-                    [ReportRates addObject:[NSString stringWithFormat:@"%.9f", annualRates]];
-                    
-                    
-                }
-                
-                if (sqlite3_step(statement) == SQLITE_DONE)
-                {
-                    
-                    
-                }
-                sqlite3_finalize(statement);
-            }
-            sqlite3_close(contactDB);
-            */
-            
         
+            // For report part ---------- added by heng
+            if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+                for (int a = 0; a<ReportHMMRates.count; a++) {
+                    
+                    double annualRates = [[ReportHMMRates objectAtIndex:a] doubleValue ] * (1 + RiderHLAnnually/100) * annFac;
+                    //[ReportRates addObject:[NSString stringWithFormat:@"%.9f", annualRates]];
+                    
+                    NSString *querySQL = [NSString stringWithFormat: @"INSERT INTO SI_Store_premium (\"Type\",\"Annually\",\"FromAge\", \"ToAge\") "
+                                          " VALUES(\"%@\", \"%.9f\", \"%@\", \"%@\")",
+                                          RidCode, annualRates, [ReportFromAge objectAtIndex:a], [ReportToAge objectAtIndex:a]];
+                    
+                    if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                    {
+                        if (sqlite3_step(statement) == SQLITE_DONE)
+                        {
+                            
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    
+                }
+                sqlite3_close(contactDB);
+            }
             
             // report part end -----------
+
         }
         else if ([RidCode isEqualToString:@"HB"])
         {
@@ -1352,11 +1351,12 @@
         }
         
         //----------- for report part  ----------- added by heng
-        if ([strRiderCode isEqualToString:@"HMM"]) {
+        if ([strRiderCode isEqualToString:@"HMM"] || [strRiderCode isEqualToString:@"MG_II"] || [strRiderCode isEqualToString:@"MG_IV"] ) {
             ReportHMMRates = [[NSMutableArray alloc] init ];
-            ReportAge = [[NSMutableArray alloc] init ];
+            ReportFromAge = [[NSMutableArray alloc] init ];
+            ReportToAge = [[NSMutableArray alloc] init ];
             querySQL = [NSString stringWithFormat:
-                        @"SELECT Rate, \"FromAge\" FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                        @"SELECT Rate, \"FromAge\", \"ToAge\" FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
                         " FromMortality=0 AND Sex=\"%@\" AND occpClass = \"%d\" ORDER BY fromage",
                         aaplan,aaterm,aaterm,sex, premH.storedOccpClass];
             
@@ -1365,16 +1365,14 @@
                 while (sqlite3_step(statement) == SQLITE_ROW)
                 {
                     [ReportHMMRates addObject:[NSString stringWithFormat:@"%.3f", sqlite3_column_double(statement, 0)]];
-                    [ReportAge addObject:[NSString stringWithFormat:@"%d", sqlite3_column_int(statement, 1)]];
-                } 
+                    [ReportFromAge addObject:[NSString stringWithFormat:@"%d", sqlite3_column_int(statement, 1)]];
+                    [ReportToAge addObject:[NSString stringWithFormat:@"%d", sqlite3_column_int(statement, 2)]];
+                }
                 sqlite3_finalize(statement);
             }
         }
-        else {
-            
-        }
-            
         //----------- report part end -------------------------
+        
         sqlite3_close(contactDB);
     }
 }

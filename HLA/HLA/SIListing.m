@@ -536,6 +536,7 @@
         self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
     }
     
+        [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 
@@ -870,11 +871,15 @@
             
             [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
             
-            [self.myTableView reloadData]; 
+            [self.myTableView reloadData];
+            if(SINO.count == 0){
+                outletDelete.hidden = TRUE;
+                outletEdit.hidden = FALSE;
+                [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+                [outletEdit setTitle:@"Delete" forState:UIControlStateNormal];
+            }
+                
         }
-        
-        
-        
         
     }
 

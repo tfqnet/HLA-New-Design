@@ -1005,7 +1005,7 @@
                                                         <action selector="ActionClose:" destination="HPZ-AH-16P" id="thb-1o-Ia1"/>
                                                     </connections>
                                                 </barButtonItem>
-                                                <barButtonItem key="rightBarButtonItem" title="Save" id="eDx-Ty-PmA">
+                                                <barButtonItem key="rightBarButtonItem" title="Done" id="eDx-Ty-PmA">
                                                     <connections>
                                                         <action selector="doSave:" destination="HPZ-AH-16P" id="iC5-vg-Ahe"/>
                                                     </connections>
@@ -1966,6 +1966,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="outletContactType" destination="c5T-AY-icA" id="7cp-bz-TER"/>
                         <outlet property="outletDOB" destination="SN2-h0-oDE" id="z9p-iq-efQ"/>
                         <outlet property="outletDobPicker" destination="zrh-IJ-b4d" id="pPR-lL-9sn"/>
+                        <outlet property="outletDone" destination="CBf-MC-Qgc" id="aPR-9e-R1c"/>
                         <outlet property="outletOccup" destination="Y1m-4g-sHD" id="dor-4U-ylg"/>
                         <outlet property="outletType1" destination="XGC-H3-xTz" id="1CG-Mb-YSM"/>
                         <outlet property="outletType2" destination="tqt-OF-ARl" id="S0C-3f-QhO"/>
@@ -2067,6 +2068,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <navigationBar contentMode="scaleToFill" id="Faf-hI-ANt">
                                 <rect key="frame" x="0.0" y="1" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
                                     <navigationItem id="ZTP-hs-cox">
                                         <barButtonItem key="rightBarButtonItem" title="Done" id="vl0-UU-7Zw">

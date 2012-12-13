@@ -17,6 +17,7 @@
 @synthesize delegate = _delegate;
 @synthesize ProspectDOB;
 
+id msg, DBDate;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -60,10 +61,10 @@
         
         NSString *pickerDate = [dateFormatter stringFromDate:[_outletDate date]];
         
-        NSString *msg = [NSString stringWithFormat:@"%@",pickerDate];
+        msg = [NSString stringWithFormat:@"%@",pickerDate];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        NSString *DBDate = [dateFormatter stringFromDate:[_outletDate date]];
-        [_delegate DateSelected:msg :DBDate];
+        DBDate = [dateFormatter stringFromDate:[_outletDate date]];
+        //[_delegate DateSelected:msg :DBDate];
         
     }
 }
@@ -72,6 +73,30 @@
 }
 
 - (IBAction)btnDone:(id)sender {
+    if (msg == NULL) {
+        /*
+        if (ProspectDOB != NULL) {
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+            msg = [NSString stringWithFormat:@"%@", ProspectDOB];
+            NSDate *zzz = [dateFormatter dateFromString:ProspectDOB];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+            DBDate = [dateFormatter stringFromDate:zzz];
+        }
+        else{
+            
+        }
+          */
+        
+    }
+    else{
+        
+        [_delegate DateSelected:msg :DBDate];
+    }
+    
+    
+    
+    
     [_delegate CloseWindow];
 }
 @end

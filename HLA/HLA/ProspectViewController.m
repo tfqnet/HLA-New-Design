@@ -23,6 +23,7 @@
 @synthesize txtPrefix5;
 @synthesize lblOfficeAddr;
 @synthesize lblPostCode;
+@synthesize outletDone;
 @synthesize outletType1;
 @synthesize pickerToolbar;
 @synthesize outletContactType;
@@ -94,6 +95,8 @@ bool PostcodeContinue = TRUE;
     
     [txtHomePostCode addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtOfficePostcode addTarget:self action:@selector(OfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+    [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    [txtOfficePostcode addTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc] init ];
     
@@ -229,6 +232,7 @@ bool PostcodeContinue = TRUE;
     [self setTxtPrefix5:nil];
     [self setLblOfficeAddr:nil];
     [self setLblPostCode:nil];
+    [self setOutletDone:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -248,6 +252,19 @@ bool PostcodeContinue = TRUE;
     else {
         gender = @"F";
     }
+}
+
+-(void)EditTextFieldBegin:(id)sender{
+    outletDone.enabled = FALSE;
+    
+}
+
+-(void)OfficeEditTextFieldBegin:(id)sender{
+    
+    if ([self OptionalOccp] == FALSE) {
+        outletDone.enabled = FALSE;
+    }
+    
 }
 
 - (IBAction)btnDOB:(id)sender {
@@ -1334,6 +1351,24 @@ PostcodeContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
+   /*
+    for (UIWindow* window in [UIApplication sharedApplication].windows) {
+        NSArray* subviews = window.subviews;
+        if ([subviews count] > 0) {
+            
+            BOOL alert = [[subviews objectAtIndex:0] isKindOfClass:[UIAlertView class]];
+            BOOL action = [[subviews objectAtIndex:0] isKindOfClass:[UIActionSheet class]];
+            
+            if (alert || action){
+                NSLog(@"dsadsa");
+            }
+                
+        }
+    }
+    */
+
+    
     [self dismissModalViewControllerAnimated:YES ];
 }
 
@@ -1385,7 +1420,7 @@ PostcodeContinue = TRUE;
         if (!valid) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Residence post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                            message:@"Home post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [self resignFirstResponder];
             [self.view endEditing:TRUE];
             
@@ -1417,12 +1452,13 @@ PostcodeContinue = TRUE;
                         SelectedStateCode = Statecode;
                         gotRow = true;
                          PostcodeContinue = TRUE;
+                        outletDone.enabled = TRUE;
                     }
                     sqlite3_finalize(statement);
                 }
                 
                 if (gotRow == false) {
-                    UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for residence" 
+                    UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Home Address"
                                                                         delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                     
                     NoPostcode.tag = 2000;
@@ -1496,6 +1532,7 @@ PostcodeContinue = TRUE;
                         SelectedOfficeStateCode = Statecode;
                         gotRow = true;
                          PostcodeContinue = TRUE;
+                        outletDone.enabled = TRUE;
                     }
                     sqlite3_finalize(statement);
                     

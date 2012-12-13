@@ -582,7 +582,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             
             if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
-                NSLog(@"%@",riderInPage);
+                //NSLog(@"%@",riderInPage);
             }
         }
         else{
@@ -1415,8 +1415,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         NSString *strMonthly = @"";
         
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-        
-        SelectSQL = [ NSString stringWithFormat:@"Select * from SI_Store_Premium where \"type\" = \"%@\" ", [OtherRiderCode objectAtIndex:a]];
+         
+        SelectSQL = [ NSString stringWithFormat:@"Select * from SI_Store_Premium where \"type\" = \"%@\" AND \"FromAge\" is NULL ", [OtherRiderCode objectAtIndex:a]];
         
         if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -1542,7 +1542,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
             
         
-            SelectSQL = [ NSString stringWithFormat:@"Select * from SI_Store_Premium where \"type\" = \"%@\" ", [IncomeRiderCode objectAtIndex:a]];
+            SelectSQL = [ NSString stringWithFormat:@"Select * from SI_Store_Premium where \"type\" = \"%@\" AND \"FromAge\" is NULL ", [IncomeRiderCode objectAtIndex:a]];
         
             if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                 if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -1813,10 +1813,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         sqlite3_close(contactDB);
     }
     
-    
-    
-    
-    
     for (int i =1; i <= PolicyTerm; i++) {
         
         if (i <= PremiumPaymentOption) {
@@ -1947,11 +1943,35 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         }
         
         for (int j =0; j<OtherRiderCode.count; j++) {
-            if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
-            
-                sumOtherRider = sumOtherRider +
-                [[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];  
+            if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HMM" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_IV" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_II" ]) {
+                if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
+                    double tempHMMRates;
+                    
+                    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                        QuerySQL = [NSString stringWithFormat:@"Select Annually from SI_Store_premium Where Type = \"%@\" AND "
+                                    "FromAge <= \"%d\" AND ToAge >= \"%d\"", [OtherRiderCode objectAtIndex:j ], Age + i - 1, Age + i - 1];
+                        
+                        
+                        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                            if (sqlite3_step(statement) == SQLITE_ROW) {
+                                tempHMMRates = [[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)] doubleValue ];
+                                
+                            }
+                            sqlite3_finalize(statement);
+                        }
+                        sqlite3_close(contactDB);
+                    }
+                    sumOtherRider = sumOtherRider + tempHMMRates;
+                }   
             }
+            else{
+                if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
+                    
+                    sumOtherRider = sumOtherRider +
+                    [[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                }
+            }
+        
         }
         
         double TotalBasicAndRider = sumBasic + sumIncomeRider + sumOtherRider;
@@ -2760,13 +2780,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                         [tempCol4 addObject:@"-" ];
                                     }
                                 }
-                                
-                            
                         }
                         
                         double CPlusSA = 0.00;
                         double tempTotalRiderSurrenderValue = 0.00;
-                    
                         NSMutableArray *Rate = [[NSMutableArray alloc] init ];
                     
                         for (int i = 0; i < PolicyTerm; i++) {
@@ -2776,7 +2793,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 if ([tempRiderCode isEqualToString:@"CCTR"]) {
                                     
                                     if (i == 0) {
-                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                                        if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
                                             QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
                                                         , tempRiderCode, Age, tempRiderTerm ];
                                             
@@ -2799,8 +2816,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                             }
                                         }
                                     }
-                                    
-                                    
                                     
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
@@ -2907,14 +2922,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                         
                                     }
                                     
-
-                                    
                                 }
                                 
                                 else if ([tempRiderCode isEqualToString:@"PTR"]) {
                                     
                                     if (i == 0) {
-                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                                        if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
                                             QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
                                                         , tempRiderCode, Age, tempRiderTerm ];
                                             
@@ -2952,10 +2965,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 else if ([tempRiderCode isEqualToString:@"LPPR"]) {
                                     
                                     if (i == 0) {
-                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                                        if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
                                             QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
                                                         , tempRiderCode, Age, tempRiderTerm ];
-                                            
                                             
                                             if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                                                 while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -2976,8 +2988,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                         }
                                     }
                                     
-                                    
-                                    
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
                                     [tempCol3 addObject:[NSString stringWithFormat:@"%.0f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
@@ -2989,10 +2999,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 }
                                 
                                 else if ([tempRiderCode isEqualToString:@"CPA"] || [tempRiderCode isEqualToString:@"PA"]) {
-                                    
-                                    
-                                    
-                                    
                                     
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"%0ff", tempRiderSA]];
@@ -3054,8 +3060,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                         
                                     }
                                     
-                                    
-                                    
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"%.2f", CI]];
                                     [tempCol3 addObject:@"-" ];
@@ -3064,10 +3068,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 
                                 else if ([tempRiderCode isEqualToString:@"LCPR"] || [tempRiderCode isEqualToString:@"PLCP"] ) {
                                     if (i == 0) {
-                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                                        if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
                                             QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
                                                         , tempRiderCode, Age, tempRiderTerm ];
-                                            
                                             
                                             if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                                                 while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -3088,7 +3091,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                         }
                                     }
                                     
-                                    
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
                                     [tempCol3 addObject:[NSString stringWithFormat:@"%.2f", tempRiderSA] ];
@@ -3101,7 +3103,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 else if ([tempRiderCode isEqualToString:@"C+"] ) {
                                     
                                     if (i == 0) { //execute only one time to get the rates and put in array
-                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                                        if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
                                             NSString *strplanOption = @"";
                                             
                                             if ([tempRiderPlanOption isEqualToString:@"Increasing"]) {
@@ -3131,7 +3133,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                             sqlite3_close(contactDB);
                                         }
                                         
-                                        
                                         if (Rate.count < PolicyTerm) {
                                             
                                             int rowsToAdd = PolicyTerm - Rate.count;
@@ -3140,10 +3141,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                             }
                                         }
                                         
-                                        
                                     }
-                                    
-                                    
                                     
                                     if ([tempRiderPlanOption isEqualToString:@"Increasing"] || [tempRiderPlanOption isEqualToString:@"Increasing_NCB"]  ) {
                                         
@@ -3159,7 +3157,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                             }
                                         }
                                         else {
-                                            CPlusSA = 0.00;
+                                           // CPlusSA = 0.00;
+                                            CPlusSA = CPlusSA;
                                         }
                                     }
                                     else {
@@ -3182,10 +3181,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                     
                                     
                                     if (i == 0) {
-                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                                        if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
                                             QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
                                                         , tempRiderCode, Age, tempRiderTerm ];
-                                            
                                             
                                             if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                                                 while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -3204,7 +3202,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                                 [Rate addObject:@"0.00"];
                                             }
                                         }
-                                    }    
+                                    }
                                     
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"%.2f", tempRiderSA] ];
@@ -3215,7 +3213,32 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                     tempTotalRiderSurrenderValue = tempTotalRiderSurrenderValue + [[tempCol3 objectAtIndex:i] doubleValue ];
                                     [TotalRiderSurrenderValue replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%.3f", tempTotalRiderSurrenderValue]];
                                 }
+                                else if ([tempRiderCode isEqualToString:@"HMM"] || [tempRiderCode isEqualToString:@"MG_II"] || [tempRiderCode isEqualToString:@"MG_IV"]  ) {
+                                    double tempHMMRates;
+                                    
+                                    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+                                        QuerySQL = [NSString stringWithFormat:@"Select Annually from SI_Store_premium Where Type = \"%@\" AND FromAge <= \"%d\" AND ToAge >= \"%d\"  "
+                                                    , tempRiderCode, Age + i, Age + i];
+                                        
+                                        
+                                        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                            if (sqlite3_step(statement) == SQLITE_ROW) {
+                                              tempHMMRates = [[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)] doubleValue ];
+                                                
+                                            }
+                                            sqlite3_finalize(statement);
+                                        }
+                                        sqlite3_close(contactDB);
+                                    }
+                                    
+                                    
+                                    [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempHMMRates]];
+                                    [tempCol2 addObject:[NSString stringWithFormat:@"-"]];
+                                    [tempCol3 addObject:[NSString stringWithFormat:@"-"]];
+                                    [tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+                                }
                                 else {
+                                                                            
                                     [tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
                                     [tempCol2 addObject:[NSString stringWithFormat:@"-"]];
                                     [tempCol3 addObject:[NSString stringWithFormat:@"-"]];
@@ -3304,11 +3327,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 
                             }
                             
-                            EntireTotalPremiumPaid = EntireTotalPremiumPaid + [[tempCol1 objectAtIndex:i] doubleValue ];
-                            
+                            EntireTotalPremiumPaid = EntireTotalPremiumPaid + [[tempCol1 objectAtIndex:i + 3] doubleValue ]; //i +3 to skip the first 3 items
                             
                         }
-                    
                     
                     
                         if (Rider == 0){

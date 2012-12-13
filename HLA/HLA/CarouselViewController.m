@@ -78,7 +78,7 @@ const int numberOfModule = 4;
     [button.layer addSublayer:gradientLayer];
      */
     
-    button.frame = CGRectMake(0, 0, 400.0f, 400.0f);
+    button.frame = CGRectMake(0, 0, 450.0f, 400.0f);
     
     //[button setTitle:[NSString stringWithFormat:@"%i", index] forState:UIControlStateNormal];
     if (index % numberOfModule == 0) {

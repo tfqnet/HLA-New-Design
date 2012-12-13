@@ -100,7 +100,8 @@
 @property (nonatomic, retain) BrowserViewController *Browser;
 
 @property(nonatomic , retain) NSMutableArray *ReportHMMRates;
-@property(nonatomic , retain) NSMutableArray *ReportAge;
-@property(nonatomic , retain) NSMutableArray *ReportRates;
+@property(nonatomic , retain) NSMutableArray *ReportFromAge;
+@property(nonatomic , retain) NSMutableArray *ReportToAge;
+
 
 @end
