@@ -25,7 +25,7 @@
 @synthesize popOverController,requestSINo,payorH;
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo;
-@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,payorBH,deleteBtn;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,payorBH,deleteBtn,getCommDate;
 
 - (void)viewDidLoad
 {
@@ -49,6 +49,8 @@
     
     useExist = NO;
     
+    getCommDate = [[NSString alloc] initWithFormat:@"%@",payorH.storedCommDate];
+    
     if (self.requestSINo) {
         [self checkingExisting];
         if (SINo.length != 0) {
@@ -57,6 +59,8 @@
             self.deleteBtn.hidden = NO;
         }
     }
+    
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -301,14 +305,19 @@
 
 -(void)calculateAge
 {
+    /*
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
     [dateFormatter setDateFormat:@"yyyy"];
     NSString *currentYear = [dateFormatter stringFromDate:[NSDate date]];
     [dateFormatter setDateFormat:@"MM"];
     NSString *currentMonth = [dateFormatter stringFromDate:[NSDate date]];
     [dateFormatter setDateFormat:@"dd"];
-    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]]; */
+    
+    NSArray *curr = [getCommDate componentsSeparatedByString: @"/"];
+    NSString *currentDay = [curr objectAtIndex:0];
+    NSString *currentMonth = [curr objectAtIndex:1];
+    NSString *currentYear = [curr objectAtIndex:2];
     
     NSArray *foo = [DOB componentsSeparatedByString: @"/"];
     NSString *birthDay = [foo objectAtIndex: 0];
@@ -854,6 +863,7 @@
     [self setDOBField:nil];
     [self setOccpField:nil];
     [self setDeleteBtn:nil];
+    [self setGetCommDate:nil];
     [super viewDidUnload];
 }
 

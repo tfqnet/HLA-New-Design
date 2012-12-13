@@ -509,6 +509,25 @@
         }
         occpField.textColor = [UIColor darkGrayColor];
     }
+    
+    if([riderCode isEqualToString:@"CIR"]){
+        [self.planBtn setTitle:[NSString stringWithFormat:@"%d",occCPA] forState:UIControlStateNormal];
+        [self.planBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        
+        cpaField.text = [NSString stringWithFormat:@"%d",occCPA];
+        cpaField.textColor = [UIColor darkGrayColor];
+        
+        unitField.text = @"0";
+        unitField.textColor = [UIColor darkGrayColor];
+        
+        if (occLoad == 0) {
+            occpField.text = @"STD";
+        } else {
+            occpField.text = [NSString stringWithFormat:@"%d",occLoad];
+        }
+        occpField.textColor = [UIColor darkGrayColor];
+    }
+
 }
 
 
@@ -1032,6 +1051,13 @@
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (OccpLoadM *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (OccpLoadQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
+        }
+        else if ([RidCode isEqualToString:@"CIR"])
+        {
+            annualRider = (riderRate *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else {
             annualRider = (riderRate *ridSA /1000 *annFac) + (OccpLoadA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
@@ -1890,14 +1916,22 @@
     if (termField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [termField becomeFirstResponder];
+    }
+    else if ([termField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Rider Term must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        [termField becomeFirstResponder];
     }
     else if ([termField.text intValue] > maxRiderTerm) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be less than or equal to %.f",maxRiderTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [termField becomeFirstResponder];
     }
     else if ([termField.text intValue] < minTerm) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be greater than or equal to %d",minTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [termField becomeFirstResponder];
     }
     else if ([HLTField.text intValue] > [termField.text intValue]) {
         NSString *msg;
@@ -1910,10 +1944,7 @@
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    }
-    else if ([termField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Rider Term must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
+        [HLTField becomeFirstResponder];
     }
     else if (sumA) {
         NSLog(@"validate - 1st sum");
@@ -1935,11 +1966,6 @@
     
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     
-    //float num = [sumField.text floatValue];
-    //int riderSumA = num;
-    //float riderFraction = num - riderSumA;
-    //NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:riderFraction]];
-    
     NSRange rangeofDot = [sumField.text rangeOfString:@"."];
     NSString *substring = @"";
     
@@ -1948,45 +1974,51 @@
         
     }
     
-    
     if (sumField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [sumField becomeFirstResponder];
     }
-    else if ([sumField.text intValue] < minSATerm && !(incomeRider)) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    else if ([sumField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
-        sumField.text = @"";
-    }
-    else if ([sumField.text intValue] < minSATerm && incomeRider) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        sumField.text = @"";
-    }
-    else if ([sumField.text intValue] > maxRiderSA && !(incomeRider)) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        sumField.text = @"";
-    }
-    else if ([sumField.text intValue] > maxRiderSA && incomeRider) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        sumField.text = @"";
+        [sumField becomeFirstResponder];
     }
     else if (incomeRider && substring.length > 3) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Guaranteed Yearly Income only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         sumField.text = @"";
+        [sumField becomeFirstResponder];
     }
-    //else if (!(incomeRider) && msg.length > 4) {
     else if (!(incomeRider) && substring.length > 3) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         sumField.text = @"";
+        [sumField becomeFirstResponder];
     }
-    else if ([sumField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+    else if ([sumField.text intValue] < minSATerm && !(incomeRider)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        sumField.text = @"";
+        [sumField becomeFirstResponder];
+    }
+    else if ([sumField.text intValue] < minSATerm && incomeRider) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        sumField.text = @"";
+        [sumField becomeFirstResponder];
+    }
+    else if ([sumField.text intValue] > maxRiderSA && !(incomeRider)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        sumField.text = @"";
+        [sumField becomeFirstResponder];
+    }
+    else if ([sumField.text intValue] > maxRiderSA && incomeRider) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        sumField.text = @"";
+        [sumField becomeFirstResponder];
     }
     else if (unit) {
         NSLog(@"validate - 2nd unit");
@@ -2080,34 +2112,42 @@
     else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        [HLField becomeFirstResponder];
     }
     else if (inputHLPercentage.length != 0 && [HLField.text intValue] > 500) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [HLField becomeFirstResponder];
     }
     else if (inputHLPercentage.length != 0 && HLField.text.length != 0 && HLTField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [HLTField becomeFirstResponder];
     }
     else if (inputHL1KSA.length != 0 && [HLField.text intValue] > 10000) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [HLField becomeFirstResponder];
     }
     else if (inputHL1KSA.length != 0 && HLField.text.length != 0 && HLTField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [HLTField becomeFirstResponder];
     }
     else if (inputHL1KSA.length != 0 && msg.length > 4) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        [HLField becomeFirstResponder];
     }
     else if (inputHLPercentage.length != 0 && msg.length > 1) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        [HLField becomeFirstResponder];
     }
     else if (inputHLPercentage.length != 0 && msg2.length > 1) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        [HLField becomeFirstResponder];
     }
     else if (([riderCode isEqualToString:@"HMM"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"HSP_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_IV"] && LRiderCode.count != 0)) {
         NSLog(@"go RoomBoard!");

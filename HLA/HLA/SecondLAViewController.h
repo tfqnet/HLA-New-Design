@@ -26,6 +26,7 @@
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) SIHandler *la2ndH;
 @property (nonatomic,strong) BasicPlanHandler *la2ndBH;
+@property (nonatomic, copy) NSString *getCommDate;
 
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
