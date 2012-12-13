@@ -2286,19 +2286,25 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     NSLog(@"insert to SI_Temp_Trad_Overall --- start");
     
-    
     sqlite3_stmt *statement;
     NSString *QuerySQL;
     
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-                
+                /*
             QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Overall (\"SINO\", \"SurrenderValueHigh1\", "
                         " \"SurrenderValueLow1\",\"TotPremPaid1\",\"TotYearlyIncome1\", "
                         " \"SurrenderValuehigh2\",\"SurrenderValueLow2\",\"TotPremPaid2\",\"TotYearlyIncome2\") VALUES ( "
                         " \"%@\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\")", 
                             SINo, EntireMaturityValueA, EntireMaturityValueB, EntireTotalPremiumPaid,
                         EntireTotalYearlyIncome,BasicMaturityValueA,BasicMaturityValueB,BasicTotalPremiumPaid,BasicTotalYearlyIncome];
-                
+                */
+            
+            QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Overall (\"SINO\", \"SurrenderValueHigh1\", "
+                        " \"SurrenderValueLow1\",\"TotPremPaid1\",\"TotYearlyIncome1\", "
+                        " \"SurrenderValuehigh2\",\"SurrenderValueLow2\",\"TotPremPaid2\",\"TotYearlyIncome2\") VALUES ( "
+                        " \"%@\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\")",
+                        SINo, EntireMaturityValueA, EntireMaturityValueB, EntireTotalPremiumPaid,
+                        EntireTotalYearlyIncome,EntireMaturityValueA,EntireMaturityValueB,EntireTotalPremiumPaid,EntireTotalYearlyIncome];
             
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -3213,7 +3219,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                     tempTotalRiderSurrenderValue = tempTotalRiderSurrenderValue + [[tempCol3 objectAtIndex:i] doubleValue ];
                                     [TotalRiderSurrenderValue replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%.3f", tempTotalRiderSurrenderValue]];
                                 }
-                                else if ([tempRiderCode isEqualToString:@"HMM"] || [tempRiderCode isEqualToString:@"MG_II"] || [tempRiderCode isEqualToString:@"MG_IV"]  ) {
+                                else if ([tempRiderCode isEqualToString:@"HMM"] || [tempRiderCode isEqualToString:@"MG_II"] || [tempRiderCode isEqualToString:@"MG_IV"]  || [tempRiderCode isEqualToString:@"HSP_II"] ) {
                                     double tempHMMRates;
                                     
                                     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
@@ -4379,7 +4385,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 for (int a= 1; a<=[[IncomeRiderTerm objectAtIndex:i] intValue]; a++) {
                     
-                    if (a <= 20 || (a > 20 && a % 5  == 0) || (a == a<=[[IncomeRiderTerm objectAtIndex:i] intValue] && a%5 != 0) ) {
+                    if (a <= 20 || (a > 20 && a % 5  == 0) || (a == [[IncomeRiderTerm objectAtIndex:i] intValue] && a%5 != 0) ) {
                         
                         if (Age > 0){
                             
@@ -4577,7 +4583,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
                 NSString *zzz = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
                 
-                if ([zzz isEqualToString:@"I20R"] || [zzz isEqualToString:@"I30R"] || [zzz isEqualToString:@"I40R"]|| [zzz isEqualToString:@"ICR"]
+                if ([zzz isEqualToString:@"I20R"] || [zzz isEqualToString:@"I30R"] || [zzz isEqualToString:@"I40R"]
                     || [zzz isEqualToString:@"ID20R"]|| [zzz isEqualToString:@"ID30R"]|| [zzz isEqualToString:@"ID40R"]|| [zzz isEqualToString:@"IE20R"]
                     || [zzz isEqualToString:@"IE30R"]) {
                     

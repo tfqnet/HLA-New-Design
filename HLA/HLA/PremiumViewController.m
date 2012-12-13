@@ -592,7 +592,7 @@
             [self getRiderRateClass:planCodeRider riderTerm:ridTerm];
         }
         else if ([RidCode isEqualToString:@"PA"]||[RidCode isEqualToString:@"HSP_II"]) {
-            [self getRiderRateAgeClass:planCodeRider riderTerm:ridTerm];
+            [self getRiderRateAgeClass:planCodeRider riderTerm:ridTerm code:RidCode];
         }
         else if ([RidCode isEqualToString:@"HB"]) {
             [self getRiderRateSex:planCodeRider riderTerm:ridTerm];
@@ -780,10 +780,38 @@
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else {
+            
             annualRider = (riderRate *ridSA /1000 *annFac) + (OccpLoadA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (OccpLoadM *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (OccpLoadQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
+            
+            if ([RidCode isEqualToString:@"HSP_II"]) {
+                // For report part ---------- added by heng
+                if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+                    for (int a = 0; a<ReportHMMRates.count; a++) {
+                        
+                        double annualRates = ([[ReportHMMRates objectAtIndex:a] doubleValue ] *ridSA /1000 *annFac) + (OccpLoadA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+                        
+                        NSString *querySQL = [NSString stringWithFormat: @"INSERT INTO SI_Store_premium (\"Type\",\"Annually\",\"FromAge\", \"ToAge\") "
+                                              " VALUES(\"%@\", \"%.9f\", \"%@\", \"%@\")",
+                                              RidCode, annualRates, [ReportFromAge objectAtIndex:a], [ReportToAge objectAtIndex:a]];
+                        
+                        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                        {
+                            if (sqlite3_step(statement) == SQLITE_DONE)
+                            {
+                                
+                            }
+                            sqlite3_finalize(statement);
+                        }
+                        
+                    }
+                    sqlite3_close(contactDB);
+                }
+                
+                // report part end -----------
+            }
         }
         
         NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
@@ -1377,7 +1405,7 @@
     }
 }
 
--(void)getRiderRateAgeClass:(NSString *)aaplan riderTerm:(int)aaterm
+-(void)getRiderRateAgeClass:(NSString *)aaplan riderTerm:(int)aaterm code:(NSString *)strRiderCode
 {
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -1400,6 +1428,30 @@
             }
             sqlite3_finalize(statement);
         }
+        
+        //----------- for report part  ----------- added by heng
+        if ([strRiderCode isEqualToString:@"HSP_II"]) {
+            ReportHMMRates = [[NSMutableArray alloc] init ];
+            ReportFromAge = [[NSMutableArray alloc] init ];
+            ReportToAge = [[NSMutableArray alloc] init ];
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT Rate, \"FromAge\", \"ToAge\" FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                        " FromMortality=0 AND Sex=\"%@\" AND occpClass = \"%d\" ORDER BY fromage",
+                        aaplan,aaterm,aaterm,sex, premH.storedOccpClass];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    [ReportHMMRates addObject:[NSString stringWithFormat:@"%.3f", sqlite3_column_double(statement, 0)]];
+                    [ReportFromAge addObject:[NSString stringWithFormat:@"%d", sqlite3_column_int(statement, 1)]];
+                    [ReportToAge addObject:[NSString stringWithFormat:@"%d", sqlite3_column_int(statement, 2)]];
+                }
+                sqlite3_finalize(statement);
+            }
+        }
+        //----------- report part end -------------------------
+        
         sqlite3_close(contactDB);
     }
 }
