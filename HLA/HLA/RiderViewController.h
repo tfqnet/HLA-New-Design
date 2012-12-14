@@ -55,7 +55,6 @@
 @property (nonatomic, assign,readwrite) int requestCoverTerm;
 @property (nonatomic,strong) id requestPlanCode;
 @property (nonatomic, assign,readwrite) double requestBasicSA;
-@property (nonatomic,strong) id requestOccpCode;
 @property (nonatomic, assign,readwrite) int requestMOP;
 
 @property (nonatomic, retain) UIPopoverController *RiderListPopover;
@@ -90,6 +89,7 @@
 @property (nonatomic, assign,readwrite) int PTypeSeq;
 @property (nonatomic,copy) NSString *pTypeDesc;
 @property (nonatomic, assign,readwrite) int pTypeAge;
+@property (nonatomic,copy) NSString *pTypeOccp;
 @property (nonatomic,copy) NSString *riderCode;
 @property (nonatomic,copy) NSString *riderDesc;
 
@@ -129,6 +129,7 @@
 @property (nonatomic,strong) NSString *secondLARidCode;
 @property (nonatomic, assign,readwrite) int GYI;
 @property (nonatomic, assign,readwrite) int occLoad;
+@property (nonatomic, assign,readwrite) int occLoadRider;
 @property (nonatomic, assign,readwrite) int occClass;
 @property (nonatomic, assign,readwrite) int occCPA;
 @property (nonatomic, assign,readwrite) int storedMaxTerm;
@@ -156,6 +157,7 @@
 @property(nonatomic , retain) NSMutableArray *LAge;
 @property(nonatomic , retain) NSMutableArray *LRidHLTerm;
 @property(nonatomic , retain) NSMutableArray *LRidHL100Term;
+@property(nonatomic , retain) NSMutableArray *LOccpCode;
 @property (retain, nonatomic) IBOutlet UILabel *titleRidCode;
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
 @property (retain, nonatomic) IBOutlet UILabel *titleTerm;

@@ -32,6 +32,7 @@
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,ReportHMMRates;
 @synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2,ReportFromAge,ReportToAge;
 @synthesize Browser = _Browser;
+@synthesize riderOccp,strOccp,occLoadRider;
 
 - (void)viewDidLoad
 {
@@ -645,10 +646,13 @@
         NSLog(@"factorann (%@):%.4f, half:%.4f, quar:%.4f, month:%.4f",RidCode,annFac,halfFac,quarterFac,monthFac);
         
         //calculate occupationLoading
-        double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
-        double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
-        double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
-        double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
+        strOccp = [riderOccp objectAtIndex:i];
+        [self getOccLoadRider];
+        NSLog(@"occpLoadRate:%d",occLoadRider);
+        double OccpLoadA = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
+        double OccpLoadH = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
+        double OccpLoadQ = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
+        double OccpLoadM = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
         NSLog(@"OccpLoad A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
         
         //calculate rider health loading
@@ -1024,11 +1028,14 @@
         double monthFac = 0.0875;
         
         //calculate occupationLoading
-        double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
-        double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
-        double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
-        double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
-        NSLog(@"RiderOccpL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
+        strOccp = [riderOccp objectAtIndex:i];
+        [self getOccLoadRider];
+        NSLog(@"occpLoadRate:%d",occLoadRider);
+        double OccpLoadA = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
+        double OccpLoadH = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
+        double OccpLoadQ = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
+        double OccpLoadM = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
+        NSLog(@"OccpLoad A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
         
         //calculate rider health loading
         double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * annFac;
@@ -1044,13 +1051,17 @@
             double waiverQuarPrem = ridSA/100 * (waiverQuarSum+basicPremQuar) *4;
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPremMonth) *12;
             NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
-            
+            /*
             double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
             double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
             double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
             double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
+            */
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLAnnually/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLHalfYear/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLQuarterly/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLMonthly/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
-            
             annualRider = annualRider_ * annFac;
             halfYearRider = halfYearRider_ * halfFac;
             quarterRider = quarterRider_ * quarterFac;
@@ -1063,11 +1074,16 @@
             double waiverQuarPrem = ridSA/100 * (waiverQuarSum2+basicPremQuar) *4;
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
             NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
-            
+            /*
             double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
             double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
             double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
             double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
+             */
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 *occLoadRider + RiderHLAnnually/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 *occLoadRider + RiderHLHalfYear/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 *occLoadRider + RiderHLQuarterly/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000  *occLoadRider + RiderHLMonthly/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
             annualRider = annualRider_ * annFac;
@@ -1219,12 +1235,13 @@
     riderSmoker = [[NSMutableArray alloc] init];
     riderSex = [[NSMutableArray alloc] init];
     riderAge = [[NSMutableArray alloc] init];
+    riderOccp = [[NSMutableArray alloc] init];
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode, b.RiderDesc, a.RiderTerm, a.SumAssured, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.CustCode,d.Smoker,d.Sex,d.ALB from Trad_Rider_Details a, Trad_Sys_Rider_Profile b, Trad_LAPayor c, Clt_Profile d WHERE a.RiderCode=b.RiderCode AND a.PTypeCode=c.PTypeCode AND a.Seq=c.Sequence AND d.CustCode=c.CustCode AND a.SINo=c.SINo AND a.SINo=\"%@\"", [self.requestSINo description]];
+            @"SELECT a.RiderCode, b.RiderDesc, a.RiderTerm, a.SumAssured, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.CustCode,d.Smoker,d.Sex,d.ALB,d.OccpCode from Trad_Rider_Details a, Trad_Sys_Rider_Profile b, Trad_LAPayor c, Clt_Profile d WHERE a.RiderCode=b.RiderCode AND a.PTypeCode=c.PTypeCode AND a.Seq=c.Sequence AND d.CustCode=c.CustCode AND a.SINo=c.SINo AND a.SINo=\"%@\"", [self.requestSINo description]];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1261,6 +1278,7 @@
                 [riderSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
                 [riderSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 12)]];
                 [riderAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 13)]];
+                [riderOccp addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 14)]];
             }
             sqlite3_finalize(statement);
         }
@@ -1511,10 +1529,38 @@
     
 }
 
+-(void)getOccLoadRider
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",strOccp];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                occLoadRider =  sqlite3_column_int(statement, 0);
+                
+            } else {
+                NSLog(@"error access Trad_LSD_HLAIB");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+}
+
 #pragma mark - memory management
 
 - (void)viewDidUnload
 {
+    [self setStrOccp:nil];
+    [self setRiderOccp:nil];
     [self setRequestPlanCode:nil];
     [self setWebView:nil];
     [self setRequestBasicHL:nil];

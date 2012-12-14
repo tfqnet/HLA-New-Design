@@ -560,6 +560,7 @@ id temp;
 //    NSString *birthYear = [DOB substringFromIndex:[DOB length]-4];
 //    NSString *birthMonth = [DOB substringWithRange:NSMakeRange(3, 2)];
 //    NSString *birthDay = [DOB substringWithRange:NSMakeRange(0, 2)];
+    //12/12/2012
     
     NSArray *curr = [commDate componentsSeparatedByString: @"/"];
     NSString *currentDay = [curr objectAtIndex:0];

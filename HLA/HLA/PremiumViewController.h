@@ -40,6 +40,7 @@
 @property (nonatomic, assign,readwrite) int LSDRate;
 @property (nonatomic, assign,readwrite) double riderRate;
 @property (nonatomic, assign,readwrite) int occLoad;
+@property (nonatomic, assign,readwrite) int occLoadRider;
 @property(nonatomic , retain) NSMutableArray *riderCode;
 @property(nonatomic , retain) NSMutableArray *riderDesc;
 @property(nonatomic , retain) NSMutableArray *riderTerm;
@@ -54,6 +55,8 @@
 @property(nonatomic , retain) NSMutableArray *riderSmoker;
 @property(nonatomic , retain) NSMutableArray *riderSex;
 @property(nonatomic , retain) NSMutableArray *riderAge;
+@property(nonatomic , retain) NSMutableArray *riderOccp;
+@property (nonatomic,strong) NSString *strOccp;
 @property (nonatomic,strong) NSString *planCodeRider;
 @property (nonatomic,strong) NSString *pentaSQL;
 @property (nonatomic,strong) NSString *plnOptC;
