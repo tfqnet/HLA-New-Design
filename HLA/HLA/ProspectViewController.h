@@ -29,7 +29,7 @@
     UIPopoverController *_SIDatePopover;
     id<ProspectViewControllerDelegate> _delegate;
 
-    
+    UIAlertView *rrr;
 }
 
 @property (nonatomic, copy) NSString *gender;

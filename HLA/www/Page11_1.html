@@ -165,13 +165,13 @@
                 	}
                 	$('#dateModified').html(row.DateModified);
                 	
-                	if ($.trim(row.CashDividend) == 'A')//payment description
+                	if ($.trim(row.CashDividend) == 'ACC')//payment description
                 	{
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
                 	
                 		//totalSurrenderValue
                 		//tpdBenefit
-                		if (parseInt(row.CashPayment) == 0)
+                		if (parseInt(row.YearlyIncome) == 'POF')
                 		{
                 			$('#totalSurrenderValue').html('(6)=(3)+(9)+(10)');
                 			$('#tpdBenefit').html('(7)=(4B)+(9)+(11)');
@@ -189,10 +189,10 @@
                 			//}
                 		}
                 	}
-                	else if (row.CashDividend == 'P')
+                	else if (row.CashDividend == 'POF')
                 	{
                 		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
-                	    if (parseInt(row.CashPayment) == 0)
+                	    if (parseInt(row.YearlyIncome) == 'POF')
                 		{
                 		    $('#totalSurrenderValue').html('(6)=(3)+(9)');
                 			$('#tpdBenefit').html('(7)=(4B)+(10)');
@@ -261,9 +261,9 @@
 <div class="main-content">
 <table>
 <tr>
-<td width="75%" valign="top"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span>
+<td width="80%" valign="top"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span></br>
 <span id="paymentDesc">{PaymentDescription}</span></td>
-<td width="25%">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="laName">{LAName}</span></td>
+<td width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i></br> <span id="laName">{LAName}</span></td>
 </tr>
 </table>
 <!--<p>Basic Plan <i>Pelan Asas</i>: <span id="basicPlan">HLA Income Builder</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="paymentDesc">(Yearly Income Pay Out) (Cash Dividend Pay Out) (Pendapatan Tahunan Dibayar)(Dividen Tunai Dibayar)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Life Assured Hayat Diinsuranskan: Mat</p>-->

@@ -21,6 +21,8 @@
     SIDate *_SIDate;
     UIPopoverController *_SIDatePopover;
 //    NewLAViewController *_NewLAViewController;
+    NSMutableArray *ItemToBeDeleted;
+    NSMutableArray *indexPaths;
 }
 
 @property (nonatomic, retain) siListingSortBy *SortBy;

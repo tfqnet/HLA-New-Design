@@ -225,6 +225,7 @@ const int numberOfModule = 4;
         sqlite3_close(contactDB);
     }
     
+    exit(0);
 }
 
 - (IBAction)btnExit:(id)sender {

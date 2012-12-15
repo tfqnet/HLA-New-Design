@@ -290,6 +290,8 @@
         }
         sqlite3_close(contactDB);
     }
+    
+    exit(0);
 }
 
 

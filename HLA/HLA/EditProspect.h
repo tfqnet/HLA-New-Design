@@ -28,6 +28,8 @@
     SIDate *_SIDate;
     UIPopoverController *_SIDatePopover;
     id<EditProspectDelegate> _delegate;
+    
+    UIAlertView *rrr;
 }
 @property (strong, nonatomic) ProspectProfile* pp;
 @property (nonatomic, copy) NSString *gender;

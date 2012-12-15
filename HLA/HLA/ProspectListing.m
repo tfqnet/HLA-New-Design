@@ -406,7 +406,8 @@ if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     isFiltered = FALSE;
     [self ReloadTableData];
     searchBar.text = @"";
-
+    _EditProspect = Nil;
+    
 }
 
 -(void) FinishInsert{

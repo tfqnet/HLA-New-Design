@@ -169,6 +169,10 @@
     myTableView.backgroundView = nil;
     
     [self.view addSubview:myTableView];
+    
+    ItemToBeDeleted = [[NSMutableArray alloc] init];
+    indexPaths = [[NSMutableArray alloc] init];
+    
 
 }
 
@@ -464,6 +468,13 @@
             [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
             outletDelete.enabled = TRUE;
         }
+        
+        
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted addObject:zzz];
+        [indexPaths addObject:indexPath];
+        
  
     }
     else {
@@ -508,6 +519,10 @@
             [outletDelete setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
             outletDelete.enabled = TRUE;
         }
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted removeObject:zzz];
+        [indexPaths removeObject:indexPath];
         
     }
 }
@@ -802,7 +817,10 @@
     if (alertView.tag == 1) {
         
         if (buttonIndex == 0) {
-            NSArray *visibleCells = [myTableView visibleCells];
+            //NSArray *visibleCells = [myTableView visibleCells];
+            
+            
+            /*
             NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
             NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
             
@@ -817,7 +835,7 @@
                 }
                 //[myTableView endUpdates];
             }
-            
+            */
             NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *docsDir = [dirPaths objectAtIndex:0];
             databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -878,6 +896,7 @@
                 [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
                 [outletEdit setTitle:@"Delete" forState:UIControlStateNormal];
             }
+             
                 
         }
         
