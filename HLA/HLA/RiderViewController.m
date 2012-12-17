@@ -65,7 +65,6 @@
 @synthesize annualMedRiderPrem,halfMedRiderPrem,quarterMedRiderPrem,monthMedRiderPrem,annualMedRiderSum,halfMedRiderSum,quarterMedRiderSum,monthMedRiderSum;
 @synthesize riderPrem,medRiderPrem,medPentaSQL,OccpCat,CombNo,RBBenefit,RBLimit,RBGroup,medRiderCode;
 @synthesize arrCombNo,AllCombNo,medPlanOpt,arrRBBenefit,pTypeOccp;
-
 @synthesize dataInsert,LSex,sex,age,_maxRiderSA;
 @synthesize waiverRiderAnn,waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,incomeRiderGYI,incomeRiderSA,basicGYIRate,incomeRiderCSV;
@@ -78,7 +77,7 @@
 @synthesize planList = _planList;
 @synthesize deductList = _deductList;
 @synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm, LRidHLPTerm, LRidHL100Term,LOccpCode;
-@synthesize occLoadRider;
+@synthesize occLoadRider,LTypeAge,LTypeDeduct,LTypeOccpCode,LTypePlanOpt,LTypeRiderCode,LTypeRidHL100,LTypeRidHL100Term,LTypeRidHL1K,LTypeRidHLP,LTypeRidHLPTerm,LTypeRidHLTerm,LTypeSex,LTypeSmoker,LTypeSumAssured,LTypeTerm,LTypeUnits;
 
 #pragma mark - Cycle View
 
@@ -204,6 +203,7 @@
     
     [self calculateBasicPremium];   //calculate basicPrem
     
+    [self getListingRiderByType];
     [self getListingRider];     //get stored rider
     
     [self calculateRiderPrem];  //calculate riderPrem
@@ -553,7 +553,6 @@
     }
 
 }
-
 
 
 #pragma mark - calculation
@@ -996,17 +995,30 @@
         if ([RidCode isEqualToString:@"ETPD"])
         {
             double fsar = (65 - self.requestAge) * ridSA;
+            NSLog(@"fsar:%.2f",fsar);
+            /*
             annualRider = (riderRate *ridSA /100 *annFac) + (RiderHLAnnually /10 *ridSA /100 *annFac) + (fsar /1000 *OccpLoadA *annFac);
             halfYearRider = (riderRate *ridSA /100 *halfFac) + (RiderHLHalfYear /10 *ridSA /100 *halfFac) + (fsar /1000 *OccpLoadH *halfFac);
             quarterRider = (riderRate *ridSA /100 *quarterFac) + (RiderHLQuarterly /10 *ridSA /100 *quarterFac) + (fsar /1000 *OccpLoadQ *quarterFac);
-            monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac) + (fsar /1000 *OccpLoadM *monthFac);
+            monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac) + (fsar /1000 *OccpLoadM *monthFac); */
+            
+            annualRider = (riderRate *ridSA /100 *annFac) + (RiderHLAnnually /10 *ridSA /100 *annFac);
+            halfYearRider = (riderRate *ridSA /100 *halfFac) + (RiderHLHalfYear /10 *ridSA /100 *halfFac);
+            quarterRider = (riderRate *ridSA /100 *quarterFac) + (RiderHLQuarterly /10 *ridSA /100 *quarterFac);
+            monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac);
         }
         else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
         {
+            /*
             double occLoadFactorA = OccpLoadA * ((ridTerm + 1)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm + 1)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm + 1)/2);
-            double occLoadFactorM = OccpLoadM * ((ridTerm + 1)/2);
+            double occLoadFactorM = OccpLoadM * ((ridTerm + 1)/2); */
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm + 1))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm + 1))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm + 1))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm + 1))/2);
+            
             annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1014,17 +1026,28 @@
         }
         else if ([RidCode isEqualToString:@"ICR"])
         {
+            /*
             annualRider = (riderRate *ridSA /1000 *annFac) + ((OccpLoadA *ridTerm) *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ((OccpLoadH *ridTerm) *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + ((OccpLoadQ *ridTerm) *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ((OccpLoadM *ridTerm) *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ((OccpLoadM *ridTerm) *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac); */
+            annualRider = (riderRate *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else if ([RidCode isEqualToString:@"ID20R"])
         {
+            /*
             double occLoadFactorA = OccpLoadA * ((ridTerm - 20)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm - 20)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 20)/2);
-            double occLoadFactorM = OccpLoadM * ((ridTerm - 20)/2);
+            double occLoadFactorM = OccpLoadM * ((ridTerm - 20)/2); */
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm - 20))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm - 20))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 20))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm - 20))/2);
+            
             annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1032,10 +1055,16 @@
         }
         else if ([RidCode isEqualToString:@"ID30R"])
         {
+            /*
             double occLoadFactorA = OccpLoadA * ((ridTerm - 30)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm - 30)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 30)/2);
-            double occLoadFactorM = OccpLoadM * ((ridTerm - 30)/2);
+            double occLoadFactorM = OccpLoadM * ((ridTerm - 30)/2); */
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm - 30))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm - 30))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 30))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm - 30))/2);
+            
             annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1043,10 +1072,16 @@
         }
         else if ([RidCode isEqualToString:@"ID40R"])
         {
+            /*
             double occLoadFactorA = OccpLoadA * ((ridTerm - 40)/2);
             double occLoadFactorH = OccpLoadH * ((ridTerm - 40)/2);
             double occLoadFactorQ = OccpLoadQ * ((ridTerm - 40)/2);
-            double occLoadFactorM = OccpLoadM * ((ridTerm - 40)/2);
+            double occLoadFactorM = OccpLoadM * ((ridTerm - 40)/2); */
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm - 40))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm - 40))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 40))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm - 40))/2);
+            
             annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1073,13 +1108,17 @@
             double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * halfFac;
             double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * quarterFac;
             double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * monthFac;
-            
+            /*
             annualRider = (riderRate *ridSA /1000 *annFac) + (OccpLoadA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (OccpLoadM *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (OccpLoadQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac); */
+            annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadRider *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadRider *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadRider *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadRider *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
-        else if ([RidCode isEqualToString:@"CIR"])
+        else if ([RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"])
         {
             annualRider = (riderRate *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1087,10 +1126,15 @@
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         else {
+            /*
             annualRider = (riderRate *ridSA /1000 *annFac) + (OccpLoadA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (OccpLoadM *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + (OccpLoadQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (OccpLoadM *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac); */
+            annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadRider *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
+            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadRider *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
+            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadRider *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
+            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (occLoadRider *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
         
         NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
@@ -1278,7 +1322,7 @@
             double OccpLoadH = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
             double OccpLoadQ = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
             double OccpLoadM = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
-//            NSLog(@"RiderOccpL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
+            NSLog(@"RiderOccpL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
         
             //calculate rider health loading
             double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * annFac;
@@ -1302,8 +1346,7 @@
                 double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
                 double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
                 double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
-                double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
-             */
+                double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100); */
                 double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLAnnually/100);
                 double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLHalfYear/100);
                 double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLQuarterly/100);
@@ -1327,8 +1370,7 @@
                 double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadA + RiderHLAnnually/100);
                 double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadH + RiderHLHalfYear/100);
                 double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadQ + RiderHLQuarterly/100);
-                double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100);
-                 */
+                double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * OccpLoadM + RiderHLMonthly/100); */
                 double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLAnnually/100);
                 double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLHalfYear/100);
                 double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLQuarterly/100);
@@ -1486,10 +1528,16 @@
     double monthlyRider;
     if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
     {
+        /*
         double occLoadFactorA = OccpLoadA * ((ridTerm + 1)/2);
         double occLoadFactorH = OccpLoadH * ((ridTerm + 1)/2);
         double occLoadFactorQ = OccpLoadQ * ((ridTerm + 1)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm + 1)/2);
+        double occLoadFactorM = OccpLoadM * ((ridTerm + 1)/2); */
+        double occLoadFactorA = occLoadRider * (((double)(ridTerm + 1))/2);
+        double occLoadFactorH = occLoadRider * (((double)(ridTerm + 1))/2);
+        double occLoadFactorQ = occLoadRider * (((double)(ridTerm + 1))/2);
+        double occLoadFactorM = occLoadRider * (((double)(ridTerm + 1))/2);
+        
         annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
         halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
         quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1497,10 +1545,16 @@
     }
     if ([riderCode isEqualToString:@"ID20R"])
     {
+        /*
         double occLoadFactorA = OccpLoadA * ((ridTerm - 20)/2);
         double occLoadFactorH = OccpLoadH * ((ridTerm - 20)/2);
         double occLoadFactorQ = OccpLoadQ * ((ridTerm - 20)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm - 20)/2);
+        double occLoadFactorM = OccpLoadM * ((ridTerm - 20)/2); */
+        double occLoadFactorA = occLoadRider * (((double)(ridTerm - 20))/2);
+        double occLoadFactorH = occLoadRider * (((double)(ridTerm - 20))/2);
+        double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 20))/2);
+        double occLoadFactorM = occLoadRider * (((double)(ridTerm - 20))/2);
+        
         annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
         halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
         quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1508,10 +1562,16 @@
     }
     else if ([riderCode isEqualToString:@"ID30R"])
     {
+        /*
         double occLoadFactorA = OccpLoadA * ((ridTerm - 30)/2);
         double occLoadFactorH = OccpLoadH * ((ridTerm - 30)/2);
         double occLoadFactorQ = OccpLoadQ * ((ridTerm - 30)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm - 30)/2);
+        double occLoadFactorM = OccpLoadM * ((ridTerm - 30)/2); */
+        double occLoadFactorA = occLoadRider * (((double)(ridTerm - 30))/2);
+        double occLoadFactorH = occLoadRider * (((double)(ridTerm - 30))/2);
+        double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 30))/2);
+        double occLoadFactorM = occLoadRider * (((double)(ridTerm - 30))/2);
+        
         annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
         halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
         quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1519,10 +1579,16 @@
     }
     else if ([riderCode isEqualToString:@"ID40R"])
     {
+        /*
         double occLoadFactorA = OccpLoadA * ((ridTerm - 40)/2);
         double occLoadFactorH = OccpLoadH * ((ridTerm - 40)/2);
         double occLoadFactorQ = OccpLoadQ * ((ridTerm - 40)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm - 40)/2);
+        double occLoadFactorM = OccpLoadM * ((ridTerm - 40)/2); */
+        double occLoadFactorA = occLoadRider * (((double)(ridTerm - 40))/2);
+        double occLoadFactorH = occLoadRider * (((double)(ridTerm - 40))/2);
+        double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 40))/2);
+        double occLoadFactorM = occLoadRider * (((double)(ridTerm - 40))/2);
+        
         annualRider = (riderRate *ridSA /1000 *annFac) + (occLoadFactorA *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
         halfYearRider = (riderRate *ridSA /1000 *halfFac) + (occLoadFactorH *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
         quarterRider = (riderRate *ridSA /1000 *quarterFac) + (occLoadFactorQ *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
@@ -1628,7 +1694,6 @@
     //[self resignFirstResponder];
     //[self.view endEditing:YES];
     
-    
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
@@ -1662,16 +1727,16 @@
     if (riderCode.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select a Rider." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if (term)
-    {
+    }
+    else if (term) {
         NSLog(@"validate - 1st term");
         [self validateTerm];
-    } else if (sumA)
-    {
+    }
+    else if (sumA) {
         NSLog(@"validate - 2nd sum");
         [self validateSum];
-    } else if (unit)
-    {
+    }
+    else if (unit) {
         NSLog(@"validate - 3rd unit");
         [self validateUnit];
     }
@@ -1817,6 +1882,7 @@
 
         [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];        
         [self.myTableView reloadData];
+        [self getListingRiderByType];
         [self getListingRider];     //get stored rider
         [self calculateRiderPrem];  //calculate riderPrem
         [self calculateWaiver];     //calculate waiverPrem
@@ -1834,10 +1900,9 @@
     else if (alertView.tag == 1003 && buttonIndex == 0) {
         [self checkingRider];
         if (existRidCode.length == 0) {
-            
             [self saveRider];
-        } else {
-            
+        }
+        else {
             [self updateRider];
         }
     }
@@ -1873,6 +1938,7 @@
             }
             sqlite3_close(contactDB);
         }
+        [self getListingRiderByType];
         [self getListingRider];     //get stored rider
         [self calculateRiderPrem];  //calculate riderPrem
         [self calculateWaiver];     //calculate waiverPrem
@@ -1882,6 +1948,7 @@
         }
     }
     else if (alertView.tag == 1005 && buttonIndex ==0) {
+        [self getListingRiderByType];
         [self getListingRider];     //get stored rider
         [self calculateRiderPrem];  //calculate riderPrem
         [self calculateWaiver];     //calculate waiverPrem
@@ -1963,7 +2030,7 @@
 
 -(void)validateSum
 {
-    NSLog(@"keyin SA:%d,max:%.f",[sumField.text intValue],maxRiderSA);
+    NSLog(@"keyin SA:%.f,max:%.f",[sumField.text doubleValue],maxRiderSA);
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     
@@ -1974,7 +2041,6 @@
     
     if (rangeofDot.location != NSNotFound) {
         substring = [sumField.text substringFromIndex:rangeofDot.location ];
-        
     }
     
     if (sumField.text.length <= 0) {
@@ -1999,25 +2065,25 @@
         sumField.text = @"";
         [sumField becomeFirstResponder];
     }
-    else if ([sumField.text intValue] < minSATerm && !(incomeRider)) {
+    else if ([sumField.text doubleValue] < minSATerm && !(incomeRider)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         sumField.text = @"";
         [sumField becomeFirstResponder];
     }
-    else if ([sumField.text intValue] < minSATerm && incomeRider) {
+    else if ([sumField.text doubleValue] < minSATerm && incomeRider) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         sumField.text = @"";
         [sumField becomeFirstResponder];
     }
-    else if ([sumField.text intValue] > maxRiderSA && !(incomeRider)) {
+    else if ([sumField.text doubleValue] > maxRiderSA && !(incomeRider)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         sumField.text = @"";
         [sumField becomeFirstResponder];
     }
-    else if ([sumField.text intValue] > maxRiderSA && incomeRider) {
+    else if ([sumField.text doubleValue] > maxRiderSA && incomeRider) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         sumField.text = @"";
@@ -2281,6 +2347,7 @@
             }
             
             [self calculateBasicPremium];
+            [self getListingRiderByType];
             [self getListingRider];     //get stored rider
             [self calculateRiderPrem];  //calculate riderPrem
             [self calculateWaiver];     //calculate waiverPrem
@@ -2380,6 +2447,7 @@
                     }
                     
                     [self calculateBasicPremium];
+                    [self getListingRiderByType];
                     [self getListingRider];     //get stored rider
                     [self calculateRiderPrem];  //calculate riderPrem
                     [self calculateWaiver];     //calculate waiverPrem
@@ -2857,7 +2925,7 @@
     [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
     [popOverConroller dismissPopoverAnimated:YES];
    //NSLog(@"dasdasdadas RIDERVC pType:%@, seq:%d, desc:%@",pTypeCode,PTypeSeq,pTypeDesc);
-    [self getListingRider];
+    [self getListingRiderByType];
     [myTableView reloadData];
 }
 
@@ -3271,13 +3339,13 @@
         
     }
     
+    [self getListingRiderByType];
     [self getListingRider];     //get stored rider
     
     if (inputSA > _maxRiderSA) {
         NSLog(@"will delete %@",riderCode);
         //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" 
-                                                        message:@"Rider Sum Assured must be less than or equal to 1000000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         
         [alert setTag:1002];
         [alert show];
@@ -3318,30 +3386,11 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = @"";
-        if ([pTypeCode isEqualToString:@"PY"]) {
-            querySQL = [NSString stringWithFormat:
-                        @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
-                        "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
-                        "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
-                        "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'PY' ",SINoPlan];
-        }
-        else {
-            if (PTypeSeq == 2) {
-                querySQL = [NSString stringWithFormat:
-                            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
-                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
-                            "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
-                            "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND  b.Sequence = '2' ",SINoPlan];
-            }
-            else {
-                querySQL = [NSString stringWithFormat:
-                            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
-                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
-                            "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
-                            "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND b.Sequence = '1' ",SINoPlan];
-            }
-        }
+        NSString *querySQL = [NSString stringWithFormat:
+                @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
+                    "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
+                    "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+                    "AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -3388,8 +3437,106 @@
                 
                 [LOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 15)]];
             }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getListingRiderByType
+{
+    LTypeRiderCode = [[NSMutableArray alloc] init];
+    LTypeSumAssured = [[NSMutableArray alloc] init];
+    LTypeTerm = [[NSMutableArray alloc] init];
+    LTypePlanOpt = [[NSMutableArray alloc] init];
+    LTypeUnits = [[NSMutableArray alloc] init];
+    LTypeDeduct = [[NSMutableArray alloc] init];
+    LTypeRidHL1K = [[NSMutableArray alloc] init];
+    LTypeRidHL100 = [[NSMutableArray alloc] init];
+    LTypeRidHLP = [[NSMutableArray alloc] init];
+    LTypeSmoker = [[NSMutableArray alloc] init];
+    LTypeSex = [[NSMutableArray alloc] init];
+    LTypeAge = [[NSMutableArray alloc] init];
+    LTypeRidHLTerm = [[NSMutableArray alloc] init ]; // added by heng
+    LTypeRidHLPTerm = [[NSMutableArray alloc] init ]; // added by heng
+    LTypeRidHL100Term = [[NSMutableArray alloc] init ]; // added by heng
+    LTypeOccpCode = [[NSMutableArray alloc] init];
+    
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = @"";
+        if ([pTypeCode isEqualToString:@"PY"]) {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
+                        "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
+                        "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+                        "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'PY' ",SINoPlan];
+        }
+        else {
+            if (PTypeSeq == 2) {
+                querySQL = [NSString stringWithFormat:
+                            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
+                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
+                            "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+                            "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND  b.Sequence = '2' ",SINoPlan];
+            }
+            else {
+                querySQL = [NSString stringWithFormat:
+                            @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
+                            "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
+                            "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+                            "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND b.Sequence = '1' ",SINoPlan];
+            }
+        }
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                [LTypeRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]];
+                
+                const char *aaRidSA = (const char *)sqlite3_column_text(statement, 1);
+                [LTypeSumAssured addObject:aaRidSA == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaRidSA]];
+                
+                const char *aaTerm = (const char *)sqlite3_column_text(statement, 2);
+                [LTypeTerm addObject:aaTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaTerm]];
+                
+                const char *zzplan = (const char *) sqlite3_column_text(statement, 3);
+                [LTypePlanOpt addObject:zzplan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzplan]];
+                
+                const char *aaUnit = (const char *)sqlite3_column_text(statement, 4);
+                [LTypeUnits addObject:aaUnit == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaUnit]];
+                
+                const char *deduct2 = (const char *) sqlite3_column_text(statement, 5);
+                [LTypeDeduct addObject:deduct2 == NULL ? @"" :[[NSString alloc] initWithUTF8String:deduct2]];
+                
+                const char *ridHL = (const char *)sqlite3_column_text(statement, 6);
+                [LTypeRidHL1K addObject:ridHL == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL]];
+                
+                const char *ridHL100 = (const char *)sqlite3_column_text(statement, 7);
+                [LTypeRidHL100 addObject:ridHL100 == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL100]];
+                
+                const char *ridHLP = (const char *)sqlite3_column_text(statement, 8);
+                [LTypeRidHLP addObject:ridHLP == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHLP]];
+                
+                [LTypeSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
+                [LTypeSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
+                [LTypeAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
+                
+                const char *ridTerm = (const char *)sqlite3_column_text(statement, 12);
+                [LTypeRidHLTerm addObject:ridTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridTerm]]; //added by heng
+                
+                const char *ridPTerm = (const char *)sqlite3_column_text(statement, 13);
+                [LTypeRidHLPTerm addObject:ridPTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridPTerm]]; //added by heng
+                
+                const char *ridHL100Term = (const char *)sqlite3_column_text(statement, 14);
+                [LTypeRidHL100Term addObject:ridHL100Term == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL100Term]]; //added by heng
+                
+                [LTypeOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 15)]];
+            }
             
-            if ([LRiderCode count] == 0) {
+            if ([LTypeRiderCode count] == 0) {
                 myTableView.hidden = YES;
                 titleRidCode.hidden = YES;
                 titleSA.hidden = YES;
@@ -3419,12 +3566,6 @@
                 titleHLP.hidden = NO;
                 editBtn.hidden = NO;
                 titleHLPTerm.hidden = NO;
-                
-                //some code here--
-                /*
-                for (int z=0; z<LSumAssured.count; z++) {
-                    NSLog(@"VALUEDB RiderSA(%@):%@",[LRiderCode objectAtIndex:z],[LSumAssured objectAtIndex:z]);
-                }*/
             }
             
             [self.myTableView reloadData];
@@ -3496,6 +3637,7 @@
                 [SuccessAlert show];
                 
                 [self getListingRider];     //get stored rider
+                [self getListingRiderByType];
                 [self calculateRiderPrem];  //calculate riderPrem
                 [self calculateWaiver];     //calculate waiverPrem
                 [self calculateMedRiderPrem];       //calculate medicalPrem
@@ -3955,6 +4097,7 @@
             {
                 NSLog(@"rider delete!");
                 [self clearField];
+                [self getListingRiderByType];
                 [self getListingRider];     //get stored rider
                 [self calculateRiderPrem];  //calculate riderPrem
                 [self calculateWaiver];     //calculate waiverPrem
@@ -3982,7 +4125,7 @@
 
 - (NSInteger)tableView:(UITableView *)myTableView numberOfRowsInSection:(NSInteger)section
 {
-    return [LRiderCode count];
+    return [LTypeRiderCode count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)myTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -4012,7 +4155,7 @@
     CGRect frame=CGRectMake(-30,0, 130, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
-    label1.text= [LRiderCode objectAtIndex:indexPath.row];
+    label1.text= [LTypeRiderCode objectAtIndex:indexPath.row];
     label1.textAlignment = UITextAlignmentCenter;
     label1.tag = 2001;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -4021,7 +4164,7 @@
     CGRect frame2=CGRectMake(100,0, 129, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
-    NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LSumAssured objectAtIndex:indexPath.row] doubleValue]]];
+    NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LTypeSumAssured objectAtIndex:indexPath.row] doubleValue]]];
     label2.text= num;
     label2.textAlignment = UITextAlignmentCenter;
     label2.tag = 2002;
@@ -4031,7 +4174,7 @@
     CGRect frame3=CGRectMake(229,0, 62, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
-    label3.text= [LTerm objectAtIndex:indexPath.row];
+    label3.text= [LTypeTerm objectAtIndex:indexPath.row];
     label3.textAlignment = UITextAlignmentCenter;
     label3.tag = 2003;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -4040,7 +4183,7 @@
     CGRect frame4=CGRectMake(291,0, 62, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
-    label4.text= [LUnits objectAtIndex:indexPath.row];
+    label4.text= [LTypeUnits objectAtIndex:indexPath.row];
     label4.textAlignment = UITextAlignmentCenter;
     label4.tag = 2004;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -4079,16 +4222,16 @@
         hl1k = [LRidHL1K objectAtIndex:indexPath.row];
     }
      */
-    if ([[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
-        [[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+    if ([[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
+        [[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
         hl1k = @"";
     }
-    else if([[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
-            ![[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]){
-        hl1k = [LRidHL100 objectAtIndex:indexPath.row];
+    else if([[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
+            ![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]){
+        hl1k = [LTypeRidHL100 objectAtIndex:indexPath.row];
     }
         else {
-        hl1k = [LRidHL1K objectAtIndex:indexPath.row];
+        hl1k = [LTypeRidHL1K objectAtIndex:indexPath.row];
     }
     label7.text= hl1k;
     label7.textAlignment = UITextAlignmentCenter;
@@ -4123,16 +4266,16 @@
         hl100 = [LRidHLTerm objectAtIndex:indexPath.row];
     }
      */
-    if ([[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
-        [[LRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+    if ([[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
+        [[LTypeRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
         hl100 = @"";
     }
-    else if([[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
-            ![[LRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]){
-        hl100 = [LRidHL100Term objectAtIndex:indexPath.row];
+    else if([[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
+            ![[LTypeRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]){
+        hl100 = [LTypeRidHL100Term objectAtIndex:indexPath.row];
     }
     else {
-        hl100 = [LRidHLTerm objectAtIndex:indexPath.row];
+        hl100 = [LTypeRidHLTerm objectAtIndex:indexPath.row];
     }
     label8.text= hl100;
     label8.textAlignment = UITextAlignmentCenter;
@@ -4144,10 +4287,10 @@
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
     NSString *hlp;
-    if ([[LRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+    if ([[LTypeRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
         hlp = @"";
     } else {
-        hlp = [LRidHLP objectAtIndex:indexPath.row];
+        hlp = [LTypeRidHLP objectAtIndex:indexPath.row];
     }
     label9.text=hlp;
     label9.textAlignment = UITextAlignmentCenter;
@@ -4159,10 +4302,10 @@
     UILabel *label10=[[UILabel alloc]init];
     label10.frame=frame10;
     NSString *hlpTerm;
-    if ([[LRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+    if ([[LTypeRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
         hlpTerm = @"";
     } else {
-        hlpTerm = [LRidHLPTerm objectAtIndex:indexPath.row];
+        hlpTerm = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
     }
     label10.text=hlpTerm;
     label10.textAlignment = UITextAlignmentCenter;

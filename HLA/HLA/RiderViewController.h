@@ -158,6 +158,24 @@
 @property(nonatomic , retain) NSMutableArray *LRidHLTerm;
 @property(nonatomic , retain) NSMutableArray *LRidHL100Term;
 @property(nonatomic , retain) NSMutableArray *LOccpCode;
+
+@property (retain, nonatomic) NSMutableArray *LTypeRiderCode;
+@property (retain, nonatomic) NSMutableArray *LTypeSumAssured;
+@property (retain, nonatomic) NSMutableArray *LTypeTerm;
+@property (retain, nonatomic) NSMutableArray *LTypePlanOpt;
+@property (retain, nonatomic) NSMutableArray *LTypeUnits;
+@property(nonatomic , retain) NSMutableArray *LTypeDeduct;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHL1K;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHL100;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHLP;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHLPTerm;
+@property(nonatomic , retain) NSMutableArray *LTypeSmoker;
+@property(nonatomic , retain) NSMutableArray *LTypeSex;
+@property(nonatomic , retain) NSMutableArray *LTypeAge;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHLTerm;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHL100Term;
+@property(nonatomic , retain) NSMutableArray *LTypeOccpCode;
+
 @property (retain, nonatomic) IBOutlet UILabel *titleRidCode;
 @property (retain, nonatomic) IBOutlet UILabel *titleSA;
 @property (retain, nonatomic) IBOutlet UILabel *titleTerm;
