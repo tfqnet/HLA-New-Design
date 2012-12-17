@@ -28,9 +28,9 @@
 @property(nonatomic , retain) NSMutableArray *itemDesc;
 
 @property (nonatomic,strong) id requestCondition;
-@property (nonatomic, assign,readwrite) int requestSA;
+@property (nonatomic, assign,readwrite) double requestSA;
 @property (nonatomic,strong) id requestOption;
 
--(id)initWithString:(NSString *)stringCode;
+-(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)strSum andOption:(NSString *)strOpt;
 
 @end

@@ -213,17 +213,40 @@
      if (medRiderPrem != 0) {
         [self MHIGuideLines];
      } else {
+         BOOL dodelete = NO;
          for (int p=0; p<LRiderCode.count; p++) {
              
              riderCode = [LRiderCode objectAtIndex:p];
              [self calculateSA];
              double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
-             if (riderSA > maxRiderSA) {
-                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                 [alert setTag:1002];
-                 [alert show];
+             if (riderSA > maxRiderSA)
+             {
+                 dodelete = YES;
+                 sqlite3_stmt *statement;
+                 if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                 {
+                     NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
+                     
+                     if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                     {
+                         if (sqlite3_step(statement) == SQLITE_DONE)
+                         {
+                             NSLog(@"rider delete!");
+                         } else {
+                             NSLog(@"rider delete Failed!");
+                         }
+                         sqlite3_finalize(statement);
+                     }
+                     sqlite3_close(contactDB);
+                 }
              }
          }
+         if (dodelete) {
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+             [alert setTag:1005];
+             [alert show];
+         }
+         
      }
     
     myTableView.rowHeight = 50;
@@ -433,13 +456,13 @@
         
         //auto display default plan value
         //if (!_planList) {
-            self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
+            NSString *strSA = [NSString stringWithFormat:@"%.2f",self.requestBasicSA];
+            self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
             _planList.delegate = self;
-            _planList.requestSA = self.requestBasicSA;
         //}
         [self.planBtn setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
         planOption = [[NSString alloc] initWithFormat:@"%@",_planList.selectedItemDesc];
-        NSLog(@"plan:%@",planOption);
+//        NSLog(@"plan:%@",planOption);
         
     }
     else {
@@ -461,12 +484,11 @@
         deducBtn.hidden = NO;
         
         //auto display default deduc value
-        if (!_deductList) {
-            self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition];
+        //if (!_deductList) {
+        NSString *strSA = [NSString stringWithFormat:@"%.2f",self.requestBasicSA];
+        self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition andSumAss:strSA andOption:planOption];
             _deductList.delegate = self;
-            _deductList.requestSA = self.requestBasicSA;
-            _deductList.requestOption = planOption;
-        }
+        //}
         [self.deducBtn setTitle:_deductList.selectedItemDesc forState:UIControlStateNormal];
         deductible = [[NSString alloc] initWithFormat:@"%@",_deductList.selectedItemDesc];
         NSLog(@"deduc:%@",deductible);
@@ -1569,36 +1591,14 @@
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
-    /*
-    NSUInteger i;
-    for (i=0; i<[FLabelCode count]; i++) {
-        
-        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLOP"]] ||
-                [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLCH"]]) {
-            
-            if (_planList == nil) {
-//                self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
-                self.planList = [[RiderPlanTb alloc] initWithString:[FCondition objectAtIndex:i]];
-                _planList.delegate = self;
-                _planList.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
-                _planList.requestSA = self.requestBasicSA;
-                self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
-            }
-                
-            [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-            [self.planPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-    }
-     */
+  
     //if (_planList == Nil) {
-        
+        NSString *strSA = [NSString stringWithFormat:@"%.2f",self.requestBasicSA];
         self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
-        self.planList = [[RiderPlanTb alloc] initWithString:planCondition];
+        self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
+    
     //}
-        
         _planList.delegate = self;
-        _planList.requestCondition = [NSString stringWithFormat:@"%@",planCondition];
-        _planList.requestSA = self.requestBasicSA;
         self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
     
     [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
@@ -1614,32 +1614,9 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    /*
-    NSUInteger i;
-    for (i=0; i<[FLabelCode count]; i++) {
-        
-        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"DEDUC"]]) {
-            
-            if (_deductList == nil) {
-            
-                self.deductList = [[RiderDeducTb alloc] initWithStyle:UITableViewStylePlain];
-                _deductList.delegate = self;
-                _deductList.requestCondition = [NSString stringWithFormat:@"%@",[FCondition objectAtIndex:i]];
-                _deductList.requestSA = self.requestBasicSA;
-                _deductList.requestOption = planOption;
-                self.deducPopover = [[UIPopoverController alloc] initWithContentViewController:_deductList];
-            }
-        
-            [self.deducPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-            [self.deducPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-    }*/
-    
-    self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition];
+    NSString *strSA = [NSString stringWithFormat:@"%.2f",self.requestBasicSA];
+    self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition andSumAss:strSA andOption:planOption];
     _deductList.delegate = self;
-    _deductList.requestCondition = [NSString stringWithFormat:@"%@",deducCondition];
-    _deductList.requestSA = self.requestBasicSA;
-    _deductList.requestOption = planOption;
     self.deducPopover = [[UIPopoverController alloc] initWithContentViewController:_deductList];
     
     [self.deducPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
@@ -1903,7 +1880,15 @@
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
-
+    }
+    else if (alertView.tag == 1005 && buttonIndex ==0) {
+        [self getListingRider];     //get stored rider
+        [self calculateRiderPrem];  //calculate riderPrem
+        [self calculateWaiver];     //calculate waiverPrem
+        [self calculateMedRiderPrem];       //calculate medicalPrem
+        if (medRiderPrem != 0) {
+            [self MHIGuideLines];
+        }
     }
     
 }

@@ -17,7 +17,7 @@
 @synthesize delegate = _delegate;
 @synthesize requestSA,requestCondition,requestOption;
 
--(id)initWithString:(NSString *)stringCode
+-(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)strSum andOption:(NSString *)strOpt
 {
     self = [super init];
     if (self != nil) {
@@ -25,9 +25,11 @@
         NSString *docsDir = [dirPaths objectAtIndex:0];
         databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
         
-        
         requestCondition = [NSString stringWithFormat:@"%@",stringCode];
+        requestSA = [strSum doubleValue];
+        requestOption = [NSString stringWithFormat:@"%@",strOpt];
         [self getRiderCondition];
+        NSLog(@"condition:%@, sumA:%.2f, option:%@",self.requestCondition,self.requestSA,self.requestOption);
         
         if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"DeductibleHMM"] && [self.requestOption isEqualToString:@"HMM_1000"]) {
             [itemValue removeAllObjects];
