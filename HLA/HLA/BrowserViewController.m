@@ -54,7 +54,14 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(revealLeftSidebar:)];
     
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(revealRightSidebar:)];
+    /*
+    UIBarButtonItem *zzz = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(testing) ];
     
+    UIBarButtonItem *www = [[UIBarButtonItem alloc] init ];
+    www.title = @"Previous";
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:zzz, www, Nil];
+    */
+
     
     
     CDVViewController* browserController_page = [CDVViewController new];
@@ -78,6 +85,8 @@
     
     
 }
+
+
 
 -(void)presentModal{
     //NSLog(@"sssss");
@@ -178,8 +187,8 @@
 
 - (void)sidebarViewController:(SidebarViewController *)sidebarViewController didSelectObject:(NSObject *)object objectHTML:(NSObject *)objectHTML atIndexPath:(NSIndexPath *)indexPath {
     
-    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
-    [v removeFromSuperview];
+    //UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+    //[v removeFromSuperview];
     
     [self.navigationController setRevealedState:JTRevealedStateNo];
     
@@ -205,6 +214,24 @@
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
     //[self.view addSubview:browserController.view];
+    browserController = nil;
+    
+}
+
+-(void)testing{
+    
+    BrowserViewController *controller = [[BrowserViewController alloc] init];
+    
+    [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
+    controller.delegate = _delegate;
+    
+    
+    browserController = [CDVViewController new];
+    browserController.wwwFolderName = @"www";
+    browserController.startPage = @"Page2.html";
+    browserController.view.frame = CGRectMake(0, 0, 758, 1000);
+    [controller.view addSubview:browserController.view];
+    
     browserController = nil;
     
 }

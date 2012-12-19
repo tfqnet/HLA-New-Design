@@ -282,7 +282,7 @@
                      outletSave.hidden = TRUE;
                      }
                      */
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Security question update success!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Security Question successfully updated!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                     [alert setTag:01];
                     [alert show];
                     
