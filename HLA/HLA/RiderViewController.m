@@ -538,10 +538,17 @@
     }
     
     if([riderCode isEqualToString:@"CPA"]){
-        [self.planBtn setTitle:[NSString stringWithFormat:@"%d",occCPA] forState:UIControlStateNormal];
-        [self.planBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        NSString *msg = @"";
+        if (occCPA > 4) {
+            msg = @"D";
+        }
+        else {
+            msg = [NSString stringWithFormat:@"%d",occCPA];
+        }
         
-        cpaField.text = [NSString stringWithFormat:@"%d",occCPA];
+        [self.planBtn setTitle:msg forState:UIControlStateNormal];
+        [self.planBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        cpaField.text = msg;
         cpaField.textColor = [UIColor darkGrayColor];
         
         if (occLoad == 0) {
@@ -553,10 +560,19 @@
     }
     
     if([riderCode isEqualToString:@"CIR"]){
-        [self.planBtn setTitle:[NSString stringWithFormat:@"%d",occCPA] forState:UIControlStateNormal];
+        
+        NSString *msg = @"";
+        if (occCPA > 4) {
+            msg = @"D";
+        }
+        else {
+            msg = [NSString stringWithFormat:@"%d",occCPA];
+        }
+        
+        [self.planBtn setTitle:msg forState:UIControlStateNormal];
         [self.planBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         
-        cpaField.text = [NSString stringWithFormat:@"%d",occCPA];
+        cpaField.text = msg;
         cpaField.textColor = [UIColor darkGrayColor];
         
         unitField.text = @"0";
@@ -2956,20 +2972,24 @@
 -(void)roomBoardDefaultPlan
 {
     if ([riderCode isEqualToString:@"HMM"]) {
-        [self.planBtn setTitle:@"HMM_150" forState:UIControlStateNormal];
-        planOption = @"HMM_150";
+//        planOption = @"HMM_150";
+        planOption = medPlanOpt;
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
     }
     else if ([riderCode isEqualToString:@"HSP_II"]) {
-        [self.planBtn setTitle:@"Standard" forState:UIControlStateNormal];
-        planOption = @"Standard";
+//        planOption = @"Standard";
+        planOption = medPlanOpt;
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
     }
     else if ([riderCode isEqualToString:@"MG_II"]) {
-        [self.planBtn setTitle:@"MG_II_100" forState:UIControlStateNormal];
-        planOption = @"MG_II_100";
+//        planOption = @"MG_II_100";
+        planOption = medPlanOpt;
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
     }
     else if ([riderCode isEqualToString:@"MG_IV"]) {
-        [self.planBtn setTitle:@"MGIVP_150" forState:UIControlStateNormal];
-        planOption = @"MGIVP_150";
+//        planOption = @"MGIVP_150";
+        planOption = medPlanOpt;
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
     }
 }
 
@@ -4710,7 +4730,8 @@
     unitField.text = @"";
     inputSA = 0;
     secondLARidCode = nil;
-    //_planList = nil;
+    cpaField.text = @"";
+    occpField.text = @"";
     
     [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
