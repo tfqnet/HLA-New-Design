@@ -217,6 +217,7 @@
          for (int p=0; p<LRiderCode.count; p++) {
              
              riderCode = [LRiderCode objectAtIndex:p];
+             [self getRiderTermRule];
              [self calculateSA];
              double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
              if (riderSA > maxRiderSA)
@@ -305,6 +306,9 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    int MaxUnit;
+    double PseudoBSA = self.requestBasicSA / 0.05;
+    
     switch (textField.tag) {
         case 0:
             minDisplayLabel.text = @"";
@@ -346,9 +350,22 @@
                 maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
             }
             break;
+            
         case 3:
+            if (PseudoBSA >= 10000 && PseudoBSA <= 25000) {
+                MaxUnit = 4;
+            }
+            else if (PseudoBSA >= 25001 && PseudoBSA <= 50000) {
+                MaxUnit = 6;
+            }
+            else if (PseudoBSA >= 50001 && PseudoBSA <= 75000) {
+                MaxUnit = 8;
+            }
+            else if (PseudoBSA > 75000) {
+                MaxUnit = 10;
+            }
             minDisplayLabel.text = @"Min Unit: 1";
-            maxDisplayLabel.text = @"Max Unit: 4";
+            maxDisplayLabel.text = [NSString stringWithFormat:@"Max Unit: %d",MaxUnit];
             break;
             
         default:
@@ -622,7 +639,6 @@
         _maxRiderSA = dblPseudoBSA3;
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
-        
     }
     else if ([riderCode isEqualToString:@"ETPD"])
     {
@@ -1500,7 +1516,6 @@
     
     double BasicSA = requestBasicSA;
     double ridSA = [sumField.text doubleValue];
-    double PolicyTerm = requestCoverTerm;
     double riderHLoad = [HLField.text doubleValue];
 //    NSLog(@"riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",riderCode,riderRate,ridSA,riderHLoad);
     
@@ -1508,12 +1523,6 @@
     double halfFac = 0.5125;
     double quarterFac = 0.2625;
     double monthFac = 0.0875;
-        
-    //calculate occupationLoading
-    double OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
-    double OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
-    double OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
-    double OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
         
     //calculate rider health loading
     double RiderHLAnnually = riderHLoad * (BasicSA/1000) * annFac;
@@ -1528,11 +1537,6 @@
     double monthlyRider;
     if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
     {
-        /*
-        double occLoadFactorA = OccpLoadA * ((ridTerm + 1)/2);
-        double occLoadFactorH = OccpLoadH * ((ridTerm + 1)/2);
-        double occLoadFactorQ = OccpLoadQ * ((ridTerm + 1)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm + 1)/2); */
         double occLoadFactorA = occLoadRider * (((double)(ridTerm + 1))/2);
         double occLoadFactorH = occLoadRider * (((double)(ridTerm + 1))/2);
         double occLoadFactorQ = occLoadRider * (((double)(ridTerm + 1))/2);
@@ -1545,11 +1549,6 @@
     }
     if ([riderCode isEqualToString:@"ID20R"])
     {
-        /*
-        double occLoadFactorA = OccpLoadA * ((ridTerm - 20)/2);
-        double occLoadFactorH = OccpLoadH * ((ridTerm - 20)/2);
-        double occLoadFactorQ = OccpLoadQ * ((ridTerm - 20)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm - 20)/2); */
         double occLoadFactorA = occLoadRider * (((double)(ridTerm - 20))/2);
         double occLoadFactorH = occLoadRider * (((double)(ridTerm - 20))/2);
         double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 20))/2);
@@ -1562,11 +1561,6 @@
     }
     else if ([riderCode isEqualToString:@"ID30R"])
     {
-        /*
-        double occLoadFactorA = OccpLoadA * ((ridTerm - 30)/2);
-        double occLoadFactorH = OccpLoadH * ((ridTerm - 30)/2);
-        double occLoadFactorQ = OccpLoadQ * ((ridTerm - 30)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm - 30)/2); */
         double occLoadFactorA = occLoadRider * (((double)(ridTerm - 30))/2);
         double occLoadFactorH = occLoadRider * (((double)(ridTerm - 30))/2);
         double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 30))/2);
@@ -1579,11 +1573,6 @@
     }
     else if ([riderCode isEqualToString:@"ID40R"])
     {
-        /*
-        double occLoadFactorA = OccpLoadA * ((ridTerm - 40)/2);
-        double occLoadFactorH = OccpLoadH * ((ridTerm - 40)/2);
-        double occLoadFactorQ = OccpLoadQ * ((ridTerm - 40)/2);
-        double occLoadFactorM = OccpLoadM * ((ridTerm - 40)/2); */
         double occLoadFactorA = occLoadRider * (((double)(ridTerm - 40))/2);
         double occLoadFactorH = occLoadRider * (((double)(ridTerm - 40))/2);
         double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 40))/2);
@@ -1609,7 +1598,6 @@
     calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
     inputIncomeAnn = [calRiderAnn doubleValue];
     NSLog(@"inputIncomeRiderTot(%@) A:%@, S:%@, Q:%@, M:%@",riderCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
-         
 }
 
 
@@ -1724,7 +1712,7 @@
         }
     }
     
-    if (riderCode.length == 0) {
+    if (riderCode.length == 0 || btnAddRider.titleLabel.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select a Rider." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
@@ -1816,7 +1804,7 @@
         msg = @"Are you sure want to delete these Rider(s)?";
     } else {
         int value = [[ItemToBeDeleted objectAtIndex:0] intValue];
-        msg = [NSString stringWithFormat:@"Delete Rider:%@",[LRiderCode objectAtIndex:value]];
+        msg = [NSString stringWithFormat:@"Delete Rider:%@",[LTypeRiderCode objectAtIndex:value]];
     }
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
@@ -1851,7 +1839,7 @@
                 value = value - a;
                 
                 NSString *querySQL = [NSString stringWithFormat:
-                                      @"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,[LRiderCode objectAtIndex:value]];
+                                      @"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,[LTypeRiderCode objectAtIndex:value]];
                 NSLog(@"%@",querySQL);
                 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
                 {
@@ -1865,17 +1853,17 @@
                     sqlite3_finalize(statement);
                 }
             
-                [LRiderCode removeObjectAtIndex:value];
-                [LSumAssured removeObjectAtIndex:value];
-                [LTerm removeObjectAtIndex:value];
-                [LPlanOpt removeObjectAtIndex:value];
-                [LUnits removeObjectAtIndex:value];
-                [LDeduct removeObjectAtIndex:value];
-                [LRidHL1K removeObjectAtIndex:value];
-                [LRidHL100 removeObjectAtIndex:value];
-                [LRidHLP removeObjectAtIndex:value];
-                [LSmoker removeObjectAtIndex:value];
-                [LAge removeObjectAtIndex:value];
+                [LTypeRiderCode removeObjectAtIndex:value];
+                [LTypeSumAssured removeObjectAtIndex:value];
+                [LTypeTerm removeObjectAtIndex:value];
+                [LTypePlanOpt removeObjectAtIndex:value];
+                [LTypeUnits removeObjectAtIndex:value];
+                [LTypeDeduct removeObjectAtIndex:value];
+                [LTypeRidHL1K removeObjectAtIndex:value];
+                [LTypeRidHL100 removeObjectAtIndex:value];
+                [LTypeRidHLP removeObjectAtIndex:value];
+                [LTypeSmoker removeObjectAtIndex:value];
+                [LTypeAge removeObjectAtIndex:value];
             }
             sqlite3_close(contactDB);
         }
@@ -2232,6 +2220,7 @@
     else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count == 0)) {
         
         NSLog(@"go Negative Yield2 - empty listing!");
+        [self calculateIncomeRider];
         [self calculateIncomeRiderInput];
         [self NegativeYield];
     }
@@ -2305,7 +2294,6 @@
                 if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
                 {
                     riderCode = [LRiderCode objectAtIndex:u];
-//                    [self calculateSA];
                     [self getRiderTermRule];
                     riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                     
@@ -2403,7 +2391,6 @@
                         if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
                         {
                             riderCode = [LRiderCode objectAtIndex:u];
-//                            [self calculateSA];
                             [self getRiderTermRule];
                             riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
                             
@@ -2652,7 +2639,7 @@
 
 -(void)NegativeYield
 {
-    //if TPremiumPayable > totalGYI + maturityCSV then popup
+    //--if TPremiumPayable > totalGYI + maturityCSV then popup
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -3002,6 +2989,8 @@
             [self getLabelForm];
             [self toggleForm];
             [self getRiderTermRule];
+            [self calculateTerm];
+            [self calculateSA];
         }
     }
     else if (!(foundPayor)) {
@@ -3019,6 +3008,8 @@
         [self getLabelForm];
         [self toggleForm];
         [self getRiderTermRule];
+        [self calculateTerm];
+        [self calculateSA];
     }
     
     if ([riderCode isEqualToString: @"HMM"]||[riderCode isEqualToString: @"HB"]||[riderCode isEqualToString: @"HSP_II"]||[riderCode isEqualToString: @"MG_II"]||[riderCode isEqualToString: @"MG_IV"]) {
@@ -3175,10 +3166,8 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-            @"Select rate from Trad_Sys_Rider_CSV where PlanCode=\"%@\" AND PremPayOpt=%d AND Age=%d ORDER by PolYear desc",code,requestMOP, age];
-        
-//        NSLog(@"%@",querySQL);
+        NSString *querySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV"
+                              " where PlanCode=\"%@\" AND PremPayOpt=%d AND Age=%d ORDER by PolYear desc",code,requestMOP, age];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -3251,9 +3240,6 @@
                 minSATerm = sqlite3_column_int(statement, 5);
                 maxSATerm = sqlite3_column_int(statement, 6);
                 NSLog(@"expiryAge:%d,minTerm:%d,maxTerm:%d,minSA:%d,maxSA:%d",expAge,minTerm,maxTerm,minSATerm,maxSATerm);
-                
-                [self calculateTerm];
-                [self calculateSA];
                 
             } else {
                 NSLog(@"error access Trad_Mtn");
@@ -3390,7 +3376,7 @@
                 @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, "
                     "a.HL100SA, a.HLPercentage, c.Smoker,c.Sex, c.ALB, a.HL1KSATerm, a.HLPercentageTerm, a.HL100SATerm, c.OccpCode FROM Trad_Rider_Details a, "
                     "Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
-                    "AND a.SINo=b.SINo AND a.SINo=\"%@\"",SINoPlan];
+                    "AND a.SINo=b.SINo AND a.SINo=\"%@\" ORDER by a.RiderCode asc",SINoPlan];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -3437,6 +3423,7 @@
                 
                 [LOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 15)]];
             }
+            
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
@@ -3569,6 +3556,7 @@
             }
             
             [self.myTableView reloadData];
+            
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
@@ -3629,7 +3617,7 @@
     {
         NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
                                @"UPDATE Trad_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", Units=\"%@\", Deductible=\"%@\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", HL100SA=\"%@\", HL100SATerm=\"%d\", HLPercentage=\"%@\", HLPercentageTerm=\"%d\", CreatedAt=\"%@\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",termField.text, sumField.text, planOption, unitField.text, deductible, inputHL1KSA, inputHL1KSATerm, inputHL100SA, inputHL100SATerm, inputHLPercentage, inputHLPercentageTerm, dateString,SINoPlan,riderCode,pTypeCode, PTypeSeq];
-            
+//        NSLog(@"%@",updatetSQL);
         if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -4394,60 +4382,58 @@
         //[btnAddRider setTitle:[LRiderCode objectAtIndex:indexPath.row] forState:UIControlStateNormal ];
         
         RiderListTbViewController *zzz = [[RiderListTbViewController alloc] init ];
-        [self RiderListController:zzz didSelectCode:[LRiderCode objectAtIndex:indexPath.row] desc:[self getRiderDesc:[LRiderCode objectAtIndex:indexPath.row]]];
-        NSRange rangeofDot = [[LSumAssured objectAtIndex:indexPath.row ] rangeOfString:@"."];
+        [self RiderListController:zzz didSelectCode:[LTypeRiderCode objectAtIndex:indexPath.row] desc:[self getRiderDesc:[LTypeRiderCode objectAtIndex:indexPath.row]]];
+        NSRange rangeofDot = [[LTypeSumAssured objectAtIndex:indexPath.row ] rangeOfString:@"."];
         NSString *SumToDisplay = @"";
     
         if (rangeofDot.location != NSNotFound) {
-            NSString *substring = [[LSumAssured objectAtIndex:indexPath.row] substringFromIndex:rangeofDot.location ];
+            NSString *substring = [[LTypeSumAssured objectAtIndex:indexPath.row] substringFromIndex:rangeofDot.location ];
             if (substring.length == 2 && [substring isEqualToString:@".0"]) {
-                SumToDisplay = [[LSumAssured objectAtIndex:indexPath.row] substringToIndex:rangeofDot.location ];
+                SumToDisplay = [[LTypeSumAssured objectAtIndex:indexPath.row] substringToIndex:rangeofDot.location ];
             }
             else {
-                SumToDisplay = [LSumAssured objectAtIndex:indexPath.row];
+                SumToDisplay = [LTypeSumAssured objectAtIndex:indexPath.row];
             }
         }
         else {
-            SumToDisplay = [LSumAssured objectAtIndex:indexPath.row];
+            SumToDisplay = [LTypeSumAssured objectAtIndex:indexPath.row];
         }
         
         sumField.text = SumToDisplay;
-        termField.text = [LTerm objectAtIndex:indexPath.row];
-        unitField.text = [LUnits objectAtIndex:indexPath.row];
+        termField.text = [LTypeTerm objectAtIndex:indexPath.row];
+        unitField.text = [LTypeUnits objectAtIndex:indexPath.row];
         
-        if (  ![[LPlanOpt objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-            [planBtn setTitle:[LPlanOpt objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+        if (  ![[LTypePlanOpt objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            [planBtn setTitle:[LTypePlanOpt objectAtIndex:indexPath.row] forState:UIControlStateNormal];
         }
         
-        if (  ![[LDeduct objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-            [deducBtn setTitle:[LDeduct objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+        if (  ![[LTypeDeduct objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            [deducBtn setTitle:[LTypeDeduct objectAtIndex:indexPath.row] forState:UIControlStateNormal];
         }
         
-        if (  ![[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-            HLField.text = [LRidHL1K objectAtIndex:indexPath.row];
+        if (  ![[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = [LTypeRidHL1K objectAtIndex:indexPath.row];
         }
     
-        if (  ![[LRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
-            HLTField.text = [LRidHLTerm objectAtIndex:indexPath.row];
+        if (  ![[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+            HLTField.text = [LTypeRidHLTerm objectAtIndex:indexPath.row];
         }
         
-        if (  ![[LRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-            HLField.text = [LRidHL100 objectAtIndex:indexPath.row];
+        if (  ![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = [LTypeRidHL100 objectAtIndex:indexPath.row];
         }
         
-        if (  ![[LRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
-            HLTField.text = [LRidHL100Term objectAtIndex:indexPath.row];
+        if (  ![[LTypeRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+            HLTField.text = [LTypeRidHL100Term objectAtIndex:indexPath.row];
         }
         
-        if (  ![[LRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-            HLField.text = [LRidHLP objectAtIndex:indexPath.row];
+        if (  ![[LTypeRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = [LTypeRidHLP objectAtIndex:indexPath.row];
         }
         
-        if (  ![[LRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
-            HLTField.text = [LRidHLPTerm objectAtIndex:indexPath.row];
+        if (  ![[LTypeRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
+            HLTField.text = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
         }
-         
-        
     }
 }
 
