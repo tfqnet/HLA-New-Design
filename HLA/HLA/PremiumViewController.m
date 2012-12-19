@@ -465,7 +465,7 @@
     basicPremHalf = [[basicTotalS stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     basicPremQuar = [[basicTotalQ stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     basicPremMonth = [[basicTotalM stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"TAP A:%.2f, S:%.2f, Q:%.2f, M:%.2f",basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth);
+    NSLog(@"f%.2f, S:%.2f, Q:%.2f, M:%.2f",basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth);
 }
 
 -(void)calculateRiderPrem
@@ -1139,10 +1139,10 @@
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPremMonth) *12;
             NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
-            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLAnnually/100);
-            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLHalfYear/100);
-            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLQuarterly/100);
-            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLMonthly/100);
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + RiderHLAnnually/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + RiderHLHalfYear/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + RiderHLQuarterly/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + RiderHLMonthly/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             annualRider = annualRider_ * annFac;
             halfYearRider = halfYearRider_ * halfFac;

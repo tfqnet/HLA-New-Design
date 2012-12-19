@@ -130,6 +130,7 @@
 @property (nonatomic, assign,readwrite) int GYI;
 @property (nonatomic, assign,readwrite) int occLoad;
 @property (nonatomic, assign,readwrite) int occLoadRider;
+@property (nonatomic, assign,readwrite) int occLoadType;
 @property (nonatomic, assign,readwrite) int occClass;
 @property (nonatomic, assign,readwrite) int occCPA;
 @property (nonatomic, assign,readwrite) int storedMaxTerm;
