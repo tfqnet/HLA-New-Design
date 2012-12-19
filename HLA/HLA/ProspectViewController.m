@@ -1783,6 +1783,18 @@ PostcodeContinue = TRUE;
 
 -(void)DateSelected:(NSString *)strDate :(NSString *)dbDate{
     [outletDOB setTitle:strDate forState:UIControlStateNormal ];
+    
+    NSDateFormatter* df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy-MM-dd"];
+    NSDate *d = [NSDate date];
+    NSDate* d2 = [df dateFromString:dbDate];
+    
+    if ([d compare:d2] == NSOrderedAscending) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                    message:@"Entered date cannot be greater than today." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        [outletDOB setTitle:@"" forState:UIControlStateNormal ];
+    }
 }
 
 -(void)CloseWindow{
