@@ -99,6 +99,8 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
 
+    [self LoadAllResult];
+    /*
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
     
@@ -150,7 +152,7 @@
         [outletEdit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
         outletEdit.enabled = TRUE;
     }
-    
+    */
     //    UITableView *tableView =  [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
     
     /*    UITableView *tableView =  [[UITableView alloc] initWithFrame:CGRectMake(100.0,100.0,300,500) style:UITableViewStyleGrouped ];
@@ -174,6 +176,60 @@
     indexPaths = [[NSMutableArray alloc] init];
     
 
+}
+
+- (void)LoadAllResult{
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+        NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
+                                  " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
+                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" order by createdAt Desc "];
+        const char *SelectSI = [SIListingSQL UTF8String];
+        if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
+            
+            SINO = [[NSMutableArray alloc] init ];
+            DateCreated = [[NSMutableArray alloc] init ];
+            Name = [[NSMutableArray alloc] init ];
+            PlanName = [[NSMutableArray alloc] init ];
+            BasicSA = [[NSMutableArray alloc] init ];
+            SIStatus = [[NSMutableArray alloc] init ];
+            CustomerCode = [[NSMutableArray alloc] init ];
+            
+            while (sqlite3_step(statement) == SQLITE_ROW){
+                NSString *SINumber = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                NSString *ItemDateCreated = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                NSString *ItemName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                NSString *ItemPlanName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                NSString *ItemBasicSA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                NSString *ItemStatus = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+                NSString *ItemCustomerCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
+                
+                [SINO addObject:SINumber];
+                [DateCreated addObject:ItemDateCreated ];
+                [Name addObject:ItemName ];
+                [PlanName addObject:ItemPlanName ];
+                [BasicSA addObject:ItemBasicSA ];
+                [SIStatus addObject:ItemStatus];
+                [CustomerCode addObject:ItemCustomerCode];
+            }
+            
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(contactDB);
+    }
+    
+    if (SINO.count == 0) {
+        [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        outletEdit.enabled = FALSE;
+    }
+    else {
+        [outletEdit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+        outletEdit.enabled = TRUE;
+    }
 }
 
 - (void)viewDidUnload
@@ -469,8 +525,6 @@
             outletDelete.enabled = TRUE;
         }
         
-        
-        
         NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
         [ItemToBeDeleted addObject:zzz];
         [indexPaths addObject:indexPath];
@@ -567,7 +621,7 @@
         [df setDateFormat:@"dd/MM/yyyy"];
         //NSString* d = [df stringFromDate:[[NSDate date] dateByAddingTimeInterval:3600*8]];    
         NSString* d = [df stringFromDate:[NSDate date]];    
-        
+     
         [outletDateTo setTitle:d forState:UIControlStateNormal];
         DBDateTo = d;
     }
@@ -580,6 +634,7 @@
         self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
     }
     
+    [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
@@ -707,7 +762,7 @@
             const char *SelectSI = [SIListingSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
                 
-                /*
+                
                 SINO = nil;
                 DateCreated = nil;
                 Name = nil;
@@ -723,8 +778,8 @@
                 BasicSA = [[NSMutableArray alloc] init ];
                 SIStatus = [[NSMutableArray alloc] init ];
                 CustomerCode = [[NSMutableArray alloc] init ]; 
-                */
                 
+                 /*
                  FilteredSINO = [[NSMutableArray alloc] init ];
                  FilteredDateCreated = [[NSMutableArray alloc] init ];
                  FilteredName = [[NSMutableArray alloc] init ];
@@ -732,7 +787,7 @@
                  FilteredBasicSA = [[NSMutableArray alloc] init ];
                  FilteredSIStatus = [[NSMutableArray alloc] init ];
                  FilteredCustomerCode = [[NSMutableArray alloc] init ];
-                
+                */
                 
                 while (sqlite3_step(statement) == SQLITE_ROW){
                     NSString *SINumber = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
@@ -743,6 +798,7 @@
                     NSString *ItemStatus = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
                     NSString *ItemCustomerCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
                     
+                    /*
                      [FilteredSINO addObject:SINumber];
                      [FilteredDateCreated addObject:ItemDateCreated ];
                      [FilteredName addObject:ItemName ];
@@ -750,7 +806,8 @@
                      [FilteredBasicSA addObject:ItemBasicSA ];
                      [FilteredSIStatus addObject:ItemStatus];
                     [FilteredCustomerCode addObject:ItemCustomerCode];
-                     /*
+                     */
+                    
                     [SINO addObject:SINumber];
                     [DateCreated addObject:ItemDateCreated ];
                     [Name addObject:ItemName ];
@@ -758,7 +815,7 @@
                     [BasicSA addObject:ItemBasicSA ];
                     [SIStatus addObject:ItemStatus];
                     [CustomerCode addObject:ItemCustomerCode];
-                      */
+                      
                 }
                 
                 sqlite3_finalize(statement);
@@ -774,7 +831,7 @@
             NSLog(@"cannot open DB");
         }
         
-        isFilter = TRUE;
+        //isFilter = TRUE;
         if (SINO.count == 0) {
             outletEdit.enabled = FALSE;
             [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
@@ -849,8 +906,17 @@
                     int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
                     value = value - a;
                     
-                    NSString *DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
-                                                  " trad_lapayor where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+                    NSString *DeleteLAPayorSQL;
+                    if (isFilter == false) {
+                        DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
+                                                      " trad_lapayor where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+                        
+                    }
+                    else{
+                        DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
+                                            " trad_lapayor where custcode = \"%@\" ", [FilteredCustomerCode objectAtIndex:value]];
+                    }
+                        
                     
                     if(sqlite3_prepare_v2(contactDB, [DeleteLAPayorSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                         
@@ -861,9 +927,16 @@
                         sqlite3_finalize(statement);
                         
                     }
-                    
-                    NSString *DeleteCltProfileSQL = [NSString stringWithFormat:@"Delete from "
-                                                     " clt_Profile where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+
+                    NSString *DeleteCltProfileSQL;
+                    if (isFilter == FALSE) {
+                        DeleteCltProfileSQL = [NSString stringWithFormat:@"Delete from "
+                                                " clt_Profile where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+                    }
+                    else{
+                        DeleteCltProfileSQL = [NSString stringWithFormat:@"Delete from "
+                                               " clt_Profile where custcode = \"%@\" ", [FilteredCustomerCode objectAtIndex:value]];
+                    }
                     
                     if(sqlite3_prepare_v2(contactDB, [DeleteCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
                         int zzz = sqlite3_step(statement2);
@@ -872,14 +945,25 @@
                         }
                         sqlite3_finalize(statement2);
                     }
-                    
-                    [SINO removeObjectAtIndex:value];
-                    [DateCreated removeObjectAtIndex:value];
-                    [Name removeObjectAtIndex:value];
-                    [PlanName removeObjectAtIndex:value];
-                    [BasicSA removeObjectAtIndex:value];
-                    [SIStatus removeObjectAtIndex:value];
-                    [CustomerCode removeObjectAtIndex:value];
+                
+                    if (isFilter == FALSE) {
+                        [SINO removeObjectAtIndex:value];
+                        [DateCreated removeObjectAtIndex:value];
+                        [Name removeObjectAtIndex:value];
+                        [PlanName removeObjectAtIndex:value];
+                        [BasicSA removeObjectAtIndex:value];
+                        [SIStatus removeObjectAtIndex:value];
+                        [CustomerCode removeObjectAtIndex:value];
+                    }
+                    else{
+                        [FilteredSINO removeObjectAtIndex:value];
+                        [FilteredDateCreated removeObjectAtIndex:value];
+                        [FilteredName removeObjectAtIndex:value];
+                        [FilteredPlanName removeObjectAtIndex:value];
+                        [FilteredBasicSA removeObjectAtIndex:value];
+                        [FilteredSIStatus removeObjectAtIndex:value];
+                        [FilteredCustomerCode removeObjectAtIndex:value];
+                    }
                     
                 }
                 
@@ -1082,8 +1166,12 @@
     outletGender.enabled = FALSE;
     _SortBy = Nil;
     isFilter = FALSE;
+    [myTableView setEditing:NO animated:NO];
+    
+    [self LoadAllResult];
     
     [myTableView reloadData];
+    
 }
 
 - (IBAction)btnAddNewSI:(id)sender {

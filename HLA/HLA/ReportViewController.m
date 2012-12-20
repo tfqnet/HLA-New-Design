@@ -27,7 +27,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize SummaryGuaranteedTotalGYI, SummaryNonGuaranteedAccuCashDividendA,SummaryNonGuaranteedAccuCashDividendB;
 @synthesize SummaryGuaranteedAddEndValue, SummaryNonGuaranteedAccuYearlyIncomeA, SummaryNonGuaranteedAccuYearlyIncomeB;
 @synthesize SummaryNonGuaranteedDBValueA, SummaryNonGuaranteedDBValueB, SummaryNonGuaranteedSurrenderValueA,SummaryNonGuaranteedSurrenderValueB;
-@synthesize BasicMaturityValueA, BasicMaturityValueB, BasicTotalPremiumPaid, BasicTotalYearlyIncome;
+@synthesize BasicMaturityValueA, BasicMaturityValueB, BasicTotalPremiumPaid, BasicTotalYearlyIncome, TotalPremiumBasicANDIncomeRider;
 @synthesize EntireMaturityValueA,EntireMaturityValueB,EntireTotalPremiumPaid,EntireTotalYearlyIncome, OtherRiderDeductible;
 @synthesize aStrIncomeRiderMonthly,aStrIncomeRiderQuarterly,aStrIncomeRiderSemiAnnually,aStrOtherRiderMonthly;
 @synthesize aStrOtherRiderQuarterly,aStrOtherRiderSemiAnnually,strBasicMonthly,strBasicQuarterly,strBasicSemiAnnually, OccLoading;
@@ -1334,15 +1334,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE) {
-                
-                
             } 
             sqlite3_finalize(statement);
         }   
         sqlite3_close(contactDB);
-        
     }    
-    
 }
 
 -(void)InsertToSI_Temp_Trad_LA{
@@ -1356,9 +1352,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     NSLog(@"insert to SI Temp Trad LA --- start");
     
-    for (int i = 1; i <2; i ++) {
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-            getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND sequence = %d ", SINo, i];
+            getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND sequence = %d ", SINo, 1];
             
             if(sqlite3_prepare_v2(contactDB, [getCustomerCodeSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                 if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -1377,7 +1372,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                             QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
                                          "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
                                          " VALUES (\"%@\",\"Life Assured\",\"LA\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
-                                         " \"Hayat yang Diinsuranskan\")", SINo, i, Name, Age, sex, smoker ]; 
+                                         " \"Hayat yang Diinsuranskan\")", SINo, 1, Name, Age, sex, smoker ];
                             
                             if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
                                 if (sqlite3_step(statement3) == SQLITE_DONE) {
@@ -1393,11 +1388,83 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             sqlite3_close(contactDB);
         } 
+    
+    // check for 2nd life assured
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND sequence = %d ", SINo, 2];
+        
+        if(sqlite3_prepare_v2(contactDB, [getCustomerCodeSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW) {
+                CustCode  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                
+                getFromCltProfileSQL  = [NSString stringWithFormat:@"Select Name, Smoker, sex, ALB from clt_profile where custcode  = \"%@\"",  CustCode];
+                
+                if(sqlite3_prepare_v2(contactDB, [getFromCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+                    
+                    if (sqlite3_step(statement2) == SQLITE_ROW) {
+                        NSString *SecName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+                        NSString *Secsmoker = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)];
+                        NSString *Secsex = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)];
+                        int SecAge = sqlite3_column_int(statement2, 3);
+                        
+                        QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
+                                     "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
+                                     " VALUES (\"%@\",\"Life Assured\",\"LA\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+                                     " \"Hayat yang Diinsuranskan\")", SINo, 2, SecName, SecAge, Secsex, Secsmoker ];
+                        
+                        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
+                            if (sqlite3_step(statement3) == SQLITE_DONE) {
+                                //NSLog(@"done insert to temp_trad_LA");
+                            }
+                            sqlite3_finalize(statement3);
+                        }
+                    }
+                    sqlite3_finalize(statement2);
+                }
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
     }
     
-    
-    NSLog(@"insert to SI_Temp_Trad_LA --- End");
+    //check for payor
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND PtypeCode = 'PY' ", SINo];
         
+        if(sqlite3_prepare_v2(contactDB, [getCustomerCodeSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW) {
+                CustCode  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                
+                getFromCltProfileSQL  = [NSString stringWithFormat:@"Select Name, Smoker, sex, ALB from clt_profile where custcode  = \"%@\"",  CustCode];
+                
+                if(sqlite3_prepare_v2(contactDB, [getFromCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+                    
+                    if (sqlite3_step(statement2) == SQLITE_ROW) {
+                        NSString *PYName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+                        NSString *PYsmoker = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)];
+                        NSString *PYsex = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)];
+                        int PYAge = sqlite3_column_int(statement2, 3);
+                        
+                        QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
+                                     "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
+                                     " VALUES (\"%@\",\"Life Assured\",\"PY\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+                                     " \"Hayat yang Diinsuranskan\")", SINo, 1, PYName, PYAge, PYsex, PYsmoker ];
+                        
+                        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
+                            if (sqlite3_step(statement3) == SQLITE_DONE) {
+                                
+                            }
+                            sqlite3_finalize(statement3);
+                        }
+                    }
+                    sqlite3_finalize(statement2);
+                }
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    NSLog(@"insert to SI_Temp_Trad_LA --- End");
 }
 
 -(void)InsertToSI_Temp_Trad_Details{
@@ -1662,12 +1729,24 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     planOption = @"Option 4";
                 }
                 
-                RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-                            "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
-                            " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
-                            ")", SINo, RiderDesc,planOption, strUnits, [OtherRiderSA objectAtIndex:a],
-                            [OtherRiderTerm objectAtIndex:a], [OtherRiderTerm objectAtIndex:a], strAnnually, 
-                            strSemiAnnually, strQuarterly, strMonthly];
+
+                if ([[OtherRiderCode objectAtIndex:a ] isEqualToString:@"CCTR" ]) {
+                    RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+                                "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
+                                " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"%@\" "
+                                ")", SINo, RiderDesc,planOption, strUnits, [OtherRiderSA objectAtIndex:a],
+                                [OtherRiderTerm objectAtIndex:a], [OtherRiderTerm objectAtIndex:a], strAnnually,
+                                strSemiAnnually, strQuarterly, strMonthly, firstLifeLoading];
+                }
+                else{
+                    RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+                                "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
+                                " \"%@\",\"3\",\"DATA\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\",\"\" "
+                                ")", SINo, RiderDesc,planOption, strUnits, [OtherRiderSA objectAtIndex:a],
+                                [OtherRiderTerm objectAtIndex:a], [OtherRiderTerm objectAtIndex:a], strAnnually,
+                                strSemiAnnually, strQuarterly, strMonthly];
+                }
+                
                 
                 if(sqlite3_prepare_v2(contactDB, [RiderSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -1983,6 +2062,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         EntireTotalPremiumPaid = EntireTotalPremiumPaid + 
         [[[AnnualPremium objectAtIndex:i-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
         
+        TotalPremiumBasicANDIncomeRider = TotalPremiumBasicANDIncomeRider +
+        [[[AnnualPremium objectAtIndex:i-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
         
         if(AdvanceYearlyIncome > 0){
             if (i + Age < AdvanceYearlyIncome) {
@@ -2350,6 +2431,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     }
 
     
+    
     for (int a= 1; a<=PolicyTerm; a++) {
         
         if (a <= 20 || (a > 20 && a % 5  == 0) || (a == PolicyTerm && a%5 != 0) ) {
@@ -2459,7 +2541,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         " \"SurrenderValuehigh2\",\"SurrenderValueLow2\",\"TotPremPaid2\",\"TotYearlyIncome2\") VALUES ( "
                         " \"%@\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\",\"%.8f\",\"%.9f\",\"%.2f\",\"%.2f\")",
                         SINo, EntireMaturityValueA, EntireMaturityValueB, EntireTotalPremiumPaid,
-                        EntireTotalYearlyIncome,EntireMaturityValueA,EntireMaturityValueB,EntireTotalPremiumPaid,EntireTotalYearlyIncome];
+                        EntireTotalYearlyIncome,EntireMaturityValueA,EntireMaturityValueB,TotalPremiumBasicANDIncomeRider,EntireTotalYearlyIncome];
             
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -3931,7 +4013,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     }
                     
                     EntireTotalPremiumPaid = EntireTotalPremiumPaid +
-                    [[[AnnualPremium objectAtIndex:j-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ]; 
+                    [[[AnnualPremium objectAtIndex:j-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                    
+                    TotalPremiumBasicANDIncomeRider = TotalPremiumBasicANDIncomeRider + 
+                    [[[AnnualPremium objectAtIndex:j-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                     
                     
                     // ----- GYI -----
@@ -4536,6 +4621,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 //NSLog(@"%.3f", EntireMaturityValueA);
             }
                         NSLog(@"income rider for summary calculation done");
+            
+            
             
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 for (int a= 1; a<=[[IncomeRiderTerm objectAtIndex:i] intValue]; a++) {

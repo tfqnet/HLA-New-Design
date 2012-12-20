@@ -78,6 +78,8 @@
 @property (nonatomic, assign) double EntireMaturityValueB;
 @property (nonatomic, assign) double EntireTotalYearlyIncome;
 
+//for total premium paid for basic plan and income rider only
+@property (nonatomic, assign) double TotalPremiumBasicANDIncomeRider;
 
 @property (strong, nonatomic) DBController* db;
 @property (strong, nonatomic) DataTable * dataTable;

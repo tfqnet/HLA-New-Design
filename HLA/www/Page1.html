@@ -101,6 +101,95 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
+                    var row2 = result.rows.item(1);
+
+                                   
+                    if(result.rows.length == 1){
+                                   var row = result.rows.item(0);
+                                   $('#LADesc').html(row.LADesc + '<br/><i>' + row.LADescM + '</i>');
+                                   $('#LAName').html(row.Name);
+                                   $('#LAAge').html(row.Age);
+                                   if (row.Sex == 'M'){
+                                   $('#LASex').html('Male<br/><i>Lelaki</i>');
+                                   }
+                                   else{
+                                   $('#LASex').html('Female<br/><i>Perempuan</i>');
+                                   }
+                                   if (row.Smoker == 'Y'){
+                                   $('#LASmoker').html('Yes<br/><i>Ya</i>');
+                                   }
+                                   else{
+                                   $('#LASmoker').html('No<br/><i>Tidak</i>');
+                                   }
+                    }
+                    else if(result.rows.length == 2 && row2.PTypeCode == 'LA'){ //got 2nd life assured
+                                   var row = result.rows.item(0);
+                                   var row2 = result.rows.item(1);
+                                   $('#LADesc').html(row.LADesc + '<br/><i>' + row.LADescM + '</i>' + '<br/>' + row2.LADesc + '<br/><i>' + row2.LADescM);
+                                   $('#LAName').html(row.Name + '<br/><br/>' + row2.Name)  ;
+                                   $('#LAAge').html(row.Age + '<br/><br/>' + row2.Age);
+                                   if (row.Sex == 'M' && row2.Sex == 'M'){
+                                    $('#LASex').html('Male<br/><i>Lelaki</i>' + '<br/>' + 'Male<br/><i>Lelaki</i>' );
+                                   }
+                                   else if(row.Sex == 'M' && row2.Sex == 'F'){
+                                    $('#LASex').html('Male<br/><i>Lelaki</i>' + '<br/>' + 'Female<br/><i>Perempuan</i>' );
+                                   }
+                                   else if(row.Sex == 'F' && row2.Sex == 'M'){
+                                    $('#LASex').html('Female<br/><i>Perempuan</i>' + '<br/>' + 'Male<br/><i>Lelaki</i>' );
+                                   }
+                                   else{
+                                    $('#LASex').html('Female<br/><i>Perempuan</i>' + '<br/>' + 'Female<br/><i>Perempuan</i>' );
+                                   }
+                                   
+                                   if (row.Smoker == 'Y' && row2.Smoker == 'Y' ){
+                                    $('#LASmoker').html('Yes<br/><i>Ya</i>' + '<br/>' + 'Yes<br/><i>Ya</i>'  );
+                                   }
+                                   else if (row.Smoker == 'Y' && row2.Smoker == 'N' ){
+                                    $('#LASmoker').html('Yes<br/><i>Ya</i>' + '<br/>' + 'No<br/><i>Tidak</i>'  );
+                                   }
+                                   else if (row.Smoker == 'N' && row2.Smoker == 'Y' ){
+                                    $('#LASmoker').html('No<br/><i>Tidak</i>' + '<br/>' + 'Yes<br/><i>Ya</i>'  );
+                                   }
+                                   else{
+                                    $('#LASmoker').html('No<br/><i>Tidak</i>' + '<br/>' + 'No<br/><i>Tidak</i>' );
+                                   }
+                    }
+                    else{ // got payor
+
+                                   var row = result.rows.item(0);
+                                   var row2 = result.rows.item(1);
+
+                                   $('#LADesc').html(row.LADesc + '<br/><i>' + row.LADescM + '</i>' + '<br/>' + row2.LADesc + '<br/><i>' + row2.LADescM);
+                                   $('#LAName').html(row.Name + '<br/><br/>' + row2.Name)  ;
+                                   $('#LAAge').html(row.Age + '<br/><br/>' + row2.Age);
+                                   if (row.Sex == 'M' && row2.Sex == 'M'){
+                                   $('#LASex').html('Male<br/><i>Lelaki</i>' + '<br/>' + 'Male<br/><i>Lelaki</i>' );
+                                   }
+                                   else if(row.Sex == 'M' && row2.Sex == 'F'){
+                                   $('#LASex').html('Male<br/><i>Lelaki</i>' + '<br/>' + 'Female<br/><i>Perempuan</i>' );
+                                   }
+                                   else if(row.Sex == 'F' && row2.Sex == 'M'){
+                                   $('#LASex').html('Female<br/><i>Perempuan</i>' + '<br/>' + 'Male<br/><i>Lelaki</i>' );
+                                   }
+                                   else{
+                                   $('#LASex').html('Female<br/><i>Perempuan</i>' + '<br/>' + 'Female<br/><i>Perempuan</i>' );
+                                   }
+                                   
+                                   if (row.Smoker == 'Y' && row2.Smoker == 'Y' ){
+                                   $('#LASmoker').html('Yes<br/><i>Ya</i>' + '<br/>' + 'Yes<br/><i>Ya</i>'  );
+                                   }
+                                   else if (row.Smoker == 'Y' && row2.Smoker == 'N' ){
+                                   $('#LASmoker').html('Yes<br/><i>Ya</i>' + '<br/>' + 'No<br/><i>Tidak</i>'  );
+                                   }
+                                   else if (row.Smoker == 'N' && row2.Smoker == 'Y' ){
+                                   $('#LASmoker').html('No<br/><i>Tidak</i>' + '<br/>' + 'Yes<br/><i>Ya</i>'  );
+                                   }
+                                   else{
+                                   $('#LASmoker').html('No<br/><i>Tidak</i>' + '<br/>' + 'No<br/><i>Tidak</i>' );
+                                   }
+                    }
+                                   
+                    /*
                     for (var i = 0; i < result.rows.length; i++) {
                         var row = result.rows.item(i);
                         //LADesc
@@ -121,6 +210,7 @@
                             $('#LASmoker').html('No<br/><i>Tidak</i>');
                         }
                     }
+                     */
                                               
                 }
             },errorHandler);
@@ -267,8 +357,12 @@ $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'
     <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LAAge">{LAAge}</td>
     <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LASex">{LASex}</td>
     <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LASmoker">{LASmoker}</td>
+    
   </tr>
-</table><br/>
+    
+</table>
+    
+    <br/>
 
 <table id="table-data">
 <thead>

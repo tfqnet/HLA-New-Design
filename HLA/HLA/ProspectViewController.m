@@ -1759,6 +1759,7 @@ PostcodeContinue = TRUE;
 }
 
 -(void)ContactTypeSelected:(NSString *)ContactTypeString{
+
     if ([ContactTypeTracker isEqualToString:@"1" ]) {
         [outletType1 setTitle:ContactTypeString forState:UIControlStateNormal ];
         [self.ContactTypePopover dismissPopoverAnimated:YES];
