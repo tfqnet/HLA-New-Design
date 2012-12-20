@@ -589,8 +589,8 @@
     cpaField.text = msg;
     cpaField.textColor = [UIColor darkGrayColor];
     
-    if (occLoad == 0) { occpField.text = @"STD"; }
-    else { occpField.text = [NSString stringWithFormat:@"%d",occLoad]; }
+    if (occLoadType == 0) { occpField.text = @"STD"; }
+    else { occpField.text = [NSString stringWithFormat:@"%d",occLoadType]; }
     occpField.textColor = [UIColor darkGrayColor];
 
 }

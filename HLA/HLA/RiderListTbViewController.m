@@ -56,8 +56,11 @@
                         "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"",[self.requestPtype description],self.requestSeq,self.requestAge,self.requestAge];
         }
         
-        if (self.requestAge >= 70) {
+        if (self.requestAge > 60) {
             querySQL = [querySQL stringByAppendingFormat:@" AND j.RiderCode != \"I20R\""];
+        }
+        if (self.requestAge > 65) {
+            querySQL = [querySQL stringByAppendingFormat:@" AND j.RiderCode != \"IE20R\""];
         }
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
