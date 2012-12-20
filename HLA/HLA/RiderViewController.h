@@ -83,6 +83,8 @@
 @property (retain, nonatomic) IBOutlet UIButton *deducBtn;
 @property (retain, nonatomic) IBOutlet UILabel *minDisplayLabel;
 @property (retain, nonatomic) IBOutlet UILabel *maxDisplayLabel;
+@property (strong, nonatomic) IBOutlet UITextField *classField;
+
 
 //get from popover
 @property (nonatomic,copy) NSString *pTypeCode;

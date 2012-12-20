@@ -72,8 +72,11 @@
         advanceIncomeSegment.enabled = NO;
     }
     
-    newSegment = YES;
-    [self toggleSegment];
+    if (ageClient > 50 && ageClient <=65)
+    {
+        [advanceIncomeSegment setEnabled:NO forSegmentAtIndex:0];
+//        advanceIncomeSegment.selectedSegmentIndex = 2;
+    }
     
     healthLoadingView.alpha = 0;
     showHL = NO;
@@ -93,46 +96,6 @@
         }
     } else {
         NSLog(@"SINo not exist!");
-    }
-}
-
--(void)toggleSegment
-{
-    if (ageClient > 50 && ageClient <=65)
-    {
-        UISegmentedControl *segName = [[UISegmentedControl alloc] init];
-        
-        if (newSegment) {
-            NSArray *buttons = [NSArray arrayWithObjects:@"75", @"No", nil];
-            segName = [[UISegmentedControl alloc] initWithItems:buttons];
-            [self setAdvanceIncomeSegment:segName];
-            segName.frame = CGRectMake(342, 363, 287, 44);
-            segName.segmentedControlStyle = UISegmentedControlStylePlain;
-            segName.momentary = NO;
-            segName.selectedSegmentIndex = 1;
-            segName.tag = 2001;
-            [segName addTarget:self action:@selector(otherAdvancePressed:)
-              forControlEvents:UIControlEventValueChanged];
-            [self.view addSubview:segName];
-            NSLog(@"segment default");
-        }
-        else {
-            NSArray *buttons = [NSArray arrayWithObjects:@"75", @"No", nil];
-            segName = [[UISegmentedControl alloc] initWithItems:buttons];
-            [self setAdvanceIncomeSegment:segName];
-            segName.frame = CGRectMake(342, 363-45, 287, 44);
-            segName.segmentedControlStyle = UISegmentedControlStylePlain;
-            segName.momentary = NO;
-            if (advanceYearlyIncome == 75) {
-                segName.selectedSegmentIndex = 0;
-            } else if (advanceYearlyIncome == 0) {
-                segName.selectedSegmentIndex = 1;
-            }
-            [segName addTarget:self action:@selector(otherAdvancePressed:)
-              forControlEvents:UIControlEventValueChanged];
-            [self.view addSubview:segName];
-            NSLog(@"segment keyboard");
-        }
     }
 }
 
@@ -158,7 +121,6 @@
 {
 	[super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    newSegment = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -170,10 +132,6 @@
 {
     self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
     self.myScrollView.contentSize = CGSizeMake(1024, 704);
-    
-    newSegment = NO;
-    [[self.view viewWithTag:2001] removeFromSuperview];
-    [self toggleSegment];
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
@@ -302,24 +260,6 @@
     else if (advanceIncomeSegment.selectedSegmentIndex == 2) {
         advanceYearlyIncome = 0;
     }
-}
-
--(void)otherAdvancePressed:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if (advanceIncomeSegment.selectedSegmentIndex == 0) {
-        advanceYearlyIncome = 75;
-    }
-    else if (advanceIncomeSegment.selectedSegmentIndex == 1) {
-        advanceYearlyIncome = 0;
-    }
-    NSLog(@"value:%d",advanceYearlyIncome);
 }
 
 - (IBAction)cashDividendSegmentPressed:(id)sender
@@ -611,20 +551,12 @@
         cashDividendSegment.selectedSegmentIndex = 1;
     }
     
-    if (ageClient > 50 && ageClient <=65) {
-        if (advanceYearlyIncome == 75) {
-            advanceIncomeSegment.selectedSegmentIndex = 0;
-        } else if (advanceYearlyIncome == 0) {
-            advanceIncomeSegment.selectedSegmentIndex = 1;
-        }
-    } else {
-        if (advanceYearlyIncome == 60) {
-            advanceIncomeSegment.selectedSegmentIndex = 0;
-        } else if (advanceYearlyIncome == 75) {
-            advanceIncomeSegment.selectedSegmentIndex = 1;
-        } else if (advanceYearlyIncome == 0) {
-            advanceIncomeSegment.selectedSegmentIndex = 2;
-        }
+    if (advanceYearlyIncome == 60) {
+        advanceIncomeSegment.selectedSegmentIndex = 0;
+    } else if (advanceYearlyIncome == 75) {
+        advanceIncomeSegment.selectedSegmentIndex = 1;
+    } else if (advanceYearlyIncome == 0) {
+        advanceIncomeSegment.selectedSegmentIndex = 2;
     }
     
     if (getHL.length != 0) {

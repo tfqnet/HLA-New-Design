@@ -78,7 +78,7 @@
 @synthesize deductList = _deductList;
 @synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm, LRidHLPTerm, LRidHL100Term,LOccpCode;
 @synthesize occLoadRider,LTypeAge,LTypeDeduct,LTypeOccpCode,LTypePlanOpt,LTypeRiderCode,LTypeRidHL100,LTypeRidHL100Term,LTypeRidHL1K,LTypeRidHLP,LTypeRidHLPTerm,LTypeRidHLTerm,LTypeSex,LTypeSmoker,LTypeSumAssured,LTypeTerm,LTypeUnits;
-@synthesize occLoadType;
+@synthesize occLoadType,classField;
 
 #pragma mark - Cycle View
 
@@ -306,10 +306,7 @@
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    int MaxUnit;
-    double PseudoBSA = self.requestBasicSA / 0.05;
-    
+{    
     switch (textField.tag) {
         case 0:
             minDisplayLabel.text = @"";
@@ -353,20 +350,8 @@
             break;
             
         case 3:
-            if (PseudoBSA >= 10000 && PseudoBSA <= 25000) {
-                MaxUnit = 4;
-            }
-            else if (PseudoBSA >= 25001 && PseudoBSA <= 50000) {
-                MaxUnit = 6;
-            }
-            else if (PseudoBSA >= 50001 && PseudoBSA <= 75000) {
-                MaxUnit = 8;
-            }
-            else if (PseudoBSA > 75000) {
-                MaxUnit = 10;
-            }
             minDisplayLabel.text = @"Min Unit: 1";
-            maxDisplayLabel.text = [NSString stringWithFormat:@"Max Unit: %d",MaxUnit];
+            maxDisplayLabel.text = [NSString stringWithFormat:@"Max Unit: %.f",maxRiderSA];
             break;
             
         default:
@@ -375,6 +360,56 @@
             break;
     }
     return YES;
+}
+
+-(void)displayedMinMax
+{    
+    if ([sumField isFirstResponder] == TRUE) {
+        
+        if (incomeRider) {
+        
+            NSString *strMaxRiderSA = [NSString stringWithFormat:@"%.2f", maxRiderSA];
+            NSRange rangeofDot = [ strMaxRiderSA rangeOfString:@"."];
+            NSString *ValueToDisplay = @"";
+            
+            if (rangeofDot.location != NSNotFound) {
+                NSString *substring = [strMaxRiderSA substringFromIndex:rangeofDot.location ];
+                 NSString *substring2 = [substring substringFromIndex:[substring length]-1];
+                
+                if (substring.length == 3 && [substring isEqualToString:@".00"]) {
+                    ValueToDisplay = [strMaxRiderSA substringToIndex:rangeofDot.location ];
+                }
+                else if (substring.length == 3 && [substring2 isEqualToString:@"0"]) {
+                    ValueToDisplay = [strMaxRiderSA substringToIndex:[strMaxRiderSA length]-1];
+                }
+                else {
+                    ValueToDisplay = strMaxRiderSA;
+                }
+            }
+            else {
+                ValueToDisplay = strMaxRiderSA;
+            }
+            minDisplayLabel.text = [NSString stringWithFormat:@"Min GYI: %d",minSATerm];
+            maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %@",ValueToDisplay];
+        }
+        else {
+            minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
+            maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
+        }
+    }
+    else if ([termField isFirstResponder] == TRUE) {
+            minDisplayLabel.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
+            maxDisplayLabel.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
+    }
+    else if ([unitField isFirstResponder] == TRUE) {
+        
+        minDisplayLabel.text = @"Min Unit: 1";
+        maxDisplayLabel.text = [NSString stringWithFormat:@"Max Unit: %.f",maxRiderSA];
+    }
+    else {
+            minDisplayLabel.text = @"";
+            maxDisplayLabel.text = @"";
+    }
 }
 
 
@@ -471,26 +506,37 @@
     if (plan) {
         planLabel.textColor = [UIColor blackColor];
         planBtn.enabled = YES;
+        planBtn.hidden = NO;
+        [self.planBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         
-        //auto display default plan value
-        //if (!_planList) {
-            NSString *strSA = [NSString stringWithFormat:@"%.2f",self.requestBasicSA];
-            self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
-            _planList.delegate = self;
-        //}
+        classField.hidden = YES;
+        
+        NSString *strSA = [NSString stringWithFormat:@"%.2f",self.requestBasicSA];
+        self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
+        _planList.delegate = self;
+        
         [self.planBtn setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
         planOption = [[NSString alloc] initWithFormat:@"%@",_planList.selectedItemDesc];
-//        NSLog(@"plan:%@",planOption);
-        
     }
     else {
         planLabel.textColor = [UIColor grayColor];
-        planBtn.enabled = NO;
         planLabel.text = @"PA Class";
+        planBtn.enabled = NO;
+        planBtn.hidden = YES;
+        classField.hidden = NO;
+        classField.enabled = NO;
+        
+        NSString *msg = @"";
+        if (occCPA > 4) { msg = @"D"; }
+        else { msg = [NSString stringWithFormat:@"%d",occCPA]; }
+        
+        classField.text = msg;
+        classField.textColor = [UIColor darkGrayColor];
     }
     
     if (unit) {
         unitLabel.textColor = [UIColor blackColor];
+        unitField.textColor = [UIColor blackColor];
         unitField.hidden = NO;
         unitField.enabled = YES;
         deducBtn.hidden = YES;
@@ -501,12 +547,10 @@
         unitField.hidden = YES;
         deducBtn.hidden = NO;
         
-        //auto display default deduc value
-        //if (!_deductList) {
         NSString *strSA = [NSString stringWithFormat:@"%.2f",self.requestBasicSA];
         self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition andSumAss:strSA andOption:planOption];
             _deductList.delegate = self;
-        //}
+        
         [self.deducBtn setTitle:_deductList.selectedItemDesc forState:UIControlStateNormal];
         deductible = [[NSString alloc] initWithFormat:@"%@",_deductList.selectedItemDesc];
         NSLog(@"deduc:%@",deductible);
@@ -519,6 +563,8 @@
         deducBtn.hidden = YES;
         unitField.hidden = NO;
         unitField.enabled = NO;
+        unitField.text = @"0";
+        unitField.textColor = [UIColor darkGrayColor];
     }
     
     if (hload) {
@@ -537,54 +583,15 @@
         HLTField.enabled = NO;
     }
     
-    if([riderCode isEqualToString:@"CPA"]){
-        NSString *msg = @"";
-        if (occCPA > 4) {
-            msg = @"D";
-        }
-        else {
-            msg = [NSString stringWithFormat:@"%d",occCPA];
-        }
-        
-        [self.planBtn setTitle:msg forState:UIControlStateNormal];
-        [self.planBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        cpaField.text = msg;
-        cpaField.textColor = [UIColor darkGrayColor];
-        
-        if (occLoad == 0) {
-            occpField.text = @"STD";
-        } else {
-            occpField.text = [NSString stringWithFormat:@"%d",occLoad];
-        }
-        occpField.textColor = [UIColor darkGrayColor];
-    }
+    NSString *msg = @"";
+    if (occCPA > 4) { msg = @"D"; }
+    else { msg = [NSString stringWithFormat:@"%d",occCPA]; }
+    cpaField.text = msg;
+    cpaField.textColor = [UIColor darkGrayColor];
     
-    if([riderCode isEqualToString:@"CIR"]){
-        
-        NSString *msg = @"";
-        if (occCPA > 4) {
-            msg = @"D";
-        }
-        else {
-            msg = [NSString stringWithFormat:@"%d",occCPA];
-        }
-        
-        [self.planBtn setTitle:msg forState:UIControlStateNormal];
-        [self.planBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        
-        cpaField.text = msg;
-        cpaField.textColor = [UIColor darkGrayColor];
-        
-        unitField.text = @"0";
-        unitField.textColor = [UIColor darkGrayColor];
-        
-        if (occLoad == 0) {
-            occpField.text = @"STD";
-        } else {
-            occpField.text = [NSString stringWithFormat:@"%d",occLoad];
-        }
-        occpField.textColor = [UIColor darkGrayColor];
-    }
+    if (occLoad == 0) { occpField.text = @"STD"; }
+    else { occpField.text = [NSString stringWithFormat:@"%d",occLoad]; }
+    occpField.textColor = [UIColor darkGrayColor];
 
 }
 
@@ -649,6 +656,7 @@
     double dblPseudoBSA2 = dblPseudoBSA * 0.1;
     double dblPseudoBSA3 = dblPseudoBSA * 5;
     double dblPseudoBSA4 = dblPseudoBSA * 2;
+    int MaxUnit;
 //    NSLog(@"dblPseudoBSA:%.f, dblPseudoBSA3:%.f",maxRiderSA,dblPseudoBSA3);
     
     if ([riderCode isEqualToString:@"CCTR"])
@@ -672,7 +680,8 @@
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
-    else if ([riderCode isEqualToString:@"CPA"]) {
+    else if ([riderCode isEqualToString:@"CPA"])
+    {
         if (riderH.storedOccpClass == 1 || riderH.storedOccpClass == 2) {
             if (dblPseudoBSA < 100000) {
                 _maxRiderSA = fmin(dblPseudoBSA3,200000);
@@ -700,6 +709,21 @@
         _maxRiderSA = fmin(dblPseudoBSA3,500000);
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
+    }
+    else if ([riderCode isEqualToString:@"HB"]) {
+        if (dblPseudoBSA >= 10000 && dblPseudoBSA <= 25000) {
+            MaxUnit = 4;
+        }
+        else if (dblPseudoBSA >= 25001 && dblPseudoBSA <= 50000) {
+            MaxUnit = 6;
+        }
+        else if (dblPseudoBSA >= 50001 && dblPseudoBSA <= 75000) {
+            MaxUnit = 8;
+        }
+        else if (dblPseudoBSA > 75000) {
+            MaxUnit = 10;
+        }
+        maxRiderSA = MaxUnit;
     }
     else {
         _maxRiderSA = maxSATerm;
@@ -1185,7 +1209,7 @@
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadA doubleValue]) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadA doubleValue]) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
-        else if ([RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"])
+        else if ([RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"]||[RidCode isEqualToString:@"CCTR"])
         {
             annualRider = (riderRate *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1724,6 +1748,10 @@
 
 - (IBAction)btnAddRiderPressed:(id)sender
 {
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
     _RiderList.delegate = self;
     _RiderList.requestPtype = self.pTypeCode;
@@ -1734,9 +1762,6 @@
     
     [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
     [self.RiderListPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    
-    
-    
 }
 
 - (IBAction)planBtnPressed:(id)sender
@@ -1781,8 +1806,8 @@
 
 - (IBAction)doSaveRider:(id)sender
 {
-    //[self resignFirstResponder];
-    //[self.view endEditing:YES];
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
     
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
@@ -1996,7 +2021,7 @@
             [self updateRider];
         }
     }
-    else if (alertView.tag == 1004 && buttonIndex == 0)
+    else if (alertView.tag == 1004 && buttonIndex == 0)     //deleted 2nd LA rider
     {
         sqlite3_stmt *statement;
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -2037,7 +2062,8 @@
             [self MHIGuideLines];
         }
     }
-    else if (alertView.tag == 1005 && buttonIndex ==0) {
+    else if (alertView.tag == 1005 && buttonIndex ==0)      //deleting due to business rule
+    {
         [self getListingRiderByType];
         [self getListingRider];     //get stored rider
         [self calculateRiderPrem];  //calculate riderPrem
@@ -2046,6 +2072,10 @@
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
+    }
+    else if (alertView.tag == 1006 && buttonIndex == 0) //displayed label min/max
+    {
+        [self displayedMinMax];
     }
     
 }
@@ -2075,21 +2105,25 @@
     
     if (termField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
         [termField becomeFirstResponder];
     }
     else if ([termField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Rider Term must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
         [alert show];
         [termField becomeFirstResponder];
     }
     else if ([termField.text intValue] > maxRiderTerm) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be less than or equal to %.f",maxRiderTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
         [termField becomeFirstResponder];
     }
     else if ([termField.text intValue] < minTerm) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be greater than or equal to %d",minTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
         [termField becomeFirstResponder];
     }
@@ -2135,48 +2169,50 @@
     
     if (sumField.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
         [sumField becomeFirstResponder];
     }
     else if ([sumField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
         [alert show];
         [sumField becomeFirstResponder];
     }
     else if (incomeRider && substring.length > 3) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Guaranteed Yearly Income only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
         [alert show];
-        sumField.text = @"";
         [sumField becomeFirstResponder];
     }
     else if (!(incomeRider) && substring.length > 3) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
         [alert show];
-        sumField.text = @"";
         [sumField becomeFirstResponder];
     }
     else if ([sumField.text doubleValue] < minSATerm && !(incomeRider)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
-        sumField.text = @"";
         [sumField becomeFirstResponder];
     }
     else if ([sumField.text doubleValue] < minSATerm && incomeRider) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
-        sumField.text = @"";
         [sumField becomeFirstResponder];
     }
     else if ([sumField.text doubleValue] > maxRiderSA && !(incomeRider)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
-        sumField.text = @"";
         [sumField becomeFirstResponder];
     }
     else if ([sumField.text doubleValue] > maxRiderSA && incomeRider) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Guaranteed Yearly Income must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
-        sumField.text = @"";
         [sumField becomeFirstResponder];
     }
     else if (unit) {
@@ -2194,20 +2230,23 @@
 
     if (unitField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Unit is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
-        unitField.text = @"";
         [unitField becomeFirstResponder];
-    } else if ([unitField.text intValue] > 4) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Unit must be in the range of 1 - 4" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    }
+    else if ([unitField.text intValue] > maxRiderSA) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Unit must be in the\n range of 1 - %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
-        unitField.text = @"";
         [unitField becomeFirstResponder];
-    } else if (rangeofDot.location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Unit must be in the range of 1-4 and no decimal allowed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    }
+    else if (rangeofDot.location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Unit must be in the\n range of 1 - %.f and no decimal allowed",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
         [alert show];
-        unitField.text = @"";
         [unitField becomeFirstResponder];
-    } else {
+    }
+    else {
         NSLog(@"validate - 3rd save");
         [self validateSaver];
     }
@@ -3123,52 +3162,6 @@
     if ([riderCode isEqualToString: @"HMM"]||[riderCode isEqualToString: @"HB"]||[riderCode isEqualToString: @"HSP_II"]||[riderCode isEqualToString: @"MG_II"]||[riderCode isEqualToString: @"MG_IV"]) {
         sumLabel.text = @"Sum Assured (RM)";
     }
-    
-    if ([sumField isFirstResponder] == TRUE) {
-            
-            if (incomeRider) {
-                        
-                NSString *strMaxRiderSA = [NSString stringWithFormat:@"%.2f", maxRiderSA];
-                NSRange rangeofDot = [ strMaxRiderSA rangeOfString:@"."];
-                NSString *ValueToDisplay = @"";
-                
-                if (rangeofDot.location != NSNotFound) {
-                    NSString *substring = [strMaxRiderSA substringFromIndex:rangeofDot.location ];
-                    
-                    if (substring.length == 3 && [substring isEqualToString:@".00"]) {
-                        ValueToDisplay = [strMaxRiderSA substringToIndex:rangeofDot.location ];
-                    }
-                    else {
-                        ValueToDisplay = strMaxRiderSA;
-                    }
-                }
-                else {
-                    ValueToDisplay = strMaxRiderSA;
-                }
-                minDisplayLabel.text = [NSString stringWithFormat:@"Min GYI: %d",minSATerm];
-                //maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %.2f",maxRiderSA];
-                maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %@",ValueToDisplay];
-                
-            } else {
-                minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
-                maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
-            }
-        
-    }
-    else {
-        //minDisplayLabel.text = @"";
-        //maxDisplayLabel.text = @""; 
-        if ([termField isFirstResponder] == TRUE) {
-            minDisplayLabel.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
-            maxDisplayLabel.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
-        }
-        else {
-            minDisplayLabel.text = @"";
-            maxDisplayLabel.text = @""; 
-        }
-            
-    }
-    
 }
 
 -(void)PlanView:(RiderPlanTb *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
@@ -4335,23 +4328,19 @@
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
     NSString *hl1k;
-    /*
-    if ([[LRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-        hl1k = @"";
-    } else {
-        hl1k = [LRidHL1K objectAtIndex:indexPath.row];
-    }
-     */
+    
     if ([[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
         [[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
         hl1k = @"";
     }
-    else if([[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
-            ![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]){
-        hl1k = [LTypeRidHL100 objectAtIndex:indexPath.row];
+    else if(![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]){
+        hl1k = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LTypeRidHL100 objectAtIndex:indexPath.row] doubleValue]]];
     }
-        else {
-        hl1k = [LTypeRidHL1K objectAtIndex:indexPath.row];
+    else if (![[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] && [[LTypeRidHL1K objectAtIndex:indexPath.row] integerValue] > 0) {
+        hl1k = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LTypeRidHL1K objectAtIndex:indexPath.row] doubleValue]]];
+    }
+    else {
+        hl1k = @"";
     }
     label7.text= hl1k;
     label7.textAlignment = UITextAlignmentCenter;
@@ -4515,9 +4504,9 @@
         
         RiderListTbViewController *zzz = [[RiderListTbViewController alloc] init ];
         [self RiderListController:zzz didSelectCode:[LTypeRiderCode objectAtIndex:indexPath.row] desc:[self getRiderDesc:[LTypeRiderCode objectAtIndex:indexPath.row]]];
+        
         NSRange rangeofDot = [[LTypeSumAssured objectAtIndex:indexPath.row ] rangeOfString:@"."];
         NSString *SumToDisplay = @"";
-    
         if (rangeofDot.location != NSNotFound) {
             NSString *substring = [[LTypeSumAssured objectAtIndex:indexPath.row] substringFromIndex:rangeofDot.location ];
             if (substring.length == 2 && [substring isEqualToString:@".0"]) {
@@ -4543,16 +4532,46 @@
             [deducBtn setTitle:[LTypeDeduct objectAtIndex:indexPath.row] forState:UIControlStateNormal];
         }
         
-        if (  ![[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-            HLField.text = [LTypeRidHL1K objectAtIndex:indexPath.row];
+        NSRange rangeofDotHL = [[LTypeRidHL1K objectAtIndex:indexPath.row ] rangeOfString:@"."];
+        NSString *HLToDisplay = @"";
+        if (rangeofDotHL.location != NSNotFound) {
+            NSString *substringHL = [[LTypeRidHL1K objectAtIndex:indexPath.row] substringFromIndex:rangeofDotHL.location ];
+            if (substringHL.length == 2 && [substringHL isEqualToString:@".0"]) {
+                HLToDisplay = [[LTypeRidHL1K objectAtIndex:indexPath.row] substringToIndex:rangeofDotHL.location ];
+            }
+            else {
+                HLToDisplay = [LTypeRidHL1K objectAtIndex:indexPath.row];
+            }
+        }
+        else {
+            HLToDisplay = [LTypeRidHL1K objectAtIndex:indexPath.row];
+        }
+        
+        if (![[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = HLToDisplay;
         }
     
         if (  ![[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
             HLTField.text = [LTypeRidHLTerm objectAtIndex:indexPath.row];
         }
         
-        if (  ![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-            HLField.text = [LTypeRidHL100 objectAtIndex:indexPath.row];
+        NSRange rangeofDotHL100 = [[LTypeRidHL100 objectAtIndex:indexPath.row ] rangeOfString:@"."];
+        NSString *HL100ToDisplay = @"";
+        if (rangeofDotHL100.location != NSNotFound) {
+            NSString *substringHL100 = [[LTypeRidHL100 objectAtIndex:indexPath.row] substringFromIndex:rangeofDotHL100.location ];
+            if (substringHL100.length == 2 && [substringHL100 isEqualToString:@".0"]) {
+                HL100ToDisplay = [[LTypeRidHL100 objectAtIndex:indexPath.row] substringToIndex:rangeofDotHL100.location ];
+            }
+            else {
+                HL100ToDisplay = [LTypeRidHL100 objectAtIndex:indexPath.row];
+            }
+        }
+        else {
+            HL100ToDisplay = [LTypeRidHL100 objectAtIndex:indexPath.row];
+        }
+        
+        if (![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+            HLField.text = HL100ToDisplay;
         }
         
         if (  ![[LTypeRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
@@ -4702,6 +4721,7 @@
     [self setDeleteBtn:nil];
     [self setTitleHLPTerm:nil];
     [self setPTypeOccp:nil];
+    [self setClassField:nil];
     [super viewDidUnload];
 }
 
