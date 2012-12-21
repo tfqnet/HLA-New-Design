@@ -341,7 +341,7 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"Invalid Immediate Leader Code length. Immediate Leader Code length should be 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            [txtAgentContactNo becomeFirstResponder];
+            [txtLeaderCode becomeFirstResponder];
             return false;
         }
     }

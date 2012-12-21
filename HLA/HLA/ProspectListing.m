@@ -51,7 +51,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         //NSString *querySQL = [NSString stringWithFormat: @"SELECT * from tbl_prospect_profile"];
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile order by dateCreated desc"];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile order by ProspectName ASC"];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -347,7 +347,7 @@ const char *dbpath = [databasePath UTF8String];
 sqlite3_stmt *statement;
 if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
 {
-    NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile order by datecreated desc"];
+    NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile order by ProspectName ASC"];
     const char *query_stmt = [querySQL UTF8String];
     if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
     {

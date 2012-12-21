@@ -29,6 +29,8 @@
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
     CGPoint _containerOrigin;
 #endif
+    UIBarButtonItem *next;
+    UIBarButtonItem *prev;
     id<BrowserDelegate> _delegate;
 }
 
@@ -39,5 +41,6 @@
 @property (nonatomic, strong) id<BrowserDelegate> delegate;
 @property (nonatomic,strong) SIHandler *premH;
 @property (nonatomic,strong) BasicPlanHandler *premBH;
+@property (nonatomic, assign) int gPages;
 
 @end

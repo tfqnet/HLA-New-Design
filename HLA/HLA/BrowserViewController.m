@@ -13,7 +13,7 @@
 #import "JTRevealSidebarV2Delegate.h"
 #import "MainScreen.h"
 #import "PremiumViewController.h"
-
+#import <sqlite3.h>
 
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
 #import <QuartzCore/QuartzCore.h>
@@ -25,9 +25,12 @@
 @implementation BrowserViewController
 @synthesize leftSelectedIndexPath, leftSidebarViewController;
 @synthesize delegate = _delegate;
-@synthesize premH, premBH;
+@synthesize premH, premBH, gPages;
 //@synthesize leftSidebarViewController;
 //@synthesize leftSelectedIndexPath;
+
+id databasePath;
+NSMutableArray *ItemPages;
 
 - (id)init {
     self = [super init];
@@ -45,24 +48,19 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
-    
-    
+    sqlite3 *contactDB;
     
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor grayColor];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(revealLeftSidebar:)];
-    
     //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(revealRightSidebar:)];
-    /*
-    UIBarButtonItem *zzz = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(testing) ];
     
-    UIBarButtonItem *www = [[UIBarButtonItem alloc] init ];
-    www.title = @"Previous";
-    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:zzz, www, Nil];
-    */
+    UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(revealLeftSidebar:)];
+    next = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(NextPage) ];
+    prev = [[UIBarButtonItem alloc] initWithTitle:@"Prev" style:UIBarButtonItemStyleBordered target:self action:@selector(PrevPage) ];
 
-    
+    self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:left, prev, next, Nil];
     
     CDVViewController* browserController_page = [CDVViewController new];
     browserController_page.wwwFolderName = @"www";
@@ -71,19 +69,37 @@
     [self.view addSubview:browserController_page.view];
     browserController_page = nil;
     
-    
-    
-    
     self.navigationItem.revealSidebarDelegate = self;
     
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" 
                                                                   style:UIBarButtonItemStyleBordered target:self action:@selector(CloseButtonAction)];
     self.navigationItem.rightBarButtonItem = barButton;
     
-    //NSLog(@"before");
     //[self performSelector:@selector(presentModal) withObject:Nil afterDelay:3.0];
     
+    ItemPages = [[NSMutableArray alloc] init ];
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+
     
+    
+    //gPages = 0;
+    
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        NSString *QuerySQL = [NSString stringWithFormat: @"Select htmlName from SI_Temp_Pages"];
+        
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+         
+            while(sqlite3_step(statement) == SQLITE_ROW) {
+                [ItemPages addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+            }
+            sqlite3_finalize(statement);
+        
+        }
+        sqlite3_close(contactDB);
+    }
 }
 
 
@@ -197,6 +213,8 @@
     controller.leftSidebarViewController = sidebarViewController;
     controller.leftSelectedIndexPath = indexPath;
     sidebarViewController.sidebarDelegate = controller;
+    controller.gPages = indexPath.row;
+    controller.title = [NSString stringWithFormat:@"Page%d / %d", indexPath.row + 1, ItemPages.count];
     [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
     controller.delegate = _delegate;
     
@@ -213,28 +231,71 @@
     browserController.startPage = (NSString *)objectHTML;
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
-    //[self.view addSubview:browserController.view];
     browserController = nil;
     
 }
 
--(void)testing{
+-(void)NextPage{
     
+    /*
     BrowserViewController *controller = [[BrowserViewController alloc] init];
-    
     [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
     controller.delegate = _delegate;
     
     
     browserController = [CDVViewController new];
     browserController.wwwFolderName = @"www";
-    browserController.startPage = @"Page2.html";
+    browserController.startPage = [NSString stringWithFormat: @"Page%d.html", 2];
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
-    [controller.view addSubview:browserController.view];
+    [self.view addSubview:browserController.view];
     
     browserController = nil;
+    */
     
+    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+    [v removeFromSuperview];
+    
+    if (gPages + 1 < ItemPages.count) {
+        gPages = gPages + 1;
+        //next.enabled = TRUE;
+    }
+    else{
+        //next.enabled = false;
+    }
+    
+    browserController = [CDVViewController new];
+    browserController.wwwFolderName = @"www";
+    browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
+    browserController.view.frame = CGRectMake(0, 0, 1024, 700);
+    self.title = [NSString stringWithFormat:@"Page%d / %d", gPages + 1, ItemPages.count ];
+    [self.view addSubview:browserController.view];
+    
+    browserController = nil;
 }
+
+-(void)PrevPage{
+    
+    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+    [v removeFromSuperview];
+    
+    if (gPages - 1 >= 0 ) {
+            gPages = gPages - 1;
+        //prev.enabled = TRUE;
+    }else{
+        //prev.enabled = FALSE;
+        
+    }
+    
+    browserController = [CDVViewController new];
+    browserController.wwwFolderName = @"www";
+    browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
+    browserController.view.frame = CGRectMake(0, 0, 1024, 700);
+    self.title = [NSString stringWithFormat:@"Page%d / %d", gPages + 1, ItemPages.count ];
+    [self.view addSubview:browserController.view];
+    
+    browserController = nil;
+}
+
 
 - (NSIndexPath *)lastSelectedIndexPathForSidebarViewController:(SidebarViewController *)sidebarViewController {
     return self.leftSelectedIndexPath;
@@ -261,18 +322,6 @@
         [self dismissViewControllerAnimated:YES completion:Nil];
     }
     */
-    /*
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.mainH = premH;
-        main.mainBH = premBH;
-        main.IndexTab = 3;
-        main.showQuotation = @"YES";
-        //[self presentModalViewController:main animated:YES];
-        [self presentViewController:main animated:YES completion:Nil]; 
-      */ 
-    
     
 }
 

@@ -222,7 +222,7 @@
         
         
         db.transaction(function(transaction) {
-            transaction.executeSql('SELECT * FROM SI_Temp_Trad_Details;', [], function(transaction, result) {
+            transaction.executeSql('SELECT * FROM SI_Temp_Trad_Details ORDER BY SeqNo;', [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     var rowCol1, rowCol2, rowCol3, rowCol4, rowCol5, rowCol6, rowCol7, rowCol8, rowCol9, rowCol10, rowCol11, rowCol12;
