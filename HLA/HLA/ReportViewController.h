@@ -21,6 +21,7 @@
 @property (nonatomic,strong) id CustCode;
 @property (nonatomic,strong) id Name;
 @property (nonatomic,strong) id strBasicAnnually, strBasicSemiAnnually, strBasicQuarterly, strBasicMonthly;
+@property (nonatomic,strong) id strOriBasicAnnually, strOriBasicSemiAnnually, strOriBasicQuarterly, strOriBasicMonthly;
 @property (nonatomic,strong) id sex, OccpClass;
 @property (retain, nonatomic) NSMutableArray *OccLoading;
 //@property (nonatomic,strong) id strIncomeRiderAnnually;

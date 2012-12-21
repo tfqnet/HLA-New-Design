@@ -893,6 +893,14 @@
                 //[myTableView endUpdates];
             }
             */
+            
+            if (ItemToBeDeleted.count < 1) {
+                return;
+            }
+            else{
+                NSLog(@"%d", ItemToBeDeleted.count);
+            }
+            
             NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *docsDir = [dirPaths objectAtIndex:0];
             databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -900,11 +908,19 @@
             sqlite3_stmt *statement;
             sqlite3_stmt *statement2;
             const char *dbpath = [databasePath UTF8String];
+            NSArray *sorted = [[NSArray alloc] init ];
+            
+            sorted = [ItemToBeDeleted sortedArrayUsingComparator:^(id firstObject, id secondObject){
+                return [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch];
+            }];
+            
             
             if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-                for(int a=0; a<ItemToBeDeleted.count; a++){
-                    int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
+                for(int a=0; a<sorted.count; a++){
+                    int value = [[sorted objectAtIndex:a] intValue];
+                    
                     value = value - a;
+                    
                     
                     NSString *DeleteLAPayorSQL;
                     if (isFilter == false) {
@@ -917,7 +933,6 @@
                                             " trad_lapayor where custcode = \"%@\" ", [FilteredCustomerCode objectAtIndex:value]];
                     }
                         
-                    
                     if(sqlite3_prepare_v2(contactDB, [DeleteLAPayorSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                         
                         int zzz = sqlite3_step(statement);
@@ -925,7 +940,6 @@
                             
                         }
                         sqlite3_finalize(statement);
-                        
                     }
 
                     NSString *DeleteCltProfileSQL;
@@ -946,6 +960,7 @@
                         sqlite3_finalize(statement2);
                     }
                 
+                  
                     if (isFilter == FALSE) {
                         [SINO removeObjectAtIndex:value];
                         [DateCreated removeObjectAtIndex:value];
@@ -965,10 +980,9 @@
                         [FilteredCustomerCode removeObjectAtIndex:value];
                     }
                     
+                    
                 }
-                
                 sqlite3_close(contactDB);
-                
             }
             
             [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
@@ -980,8 +994,13 @@
                 [outletEdit setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
                 [outletEdit setTitle:@"Delete" forState:UIControlStateNormal];
             }
-             
-                
+            
+            //action performed after deletion success
+            outletDelete.enabled = FALSE;
+            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            
+            ItemToBeDeleted = [[NSMutableArray alloc] init];
+            indexPaths = [[NSMutableArray alloc] init];
         }
         
     }

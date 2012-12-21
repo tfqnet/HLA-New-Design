@@ -270,6 +270,8 @@
     NSString *QuerySQL =  [ NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
                            " \"Quarterly\",\"Monthly\") VALUES "
                            " (\"B\", \"%@\", \"%@\", \"%@\", \"%@\") ", basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
+    
+    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -282,6 +284,28 @@
         }
         sqlite3_close(contactDB);
     }
+    
+    
+     double valueBeforeAdjustedA = _BasicAnnually + _OccpLoadA + _BasicHLAnnually - _LSDAnnually;
+     double valueBeforeAdjustedS = _BasicHalfYear + _OccpLoadH + _BasicHLHalfYear - LSDHalfYear_;
+     double valueBeforeAdjustedQ = _BasicQuarterly + _OccpLoadQ + _BasicHLQuarterly - _LSDQuarterly;
+     double valueBeforeAdjustedM = _BasicMonthly + _OccpLoadM + _BasicHLMonthly - _LSDMonthly;
+     
+     QuerySQL =  [NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
+                    " \"Quarterly\",\"Monthly\") VALUES (\"BOriginal\", \"%.9f\", \"%.9f\", \"%.9f\", \"%.9f\") ",
+                    valueBeforeAdjustedA, valueBeforeAdjustedS, valueBeforeAdjustedQ, valueBeforeAdjustedM];
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
     
     //--------------
     

@@ -31,6 +31,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize EntireMaturityValueA,EntireMaturityValueB,EntireTotalPremiumPaid,EntireTotalYearlyIncome, OtherRiderDeductible;
 @synthesize aStrIncomeRiderMonthly,aStrIncomeRiderQuarterly,aStrIncomeRiderSemiAnnually,aStrOtherRiderMonthly;
 @synthesize aStrOtherRiderQuarterly,aStrOtherRiderSemiAnnually,strBasicMonthly,strBasicQuarterly,strBasicSemiAnnually, OccLoading;
+@synthesize strOriBasicAnnually, strOriBasicMonthly,strOriBasicQuarterly,strOriBasicSemiAnnually;
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
 
@@ -1409,8 +1410,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         
                         QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
                                      "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
-                                     " VALUES (\"%@\",\"Life Assured\",\"LA\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
-                                     " \"Hayat yang Diinsuranskan\")", SINo, 2, SecName, SecAge, Secsex, Secsmoker ];
+                                     " VALUES (\"%@\",\"2nd Life Assured\",\"LA\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+                                     " \"Hayat yang Diinsuranskan ke-2\")", SINo, 2, SecName, SecAge, Secsex, Secsmoker ];
                         
                         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
                             if (sqlite3_step(statement3) == SQLITE_DONE) {
@@ -1447,8 +1448,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         
                         QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
                                      "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
-                                     " VALUES (\"%@\",\"Life Assured\",\"PY\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
-                                     " \"Hayat yang Diinsuranskan\")", SINo, 1, PYName, PYAge, PYsex, PYsmoker ];
+                                     " VALUES (\"%@\",\"Assured\",\"PY\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+                                     " \"Pemunya\")", SINo, 1, PYName, PYAge, PYsex, PYsmoker ];
                         
                         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
                             if (sqlite3_step(statement3) == SQLITE_DONE) {
@@ -1513,6 +1514,17 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     sqlite3_finalize(statement);
                 }
             
+            SelectSQL = @"Select * from SI_Store_Premium where type = \"BOriginal\" ";
+            if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement) == SQLITE_ROW) {
+                    strOriBasicAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                    strOriBasicSemiAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    strOriBasicQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                    strOriBasicMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                    
+                }
+                sqlite3_finalize(statement);
+            }
             /*
                 QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
@@ -3080,11 +3092,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                     double waiverRiderSAQuarterly;
                                     double waiverRiderSAMonthly;
                                     
+                                    
                                     waiverRiderSA = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSASemiAnnual = [[strBasicSemiAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSAQuarterly = [[strBasicQuarterly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSAMonthly = [[strBasicMonthly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     
+                                    /*
+                                    waiverRiderSA = [[strOriBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                                    waiverRiderSASemiAnnual = [[strOriBasicSemiAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                                    waiverRiderSAQuarterly = [[strOriBasicQuarterly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                                    waiverRiderSAMonthly = [[strOriBasicMonthly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                                    */
                                     for (int g=0; g < IncomeRiderCode.count; g++) {
                                         
                                         waiverRiderSA = waiverRiderSA + 
@@ -4717,6 +4736,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
             //[formatter setMaximumFractionDigits:3];
             [formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
+            
             NSString *SAAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverAnnual objectAtIndex:i] doubleValue ]]];
             NSString *SASemiAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverSemiAnnual objectAtIndex:i] doubleValue ]]];
             NSString *SAQuaterly = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverQuarterly objectAtIndex:i] doubleValue ]]];
