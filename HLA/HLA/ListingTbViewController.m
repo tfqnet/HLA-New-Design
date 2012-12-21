@@ -59,7 +59,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {        
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT IndexNo, ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile ORDER by ProspectName desc"];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT IndexNo, ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile ORDER by ProspectName asc"];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)

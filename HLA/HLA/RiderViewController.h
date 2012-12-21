@@ -129,6 +129,7 @@
 @property(nonatomic , retain) NSMutableArray *atcPlanChoice;
 @property (nonatomic,strong) NSString *existRidCode;
 @property (nonatomic,strong) NSString *secondLARidCode;
+@property (nonatomic,strong) NSString *payorRidCode;
 @property (nonatomic, assign,readwrite) int GYI;
 @property (nonatomic, assign,readwrite) int occLoad;
 @property (nonatomic, assign,readwrite) int occLoadRider;

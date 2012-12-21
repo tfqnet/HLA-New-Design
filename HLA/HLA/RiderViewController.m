@@ -78,7 +78,7 @@
 @synthesize deductList = _deductList;
 @synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm, LRidHLPTerm, LRidHL100Term,LOccpCode;
 @synthesize occLoadRider,LTypeAge,LTypeDeduct,LTypeOccpCode,LTypePlanOpt,LTypeRiderCode,LTypeRidHL100,LTypeRidHL100Term,LTypeRidHL1K,LTypeRidHLP,LTypeRidHLPTerm,LTypeRidHLTerm,LTypeSex,LTypeSmoker,LTypeSumAssured,LTypeTerm,LTypeUnits;
-@synthesize occLoadType,classField;
+@synthesize occLoadType,classField,payorRidCode;
 
 #pragma mark - Cycle View
 
@@ -1291,12 +1291,10 @@
             [incomeRiderMonth addObject:calRiderMonth];
             NSLog(@"income insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
             
-            
             //get CSV rate
             [self getRiderCSV:RidCode];
             NSString *csv = [NSString stringWithFormat:@"%.2f",riderCSVRate];
             [incomeRiderCSV addObject:csv];
-             
         }
     }
     
@@ -1964,16 +1962,17 @@
             for(int a=0; a<ItemToBeDeleted.count; a++) {
                 int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
                 value = value - a;
+                NSString *rider = [LTypeRiderCode objectAtIndex:value];
                 
                 NSString *querySQL = [NSString stringWithFormat:
-                                      @"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,[LTypeRiderCode objectAtIndex:value]];
+                            @"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,rider];
+                
                 NSLog(@"%@",querySQL);
                 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
                 {
                     if (sqlite3_step(statement) == SQLITE_DONE)
                     {
                         NSLog(@"rider delete!");
-                        
                     } else {
                         NSLog(@"rider delete Failed!");
                     }
@@ -1991,6 +1990,16 @@
                 [LTypeRidHLP removeObjectAtIndex:value];
                 [LTypeSmoker removeObjectAtIndex:value];
                 [LTypeAge removeObjectAtIndex:value];
+                
+                if ([pTypeCode isEqualToString:@"PY"] && ([rider isEqualToString:@"LCWP"]||[rider isEqualToString:@"PR"])) {
+                    [self checkPayorRider:rider];
+                    
+                    if (payorRidCode.length != 0) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        [alert setTag:1007];
+                        [alert show];
+                    }
+                }
             }
             sqlite3_close(contactDB);
         }
@@ -2009,10 +2018,12 @@
         deleteBtn.enabled = FALSE;
         [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
     }
-    else if (alertView.tag == 1002 && buttonIndex == 0) {
+    else if (alertView.tag == 1002 && buttonIndex == 0)
+    {
         [self deleteRider];
     }
-    else if (alertView.tag == 1003 && buttonIndex == 0) {
+    else if (alertView.tag == 1003 && buttonIndex == 0)
+    {
         [self checkingRider];
         if (existRidCode.length == 0) {
             [self saveRider];
@@ -2076,6 +2087,34 @@
     else if (alertView.tag == 1006 && buttonIndex == 0) //displayed label min/max
     {
         [self displayedMinMax];
+    }
+    else if (alertView.tag == 1007 && buttonIndex == 0) //deleted payor
+    {
+        sqlite3_stmt *statement;
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,payorRidCode];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_DONE)
+                {
+                    NSLog(@"rider delete!");
+                } else {
+                    NSLog(@"rider delete Failed!");
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+        [self getListingRiderByType];
+        [self getListingRider];     //get stored rider
+        [self calculateRiderPrem];  //calculate riderPrem
+        [self calculateWaiver];     //calculate waiverPrem
+        [self calculateMedRiderPrem];       //calculate medicalPrem
+        if (medRiderPrem != 0) {
+            [self MHIGuideLines];
+        }
     }
     
 }
@@ -2788,8 +2827,6 @@
 
 -(void)NegativeYield
 {
-    //--if TPremiumPayable > totalGYI + maturityCSV then popup
-    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
@@ -2802,7 +2839,6 @@
     //--rider GYI & CSV
     incomeRiderGYI = [[NSMutableArray alloc] init];
     NSMutableArray *RiderGYI = [[NSMutableArray alloc] init];
-    NSMutableArray *InputRiderGYI = [[NSMutableArray alloc] init];
     NSMutableArray *RiderCSV = [[NSMutableArray alloc] init];
     NSMutableArray *BasicGYI = [[NSMutableArray alloc] init];
     
@@ -2900,6 +2936,7 @@
     }
     
     //input rider GYI and CSV
+    NSMutableArray *InputRiderGYI = [[NSMutableArray alloc] init];
     int inputTerm = [termField.text intValue];
     double _inputSA = [sumField.text doubleValue];
     
@@ -3429,7 +3466,6 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1004];
         [alert show];
-        
     }
     
     [self getListingRiderByType];
@@ -3451,10 +3487,7 @@
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
-         
     }
-    
-    
 }
 
 -(void)getListingRider
@@ -3907,6 +3940,37 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 secondLARidCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)checkPayorRider:(NSString *)aaRider
+{
+    payorRidCode = [[NSString alloc] init];
+    sqlite3_stmt *statement;
+    NSString *ridPayor = @"";
+    
+    if ([aaRider isEqualToString:@"LCWP"]) {
+        ridPayor = @"PLCP";
+    }
+    else {
+        ridPayor = @"PTR";
+    }
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                        @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\" ",SINoPlan,ridPayor];
+        
+        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                payorRidCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
             }
             sqlite3_finalize(statement);
         }
