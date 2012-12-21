@@ -3092,18 +3092,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                     double waiverRiderSAQuarterly;
                                     double waiverRiderSAMonthly;
                                     
-                                    
+                                    /*
                                     waiverRiderSA = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSASemiAnnual = [[strBasicSemiAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSAQuarterly = [[strBasicQuarterly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSAMonthly = [[strBasicMonthly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+                                    */
                                     
-                                    /*
                                     waiverRiderSA = [[strOriBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSASemiAnnual = [[strOriBasicSemiAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSAQuarterly = [[strOriBasicQuarterly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
                                     waiverRiderSAMonthly = [[strOriBasicMonthly stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
-                                    */
+                                    
                                     for (int g=0; g < IncomeRiderCode.count; g++) {
                                         
                                         waiverRiderSA = waiverRiderSA + 

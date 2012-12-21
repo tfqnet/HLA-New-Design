@@ -285,11 +285,24 @@
         sqlite3_close(contactDB);
     }
     
+    double valueBeforeAdjustedA;
+    double valueBeforeAdjustedS;
+    double valueBeforeAdjustedQ;
+    double valueBeforeAdjustedM;
     
-     double valueBeforeAdjustedA = _BasicAnnually + _OccpLoadA + _BasicHLAnnually - _LSDAnnually;
-     double valueBeforeAdjustedS = _BasicHalfYear + _OccpLoadH + _BasicHLHalfYear - LSDHalfYear_;
-     double valueBeforeAdjustedQ = _BasicQuarterly + _OccpLoadQ + _BasicHLQuarterly - _LSDQuarterly;
-     double valueBeforeAdjustedM = _BasicMonthly + _OccpLoadM + _BasicHLMonthly - _LSDMonthly;
+    if (BasicSA < 1000) {
+        valueBeforeAdjustedA = BasicAnnually_ + _OccpLoadA + BasicHLAnnually_ + LSDAnnually_;
+        valueBeforeAdjustedS = BasicHalfYear_ + _OccpLoadH + BasicHLHalfYear_ + LSDHalfYear_;
+        valueBeforeAdjustedQ = BasicQuarterly_ + _OccpLoadQ + BasicHLQuarterly_ + LSDQuarterly_;
+        valueBeforeAdjustedM = BasicMonthly_ + _OccpLoadM + BasicHLMonthly_ + LSDMonthly_;
+    }
+    else{
+        valueBeforeAdjustedA = BasicAnnually_ + _OccpLoadA + BasicHLAnnually_ - LSDAnnually_;
+        valueBeforeAdjustedS = BasicHalfYear_ + _OccpLoadH + BasicHLHalfYear_ - LSDHalfYear_;
+        valueBeforeAdjustedQ = BasicQuarterly_ + _OccpLoadQ + BasicHLQuarterly_ - LSDQuarterly_;
+        valueBeforeAdjustedM = BasicMonthly_ + _OccpLoadM + BasicHLMonthly_ - LSDMonthly_;
+    }
+    
      
      QuerySQL =  [NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
                     " \"Quarterly\",\"Monthly\") VALUES (\"BOriginal\", \"%.9f\", \"%.9f\", \"%.9f\", \"%.9f\") ",
