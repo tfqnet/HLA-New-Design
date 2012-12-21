@@ -55,11 +55,19 @@
 @property (strong, nonatomic) IBOutlet UITextField *LADOBField;
 @property (strong, nonatomic) IBOutlet UITextField *LAOccpField;
 
+@property (nonatomic, copy) NSString *SINo;
+@property (nonatomic, copy) NSString *CustCode;
+
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, copy) NSString *occuCode;
 @property (nonatomic, copy) NSString *occuDesc;
 @property (nonatomic, assign,readwrite) int occuClass;
 @property (nonatomic, assign,readwrite) int IndexNo;
+@property (nonatomic, assign,readwrite) int idPayor;
+@property (nonatomic, assign,readwrite) int idProfile;
+@property (nonatomic, assign,readwrite) int idProfile2;
+@property (nonatomic, assign,readwrite) int lastIdPayor;
+@property (nonatomic, assign,readwrite) int lastIdProfile;
 
 @property (nonatomic,strong) NSString *getSINo;
 @property (nonatomic,assign,readwrite) int getPolicyTerm;
@@ -81,19 +89,13 @@
 @property (nonatomic, copy) NSString *DOB;
 @property (nonatomic, copy) NSString *commDate;
 @property (nonatomic, copy) NSString *jobDesc;
-@property (nonatomic, copy) NSString *SINo;
-@property (nonatomic, copy) NSString *SIDate;
-@property (nonatomic, assign,readwrite) int SILastNo;
-@property (nonatomic, copy) NSString *CustCode;
-@property (nonatomic, copy) NSString *CustDate;
-@property (nonatomic, assign,readwrite) int CustLastNo;
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic, assign,readwrite) int ANB;
-@property (nonatomic, assign,readwrite) int clientID;
-@property (nonatomic, assign,readwrite) int clientID2;
 @property (nonatomic, copy) NSString *CustCode2;
 @property (nonatomic, copy) NSString *payorSINo;
 @property (nonatomic, copy) NSString *payorCustCode;
+
+
 
 //for occupation
 @property(nonatomic , retain) NSMutableArray *occDesc;

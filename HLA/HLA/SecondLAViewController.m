@@ -48,7 +48,7 @@
     
     useExist = NO;
     getCommDate = [[NSString alloc] initWithFormat:@"%@",la2ndH.storedCommDate];
-    requestSINo = la2ndH.storedSINo;
+    requestSINo = la2ndBH.storedSINo;
     NSLog(@"2ndLA-SINo:%@",requestSINo);
     
     if (requestSINo) {

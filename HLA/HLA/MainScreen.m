@@ -44,7 +44,7 @@
     self.delegate = self;
     
     //passing value
-    NSLog(@"MAINLA-SINo:%@, age:%d, job:%@",mainH.storedSINo,mainH.storedAge,mainH.storedOccpCode);
+    NSLog(@"MAINLA-age:%d, job:%@",mainH.storedAge,mainH.storedOccpCode);
     NSLog(@"MAINBasic-SINo:%@, age:%d, job:%@",mainBH.storedSINo,mainBH.storedAge,mainBH.storedOccpCode);
     
     //Create view controllers

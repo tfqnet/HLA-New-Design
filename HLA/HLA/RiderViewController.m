@@ -2168,9 +2168,15 @@
     }
     
     if (sumField.text.length <= 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert setTag:1006];
-        [alert show];
+        if (incomeRider) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Guaranteed Yearly Income\n is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert setTag:1006];
+            [alert show];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert setTag:1006];
+            [alert show];
+        }
         [sumField becomeFirstResponder];
     }
     else if ([sumField.text rangeOfCharacterFromSet:set].location != NSNotFound) {

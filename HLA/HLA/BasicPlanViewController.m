@@ -38,11 +38,11 @@
 @synthesize tempHLField;
 @synthesize tempHLTermField;
 @synthesize myScrollView;
-@synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA,SINoPlan;
+@synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
-@synthesize planCode,requestOccpCode,basicH,dataInsert, OccuClass;
-@synthesize popoverController;
+@synthesize planCode,requestOccpCode,basicH,dataInsert, OccuClass,basicBH;
+@synthesize popoverController,SINo,CustCode,SIDate,SILastNo,CustDate,CustLastNo;
 
 #pragma mark - Cycle View
 
@@ -56,7 +56,7 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
     ageClient = basicH.storedAge;
-    requestSINo = basicH.storedSINo;
+    requestSINo = basicBH.storedSINo;
     requestOccpCode = basicH.storedOccpCode;
     OccuClass = basicH.storedOccpClass;
     NSLog(@"BASIC-SINo:%@, age:%d, job:%@",requestSINo,ageClient,requestOccpCode);
@@ -81,7 +81,7 @@
     healthLoadingView.alpha = 0;
     showHL = NO;
     useExist = NO;
-    SINoPlan = [[NSString alloc] initWithFormat:@"%@",requestSINo];
+    SINo = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     termField.enabled = NO;
     [self getTermRule];
     
@@ -287,8 +287,6 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-//    NSString *SAInput = [yearlyIncomeField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
-    
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
@@ -309,7 +307,7 @@
         substringTempHL = [tempHLField.text substringFromIndex:rangeofDotTempHL.location ];
     }
     
-    if (requestSINo.length == 0) {
+    if (requestOccpCode.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1001];
         [alert show];
@@ -622,6 +620,135 @@
 
 #pragma mark - Handle DB
 
+-(void)getRunningSI
+{
+    sqlite3_stmt *statement;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT LastNo,LastUpdated FROM Adm_TrnTypeNo WHERE TrnTypeCode=\"SI\" AND LastUpdated like \"%%%@%%\"", dateString];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                SILastNo = sqlite3_column_int(statement, 0);
+                
+                const char *lastDate = (const char *)sqlite3_column_text(statement, 1);
+                SIDate = lastDate == NULL ? nil : [[NSString alloc] initWithUTF8String:lastDate];
+                
+                NSLog(@"LastSINo:%d SIDate:%@",SILastNo,SIDate);
+                
+            } else {
+                SILastNo = 0;
+                SIDate = dateString;
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+    if (SILastNo == 0 && SIDate == NULL) {
+        [self updateFirstRunSI];
+    } else {
+        [self updateFirstRunSI];
+    }
+}
+
+-(void)getRunningCustCode
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT LastNo,LastUpdated FROM Adm_TrnTypeNo WHERE TrnTypeCode=\"CL\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                CustLastNo = sqlite3_column_int(statement, 0);
+                
+                const char *lastDate = (const char *)sqlite3_column_text(statement, 1);
+                CustDate = lastDate == NULL ? nil : [[NSString alloc] initWithUTF8String:lastDate];
+                
+                NSLog(@"LastCustNo:%d CustDate:%@",CustLastNo,CustDate);
+                
+            } else {
+                NSLog(@"error check tbl_Adm_TrnTypeNo");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    if (CustLastNo == 0 && CustDate == NULL) {
+        [self updateFirstRunCust];
+    } else {
+        [self updateFirstRunCust];
+    }
+}
+
+-(void)updateFirstRunSI
+{
+    int newLastNo;
+    newLastNo = SILastNo + 1;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"UPDATE Adm_TrnTypeNo SET LastNo= \"%d\",LastUpdated=\"%@\" WHERE TrnTypeCode=\"SI\"",newLastNo, dateString];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Run SI update!");
+                
+            } else {
+                NSLog(@"Run SI update Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)updateFirstRunCust
+{
+    int newLastNo;
+    newLastNo = CustLastNo + 1;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"UPDATE Adm_TrnTypeNo SET LastNo= \"%d\",LastUpdated= \"%@\" WHERE TrnTypeCode=\"CL\"",newLastNo,dateString];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Run Cust update!");
+                
+            } else {
+                NSLog(@"Run Cust update Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 -(void) getTermRule
 {
     sqlite3_stmt *statement;
@@ -662,7 +789,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT SINo FROM Trad_Details WHERE SINo=\"%@\"",SINoPlan];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT SINo FROM Trad_Details WHERE SINo=\"%@\"",SINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -689,7 +816,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT SINo,PolicyTerm,BasicSA,PremiumPaymentOption,CashDividend,YearlyIncome,AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",SINoPlan];
+                @"SELECT SINo,PolicyTerm,BasicSA,PremiumPaymentOption,CashDividend,YearlyIncome,AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",SINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -721,29 +848,40 @@
 
 -(void)saveBasicPlan
 {
-    /*
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-    */
+    [self getRunningSI];
+    [self getRunningCustCode];
     
-//    NSString *SAInput = [yearlyIncomeField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+    //generate SINo || CustCode
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    NSString *currentdate = [dateFormatter stringFromDate:[NSDate date]];
+    
+    int runningNoSI = SILastNo + 1;
+    int runningNoCust = CustLastNo + 1;
+    
+    NSString *fooSI = [NSString stringWithFormat:@"%04d", runningNoSI];
+    NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
+    
+    SINo = [[NSString alloc] initWithFormat:@"SI%@-%@",currentdate,fooSI];
+    CustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@)", SINoPlan,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")"];
-//        NSLog(@"%@",insertSQL);
+        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@)", SINo,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")"];
+
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Saved BasicPlan!");
+                [self updateLA];
+                
                 [self getPlanCodePenta];
                 
                 dataInsert = [[NSMutableArray alloc] init];
                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
+                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
                 for (NSUInteger i=0; i< dataInsert.count; i++) {
                     ss = [dataInsert objectAtIndex:i];
                     NSLog(@"storedbasic:%@",ss.storedSINo);
@@ -765,18 +903,53 @@
     }
 }
 
--(void)updateBasicPlan
+-(void)updateLA
 {
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-//    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-    
-//    NSString *SAInput = [yearlyIncomeField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    NSString *currentdate = [dateFormatter stringFromDate:[NSDate date]];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET PolicyTerm=\"%@\", BasicSA=\"%@\", PremiumPaymentOption=\"%d\", CashDividend=\"%@\", YearlyIncome=\"%@\", AdvanceYearlyIncome=\"%d\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", TempHL1KSA=\"%@\", TempHL1KSATerm=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome,advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")", SINoPlan];
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"UPDATE Clt_Profile SET CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",CustCode,currentdate,basicH.storedIdProfile];
+    
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE){
+                //save
+            }
+            else {
+                //failed
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL2 = [NSString stringWithFormat:
+                @"UPDATE Trad_LAPayor SET SINo=\"%@\", CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE rowid=\"%d\"",SINo,CustCode,currentdate,basicH.storedIdPayor];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE){
+                //save
+            }
+            else {
+                //failed
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)updateBasicPlan
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET PolicyTerm=\"%@\", BasicSA=\"%@\", PremiumPaymentOption=\"%d\", CashDividend=\"%@\", YearlyIncome=\"%@\", AdvanceYearlyIncome=\"%d\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", TempHL1KSA=\"%@\", TempHL1KSATerm=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome,advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")", SINo];
         NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -787,7 +960,7 @@
                 
                 dataInsert = [[NSMutableArray alloc] init];
                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
+                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
                 for (NSUInteger i=0; i< dataInsert.count; i++) {
                     ss = [dataInsert objectAtIndex:i];
                     NSLog(@"storedbasic:%@",ss.storedSINo);
@@ -797,7 +970,8 @@
                 [SuccessAlert setTag:1005];
                 [SuccessAlert show];
                 
-            } else {
+            }
+            else {
                 NSLog(@"BasicPlan update Failed!");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -856,7 +1030,6 @@
 - (void)viewDidUnload
 {
     [self resignFirstResponder];
-    [self setSINoPlan:nil];
     [self setGetSINo:nil];
     [self setTermField:nil];
     [self setYearlyIncomeField:nil];

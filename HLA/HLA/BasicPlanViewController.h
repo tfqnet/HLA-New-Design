@@ -10,6 +10,7 @@
 #import <sqlite3.h>
 #import "SIHandler.h"
 #import "PlanList.h"
+#import "BasicPlanHandler.h"
 
 @interface BasicPlanViewController : UIViewController <UITextFieldDelegate,PlanListDelegate>{
     NSString *databasePath;
@@ -28,6 +29,7 @@
 @property (nonatomic,retain) NSString *requestSINo;
 @property (nonatomic,retain) NSString *requestOccpCode;
 @property (nonatomic,strong) SIHandler *basicH;
+@property (nonatomic,strong) BasicPlanHandler *basicBH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 
 @property (nonatomic, retain) UIPopoverController *popoverController;
@@ -50,11 +52,19 @@
 @property (retain, nonatomic) IBOutlet UITextField *tempHLTermField;
 @property (strong, nonatomic) IBOutlet UIScrollView *myScrollView;
 
+//for SINo
+@property (nonatomic, assign,readwrite) int SILastNo;
+@property (nonatomic, assign,readwrite) int CustLastNo;
+@property (nonatomic, copy) NSString *SINo;
+@property (nonatomic, copy) NSString *CustCode;
+@property (nonatomic, copy) NSString *SIDate;
+@property (nonatomic, copy) NSString *CustDate;
+
 @property (nonatomic, assign,readwrite) int termCover;
 @property (nonatomic, assign,readwrite) int minSA;
 @property (nonatomic, assign,readwrite) int maxSA;
 @property (nonatomic,strong) NSString *planChoose;
-@property (nonatomic,strong) NSString *SINoPlan;
+
 //use to calculate
 @property (nonatomic, assign,readwrite) int MOP;
 @property (nonatomic, copy) NSString *yearlyIncome;

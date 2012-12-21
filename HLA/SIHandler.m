@@ -10,20 +10,21 @@
 
 @implementation SIHandler
 
-@synthesize storedSINo,storedAge,storedOccpCode,storedOccpClass,storedSex,storedIndexNo,storedCommDate;
+@synthesize storedAge,storedOccpCode,storedOccpClass,storedSex,storedIndexNo,storedCommDate;
+@synthesize storedIdPayor,storedIdProfile;
 
-
--(id)initWithSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
+-(id)initWithIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
 {
     self = [super init];
     if(self) {
-        self.storedSINo = aaSINo;
         self.storedAge = aaAge;
         self.storedOccpCode = aaOccpCode;
         self.storedOccpClass = aaOccpClass;
         self.storedSex = aaSex;
         self.storedIndexNo = aaIndexNo;
         self.storedCommDate = aaCommDate;
+        self.storedIdProfile = aaIdProfile;
+        self.storedIdPayor = aaIdPayor;
     }
     return self;
 }

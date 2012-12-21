@@ -49,7 +49,7 @@
     
     SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", @"6", nil ];
     
-    getSINo = menuH.storedSINo;
+    getSINo = menuBH.storedSINo;
     getAge = menuH.storedAge;
     getOccpCode = menuH.storedOccpCode;
     getbasicSA = menuBH.storedbasicSA;
@@ -236,6 +236,7 @@
             zzz.modalPresentationStyle = UIModalPresentationFormSheet;
             zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             zzz.basicH = menuH;
+            zzz.basicBH = menuBH;
             [self presentModalViewController:zzz animated:YES];
             zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
         }
@@ -245,6 +246,7 @@
         zzz.modalPresentationStyle = UIModalPresentationFormSheet;
         zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         zzz.basicH = menuH;
+        zzz.basicBH = menuBH;
         [self presentModalViewController:zzz animated:YES];
         zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
     }
@@ -252,8 +254,6 @@
 
 -(void)calculatedPrem
 {
-    
-    
     if (menuBH.storedSINo) {
     
         PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
@@ -266,7 +266,7 @@
         
     }
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Error!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"No record selected!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
 }

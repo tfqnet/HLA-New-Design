@@ -30,7 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    requestSINo = payorH.storedSINo;
+    requestSINo = payorBH.storedSINo;
     NSLog(@"Payor-SINo:%@",[self.requestSINo description]);
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
