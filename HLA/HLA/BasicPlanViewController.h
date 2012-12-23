@@ -11,6 +11,8 @@
 #import "SIHandler.h"
 #import "PlanList.h"
 #import "BasicPlanHandler.h"
+#import "PayorHandler.h"
+#import "SecondLAHandler.h"
 
 @interface BasicPlanViewController : UIViewController <UITextFieldDelegate,PlanListDelegate>{
     NSString *databasePath;
@@ -30,6 +32,8 @@
 @property (nonatomic,retain) NSString *requestOccpCode;
 @property (nonatomic,strong) SIHandler *basicH;
 @property (nonatomic,strong) BasicPlanHandler *basicBH;
+@property (nonatomic,strong) PayorHandler *basicPH;
+@property (nonatomic,strong) SecondLAHandler *basicLa2ndH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 
 @property (nonatomic, retain) UIPopoverController *popoverController;
@@ -56,14 +60,25 @@
 @property (nonatomic, assign,readwrite) int SILastNo;
 @property (nonatomic, assign,readwrite) int CustLastNo;
 @property (nonatomic, copy) NSString *SINo;
-@property (nonatomic, copy) NSString *CustCode;
 @property (nonatomic, copy) NSString *SIDate;
 @property (nonatomic, copy) NSString *CustDate;
+
+@property (nonatomic, copy) NSString *LACustCode;
+@property (nonatomic, copy) NSString *PYCustCode;
+@property (nonatomic, copy) NSString *secondLACustCode;
+@property (nonatomic, assign,readwrite) int IndexNo;
+@property (nonatomic, assign,readwrite) int PayorIndexNo;
+@property (nonatomic, assign,readwrite) int secondLAIndexNo;
 
 @property (nonatomic, assign,readwrite) int termCover;
 @property (nonatomic, assign,readwrite) int minSA;
 @property (nonatomic, assign,readwrite) int maxSA;
 @property (nonatomic,strong) NSString *planChoose;
+
+@property(nonatomic , retain) NSString *NamePP;
+@property(nonatomic , retain) NSString *DOBPP;
+@property(nonatomic , retain) NSString *GenderPP;
+@property(nonatomic , retain) NSString *OccpCodePP;
 
 //use to calculate
 @property (nonatomic, assign,readwrite) int MOP;

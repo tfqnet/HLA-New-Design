@@ -1875,7 +1875,7 @@
             MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
             main.modalPresentationStyle = UIModalPresentationFullScreen;
             main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainH = riderH;
+            main.mainLaH = riderH;
             main.mainBH = ss;
             main.IndexTab = 3;
             main.showQuotation = @"NO";
@@ -1886,7 +1886,7 @@
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.mainH = riderH;
+        main.mainLaH = riderH;
         main.mainBH = riderBH;
         main.IndexTab = 3;
         main.showQuotation = @"NO";

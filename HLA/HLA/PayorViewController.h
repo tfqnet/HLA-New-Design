@@ -11,6 +11,7 @@
 #import "ListingTbViewController.h"
 #import "SIHandler.h"
 #import "BasicPlanHandler.h"
+#import "PayorHandler.h"
 
 @interface PayorViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {
     NSString *databasePath;
@@ -24,9 +25,11 @@
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
 
 @property (nonatomic,strong) id requestSINo;
-@property (nonatomic,strong) SIHandler *payorH;
-@property (nonatomic,strong) BasicPlanHandler *payorBH;
+@property (nonatomic,strong) SIHandler *laHand;
+@property (nonatomic,strong) PayorHandler *payorHand;
+@property (nonatomic,strong) BasicPlanHandler *basicHand;
 @property (nonatomic, copy) NSString *getCommDate;
+@property (strong, nonatomic) NSMutableArray *dataInsert;
 
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;

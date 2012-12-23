@@ -10,7 +10,8 @@
 #import <sqlite3.h>
 #import "SIHandler.h"
 #import "BasicPlanHandler.h"
-
+#import "PayorHandler.h"
+#import "SecondLAHandler.h"
 
 @interface SIMenuViewController : UIViewController {
     NSString *databasePath;
@@ -26,8 +27,13 @@
 
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
 @property (retain, nonatomic) NSMutableArray *SelectedRow;
-@property (nonatomic,strong) SIHandler *menuH;
+@property (nonatomic,strong) SIHandler *menulaH;
 @property (nonatomic,strong) BasicPlanHandler *menuBH;
+@property (nonatomic,strong) PayorHandler *menuPH;
+@property (nonatomic,strong) SecondLAHandler *menuLa2ndH;
+
+@property (nonatomic ,assign ,readwrite) int checkPayor;
+@property (nonatomic ,assign ,readwrite) int check2ndLA;
 
 @property (nonatomic, retain) NSString *getSINo;
 @property (nonatomic ,assign ,readwrite) int getAge;

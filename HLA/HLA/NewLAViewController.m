@@ -71,6 +71,7 @@ id temp;
     
     if (requestSINo) {
         self.laH = [[SIHandler alloc] init];
+        self.laBH = [[BasicPlanHandler alloc] init];
     } else {
         requestSINo = laBH.storedSINo;
     }
@@ -92,6 +93,10 @@ id temp;
         }
     } else {
         NSLog(@"SINo not exist!");
+    }
+    
+    if (self.laH.storedIndexNo != 0 && !requestSINo) {
+        [self toggleTempView];
     }
 }
 
@@ -217,7 +222,7 @@ id temp;
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
+        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"storedLA sex:%@",ss.storedSex);
@@ -270,9 +275,55 @@ id temp;
 //            statusLabel.textColor = [UIColor redColor];
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to "
-                              "apply changes to this SI?" delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No",nil];
+                              "apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert setTag:1004];
         [alert show];
+    }
+}
+
+-(void)toggleTempView
+{
+    IndexNo = laH.storedIndexNo;
+    [self getProspectData];
+    LANameField.text = NamePP;
+    
+    sex = laH.storedSex;
+    if ([sex isEqualToString:@"M"]) {
+        sexSegment.selectedSegmentIndex = 0;
+    } else {
+        sexSegment.selectedSegmentIndex = 1;
+    }
+    
+    smoker = laH.storedSmoker;
+    if ([smoker isEqualToString:@"Y"]) {
+        smokerSegment.selectedSegmentIndex = 0;
+    } else {
+        smokerSegment.selectedSegmentIndex = 1;
+    }
+    
+    DOB = DOBPP;
+    LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+    
+    age = laH.storedAge;
+    LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    
+    [self.btnCommDate setTitle:laH.storedCommDate forState:UIControlStateNormal];
+    
+    occuCode = laH.storedOccpCode;
+    [self getOccLoadExist];
+    LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+    if (occLoading == 0) {
+        LAOccLoadingField.text = @"STD";
+    } else {
+        LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+    }
+    
+    if (occCPA_PA > 4) {
+        LACPAField.text = @"D";
+        LAPAField.text = @"D";
+    } else {
+        LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
     }
 }
 
@@ -514,7 +565,7 @@ id temp;
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
+        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"storedLA sex:%@",ss.storedSex);
@@ -643,7 +694,7 @@ id temp;
             MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
             main.modalPresentationStyle = UIModalPresentationFullScreen;
             main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainH = ss;
+            main.mainLaH = ss;
             main.mainBH = laBH;
             main.IndexTab = 3;
             [self presentViewController:main animated:NO completion:nil];
@@ -654,7 +705,7 @@ id temp;
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             SIHandler *ss = [dataInsert objectAtIndex:i];
-            main.mainH = ss;
+            main.mainLaH = ss;
         }
         for (NSUInteger i=0; i< dataInsert2.count; i++) {
             BasicPlanHandler *pp = [dataInsert2 objectAtIndex:i];
@@ -671,6 +722,7 @@ id temp;
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         main.IndexTab = 3;
+        main.mainLaH = laH;
         [self presentViewController:main animated:NO completion:nil];
         
     }
@@ -751,7 +803,7 @@ id temp;
         NSString *insertSQL = [NSString stringWithFormat:
                 @"INSERT INTO Trad_LAPayor (PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"LA\",\"1\",\"%@\",\"hla\")",commDate];
         
-//        NSLog(@"%@",insertSQL);
+        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -765,7 +817,7 @@ id temp;
         
         NSString *insertSQL2 = [NSString stringWithFormat:@"INSERT INTO Clt_Profile (Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")",LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
         
-//        NSLog(@"%@",insertSQL2);
+        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -789,7 +841,7 @@ id temp;
         
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
+        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"stored %d",ss.storedIdPayor);
@@ -874,7 +926,7 @@ id temp;
             
             dataInsert = [[NSMutableArray alloc] init];
             SIHandler *ss = [[SIHandler alloc] init];
-            [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate]];
+            [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
             for (NSUInteger i=0; i< dataInsert.count; i++) {
                 ss = [dataInsert objectAtIndex:i];
                 NSLog(@"stored sex:%@",ss.storedSex);
@@ -911,7 +963,7 @@ id temp;
                 idProfile = sqlite3_column_int(statement, 9);
                 IndexNo = sqlite3_column_int(statement, 10);
                 idPayor = sqlite3_column_int(statement, 11);
-                NSLog(@"idPayor:%d, idProfile:%d",idPayor,idProfile);
+                NSLog(@"age:%d, indexNo:%d, idPayor:%d, idProfile:%d",age,IndexNo,idPayor,idProfile);
             
             } else {
                 NSLog(@"error access tbl_SI_Trad_LAPayor");
@@ -990,7 +1042,8 @@ id temp;
     {
         NSString *querySQL = [NSString stringWithFormat:
             @"SELECT ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile WHERE IndexNo= \"%d\"",IndexNo];
-
+        
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

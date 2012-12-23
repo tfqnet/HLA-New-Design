@@ -25,9 +25,9 @@
 @synthesize myTableView, SIshowQuotation;
 @synthesize RightView;
 @synthesize ListOfSubMenu,SelectedRow;
-@synthesize menuH,menuBH;
+@synthesize menulaH,menuBH,menuPH,menuLa2ndH;
 @synthesize getAge,getSINo,getOccpCode,getbasicSA;
-@synthesize payorCustCode,payorSINo,CustCode2,clientID2;
+@synthesize payorCustCode,payorSINo,CustCode2,clientID2,checkPayor,check2ndLA;
 
 
 - (void)viewDidLoad
@@ -47,20 +47,28 @@
     
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", @"Quotation", nil ];
     
-    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", @"6", nil ];
+//    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", @"6", nil ];
+    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", @"6", nil ];
+    
+    getAge = menulaH.storedAge;
+    getOccpCode = menulaH.storedOccpCode;
+    
+    checkPayor = menuPH.storedIndexNo;
+    check2ndLA = menuLa2ndH.storedIndexNo;
     
     getSINo = menuBH.storedSINo;
-    getAge = menuH.storedAge;
-    getOccpCode = menuH.storedOccpCode;
     getbasicSA = menuBH.storedbasicSA;
-    LAEmpty = YES;
+    
+    
+//    LAEmpty = YES;
     PlanEmpty = YES;
     
+    /*
     if (getSINo)
     {
         LAEmpty = NO;
 //        NSLog(@"la receive!");
-    }
+    }*/
 
     if (getbasicSA)
     {
@@ -93,10 +101,12 @@
     NSLog(@"menu disappear!");
     MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     main.mainBH = nil;
-    main.mainH = nil;
+    main.mainLaH = nil;
+    main.mainPH = nil;
     self.menuBH = nil;
-    self.menuH = nil;
-    LAEmpty = YES;
+    self.menulaH = nil;
+    self.menuPH = nil;
+//    LAEmpty = YES;
     PlanEmpty = YES;
     [SelectedRow addObject:@"1" ];
     [SelectedRow addObject:@"2" ];
@@ -112,6 +122,7 @@
 
 -(void)toogleView
 {
+    /*
     if (LAEmpty)
     {
         [SelectedRow addObject:@"1" ];
@@ -125,6 +136,7 @@
         
 //        NSLog(@"LA not empty");
     }
+    */
     
     if (PlanEmpty)
     {
@@ -157,31 +169,55 @@
         SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
         secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
         secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        secondLA.la2ndH = menuH;
-        secondLA.la2ndBH = menuBH;
+        secondLA.laHand = menulaH;
+        secondLA.basicHand = menuBH;
+        secondLA.la2ndHand = menuLa2ndH;
         [self presentModalViewController:secondLA animated:YES];
         secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
     }
-    else if (getAge < 16){
+    else if (getAge < 16 && getOccpCode.length != 0){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
+    else if (getOccpCode.length == 0) {
+        NSLog(@"no where!");
+    }
     else {
         NSLog(@"age 16-17");
-        [self checkingPayor];
-        if (payorSINo.length != 0) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
+        if (getSINo) {
+            [self checkingPayor];
+            if (payorSINo.length != 0) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+            else {
+                SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
+                secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
+                secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                secondLA.laHand = menulaH;
+                secondLA.basicHand = menuBH;
+                secondLA.la2ndHand = menuLa2ndH;
+                [self presentModalViewController:secondLA animated:YES];
+                secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+            }
         }
         else {
-            SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-            secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-            secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            secondLA.la2ndH = menuH;
-            secondLA.la2ndBH = menuBH;
-            [self presentModalViewController:secondLA animated:YES];
-            secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+            if (checkPayor != 0) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+            else {
+                SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
+                secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
+                secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                secondLA.laHand = menulaH;
+                secondLA.basicHand = menuBH;
+                secondLA.la2ndHand = menuLa2ndH;
+                [self presentModalViewController:secondLA animated:YES];
+                secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+            }
         }
+        
     }
 }
 
@@ -192,31 +228,53 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Life Assured's age must not greater or equal to 18 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
-    else if (getAge < 16) {
+    else if (getAge < 16 && getOccpCode.length != 0) {
         
         PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
         payorView.modalPresentationStyle = UIModalPresentationFormSheet;
         payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        payorView.payorH = menuH;
-        payorView.payorBH = menuBH;
+        payorView.laHand = menulaH;
+        payorView.basicHand = menuBH;
+        payorView.payorHand = menuPH;
         [self presentModalViewController:payorView animated:YES];
         payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
     }
+    else if (getOccpCode.length == 0) {
+        NSLog(@"no where!");
+    }
     else {
         NSLog(@"age 16-17");
-        
-        [self checking2ndLA];
-        if (CustCode2.length != 0) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [alert show];
-        } else {
-            PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
-            payorView.modalPresentationStyle = UIModalPresentationFormSheet;
-            payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            payorView.payorH = menuH;
-            payorView.payorBH = menuBH;
-            [self presentModalViewController:payorView animated:YES];
-            payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+        if (getSINo.length != 0) {
+            [self checking2ndLA];
+            if (CustCode2.length != 0) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            } else {
+                PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
+                payorView.modalPresentationStyle = UIModalPresentationFormSheet;
+                payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                payorView.laHand = menulaH;
+                payorView.basicHand = menuBH;
+                payorView.payorHand = menuPH;
+                [self presentModalViewController:payorView animated:YES];
+                payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+            }
+        }
+        else {
+            if (check2ndLA != 0) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+            else {
+                PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
+                payorView.modalPresentationStyle = UIModalPresentationFormSheet;
+                payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                payorView.laHand = menulaH;
+                payorView.basicHand = menuBH;
+                payorView.payorHand = menuPH;
+                [self presentModalViewController:payorView animated:YES];
+                payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+            }
         }
     }
 }
@@ -235,20 +293,35 @@
             BasicPlanViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
             zzz.modalPresentationStyle = UIModalPresentationFormSheet;
             zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            zzz.basicH = menuH;
+            zzz.basicH = menulaH;
             zzz.basicBH = menuBH;
+            zzz.basicPH = menuPH;
+            zzz.basicLa2ndH = menuLa2ndH;
+            [self presentModalViewController:zzz animated:YES];
+            zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
+        }
+    }
+    else if (menulaH.storedIdProfile != 0){
+        
+        if (getAge < 10) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        }
+        else {
+            BasicPlanViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
+            zzz.modalPresentationStyle = UIModalPresentationFormSheet;
+            zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            zzz.basicH = menulaH;
+            zzz.basicBH = menuBH;
+            zzz.basicPH = menuPH;
+            zzz.basicLa2ndH = menuLa2ndH;
             [self presentModalViewController:zzz animated:YES];
             zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
         }
     }
     else {
-        BasicPlanViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
-        zzz.modalPresentationStyle = UIModalPresentationFormSheet;
-        zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        zzz.basicH = menuH;
-        zzz.basicBH = menuBH;
-        [self presentModalViewController:zzz animated:YES];
-        zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
+        NSLog(@"no where!");
     }
 }
 
@@ -260,7 +333,7 @@
         premView.modalPresentationStyle = UIModalPresentationFormSheet;
         premView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         premView.premBH = menuBH;
-        premView.premH = menuH;
+        premView.premH = menulaH;
         [self presentModalViewController:premView animated:YES];
         premView.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
         
@@ -357,7 +430,7 @@
         NewLAViewController *newLA = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
         newLA.modalPresentationStyle = UIModalPresentationFormSheet;
         newLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        newLA.laH = menuH;
+        newLA.laH = menulaH;
         newLA.laBH = menuBH;
         [self presentModalViewController:newLA animated:YES];
         newLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
@@ -384,7 +457,7 @@
         zzz.modalPresentationStyle = UIModalPresentationFormSheet;
         zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         zzz.riderBH = menuBH;
-        zzz.riderH = menuH;
+        zzz.riderH = menulaH;
         [self presentModalViewController:zzz animated:YES];
         zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
 
@@ -538,7 +611,8 @@
     [self setCustCode2:nil];
     [self setGetbasicSA:nil];
     [self setMenuBH:nil];
-    [self setMenuH:nil];
+    [self setMenulaH:nil];
+    [self setMenuPH:nil];
     [super viewDidUnload];
 }
 

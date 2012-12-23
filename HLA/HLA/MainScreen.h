@@ -10,6 +10,8 @@
 #import "FSVerticalTabBarController.h"
 #import "SIHandler.h"
 #import "BasicPlanHandler.h"
+#import "PayorHandler.h"
+#import "SecondLAHandler.h"
 
 @interface MainScreen : FSVerticalTabBarController<FSTabBarControllerDelegate>
 
@@ -17,8 +19,10 @@
 @property (nonatomic,strong) id userRequest;
 
 @property (nonatomic, assign,readwrite) int IndexTab;
-@property (nonatomic,strong) SIHandler *mainH;
+@property (nonatomic,strong) SIHandler *mainLaH;
 @property (nonatomic,strong) BasicPlanHandler *mainBH;
+@property (nonatomic,strong) PayorHandler *mainPH;
+@property (nonatomic,strong) SecondLAHandler *mainLa2ndH;
 
 @property (nonatomic,strong) id showQuotation;
 @end

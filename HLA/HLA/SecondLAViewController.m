@@ -22,11 +22,11 @@
 @synthesize CPAField;
 @synthesize PAField;
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
-@synthesize popOverController,requestSINo,la2ndH;
+@synthesize popOverController,requestSINo,la2ndHand,laHand,basicHand;
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
-@synthesize DOBField,OccpField,la2ndBH,deleteBtn,getCommDate;
+@synthesize DOBField,OccpField,deleteBtn,getCommDate,dataInsert;
 
 - (void)viewDidLoad
 {
@@ -47,8 +47,8 @@
     self.deleteBtn.hidden = YES;
     
     useExist = NO;
-    getCommDate = [[NSString alloc] initWithFormat:@"%@",la2ndH.storedCommDate];
-    requestSINo = la2ndBH.storedSINo;
+    getCommDate = [[NSString alloc] initWithFormat:@"%@",laHand.storedCommDate];
+    requestSINo = basicHand.storedSINo;
     NSLog(@"2ndLA-SINo:%@",requestSINo);
     
     if (requestSINo) {
@@ -59,6 +59,11 @@
             self.deleteBtn.hidden = NO;
         }
     }
+    
+    if (self.la2ndHand.storedIndexNo != 0 && !self.requestSINo) {
+        [self toggleTempView];
+    }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -173,6 +178,52 @@
 
 }
 
+-(void)toggleTempView
+{
+    IndexNo = la2ndHand.storedIndexNo;
+    [self getProspectData];
+    nameField.text = NamePP;
+    
+    sex = la2ndHand.storedSex;
+    if ([sex isEqualToString:@"M"]) {
+        sexSegment.selectedSegmentIndex = 0;
+    } else {
+        sexSegment.selectedSegmentIndex = 1;
+    }
+    
+    smoker = la2ndHand.storedSmoker;
+    if ([smoker isEqualToString:@"Y"]) {
+        smokerSegment.selectedSegmentIndex = 0;
+    } else {
+        smokerSegment.selectedSegmentIndex = 1;
+    }
+    
+    DOB = la2ndHand.storedDOB;
+    DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+    
+    age = la2ndHand.storedAge;
+    ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    
+    OccpCode = la2ndHand.storedOccpCode;
+    [self getOccLoadExist];
+    OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
+    if (occLoading == 0) {
+        OccpLoadField.text = @"STD";
+    } else {
+        OccpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
+    }
+    
+    if (occCPA_PA > 4) {
+        CPAField.text = @"D";
+        PAField.text = @"D";
+    } else {
+        CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    }
+    
+    [self save2ndLAHandler];
+}
+
 #pragma mark - action
 - (IBAction)doSelectProspect:(id)sender
 {
@@ -233,12 +284,25 @@
     }
     else {
         NSString *msg;
-        [self checkingExisting2];
-        if (useExist) {
-            msg = @"Confirm changes?";
-        } else {
-            msg = @"Save?";
+        if (self.requestSINo) {
+            [self checkingExisting2];
+            if (useExist) {
+                msg = @"Confirm changes?";
+            } else {
+                msg = @"Save?";
+            }
         }
+        else {
+            if (dataInsert.count != 0) {
+                useExist = YES;
+                msg = @"Confirm changes?";
+            }
+            else {
+                useExist = NO;
+                msg = @"Save?";
+            }
+        }
+    
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
         [alert show];
@@ -260,28 +324,55 @@
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag==1001 && buttonIndex == 0) {
-        if (useExist) {
-            [self updateData];
-        } else {
-            [self saveData];
+        if (self.requestSINo) {
+            if (useExist) {
+                [self updateData];
+            } else {
+                [self saveData];
+            }
         }
+        else {
+            [self save2ndLAHandler];
+        }
+        
     }
     else if (alertView.tag == 1002 && buttonIndex == 0) {
-        [self checkingRider];
-        [self deleteLA];
-        if (CheckRiderCode.length != 0) {
-            [self deleteRider];
+        if (self.requestSINo) {
+            [self checkingRider];
+            [self deleteLA];
+            if (CheckRiderCode.length != 0) {
+                [self deleteRider];
+            }
+            nameField.text = @"";
+            [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+            //        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+            DOBField.text = @"";
+            ageField.text = @"";
+            OccpField.text = @"";
+            OccpLoadField.text = @"";
+            CPAField.text = @"";
+            PAField.text = @"";
+            [self closeScreen];
         }
-        nameField.text = @"";
-        [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        DOBField.text = @"";
-        ageField.text = @"";
-        OccpField.text = @"";
-        OccpLoadField.text = @"";
-        CPAField.text = @"";
-        PAField.text = @"";
-        [self closeScreen];
+        else {
+            if (dataInsert.count != 0) {
+                dataInsert = [[NSMutableArray alloc] init];
+                self.la2ndHand = [[SecondLAHandler alloc] init];
+                NSLog(@"existStored:%d, dataInsert:%d",self.la2ndHand.storedIndexNo,dataInsert.count);
+                
+                nameField.text = @"";
+                [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+                DOBField.text = @"";
+                ageField.text = @"";
+                OccpField.text= @"";
+                OccpLoadField.text = @"";
+                CPAField.text = @"";
+                PAField.text = @"";
+                
+                self.deleteBtn.hidden = YES;
+            }
+        }
+        
     }
     else if (alertView.tag==1004 && buttonIndex == 0) {
         
@@ -373,13 +464,29 @@
 
 -(void)closeScreen
 {
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.modalPresentationStyle = UIModalPresentationFullScreen;
-    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.IndexTab = 3;
-    main.mainH = la2ndH;
-    main.mainBH = la2ndBH;
-    [self presentModalViewController:main animated:YES];
+    if (dataInsert.count != 0) {
+        for (NSUInteger i=0; i< dataInsert.count; i++) {
+            SecondLAHandler *ss = [dataInsert objectAtIndex:i];
+            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+            main.modalPresentationStyle = UIModalPresentationFullScreen;
+            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            main.IndexTab = 3;
+            main.mainLaH = laHand;
+            main.mainBH = basicHand;
+            main.mainLa2ndH = ss;
+            [self presentModalViewController:main animated:YES];
+        }
+    }
+    else {
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.IndexTab = 3;
+        main.mainLaH = laHand;
+        main.mainBH = basicHand;
+        main.mainLa2ndH = la2ndHand;
+        [self presentModalViewController:main animated:YES];
+    }
 }
 
 #pragma mark - delegate
@@ -393,7 +500,7 @@
     smoker = @"N";
     IndexNo = [aaIndex intValue];
     
-    if (la2ndH.storedIndexNo == IndexNo) {
+    if (laHand.storedIndexNo == IndexNo) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"This Life Assured has already been attached to the plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     } else {
@@ -408,7 +515,6 @@
         }
         NSLog(@"sex:%@",sex);
         
-//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         DOBField.text = [[NSString alloc] initWithFormat:@"%@",aaDOB];
         DOB = aaDOB;
         [self calculateAge];
@@ -557,6 +663,19 @@
         }
         sqlite3_close(contactDB);
     }
+    self.deleteBtn.hidden = NO;
+}
+
+-(void)save2ndLAHandler
+{
+    dataInsert = [[NSMutableArray alloc] init];
+    SecondLAHandler *ss = [[SecondLAHandler alloc] init];
+    [dataInsert addObject:[[SecondLAHandler alloc] initWithIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode]];
+    for (NSUInteger i=0; i< dataInsert.count; i++) {
+        ss = [dataInsert objectAtIndex:i];
+        NSLog(@"stored %d",ss.storedIndexNo);
+    }
+    
     self.deleteBtn.hidden = NO;
 }
 

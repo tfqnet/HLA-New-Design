@@ -18,8 +18,9 @@
 @property (nonatomic, retain) NSString *storedCommDate;
 @property (nonatomic ,assign ,readwrite) int storedIdPayor;
 @property (nonatomic ,assign ,readwrite) int storedIdProfile;
+@property (nonatomic, retain) NSString *storedSmoker;
 
--(id) initWithIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate;
+-(id) initWithIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker;
 
 
 @end

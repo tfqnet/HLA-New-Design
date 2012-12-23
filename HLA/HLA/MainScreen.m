@@ -27,7 +27,7 @@
 @implementation MainScreen
 @synthesize indexNo, showQuotation;
 @synthesize userRequest;
-@synthesize IndexTab,mainH,mainBH;
+@synthesize IndexTab,mainLaH,mainBH,mainPH,mainLa2ndH;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,7 +44,7 @@
     self.delegate = self;
     
     //passing value
-    NSLog(@"MAINLA-age:%d, job:%@",mainH.storedAge,mainH.storedOccpCode);
+    NSLog(@"MAINLA-age:%d, job:%@",mainLaH.storedAge,mainLaH.storedOccpCode);
     NSLog(@"MAINBasic-SINo:%@, age:%d, job:%@",mainBH.storedSINo,mainBH.storedAge,mainBH.storedOccpCode);
     
     //Create view controllers
@@ -73,8 +73,10 @@
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
-    menuSIPage.menuH = mainH;
+    menuSIPage.menulaH = mainLaH;
     menuSIPage.menuBH = mainBH;
+    menuSIPage.menuPH = mainPH;
+    menuSIPage.menuLa2ndH = mainLa2ndH;
     menuSIPage.SIshowQuotation = showQuotation;
     menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];

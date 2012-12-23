@@ -41,8 +41,9 @@
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
-@synthesize planCode,requestOccpCode,basicH,dataInsert, OccuClass,basicBH;
-@synthesize popoverController,SINo,CustCode,SIDate,SILastNo,CustDate,CustLastNo;
+@synthesize planCode,requestOccpCode,basicH,dataInsert, OccuClass,basicBH,basicPH,basicLa2ndH;
+@synthesize popoverController,SINo,LACustCode,PYCustCode,SIDate,SILastNo,CustDate,CustLastNo;
+@synthesize NamePP,DOBPP,OccpCodePP,GenderPP,secondLACustCode,IndexNo,PayorIndexNo,secondLAIndexNo;
 
 #pragma mark - Cycle View
 
@@ -75,14 +76,14 @@
     if (ageClient > 50 && ageClient <=65)
     {
         [advanceIncomeSegment setEnabled:NO forSegmentAtIndex:0];
-//        advanceIncomeSegment.selectedSegmentIndex = 2;
     }
     
     healthLoadingView.alpha = 0;
     showHL = NO;
     useExist = NO;
-    SINo = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     termField.enabled = NO;
+    
+    SINo = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     [self getTermRule];
     
     if (requestSINo) {
@@ -96,6 +97,22 @@
         }
     } else {
         NSLog(@"SINo not exist!");
+    }
+    
+    if (basicPH.storedIndexNo != 0) {
+        NSLog(@"exist payor!");
+        IndexNo = basicPH.storedIndexNo;
+        PayorIndexNo = basicPH.storedIndexNo;
+        [self getProspectData];
+        NSLog(@"payorAge:%d",basicPH.storedAge);
+    }
+    
+    if (basicLa2ndH.storedIndexNo != 0) {
+        NSLog(@"exist secondLA!");
+        IndexNo = basicLa2ndH.storedIndexNo;
+        secondLAIndexNo = basicLa2ndH.storedIndexNo;
+        [self getProspectData];
+        NSLog(@"2ndLAAge:%d",basicLa2ndH.storedAge);
     }
 }
 
@@ -469,8 +486,9 @@
             MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
             main.modalPresentationStyle = UIModalPresentationFullScreen;
             main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainH = basicH;
+            main.mainLaH = basicH;
             main.mainBH = ss;
+            main.mainPH = basicPH;
             main.IndexTab = 3;
             main.showQuotation = @"NO";
             [self presentViewController:main animated:YES completion:nil];
@@ -479,7 +497,7 @@
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         main.modalPresentationStyle = UIModalPresentationFullScreen;
         main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.mainH = basicH;
+        main.mainLaH = basicH;
         main.IndexTab = 3;
         [self presentViewController:main animated:YES completion:nil];
     }
@@ -652,19 +670,20 @@
         sqlite3_close(contactDB);
     }
     
-    if (SILastNo == 0 && SIDate == NULL) {
-        [self updateFirstRunSI];
-    } else {
-        [self updateFirstRunSI];
-    }
+    [self updateFirstRunSI];
 }
 
 -(void)getRunningCustCode
 {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT LastNo,LastUpdated FROM Adm_TrnTypeNo WHERE TrnTypeCode=\"CL\""];
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT LastNo,LastUpdated FROM Adm_TrnTypeNo WHERE TrnTypeCode=\"CL\" AND LastUpdated like \"%%%@%%\" ",dateString];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -677,17 +696,15 @@
                 NSLog(@"LastCustNo:%d CustDate:%@",CustLastNo,CustDate);
                 
             } else {
-                NSLog(@"error check tbl_Adm_TrnTypeNo");
+                CustLastNo = 0;
+                CustDate = dateString;
             }
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
     }
-    if (CustLastNo == 0 && CustDate == NULL) {
-        [self updateFirstRunCust];
-    } else {
-        [self updateFirstRunCust];
-    }
+    
+    [self updateFirstRunCust];
 }
 
 -(void)updateFirstRunSI
@@ -863,7 +880,8 @@
     NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
     
     SINo = [[NSString alloc] initWithFormat:@"SI%@-%@",currentdate,fooSI];
-    CustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
+    LACustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
+    NSLog(@"SINo:%@, CustCode:%@",SINo,LACustCode);
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -887,6 +905,14 @@
                     NSLog(@"storedbasic:%@",ss.storedSINo);
                 }
                 
+                if (PayorIndexNo != 0) {
+                    [self savePayor];
+                }
+                
+                if (secondLAIndexNo != 0) {
+                    [self saveSecondLA];
+                }
+                
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert setTag:1004];
                 [SuccessAlert show];
@@ -896,6 +922,111 @@
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [failAlert show];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)savePayor
+{
+    [self getRunningCustCode];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    NSString *currentdate = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    NSString *dateStr = [dateFormatter stringFromDate:[NSDate date]];
+    
+    int runningNoCust = CustLastNo + 1;
+    NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
+    
+    PYCustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
+    
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *insertSQL = [NSString stringWithFormat:
+                               @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"PY\",\"1\",\"%@\",\"hla\")",SINo, PYCustCode,dateStr];
+        
+        NSLog(@"%@",insertSQL);
+        if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Done LA");
+            } else {
+                NSLog(@"Failed LA");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        int ANB = basicPH.storedAge + 1;
+        NSString *insertSQL2 = [NSString stringWithFormat:
+                                @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", PYCustCode, NamePP, basicPH.storedSmoker, basicPH.storedSex, basicPH.storedDOB, basicPH.storedAge, ANB, basicPH.storedOccpCode, dateStr,PayorIndexNo];
+    
+        NSLog(@"%@",insertSQL2);
+        if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Done LA2");
+                
+            } else {
+                NSLog(@"Failed LA2");
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)saveSecondLA
+{
+    [self getRunningCustCode];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyyMMdd"];
+    NSString *currentdate = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    NSString *dateStr = [dateFormatter stringFromDate:[NSDate date]];
+    
+    int runningNoCust = CustLastNo + 1;
+    NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
+
+    secondLACustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
+    
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *insertSQL = [NSString stringWithFormat:
+                               @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"2\",\"%@\",\"hla\")",SINo, secondLACustCode,dateStr];
+        
+        NSLog(@"%@",insertSQL);
+        if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Done LA");
+            } else {
+                NSLog(@"Failed LA");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        int ANB = basicLa2ndH.storedAge + 1;
+        NSString *insertSQL2 = [NSString stringWithFormat:
+                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", secondLACustCode, NamePP, basicLa2ndH.storedSmoker, basicLa2ndH.storedSex, basicLa2ndH.storedDOB, basicLa2ndH.storedAge, ANB, basicLa2ndH.storedOccpCode, dateStr,secondLAIndexNo];
+        
+        NSLog(@"%@",insertSQL2);
+        if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Done LA2");
+                
+            } else {
+                NSLog(@"Failed LA2");
             }
             sqlite3_finalize(statement);
         }
@@ -913,7 +1044,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"UPDATE Clt_Profile SET CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",CustCode,currentdate,basicH.storedIdProfile];
+                              @"UPDATE Clt_Profile SET CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",LACustCode,currentdate,basicH.storedIdProfile];
     
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -927,7 +1058,7 @@
         }
         
         NSString *querySQL2 = [NSString stringWithFormat:
-                @"UPDATE Trad_LAPayor SET SINo=\"%@\", CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE rowid=\"%d\"",SINo,CustCode,currentdate,basicH.storedIdPayor];
+                @"UPDATE Trad_LAPayor SET SINo=\"%@\", CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE rowid=\"%d\"",SINo,LACustCode,currentdate,basicH.storedIdPayor];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -996,6 +1127,31 @@
                 planCode =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
             } else {
                 NSLog(@"error access PentaPlanCode");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getProspectData
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile WHERE IndexNo= \"%d\"",IndexNo];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NamePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                DOBPP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                GenderPP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                OccpCodePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
+            } else {
+                NSLog(@"error access prospect_profile");
             }
             sqlite3_finalize(statement);
         }

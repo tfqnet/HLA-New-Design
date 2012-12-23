@@ -10,10 +10,10 @@
 
 @implementation SIHandler
 
-@synthesize storedAge,storedOccpCode,storedOccpClass,storedSex,storedIndexNo,storedCommDate;
+@synthesize storedAge,storedOccpCode,storedOccpClass,storedSex,storedIndexNo,storedCommDate,storedSmoker;
 @synthesize storedIdPayor,storedIdProfile;
 
--(id)initWithIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
+-(id)initWithIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker
 {
     self = [super init];
     if(self) {
@@ -25,6 +25,7 @@
         self.storedCommDate = aaCommDate;
         self.storedIdProfile = aaIdProfile;
         self.storedIdPayor = aaIdPayor;
+        self.storedSmoker = aaSmoker;
     }
     return self;
 }

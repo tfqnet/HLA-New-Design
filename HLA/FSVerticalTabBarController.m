@@ -116,8 +116,8 @@
                 
                 MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
                 main.mainBH = nil;
-                main.mainH = nil;
-                NSLog(@"Index:%d", main.mainH.storedIndexNo);
+                main.mainLaH = nil;
+                NSLog(@"Index:%d", main.mainLaH.storedIndexNo);
                 
                 if (_selectedIndex == 3) {
                     NSLog(@"empty!");

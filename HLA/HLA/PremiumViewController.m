@@ -133,7 +133,7 @@
     MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     main.modalPresentationStyle = UIModalPresentationFullScreen;
     main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.mainH = premH;
+    main.mainLaH = premH;
     main.mainBH = premBH;
     main.IndexTab = 3;
     main.showQuotation = @"YES";
