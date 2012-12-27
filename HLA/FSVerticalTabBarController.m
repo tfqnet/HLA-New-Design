@@ -19,6 +19,7 @@
 #import "BasicPlanViewController.h"
 #import "RiderViewController.h"
 #import "PremiumViewController.h"
+#import "SIListing.h"
 
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
@@ -36,6 +37,7 @@
 @synthesize viewControllers = _viewControllers;
 @synthesize selectedIndex = _selectedIndex;
 @synthesize tabBarWidth = _tabBarWidth;
+
 
 
 - (FSVerticalTabBar *)tabBar
@@ -126,7 +128,13 @@
                     [previousViewController removeFromParentViewController];
                 }
             }
-        
+            
+            if (selectedIndex == 2) {
+                
+                [(SIListing *)selectedViewController RefreshZZZ];
+                
+            }
+            
             [self addChildViewController:selectedViewController];
             selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
                                                        0,
@@ -316,5 +324,7 @@
 {
     return NO;
 }
+
+
 
 @end

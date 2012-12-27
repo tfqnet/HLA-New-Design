@@ -39,6 +39,7 @@
 @synthesize Popover = _Popover;
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
+
 //@synthesize NewLAViewController =_NewLAViewController;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -55,7 +56,6 @@
     [super viewDidLoad];
     
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg18.jpg"]];
-    
     outletDelete.hidden = TRUE;
     outletDate.hidden = true;
     outletDone.hidden = true;
@@ -100,6 +100,7 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
 
     [self LoadAllResult];
+    
     /*
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
@@ -178,10 +179,14 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+
+}
+
 - (void)LoadAllResult{
+    
     sqlite3_stmt *statement;
     const char *dbpath = [databasePath UTF8String];
-    
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
@@ -634,6 +639,7 @@
     }
      */
     
+
     if (_SIDate == Nil) {
         
         self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
@@ -1202,11 +1208,6 @@
 
 - (IBAction)btnAddNewSI:(id)sender {
     /*
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.modalPresentationStyle = UIModalPresentationFullScreen;
-    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.IndexTab = 3;
-    */
     NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
     MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     MainScreenPage.IndexTab = 3;
@@ -1216,7 +1217,7 @@
         [MainScreenPage presentModalViewController:NewLAPage animated:NO];
         NewLAPage.view.superview.bounds =  CGRectMake(-300, 0, 1024, 748);
     }];
-    
+    */
     //[self presentViewController:main animated:NO completion:nil];
     
 //    if (_NewLAViewController == Nil) {
@@ -1226,6 +1227,16 @@
 //    _NewLAViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 //    [self presentModalViewController:_NewLAViewController animated:YES];
 //    _NewLAViewController.view.superview.frame = CGRectMake(100, 0, 970, 768);//50, 0, 970, 768
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    //        main.modalPresentationStyle = UIModalPresentationFullScreen;
+    //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    main.IndexTab = 3;
+    [self presentViewController:main animated:NO completion:nil];
+}
+
+-(void)RefreshZZZ{
+    [self LoadAllResult];
+    [myTableView reloadData];
 }
 
 @end
