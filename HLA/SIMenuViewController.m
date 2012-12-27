@@ -162,7 +162,7 @@ id RiderCount;
 -(void)select2ndLA
 {
     NSLog(@"select 2ndLA:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
-    if (getAge >= 18 && ![getOccpCode isEqualToString:@"(null)"])
+    if (getAge >= 18 && getAge <=70 && ![getOccpCode isEqualToString:@"(null)"])
     {
         if (_SecondLAController == nil) {
             self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
@@ -172,6 +172,11 @@ id RiderCount;
         self.SecondLAController.requestSINo = getSINo;
         [self addChildViewController:self.SecondLAController];
         [self.RightView addSubview:self.SecondLAController.view];
+    }
+    else if (getAge > 70) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
     }
     else if (getAge < 16 && getOccpCode.length != 0 && ![getOccpCode isEqualToString:@"(null)"]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -294,6 +299,11 @@ id RiderCount;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
         }
+        else if (getAge > 70) {
+        
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        }
         else {
             
             self.BasicController = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
@@ -369,7 +379,7 @@ id RiderCount;
 
 -(void)calculatedPrem
 {
-    if (getSINo.length != 0) {
+    if (getSINo.length != 0 && getAge <= 70) {
     
         PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
         premView.requestAge = getAge;
@@ -385,6 +395,11 @@ id RiderCount;
         
         [self addChildViewController:premView];
         [self.RightView addSubview:premView.view];
+    }
+    else if (getAge > 70) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"No record selected!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -522,19 +537,26 @@ id RiderCount;
     
     else if (indexPath.row == 4) {
         
-        RiderViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
-        zzz.requestAge = getAge;
-        zzz.requestOccpClass = getOccpClass;
+        if (getAge > 70) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        }
+        else {
+            RiderViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
+            zzz.requestAge = getAge;
+            zzz.requestOccpClass = getOccpClass;
         
-        zzz.requestSINo = getSINo;
-        zzz.requestPlanCode = getPlanCode;
-        zzz.requestCoverTerm = getTerm;
-        zzz.requestBasicSA = getbasicSA;
-        zzz.requestMOP = getMOP;
-        zzz.requestAdvance = getAdvance;
+            zzz.requestSINo = getSINo;
+            zzz.requestPlanCode = getPlanCode;
+            zzz.requestCoverTerm = getTerm;
+            zzz.requestBasicSA = getbasicSA;
+            zzz.requestMOP = getMOP;
+            zzz.requestAdvance = getAdvance;
         
-        [self addChildViewController:zzz];
-        [self.RightView addSubview:zzz.view];
+            [self addChildViewController:zzz];
+            [self.RightView addSubview:zzz.view];
+        }
     }
     
     else if (indexPath.row == 5) {

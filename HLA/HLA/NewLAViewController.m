@@ -230,7 +230,7 @@ id temp;
     else {
         
         LANameField.text = NamePP;
-        //sex = GenderPP;
+        sex = GenderPP;
         
         if ([GenderPP isEqualToString:@"M"]) {
             sexSegment.selectedSegmentIndex = 0;
@@ -248,36 +248,38 @@ id temp;
         
         DOB = DOBPP;
         [self calculateAge];
-        NSLog(@"age:%d",age);
+            
+        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+        [btnCommDate setTitle:commDate forState:UIControlStateNormal];
+        
+        occuCode = OccpCodePP;
+        [self getOccLoadExist];
+        LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        if (occLoading == 0) {
+            LAOccLoadingField.text = @"STD";
+        } else {
+            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+        }
+        
+        if (occCPA_PA > 4) {
+            LACPAField.text = @"D";
+            LAPAField.text = @"D";
+        } else {
+            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+//        statusLabel.text = @"Data changed. Please resave!";
+//        statusLabel.textColor = [UIColor redColor];
+        
+        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+        
         if (age > 70) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
         }
         else {
-            
-            LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-            LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-            [btnCommDate setTitle:commDate forState:UIControlStateNormal];
-        
-            //occuCode = OccpCodePP;
-            [self getOccLoadExist];
-            LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
-            if (occLoading == 0) {
-                LAOccLoadingField.text = @"STD";
-            } else {
-                LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-            }
-        
-            if (occCPA_PA > 4) {
-                LACPAField.text = @"D";
-                LAPAField.text = @"D";
-            } else {
-                LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            }
-        
-//              statusLabel.text = @"Data changed. Please resave!";
-//              statusLabel.textColor = [UIColor redColor];
         
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to "
                               "apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -397,6 +399,10 @@ id temp;
     else if (AgeLess) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert setTag:1005];
+        [alert show];
+    }
+    else if (age > 70) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (occuCode.length == 0 || LAOccpField.text.length == 0) {
