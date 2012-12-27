@@ -246,37 +246,44 @@ id temp;
         }
         NSLog(@"smoker:%@",smoker);
         
-        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-        //DOB = DOBPP;
+        DOB = DOBPP;
         [self calculateAge];
-        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-        
-        [btnCommDate setTitle:commDate forState:UIControlStateNormal];
-        
-        //occuCode = OccpCodePP;
-        [self getOccLoadExist];
-        LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
-        if (occLoading == 0) {
-            LAOccLoadingField.text = @"STD";
-        } else {
-            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+        NSLog(@"age:%d",age);
+        if (age > 70) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
         }
+        else {
+            
+            LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+            LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+            [btnCommDate setTitle:commDate forState:UIControlStateNormal];
         
-        if (occCPA_PA > 4) {
-            LACPAField.text = @"D";
-            LAPAField.text = @"D";
-        } else {
-            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-        }
+            //occuCode = OccpCodePP;
+            [self getOccLoadExist];
+            LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+            if (occLoading == 0) {
+                LAOccLoadingField.text = @"STD";
+            } else {
+                LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+            }
         
-//            statusLabel.text = @"Data changed. Please resave!";
-//            statusLabel.textColor = [UIColor redColor];
+            if (occCPA_PA > 4) {
+                LACPAField.text = @"D";
+                LAPAField.text = @"D";
+            } else {
+                LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+                LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            }
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to "
+//              statusLabel.text = @"Data changed. Please resave!";
+//              statusLabel.textColor = [UIColor redColor];
+        
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to "
                               "apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert setTag:1004];
-        [alert show];
+            [alert setTag:1004];
+            [alert show];
+        }
     }
 }
 
@@ -382,8 +389,8 @@ id temp;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
-
-    else if ([btnCommDate.titleLabel.text isEqualToString:@"(null)"] || [btnCommDate.titleLabel.text isEqualToString:@""]) {
+    
+    else if ([btnCommDate.titleLabel.text isEqualToString:@"(null)"] || btnCommDate.titleLabel.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Commencement date is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
@@ -392,7 +399,7 @@ id temp;
         [alert setTag:1005];
         [alert show];
     }
-    else if (occuCode.length == 0) {        
+    else if (occuCode.length == 0 || LAOccpField.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     } else if ([LANameField.text rangeOfCharacterFromSet:set].location != NSNotFound) {

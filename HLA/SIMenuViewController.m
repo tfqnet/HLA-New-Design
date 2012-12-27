@@ -43,19 +43,15 @@ id RiderCount;
     [super viewDidLoad];
     [self resignFirstResponder];
     
-    //--for table view
-    [self.view addSubview:myTableView];
-    self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
-    
-    //--for detail view
-//    self.RightView.backgroundColor = [UIColor colorWithRed:(5.0/255.0) green:(150.0/255.0) blue:(200.0/255.0) alpha:1.0];
-    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", @"Quotation", nil ];
+    //--for table view
+    [self.view addSubview:myTableView];
+    self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
+    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", @"Quotation", nil ];
     SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", @"6", nil ];
     PlanEmpty = YES;
     
@@ -95,7 +91,9 @@ id RiderCount;
     _BasicController = nil;
     _PayorController = nil;
     _SecondLAController = nil;
+    getAge = 0;
     getSINo = nil;
+    getOccpCode = nil;
     [self.myTableView reloadData];
     
     self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
@@ -138,7 +136,8 @@ id RiderCount;
 
 #pragma mark - action
 
--(void)CalculateRider{
+-(void)CalculateRider
+{
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -160,10 +159,10 @@ id RiderCount;
     }
 }
 
-
 -(void)select2ndLA
 {
-    if (getAge >= 18)
+    NSLog(@"select 2ndLA:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
+    if (getAge >= 18 && ![getOccpCode isEqualToString:@"(null)"])
     {
         if (_SecondLAController == nil) {
             self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
@@ -174,18 +173,18 @@ id RiderCount;
         [self addChildViewController:self.SecondLAController];
         [self.RightView addSubview:self.SecondLAController.view];
     }
-    else if (getAge < 16 && getOccpCode.length != 0){
+    else if (getAge < 16 && getOccpCode.length != 0 && ![getOccpCode isEqualToString:@"(null)"]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
-    else if (getOccpCode.length == 0) {
+    else if (getOccpCode.length == 0 || [getOccpCode isEqualToString:@"(null)"]) {
         NSLog(@"no where!");
     }
     else {
         NSLog(@"age 16-17");
-        if (getSINo.length != 0) {
-            
+        if (getSINo.length != 0 && ![getSINo isEqualToString:@"(null)"]) {
             NSLog(@"with SI");
+            
             [self checkingPayor];
             if (payorSINo.length != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -222,13 +221,15 @@ id RiderCount;
 
 -(void)selectPayor
 {
-    if (getAge >= 18) {
+    NSLog(@"select payor:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
+    if (getAge >= 18 && ![getOccpCode isEqualToString:@"(null)"]) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Life Assured's age must not greater or equal to 18 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
     else if (getAge < 16 && getOccpCode.length != 0) {
         
+        NSLog(@"payor here!");
         if (_PayorController == nil) {
             self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
             _PayorController.delegate = self;
@@ -238,12 +239,12 @@ id RiderCount;
         [self addChildViewController:self.PayorController];
         [self.RightView addSubview:self.PayorController.view];
     }
-    else if (getOccpCode.length == 0) {
+    else if (getOccpCode.length == 0 || [getOccpCode isEqualToString:@"(null)"]) {
         NSLog(@"no where!");
     }
     else {
         NSLog(@"age 16-17");
-        if (getSINo.length != 0) {
+        if (getSINo.length != 0 && ![getSINo isEqualToString:@"(null)"]) {
             
             NSLog(@"with SI");
             [self checking2ndLA];
@@ -283,7 +284,8 @@ id RiderCount;
 
 -(void)selectBasicPlan
 {
-    if (getSINo.length != 0) {
+    NSLog(@"select basic:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
+    if (getSINo.length != 0 && ![getSINo isEqualToString:@"(null)"]) {
         NSLog(@"with SI");
         
         [self checkingPayor];
@@ -456,18 +458,21 @@ id RiderCount;
 - (UITableViewCell *)tableView:(UITableView *)myTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *CellIdentifier = @"Cell";
-    
     UITableViewCell *cell = [self.myTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
-    //cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     if (indexPath.row == 4) {
         cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", RiderCount ];
     }
     else{
         cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     }
+    
+    cell.detailTextLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    cell.detailTextLabel.textColor = [UIColor whiteColor];
+    cell.detailTextLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:10];
+    cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:18];
@@ -483,6 +488,7 @@ id RiderCount;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
+        NSLog(@"select LA:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
         
         if (getSINo.length != 0) {
             NSLog(@"with SI");
@@ -732,6 +738,20 @@ id RiderCount;
     [self setMenuBH:nil];
     [self setMenulaH:nil];
     [self setMenuPH:nil];
+    [self setGetOccpCode:nil];
+    [self setGetCommDate:nil];
+    [self setGetPaySmoker:nil];
+    [self setGetPaySex:nil];
+    [self setGetPayDOB:nil];
+    [self setGetPayOccp:nil];
+    [self setGet2ndLASmoker:nil];
+    [self setGet2ndLASex:nil];
+    [self setGet2ndLADOB:nil];
+    [self setGet2ndLAOccp:nil];
+    [self setGetSINo:nil];
+    [self setGetbasicSA:nil];
+    [self setGetbasicHL:nil];
+    [self setGetPlanCode:nil];
     [super viewDidUnload];
 }
 
