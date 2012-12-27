@@ -143,7 +143,7 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction)btnUserProfile:(id)sender {
+- (IBAction)ActionProfile:(id)sender {
     UserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingUserProfile"];
     UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
     UserProfileView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -153,7 +153,7 @@
     UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 748);
 }
 
-- (IBAction)btnSecurity:(id)sender {
+- (IBAction)ActionSecurity:(id)sender {
     SettingSecurityQuestion *SecurityQuesView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingSecurityQuestion"];
     SecurityQuesView.modalPresentationStyle = UIModalPresentationPageSheet;
     SecurityQuesView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -161,13 +161,13 @@
     SecurityQuesView.view.superview.frame = CGRectMake(150, 50, 700, 748);
 }
 
-- (IBAction)btnChangePwd:(id)sender {
+- (IBAction)ActionPwd:(id)sender {
     ChangePassword *changePwdView = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePwd"];
     changePwdView.modalPresentationStyle = UIModalPresentationPageSheet;
     changePwdView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     changePwdView.userID = self.indexNo;
     [self presentModalViewController:changePwdView animated:YES];
     changePwdView.view.superview.frame = CGRectMake(150, 50, 700, 748);
-    
 }
+
 @end

@@ -36,6 +36,8 @@
 @synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
 @synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance;
 
+id RiderCount;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -119,6 +121,8 @@
         [SelectedRow removeObject:@"4"];
         [SelectedRow removeObject:@"5"];
 //          NSLog(@"Plan not empty");
+        [self CalculateRider];
+
     }
     
     if ([SIshowQuotation isEqualToString:@"NO"] || SIshowQuotation == NULL ) {
@@ -133,6 +137,29 @@
 
 
 #pragma mark - action
+
+-(void)CalculateRider{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"select count(*) from trad_rider_details where sino = '%@' ", getSINo ];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                RiderCount = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                
+                
+            } else {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 
 -(void)select2ndLA
 {
@@ -434,7 +461,14 @@
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
-    cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    //cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    if (indexPath.row == 4) {
+        cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", RiderCount ];
+    }
+    else{
+        cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    }
+
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:18];
     cell.textLabel.textAlignment = UITextAlignmentLeft;

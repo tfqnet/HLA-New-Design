@@ -16,6 +16,9 @@
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 - (IBAction)btnClose:(id)sender;
+- (IBAction)ActionProfile:(id)sender;
+- (IBAction)ActionSecurity:(id)sender;
+- (IBAction)ActionPwd:(id)sender;
 
 
 @end
