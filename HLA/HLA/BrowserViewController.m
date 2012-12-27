@@ -252,6 +252,7 @@ NSMutableArray *ItemPages;
     browserController = nil;
     */
     
+    [self.navigationController setRevealedState:JTRevealedStateNo];
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
     
@@ -275,6 +276,7 @@ NSMutableArray *ItemPages;
 
 -(void)PrevPage{
     
+    [self.navigationController setRevealedState:JTRevealedStateNo];
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
     

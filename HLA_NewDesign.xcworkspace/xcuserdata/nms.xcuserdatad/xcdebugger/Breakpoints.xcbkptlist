@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/setting.m"
-         timestampString = "376452586.759814"
+         timestampString = "378179196.4037"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "138"
-         endingLineNumber = "138"
+         startingLineNumber = "139"
+         endingLineNumber = "139"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -190,11 +190,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/setting.m"
-         timestampString = "376452586.759814"
+         timestampString = "378179196.4037"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "92"
-         endingLineNumber = "92"
+         startingLineNumber = "93"
+         endingLineNumber = "93"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -546,8 +546,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "600"
          endingLineNumber = "600"
-         landmarkName = "-calculateSA"
-         landmarkType = "5">
+         landmarkName = "@implementation RiderViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -559,7 +559,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "557"
          endingLineNumber = "557"
-         landmarkName = "-calculateTerm"
+         landmarkName = "-replaceActive"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1040,7 +1040,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "428"
          endingLineNumber = "428"
-         landmarkName = "-alertView:clickedButtonAtIndex:"
+         landmarkName = "-selectProspect:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1053,7 +1053,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "4184"
          endingLineNumber = "4184"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkName = "-getListCombNo"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1066,7 +1066,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1629"
          endingLineNumber = "1629"
-         landmarkName = "-deducBtnPressed:"
+         landmarkName = "-calculateIncomeRiderInput"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1092,7 +1092,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "3068"
          endingLineNumber = "3068"
-         landmarkName = "-getBasicCSV"
+         landmarkName = "-roomBoardDefaultPlan"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1118,7 +1118,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "303"
          endingLineNumber = "303"
-         landmarkName = "-textFieldShouldBeginEditing:"
+         landmarkName = "-keyboardDidHide:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1131,7 +1131,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "2938"
          endingLineNumber = "2938"
-         landmarkName = "-RiderListController:didSelectCode:desc:"
+         landmarkName = "-NegativeYield"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1144,7 +1144,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1619"
          endingLineNumber = "1619"
-         landmarkName = "-deducBtnPressed:"
+         landmarkName = "-calculateIncomeRiderInput"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1157,7 +1157,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1617"
          endingLineNumber = "1617"
-         landmarkName = "-deducBtnPressed:"
+         landmarkName = "-calculateIncomeRiderInput"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

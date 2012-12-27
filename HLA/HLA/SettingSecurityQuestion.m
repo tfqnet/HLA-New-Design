@@ -44,7 +44,7 @@
     outletQues1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     outletQues2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     outletQues3.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     
 }
 
@@ -112,7 +112,7 @@
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
-  self.ScrollView.frame = CGRectMake(0, 0, 700, 500);
+  self.ScrollView.frame = CGRectMake(0, 0, 700, 700);
 }
 
 -(void) loadExisting{

@@ -42,6 +42,7 @@
     myTableView.backgroundColor = [UIColor clearColor];
     myTableView.backgroundView = nil;
     myTableView.opaque = NO;
+    myTableView.hidden = YES;
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 }
 
@@ -140,5 +141,33 @@
 
 - (IBAction)btnClose:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (IBAction)btnUserProfile:(id)sender {
+    UserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingUserProfile"];
+    UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
+    UserProfileView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    UserProfileView.indexNo = self.indexNo;
+    UserProfileView.idRequest = self.userRequest;
+    [self presentModalViewController:UserProfileView animated:YES];
+    UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 748);
+}
+
+- (IBAction)btnSecurity:(id)sender {
+    SettingSecurityQuestion *SecurityQuesView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingSecurityQuestion"];
+    SecurityQuesView.modalPresentationStyle = UIModalPresentationPageSheet;
+    SecurityQuesView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:SecurityQuesView animated:YES];
+    SecurityQuesView.view.superview.frame = CGRectMake(150, 50, 700, 748);
+}
+
+- (IBAction)btnChangePwd:(id)sender {
+    ChangePassword *changePwdView = [self.storyboard instantiateViewControllerWithIdentifier:@"ChangePwd"];
+    changePwdView.modalPresentationStyle = UIModalPresentationPageSheet;
+    changePwdView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    changePwdView.userID = self.indexNo;
+    [self presentModalViewController:changePwdView animated:YES];
+    changePwdView.view.superview.frame = CGRectMake(150, 50, 700, 748);
+    
 }
 @end

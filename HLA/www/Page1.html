@@ -101,8 +101,11 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
-                    var row2 = result.rows.item(1);
+                    if(result.rows.length > 1){
+                        var row2 = result.rows.item(1);
 
+                    }
+                        
                                    
                     if(result.rows.length == 1){
                                    var row = result.rows.item(0);
