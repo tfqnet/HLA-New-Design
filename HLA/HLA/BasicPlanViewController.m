@@ -41,9 +41,15 @@
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
-@synthesize planCode,requestOccpCode,basicH,dataInsert, OccuClass,basicBH,basicPH,basicLa2ndH;
+@synthesize planCode,requestOccpCode,basicH,dataInsert,basicBH,basicPH,basicLa2ndH;
 @synthesize popoverController,SINo,LACustCode,PYCustCode,SIDate,SILastNo,CustDate,CustLastNo;
 @synthesize NamePP,DOBPP,OccpCodePP,GenderPP,secondLACustCode,IndexNo,PayorIndexNo,secondLAIndexNo;
+@synthesize delegate = _delegate;
+@synthesize requestAge,OccpCode,requestIDPay,requestIDProf,idPay,idProf;
+@synthesize requestAgePay,requestDOBPay,requestIndexPay,requestOccpPay,requestSexPay,requestSmokerPay;
+@synthesize PayorAge,PayorDOB,PayorOccpCode,PayorSex,PayorSmoker;
+@synthesize requestAge2ndLA,requestDOB2ndLA,requestIndex2ndLA,requestOccp2ndLA,requestSex2ndLA,requestSmoker2ndLA;
+@synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 
 #pragma mark - Cycle View
 
@@ -56,11 +62,28 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    ageClient = basicH.storedAge;
-    requestSINo = basicBH.storedSINo;
-    requestOccpCode = basicH.storedOccpCode;
-    OccuClass = basicH.storedOccpClass;
-    NSLog(@"BASIC-SINo:%@, age:%d, job:%@",requestSINo,ageClient,requestOccpCode);
+    ageClient = requestAge;
+    OccpCode = [self.requestOccpCode description];
+    idPay = requestIDPay;
+    idProf = requestIDProf;
+    
+    PayorIndexNo = requestIndexPay;
+    PayorSmoker = [self.requestSmokerPay description];
+    PayorSex = [self.requestSexPay description];
+    PayorDOB = [self.requestDOBPay description];
+    PayorAge = requestAgePay;
+    PayorOccpCode = [self.requestOccpPay description];
+    
+    secondLAIndexNo = requestIndex2ndLA;
+    secondLASmoker = [self.requestSmoker2ndLA description];
+    secondLASex = [self.requestSex2ndLA description];
+    secondLADOB = [self.requestDOB2ndLA description];
+    secondLAAge = requestAge2ndLA;
+    secondLAOccpCode = [self.requestOccp2ndLA description];
+    
+    SINo = [self.requestSINo description];
+    NSLog(@"BASIC-SINo:%@, age:%d, job:%@",SINo,ageClient,OccpCode);
+    NSLog(@"BASIC-idPayor:%d, idProfile:%d",idPay,idProf);
     
     if (!planList) {
         planList = [[PlanList alloc] init];
@@ -82,11 +105,9 @@
     showHL = NO;
     useExist = NO;
     termField.enabled = NO;
-    
-    SINo = [[NSString alloc] initWithFormat:@"%@",requestSINo];
     [self getTermRule];
     
-    if (requestSINo) {
+    if (self.requestSINo) {
         [self checkingExisting];
         if (getSINo.length != 0) {
             NSLog(@"view selected field");
@@ -99,20 +120,17 @@
         NSLog(@"SINo not exist!");
     }
     
-    if (basicPH.storedIndexNo != 0) {
-        NSLog(@"exist payor!");
-        IndexNo = basicPH.storedIndexNo;
-        PayorIndexNo = basicPH.storedIndexNo;
+    if (PayorIndexNo != 0) {
+        NSLog(@"exist payor! Age:%d",PayorAge);
+        IndexNo = PayorIndexNo;
         [self getProspectData];
-        NSLog(@"payorAge:%d",basicPH.storedAge);
     }
     
-    if (basicLa2ndH.storedIndexNo != 0) {
+    if (secondLAIndexNo != 0) {
         NSLog(@"exist secondLA!");
-        IndexNo = basicLa2ndH.storedIndexNo;
-        secondLAIndexNo = basicLa2ndH.storedIndexNo;
+        IndexNo = secondLAIndexNo;
         [self getProspectData];
-        NSLog(@"2ndLAAge:%d",basicLa2ndH.storedAge);
+        NSLog(@"2ndLAAge:%d",secondLAAge);
     }
 }
 
@@ -324,7 +342,7 @@
         substringTempHL = [tempHLField.text substringFromIndex:rangeofDotTempHL.location ];
     }
     
-    if (requestOccpCode.length == 0) {
+    if (OccpCode.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1001];
         [alert show];
@@ -478,6 +496,7 @@
     }
 }
 
+/*
 -(void)closeScreen
 {
     if (dataInsert.count != 0) {
@@ -502,6 +521,7 @@
         [self presentViewController:main animated:YES completion:nil];
     }
 }
+*/
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -527,12 +547,8 @@
         [self checkingSave];
     }
     else if (alertView.tag==1004 && buttonIndex == 0) {
-        [self closeScreen];
+//        [self closeScreen];
     }
-    else if (alertView.tag==1005 && buttonIndex == 0) {
-        [self closeScreen];
-    }
-    
 }
 
 
@@ -626,13 +642,17 @@
     }
     [self getPlanCodePenta];
     
+    /*
     dataInsert = [[NSMutableArray alloc] init];
     BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
     [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"storedbasic:%@",ss.storedSINo);
-    }
+    } */
+    
+    [_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+     
 }
 
 
@@ -889,6 +909,7 @@
         NSString *insertSQL = [NSString stringWithFormat:
         @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@)", SINo,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")"];
 
+//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -897,13 +918,16 @@
                 
                 [self getPlanCodePenta];
                 
+                /*
                 dataInsert = [[NSMutableArray alloc] init];
                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
                 [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
                 for (NSUInteger i=0; i< dataInsert.count; i++) {
                     ss = [dataInsert objectAtIndex:i];
                     NSLog(@"storedbasic:%@",ss.storedSINo);
-                }
+                } */
+                
+                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
                 
                 if (PayorIndexNo != 0) {
                     [self savePayor];
@@ -914,7 +938,7 @@
                 }
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:1004];
+//                [SuccessAlert setTag:1004];
                 [SuccessAlert show];
                 
             } else {
@@ -962,9 +986,9 @@
             sqlite3_finalize(statement);
         }
         
-        int ANB = basicPH.storedAge + 1;
+        int ANB =PayorAge + 1;
         NSString *insertSQL2 = [NSString stringWithFormat:
-                                @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", PYCustCode, NamePP, basicPH.storedSmoker, basicPH.storedSex, basicPH.storedDOB, basicPH.storedAge, ANB, basicPH.storedOccpCode, dateStr,PayorIndexNo];
+                                @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", PYCustCode, NamePP, PayorSmoker, PayorSex, PayorDOB, PayorAge, ANB, PayorOccpCode, dateStr,PayorIndexNo];
     
         NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1015,9 +1039,9 @@
             sqlite3_finalize(statement);
         }
         
-        int ANB = basicLa2ndH.storedAge + 1;
+        int ANB = secondLAAge + 1;
         NSString *insertSQL2 = [NSString stringWithFormat:
-                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", secondLACustCode, NamePP, basicLa2ndH.storedSmoker, basicLa2ndH.storedSex, basicLa2ndH.storedDOB, basicLa2ndH.storedAge, ANB, basicLa2ndH.storedOccpCode, dateStr,secondLAIndexNo];
+                    @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", secondLACustCode, NamePP, secondLASmoker, secondLASex, secondLADOB, secondLAAge, ANB, secondLAOccpCode, dateStr,secondLAIndexNo];
         
         NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1044,8 +1068,9 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"UPDATE Clt_Profile SET CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",LACustCode,currentdate,basicH.storedIdProfile];
-    
+                              @"UPDATE Clt_Profile SET CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",LACustCode,currentdate,idProf];
+        
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE){
@@ -1058,8 +1083,9 @@
         }
         
         NSString *querySQL2 = [NSString stringWithFormat:
-                @"UPDATE Trad_LAPayor SET SINo=\"%@\", CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE rowid=\"%d\"",SINo,LACustCode,currentdate,basicH.storedIdPayor];
+                @"UPDATE Trad_LAPayor SET SINo=\"%@\", CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE rowid=\"%d\"",SINo,LACustCode,currentdate,idPay];
         
+//        NSLog(@"%@",querySQL2);
         if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE){
@@ -1089,16 +1115,19 @@
                 NSLog(@"BasicPlan update!");
                 [self getPlanCodePenta];
                 
+                /*
                 dataInsert = [[NSMutableArray alloc] init];
                 BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
                 [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
                 for (NSUInteger i=0; i< dataInsert.count; i++) {
                     ss = [dataInsert objectAtIndex:i];
                     NSLog(@"storedbasic:%@",ss.storedSINo);
-                }
+                } */
+                
+                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:1005];
+//                [SuccessAlert setTag:1004];
                 [SuccessAlert show];
                 
             }

@@ -27,6 +27,8 @@
 @synthesize CheckRiderCode,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 @synthesize DOBField,OccpField,deleteBtn,getCommDate,dataInsert;
+@synthesize delegate = _delegate;
+@synthesize getSINo;
 
 - (void)viewDidLoad
 {
@@ -35,6 +37,10 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
+    getCommDate = [self.requestCommDate description];
+    getSINo = [self.requestSINo description];
+    NSLog(@"2ndLA-SINo:%@, CommDate:%@",getSINo,getCommDate);
     
     nameField.enabled = NO;
     sexSegment.enabled = NO;
@@ -47,9 +53,6 @@
     self.deleteBtn.hidden = YES;
     
     useExist = NO;
-    getCommDate = [[NSString alloc] initWithFormat:@"%@",laHand.storedCommDate];
-    requestSINo = basicHand.storedSINo;
-    NSLog(@"2ndLA-SINo:%@",requestSINo);
     
     if (requestSINo) {
         [self checkingExisting];
@@ -60,9 +63,12 @@
         }
     }
     
+    NSLog(@"delegate:%@",_delegate);
+    
+    /*
     if (self.la2ndHand.storedIndexNo != 0 && !self.requestSINo) {
         [self toggleTempView];
-    }
+    } */
     
 }
 
@@ -293,7 +299,7 @@
             }
         }
         else {
-            if (dataInsert.count != 0) {
+            if (_delegate != nil) {
                 useExist = YES;
                 msg = @"Confirm changes?";
             }
@@ -316,11 +322,6 @@
     [alert show];
 }
 
-- (IBAction)doClose:(id)sender
-{
-    [self closeScreen];
-}
-
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag==1001 && buttonIndex == 0) {
@@ -336,7 +337,8 @@
         }
         
     }
-    else if (alertView.tag == 1002 && buttonIndex == 0) {
+    else if (alertView.tag == 1002 && buttonIndex == 0) //delete
+    {
         if (self.requestSINo) {
             [self checkingRider];
             [self deleteLA];
@@ -352,13 +354,16 @@
             OccpLoadField.text = @"";
             CPAField.text = @"";
             PAField.text = @"";
-            [self closeScreen];
+//            [self closeScreen];
         }
         else {
-            if (dataInsert.count != 0) {
+            if (_delegate != nil) {
+                /*
                 dataInsert = [[NSMutableArray alloc] init];
                 self.la2ndHand = [[SecondLAHandler alloc] init];
-                NSLog(@"existStored:%d, dataInsert:%d",self.la2ndHand.storedIndexNo,dataInsert.count);
+                NSLog(@"existStored:%d, dataInsert:%d",self.la2ndHand.storedIndexNo,dataInsert.count); */
+                
+                _delegate = nil;
                 
                 nameField.text = @"";
                 [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
@@ -384,25 +389,12 @@
         }
     }
     else if (alertView.tag == 1005 && buttonIndex == 0) {
-        [self closeScreen];
-    }
-    else if (alertView.tag == 1006 && buttonIndex == 0) {
-        [self closeScreen];
+//        [self closeScreen];
     }
 }
 
 -(void)calculateAge
-{
-    /*
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    [dateFormatter setDateFormat:@"yyyy"];
-    NSString *currentYear = [dateFormatter stringFromDate:[NSDate date]];
-    [dateFormatter setDateFormat:@"MM"];
-    NSString *currentMonth = [dateFormatter stringFromDate:[NSDate date]];
-    [dateFormatter setDateFormat:@"dd"];
-    NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]]; */
-    
+{    
     NSArray *curr = [getCommDate componentsSeparatedByString: @"/"];
     NSString *currentDay = [curr objectAtIndex:0];
     NSString *currentMonth = [curr objectAtIndex:1];
@@ -462,6 +454,7 @@
     NSLog(@"msgAge:%@",msgAge);
 }
 
+/*
 -(void)closeScreen
 {
     if (dataInsert.count != 0) {
@@ -487,7 +480,7 @@
         main.mainLa2ndH = la2ndHand;
         [self presentModalViewController:main animated:YES];
     }
-}
+} */
 
 #pragma mark - delegate
 
@@ -650,7 +643,7 @@
                 [self updateRunCustCode];
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:1005];
+//                [SuccessAlert setTag:1005];
                 [SuccessAlert show];
                 
             } else {
@@ -668,13 +661,16 @@
 
 -(void)save2ndLAHandler
 {
+    /*
     dataInsert = [[NSMutableArray alloc] init];
     SecondLAHandler *ss = [[SecondLAHandler alloc] init];
     [dataInsert addObject:[[SecondLAHandler alloc] initWithIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"stored %d",ss.storedIndexNo);
-    }
+    } */
+    
+    [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
     
     self.deleteBtn.hidden = NO;
 }
@@ -714,7 +710,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id, b.IndexNo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",[self.requestSINo description]];
+                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id, b.IndexNo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",getSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -842,7 +838,7 @@
                 NSLog(@"SI update!");
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:1006];
+//                [SuccessAlert setTag:1005];
                 [SuccessAlert show];
                 
             } else {

@@ -73,10 +73,12 @@
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+    /*
     menuSIPage.menulaH = mainLaH;
     menuSIPage.menuBH = mainBH;
     menuSIPage.menuPH = mainPH;
-    menuSIPage.menuLa2ndH = mainLa2ndH;
+    menuSIPage.menuLa2ndH = mainLa2ndH; */
+    menuSIPage.requestSINo = [self.requestSINo description];
     menuSIPage.SIshowQuotation = showQuotation;
     menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];

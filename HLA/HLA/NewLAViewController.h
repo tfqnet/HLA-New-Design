@@ -13,6 +13,13 @@
 #import "SIHandler.h"
 #import "BasicPlanHandler.h"
 
+@class NewLAViewController;
+@protocol NewLAViewControllerDelegate
+-(void) LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker;
+
+-(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance;
+@end
+
 @interface NewLAViewController : UIViewController<UITextFieldDelegate,UIPopoverControllerDelegate,ListingTbViewControllerDelegate,DateViewControllerDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
@@ -20,6 +27,7 @@
     UIPopoverController *popOverController;
     UIPopoverController *_prospectPopover;
     ListingTbViewController *_ProspectList;
+    id <NewLAViewControllerDelegate> _delegate;
     BOOL Saved;
     BOOL useExist;
     BOOL date1;
@@ -34,8 +42,12 @@
 @property (strong, nonatomic) NSMutableArray *dataInsert2;
 @property (nonatomic,strong) SIHandler *laH;
 @property (nonatomic,strong) BasicPlanHandler *laBH;
-//request from previous
+@property (nonatomic,strong) id <NewLAViewControllerDelegate> delegate;
+
+//--request
 @property (nonatomic,strong) id requestSINo;
+@property (nonatomic, copy) NSString *getSINo;
+//--
 
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
 @property (nonatomic, retain) UIPopoverController *prospectPopover;
@@ -69,7 +81,7 @@
 @property (nonatomic, assign,readwrite) int lastIdPayor;
 @property (nonatomic, assign,readwrite) int lastIdProfile;
 
-@property (nonatomic,strong) NSString *getSINo;
+@property (nonatomic,strong) NSString *basicSINo;
 @property (nonatomic,assign,readwrite) int getPolicyTerm;
 @property (nonatomic,assign,readwrite) double getSumAssured;
 @property (nonatomic,copy) NSString *getHL;
@@ -95,8 +107,6 @@
 @property (nonatomic, copy) NSString *payorSINo;
 @property (nonatomic, copy) NSString *payorCustCode;
 
-
-
 //for occupation
 @property(nonatomic , retain) NSMutableArray *occDesc;
 @property(nonatomic , retain) NSMutableArray *occCode;
@@ -115,9 +125,12 @@
 - (IBAction)doSaveLA:(id)sender;
 - (IBAction)selectProspect:(id)sender;
 - (IBAction)btnCommDatePressed:(id)sender;
-- (IBAction)doClose:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
 
+
+
 @end
+
+

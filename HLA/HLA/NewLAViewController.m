@@ -42,6 +42,8 @@
 @synthesize termCover,planCode,arrExistRiderCode;
 @synthesize prospectPopover = _prospectPopover;
 @synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile;
+@synthesize delegate = _delegate;
+@synthesize basicSINo;
 
 id temp;
 - (void)viewDidLoad
@@ -52,7 +54,6 @@ id temp;
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    
     NSLog(@"%@",databasePath);
     
     LANameField.enabled = NO;
@@ -69,15 +70,11 @@ id temp;
     AgeChanged = NO;
     JobChanged = NO;
     
-    if (requestSINo) {
-        self.laH = [[SIHandler alloc] init];
-        self.laBH = [[BasicPlanHandler alloc] init];
-    } else {
-        requestSINo = laBH.storedSINo;
-    }
+    getSINo = [self.requestSINo description];
+    NSLog(@"LA-SINo: %@",getSINo);
     
-    NSLog(@"LA-SINo: %@",requestSINo);
-    if (requestSINo) {
+    if (getSINo.length != 0) {
+        
         [self checkingExisting];
         if (SINo.length != 0) {
             [self getProspectData];
@@ -86,18 +83,20 @@ id temp;
         }
         
         [self checkingExistingSI];
-        if (getSINo.length != 0) {
+        if (basicSINo.length != 0) {
             [self getExistingBasic];
             [self getTerm];
             [self toogleExistingBasic];
         }
-    } else {
+    }
+    else {
         NSLog(@"SINo not exist!");
     }
     
+    /*
     if (self.laH.storedIndexNo != 0 && !requestSINo) {
         [self toggleTempView];
-    }
+    } */
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -179,9 +178,6 @@ id temp;
         JobChanged = YES;
     }
     
-//    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,occuCode);
-//    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
-    
     if (valid) {
         
         LANameField.text = clientName;
@@ -220,13 +216,16 @@ id temp;
             LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
         
+        /*
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
         [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"storedLA sex:%@",ss.storedSex);
-        }
+        } */
+        
+        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
     }
     else {
         
@@ -337,13 +336,16 @@ id temp;
     
     [self getPlanCodePenta];
 
+    /*
     dataInsert2 = [[NSMutableArray alloc] init];
     BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
     [dataInsert2 addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
-    for (NSUInteger i=0; i< dataInsert.count; i++) {
+    for (NSUInteger i=0; i< dataInsert2.count; i++) {
         ss = [dataInsert2 objectAtIndex:i];
         NSLog(@"storedbasic:%@",ss.storedSINo);
-    }
+    } */
+    
+    [_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
 }
 
 #pragma mark - Action
@@ -446,11 +448,6 @@ id temp;
     else {
 		[popOverController dismissPopoverAnimated:YES];
 	}
-}
-
-- (IBAction)doClose:(id)sender
-{
-    [self closeScreen];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -562,7 +559,7 @@ id temp;
             LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
             LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
-        
+        /*
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
         [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
@@ -570,7 +567,7 @@ id temp;
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"storedLA sex:%@",ss.storedSex);
         }
-        
+        */
         
     }    
     else if (alertView.tag==1005 && buttonIndex == 0) {
@@ -586,8 +583,9 @@ id temp;
         LACPAField.text = @"";
         LAPAField.text = @"";
     }
-    else if (alertView.tag==1006 && buttonIndex == 0) {
-        [self closeScreen];
+    else if (alertView.tag==1006 && buttonIndex == 0) //record saved
+    {
+//        [self closeScreen];
     }
     else if (alertView.tag == 1007 && buttonIndex == 0) {
         [self deleteRider];
@@ -685,6 +683,7 @@ id temp;
 //    NSLog(@"msgAge:%@",msgAge);
 }
 
+/*
 -(void)closeScreen
 {
     if (dataInsert.count != 0 && dataInsert2.count == 0) {
@@ -726,7 +725,7 @@ id temp;
         [self presentViewController:main animated:NO completion:nil];
         
     }
-}
+} */
 
 
 #pragma mark - Handle Data
@@ -803,7 +802,7 @@ id temp;
         NSString *insertSQL = [NSString stringWithFormat:
                 @"INSERT INTO Trad_LAPayor (PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"LA\",\"1\",\"%@\",\"hla\")",commDate];
         
-        NSLog(@"%@",insertSQL);
+//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -817,14 +816,14 @@ id temp;
         
         NSString *insertSQL2 = [NSString stringWithFormat:@"INSERT INTO Clt_Profile (Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")",LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
         
-        NSLog(@"%@",insertSQL2);
+//        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Done LA2");
 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:1006];
+//                [SuccessAlert setTag:1006];
                 [SuccessAlert show];
                 
                 [self getLastIDPayor];
@@ -839,13 +838,16 @@ id temp;
             sqlite3_finalize(statement);
         }
         
+        /*
         dataInsert = [[NSMutableArray alloc] init];
         SIHandler *ss = [[SIHandler alloc] init];
         [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
         for (NSUInteger i=0; i< dataInsert.count; i++) {
             ss = [dataInsert objectAtIndex:i];
             NSLog(@"stored %d",ss.storedIdPayor);
-        }
+        }*/
+        
+        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
         
         sqlite3_close(contactDB);
     }
@@ -914,7 +916,7 @@ id temp;
                 }
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:1006];
+//                [SuccessAlert setTag:1006];
                 [SuccessAlert show];
                 
                 statusLabel.text = @"";
@@ -924,13 +926,16 @@ id temp;
                 [failAlert show];
             }
             
+            /*
             dataInsert = [[NSMutableArray alloc] init];
             SIHandler *ss = [[SIHandler alloc] init];
             [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
             for (NSUInteger i=0; i< dataInsert.count; i++) {
                 ss = [dataInsert objectAtIndex:i];
                 NSLog(@"stored sex:%@",ss.storedSex);
-            }
+            }*/
+            
+            [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
             
             sqlite3_finalize(statement);
         }
@@ -944,7 +949,7 @@ id temp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id, b.IndexNo, a.rowid FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
+                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id, b.IndexNo, a.rowid FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
         
 //        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -988,7 +993,7 @@ id temp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.SINo, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",[self.requestSINo description]];
+                              @"SELECT a.SINo, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
         
 //        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -1020,12 +1025,12 @@ id temp;
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT SINo FROM Trad_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT SINo FROM Trad_Details WHERE SINo=\"%@\"",getSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                getSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                basicSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
             } else {
                 NSLog(@"error access Trad_Details");
             }
@@ -1067,12 +1072,12 @@ id temp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT SINo,PolicyTerm,BasicSA,PremiumPaymentOption,CashDividend,YearlyIncome,AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+                @"SELECT SINo, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",getSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                getSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                basicSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 getPolicyTerm = sqlite3_column_int(statement, 1);
                 getSumAssured = sqlite3_column_double(statement, 2);
                 MOP = sqlite3_column_int(statement, 3);
@@ -1103,7 +1108,7 @@ id temp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-        @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",[self.requestSINo description]];
+        @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",getSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1127,7 +1132,7 @@ id temp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",[self.requestSINo description]];
+                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",getSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1215,7 +1220,8 @@ id temp;
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT MinTerm,MaxTerm,MinSA,MaxSA FROM Trad_Sys_Mtn WHERE PlanCode=\"HLAIB\""];
+        NSString *querySQL = [NSString stringWithFormat:
+                        @"SELECT MinTerm,MaxTerm,MinSA,MaxSA FROM Trad_Sys_Mtn WHERE PlanCode=\"HLAIB\""];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -1259,7 +1265,7 @@ id temp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+                              @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\"",getSINo];
         NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1278,7 +1284,7 @@ id temp;
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\"",[self.requestSINo description]];
+        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\"",getSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)

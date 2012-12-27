@@ -18,21 +18,33 @@
     NSString *databasePath;
     sqlite3 *contactDB;
      BrowserViewController *_Browser;
-    
 }
 
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
 @property (nonatomic,strong) SIHandler *premH;
 @property (nonatomic,strong) BasicPlanHandler *premBH;
 
+//--request
+@property (nonatomic, assign,readwrite) int requestAge;
+@property (nonatomic, assign,readwrite) int requestOccpClass;
+@property (nonatomic,strong) id requestOccpCode;
+@property (nonatomic,strong) id requestSINo;
 @property (nonatomic, assign,readwrite) int requestMOP;
 @property (nonatomic, assign,readwrite) int requestTerm;
-@property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestBasicSA;
 @property (nonatomic,strong) id requestBasicHL;
-@property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) id requestPlanCode;
-@property (nonatomic,strong) id requestOccpCode;
+
+@property (nonatomic, assign,readwrite) int getAge;
+@property (nonatomic, assign,readwrite) int getOccpClass;
+@property (nonatomic,strong) NSString *getOccpCode;
+@property (nonatomic,strong) NSString *SINo;
+@property (nonatomic, assign,readwrite) int getMOP;
+@property (nonatomic, assign,readwrite) int getTerm;
+@property (nonatomic,strong) NSString *getBasicSA;
+@property (nonatomic,strong) NSString *getBasicHL;
+@property (nonatomic,strong) NSString *getPlanCode;
+//--
 
 @property (nonatomic, assign,readwrite) int basicRate;
 @property (nonatomic, assign,readwrite) int age;
@@ -95,8 +107,6 @@
 @property (nonatomic,strong) NSMutableArray *waiverRiderMonth2;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
-
-- (IBAction)doClose:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *doGenerate;
 - (IBAction)btnGenerate:(id)sender;
 - (IBAction)btnQuotation:(id)sender;

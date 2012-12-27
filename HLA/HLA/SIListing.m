@@ -533,6 +533,7 @@
     }
     else {
        
+        /*
         NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
         MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         MainScreenPage.IndexTab = 3;
@@ -544,8 +545,14 @@
             //[self presentModalViewController:NewLAPage animated:YES];
             NewLAPage.view.superview.bounds =  CGRectMake(-300, 0, 1024, 748);
             
-        }];
+        }]; */
         
+        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+//        main.modalPresentationStyle = UIModalPresentationFullScreen;
+//        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        main.IndexTab = 3;
+        main.requestSINo = [SINO objectAtIndex:indexPath.row];
+        [self presentViewController:main animated:NO completion:nil];
         
     }
     

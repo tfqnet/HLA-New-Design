@@ -13,22 +13,34 @@
 #import "BasicPlanHandler.h"
 #import "PayorHandler.h"
 
+@class PayorViewController;
+@protocol PayorViewControllerDelegate
+-(void) PayorIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode;
+@end
+
 @interface PayorViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
     UIPopoverController *popOverController;
     ListingTbViewController *_ProspectList;
+    id <PayorViewControllerDelegate> _delegate;
     BOOL useExist;
 }
 
 @property (nonatomic, retain) UIPopoverController *popOverController;
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
+@property (nonatomic,strong) id <PayorViewControllerDelegate> delegate;
 
+//--request
 @property (nonatomic,strong) id requestSINo;
+@property (nonatomic,strong) id requestCommDate;
+@property(nonatomic , retain) NSString *getSINo;
+@property (nonatomic, copy) NSString *getCommDate;
+//--
+
 @property (nonatomic,strong) SIHandler *laHand;
 @property (nonatomic,strong) PayorHandler *payorHand;
 @property (nonatomic,strong) BasicPlanHandler *basicHand;
-@property (nonatomic, copy) NSString *getCommDate;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
@@ -72,6 +84,5 @@
 - (IBAction)smokerSegmentChange:(id)sender;
 - (IBAction)doSave:(id)sender;
 - (IBAction)doDelete:(id)sender;
-- (IBAction)doClose:(id)sender;
 
 @end

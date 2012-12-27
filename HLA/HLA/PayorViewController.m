@@ -25,18 +25,21 @@
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
 @synthesize popOverController,requestSINo,payorHand,laHand;
 @synthesize ProspectList = _ProspectList;
-@synthesize CheckRiderCode,DOBField,OccpField,IndexNo;
-@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert;
+@synthesize CheckRiderCode,DOBField,OccpField,IndexNo,requestCommDate;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert,getSINo;
+@synthesize delegate = _delegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    requestSINo = basicHand.storedSINo;
-    NSLog(@"Payor-SINo:%@",[self.requestSINo description]);
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
+    getCommDate = [self.requestCommDate description];
+    getSINo = [self.requestSINo description];
+    NSLog(@"Payor-SINo:%@, CommDate:%@",getSINo,getCommDate);
     
     nameField.enabled = NO;
     sexSegment.enabled = NO;
@@ -47,11 +50,8 @@
     DOBField.enabled = NO;
     OccpField.enabled = NO;
     self.deleteBtn.hidden = YES;
-    
     useExist = NO;
-    
-    getCommDate = [[NSString alloc] initWithFormat:@"%@",laHand.storedCommDate];
-    
+
     if (self.requestSINo) {
         [self checkingExisting];
         if (SINo.length != 0) {
@@ -61,9 +61,12 @@
         }
     }
     
-    if (self.payorHand && !self.requestSINo) {
+    /*
+    if (_delegate != nil && !self.requestSINo) {
         [self toggleTempView];
-    }
+    } */
+    
+    NSLog(@"delegate:%@",_delegate);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -294,7 +297,7 @@
             }
         }
         else {            
-            if (dataInsert.count != 0) {
+            if (_delegate != nil) {
                 useExist = YES;
                 msg = @"Confirm changes?";
             }
@@ -315,11 +318,6 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Delete Payor:%@?",nameField.text] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
     [alert setTag:2002];
     [alert show];
-}
-
-- (IBAction)doClose:(id)sender
-{
-    [self closeScreen];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -353,13 +351,17 @@
             occpLoadField.text = @"";
             CPAField.text = @"";
             PAField.text = @"";
-            [self closeScreen];
+//            [self closeScreen];
         }
         else {
-            if (dataInsert.count != 0) {
+            if (_delegate != nil) {
+                
+                /*
                 dataInsert = [[NSMutableArray alloc] init];
                 self.payorHand = [[PayorHandler alloc] init];
-                NSLog(@"existStored:%d, dataInsert:%d",self.payorHand.storedIndexNo,dataInsert.count);
+                NSLog(@"existStored:%d, dataInsert:%d",self.payorHand.storedIndexNo,dataInsert.count); */
+                
+                _delegate = nil;
             
                 nameField.text = @"";
                 [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
@@ -385,10 +387,7 @@
         }
     }
     else if (alertView.tag==2004 && buttonIndex == 0) {
-        [self closeScreen];
-    }
-    else if (alertView.tag==2005 && buttonIndex == 0) {
-        [self closeScreen];
+//        [self closeScreen];
     }
 }
 
@@ -464,6 +463,7 @@
     NSLog(@"msgAge:%@",msgAge);
 }
 
+/*
 -(void)closeScreen
 {
     if (dataInsert.count != 0) {
@@ -488,7 +488,7 @@
         main.IndexTab = 3;
         [self presentViewController:main animated:YES completion:nil];
     }
-}
+} */
 
 
 #pragma mark - delegate
@@ -622,10 +622,7 @@
     
     int runningNoCust = CustLastNo + 1;
     NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
-    
-    SINo = [self.requestSINo description];
     CustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
-    
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -653,7 +650,7 @@
                 [self updateRunCustCode];
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:2004];
+//                [SuccessAlert setTag:2004];
                 [SuccessAlert show];
                 
             } else {
@@ -670,15 +667,17 @@
 }
 
 -(void)savePayorHandler
-{    
+{
+    /*
     dataInsert = [[NSMutableArray alloc] init];
     PayorHandler *ss = [[PayorHandler alloc] init];
     [dataInsert addObject:[[PayorHandler alloc] initWithIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode]];
     for (NSUInteger i=0; i< dataInsert.count; i++) {
         ss = [dataInsert objectAtIndex:i];
         NSLog(@"stored %d",ss.storedIndexNo);
-    }
+    } */
     
+    [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
     self.deleteBtn.hidden = NO;
 }
 
@@ -718,7 +717,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id, b.IndexNo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",[self.requestSINo description]];
+                              @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id, b.IndexNo FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",getSINo];
         
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -736,7 +735,7 @@
                 clientID = sqlite3_column_int(statement, 8);
                 IndexNo = sqlite3_column_int(statement, 9);
             } else {
-                NSLog(@"error access tbl_SI_Trad_LAPayor");
+                NSLog(@"error checkingExisting");
                 useExist = NO;
             }
             sqlite3_finalize(statement);
@@ -854,7 +853,7 @@
                 NSLog(@"SI update!");
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert setTag:2005];
+//                [SuccessAlert setTag:2004];
                 [SuccessAlert show];
                 
             } else {

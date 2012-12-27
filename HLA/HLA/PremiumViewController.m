@@ -32,7 +32,7 @@
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,ReportHMMRates;
 @synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2,ReportFromAge,ReportToAge;
 @synthesize Browser = _Browser;
-@synthesize riderOccp,strOccp,occLoadRider;
+@synthesize riderOccp,strOccp,occLoadRider,getAge,SINo,getOccpCode,getMOP,getTerm,getBasicSA,getBasicHL,getPlanCode,getOccpClass;
 
 - (void)viewDidLoad
 {
@@ -41,17 +41,18 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-
-    requestSINo = premBH.storedSINo;
-    requestTerm = premBH.storedCovered;
-    requestOccpCode = premBH.storedOccpCode;
-    requestPlanCode = premBH.storedPlanCode;
-    requestMOP = premBH.storedMOP;
-    requestAge = premBH.storedAge;
-    requestBasicSA = premBH.storedbasicSA;
-    requestBasicHL = premBH.storedbasicHL;
-
     
+    getAge = self.requestAge;
+    getOccpClass = self.requestOccpClass;
+    getOccpCode = [self.requestOccpCode description];
+    SINo = [self.requestSINo description];
+    getMOP = self.requestMOP;
+    getTerm = self.requestTerm;
+    getBasicSA = [self.requestBasicSA description];
+    getBasicHL = [self.requestBasicHL description];
+    getPlanCode = [self.requestPlanCode description];
+    NSLog(@"Prem-SINo:%@, MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@",SINo,getMOP,getTerm,getBasicSA,getBasicHL,getOccpCode);
+
     // ----------- edited by heng
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     if (![zzz.MhiMessage isEqualToString:@""]) {
@@ -66,15 +67,11 @@
             lblMessage.text = [NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",RevisedSumAssured];
             lblMessage.hidden = FALSE;
         }
-        
     }
     else {
         lblMessage.hidden = TRUE;
     }
     // ------------- end -------------
-    
-    
-    NSLog(@"Prem-SINo:%@, MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@ sex:%@",requestSINo,self.requestMOP,self.requestTerm,self.requestBasicSA,self.requestBasicHL,[self.requestOccpCode description],premH.storedSex);
     
     [self getBasicPentaRate];
     [self getLSDRate];
@@ -126,20 +123,6 @@
 	return YES;
 }
 
-
-
-- (IBAction)doClose:(id)sender
-{
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.modalPresentationStyle = UIModalPresentationFullScreen;
-    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.mainLaH = premH;
-    main.mainBH = premBH;
-    main.IndexTab = 3;
-    main.showQuotation = @"YES";
-    [self presentModalViewController:main animated:YES];
-}
-
 -(void)viewWillAppear:(BOOL)animated{
     
     self.view.superview.bounds = CGRectMake(-42, 20, 1024, 748);
@@ -154,9 +137,9 @@
 
 -(void)calculatePremium
 {
-    double BasicSA = [[self.requestBasicSA description] doubleValue];
-    double PolicyTerm = self.requestTerm;
-    double BasicHLoad = [[self.requestBasicHL description] doubleValue];
+    double BasicSA = [getBasicSA doubleValue];
+    double PolicyTerm = getTerm;
+    double BasicHLoad = [getBasicHL doubleValue];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -324,7 +307,7 @@
     
     
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
-        @"<html><body><table border='1' width='70%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
+        @"<html><body><table border='1' width='92%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
         "<tr><td width='32%%' align='center' style='height:45px; background-color:#4F81BD;'>&nbsp;</td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Annual</font></td>"
             "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Semi-Annual</font></td>"
@@ -401,9 +384,9 @@
 
 -(void)calculateTempPremium
 {
-    double BasicSA = [[self.requestBasicSA description] doubleValue];
-    double PolicyTerm = self.requestTerm;
-    double BasicHLoad = [[self.requestBasicHL description] doubleValue];
+    double BasicSA = [getBasicSA doubleValue];
+    double PolicyTerm = getTerm;
+    double BasicHLoad = [getBasicHL doubleValue];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -580,7 +563,7 @@
             }
             else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"ID20R"]||[RidCode isEqualToString:@"ID30R"]||[RidCode isEqualToString:@"ID40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
             {
-                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND PremPayOpt=\"%d\"",[riderCode objectAtIndex:i],self.requestMOP];
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND PremPayOpt=\"%d\"",[riderCode objectAtIndex:i],getMOP];
                 
             }
             else if ([RidCode isEqualToString:@"ICR"])
@@ -642,11 +625,11 @@
             [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
         }
         
-        double BasicSA = [[self.requestBasicSA description] doubleValue];
-        double BasicHLoad = [[self.requestBasicHL description] doubleValue];
+        double BasicSA = [getBasicSA doubleValue];
+        double BasicHLoad = [getBasicHL doubleValue];
         
         double ridSA = [[riderSA objectAtIndex:i] doubleValue];
-        double PolicyTerm = self.requestTerm;
+        double PolicyTerm = getTerm;
         double riderHLoad;
         if ([riderHL1K count] != 0) {
             riderHLoad = [[riderHL1K objectAtIndex:i] doubleValue];
@@ -695,7 +678,7 @@
         
         if ([RidCode isEqualToString:@"ETPD"])
         {
-            double fsar = (65 - self.requestAge) * ridSA;
+            double fsar = (65 - getAge) * ridSA;
             NSLog(@"fsar:%.2f",fsar);
             /*
             annualRider = (riderRate *ridSA /100 *annFac) + (RiderHLAnnually /10 *ridSA /100 *annFac) + (fsar /1000 *OccpLoadA *annFac);
@@ -1131,11 +1114,11 @@
         //get rate
         [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
         
-        double BasicSA = [[self.requestBasicSA description] doubleValue];
-        double BasicHLoad = [[self.requestBasicHL description] doubleValue];
+        double BasicSA = [getBasicSA doubleValue];
+        double BasicHLoad = [getBasicHL doubleValue];
         
         double ridSA = [[riderSA objectAtIndex:i] doubleValue];
-        double PolicyTerm = self.requestTerm;
+        double PolicyTerm = getTerm;
         double riderHLoad;
         if ([riderHL1K count] != 0) {
             riderHLoad = [[riderHL1K objectAtIndex:i] doubleValue];
@@ -1294,7 +1277,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Basic_Prem WHERE PlanCode=\"%@\" AND FromTerm=\"%d\" AND FromMortality=0",[self.requestPlanCode description],self.requestTerm];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Basic_Prem WHERE PlanCode=\"%@\" AND FromTerm=\"%d\" AND FromMortality=0",getPlanCode,getTerm];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1316,7 +1299,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT LSD FROM Trad_Sys_LSD_HLAIB WHERE PremPayOpt=\"%d\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",self.requestMOP,[self.requestBasicSA description],[self.requestBasicSA description]];
+                              @"SELECT LSD FROM Trad_Sys_LSD_HLAIB WHERE PremPayOpt=\"%d\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",getMOP,getBasicSA,getBasicSA];
 //        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1355,7 +1338,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-            @"SELECT a.RiderCode, b.RiderDesc, a.RiderTerm, a.SumAssured, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.CustCode,d.Smoker,d.Sex,d.ALB,d.OccpCode from Trad_Rider_Details a, Trad_Sys_Rider_Profile b, Trad_LAPayor c, Clt_Profile d WHERE a.RiderCode=b.RiderCode AND a.PTypeCode=c.PTypeCode AND a.Seq=c.Sequence AND d.CustCode=c.CustCode AND a.SINo=c.SINo AND a.SINo=\"%@\" ORDER by a.RiderCode asc", [self.requestSINo description]];
+            @"SELECT a.RiderCode, b.RiderDesc, a.RiderTerm, a.SumAssured, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.CustCode,d.Smoker,d.Sex,d.ALB,d.OccpCode from Trad_Rider_Details a, Trad_Sys_Rider_Profile b, Trad_LAPayor c, Clt_Profile d WHERE a.RiderCode=b.RiderCode AND a.PTypeCode=c.PTypeCode AND a.Seq=c.Sequence AND d.CustCode=c.CustCode AND a.SINo=c.SINo AND a.SINo=\"%@\" ORDER by a.RiderCode asc", SINo];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1409,6 +1392,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND Sex=\"%@\"",aaplan,aaterm,aaterm,sex];
+        
 //        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -1495,7 +1479,7 @@
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
                               " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\" AND occpClass = \"%d\"",
-                              aaplan,aaterm,aaterm,age,age,sex, premH.storedOccpClass];
+                              aaplan,aaterm,aaterm,age,age,sex,getOccpClass];
         
 //        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
@@ -1518,7 +1502,7 @@
             querySQL = [NSString stringWithFormat:
                         @"SELECT Rate, \"FromAge\", \"ToAge\" FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
                         " FromMortality=0 AND Sex=\"%@\" AND occpClass = \"%d\" ORDER BY fromage",
-                        aaplan,aaterm,aaterm,sex, premH.storedOccpClass];
+                        aaplan,aaterm,aaterm,sex, getOccpClass];
             
             if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
@@ -1546,7 +1530,7 @@
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
                               " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND occpClass = \"%d\"",
-                              aaplan,aaterm,aaterm,age,age, premH.storedOccpClass];
+                              aaplan,aaterm,aaterm,age,age, getOccpClass];
         
 //        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
@@ -1569,7 +1553,7 @@
             querySQL = [NSString stringWithFormat:
                         @"SELECT Rate, \"FromAge\", \"ToAge\" FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
                         " FromMortality=0 AND Sex=\"%@\" AND occpClass = \"%d\" ORDER BY fromage",
-                        aaplan,aaterm,aaterm,sex, premH.storedOccpClass];
+                        aaplan,aaterm,aaterm,sex, getOccpClass];
             
             if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
@@ -1597,7 +1581,7 @@
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
                               " FromMortality=0 AND occpClass = \"%d\"",
-                              aaplan,aaterm,aaterm, premH.storedOccpClass];
+                              aaplan,aaterm,aaterm, getOccpClass];
         
 //        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
@@ -1624,7 +1608,7 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                        @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",[self.requestOccpCode description]];
+                        @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",getOccpCode];
         
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -1713,7 +1697,7 @@
 
 - (IBAction)btnGenerate:(id)sender {
     ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
-    ReportPage.SINo = requestSINo;
+    ReportPage.SINo = SINo;
     [self presentViewController:ReportPage animated:NO completion:^{
         [ReportPage dismissViewControllerAnimated:NO completion:^{
             /*
@@ -1744,7 +1728,7 @@
         NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
                               "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
                               "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
-                              "A.sino = \"%@\" AND \"seq\" = 1 ", requestSINo];
+                              "A.sino = \"%@\" AND \"seq\" = 1 ", SINo];
         
         if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1782,7 +1766,7 @@
             //dispatch_async(downloadQueue, ^{
             
             ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
-            ReportPage.SINo = requestSINo;
+            ReportPage.SINo = SINo;
             [self presentViewController:ReportPage animated:NO completion:Nil];
             
             dispatch_async(dispatch_get_main_queue(), ^{

@@ -45,17 +45,29 @@
 @property (nonatomic,strong) BasicPlanHandler *riderBH;
 @property (nonatomic,strong) SIHandler *riderH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
-
 @property (nonatomic, retain) RiderListTbViewController *RiderList;
 @property (nonatomic, retain) RiderPlanTb *planList;
 @property (nonatomic, retain) RiderDeducTb *deductList;
 
-@property (nonatomic, assign,readwrite) int requestAge;
+//--request
 @property (nonatomic,strong) id requestSINo;
-@property (nonatomic, assign,readwrite) int requestCoverTerm;
 @property (nonatomic,strong) id requestPlanCode;
-@property (nonatomic, assign,readwrite) double requestBasicSA;
+@property (nonatomic, assign,readwrite) int requestAge;
+@property (nonatomic, assign,readwrite) int requestOccpClass;
+@property (nonatomic, assign,readwrite) int requestCoverTerm;
+@property (nonatomic, strong) id requestBasicSA;
 @property (nonatomic, assign,readwrite) int requestMOP;
+@property (nonatomic, assign,readwrite) int requestAdvance;
+
+@property (nonatomic,strong) NSString *getSINo;
+@property (nonatomic,strong) NSString *getPlanCode;
+@property (nonatomic, assign,readwrite) int getAge;
+@property (nonatomic, assign,readwrite) int getOccpClass;
+@property (nonatomic, assign,readwrite) int getTerm;
+@property (nonatomic, assign,readwrite) double getBasicSA;
+@property (nonatomic, assign,readwrite) int getMOP;
+@property (nonatomic, assign,readwrite) int getAdvance;
+//--
 
 @property (nonatomic, retain) UIPopoverController *RiderListPopover;
 @property (nonatomic, retain) UIPopoverController *planPopover;
@@ -104,8 +116,6 @@
 @property(nonatomic , retain) NSMutableArray *FFieldName;
 @property(nonatomic , retain) NSMutableArray *FCondition;
 
-@property (nonatomic,strong) NSString *SINoPlan;
-@property (nonatomic,strong) NSString *planCode;
 @property (nonatomic,strong) NSString *planCondition;
 @property (nonatomic,strong) NSString *deducCondition;
 @property (nonatomic, assign,readwrite) int expAge;
@@ -269,7 +279,6 @@
 - (IBAction)planBtnPressed:(id)sender;
 - (IBAction)deducBtnPressed:(id)sender;
 - (IBAction)doSaveRider:(id)sender;
-- (IBAction)goBack:(id)sender;
 - (IBAction)editPressed:(id)sender;
 - (IBAction)deletePressed:(id)sender;
 

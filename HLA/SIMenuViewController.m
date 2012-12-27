@@ -25,21 +25,28 @@
 @synthesize myTableView, SIshowQuotation;
 @synthesize RightView;
 @synthesize ListOfSubMenu,SelectedRow;
-@synthesize menulaH,menuBH,menuPH,menuLa2ndH;
+@synthesize menulaH,menuBH,menuPH,menuLa2ndH,getCommDate;
 @synthesize getAge,getSINo,getOccpCode,getbasicSA;
-@synthesize payorCustCode,payorSINo,CustCode2,clientID2,checkPayor,check2ndLA;
-
+@synthesize payorCustCode,payorSINo,CustCode2,clientID2,getPayorIndexNo,get2ndLAIndexNo;
+@synthesize LAController = _LAController;
+@synthesize PayorController = _PayorController;
+@synthesize SecondLAController = _SecondLAController;
+@synthesize BasicController = _BasicController;
+@synthesize getIdPay,getIdProf,getPayAge,getPayDOB,getPayOccp,getPaySex,getPaySmoker;
+@synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
+@synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self resignFirstResponder];
-    [self.view addSubview:myTableView];
     
+    //--for table view
+    [self.view addSubview:myTableView];
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
-//    self.myTableView.separatorColor = [UIColor clearColor];
-//    self.RightView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"IMG_0039.png"]];
-    self.RightView.backgroundColor = [UIColor colorWithRed:(5.0/255.0) green:(150.0/255.0) blue:(200.0/255.0) alpha:1.0];
+    
+    //--for detail view
+//    self.RightView.backgroundColor = [UIColor colorWithRed:(5.0/255.0) green:(150.0/255.0) blue:(200.0/255.0) alpha:1.0];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -47,37 +54,16 @@
     
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", @"Quotation", nil ];
     
-//    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"1", @"2", @"4", @"5", @"6", nil ];
     SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", @"6", nil ];
-    
-    getAge = menulaH.storedAge;
-    getOccpCode = menulaH.storedOccpCode;
-    
-    checkPayor = menuPH.storedIndexNo;
-    check2ndLA = menuLa2ndH.storedIndexNo;
-    
-    getSINo = menuBH.storedSINo;
-    getbasicSA = menuBH.storedbasicSA;
-    
-    
-//    LAEmpty = YES;
     PlanEmpty = YES;
     
-    /*
-    if (getSINo)
-    {
-        LAEmpty = NO;
-//        NSLog(@"la receive!");
-    }*/
-
-    if (getbasicSA)
-    {
-        PlanEmpty = NO;
-//        NSLog(@"plan receive!");
+    if (_LAController == nil) {
+        self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+        _LAController.delegate = self;
     }
-    
-    [self toogleView];
-
+    self.LAController.requestSINo = [self.requestSINo description];
+    [self addChildViewController:self.LAController];
+    [self.RightView addSubview:self.LAController.view];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -99,20 +85,21 @@
 {
 	[super viewWillDisappear:animated];
     NSLog(@"menu disappear!");
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.mainBH = nil;
-    main.mainLaH = nil;
-    main.mainPH = nil;
-    self.menuBH = nil;
-    self.menulaH = nil;
-    self.menuPH = nil;
-//    LAEmpty = YES;
     PlanEmpty = YES;
-    [SelectedRow addObject:@"1" ];
-    [SelectedRow addObject:@"2" ];
     [SelectedRow addObject:@"4" ];
     [SelectedRow addObject:@"5" ];
     [SelectedRow addObject:@"6" ];
+    _LAController = nil;
+    _BasicController = nil;
+    _PayorController = nil;
+    _SecondLAController = nil;
+    getSINo = nil;
+    [self.myTableView reloadData];
+    
+    self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+    _LAController.delegate = self;
+    [self addChildViewController:self.LAController];
+    [self.RightView addSubview:self.LAController.view];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -122,22 +109,6 @@
 
 -(void)toogleView
 {
-    /*
-    if (LAEmpty)
-    {
-        [SelectedRow addObject:@"1" ];
-        [SelectedRow addObject:@"2" ];
-        
-//        NSLog(@"LA empty");
-    }
-    else {
-        [SelectedRow removeObject:@"1"];
-        [SelectedRow removeObject:@"2"];
-        
-//        NSLog(@"LA not empty");
-    }
-    */
-    
     if (PlanEmpty)
     {
         [SelectedRow addObject:@"4"];
@@ -152,11 +123,12 @@
     
     if ([SIshowQuotation isEqualToString:@"NO"] || SIshowQuotation == NULL ) {
         [SelectedRow addObject:@"6"];
-        
     }
     else {
         //[SelectedRow removeObject:@"6"];
     }
+    
+    [self.myTableView reloadData];
 }
 
 
@@ -166,14 +138,14 @@
 {
     if (getAge >= 18)
     {
-        SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-        secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-        secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        secondLA.laHand = menulaH;
-        secondLA.basicHand = menuBH;
-        secondLA.la2ndHand = menuLa2ndH;
-        [self presentModalViewController:secondLA animated:YES];
-        secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+        if (_SecondLAController == nil) {
+            self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
+            _SecondLAController.delegate = self;
+        }
+        self.SecondLAController.requestCommDate = getCommDate;
+        self.SecondLAController.requestSINo = getSINo;
+        [self addChildViewController:self.SecondLAController];
+        [self.RightView addSubview:self.SecondLAController.view];
     }
     else if (getAge < 16 && getOccpCode.length != 0){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -184,40 +156,40 @@
     }
     else {
         NSLog(@"age 16-17");
-        if (getSINo) {
+        if (getSINo.length != 0) {
+            
+            NSLog(@"with SI");
             [self checkingPayor];
             if (payorSINo.length != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
             else {
-                SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-                secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-                secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                secondLA.laHand = menulaH;
-                secondLA.basicHand = menuBH;
-                secondLA.la2ndHand = menuLa2ndH;
-                [self presentModalViewController:secondLA animated:YES];
-                secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+                
+                self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
+                _SecondLAController.delegate = self;
+                self.SecondLAController.requestCommDate = getCommDate;
+                self.SecondLAController.requestSINo = getSINo;
+                [self addChildViewController:self.SecondLAController];
+                [self.RightView addSubview:self.SecondLAController.view];
             }
         }
         else {
-            if (checkPayor != 0) {
+            if (getPayorIndexNo != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
             else {
-                SecondLAViewController *secondLA = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
-                secondLA.modalPresentationStyle = UIModalPresentationFormSheet;
-                secondLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                secondLA.laHand = menulaH;
-                secondLA.basicHand = menuBH;
-                secondLA.la2ndHand = menuLa2ndH;
-                [self presentModalViewController:secondLA animated:YES];
-                secondLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+                if (_SecondLAController == nil) {
+                    self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
+                    _SecondLAController.delegate = self;
+                }
+                self.SecondLAController.requestCommDate = getCommDate;
+                self.SecondLAController.requestSINo = getSINo;
+                [self addChildViewController:self.SecondLAController];
+                [self.RightView addSubview:self.SecondLAController.view];
             }
         }
-        
     }
 }
 
@@ -230,14 +202,14 @@
     }
     else if (getAge < 16 && getOccpCode.length != 0) {
         
-        PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
-        payorView.modalPresentationStyle = UIModalPresentationFormSheet;
-        payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        payorView.laHand = menulaH;
-        payorView.basicHand = menuBH;
-        payorView.payorHand = menuPH;
-        [self presentModalViewController:payorView animated:YES];
-        payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+        if (_PayorController == nil) {
+            self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
+            _PayorController.delegate = self;
+        }
+        self.PayorController.requestCommDate = getCommDate;
+        self.PayorController.requestSINo = getSINo;
+        [self addChildViewController:self.PayorController];
+        [self.RightView addSubview:self.PayorController.view];
     }
     else if (getOccpCode.length == 0) {
         NSLog(@"no where!");
@@ -245,35 +217,38 @@
     else {
         NSLog(@"age 16-17");
         if (getSINo.length != 0) {
+            
+            NSLog(@"with SI");
             [self checking2ndLA];
             if (CustCode2.length != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
-            } else {
-                PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
-                payorView.modalPresentationStyle = UIModalPresentationFormSheet;
-                payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                payorView.laHand = menulaH;
-                payorView.basicHand = menuBH;
-                payorView.payorHand = menuPH;
-                [self presentModalViewController:payorView animated:YES];
-                payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+            }
+            else {
+                
+                self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
+                _PayorController.delegate = self;
+                
+                self.PayorController.requestCommDate = getCommDate;
+                self.PayorController.requestSINo = getSINo;
+                [self addChildViewController:self.PayorController];
+                [self.RightView addSubview:self.PayorController.view];
             }
         }
         else {
-            if (check2ndLA != 0) {
+            if (get2ndLAIndexNo != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
             }
             else {
-                PayorViewController *payorView = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
-                payorView.modalPresentationStyle = UIModalPresentationFormSheet;
-                payorView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                payorView.laHand = menulaH;
-                payorView.basicHand = menuBH;
-                payorView.payorHand = menuPH;
-                [self presentModalViewController:payorView animated:YES];
-                payorView.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
+                if (_PayorController == nil) {
+                    self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
+                    _PayorController.delegate = self;
+                }
+                self.PayorController.requestCommDate = getCommDate;
+                self.PayorController.requestSINo = getSINo;
+                [self addChildViewController:self.PayorController];
+                [self.RightView addSubview:self.PayorController.view];
             }
         }
     }
@@ -281,7 +256,8 @@
 
 -(void)selectBasicPlan
 {
-    if (getSINo) {
+    if (getSINo.length != 0) {
+        NSLog(@"with SI");
         
         [self checkingPayor];
         if (getAge < 10 && payorSINo.length == 0) {
@@ -290,34 +266,71 @@
             [alert show];
         }
         else {
-            BasicPlanViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
-            zzz.modalPresentationStyle = UIModalPresentationFormSheet;
-            zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            zzz.basicH = menulaH;
-            zzz.basicBH = menuBH;
-            zzz.basicPH = menuPH;
-            zzz.basicLa2ndH = menuLa2ndH;
-            [self presentModalViewController:zzz animated:YES];
-            zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
+            
+            self.BasicController = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
+            _BasicController.delegate = self;
+            
+            self.BasicController.requestAge = getAge;
+            self.BasicController.requestOccpCode = getOccpCode;
+            self.BasicController.requestIDPay = getIdPay;
+            self.BasicController.requestIDProf = getIdProf;
+            
+            self.BasicController.requestIndexPay = getPayorIndexNo;
+            self.BasicController.requestSmokerPay = getPaySmoker;
+            self.BasicController.requestSexPay = getPaySex;
+            self.BasicController.requestDOBPay = getPayDOB;
+            self.BasicController.requestAgePay = getPayAge;
+            self.BasicController.requestOccpPay = getPayOccp;
+            
+            self.BasicController.requestIndex2ndLA = get2ndLAIndexNo;
+            self.BasicController.requestSmoker2ndLA = get2ndLASmoker;
+            self.BasicController.requestSex2ndLA = get2ndLASex;
+            self.BasicController.requestDOB2ndLA = get2ndLADOB;
+            self.BasicController.requestAge2ndLA = get2ndLAAge;
+            self.BasicController.requestOccp2ndLA = get2ndLAOccp;
+            
+            self.BasicController.requestSINo = getSINo;
+            
+            [self addChildViewController:self.BasicController];
+            [self.RightView addSubview:self.BasicController.view];
         }
     }
-    else if (menulaH.storedIdProfile != 0){
+    else if (getOccpCode != 0 && getSINo.length == 0) {
+        NSLog(@"no SI");
         
-        if (getAge < 10) {
+        if (getAge < 10 && getPayorIndexNo == 0) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
         }
         else {
-            BasicPlanViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
-            zzz.modalPresentationStyle = UIModalPresentationFormSheet;
-            zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            zzz.basicH = menulaH;
-            zzz.basicBH = menuBH;
-            zzz.basicPH = menuPH;
-            zzz.basicLa2ndH = menuLa2ndH;
-            [self presentModalViewController:zzz animated:YES];
-            zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
+            if (_BasicController == nil) {
+                self.BasicController = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
+                _BasicController.delegate = self;
+            }
+            self.BasicController.requestAge = getAge;
+            self.BasicController.requestOccpCode = getOccpCode;
+            self.BasicController.requestIDPay = getIdPay;
+            self.BasicController.requestIDProf = getIdProf;
+            
+            self.BasicController.requestIndexPay = getPayorIndexNo;
+            self.BasicController.requestSmokerPay = getPaySmoker;
+            self.BasicController.requestSexPay = getPaySex;
+            self.BasicController.requestDOBPay = getPayDOB;
+            self.BasicController.requestAgePay = getPayAge;
+            self.BasicController.requestOccpPay = getPayOccp;
+            
+            self.BasicController.requestIndex2ndLA = get2ndLAIndexNo;
+            self.BasicController.requestSmoker2ndLA = get2ndLASmoker;
+            self.BasicController.requestSex2ndLA = get2ndLASex;
+            self.BasicController.requestDOB2ndLA = get2ndLADOB;
+            self.BasicController.requestAge2ndLA = get2ndLAAge;
+            self.BasicController.requestOccp2ndLA = get2ndLAOccp;
+            
+            self.BasicController.requestSINo = getSINo;
+            
+            [self addChildViewController:self.BasicController];
+            [self.RightView addSubview:self.BasicController.view];
         }
     }
     else {
@@ -327,16 +340,22 @@
 
 -(void)calculatedPrem
 {
-    if (menuBH.storedSINo) {
+    if (getSINo.length != 0) {
     
         PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-        premView.modalPresentationStyle = UIModalPresentationFormSheet;
-        premView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        premView.premBH = menuBH;
-        premView.premH = menulaH;
-        [self presentModalViewController:premView animated:YES];
-        premView.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
+        premView.requestAge = getAge;
+        premView.requestOccpClass = getOccpClass;
+        premView.requestOccpCode = getOccpCode;
         
+        premView.requestSINo = getSINo;
+        premView.requestMOP = getMOP;
+        premView.requestTerm = getTerm;
+        premView.requestBasicSA = getbasicSA;
+        premView.requestBasicHL = getbasicHL;
+        premView.requestPlanCode = getPlanCode;
+        
+        [self addChildViewController:premView];
+        [self.RightView addSubview:premView.view];
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"No record selected!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -363,7 +382,7 @@
                 payorCustCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
                 
             } else {
-                NSLog(@"error access tbl_SI_Trad_LAPayor");
+                NSLog(@"error access checkingPayor");
             }
             sqlite3_finalize(statement);
         }
@@ -424,29 +443,39 @@
     return cell;
 }
 
+
+#pragma mark - table delegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        NewLAViewController *newLA = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
-        newLA.modalPresentationStyle = UIModalPresentationFormSheet;
-        newLA.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        newLA.laH = menulaH;
-        newLA.laBH = menuBH;
-        [self presentModalViewController:newLA animated:YES];
-        newLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
         
-//        [self addChildViewController:newLA];
-//        [self.RightView addSubview:newLA.view];
+        if (getSINo.length != 0) {
+            NSLog(@"with SI");
+            
+            self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+            _LAController.delegate = self;
+            self.LAController.requestSINo = getSINo;
+            [self addChildViewController:self.LAController];
+            [self.RightView addSubview:self.LAController.view];
+        }
+        else {
+            NSLog(@"no SI");
+            if (_LAController == nil) {
+                self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+                _LAController.delegate = self;
+            }
+            [self addChildViewController:self.LAController];
+            [self.RightView addSubview:self.LAController.view];
+        }
+        
     }
-    
     else if (indexPath.row == 1) {
         [self select2ndLA];
     }
-    
     else if (indexPath.row == 2) {
         [self selectPayor];
     }
-    
     else if (indexPath.row == 3) {
         [self selectBasicPlan];
     }
@@ -454,13 +483,18 @@
     else if (indexPath.row == 4) {
         
         RiderViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
-        zzz.modalPresentationStyle = UIModalPresentationFormSheet;
-        zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        zzz.riderBH = menuBH;
-        zzz.riderH = menulaH;
-        [self presentModalViewController:zzz animated:YES];
-        zzz.view.superview.bounds = CGRectMake(-284, 0, 1024, 748);
-
+        zzz.requestAge = getAge;
+        zzz.requestOccpClass = getOccpClass;
+        
+        zzz.requestSINo = getSINo;
+        zzz.requestPlanCode = getPlanCode;
+        zzz.requestCoverTerm = getTerm;
+        zzz.requestBasicSA = getbasicSA;
+        zzz.requestMOP = getMOP;
+        zzz.requestAdvance = getAdvance;
+        
+        [self addChildViewController:zzz];
+        [self.RightView addSubview:zzz.view];
     }
     
     else if (indexPath.row == 5) {
@@ -567,8 +601,6 @@
     [tableView reloadData];
 }
 
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -595,6 +627,59 @@
             return  44;
         }
     }
+}
+
+#pragma mark - delegate source
+
+-(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker
+{
+    NSLog(@"::receive data LAIndex:%d",aaIndexNo);
+    getAge = aaAge;
+    getOccpClass = aaOccpClass;
+    getOccpCode = aaOccpCode;
+    getCommDate = aaCommDate;
+    getIdPay = aaIdPayor;
+    getIdProf = aaIdProfile;
+}
+
+-(void)PayorIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
+{
+    NSLog(@"::receive data PayorIndex:%d",aaIndexNo);
+    getPayorIndexNo = aaIndexNo;
+    getPaySmoker = aaSmoker;
+    getPaySex = aaSex;
+    getPayDOB = aaDOB;
+    getPayAge = aaAge;
+    getPayOccp = aaOccpCode;
+}
+
+-(void)LA2ndIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
+{
+    NSLog(@"::receive data 2ndLAIndex:%d",aaIndexNo);
+    get2ndLAIndexNo = aaIndexNo;
+    get2ndLASmoker = aaSmoker;
+    get2ndLASex = aaSex;
+    get2ndLADOB = aaDOB;
+    get2ndLAAge = aaAge;
+    get2ndLAOccp = aaOccpCode;
+}
+
+-(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
+{
+    NSLog(@"::receive databasicSINo:%@",aaSINo);
+    getSINo = aaSINo;
+    getMOP = aaMOP;
+    getTerm = aaCovered;
+    getbasicSA = aaBasicSA;
+    getbasicHL = aaBasicHL;
+    getPlanCode = aaPlanCode;
+    getAdvance = aaAdvance;
+    
+    if (getbasicSA.length != 0)
+    {
+        PlanEmpty = NO;
+    }
+    [self toogleView];
 }
 
 #pragma mark - memory

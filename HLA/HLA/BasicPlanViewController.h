@@ -14,6 +14,11 @@
 #import "PayorHandler.h"
 #import "SecondLAHandler.h"
 
+@class BasicPlanViewController;
+@protocol BasicPlanViewControllerDelegate
+-(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance;
+@end
+
 @interface BasicPlanViewController : UIViewController <UITextFieldDelegate,PlanListDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
@@ -23,20 +28,56 @@
     BOOL showHL;
     BOOL useExist;
     BOOL newSegment;
+    id <BasicPlanViewControllerDelegate> _delegate;
 }
 
-//request from previous
-@property (nonatomic, assign,readwrite) int ageClient;
-@property (nonatomic, assign,readwrite) int OccuClass;
-@property (nonatomic,retain) NSString *requestSINo;
-@property (nonatomic,retain) NSString *requestOccpCode;
+@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic,strong) id <BasicPlanViewControllerDelegate> delegate;
 @property (nonatomic,strong) SIHandler *basicH;
 @property (nonatomic,strong) BasicPlanHandler *basicBH;
 @property (nonatomic,strong) PayorHandler *basicPH;
 @property (nonatomic,strong) SecondLAHandler *basicLa2ndH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 
-@property (nonatomic, retain) UIPopoverController *popoverController;
+//--request from previous
+@property (nonatomic, assign,readwrite) int requestAge;
+@property (nonatomic,strong) id requestOccpCode;
+@property (nonatomic,strong) id requestSINo;
+@property (nonatomic, assign,readwrite) int requestIDProf;
+@property (nonatomic, assign,readwrite) int requestIDPay;
+@property (nonatomic, assign,readwrite) int requestIndexPay;
+@property (nonatomic,strong) id requestSmokerPay;
+@property (nonatomic,strong) id requestSexPay;
+@property (nonatomic,strong) id requestDOBPay;
+@property (nonatomic, assign,readwrite) int requestAgePay;
+@property (nonatomic,strong) id requestOccpPay;
+@property (nonatomic, assign,readwrite) int requestIndex2ndLA;
+@property (nonatomic,strong) id requestSmoker2ndLA;
+@property (nonatomic,strong) id requestSex2ndLA;
+@property (nonatomic,strong) id requestDOB2ndLA;
+@property (nonatomic, assign,readwrite) int requestAge2ndLA;
+@property (nonatomic,strong) id requestOccp2ndLA;
+
+@property (nonatomic, assign,readwrite) int ageClient;
+@property(nonatomic , retain) NSString *OccpCode;
+@property (nonatomic, copy) NSString *SINo;
+@property (nonatomic, assign,readwrite) int idPay;
+@property (nonatomic, assign,readwrite) int idProf;
+@property (nonatomic, assign,readwrite) int PayorIndexNo;
+@property (nonatomic, copy) NSString *PayorSmoker;
+@property (nonatomic, copy) NSString *PayorSex;
+@property (nonatomic, copy) NSString *PayorDOB;
+@property (nonatomic, assign,readwrite) int PayorAge;
+@property (nonatomic, copy) NSString *PayorOccpCode;
+
+@property (nonatomic, assign,readwrite) int secondLAIndexNo;
+@property (nonatomic, copy) NSString *secondLASmoker;
+@property (nonatomic, copy) NSString *secondLASex;
+@property (nonatomic, copy) NSString *secondLADOB;
+@property (nonatomic, assign,readwrite) int secondLAAge;
+@property (nonatomic, copy) NSString *secondLAOccpCode;
+
+//--
 
 //screen field
 @property (strong, nonatomic) IBOutlet UIButton *btnPlan;
@@ -59,7 +100,6 @@
 //for SINo
 @property (nonatomic, assign,readwrite) int SILastNo;
 @property (nonatomic, assign,readwrite) int CustLastNo;
-@property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, copy) NSString *SIDate;
 @property (nonatomic, copy) NSString *CustDate;
 
@@ -67,8 +107,7 @@
 @property (nonatomic, copy) NSString *PYCustCode;
 @property (nonatomic, copy) NSString *secondLACustCode;
 @property (nonatomic, assign,readwrite) int IndexNo;
-@property (nonatomic, assign,readwrite) int PayorIndexNo;
-@property (nonatomic, assign,readwrite) int secondLAIndexNo;
+
 
 @property (nonatomic, assign,readwrite) int termCover;
 @property (nonatomic, assign,readwrite) int minSA;

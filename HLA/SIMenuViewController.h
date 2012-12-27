@@ -13,17 +13,27 @@
 #import "PayorHandler.h"
 #import "SecondLAHandler.h"
 
-@interface SIMenuViewController : UIViewController {
+#import "NewLAViewController.h"
+#import "PayorViewController.h"
+#import "SecondLAViewController.h"
+#import "BasicPlanViewController.h"
+
+@interface SIMenuViewController : UIViewController <NewLAViewControllerDelegate,PayorViewControllerDelegate,SecondLAViewControllerDelegate,BasicPlanViewControllerDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
-    BOOL LAEmpty;
     BOOL PlanEmpty;
-    
+    NewLAViewController *_LAController;
+    PayorViewController *_PayorController;
+    SecondLAViewController *_SecondLAController;
+    BasicPlanViewController *_BasicController;
 }
-
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *RightView;
+@property (nonatomic, retain) NewLAViewController *LAController;
+@property (nonatomic, retain) PayorViewController *PayorController;
+@property (nonatomic, retain) SecondLAViewController *SecondLAController;
+@property (nonatomic, retain) BasicPlanViewController *BasicController;
 
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
 @property (retain, nonatomic) NSMutableArray *SelectedRow;
@@ -31,14 +41,39 @@
 @property (nonatomic,strong) BasicPlanHandler *menuBH;
 @property (nonatomic,strong) PayorHandler *menuPH;
 @property (nonatomic,strong) SecondLAHandler *menuLa2ndH;
+@property (nonatomic,strong) id requestSINo;
 
-@property (nonatomic ,assign ,readwrite) int checkPayor;
-@property (nonatomic ,assign ,readwrite) int check2ndLA;
+//--from delegate
+@property (nonatomic ,assign ,readwrite) int getAge;
+@property (nonatomic ,assign ,readwrite) int getOccpClass;
+@property (nonatomic, retain) NSString *getOccpCode;
+@property (nonatomic, retain) NSString *getCommDate;
+@property (nonatomic ,assign ,readwrite) int getIdProf;
+@property (nonatomic ,assign ,readwrite) int getIdPay;
+
+@property (nonatomic ,assign ,readwrite) int getPayorIndexNo;
+@property (nonatomic, retain) NSString *getPaySmoker;
+@property (nonatomic, retain) NSString *getPaySex;
+@property (nonatomic, retain) NSString *getPayDOB;
+@property (nonatomic ,assign ,readwrite) int getPayAge;
+@property (nonatomic, retain) NSString *getPayOccp;
+
+@property (nonatomic ,assign ,readwrite) int get2ndLAIndexNo;
+@property (nonatomic, retain) NSString *get2ndLASmoker;
+@property (nonatomic, retain) NSString *get2ndLASex;
+@property (nonatomic, retain) NSString *get2ndLADOB;
+@property (nonatomic ,assign ,readwrite) int get2ndLAAge;
+@property (nonatomic, retain) NSString *get2ndLAOccp;
 
 @property (nonatomic, retain) NSString *getSINo;
-@property (nonatomic ,assign ,readwrite) int getAge;
-@property (nonatomic, retain) NSString *getOccpCode;
+@property (nonatomic ,assign ,readwrite) int getMOP;
+@property (nonatomic ,assign ,readwrite) int getTerm;
 @property (nonatomic, retain) NSString *getbasicSA;
+@property (nonatomic, retain) NSString *getbasicHL;
+@property (nonatomic, retain) NSString *getPlanCode;
+@property (nonatomic ,assign ,readwrite) int getAdvance;
+
+//----
 
 @property (nonatomic, copy) NSString *payorSINo;
 @property (nonatomic, copy) NSString *payorCustCode;
