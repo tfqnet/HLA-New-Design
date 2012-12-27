@@ -42,7 +42,7 @@
 @property (nonatomic,strong) PayorHandler *menuPH;
 @property (nonatomic,strong) SecondLAHandler *menuLa2ndH;
 @property (nonatomic,strong) id requestSINo;
-
+@property (nonatomic,strong) id requestSINo2;
 //--from delegate
 @property (nonatomic ,assign ,readwrite) int getAge;
 @property (nonatomic ,assign ,readwrite) int getOccpClass;
@@ -81,4 +81,5 @@
 @property (nonatomic, copy) NSString *CustCode2;
 
 @property (nonatomic,strong) id SIshowQuotation;
+-(void)Reset;
 @end

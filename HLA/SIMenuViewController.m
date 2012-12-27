@@ -34,7 +34,7 @@
 @synthesize BasicController = _BasicController;
 @synthesize getIdPay,getIdProf,getPayAge,getPayDOB,getPayOccp,getPaySex,getPaySmoker;
 @synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
-@synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance;
+@synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance,requestSINo2;
 
 id RiderCount;
 
@@ -81,7 +81,8 @@ id RiderCount;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[super viewWillDisappear:animated];
+    [super viewWillDisappear:animated];
+   /*
     NSLog(@"menu disappear!");
     PlanEmpty = YES;
     [SelectedRow addObject:@"4" ];
@@ -100,6 +101,8 @@ id RiderCount;
     _LAController.delegate = self;
     [self addChildViewController:self.LAController];
     [self.RightView addSubview:self.LAController.view];
+    */
+    //RightView.frame = CGRectMake(440, 45, 500, 700) ;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -107,6 +110,36 @@ id RiderCount;
 	[super viewDidDisappear:animated];
 }
 
+-(void)Reset{
+
+    if ([self.requestSINo isEqualToString:self.requestSINo2] || (self.requestSINo == NULL && self.requestSINo2 == NULL) ) {
+        
+        PlanEmpty = YES;
+        [SelectedRow addObject:@"4" ];
+        [SelectedRow addObject:@"5" ];
+        [SelectedRow addObject:@"6" ];
+        _LAController = nil;
+        _BasicController = nil;
+        _PayorController = nil;
+        _SecondLAController = nil;
+        getAge = 0;
+        getSINo = nil;
+        getOccpCode = nil;
+        [self.myTableView reloadData];
+        
+        self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+        _LAController.delegate = self;
+        [self addChildViewController:self.LAController];
+        [self.RightView addSubview:self.LAController.view];
+        
+    }
+
+    else{
+        
+        requestSINo2 = self.requestSINo;
+    }
+    
+}
 -(void)toogleView
 {
     if (PlanEmpty)
@@ -395,6 +428,7 @@ id RiderCount;
         
         [self addChildViewController:premView];
         [self.RightView addSubview:premView.view];
+        [SelectedRow removeObject:@"6"];
     }
     else if (getAge > 70) {
         
@@ -561,13 +595,10 @@ id RiderCount;
     
     else if (indexPath.row == 5) {
         [self calculatedPrem];
+        
     }
     
     else if (indexPath.row == 6) { //quotation
-        NewLAViewController *newLA = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
-        [self.RightView addSubview:newLA.view];
-        [self addChildViewController:newLA];
-        newLA.view.superview.bounds = CGRectMake(-284, 0,1024, 748);
         
         /*
         sqlite3_stmt *statement;
@@ -658,6 +689,89 @@ id RiderCount;
             [alert show];
         }
          */
+        sqlite3_stmt *statement;
+        BOOL cont = FALSE;
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            // NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
+            
+            NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
+                                  "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
+                                  "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+                                  "A.sino = \"%@\" AND \"seq\" = 1 ", self.requestSINo];
+            
+            if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    cont = TRUE;
+                    
+                } else {
+                    cont = FALSE;
+                    NSLog(@"error access SI_Store_Premium");
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+        
+        if (cont == TRUE) {
+            
+            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            spinner.center = CGPointMake(400, 350);
+            
+            spinner.hidesWhenStopped = YES;
+            [self.view addSubview:spinner];
+            UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+            spinnerLabel.text  = @" Please Wait...";
+            spinnerLabel.backgroundColor = [UIColor blackColor];
+            spinnerLabel.opaque = YES;
+            spinnerLabel.textColor = [UIColor whiteColor];
+            [self.view addSubview:spinnerLabel];
+            [spinner startAnimating];
+            
+            
+            //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+                //dispatch_async(downloadQueue, ^{
+                
+                ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+                ReportPage.SINo = self.requestSINo;
+                [self presentViewController:ReportPage animated:NO completion:Nil];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [spinner stopAnimating];
+                    spinnerLabel.text = @"";
+                    
+                    [ReportPage dismissViewControllerAnimated:NO completion:Nil];
+                    
+                    
+                    BrowserViewController *controller = [[BrowserViewController alloc] init];
+                    controller.title = @"Quotation";
+                    //controller.delegate = self;
+                    //controller.premH = premH;
+                    //controller.premBH = premBH;
+                    
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    UINavigationController *container = [[UINavigationController alloc] init];
+                    [container setNavigationBarHidden:YES animated:NO];
+                    [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+                    
+                    [self presentModalViewController:container animated:YES];
+                    
+                    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+                    [v removeFromSuperview];
+                });
+                
+                
+            });
+            
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+            [alert show];
+        }
     }
     
     [tableView reloadData];

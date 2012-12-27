@@ -308,22 +308,17 @@ NSMutableArray *ItemPages;
     
     if ([self.view subviews].count > 1) {
         
-        [_delegate CloseWindow];
+        //[_delegate CloseWindow];
         [self dismissModalViewControllerAnimated:YES];
         
     }
     else {
-        [_delegate CloseWindow];
+        //[_delegate CloseWindow];
         [self dismissModalViewControllerAnimated:YES];
     }
     
-    /*
-    if (_delegate != Nil) {
-        NSLog(@"close");
-        [_delegate CloseWindow];
-        [self dismissViewControllerAnimated:YES completion:Nil];
-    }
-    */
+    //[self dismissModalViewControllerAnimated:YES];
+
     
 }
 

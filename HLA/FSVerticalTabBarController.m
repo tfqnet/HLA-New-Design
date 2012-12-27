@@ -135,6 +135,12 @@
                 
             }
             
+            if (selectedIndex == 3) {
+                
+                [(SIMenuViewController *)selectedViewController Reset];
+                
+            }
+            
             [self addChildViewController:selectedViewController];
             selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
                                                        0,
