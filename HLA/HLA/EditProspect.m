@@ -679,8 +679,8 @@ bool IsContinue = TRUE;
                           initWithTitle: NSLocalizedString(@"Delete prospect",nil)
                           message: NSLocalizedString(@"Are you sure you want to delete this prospect profile?",nil)
                           delegate: self
-                          cancelButtonTitle: NSLocalizedString(@"No",nil)
-                          otherButtonTitles: NSLocalizedString(@"Yes",nil), nil];
+                          cancelButtonTitle: NSLocalizedString(@"Yes",nil)
+                          otherButtonTitles: NSLocalizedString(@"No",nil), nil];
     alert.tag = 1;
     [alert show];
 }
@@ -1932,8 +1932,68 @@ bool IsContinue = TRUE;
     
     switch (buttonIndex) {
         case 0: 
-        {       
-            if (alertView.tag == 2) {
+        {
+            if (alertView.tag == 1) { //delete mode
+            
+                const char *dbpath = [databasePath UTF8String];
+            
+                if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+                NSString *DeleteProspectSQL = [NSString stringWithFormat:
+                                               @"Delete from prospect_profile where \"indexNo\" = \"%@\" ", pp.ProspectID];
+                
+                const char *Delete_prospectStmt = [DeleteProspectSQL UTF8String];
+                if(sqlite3_prepare_v2(contactDB, Delete_prospectStmt, -1, &statement, NULL) == SQLITE_OK)
+                {
+                    int zzz = sqlite3_step(statement);
+                    
+                    if (zzz == SQLITE_DONE){
+                        
+                        /*
+                         UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Delete Success" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                         [SuccessAlert show];
+                         
+                         EditTableViewController *Listing = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
+                         Listing.modalPresentationStyle = UIModalPresentationFullScreen;
+                         Listing.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                         [self presentModalViewController:Listing animated:YES];
+                         */
+                    }
+                    
+                    sqlite3_finalize(statement);
+                }
+                
+                NSString *DeleteContactSQL = [NSString stringWithFormat:
+                                              @"Delete from contact_input where \"indexNo\" = %@ ", pp.ProspectID];
+                
+                const char *Delete_ContactStmt = [DeleteContactSQL UTF8String];
+                if(sqlite3_prepare_v2(contactDB, Delete_ContactStmt, -1, &statement2, NULL) == SQLITE_OK)
+                {
+                    int delCount = sqlite3_step(statement2);
+                    
+                    if (delCount == SQLITE_DONE){
+                        
+                        sqlite3_finalize(statement);
+                        
+                        if (_delegate != nil) {
+                            [_delegate FinishEdit];
+                        }
+                        
+                        UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile"
+                                                                               message:@"Prospect record successfully been deleted" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                        SuccessAlert.tag = 2;
+                        [SuccessAlert show];
+                        
+                    }
+                    sqlite3_finalize(statement2);
+                    
+                }
+                
+                sqlite3_close(contactDB);
+                }
+            
+            }
+            
+            else if (alertView.tag == 2) {
                 [self resignFirstResponder];
                 [self.view endEditing:YES];
                 [self dismissModalViewControllerAnimated:YES];
@@ -1960,7 +2020,7 @@ bool IsContinue = TRUE;
         {
             
             if (alertView.tag == 1) { //delete mode
-                
+                /*
                 const char *dbpath = [databasePath UTF8String];
                 
                 if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
@@ -1974,15 +2034,6 @@ bool IsContinue = TRUE;
                         
                         if (zzz == SQLITE_DONE){
                             
-                            /*
-                             UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Delete Success" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                             [SuccessAlert show];    
-                             
-                             EditTableViewController *Listing = [self.storyboard instantiateViewControllerWithIdentifier:@"Listing"];
-                             Listing.modalPresentationStyle = UIModalPresentationFullScreen;
-                             Listing.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                             [self presentModalViewController:Listing animated:YES];
-                             */
                         }
                         
                         sqlite3_finalize(statement);
@@ -2016,6 +2067,7 @@ bool IsContinue = TRUE;
                     
                 sqlite3_close(contactDB);    
                 }
+                 */
 
             }
             else if (alertView.tag == 1003) { //save changes
