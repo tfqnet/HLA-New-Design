@@ -80,6 +80,7 @@
 @synthesize occLoadRider,LTypeAge,LTypeDeduct,LTypeOccpCode,LTypePlanOpt,LTypeRiderCode,LTypeRidHL100,LTypeRidHL100Term,LTypeRidHL1K,LTypeRidHLP,LTypeRidHLPTerm,LTypeRidHLTerm,LTypeSex,LTypeSmoker,LTypeSumAssured,LTypeTerm,LTypeUnits;
 @synthesize occLoadType,classField,payorRidCode,getSINo,getPlanCode,getAge,getTerm,getBasicSA,getMOP,requestAdvance,getAdvance;
 @synthesize requestOccpClass,getOccpClass;
+@synthesize delegate = _delegate;
 
 #pragma mark - Cycle View
 
@@ -1941,7 +1942,7 @@
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag==1001 && buttonIndex == 0)
+    if (alertView.tag==1001 && buttonIndex == 0) //delete
     {
         NSArray *visibleCells = [myTableView visibleCells];
         NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
@@ -2019,8 +2020,9 @@
         
         deleteBtn.enabled = FALSE;
         [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        [_delegate RiderAdded];
     }
-    else if (alertView.tag == 1002 && buttonIndex == 0)
+    else if (alertView.tag == 1002 && buttonIndex == 0) //delete
     {
         [self deleteRider];
     }
@@ -2074,6 +2076,7 @@
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
+        [_delegate RiderAdded];
     }
     else if (alertView.tag == 1005 && buttonIndex ==0)      //deleting due to business rule
     {
@@ -2085,6 +2088,7 @@
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
+        [_delegate RiderAdded];
     }
     else if (alertView.tag == 1006 && buttonIndex == 0) //displayed label min/max
     {
@@ -2117,8 +2121,8 @@
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
+        [_delegate RiderAdded];
     }
-    
 }
 
 #pragma mark - validate
@@ -3303,11 +3307,12 @@
         @"INSERT INTO Trad_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, PlanOption, Units, Deductible, HL1KSA, HL1KSATerm, HL100SA, HL100SATerm, HLPercentage, HLPercentageTerm, CreatedAt) VALUES"
         "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\")", getSINo,riderCode, pTypeCode, PTypeSeq, termField.text, sumField.text, planOption, unitField.text, deductible, inputHL1KSA, inputHL1KSATerm, inputHL100SA, inputHL100SATerm, inputHLPercentage, inputHLPercentageTerm, dateString];
 
-        NSLog(@"%@",insertSQL);
+//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Saved Rider!");
+                [_delegate RiderAdded];
             } else {
                 NSLog(@"Failed Save Rider!");
                 
@@ -4147,6 +4152,7 @@
                     [self MHIGuideLines];
                 }
                 
+                [_delegate RiderAdded];
             } else {
                 NSLog(@"rider delete Failed!");
             }

@@ -17,8 +17,9 @@
 #import "PayorViewController.h"
 #import "SecondLAViewController.h"
 #import "BasicPlanViewController.h"
+#import "RiderViewController.h"
 
-@interface SIMenuViewController : UIViewController <NewLAViewControllerDelegate,PayorViewControllerDelegate,SecondLAViewControllerDelegate,BasicPlanViewControllerDelegate> {
+@interface SIMenuViewController : UIViewController <NewLAViewControllerDelegate,PayorViewControllerDelegate,SecondLAViewControllerDelegate,BasicPlanViewControllerDelegate,RiderViewControllerDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
     BOOL PlanEmpty;
@@ -26,6 +27,10 @@
     PayorViewController *_PayorController;
     SecondLAViewController *_SecondLAController;
     BasicPlanViewController *_BasicController;
+    RiderViewController *_RiderController;
+    NSIndexPath *selectedPath;
+    NSIndexPath *previousPath;
+    BOOL blocked;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
@@ -34,6 +39,7 @@
 @property (nonatomic, retain) PayorViewController *PayorController;
 @property (nonatomic, retain) SecondLAViewController *SecondLAController;
 @property (nonatomic, retain) BasicPlanViewController *BasicController;
+@property (nonatomic,retain) RiderViewController *RiderController;
 
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
 @property (retain, nonatomic) NSMutableArray *SelectedRow;

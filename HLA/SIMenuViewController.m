@@ -35,6 +35,7 @@
 @synthesize getIdPay,getIdProf,getPayAge,getPayDOB,getPayOccp,getPaySex,getPaySmoker;
 @synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
 @synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance,requestSINo2;
+@synthesize RiderController = _RiderController;
 
 id RiderCount;
 
@@ -62,6 +63,8 @@ id RiderCount;
     self.LAController.requestSINo = [self.requestSINo description];
     [self addChildViewController:self.LAController];
     [self.RightView addSubview:self.LAController.view];
+    blocked = NO;
+    selectedPath = 0;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -140,6 +143,7 @@ id RiderCount;
     }
     
 }
+
 -(void)toogleView
 {
     if (PlanEmpty)
@@ -205,18 +209,24 @@ id RiderCount;
         self.SecondLAController.requestSINo = getSINo;
         [self addChildViewController:self.SecondLAController];
         [self.RightView addSubview:self.SecondLAController.view];
+        
+        previousPath = selectedPath;
+        blocked = NO;
     }
     else if (getAge > 70) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        blocked = YES;
     }
     else if (getAge < 16 && getOccpCode.length != 0 && ![getOccpCode isEqualToString:@"(null)"]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Life Assured" message:@"Life Assured is less than 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        blocked = YES;
     }
     else if (getOccpCode.length == 0 || [getOccpCode isEqualToString:@"(null)"]) {
         NSLog(@"no where!");
+        blocked = YES;
     }
     else {
         NSLog(@"age 16-17");
@@ -227,6 +237,7 @@ id RiderCount;
             if (payorSINo.length != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                blocked = YES;
             }
             else {
                 
@@ -236,12 +247,16 @@ id RiderCount;
                 self.SecondLAController.requestSINo = getSINo;
                 [self addChildViewController:self.SecondLAController];
                 [self.RightView addSubview:self.SecondLAController.view];
+                
+                previousPath = selectedPath;
+                blocked = NO;
             }
         }
         else {
             if (getPayorIndexNo != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                blocked = YES;
             }
             else {
                 if (_SecondLAController == nil) {
@@ -252,6 +267,9 @@ id RiderCount;
                 self.SecondLAController.requestSINo = getSINo;
                 [self addChildViewController:self.SecondLAController];
                 [self.RightView addSubview:self.SecondLAController.view];
+                
+                previousPath = selectedPath;
+                blocked = NO;
             }
         }
     }
@@ -264,6 +282,7 @@ id RiderCount;
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Life Assured's age must not greater or equal to 18 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        blocked = YES;
     }
     else if (getAge < 16 && getOccpCode.length != 0) {
         
@@ -276,9 +295,13 @@ id RiderCount;
         self.PayorController.requestSINo = getSINo;
         [self addChildViewController:self.PayorController];
         [self.RightView addSubview:self.PayorController.view];
+        
+        previousPath = selectedPath;
+        blocked = NO;
     }
     else if (getOccpCode.length == 0 || [getOccpCode isEqualToString:@"(null)"]) {
         NSLog(@"no where!");
+        blocked = YES;
     }
     else {
         NSLog(@"age 16-17");
@@ -289,6 +312,7 @@ id RiderCount;
             if (CustCode2.length != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                blocked = YES;
             }
             else {
                 
@@ -299,12 +323,16 @@ id RiderCount;
                 self.PayorController.requestSINo = getSINo;
                 [self addChildViewController:self.PayorController];
                 [self.RightView addSubview:self.PayorController.view];
+                
+                previousPath = selectedPath;
+                blocked = NO;
             }
         }
         else {
             if (get2ndLAIndexNo != 0) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Payor" message:@"Not allowed as Payor/ 2nd LA has been attached" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
+                blocked = YES;
             }
             else {
                 if (_PayorController == nil) {
@@ -315,6 +343,9 @@ id RiderCount;
                 self.PayorController.requestSINo = getSINo;
                 [self addChildViewController:self.PayorController];
                 [self.RightView addSubview:self.PayorController.view];
+                
+                previousPath = selectedPath;
+                blocked = NO;
             }
         }
     }
@@ -331,11 +362,13 @@ id RiderCount;
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
+            blocked = YES;
         }
         else if (getAge > 70) {
         
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
+            blocked = YES;
         }
         else {
             
@@ -365,6 +398,9 @@ id RiderCount;
             
             [self addChildViewController:self.BasicController];
             [self.RightView addSubview:self.BasicController.view];
+            
+            previousPath = selectedPath;
+            blocked = NO;
         }
     }
     else if (getOccpCode != 0 && getSINo.length == 0) {
@@ -374,6 +410,7 @@ id RiderCount;
         
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
+            blocked = YES;
         }
         else {
             if (_BasicController == nil) {
@@ -403,10 +440,14 @@ id RiderCount;
             
             [self addChildViewController:self.BasicController];
             [self.RightView addSubview:self.BasicController.view];
+            
+            previousPath = selectedPath;
+            blocked = NO;
         }
     }
     else {
         NSLog(@"no where!");
+        blocked = YES;
     }
 }
 
@@ -429,15 +470,20 @@ id RiderCount;
         [self addChildViewController:premView];
         [self.RightView addSubview:premView.view];
         [SelectedRow removeObject:@"6"];
+        
+        previousPath = selectedPath;
+        blocked = NO;
     }
     else if (getAge > 70) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        blocked = YES;
     }
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"No record selected!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+        blocked = YES;
     }
 }
 
@@ -508,8 +554,9 @@ id RiderCount;
 {
 	static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [self.myTableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
+    if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
     
     if (indexPath.row == 4) {
         cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", RiderCount ];
@@ -536,6 +583,8 @@ id RiderCount;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    selectedPath = indexPath;
+    NSLog(@"path:%@",selectedPath);
     if (indexPath.row == 0) {
         NSLog(@"select LA:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
         
@@ -557,7 +606,8 @@ id RiderCount;
             [self addChildViewController:self.LAController];
             [self.RightView addSubview:self.LAController.view];
         }
-        
+        previousPath = selectedPath;
+        blocked = NO;
     }
     else if (indexPath.row == 1) {
         [self select2ndLA];
@@ -575,29 +625,31 @@ id RiderCount;
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
+            blocked = YES;
         }
         else {
-            RiderViewController *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
-            zzz.requestAge = getAge;
-            zzz.requestOccpClass = getOccpClass;
+            self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
+            _RiderController.delegate = self;
+            self.RiderController.requestAge = getAge;
+            self.RiderController.requestOccpClass = getOccpClass;
         
-            zzz.requestSINo = getSINo;
-            zzz.requestPlanCode = getPlanCode;
-            zzz.requestCoverTerm = getTerm;
-            zzz.requestBasicSA = getbasicSA;
-            zzz.requestMOP = getMOP;
-            zzz.requestAdvance = getAdvance;
+            self.RiderController.requestSINo = getSINo;
+            self.RiderController.requestPlanCode = getPlanCode;
+            self.RiderController.requestCoverTerm = getTerm;
+            self.RiderController.requestBasicSA = getbasicSA;
+            self.RiderController.requestMOP = getMOP;
+            self.RiderController.requestAdvance = getAdvance;
         
-            [self addChildViewController:zzz];
-            [self.RightView addSubview:zzz.view];
+            [self addChildViewController:self.RiderController];
+            [self.RightView addSubview:self.RiderController.view];
+            
+            previousPath = selectedPath;
+            blocked = NO;
         }
     }
-    
     else if (indexPath.row == 5) {
         [self calculatedPrem];
-        
     }
-    
     else if (indexPath.row == 6) { //quotation
         
         /*
@@ -774,7 +826,14 @@ id RiderCount;
         }
     }
     
-    [tableView reloadData];
+//    [tableView reloadData];
+    
+    if (blocked) {
+        [tableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [tableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -856,6 +915,12 @@ id RiderCount;
         PlanEmpty = NO;
     }
     [self toogleView];
+}
+
+-(void)RiderAdded
+{
+    [self CalculateRider];
+    [self.myTableView reloadData];
 }
 
 #pragma mark - memory
