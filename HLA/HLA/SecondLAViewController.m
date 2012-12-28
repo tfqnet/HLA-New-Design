@@ -347,7 +347,6 @@
             }
             nameField.text = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-            //        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
             DOBField.text = @"";
             ageField.text = @"";
             OccpField.text = @"";
@@ -377,6 +376,8 @@
                 self.deleteBtn.hidden = YES;
             }
         }
+        
+        [_delegate secondLADelete];
         
     }
     else if (alertView.tag==1004 && buttonIndex == 0) {

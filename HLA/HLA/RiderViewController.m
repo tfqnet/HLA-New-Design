@@ -259,6 +259,10 @@
     myTableView.opaque = NO;
     myTableView.backgroundView = nil;
     
+//    myTableView.delegate = self;
+//    myTableView.dataSource = self;
+//    [myTableView reloadData];
+    
     [self.view addSubview:myTableView];
     
     [editBtn setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f] forState:UIControlStateNormal];
@@ -685,7 +689,7 @@
     }
     else if ([riderCode isEqualToString:@"CPA"])
     {
-        if (riderH.storedOccpClass == 1 || riderH.storedOccpClass == 2) {
+        if (getOccpClass == 1 || getOccpClass == 2) {
             if (dblPseudoBSA < 100000) {
                 _maxRiderSA = fmin(dblPseudoBSA3,200000);
                 NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
@@ -697,7 +701,7 @@
                 maxRiderSA = [a_maxRiderSA doubleValue];
             }
         }
-        else if (riderH.storedOccpClass == 3 || riderH.storedOccpClass == 4) {
+        else if (getOccpClass == 3 || getOccpClass == 4) {
             _maxRiderSA = fmin(dblPseudoBSA3,100000);
             NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
             maxRiderSA = [a_maxRiderSA doubleValue];

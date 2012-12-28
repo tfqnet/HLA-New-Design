@@ -36,6 +36,7 @@
 @synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
 @synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance,requestSINo2;
 @synthesize RiderController = _RiderController;
+@synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor;
 
 id RiderCount;
 
@@ -52,8 +53,9 @@ id RiderCount;
     [self.view addSubview:myTableView];
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
-    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", @"Quotation", nil ];
-    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", @"6", nil ];
+    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
+    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", nil ];
+    
     PlanEmpty = YES;
     
     if (_LAController == nil) {
@@ -65,6 +67,10 @@ id RiderCount;
     [self.RightView addSubview:self.LAController.view];
     blocked = NO;
     selectedPath = 0;
+    
+    for (int a=0; a<SelectedRow.count; a++) {
+        NSLog(@"rowInLoad:%@",[SelectedRow objectAtIndex:a]);
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -113,14 +119,13 @@ id RiderCount;
 	[super viewDidDisappear:animated];
 }
 
--(void)Reset{
-
+-(void)Reset
+{
     if ([self.requestSINo isEqualToString:self.requestSINo2] || (self.requestSINo == NULL && self.requestSINo2 == NULL) ) {
         
         PlanEmpty = YES;
         [SelectedRow addObject:@"4" ];
         [SelectedRow addObject:@"5" ];
-        [SelectedRow addObject:@"6" ];
         _LAController = nil;
         _BasicController = nil;
         _PayorController = nil;
@@ -128,20 +133,27 @@ id RiderCount;
         getAge = 0;
         getSINo = nil;
         getOccpCode = nil;
+        getLAIndexNo = 0;
+        get2ndLAIndexNo = 0;
+        getPayorIndexNo = 0;
+        NameLA = nil;
+        Name2ndLA = nil;
+        NamePayor = nil;
+        selectedPath = nil;
         [self.myTableView reloadData];
         
         self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
         _LAController.delegate = self;
         [self addChildViewController:self.LAController];
         [self.RightView addSubview:self.LAController.view];
-        
     }
-
-    else{
-        
+    else {
         requestSINo2 = self.requestSINo;
     }
     
+    for (int a=0; a<SelectedRow.count; a++) {
+        NSLog(@"rowInReset:%@",[SelectedRow objectAtIndex:a]);
+    }
 }
 
 -(void)toogleView
@@ -150,51 +162,28 @@ id RiderCount;
     {
         [SelectedRow addObject:@"4"];
         [SelectedRow addObject:@"5"];
-//        NSLog(@"Plan empty");
     }
     else {
         [SelectedRow removeObject:@"4"];
         [SelectedRow removeObject:@"5"];
-//          NSLog(@"Plan not empty");
         [self CalculateRider];
-
+        
     }
-    
+
+    /*
     if ([SIshowQuotation isEqualToString:@"NO"] || SIshowQuotation == NULL ) {
         [SelectedRow addObject:@"6"];
     }
     else {
         //[SelectedRow removeObject:@"6"];
     }
+    */
     
     [self.myTableView reloadData];
 }
 
 
 #pragma mark - action
-
--(void)CalculateRider
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:@"select count(*) from trad_rider_details where sino = '%@' ", getSINo ];
-        
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_ROW)
-            {
-                RiderCount = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                
-                
-            } else {
-                
-            }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
 
 -(void)select2ndLA
 {
@@ -466,10 +455,8 @@ id RiderCount;
         premView.requestBasicSA = getbasicSA;
         premView.requestBasicHL = getbasicHL;
         premView.requestPlanCode = getPlanCode;
-        
         [self addChildViewController:premView];
         [self.RightView addSubview:premView.view];
-        [SelectedRow removeObject:@"6"];
         
         previousPath = selectedPath;
         blocked = NO;
@@ -537,6 +524,100 @@ id RiderCount;
     }
 }
 
+-(void)CalculateRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"select count(*) from trad_rider_details where sino = '%@' ", getSINo ];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                RiderCount = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                
+                
+            } else {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getLAName
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT ProspectName FROM prospect_profile WHERE IndexNo= \"%d\"",getLAIndexNo];
+        
+//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NameLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            
+            } else {
+                NSLog(@"error access prospect_profile");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)get2ndLAName
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT ProspectName FROM prospect_profile WHERE IndexNo= \"%d\"",get2ndLAIndexNo];
+        
+//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                Name2ndLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                
+            } else {
+                NSLog(@"error access prospect_profile");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getPayorName
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT ProspectName FROM prospect_profile WHERE IndexNo= \"%d\"",getPayorIndexNo];
+        
+//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NamePayor = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                
+            } else {
+                NSLog(@"error access prospect_profile");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
 
 #pragma mark - table view
 
@@ -558,21 +639,67 @@ id RiderCount;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    if (indexPath.row == 4) {
-        cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", RiderCount ];
+    //--text label
+    
+    if (PlanEmpty) {
+        if (indexPath.row == 4||indexPath.row == 5||indexPath.row == 6) {
+            cell.textLabel.text = @"";
+        }
+        else {
+            cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+        }
     }
-    else{
-        cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    else {
+        if (indexPath.row == 4) {
+            cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", RiderCount ];
+        }
+        else {
+            cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+        }
     }
     
-    cell.detailTextLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:10];
-    cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
+    //--
 
+    
+    //--detail text label
+
+    if (indexPath.row == 0) {
+        if (NameLA.length != 0) {
+            cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@",NameLA];
+        }
+        else {
+            cell.detailTextLabel.text = @"";
+        }
+    }
+    else if (indexPath.row == 1) {
+        if (Name2ndLA.length != 0) {
+            cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@",Name2ndLA];
+        }
+        else {
+            cell.detailTextLabel.text = @"";
+        }
+    }
+    else if (indexPath.row == 2) {
+        if (NamePayor.length != 0) {
+            cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@",NamePayor];
+        }
+        else {
+            cell.detailTextLabel.text = @"";
+        }
+    }
+    else {
+        cell.detailTextLabel.text = @"";
+    }
+     
+    //--
+    
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:18];
     cell.textLabel.textAlignment = UITextAlignmentLeft;
+    
+    cell.detailTextLabel.textColor = [UIColor whiteColor];
+    cell.detailTextLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:12];
+    cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
     
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     return cell;
@@ -618,7 +745,6 @@ id RiderCount;
     else if (indexPath.row == 3) {
         [self selectBasicPlan];
     }
-    
     else if (indexPath.row == 4) {
         
         if (getAge > 70) {
@@ -838,7 +964,6 @@ id RiderCount;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     BOOL found = false;
     
     if ([SelectedRow count ] == 0) {
@@ -846,8 +971,9 @@ id RiderCount;
     }
     else {
         NSString *aString = [[NSString alloc] initWithFormat:@"%d", indexPath.row ];
+        
         for (int f = 0; f < [SelectedRow count]; f++) {
-            NSString * stringFromArray = [SelectedRow objectAtIndex:f];
+            NSString *stringFromArray = [SelectedRow objectAtIndex:f];
             if ([aString isEqualToString:stringFromArray]) {
                 found = true;
                 break;
@@ -875,6 +1001,11 @@ id RiderCount;
     getCommDate = aaCommDate;
     getIdPay = aaIdPayor;
     getIdProf = aaIdProfile;
+    getLAIndexNo = aaIndexNo;
+    
+    [self getLAName];
+    [self.myTableView reloadData];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 -(void)PayorIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
@@ -886,6 +1017,10 @@ id RiderCount;
     getPayDOB = aaDOB;
     getPayAge = aaAge;
     getPayOccp = aaOccpCode;
+    
+    [self getPayorName];
+    [self.myTableView reloadData];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 -(void)LA2ndIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
@@ -897,6 +1032,19 @@ id RiderCount;
     get2ndLADOB = aaDOB;
     get2ndLAAge = aaAge;
     get2ndLAOccp = aaOccpCode;
+    
+    [self get2ndLAName];
+    [self.myTableView reloadData];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+-(void)secondLADelete
+{
+    NSLog(@"::receive data 2ndLA delete!");
+    get2ndLAIndexNo = 0;
+    [self get2ndLAName];
+    [self.myTableView reloadData];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 -(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
@@ -915,12 +1063,15 @@ id RiderCount;
         PlanEmpty = NO;
     }
     [self toogleView];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 -(void)RiderAdded
 {
-    [self CalculateRider];
-    [self.myTableView reloadData];
+//    [self CalculateRider];
+//    [self.myTableView reloadData];
+    [self toogleView];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark - memory

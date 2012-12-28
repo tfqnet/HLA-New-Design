@@ -56,6 +56,7 @@
 @property (nonatomic, retain) NSString *getCommDate;
 @property (nonatomic ,assign ,readwrite) int getIdProf;
 @property (nonatomic ,assign ,readwrite) int getIdPay;
+@property (nonatomic ,assign ,readwrite) int getLAIndexNo;
 
 @property (nonatomic ,assign ,readwrite) int getPayorIndexNo;
 @property (nonatomic, retain) NSString *getPaySmoker;
@@ -85,6 +86,9 @@
 @property (nonatomic, copy) NSString *payorCustCode;
 @property (nonatomic, assign,readwrite) int clientID2;
 @property (nonatomic, copy) NSString *CustCode2;
+@property(nonatomic , retain) NSString *NameLA;
+@property(nonatomic , retain) NSString *Name2ndLA;
+@property(nonatomic , retain) NSString *NamePayor;
 
 @property (nonatomic,strong) id SIshowQuotation;
 -(void)Reset;
