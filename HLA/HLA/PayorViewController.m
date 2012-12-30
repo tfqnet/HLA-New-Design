@@ -28,6 +28,7 @@
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo,requestCommDate;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert,getSINo;
 @synthesize delegate = _delegate;
+@synthesize getLAIndexNo,requestLAIndexNo;
 
 - (void)viewDidLoad
 {
@@ -37,6 +38,7 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    getLAIndexNo = requestLAIndexNo;
     getCommDate = [self.requestCommDate description];
     getSINo = [self.requestSINo description];
     NSLog(@"Payor-SINo:%@, CommDate:%@",getSINo,getCommDate);
@@ -51,6 +53,7 @@
     OccpField.enabled = NO;
     self.deleteBtn.hidden = YES;
     useExist = NO;
+    inserted = NO;
 
     if (self.requestSINo) {
         [self checkingExisting];
@@ -94,8 +97,8 @@
         valid = FALSE;
     }
     
-    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
-    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
+//    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
+//    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
     
     if (valid) {
     
@@ -175,7 +178,7 @@
             PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert setTag:2003];
         [alert show];
     }
@@ -297,12 +300,10 @@
             }
         }
         else {            
-            if (_delegate != nil) {
-                useExist = YES;
+            if (inserted) {
                 msg = @"Confirm changes?";
             }
             else {
-                useExist = NO;
                 msg = @"Save?";
             }
         }
@@ -342,6 +343,7 @@
             [self deletePayor];
             if (CheckRiderCode.length != 0) {
                 [self deleteRider];
+                [_delegate RiderAdded];
             }
             nameField.text = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
@@ -502,7 +504,7 @@
     IndexNo = [aaIndex intValue];
     smoker = @"N";
     
-    if (laHand.storedIndexNo == [aaIndex intValue]) {
+    if (getLAIndexNo == [aaIndex intValue]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"This Payor has already been attached to the plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     } else {
@@ -628,8 +630,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-                               @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"PY\",\"1\",\"%@\",\"hla\")",SINo, CustCode,dateStr];
-        NSLog(@"%@",insertSQL);
+                               @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"PY\",\"1\",\"%@\",\"hla\")",getSINo, CustCode,dateStr];
+//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -642,12 +644,14 @@
         
         NSString *insertSQL2 = [NSString stringWithFormat:
                                 @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", CustCode, nameField.text, smoker, sex, DOB, age, ANB, OccpCode, dateStr,IndexNo];
-        NSLog(@"%@",insertSQL2);
+//        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Done LA2");
                 [self updateRunCustCode];
+                [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
+                self.deleteBtn.hidden = NO;
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                [SuccessAlert setTag:2004];
@@ -663,7 +667,6 @@
         }
         sqlite3_close(contactDB);
     }
-    self.deleteBtn.hidden = NO;
 }
 
 -(void)savePayorHandler
@@ -679,6 +682,7 @@
     
     [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
     self.deleteBtn.hidden = NO;
+    inserted = YES;
 }
 
 -(void)updateRunCustCode
@@ -769,7 +773,7 @@
                 clientID = sqlite3_column_int(statement, 1);
                 
             } else {
-                NSLog(@"error access tbl_SI_Trad_LAPayor");
+                NSLog(@"error access checkingExisting2");
                 useExist = NO;
             }
             sqlite3_finalize(statement);
@@ -844,13 +848,13 @@
     {
         NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
         
-        NSLog(@"%@",querySQL);
-        
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"SI update!");
+                [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                [SuccessAlert setTag:2004];
@@ -895,6 +899,8 @@
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record deleted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [SuccessAlert show];
                 
+                [_delegate PayorDeleted];
+                
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
                 
@@ -914,7 +920,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode,SumAssured,RiderTerm,Units FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"PY\" AND Seq=\"1\"",requestSINo];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode,SumAssured,RiderTerm,Units FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"PY\" AND Seq=\"1\"",getSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -932,7 +938,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"PY\" AND Seq=\"1\"",requestSINo];
+        NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND PTypeCode=\"PY\" AND Seq=\"1\"",getSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)

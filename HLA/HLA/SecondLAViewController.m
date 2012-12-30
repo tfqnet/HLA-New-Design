@@ -28,7 +28,7 @@
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 @synthesize DOBField,OccpField,deleteBtn,getCommDate,dataInsert;
 @synthesize delegate = _delegate;
-@synthesize getSINo;
+@synthesize getSINo,getLAIndexNo,requestLAIndexNo;
 
 - (void)viewDidLoad
 {
@@ -38,6 +38,7 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    getLAIndexNo = requestLAIndexNo;
     getCommDate = [self.requestCommDate description];
     getSINo = [self.requestSINo description];
     NSLog(@"2ndLA-SINo:%@, CommDate:%@",getSINo,getCommDate);
@@ -53,6 +54,7 @@
     self.deleteBtn.hidden = YES;
     
     useExist = NO;
+    inserted = NO;
     
     if (requestSINo) {
         [self checkingExisting];
@@ -97,8 +99,8 @@
         valid = FALSE;
     }
     
-    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
-    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
+//    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
+//    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
     
     if (valid) {
         
@@ -177,7 +179,7 @@
             PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Data changed. Please resave!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert setTag:1004];
         [alert show];
     }
@@ -299,12 +301,10 @@
             }
         }
         else {
-            if (_delegate != nil) {
-                useExist = YES;
+            if (inserted) {
                 msg = @"Confirm changes?";
             }
             else {
-                useExist = NO;
                 msg = @"Save?";
             }
         }
@@ -324,7 +324,8 @@
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag==1001 && buttonIndex == 0) {
+    if (alertView.tag==1001 && buttonIndex == 0)
+    {
         if (self.requestSINo) {
             if (useExist) {
                 [self updateData];
@@ -494,7 +495,7 @@
     smoker = @"N";
     IndexNo = [aaIndex intValue];
     
-    if (laHand.storedIndexNo == IndexNo) {
+    if (getLAIndexNo == IndexNo) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"This Life Assured has already been attached to the plan." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     } else {
@@ -621,8 +622,8 @@
     {
         NSString *insertSQL = [NSString stringWithFormat:
                     @"INSERT INTO Trad_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"2\",\"%@\",\"hla\")",SINo, CustCode,dateStr];
-        NSLog(@"%@",insertSQL);
         
+//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -635,8 +636,8 @@
         
         NSString *insertSQL2 = [NSString stringWithFormat:
                 @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", CustCode, nameField.text, smoker, sex, DOB, age, ANB, OccpCode, dateStr,IndexNo];
-        NSLog(@"%@",insertSQL2);
         
+//        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -646,6 +647,8 @@
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                [SuccessAlert setTag:1005];
                 [SuccessAlert show];
+                
+                [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
                 
             } else {
                 NSLog(@"Failed LA2");
@@ -672,8 +675,8 @@
     } */
     
     [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
-    
     self.deleteBtn.hidden = NO;
+    inserted = YES;
 }
 
 -(void)updateRunCustCode
@@ -832,6 +835,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
+        
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -841,6 +846,8 @@
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                [SuccessAlert setTag:1005];
                 [SuccessAlert show];
+                
+                [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
                 
             } else {
                 NSLog(@"SI update Failed!");

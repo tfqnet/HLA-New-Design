@@ -25,6 +25,7 @@
     UIPopoverController *popOverController;
     ListingTbViewController *_ProspectList;
     BOOL useExist;
+    BOOL inserted;
     id <SecondLAViewControllerDelegate> _delegate;
 }
 
@@ -38,8 +39,10 @@
 @property (nonatomic,strong) id <SecondLAViewControllerDelegate> delegate;
 
 //--request
+@property (nonatomic, assign,readwrite) int requestLAIndexNo;
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) id requestCommDate;
+@property (nonatomic, assign,readwrite) int getLAIndexNo;
 @property(nonatomic , retain) NSString *getSINo;
 @property (nonatomic, copy) NSString *getCommDate;
 //--

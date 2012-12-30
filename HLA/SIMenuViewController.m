@@ -66,7 +66,8 @@ id RiderCount;
     [self addChildViewController:self.LAController];
     [self.RightView addSubview:self.LAController.view];
     blocked = NO;
-    selectedPath = 0;
+    selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
     
     for (int a=0; a<SelectedRow.count; a++) {
         NSLog(@"rowInLoad:%@",[SelectedRow objectAtIndex:a]);
@@ -194,6 +195,7 @@ id RiderCount;
             self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
             _SecondLAController.delegate = self;
         }
+        self.SecondLAController.requestLAIndexNo = getLAIndexNo;
         self.SecondLAController.requestCommDate = getCommDate;
         self.SecondLAController.requestSINo = getSINo;
         [self addChildViewController:self.SecondLAController];
@@ -232,6 +234,7 @@ id RiderCount;
                 
                 self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
                 _SecondLAController.delegate = self;
+                self.SecondLAController.requestLAIndexNo = getLAIndexNo;
                 self.SecondLAController.requestCommDate = getCommDate;
                 self.SecondLAController.requestSINo = getSINo;
                 [self addChildViewController:self.SecondLAController];
@@ -252,6 +255,7 @@ id RiderCount;
                     self.SecondLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"secondLAView"];
                     _SecondLAController.delegate = self;
                 }
+                self.SecondLAController.requestLAIndexNo = getLAIndexNo;
                 self.SecondLAController.requestCommDate = getCommDate;
                 self.SecondLAController.requestSINo = getSINo;
                 [self addChildViewController:self.SecondLAController];
@@ -280,6 +284,7 @@ id RiderCount;
             self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
             _PayorController.delegate = self;
         }
+        self.PayorController.requestLAIndexNo = getLAIndexNo;
         self.PayorController.requestCommDate = getCommDate;
         self.PayorController.requestSINo = getSINo;
         [self addChildViewController:self.PayorController];
@@ -308,6 +313,7 @@ id RiderCount;
                 self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
                 _PayorController.delegate = self;
                 
+                self.PayorController.requestLAIndexNo = getLAIndexNo;
                 self.PayorController.requestCommDate = getCommDate;
                 self.PayorController.requestSINo = getSINo;
                 [self addChildViewController:self.PayorController];
@@ -328,6 +334,7 @@ id RiderCount;
                     self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
                     _PayorController.delegate = self;
                 }
+                self.PayorController.requestLAIndexNo = getLAIndexNo;
                 self.PayorController.requestCommDate = getCommDate;
                 self.PayorController.requestSINo = getSINo;
                 [self addChildViewController:self.PayorController];
@@ -443,23 +450,33 @@ id RiderCount;
 -(void)calculatedPrem
 {
     if (getSINo.length != 0 && getAge <= 70) {
+        
+        [self checkingPayor];
+        if (getAge < 10 && payorSINo.length == 0) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            blocked = YES;
+        }
+        else {
     
-        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-        premView.requestAge = getAge;
-        premView.requestOccpClass = getOccpClass;
-        premView.requestOccpCode = getOccpCode;
+            PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+            premView.requestAge = getAge;
+            premView.requestOccpClass = getOccpClass;
+            premView.requestOccpCode = getOccpCode;
         
-        premView.requestSINo = getSINo;
-        premView.requestMOP = getMOP;
-        premView.requestTerm = getTerm;
-        premView.requestBasicSA = getbasicSA;
-        premView.requestBasicHL = getbasicHL;
-        premView.requestPlanCode = getPlanCode;
-        [self addChildViewController:premView];
-        [self.RightView addSubview:premView.view];
+            premView.requestSINo = getSINo;
+            premView.requestMOP = getMOP;
+            premView.requestTerm = getTerm;
+            premView.requestBasicSA = getbasicSA;
+            premView.requestBasicHL = getbasicHL;
+            premView.requestPlanCode = getPlanCode;
+            [self addChildViewController:premView];
+            [self.RightView addSubview:premView.view];
         
-        previousPath = selectedPath;
-        blocked = NO;
+            previousPath = selectedPath;
+            blocked = NO;
+        }
     }
     else if (getAge > 70) {
         
@@ -491,8 +508,10 @@ id RiderCount;
             {
                 payorSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 payorCustCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
-                
-            } else {
+                NamePayor = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                NSLog(@"PayorSI:%@",payorSINo);
+            }
+            else {
                 NSLog(@"error access checkingPayor");
             }
             sqlite3_finalize(statement);
@@ -514,9 +533,11 @@ id RiderCount;
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 CustCode2 = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                Name2ndLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
                 clientID2 = sqlite3_column_int(statement, 9);
+               
             } else {
-                NSLog(@"error access Trad_LAPayor");
+                NSLog(@"error access checking2ndLA");
             }
             sqlite3_finalize(statement);
         }
@@ -563,7 +584,7 @@ id RiderCount;
                 NameLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
             
             } else {
-                NSLog(@"error access prospect_profile");
+                NSLog(@"error access getLAName");
             }
             sqlite3_finalize(statement);
         }
@@ -587,7 +608,7 @@ id RiderCount;
                 Name2ndLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 
             } else {
-                NSLog(@"error access prospect_profile");
+                NSLog(@"error access get2ndLAName");
             }
             sqlite3_finalize(statement);
         }
@@ -611,7 +632,7 @@ id RiderCount;
                 NamePayor = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 
             } else {
-                NSLog(@"error access prospect_profile");
+                NSLog(@"error access getPayorName");
             }
             sqlite3_finalize(statement);
         }
@@ -746,10 +767,16 @@ id RiderCount;
         [self selectBasicPlan];
     }
     else if (indexPath.row == 4) {
-        
+        [self checkingPayor];
         if (getAge > 70) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            blocked = YES;
+        }
+        else if (getAge < 10 && payorSINo.length == 0) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
             blocked = YES;
         }
@@ -1005,7 +1032,12 @@ id RiderCount;
     
     [self getLAName];
     [self.myTableView reloadData];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 -(void)PayorIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
@@ -1020,7 +1052,28 @@ id RiderCount;
     
     [self getPayorName];
     [self.myTableView reloadData];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+}
+
+-(void)PayorDeleted
+{
+    NSLog(@"::receive data Payor deleted!");
+    getPayorIndexNo = 0;
+    NamePayor = nil;
+    payorSINo = nil;
+    [self getPayorName];
+    [self.myTableView reloadData];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 -(void)LA2ndIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
@@ -1035,16 +1088,28 @@ id RiderCount;
     
     [self get2ndLAName];
     [self.myTableView reloadData];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 -(void)secondLADelete
 {
-    NSLog(@"::receive data 2ndLA delete!");
+    NSLog(@"::receive data 2ndLA deleted!");
     get2ndLAIndexNo = 0;
+    Name2ndLA = nil;
+    CustCode2 = nil;
     [self get2ndLAName];
     [self.myTableView reloadData];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 -(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
@@ -1062,16 +1127,35 @@ id RiderCount;
     {
         PlanEmpty = NO;
     }
+    
+    [self checkingPayor];
+    [self checking2ndLA];
+    
     [self toogleView];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
 }
 
 -(void)RiderAdded
 {
-//    [self CalculateRider];
-//    [self.myTableView reloadData];
+    NSLog(@"::receive data rider added!");
     [self toogleView];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+}
+
+-(void)BasicSARevised:(NSString *)aabasicSA
+{
+    NSLog(@"::receive databasicSA revised:%@",aabasicSA);
+    getbasicSA = aabasicSA;
 }
 
 #pragma mark - memory

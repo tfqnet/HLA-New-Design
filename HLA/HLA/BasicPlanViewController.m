@@ -927,8 +927,6 @@
                     NSLog(@"storedbasic:%@",ss.storedSINo);
                 } */
                 
-                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
-                
                 if (PayorIndexNo != 0) {
                     [self savePayor];
                 }
@@ -940,6 +938,8 @@
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                [SuccessAlert setTag:1004];
                 [SuccessAlert show];
+                
+                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
                 
             } else {
                 NSLog(@"Failed Save basicPlan!");

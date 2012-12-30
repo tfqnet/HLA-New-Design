@@ -2673,6 +2673,7 @@
                 
                 //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
                 //[alert show];
+                [_delegate BasicSARevised:newBasicSA];
             }else {
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 zzz.MhiMessage = @"";
@@ -4396,7 +4397,7 @@
     CGRect frame=CGRectMake(-30,0, 110, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
-    label1.text= [LTypeRiderCode objectAtIndex:indexPath.row];
+    label1.text= [NSString stringWithFormat:@"    %@",[LTypeRiderCode objectAtIndex:indexPath.row]];
     label1.textAlignment = UITextAlignmentCenter;
     label1.tag = 2001;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];

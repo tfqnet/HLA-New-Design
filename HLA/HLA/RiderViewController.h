@@ -18,6 +18,7 @@
 @class RiderViewController;
 @protocol RiderViewControllerDelegate
 -(void) RiderAdded;
+-(void) BasicSARevised:(NSString *)aabasicSA;
 @end
 
 @interface RiderViewController : UIViewController <RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,RiderDeducTbDelegate,RiderPlanTbDelegate>

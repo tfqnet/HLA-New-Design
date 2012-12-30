@@ -420,13 +420,23 @@ id temp;
     else {
         //prompt save
         NSString *msg;
-        [self checkingExisting2];
-        
-        if (useExist) {
-            msg = @"Confirm changes?";
-        } else {
-            msg = @"Save?";
+        if (self.requestSINo) {
+            [self checkingExisting2];
+            
+            if (useExist) {
+                msg = @"Confirm changes?";
+            } else {
+                msg = @"Save?";
+            }
         }
+        else {
+            if (Inserted) {
+                msg = @"Confirm changes?";
+            } else {
+                msg = @"Save?";
+            }
+        }
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
         [alert show];
@@ -471,7 +481,12 @@ id temp;
         if (useExist) {
             NSLog(@"will update");
             [self updateData];
-        } else {
+        }
+        else if (Inserted) {
+            NSLog(@"will update2");
+            [self updateData2];
+        }
+        else {
             NSLog(@"will insert new");
             [self insertData];
         }
@@ -582,13 +597,11 @@ id temp;
             NSLog(@"storedLA sex:%@",ss.storedSex);
         }
         */
-        
     }    
     else if (alertView.tag==1005 && buttonIndex == 0) {
         
         LANameField.text = @"";
         [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-//        [smokerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
         LADOBField.text = @"";
         LAAgeField.text = @"";
         [self.btnCommDate setTitle:@"" forState:UIControlStateNormal];
@@ -862,6 +875,7 @@ id temp;
         }*/
         
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+        Inserted = YES;
         
         sqlite3_close(contactDB);
     }
@@ -887,21 +901,46 @@ id temp;
                 if (DiffClient) {
                     NSLog(@"diffClient!");
                     
+                    if (age < 10) {
+                        [self checkingPayor];
+                        if (payorSINo.length == 0) {
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                            [alert show];
+                        }
+                    }
                     [self checkExistRider];
                     if (arrExistRiderCode.count > 0) {
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                         [alert setTag:1007];
                         [alert show];
                     }
+                    if (age > 18) {
+                        [self checkingPayor];
+                        if (payorSINo.length != 0) {
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor's details will be deleted due to life Assured age is greater or equal to 18." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                            [alert setTag:1003];
+                            [alert show];
+                        }
+                    }
                     if (age < 16) {
                         [self checking2ndLA];
                         if (CustCode2.length != 0) {
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured's details will be deleted due to life Assured age is less than 16" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured's details will be deleted due to life Assured age is less than 16." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                             [alert setTag:1002];
                             [alert show];
                         }
                     }
-                    if (age > 18) {
+                }
+                
+                else {
+                    if (age < 10) {
+                        [self checkingPayor];
+                        if (payorSINo.length == 0) {
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                            [alert show];
+                        }
+                    }
+                    if (age >= 18) {
                         [self checkingPayor];
                         if (payorSINo.length != 0) {
                             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor's details will be deleted due to life Assured age is greater or equal to 18" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -909,23 +948,14 @@ id temp;
                             [alert show];
                         }
                     }
-                }
-                
-                else if (age < 16) {
-                    [self checking2ndLA];
-                    if (CustCode2.length != 0) {
-                        
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured's details will be deleted due to life Assured age is less than 16" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                        [alert setTag:1002];
-                        [alert show];
-                    }
-                }
-                else if (age >= 18) {
-                    [self checkingPayor];
-                    if (payorSINo.length != 0) {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor's details will be deleted due to life Assured age is greater or equal to 18" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                        [alert setTag:1003];
-                        [alert show];
+                    if (age < 16) {
+                        [self checking2ndLA];
+                        if (CustCode2.length != 0) {
+                            
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured's details will be deleted due to life Assured age is less than 16" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                            [alert setTag:1002];
+                            [alert show];
+                        }
                     }
                 }
                 
@@ -948,6 +978,49 @@ id temp;
                 ss = [dataInsert objectAtIndex:i];
                 NSLog(@"stored sex:%@",ss.storedSex);
             }*/
+            
+            [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+            
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)updateData2
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    NSString *currentdate = [dateFormatter stringFromDate:[NSDate date]];
+    
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", DateCreated = \"%@\"  WHERE id=\"%d\"",
+                              LANameField.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,lastIdProfile];
+//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                if (age < 10) {
+                    [self checkingPayor];
+                    if (payorSINo.length == 0) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                        [alert show];
+                    }
+                }
+                    
+                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [SuccessAlert show];
+                
+            }
+            else {
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
+            }
             
             [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
             
@@ -1124,6 +1197,7 @@ id temp;
         NSString *querySQL = [NSString stringWithFormat:
         @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",getSINo];
         
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -1132,7 +1206,7 @@ id temp;
                 payorCustCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
                 
             } else {
-                NSLog(@"error access tbl_SI_Trad_LAPayor");
+                NSLog(@"error access checkingPayor");
             }
             sqlite3_finalize(statement);
         }
@@ -1148,6 +1222,7 @@ id temp;
         NSString *querySQL = [NSString stringWithFormat:
                 @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",getSINo];
         
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -1186,6 +1261,7 @@ id temp;
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Clt_Profile delete!");
+                [_delegate secondLADelete];
                 
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
@@ -1219,6 +1295,7 @@ id temp;
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Clt_Profile delete!");
+                [_delegate PayorDeleted];
                 
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
@@ -1280,7 +1357,7 @@ id temp;
     {
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\"",getSINo];
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -1304,6 +1381,7 @@ id temp;
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"All rider delete!");
+                [_delegate RiderAdded];
                 
             } else {
                 NSLog(@"rider delete Failed!");
@@ -1368,7 +1446,7 @@ id temp;
     }
     useExist = NO;
     statusLabel.text = @"";
-    NSLog(@"namedb:%@, gender:%@",aaName,aaGender);
+//    NSLog(@"namedb:%@, gender:%@",aaName,aaGender);
     IndexNo = [aaIndex intValue];
     
     NSLog(@"view new client");

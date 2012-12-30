@@ -15,7 +15,9 @@
 
 @class PayorViewController;
 @protocol PayorViewControllerDelegate
--(void) PayorIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode;
+-(void)PayorIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode;
+-(void)PayorDeleted;
+-(void) RiderAdded;
 @end
 
 @interface PayorViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {
@@ -25,6 +27,7 @@
     ListingTbViewController *_ProspectList;
     id <PayorViewControllerDelegate> _delegate;
     BOOL useExist;
+    BOOL inserted;
 }
 
 @property (nonatomic, retain) UIPopoverController *popOverController;
@@ -32,8 +35,10 @@
 @property (nonatomic,strong) id <PayorViewControllerDelegate> delegate;
 
 //--request
+@property (nonatomic, assign,readwrite) int requestLAIndexNo;
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) id requestCommDate;
+@property (nonatomic, assign,readwrite) int getLAIndexNo;
 @property(nonatomic , retain) NSString *getSINo;
 @property (nonatomic, copy) NSString *getCommDate;
 //--
