@@ -14,5 +14,6 @@
 @property (nonatomic, assign,readwrite) int indexNo;
 @property (nonatomic,strong) id userRequest;
 @property (nonatomic,strong) id MhiMessage;
+@property (nonatomic,assign,readwrite) BOOL SICompleted;
 
 @end

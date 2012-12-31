@@ -8,6 +8,7 @@
 
 #import "SecondLAViewController.h"
 #import "MainScreen.h"
+#import "AppDelegate.h"
 
 @interface SecondLAViewController ()
 
@@ -65,13 +66,7 @@
         }
     }
     
-    NSLog(@"delegate:%@",_delegate);
-    
-    /*
-    if (self.la2ndHand.storedIndexNo != 0 && !self.requestSINo) {
-        [self toggleTempView];
-    } */
-    
+    NSLog(@"delegate:%@",_delegate);    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -137,6 +132,10 @@
             CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
             PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
+        
+        [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
+        AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+        zzz.SICompleted = YES;
     }
     else {
         
@@ -184,52 +183,6 @@
         [alert show];
     }
 
-}
-
--(void)toggleTempView
-{
-    IndexNo = la2ndHand.storedIndexNo;
-    [self getProspectData];
-    nameField.text = NamePP;
-    
-    sex = la2ndHand.storedSex;
-    if ([sex isEqualToString:@"M"]) {
-        sexSegment.selectedSegmentIndex = 0;
-    } else {
-        sexSegment.selectedSegmentIndex = 1;
-    }
-    
-    smoker = la2ndHand.storedSmoker;
-    if ([smoker isEqualToString:@"Y"]) {
-        smokerSegment.selectedSegmentIndex = 0;
-    } else {
-        smokerSegment.selectedSegmentIndex = 1;
-    }
-    
-    DOB = la2ndHand.storedDOB;
-    DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-    
-    age = la2ndHand.storedAge;
-    ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
-    
-    OccpCode = la2ndHand.storedOccpCode;
-    [self getOccLoadExist];
-    OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
-    if (occLoading == 0) {
-        OccpLoadField.text = @"STD";
-    } else {
-        OccpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
-    }
-    
-    if (occCPA_PA > 4) {
-        CPAField.text = @"D";
-        PAField.text = @"D";
-    } else {
-        CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-        PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-    }
-    
-    [self save2ndLAHandler];
 }
 
 #pragma mark - action
@@ -358,11 +311,7 @@
         }
         else {
             if (_delegate != nil) {
-                /*
-                dataInsert = [[NSMutableArray alloc] init];
-                self.la2ndHand = [[SecondLAHandler alloc] init];
-                NSLog(@"existStored:%d, dataInsert:%d",self.la2ndHand.storedIndexNo,dataInsert.count); */
-                
+            
                 _delegate = nil;
                 
                 nameField.text = @"";
@@ -665,15 +614,6 @@
 
 -(void)save2ndLAHandler
 {
-    /*
-    dataInsert = [[NSMutableArray alloc] init];
-    SecondLAHandler *ss = [[SecondLAHandler alloc] init];
-    [dataInsert addObject:[[SecondLAHandler alloc] initWithIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode]];
-    for (NSUInteger i=0; i< dataInsert.count; i++) {
-        ss = [dataInsert objectAtIndex:i];
-        NSLog(@"stored %d",ss.storedIndexNo);
-    } */
-    
     [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
     self.deleteBtn.hidden = NO;
     inserted = YES;

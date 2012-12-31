@@ -20,6 +20,7 @@
 #import "RiderViewController.h"
 #import "PremiumViewController.h"
 #import "SIListing.h"
+#import "AppDelegate.h"
 
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
@@ -113,26 +114,26 @@
         }
         */
         else {
-            //--edited by bob,still not working!
-            if (selectedIndex != 3) { //prospect profile
+            
+            if (selectedIndex == 1) {
                 
-                MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-                main.mainBH = nil;
-                main.mainLaH = nil;
-                NSLog(@"Index:%d", main.mainLaH.storedIndexNo);
-                
-                if (_selectedIndex == 3) {
-                    NSLog(@"empty!");
-                    UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
-                    [previousViewController.view removeFromSuperview];
-                    [previousViewController removeFromParentViewController];
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                if (!zzz.SICompleted) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil,nil];
+                    [alert show];
                 }
             }
             
             if (selectedIndex == 2) {
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                if (!zzz.SICompleted) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil,nil];
+                    [alert show];
+                }
                 
                 [(SIListing *)selectedViewController RefreshZZZ];
-                
             }
             
             if (selectedIndex == 3) {
@@ -251,7 +252,8 @@
                               delegate: self
                               cancelButtonTitle: NSLocalizedString(@"Yes",nil)
                               otherButtonTitles: NSLocalizedString(@"No",nil), nil];
-        [alert show ];
+        [alert setTag:1001];
+        [alert show];
     }
     else {
         [self setSelectedIndex:indexPath.row];
@@ -259,10 +261,13 @@
     
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1001 && buttonIndex == 0)
+    {
         [self updateDateLogout];
     }
+    
 }
 
 -(void)updateDateLogout
@@ -330,7 +335,6 @@
 {
     return NO;
 }
-
 
 
 @end

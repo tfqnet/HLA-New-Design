@@ -11,6 +11,7 @@
 @implementation AppDelegate
 @synthesize indexNo;
 @synthesize userRequest, MhiMessage;
+@synthesize SICompleted;
 
 @synthesize window = _window;
 
@@ -18,6 +19,7 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    SICompleted = YES;
     // Override point for customization after application launch.
     
     //for ios6 start, will also clear out ios5.1

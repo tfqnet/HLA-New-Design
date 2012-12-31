@@ -127,26 +127,20 @@ id RiderCount;
         PlanEmpty = YES;
         [SelectedRow addObject:@"4" ];
         [SelectedRow addObject:@"5" ];
-        _LAController = nil;
-        _BasicController = nil;
-        _PayorController = nil;
-        _SecondLAController = nil;
-        getAge = 0;
-        getSINo = nil;
-        getOccpCode = nil;
-        getLAIndexNo = 0;
-        get2ndLAIndexNo = 0;
-        getPayorIndexNo = 0;
-        NameLA = nil;
-        Name2ndLA = nil;
-        NamePayor = nil;
-        selectedPath = nil;
+        
+        [self clearDataLA];
+        [self clearDataPayor];
+        [self clearData2ndLA];
+        [self clearDataBasic];
         [self.myTableView reloadData];
         
         self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
         _LAController.delegate = self;
         [self addChildViewController:self.LAController];
         [self.RightView addSubview:self.LAController.view];
+        blocked = NO;
+        selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
     }
     else {
         requestSINo2 = self.requestSINo;
@@ -278,8 +272,7 @@ id RiderCount;
         blocked = YES;
     }
     else if (getAge < 16 && getOccpCode.length != 0) {
-        
-        NSLog(@"payor here!");
+    
         if (_PayorController == nil) {
             self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
             _PayorController.delegate = self;
@@ -686,7 +679,9 @@ id RiderCount;
 
     if (indexPath.row == 0) {
         if (NameLA.length != 0) {
-            cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@",NameLA];
+            NSString *str = [[NSString alloc] initWithFormat:@"%@",NameLA];
+            str = [str substringToIndex:MIN(20, [str length])];
+            cell.detailTextLabel.text = str;
         }
         else {
             cell.detailTextLabel.text = @"";
@@ -694,7 +689,9 @@ id RiderCount;
     }
     else if (indexPath.row == 1) {
         if (Name2ndLA.length != 0) {
-            cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@",Name2ndLA];
+            NSString *str = [[NSString alloc] initWithFormat:@"%@",Name2ndLA];
+            str = [str substringToIndex:MIN(20, [str length])];
+            cell.detailTextLabel.text = str;
         }
         else {
             cell.detailTextLabel.text = @"";
@@ -702,7 +699,9 @@ id RiderCount;
     }
     else if (indexPath.row == 2) {
         if (NamePayor.length != 0) {
-            cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@",NamePayor];
+            NSString *str = [[NSString alloc] initWithFormat:@"%@",NamePayor];
+            str = [str substringToIndex:MIN(20, [str length])];
+            cell.detailTextLabel.text = str;
         }
         else {
             cell.detailTextLabel.text = @"";
@@ -1063,9 +1062,7 @@ id RiderCount;
 -(void)PayorDeleted
 {
     NSLog(@"::receive data Payor deleted!");
-    getPayorIndexNo = 0;
-    NamePayor = nil;
-    payorSINo = nil;
+    [self clearDataPayor];
     [self getPayorName];
     [self.myTableView reloadData];
     if (blocked) {
@@ -1099,9 +1096,7 @@ id RiderCount;
 -(void)secondLADelete
 {
     NSLog(@"::receive data 2ndLA deleted!");
-    get2ndLAIndexNo = 0;
-    Name2ndLA = nil;
-    CustCode2 = nil;
+    [self clearData2ndLA];
     [self get2ndLAName];
     [self.myTableView reloadData];
     if (blocked) {
@@ -1189,6 +1184,57 @@ id RiderCount;
     [self setGetbasicHL:nil];
     [self setGetPlanCode:nil];
     [super viewDidUnload];
+}
+
+-(void)clearDataLA
+{
+    _LAController = nil;
+    getAge = 0;
+    getOccpClass = 0;
+    getOccpCode = nil;
+    getCommDate = nil;
+    getIdPay = 0;
+    getIdProf = 0;
+    getLAIndexNo = 0;
+    NameLA = nil;
+}
+
+-(void)clearDataPayor
+{
+    _PayorController = nil;
+    getPayorIndexNo = 0;
+    getPaySmoker = nil;
+    getPaySex = nil;
+    getPayDOB = nil;
+    getPayAge = 0;
+    getPayOccp = nil;
+    NamePayor = nil;
+    payorSINo = nil;
+}
+
+-(void)clearData2ndLA
+{
+    _SecondLAController = nil;
+    get2ndLAIndexNo = 0;
+    get2ndLASmoker = nil;
+    get2ndLASex = nil;
+    get2ndLADOB = nil;
+    get2ndLAAge = 0;
+    get2ndLAOccp = nil;
+    Name2ndLA = nil;
+    CustCode2 = nil;
+}
+
+-(void)clearDataBasic
+{
+    _BasicController = nil;
+    getSINo = nil;
+    getMOP = 0;
+    getTerm = 0;
+    getbasicSA = nil;
+    getbasicHL = nil;
+    getPlanCode = nil;
+    getAdvance = 0;
 }
 
 @end

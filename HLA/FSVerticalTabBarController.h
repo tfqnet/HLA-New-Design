@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "FSVerticalTabBar.h"
 
-
 @class FSVerticalTabBarController, FSVerticalTabBar;
 
 

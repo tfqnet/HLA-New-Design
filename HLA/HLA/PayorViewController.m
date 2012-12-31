@@ -9,6 +9,7 @@
 #import "PayorViewController.h"
 #import "MainScreen.h"
 #import "PayorHandler.h"
+#import "AppDelegate.h"
 
 @interface PayorViewController ()
 
@@ -64,10 +65,6 @@
         }
     }
     
-    /*
-    if (_delegate != nil && !self.requestSINo) {
-        [self toggleTempView];
-    } */
     
     NSLog(@"delegate:%@",_delegate);
 }
@@ -136,6 +133,11 @@
             CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
             PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
+        
+        [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
+        AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+        zzz.SICompleted = YES;
+        
     }
     else {
      
@@ -182,52 +184,6 @@
         [alert setTag:2003];
         [alert show];
     }
-}
-
--(void)toggleTempView
-{
-    IndexNo = payorHand.storedIndexNo;
-    [self getProspectData];
-    nameField.text = NamePP;
-    
-    sex = payorHand.storedSex;
-    if ([sex isEqualToString:@"M"]) {
-        sexSegment.selectedSegmentIndex = 0;
-    } else {
-        sexSegment.selectedSegmentIndex = 1;
-    }
-    
-    smoker = payorHand.storedSmoker;
-    if ([smoker isEqualToString:@"Y"]) {
-        smokerSegment.selectedSegmentIndex = 0;
-    } else {
-        smokerSegment.selectedSegmentIndex = 1;
-    }
-    
-    DOB = payorHand.storedDOB;
-    DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-    
-    age = payorHand.storedAge;
-    ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
-    
-    OccpCode = payorHand.storedOccpCode;
-    [self getOccLoadExist];
-    OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
-    if (occLoading == 0) {
-        occpLoadField.text = @"STD";
-    } else {
-        occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
-    }
-    
-    if (occCPA_PA > 4) {
-        CPAField.text = @"D";
-        PAField.text = @"D";
-    } else {
-        CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-        PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-    }
-    
-    [self savePayorHandler];
 }
 
 #pragma mark - action
@@ -357,12 +313,6 @@
         }
         else {
             if (_delegate != nil) {
-                
-                /*
-                dataInsert = [[NSMutableArray alloc] init];
-                self.payorHand = [[PayorHandler alloc] init];
-                NSLog(@"existStored:%d, dataInsert:%d",self.payorHand.storedIndexNo,dataInsert.count); */
-                
                 _delegate = nil;
             
                 nameField.text = @"";
@@ -671,16 +621,9 @@
 
 -(void)savePayorHandler
 {
-    /*
-    dataInsert = [[NSMutableArray alloc] init];
-    PayorHandler *ss = [[PayorHandler alloc] init];
-    [dataInsert addObject:[[PayorHandler alloc] initWithIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode]];
-    for (NSUInteger i=0; i< dataInsert.count; i++) {
-        ss = [dataInsert objectAtIndex:i];
-        NSLog(@"stored %d",ss.storedIndexNo);
-    } */
-    
     [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    zzz.SICompleted = NO;
     self.deleteBtn.hidden = NO;
     inserted = YES;
 }

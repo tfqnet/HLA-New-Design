@@ -88,15 +88,18 @@
     } else {
         NSLog(@"rider not exist!");
     }
-    
-    
     [self calculatePremium];
     
-        
+    if ((getMOP == 9 && [getBasicSA intValue] < 1000 && getAge >= 66 && getAge <= 70)||
+        (getMOP == 9 && [getBasicSA intValue] >= 1000 && getAge >= 68 && getAge <= 70)||
+        (getMOP == 12 && [getBasicSA intValue] < 1000 && getAge >= 59 && getAge <= 70)||
+        (getMOP == 12 && [getBasicSA intValue] >= 1000 && getAge >= 61 && getAge <= 70))
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please note that the Guaranteed Benefit payout for selected plan maybe lesser than total premium outlay." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    
     doGenerate.hidden = TRUE;
-    
-    
-    
     
     //----- meng chiong part --------
     if (IsAtLeastiOSVersion(@"6.0")){
@@ -113,9 +116,7 @@
             browserController_page = nil;
         }
     }
-    
     //------ end ---------
-     
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

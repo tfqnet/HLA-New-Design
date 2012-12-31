@@ -12,6 +12,7 @@
 #import "BasicPlanViewController.h"
 #import "RiderViewController.h"
 
+#import "AppDelegate.h"
 #import "SIMenuViewController.h"
 #import "SIHandler.h"
 #import "MainScreen.h"
@@ -92,11 +93,6 @@ id temp;
     else {
         NSLog(@"SINo not exist!");
     }
-    
-    /*
-    if (self.laH.storedIndexNo != 0 && !requestSINo) {
-        [self toggleTempView];
-    } */
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -216,14 +212,6 @@ id temp;
             LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
         
-        /*
-        dataInsert = [[NSMutableArray alloc] init];
-        SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            ss = [dataInsert objectAtIndex:i];
-            NSLog(@"storedLA sex:%@",ss.storedSex);
-        } */
         
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
     }
@@ -289,52 +277,6 @@ id temp;
     }
 }
 
--(void)toggleTempView
-{
-    IndexNo = laH.storedIndexNo;
-    [self getProspectData];
-    LANameField.text = NamePP;
-    
-    sex = laH.storedSex;
-    if ([sex isEqualToString:@"M"]) {
-        sexSegment.selectedSegmentIndex = 0;
-    } else {
-        sexSegment.selectedSegmentIndex = 1;
-    }
-    
-    smoker = laH.storedSmoker;
-    if ([smoker isEqualToString:@"Y"]) {
-        smokerSegment.selectedSegmentIndex = 0;
-    } else {
-        smokerSegment.selectedSegmentIndex = 1;
-    }
-    
-    DOB = DOBPP;
-    LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-    
-    age = laH.storedAge;
-    LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-    
-    [self.btnCommDate setTitle:laH.storedCommDate forState:UIControlStateNormal];
-    
-    occuCode = laH.storedOccpCode;
-    [self getOccLoadExist];
-    LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
-    if (occLoading == 0) {
-        LAOccLoadingField.text = @"STD";
-    } else {
-        LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-    }
-    
-    if (occCPA_PA > 4) {
-        LACPAField.text = @"D";
-        LAPAField.text = @"D";
-    } else {
-        LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-        LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-    }
-}
-
 -(void)toogleExistingBasic
 {
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -344,17 +286,10 @@ id temp;
     sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
     
     [self getPlanCodePenta];
-
-    /*
-    dataInsert2 = [[NSMutableArray alloc] init];
-    BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-    [dataInsert2 addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
-    for (NSUInteger i=0; i< dataInsert2.count; i++) {
-        ss = [dataInsert2 objectAtIndex:i];
-        NSLog(@"storedbasic:%@",ss.storedSINo);
-    } */
     
     [_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    zzz.SICompleted = YES;
 }
 
 #pragma mark - Action
@@ -864,18 +799,11 @@ id temp;
             }
             sqlite3_finalize(statement);
         }
-        
-        /*
-        dataInsert = [[NSMutableArray alloc] init];
-        SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            ss = [dataInsert objectAtIndex:i];
-            NSLog(@"stored %d",ss.storedIdPayor);
-        }*/
-        
+    
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
         Inserted = YES;
+        AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+        zzz.SICompleted = NO;
         
         sqlite3_close(contactDB);
     }
