@@ -2313,12 +2313,16 @@
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    
+    NSRange rangeofDot = [HLField.text rangeOfString:@"."];
+    NSString *substring = @"";
+    
+    if (rangeofDot.location != NSNotFound) {
+        substring = [HLField.text substringFromIndex:rangeofDot.location ];
+    }
         
     double numHL = [HLField.text doubleValue];
-    int HLValue = numHL;
-    float HLFraction = numHL - HLValue;
-    NSString *msg = [formatter stringFromNumber:[NSNumber numberWithFloat:HLFraction]];
-    
     double aaHL = numHL/25;
     int bbHL = aaHL;
     float ccHL = aaHL - bbHL;
@@ -2350,29 +2354,22 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Deductible is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
-    else if ([HLTField.text intValue] > [termField.text intValue]) {
-        NSString *msg;
-        if (HL1kTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
-        } else if (HL100kTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
-        } else if (HLPTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
-        }
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
     else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound||[HLTField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Health Loading must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [HLField becomeFirstResponder];
+        
     }
     else if (inputHLPercentage.length != 0 && [HLField.text intValue] > 500) {
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLField becomeFirstResponder];
+        
     }
     else if (HLField.text.length == 0 && HLTField.text.length != 0) {
+        
         NSString *msg;
         if (HL1kTerm) {
             msg = @"Health Loading (per 1k SA) is required.";
@@ -2384,8 +2381,10 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLField becomeFirstResponder];
+        
     }
     else if (HLField.text.length != 0 && HLTField.text.length == 0) {
+        
         NSString *msg;
         if (HL1kTerm) {
             msg = @"Health Loading (per 1k SA) Term is required.";
@@ -2397,18 +2396,29 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLTField becomeFirstResponder];
+        
     }
     else if (inputHL1KSA.length != 0 && [HLField.text intValue] > 10000) {
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLField becomeFirstResponder];
+        
     }
-    else if (inputHL1KSA.length != 0 && msg.length > 4) {
+    else if (inputHL1KSA.length !=0 && substring.length > 3) {
+        
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [HLField becomeFirstResponder];
     }
-    else if (inputHLPercentage.length != 0 && msg.length > 1) {
+    else if (inputHL100SA.length !=0 && substring.length > 3) {
+        
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 100k SA) only allow 2 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        [HLField becomeFirstResponder];
+    }
+    else if (inputHLPercentage.length != 0 && substring.length > 1) {
+        
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [HLField becomeFirstResponder];
@@ -2417,6 +2427,34 @@
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [HLField becomeFirstResponder];
+    }
+    else if ([HLTField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading (per 1k SA) Term.";
+        } else if (HL100kTerm) {
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading (per 100k SA) Term.";
+        } else if (HLPTerm) {
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading (%) Term.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        [HLTField becomeFirstResponder];
+    }
+    else if ([HLTField.text intValue] > [termField.text intValue]) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
+        } else if (HL100kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
+        } else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
     }
     else if (([riderCode isEqualToString:@"HMM"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"HSP_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_IV"] && LRiderCode.count != 0)) {
         NSLog(@"go RoomBoard!");
