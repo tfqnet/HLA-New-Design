@@ -17,6 +17,7 @@
 @class BasicPlanViewController;
 @protocol BasicPlanViewControllerDelegate
 -(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance;
+-(void)RiderAdded;
 @end
 
 @interface BasicPlanViewController : UIViewController <UITextFieldDelegate,PlanListDelegate>{
@@ -42,6 +43,7 @@
 //--request from previous
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestOccpCode;
+@property (nonatomic, assign,readwrite) int requestOccpClass;
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic, assign,readwrite) int requestIDProf;
 @property (nonatomic, assign,readwrite) int requestIDPay;
@@ -60,6 +62,7 @@
 
 @property (nonatomic, assign,readwrite) int ageClient;
 @property(nonatomic , retain) NSString *OccpCode;
+@property (nonatomic, assign,readwrite) int OccpClass;
 @property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, assign,readwrite) int idPay;
 @property (nonatomic, assign,readwrite) int idProf;
@@ -69,14 +72,12 @@
 @property (nonatomic, copy) NSString *PayorDOB;
 @property (nonatomic, assign,readwrite) int PayorAge;
 @property (nonatomic, copy) NSString *PayorOccpCode;
-
 @property (nonatomic, assign,readwrite) int secondLAIndexNo;
 @property (nonatomic, copy) NSString *secondLASmoker;
 @property (nonatomic, copy) NSString *secondLASex;
 @property (nonatomic, copy) NSString *secondLADOB;
 @property (nonatomic, assign,readwrite) int secondLAAge;
 @property (nonatomic, copy) NSString *secondLAOccpCode;
-
 //--
 
 //screen field
@@ -134,6 +135,18 @@
 @property (nonatomic,copy) NSString *getTempHL;
 @property (nonatomic,assign,readwrite) int getTempHLTerm;
 @property (nonatomic,assign,readwrite) int getHLTerm;
+
+@property (retain, nonatomic) NSMutableArray *LRiderCode;
+@property (retain, nonatomic) NSMutableArray *LSumAssured;
+@property (nonatomic,copy) NSString *riderCode;
+@property (nonatomic, assign,readwrite) int expAge;
+@property (nonatomic, assign,readwrite) int minSATerm;
+@property (nonatomic, assign,readwrite) int maxSATerm;
+@property (nonatomic, assign,readwrite) int minTerm;
+@property (nonatomic, assign,readwrite) int maxTerm;
+@property (nonatomic, assign,readwrite) double _maxRiderSA;
+@property (nonatomic, assign,readwrite) double maxRiderSA;
+@property (nonatomic, assign,readwrite) int GYI;
 
 - (IBAction)btnPlanPressed:(id)sender;
 - (IBAction)btnShowHealthLoadingPressed:(id)sender;

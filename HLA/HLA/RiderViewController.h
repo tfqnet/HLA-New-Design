@@ -46,6 +46,8 @@
     BOOL pressedDeduc;
     BOOL incomeRider;
     BOOL PtypeChange;
+    NSMutableArray *ItemToBeDeleted;
+    NSMutableArray *indexPaths;
 }
 
 @property (nonatomic,strong) BasicPlanHandler *riderBH;

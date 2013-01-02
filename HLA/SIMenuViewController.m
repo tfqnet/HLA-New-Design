@@ -140,7 +140,9 @@ id RiderCount;
         [self.RightView addSubview:self.LAController.view];
         blocked = NO;
         selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        previousPath = selectedPath;
         [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
+        
     }
     else {
         requestSINo2 = self.requestSINo;
@@ -366,6 +368,7 @@ id RiderCount;
             
             self.BasicController.requestAge = getAge;
             self.BasicController.requestOccpCode = getOccpCode;
+            self.BasicController.requestOccpClass = getOccpClass;
             self.BasicController.requestIDPay = getIdPay;
             self.BasicController.requestIDProf = getIdProf;
             
@@ -408,6 +411,7 @@ id RiderCount;
             }
             self.BasicController.requestAge = getAge;
             self.BasicController.requestOccpCode = getOccpCode;
+            self.BasicController.requestOccpClass = getOccpClass;
             self.BasicController.requestIDPay = getIdPay;
             self.BasicController.requestIDProf = getIdProf;
             

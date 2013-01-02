@@ -106,6 +106,8 @@
         UIViewController *selectedViewController = [self.viewControllers objectAtIndex:selectedIndex];
         
         if (selectedIndex == 0) {
+            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+            zzz.SICompleted = YES;
             [self presentViewController:selectedViewController animated:NO completion:Nil];
         }
         /*

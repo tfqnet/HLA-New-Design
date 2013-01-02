@@ -50,6 +50,8 @@
 @synthesize PayorAge,PayorDOB,PayorOccpCode,PayorSex,PayorSmoker;
 @synthesize requestAge2ndLA,requestDOB2ndLA,requestIndex2ndLA,requestOccp2ndLA,requestSex2ndLA,requestSmoker2ndLA;
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
+@synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
+@synthesize requestOccpClass,OccpClass;
 
 #pragma mark - Cycle View
 
@@ -64,6 +66,7 @@
     
     ageClient = requestAge;
     OccpCode = [self.requestOccpCode description];
+    OccpClass = requestOccpClass;
     idPay = requestIDPay;
     idProf = requestIDProf;
     
@@ -655,6 +658,90 @@
      
 }
 
+-(void)calculateSA
+{
+    double basicSA = [yearlyIncomeField.text doubleValue];
+    double dblPseudoBSA = basicSA / 0.05;
+    double dblPseudoBSA2 = dblPseudoBSA * 0.1;
+    double dblPseudoBSA3 = dblPseudoBSA * 5;
+    double dblPseudoBSA4 = dblPseudoBSA * 2;
+    int MaxUnit;
+    //    NSLog(@"dblPseudoBSA:%.f, dblPseudoBSA3:%.f",maxRiderSA,dblPseudoBSA3);
+    
+    if ([riderCode isEqualToString:@"CCTR"])
+    {
+        _maxRiderSA = dblPseudoBSA3;
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
+    }
+    else if ([riderCode isEqualToString:@"ETPD"])
+    {
+        _maxRiderSA = fmin(dblPseudoBSA2,120000);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
+    }
+    else if ([riderCode isEqualToString:@"I20R"]||[riderCode isEqualToString:@"I30R"]||[riderCode isEqualToString:@"I40R"]||[riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"]||[riderCode isEqualToString:@"IE20R"]||[riderCode isEqualToString:@"IE30R"])
+    {
+        NSLog(@"enter gyi");
+        [self getGYI];
+        double BasicSA_GYI = basicSA * GYI;
+        _maxRiderSA = fmin(BasicSA_GYI,9999999);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
+    }
+    else if ([riderCode isEqualToString:@"CPA"])
+    {
+        if (OccpClass == 1 || OccpClass == 2) {
+            if (dblPseudoBSA < 100000) {
+                _maxRiderSA = fmin(dblPseudoBSA3,200000);
+                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+                maxRiderSA = [a_maxRiderSA doubleValue];
+            }
+            else if (dblPseudoBSA >= 100000) {
+                _maxRiderSA = fmin(dblPseudoBSA4,1000000);
+                NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+                maxRiderSA = [a_maxRiderSA doubleValue];
+            }
+        }
+        else if (OccpClass == 3 || OccpClass == 4) {
+            _maxRiderSA = fmin(dblPseudoBSA3,100000);
+            NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+            maxRiderSA = [a_maxRiderSA doubleValue];
+        }
+    }
+    else if ([riderCode isEqualToString:@"PA"]) {
+        _maxRiderSA = fmin(dblPseudoBSA3,1000000);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
+    }
+    else if ([riderCode isEqualToString:@"PTR"]) {
+        _maxRiderSA = fmin(dblPseudoBSA3,500000);
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
+    }
+    else if ([riderCode isEqualToString:@"HB"]) {
+        if (dblPseudoBSA >= 10000 && dblPseudoBSA <= 25000) {
+            MaxUnit = 4;
+        }
+        else if (dblPseudoBSA >= 25001 && dblPseudoBSA <= 50000) {
+            MaxUnit = 6;
+        }
+        else if (dblPseudoBSA >= 50001 && dblPseudoBSA <= 75000) {
+            MaxUnit = 8;
+        }
+        else if (dblPseudoBSA > 75000) {
+            MaxUnit = 10;
+        }
+        maxRiderSA = MaxUnit;
+    }
+    else {
+        _maxRiderSA = maxSATerm;
+        NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
+        maxRiderSA = [a_maxRiderSA doubleValue];
+    }
+    //    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
+}
+
 
 #pragma mark - Handle DB
 
@@ -798,11 +885,11 @@
             {
                 int minAge =  sqlite3_column_int(statement, 0);
                 int maxAge =  sqlite3_column_int(statement, 1);
-                int maxTerm  =  sqlite3_column_int(statement, 3);
+                int maxTermB  =  sqlite3_column_int(statement, 3);
                 minSA = sqlite3_column_int(statement, 4);
                 maxSA = sqlite3_column_int(statement, 5);
                 
-                termCover = maxTerm - ageClient;
+                termCover = maxTermB - ageClient;
                 termField.text = [[NSString alloc] initWithFormat:@"%d",termCover];
                 
                 if (ageClient < minAge) {
@@ -1108,15 +1195,6 @@
                 NSLog(@"BasicPlan update!");
                 [self getPlanCodePenta];
                 
-                /*
-                dataInsert = [[NSMutableArray alloc] init];
-                BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
-                for (NSUInteger i=0; i< dataInsert.count; i++) {
-                    ss = [dataInsert objectAtIndex:i];
-                    NSLog(@"storedbasic:%@",ss.storedSINo);
-                } */
-                
                 [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -1133,6 +1211,42 @@
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
+    }
+    
+    [self getListingRider];
+    BOOL dodelete = NO;
+    for (int p=0; p<LRiderCode.count; p++) {
+        
+        riderCode = [LRiderCode objectAtIndex:p];
+        [self getRiderTermRule];
+        [self calculateSA];
+        double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
+        if (riderSA > maxRiderSA)
+        {
+            dodelete = YES;
+            sqlite3_stmt *statement;
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+            {
+                NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",SINo,riderCode];
+                
+                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                {
+                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        NSLog(@"rider delete!");
+                    } else {
+                        NSLog(@"rider delete Failed!");
+                    }
+                    sqlite3_finalize(statement);
+                }
+                sqlite3_close(contactDB);
+            }
+        }
+    }
+    if (dodelete) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [_delegate RiderAdded];
     }
 }
 
@@ -1174,6 +1288,94 @@
                 OccpCodePP = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
             } else {
                 NSLog(@"error access prospect_profile");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getListingRider
+{
+    LRiderCode = [[NSMutableArray alloc] init];
+    LSumAssured = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT RiderCode, SumAssured FROM Trad_Rider_Details WHERE SINo=\"%@\" ORDER by RiderCode asc",SINo];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                const char *aaRidCode = (const char *)sqlite3_column_text(statement, 0);
+                [LRiderCode addObject:aaRidCode == NULL ? @"" : [[NSString alloc] initWithUTF8String:aaRidCode]];
+                
+                const char *aaRidSA = (const char *)sqlite3_column_text(statement, 1);
+                [LSumAssured addObject:aaRidSA == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaRidSA]];
+            }
+            
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void) getRiderTermRule
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT MinAge,MaxAge,ExpiryAge,MinTerm,MaxTerm,MinSA,MaxSA,MaxSAFactor FROM Trad_Sys_Rider_Mtn WHERE RiderCode=\"%@\"",riderCode];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                expAge =  sqlite3_column_int(statement, 2);
+                minTerm =  sqlite3_column_int(statement, 3);
+                maxTerm =  sqlite3_column_int(statement, 4);
+                minSATerm = sqlite3_column_int(statement, 5);
+                maxSATerm = sqlite3_column_int(statement, 6);
+                NSLog(@"expiryAge(%@):%d,minTerm:%d,maxTerm:%d,minSA:%d,maxSA:%d",riderCode,expAge,minTerm,maxTerm,minSATerm,maxSATerm);
+                
+            } else {
+                NSLog(@"error access Trad_Mtn");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getGYI
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL;
+        if (MOP == 6) {
+            querySQL = [[NSString alloc] initWithFormat:
+                        @"SELECT PremPayOpt_6 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND FromAge <=\"%d\" AND ToAge >= \"%d\"",riderCode,ageClient,ageClient];
+            
+        } else if (MOP == 9) {
+            querySQL = [[NSString alloc] initWithFormat:
+                        @"SELECT PremPayOpt_9 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND FromAge <=\"%d\" AND ToAge >= \"%d\"",riderCode,ageClient,ageClient];
+            
+        } else if (MOP == 12) {
+            querySQL = [[NSString alloc] initWithFormat:
+                        @"SELECT PremPayOpt_12 FROM Trad_Sys_Rider_GYI WHERE PlanCode=\"%@\" AND FromAge <=\"%d\" AND ToAge >= \"%d\"",riderCode,ageClient,ageClient];
+        }
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                GYI = sqlite3_column_int(statement, 0);
+                NSLog(@"GYI:%d",GYI);
+            }
+            else {
+                NSLog(@"error access getGYI");
             }
             sqlite3_finalize(statement);
         }

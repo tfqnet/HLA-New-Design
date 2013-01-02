@@ -250,7 +250,6 @@
              [alert setTag:1005];
              [alert show];
          }
-         
      }
     
     myTableView.rowHeight = 50;
@@ -258,11 +257,6 @@
     myTableView.separatorColor = [UIColor clearColor];
     myTableView.opaque = NO;
     myTableView.backgroundView = nil;
-    
-//    myTableView.delegate = self;
-//    myTableView.dataSource = self;
-//    [myTableView reloadData];
-    
     [self.view addSubview:myTableView];
     
     [editBtn setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f] forState:UIControlStateNormal];
@@ -274,6 +268,9 @@
     [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     deleteBtn.titleLabel.shadowColor = [UIColor lightGrayColor];
     deleteBtn.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
+    ItemToBeDeleted = [[NSMutableArray alloc] init];
+    indexPaths = [[NSMutableArray alloc] init];
     
     [super viewDidLoad];
 }
@@ -1919,24 +1916,30 @@
 
 - (IBAction)deletePressed:(id)sender
 {
-    NSArray *visibleCells = [myTableView visibleCells];
-    NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
-    
-    for (UITableViewCell *cell in visibleCells)
+    NSString *ridCode;
+    int RecCount = 0;
+    for (UITableViewCell *cell in [myTableView visibleCells])
     {
-        if (cell.selected) {
-            NSIndexPath *indexPath = [myTableView indexPathForCell:cell];
-            NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
-            [ItemToBeDeleted addObject:zzz];
+        if (cell.selected == TRUE) {
+            NSIndexPath *selectedIndexPath = [myTableView indexPathForCell:cell];
+            if (RecCount == 0) {
+                ridCode = [LTypeRiderCode objectAtIndex:selectedIndexPath.row];
+            }
+            
+            RecCount = RecCount + 1;
+            
+            if (RecCount > 1) {
+                break;
+            }
         }
     }
     
     NSString *msg;
-    if ([ItemToBeDeleted count] > 1) {
+    if (RecCount == 1) {
+        msg = [NSString stringWithFormat:@"Delete Rider:%@",ridCode];
+    }
+    else {
         msg = @"Are you sure want to delete these Rider(s)?";
-    } else {
-        int value = [[ItemToBeDeleted objectAtIndex:0] intValue];
-        msg = [NSString stringWithFormat:@"Delete Rider:%@",[LTypeRiderCode objectAtIndex:value]];
     }
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
@@ -1948,6 +1951,7 @@
 {
     if (alertView.tag==1001 && buttonIndex == 0) //delete
     {
+        /*
         NSArray *visibleCells = [myTableView visibleCells];
         NSMutableArray *ItemToBeDeleted = [[NSMutableArray alloc] init];
         NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
@@ -1961,20 +1965,31 @@
                 [ItemToBeDeleted addObject:zzz];
                 [indexPaths addObject:indexPath];
             }
+        } */
+        
+        if (ItemToBeDeleted.count < 1) {
+            return;
+        }
+        else{
+            NSLog(@"itemToBeDeleted:%d", ItemToBeDeleted.count);
         }
         
         sqlite3_stmt *statement;
+        NSArray *sorted = [[NSArray alloc] init ];
+        sorted = [ItemToBeDeleted sortedArrayUsingComparator:^(id firstObject, id secondObject){
+            return [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch];
+        }];
+        
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
         {
-            for(int a=0; a<ItemToBeDeleted.count; a++) {
-                int value = [[ItemToBeDeleted objectAtIndex:a] intValue];
+            for(int a=0; a<sorted.count; a++) {
+                int value = [[sorted objectAtIndex:a] intValue];
                 value = value - a;
-                NSString *rider = [LTypeRiderCode objectAtIndex:value];
                 
+                NSString *rider = [LTypeRiderCode objectAtIndex:value];
                 NSString *querySQL = [NSString stringWithFormat:
                             @"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,rider];
                 
-                NSLog(@"%@",querySQL);
                 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
                 {
                     if (sqlite3_step(statement) == SQLITE_DONE)
@@ -2013,6 +2028,10 @@
 
         [myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];        
         [self.myTableView reloadData];
+        
+        ItemToBeDeleted = [[NSMutableArray alloc] init];
+        indexPaths = [[NSMutableArray alloc] init];
+        
         [self getListingRiderByType];
         [self getListingRider];     //get stored rider
         [self calculateRiderPrem];  //calculate riderPrem
@@ -4637,10 +4656,13 @@
             deleteBtn.enabled = FALSE;
         }
         else {
-//            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
             [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             deleteBtn.enabled = TRUE;
         }
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted addObject:zzz];
+        [indexPaths addObject:indexPath];
     }
     else {
         //[btnAddRider setTitle:[LRiderCode objectAtIndex:indexPath.row] forState:UIControlStateNormal ];
@@ -4749,10 +4771,13 @@
             deleteBtn.enabled = FALSE;
         }
         else {
-//            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
             [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             deleteBtn.enabled = TRUE;
         }
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted removeObject:zzz];
+        [indexPaths removeObject:indexPath];
     }
 }
 
