@@ -106,15 +106,14 @@
         UIViewController *selectedViewController = [self.viewControllers objectAtIndex:selectedIndex];
         
         if (selectedIndex == 0) {
+            
             AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+           
             zzz.SICompleted = YES;
+            zzz.ExistPayor = YES;
             [self presentViewController:selectedViewController animated:NO completion:Nil];
+            
         }
-        /*
-        else if (selectedIndex == 6) {
-            [self presentViewController:selectedViewController animated:YES completion:Nil];
-        }
-        */
         else {
             
             if (selectedIndex == 1) {
@@ -125,16 +124,24 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil,nil];
                     [alert show];
                 }
+                if (!zzz.ExistPayor) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                    [alert show];
+                }
             }
             
             if (selectedIndex == 2) {
+                
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 if (!zzz.SICompleted) {
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil,nil];
                     [alert show];
                 }
-                
+                if (!zzz.ExistPayor) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                    [alert show];
+                }
                 [(SIListing *)selectedViewController RefreshZZZ];
             }
             
@@ -265,11 +272,21 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    
     if (alertView.tag == 1001 && buttonIndex == 0)
     {
         [self updateDateLogout];
     }
-    
+    else  if (alertView.tag == 2001 && buttonIndex == 0)
+    {
+        NSLog(@"Home!");
+        
+        AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+        zzz.SICompleted = YES;
+        UIViewController *selectedViewController = [self.viewControllers objectAtIndex:_selectedIndex];
+        [self presentViewController:selectedViewController animated:NO completion:Nil];
+        
+    }
 }
 
 -(void)updateDateLogout

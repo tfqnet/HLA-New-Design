@@ -15,5 +15,6 @@
 @property (nonatomic,strong) id userRequest;
 @property (nonatomic,strong) id MhiMessage;
 @property (nonatomic,assign,readwrite) BOOL SICompleted;
+@property (nonatomic,assign,readwrite) BOOL ExistPayor;
 
 @end

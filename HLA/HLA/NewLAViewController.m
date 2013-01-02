@@ -833,6 +833,9 @@ id temp;
                         if (payorSINo.length == 0) {
                             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                             [alert show];
+                            
+                            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                            zzz.ExistPayor = NO;
                         }
                     }
                     [self checkExistRider];
@@ -865,6 +868,9 @@ id temp;
                         if (payorSINo.length == 0) {
                             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                             [alert show];
+                            
+                            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                            zzz.ExistPayor = NO;
                         }
                     }
                     if (age >= 18) {
