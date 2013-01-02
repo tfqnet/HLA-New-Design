@@ -191,7 +191,87 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
                                   " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
-                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" order by createdAt Desc "];
+                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" "];
+        
+        if (![txtSINO.text isEqualToString:@""]) {
+            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
+            
+        }
+        
+        if (![txtLAName.text isEqualToString:@""]) {
+            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND name like \"%%%@%%\"", txtLAName.text ];
+            
+        }
+        
+        if ( ![DBDateFrom isEqualToString:@""]) {
+            
+            //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
+            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", DBDateFrom ];
+            
+        }
+        
+        if ( ![DBDateTo isEqualToString:@""] ) {
+            
+            //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
+            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", DBDateTo ];
+            
+        }
+        
+        //NSLog(@"%@", SIListingSQL);
+        NSString *Sorting = [[NSString alloc] init ];
+        Sorting = @"";
+        
+        if (lblBasicSA.highlighted == TRUE) {
+            Sorting = @"basicSA";
+        }
+        
+        if (lblDateCreated.highlighted == TRUE) {
+            if ([Sorting isEqualToString:@""]) {
+                Sorting = @" createdAt";
+            }
+            else {
+                Sorting = [Sorting stringByAppendingFormat:@",createdAt"];
+                
+            }
+        }
+        
+        if (lblName.highlighted == TRUE) {
+            if ([Sorting isEqualToString:@""]) {
+                Sorting = @"name";
+            }
+            else {
+                Sorting = [Sorting stringByAppendingFormat:@",name"];
+                
+            }
+        }
+        
+        if (lblPlan.highlighted == TRUE) {
+            if ([Sorting isEqualToString:@""]) {
+                Sorting = @"planname";
+            }
+            else {
+                Sorting = [Sorting stringByAppendingFormat:@",planname"];
+                
+            }
+        }
+        
+        if (lblSINO.highlighted == TRUE) {
+            if ([Sorting isEqualToString:@""]) {
+                Sorting = @"A.SINO";
+            }
+            else {
+                Sorting = [Sorting stringByAppendingFormat:@",A.SINO"];
+            }
+        }
+        
+        if ([Sorting isEqualToString:@""]) {
+            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by createdAt Desc" ];
+            
+        }
+        else {
+            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
+        }
+        
         const char *SelectSI = [SIListingSQL UTF8String];
         if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
             
