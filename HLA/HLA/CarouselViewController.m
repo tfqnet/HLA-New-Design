@@ -53,13 +53,12 @@ const int numberOfModule = 4;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
-    {
+	//if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+    
         return YES;
-    }
-    else {
-        return NO;
-    }
+    
+      //  return NO;
+    
 
 }
 

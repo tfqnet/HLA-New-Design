@@ -239,10 +239,10 @@ bool PostcodeContinue = TRUE;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
+	//if (interfaceOrientation==UIInterfaceOrientationLandscapeRight)
         return YES;
     
-    return NO;
+    //return NO;
 }
 
 - (IBAction)ActionGender:(id)sender {
@@ -896,7 +896,7 @@ PostcodeContinue = TRUE;
         }
     }
     
-    
+    /*
     if([[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Email address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -906,7 +906,7 @@ PostcodeContinue = TRUE;
         [alert show];
         return false;
     }
-    
+    */
     if(OccupCodeSelected == NULL){
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -930,7 +930,7 @@ PostcodeContinue = TRUE;
         }
     }
     
-    
+    /*
     if([[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -940,16 +940,20 @@ PostcodeContinue = TRUE;
         [alert show];
         return false;
     }
+    */
     
     if (PostcodeContinue == TRUE) {
-        if([txtHomePostCode.text isEqualToString:@""]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [txtHomePostCode becomeFirstResponder];
-            
-            [alert show];
-            return false;
+        if(![[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+            if([txtHomePostCode.text isEqualToString:@""]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [txtHomePostCode becomeFirstResponder];
+                
+                [alert show];
+                return false;
+            }
         }
+    
     }
     else {
         return FALSE;
