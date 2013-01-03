@@ -33,6 +33,7 @@
 @synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2,ReportFromAge,ReportToAge;
 @synthesize Browser = _Browser;
 @synthesize riderOccp,strOccp,occLoadRider,getAge,SINo,getOccpCode,getMOP,getTerm,getBasicSA,getBasicHL,getPlanCode,getOccpClass;
+@synthesize getBasicTempHL,requestBasicTempHL,requestOccpClass;
 
 - (void)viewDidLoad
 {
@@ -50,6 +51,7 @@
     getTerm = self.requestTerm;
     getBasicSA = [self.requestBasicSA description];
     getBasicHL = [self.requestBasicHL description];
+    getBasicTempHL = [self.requestBasicTempHL description];
     getPlanCode = [self.requestPlanCode description];
     NSLog(@"Prem-SINo:%@, MOP:%d, term:%d, sa:%@, hl:%@, occpcode:%@",SINo,getMOP,getTerm,getBasicSA,getBasicHL,getOccpCode);
 
@@ -144,6 +146,7 @@
     double BasicSA = [getBasicSA doubleValue];
     double PolicyTerm = getTerm;
     double BasicHLoad = [getBasicHL doubleValue];
+    double BasicTempHLoad = [getBasicTempHL doubleValue];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -186,14 +189,26 @@
     double _BasicHLHalfYear = BasicHLoad * (BasicSA/1000) * 0.5125;
     double _BasicHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
     double _BasicHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
-    NSString *BasicHLAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLAnnually]];
-    NSString *BasicHLHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLHalfYear]];
-    NSString *BasicHLQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLQuarterly]];
-    NSString *BasicHLMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLMonthly]];
+    //calculate basic temporary health loading
+    double _BasicTempHLAnnually = BasicTempHLoad * (BasicSA/1000) * 1;
+    double _BasicTempHLHalfYear = BasicTempHLoad * (BasicSA/1000) * 0.5125;
+    double _BasicTempHLQuarterly = BasicTempHLoad * (BasicSA/1000) * 0.2625;
+    double _BasicTempHLMonthly = BasicTempHLoad * (BasicSA/1000) * 0.0875;
+    
+    double _allBasicHLAnn = _BasicHLAnnually + _BasicTempHLAnnually;
+    double _allBasicHLHalf = _BasicHLHalfYear + _BasicTempHLHalfYear;
+    double _allBasicHLQuar = _BasicHLQuarterly + _BasicTempHLQuarterly;
+    double _allBasicHLMonth = _BasicHLMonthly + _BasicTempHLMonthly;
+    
+    NSString *BasicHLAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLAnn]];
+    NSString *BasicHLHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLHalf]];
+    NSString *BasicHLQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLQuar]];
+    NSString *BasicHLMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLMonth]];
     double BasicHLAnnually_ = [[BasicHLAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLHalfYear_ = [[BasicHLHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLQuarterly_ = [[BasicHLQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLMonthly_ = [[BasicHLMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    NSLog(@"BasicHL A:%.2f, S:%.2f, Q:%.2f, M:%.2f",BasicHLAnnually_, BasicHLHalfYear_, BasicHLQuarterly_, BasicHLMonthly_);
     
     //calculate LSD
     double _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
@@ -217,8 +232,6 @@
     double LSDHalfYear_ = [[LSDHalfYear2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double LSDQuarterly_ = [[LSDQuarterly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double LSDMonthly_ = [[LSDMonthly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-//    NSLog(@"LSD A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_LSDAnnually,_LSDHalfYear,_LSDQuarterly,_LSDMonthly);
-//    NSLog(@"LSD A:%@, S:%@, Q:%@, M:%@",LSDAnnually2,LSDHalfYear2,LSDQuarterly2,LSDMonthly2);
 //    NSLog(@"LSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_,LSDHalfYear_,LSDQuarterly_,LSDMonthly_);
     
     //calculate Total basic premium
@@ -229,7 +242,7 @@
     double _basicTotalM;
     if (BasicSA < 1000) {
         displayLSD = @"Policy Fee Loading";
-        _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ + LSDAnnually_;
+        _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_  + LSDAnnually_;
         _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ + LSDHalfYear_;
         _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ + LSDQuarterly_;
         _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ + LSDMonthly_;
@@ -251,6 +264,7 @@
     NSString *basicTotalS = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalS]];
     NSString *basicTotalQ = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalQ]];
     NSString *basicTotalM = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalM]];
+    NSLog(@"BasicPrem2:%@, S:%@, Q:%@, M:%@",basicTotalA,basicTotalS,basicTotalQ,basicTotalM);
     
     //------------heng's part for SI report
     
@@ -290,8 +304,8 @@
         valueBeforeAdjustedM = BasicMonthly_ + _OccpLoadM + BasicHLMonthly_ - LSDMonthly_;
     }
     
-     
-     QuerySQL =  [NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
+    
+    QuerySQL =  [NSString stringWithFormat: @"INSERT INTO SI_Store_Premium (\"Type\",\"Annually\",\"SemiAnnually\", "
                     " \"Quarterly\",\"Monthly\") VALUES (\"BOriginal\", \"%.9f\", \"%.9f\", \"%.9f\", \"%.9f\") ",
                     valueBeforeAdjustedA, valueBeforeAdjustedS, valueBeforeAdjustedQ, valueBeforeAdjustedM];
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -305,10 +319,7 @@
         }
         sqlite3_close(contactDB);
     }
-    
-    
     //--------------
-    
     
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
         @"<html><body><table border='1' width='92%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
@@ -391,6 +402,7 @@
     double BasicSA = [getBasicSA doubleValue];
     double PolicyTerm = getTerm;
     double BasicHLoad = [getBasicHL doubleValue];
+    double BasicTempHLoad = [getBasicTempHL doubleValue];
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -430,14 +442,26 @@
     double _BasicHLHalfYear = BasicHLoad * (BasicSA/1000) * 0.5125;
     double _BasicHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
     double _BasicHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
-    NSString *BasicHLAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLAnnually]];
-    NSString *BasicHLHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLHalfYear]];
-    NSString *BasicHLQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLQuarterly]];
-    NSString *BasicHLMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLMonthly]];
+    //calculate basic temporary health loading
+    double _BasicTempHLAnnually = BasicTempHLoad * (BasicSA/1000) * 1;
+    double _BasicTempHLHalfYear = BasicTempHLoad * (BasicSA/1000) * 0.5125;
+    double _BasicTempHLQuarterly = BasicTempHLoad * (BasicSA/1000) * 0.2625;
+    double _BasicTempHLMonthly = BasicTempHLoad * (BasicSA/1000) * 0.0875;
+    
+    double _allBasicHLAnn = _BasicHLAnnually + _BasicTempHLAnnually;
+    double _allBasicHLHalf = _BasicHLHalfYear + _BasicTempHLHalfYear;
+    double _allBasicHLQuar = _BasicHLQuarterly + _BasicTempHLQuarterly;
+    double _allBasicHLMonth = _BasicHLMonthly + _BasicTempHLMonthly;
+    
+    NSString *BasicHLAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLAnn]];
+    NSString *BasicHLHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLHalf]];
+    NSString *BasicHLQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLQuar]];
+    NSString *BasicHLMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLMonth]];
     double BasicHLAnnually_ = [[BasicHLAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLHalfYear_ = [[BasicHLHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLQuarterly_ = [[BasicHLQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLMonthly_ = [[BasicHLMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+//    NSLog(@"BasicHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",_BasicHLAnnually, _BasicHLHalfYear, _BasicHLQuarterly, _BasicHLMonthly);
     
     //calculate LSD
     double _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
@@ -489,7 +513,7 @@
     basicPremHalf = [[basicTotalS stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     basicPremQuar = [[basicTotalQ stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     basicPremMonth = [[basicTotalM stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"f%.2f, S:%.2f, Q:%.2f, M:%.2f",basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth);
+    NSLog(@"BasicPrem:%.2f, S:%.2f, Q:%.2f, M:%.2f",basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth);
 }
 
 -(void)calculateRiderPrem

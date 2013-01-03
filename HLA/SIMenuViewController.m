@@ -36,7 +36,7 @@
 @synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
 @synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance,requestSINo2;
 @synthesize RiderController = _RiderController;
-@synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor;
+@synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor,getSex,getbasicTempHL;
 
 id RiderCount;
 
@@ -92,27 +92,6 @@ id RiderCount;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-   /*
-    NSLog(@"menu disappear!");
-    PlanEmpty = YES;
-    [SelectedRow addObject:@"4" ];
-    [SelectedRow addObject:@"5" ];
-    [SelectedRow addObject:@"6" ];
-    _LAController = nil;
-    _BasicController = nil;
-    _PayorController = nil;
-    _SecondLAController = nil;
-    getAge = 0;
-    getSINo = nil;
-    getOccpCode = nil;
-    [self.myTableView reloadData];
-    
-    self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
-    _LAController.delegate = self;
-    [self addChildViewController:self.LAController];
-    [self.RightView addSubview:self.LAController.view];
-    */
-    //RightView.frame = CGRectMake(440, 45, 500, 700) ;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -469,6 +448,7 @@ id RiderCount;
             premView.requestTerm = getTerm;
             premView.requestBasicSA = getbasicSA;
             premView.requestBasicHL = getbasicHL;
+            premView.requestBasicTempHL = getbasicTempHL;
             premView.requestPlanCode = getPlanCode;
             [self addChildViewController:premView];
             [self.RightView addSubview:premView.view];
@@ -794,12 +774,16 @@ id RiderCount;
             self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
             _RiderController.delegate = self;
             self.RiderController.requestAge = getAge;
+            self.RiderController.requestSex = getSex;
+            self.RiderController.requestOccpCode = getOccpCode;
             self.RiderController.requestOccpClass = getOccpClass;
         
             self.RiderController.requestSINo = getSINo;
             self.RiderController.requestPlanCode = getPlanCode;
             self.RiderController.requestCoverTerm = getTerm;
             self.RiderController.requestBasicSA = getbasicSA;
+            self.RiderController.requestBasicHL = getbasicHL;
+            self.RiderController.requestBasicTempHL = getbasicTempHL;
             self.RiderController.requestMOP = getMOP;
             self.RiderController.requestAdvance = getAdvance;
         
@@ -1044,6 +1028,7 @@ id RiderCount;
 {
     NSLog(@"::receive data LAIndex:%d",aaIndexNo);
     getAge = aaAge;
+    getSex = aaSex;
     getOccpClass = aaOccpClass;
     getOccpCode = aaOccpCode;
     getCommDate = aaCommDate;
@@ -1129,7 +1114,7 @@ id RiderCount;
     }
 }
 
--(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
+-(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
 {
     NSLog(@"::receive databasicSINo:%@",aaSINo);
     getSINo = aaSINo;
@@ -1137,6 +1122,7 @@ id RiderCount;
     getTerm = aaCovered;
     getbasicSA = aaBasicSA;
     getbasicHL = aaBasicHL;
+    getbasicTempHL = aaBasicTempHL;
     getPlanCode = aaPlanCode;
     getAdvance = aaAdvance;
     
@@ -1212,6 +1198,7 @@ id RiderCount;
 {
     _LAController = nil;
     getAge = 0;
+    getSex = nil;
     getOccpClass = 0;
     getOccpCode = nil;
     getCommDate = nil;
@@ -1255,6 +1242,7 @@ id RiderCount;
     getTerm = 0;
     getbasicSA = nil;
     getbasicHL = nil;
+    getbasicTempHL = nil;
     getPlanCode = nil;
     getAdvance = 0;
 }

@@ -62,18 +62,26 @@
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) id requestPlanCode;
 @property (nonatomic, assign,readwrite) int requestAge;
+@property (nonatomic,strong) id requestSex;
+@property (nonatomic,strong) id requestOccpCode;
 @property (nonatomic, assign,readwrite) int requestOccpClass;
 @property (nonatomic, assign,readwrite) int requestCoverTerm;
 @property (nonatomic, strong) id requestBasicSA;
+@property (nonatomic, strong) id requestBasicHL;
+@property (nonatomic, strong) id requestBasicTempHL;
 @property (nonatomic, assign,readwrite) int requestMOP;
 @property (nonatomic, assign,readwrite) int requestAdvance;
 
 @property (nonatomic,strong) NSString *getSINo;
 @property (nonatomic,strong) NSString *getPlanCode;
 @property (nonatomic, assign,readwrite) int getAge;
+@property (nonatomic,strong) NSString *getSex;
+@property (nonatomic,strong) NSString *getOccpCode;
 @property (nonatomic, assign,readwrite) int getOccpClass;
 @property (nonatomic, assign,readwrite) int getTerm;
 @property (nonatomic, assign,readwrite) double getBasicSA;
+@property (nonatomic, assign,readwrite) double getBasicHL;
+@property (nonatomic, assign,readwrite) double getBasicTempHL;
 @property (nonatomic, assign,readwrite) int getMOP;
 @property (nonatomic, assign,readwrite) int getAdvance;
 //--

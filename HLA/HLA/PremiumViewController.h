@@ -33,6 +33,7 @@
 @property (nonatomic, assign,readwrite) int requestTerm;
 @property (nonatomic,strong) id requestBasicSA;
 @property (nonatomic,strong) id requestBasicHL;
+@property (nonatomic,strong) id requestBasicTempHL;
 @property (nonatomic,strong) id requestPlanCode;
 
 @property (nonatomic, assign,readwrite) int getAge;
@@ -43,6 +44,7 @@
 @property (nonatomic, assign,readwrite) int getTerm;
 @property (nonatomic,strong) NSString *getBasicSA;
 @property (nonatomic,strong) NSString *getBasicHL;
+@property (nonatomic,strong) NSString *getBasicTempHL;
 @property (nonatomic,strong) NSString *getPlanCode;
 //--
 

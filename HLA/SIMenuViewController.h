@@ -52,6 +52,7 @@
 //--from delegate
 @property (nonatomic ,assign ,readwrite) int getAge;
 @property (nonatomic ,assign ,readwrite) int getOccpClass;
+@property (nonatomic, retain) NSString *getSex;
 @property (nonatomic, retain) NSString *getOccpCode;
 @property (nonatomic, retain) NSString *getCommDate;
 @property (nonatomic ,assign ,readwrite) int getIdProf;
@@ -77,6 +78,7 @@
 @property (nonatomic ,assign ,readwrite) int getTerm;
 @property (nonatomic, retain) NSString *getbasicSA;
 @property (nonatomic, retain) NSString *getbasicHL;
+@property (nonatomic, retain) NSString *getbasicTempHL;
 @property (nonatomic, retain) NSString *getPlanCode;
 @property (nonatomic ,assign ,readwrite) int getAdvance;
 

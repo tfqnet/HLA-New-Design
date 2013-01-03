@@ -645,17 +645,7 @@
     }
     [self getPlanCodePenta];
     
-    /*
-    dataInsert = [[NSMutableArray alloc] init];
-    BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-    [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:getSINo andAge:ageClient andOccpCode:requestOccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome]];
-    for (NSUInteger i=0; i< dataInsert.count; i++) {
-        ss = [dataInsert objectAtIndex:i];
-        NSLog(@"storedbasic:%@",ss.storedSINo);
-    } */
-    
-    [_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
-     
+    [_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
 }
 
 -(void)calculateSA
@@ -1017,7 +1007,7 @@
 //                [SuccessAlert setTag:1004];
                 [SuccessAlert show];
                 
-                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 zzz.SICompleted = YES;
                 
@@ -1195,7 +1185,7 @@
                 NSLog(@"BasicPlan update!");
                 [self getPlanCodePenta];
                 
-                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                [SuccessAlert setTag:1004];

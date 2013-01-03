@@ -286,7 +286,7 @@ id temp;
     
     [self getPlanCodePenta];
     
-    [_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+    [_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andBasicTempHL:getTempHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.SICompleted = YES;
 }

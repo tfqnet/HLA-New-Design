@@ -81,6 +81,7 @@
 @synthesize occLoadType,classField,payorRidCode,getSINo,getPlanCode,getAge,getTerm,getBasicSA,getMOP,requestAdvance,getAdvance;
 @synthesize requestOccpClass,getOccpClass;
 @synthesize delegate = _delegate;
+@synthesize requestSex,getSex,requestOccpCode,getOccpCode,requestBasicHL,getBasicHL,requestBasicTempHL,getBasicTempHL;
 
 #pragma mark - Cycle View
 
@@ -99,11 +100,15 @@
     getSINo = [self.requestSINo description];
     getPlanCode = [self.requestPlanCode description];
     getAge = self.requestAge;
+    getSex = [self.requestSex description];
     getTerm = self.requestCoverTerm;
     getBasicSA = [[self.requestBasicSA description] doubleValue];
+    getBasicHL = [[self.requestBasicHL description] doubleValue];
+    getBasicTempHL = [[self.requestBasicTempHL description] doubleValue];
     getMOP = self.requestMOP;
     getAdvance = self.requestAdvance;
     getOccpClass = self.requestOccpClass;
+    getOccpCode = [self.requestOccpCode description];
     NSLog(@"Rider-Sum:%.2f,Age:%d,covered:%d,SINo:%@, planCode:%@, MOP:%d, advance:%d, occpClass:%d",getBasicSA,getAge,getTerm,getSINo,getPlanCode,getMOP,getAdvance,getOccpClass);
     
     deducBtn.hidden = YES;
@@ -741,7 +746,8 @@
 {
     double BasicSA = getBasicSA;
     double PolicyTerm = getTerm;
-    double BasicHLoad = [riderBH.storedbasicHL intValue];
+    double BasicHLoad = getBasicHL;
+    double BasicTempHLoad = getBasicTempHL;
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -783,10 +789,22 @@
     double _BasicHLHalfYear = BasicHLoad * (BasicSA/1000) * 0.5125;
     double _BasicHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
     double _BasicHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
-    NSString *BasicHLAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLAnnually]];
-    NSString *BasicHLHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLHalfYear]];
-    NSString *BasicHLQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLQuarterly]];
-    NSString *BasicHLMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHLMonthly]];
+    
+    //calculate basic temporary health loading
+    double _BasicTempHLAnnually = BasicTempHLoad * (BasicSA/1000) * 1;
+    double _BasicTempHLHalfYear = BasicTempHLoad * (BasicSA/1000) * 0.5125;
+    double _BasicTempHLQuarterly = BasicTempHLoad * (BasicSA/1000) * 0.2625;
+    double _BasicTempHLMonthly = BasicTempHLoad * (BasicSA/1000) * 0.0875;
+    
+    double _allBasicHLAnn = _BasicHLAnnually + _BasicTempHLAnnually;
+    double _allBasicHLHalf = _BasicHLHalfYear + _BasicTempHLHalfYear;
+    double _allBasicHLQuar = _BasicHLQuarterly + _BasicTempHLQuarterly;
+    double _allBasicHLMonth = _BasicHLMonthly + _BasicTempHLMonthly;
+    
+    NSString *BasicHLAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLAnn]];
+    NSString *BasicHLHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLHalf]];
+    NSString *BasicHLQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLQuar]];
+    NSString *BasicHLMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLMonth]];
     double BasicHLAnnually_ = [[BasicHLAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLHalfYear_ = [[BasicHLHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLQuarterly_ = [[BasicHLQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
@@ -996,9 +1014,9 @@
         }
         
         double BasicSA = getBasicSA;
-        double BasicHLoad = [riderBH.storedbasicHL doubleValue];
+        double BasicHLoad = getBasicHL;
         double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
-        double PolicyTerm = getTerm;
+//        double PolicyTerm = getTerm;
         double riderHLoad;
         if ([LRidHL1K count] != 0) {
             riderHLoad = [[LRidHL1K objectAtIndex:i] doubleValue];
@@ -1029,11 +1047,11 @@
         //calculate occupationLoading
         pTypeOccp = [LOccpCode objectAtIndex:i];
         [self getOccLoadRider];
-        double OccpLoadA = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
-        double OccpLoadH = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
-        double OccpLoadQ = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
-        double OccpLoadM = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
-        NSLog(@"OccpLoad A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
+//        double OccpLoadA = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
+//        double OccpLoadH = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
+//        double OccpLoadQ = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
+//        double OccpLoadM = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
+//        NSLog(@"OccpLoad A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
         
         //calculate rider health loading
         double RiderHLAnnually = riderHLoad * (BasicSA/1000) * annFac;
@@ -1080,6 +1098,7 @@
             strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"OccpLoad A:%@, S:%@, Q:%@, M:%@",strLoadA,strLoadH,strLoadQ,strLoadM);
             
             annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1117,6 +1136,7 @@
             strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"OccpLoad A:%@, S:%@, Q:%@, M:%@",strLoadA,strLoadH,strLoadQ,strLoadM);
             
             annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1142,6 +1162,7 @@
             strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"OccpLoad A:%@, S:%@, Q:%@, M:%@",strLoadA,strLoadH,strLoadQ,strLoadM);
             
             annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1167,6 +1188,7 @@
             strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"OccpLoad A:%@, S:%@, Q:%@, M:%@",strLoadA,strLoadH,strLoadQ,strLoadM);
             
             annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1207,13 +1229,14 @@
             strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"OccpLoad A:%@, S:%@, Q:%@, M:%@",strLoadA,strLoadH,strLoadQ,strLoadM);
             
             annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadA doubleValue]) + (RiderHLHalfYear *ridSA /1000 *halfFac);
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadA doubleValue]) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadA doubleValue]) + (RiderHLMonthly *ridSA /1000 *monthFac);
         }
-        else if ([RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"]||[RidCode isEqualToString:@"CCTR"])
+        else if ([RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"])
         {
             annualRider = (riderRate *ridSA /1000 *annFac) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1233,6 +1256,7 @@
             strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"OccpLoad A:%@, S:%@, Q:%@, M:%@",strLoadA,strLoadH,strLoadQ,strLoadM);
             
             annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (RiderHLAnnually *ridSA /1000 *annFac);
             halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (RiderHLHalfYear *ridSA /1000 *halfFac);
@@ -1398,7 +1422,7 @@
             [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
         
             double BasicSA = getBasicSA;
-            double BasicHLoad = [riderBH.storedbasicHL doubleValue];
+            double BasicHLoad = getBasicHL;
             double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
             double PolicyTerm = getTerm;
             double riderHLoad;
@@ -1585,7 +1609,7 @@
         
     int ridTerm = [termField.text intValue];
     age = getAge;
-    sex = riderH.storedSex;
+    sex = getSex;
     
     //get rate
     [self getRiderRateAge:planCodeRider riderTerm:ridTerm];
@@ -1757,7 +1781,7 @@
     _RiderList.delegate = self;
     _RiderList.requestPtype = self.pTypeCode;
     _RiderList.requestSeq = self.PTypeSeq;
-    _RiderList.requestOccpClass = riderH.storedOccpClass;
+    _RiderList.requestOccpClass = getOccpClass;
     _RiderList.requestAge = self.pTypeAge;
     self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
     
@@ -2541,15 +2565,7 @@
                 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                         
-                        /*
-                        dataInsert = [[NSMutableArray alloc] init];
-                        BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                        [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:requestAge andOccpCode:pTypeOccp andCovered:getTerm andBasicSA:newBasicSA andBasicHL:riderBH.storedbasicHL andMOP:requestMOP andPlanCode:requestPlanCode andAdvance:riderBH.storedAdvance]];
-                        
-                        for (NSUInteger i=0; i< dataInsert.count; i++) {
-                            ss = [dataInsert objectAtIndex:i];
-                            NSLog(@"storedbasicSA:%@",ss.storedbasicSA);
-                        } */
+                         NSLog(@"BasicSA update Success!");
                         
                     } else {
                         NSLog(@"BasicSA update Failed!");
@@ -2640,15 +2656,7 @@
                         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                             if (sqlite3_step(statement) == SQLITE_DONE) {
                                 
-                                /*
-                                dataInsert = [[NSMutableArray alloc] init];
-                                BasicPlanHandler *ss = [[BasicPlanHandler alloc] init];
-                                [dataInsert addObject:[[BasicPlanHandler alloc] initWithSI:SINoPlan andAge:requestAge andOccpCode:pTypeOccp andCovered:getTerm andBasicSA:newBasicSA andBasicHL:riderBH.storedbasicHL andMOP:requestMOP andPlanCode:requestPlanCode andAdvance:riderBH.storedAdvance]];
-                                
-                                for (NSUInteger i=0; i< dataInsert.count; i++) {
-                                    ss = [dataInsert objectAtIndex:i];
-                                    NSLog(@"storedbasicSA:%@",ss.storedbasicSA);
-                                } */
+                                 NSLog(@"BasicSA update Success!");
                                 
                             } else {
                                 NSLog(@"BasicSA update Failed!");
@@ -2720,6 +2728,105 @@
                     totalPrem = basicPremAnn + riderPrem;
                     medicDouble = medRiderPrem * 2;
                     NSLog(@"~newTotalPrem:%.2f, newMedicalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+                    
+                    if (medicDouble > totalPrem) {
+                        minus = totalPrem - medRiderPrem;
+                        if (minus > 0) {
+                            
+                            varSA = medRiderPrem/minus * getBasicSA + 0.5;
+                            newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
+                            NSLog(@":3-UPDATE newBasicSA:%.f",varSA);
+                            getBasicSA = [newBasicSA doubleValue];
+                            [self getLSDRate];
+                            pop = true;
+                            
+                            //update basicSA to varSA
+                            sqlite3_stmt *statement;
+                            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK) {
+                                NSString *querySQL = [NSString stringWithFormat:
+                                                      @"UPDATE Trad_Details SET BasicSA=\"%@\" WHERE SINo=\"%@\"",newBasicSA, getSINo];
+                                
+                                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                                        
+                                        NSLog(@"BasicSA update Success!");
+                                        
+                                    } else {
+                                        NSLog(@"BasicSA update Failed!");
+                                    }
+                                    sqlite3_finalize(statement);
+                                }
+                                sqlite3_close(contactDB);
+                            }
+                            
+                            //update riderSA
+                            for (NSUInteger u=0; u<[LRiderCode count]; u++)
+                            {
+                                NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
+                                
+                                if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
+                                {
+                                    riderCode = [LRiderCode objectAtIndex:u];
+                                    [self getRiderTermRule];
+                                    riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
+                                    
+                                    if (riderSA > 0)
+                                    {
+                                        RiderSA = (medRiderPrem/minus) * riderSA;
+                                        NSLog(@"2-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%d",riderCode,RiderSA,riderSA,maxSATerm);
+                                        
+                                        double newSA;
+                                        if (RiderSA > maxSATerm)
+                                        {
+                                            newSA = maxSATerm;
+                                        } else {
+                                            newSA = RiderSA;
+                                        }
+                                        
+                                        NSLog(@":3-UPDATE newRiderSA(%@):%.2f",riderCode,newSA);
+                                        //update riderSA
+                                        sqlite3_stmt *statement;
+                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                                        {
+                                            NSString *updatetSQL = [NSString stringWithFormat:
+                                                                    @"UPDATE Trad_Rider_Details SET SumAssured=\"%.f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",newSA,getSINo,riderCode,pTypeCode, PTypeSeq];
+                                            
+                                            if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                                if (sqlite3_step(statement) == SQLITE_DONE) {
+                                                    //                                                NSLog(@"Update RiderSA success!");
+                                                } else {
+                                                    NSLog(@"Update RiderSA failed!");
+                                                }
+                                                sqlite3_finalize(statement);
+                                            }
+                                            sqlite3_close(contactDB);
+                                        }
+                                        
+                                    }
+                                }
+                                else {
+                                    continue;
+                                }
+                            }
+                            
+                            [self calculateBasicPremium];
+                            [self getListingRiderByType];
+                            [self getListingRider];     //get stored rider
+                            [self calculateRiderPrem];  //calculate riderPrem
+                            [self calculateWaiver];     //calculate waiverPrem
+                            [self calculateMedRiderPrem];       //calculate medicalPrem
+                            
+                            //--forth cycle--//
+                            
+                            totalPrem = basicPremAnn + riderPrem;
+                            medicDouble = medRiderPrem * 2;
+                            NSLog(@"~newTotalPrem:%.2f, newMedicalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+                            
+                            if (medicDouble > totalPrem) {
+                                NSLog(@"need 4th cycly!");
+                            }
+                        }
+                    }
                 }
             }
             
@@ -2731,12 +2838,11 @@
                 //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",newBasicSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"No", nil];
                 //[alert show];
                 [_delegate BasicSARevised:newBasicSA];
-            }else {
+            }
+            else {
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 zzz.MhiMessage = @"";
-                
             }
-           
         }
         else {
             NSLog(@"value minus not greater than 0");
@@ -3716,7 +3822,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                    @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",riderH.storedOccpCode];
+                    @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",getOccpCode];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
