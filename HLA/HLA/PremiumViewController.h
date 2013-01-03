@@ -109,7 +109,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblMessage;
 @property (weak, nonatomic) IBOutlet UIButton *doGenerate;
 - (IBAction)btnGenerate:(id)sender;
-- (IBAction)btnQuotation:(id)sender;
+
 @property (nonatomic, retain) BrowserViewController *Browser;
 
 @property(nonatomic , retain) NSMutableArray *ReportHMMRates;

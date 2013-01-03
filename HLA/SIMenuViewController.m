@@ -159,10 +159,12 @@ id RiderCount;
     {
         [SelectedRow addObject:@"4"];
         [SelectedRow addObject:@"5"];
+        
     }
     else {
         [SelectedRow removeObject:@"4"];
         [SelectedRow removeObject:@"5"];
+        
         [self CalculateRider];
         
     }
@@ -766,11 +768,16 @@ id RiderCount;
     else if (indexPath.row == 2) {
         [self selectPayor];
     }
-    else if (indexPath.row == 3) {
+    else if (indexPath.row == 3) { //basic plan
         [self selectBasicPlan];
+        [ListOfSubMenu removeObject:@"Quotation"];
+        //[SelectedRow addObject:@"6"];
+        [myTableView reloadData];
     }
-    else if (indexPath.row == 4) {
-        [self checkingPayor];
+    else if (indexPath.row == 4) { //rider
+        //[SelectedRow addObject:@"6"];
+        [ListOfSubMenu removeObject:@"Quotation"];
+        [self checkingPayor];   
         if (getAge > 70) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -802,9 +809,14 @@ id RiderCount;
             previousPath = selectedPath;
             blocked = NO;
         }
+        [myTableView reloadData];
     }
-    else if (indexPath.row == 5) {
+    else if (indexPath.row == 5) { //premium
         [self calculatedPrem];
+        //[SelectedRow removeObject:@"6"];
+        [ListOfSubMenu removeObject:@"Quotation"];
+        [ListOfSubMenu addObject:@"Quotation"];
+        [myTableView reloadData];
     }
     else if (indexPath.row == 6) { //quotation
         
@@ -908,6 +920,8 @@ id RiderCount;
                                   "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
                                   "A.sino = \"%@\" AND \"seq\" = 1 ", self.requestSINo];
             
+            //NSLog(@"%@", QuerySQL);
+            
             if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
                 if (sqlite3_step(statement) == SQLITE_ROW)
@@ -997,6 +1011,7 @@ id RiderCount;
     BOOL found = false;
     
     if ([SelectedRow count ] == 0) {
+        
         return  44;
     }
     else {
@@ -1011,11 +1026,14 @@ id RiderCount;
         }
         
         if (found) {
+            
             return 0;
             
         }
         else {
+            
             return  44;
+            
         }
     }
 }

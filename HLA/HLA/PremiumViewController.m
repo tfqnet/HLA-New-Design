@@ -117,6 +117,7 @@
         }
     }
     //------ end ---------
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -1715,7 +1716,7 @@
         }];
     }];
 }
-
+/*
 - (IBAction)btnQuotation:(id)sender {
     if (_Browser == Nil) {
         self.Browser = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
@@ -1807,7 +1808,7 @@
     }
     
 }
-
+*/
 -(void)deleteSIStorePremium{
     sqlite3_stmt *statement;
     
