@@ -460,6 +460,7 @@
         [alert show];
     } else {
         
+        [_delegate payorSaved:NO];
         nameField.text = aaName;
         sex = aaGender;
         
@@ -602,6 +603,7 @@
                 NSLog(@"Done LA2");
                 [self updateRunCustCode];
                 [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
+                [_delegate payorSaved:YES];
                 self.deleteBtn.hidden = NO;
                 
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -627,6 +629,7 @@
     zzz.SICompleted = NO;
     self.deleteBtn.hidden = NO;
     inserted = YES;
+    [_delegate payorSaved:YES];
 }
 
 -(void)updateRunCustCode

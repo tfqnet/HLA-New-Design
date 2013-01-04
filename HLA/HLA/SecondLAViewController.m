@@ -183,7 +183,6 @@
         [alert setTag:1004];
         [alert show];
     }
-
 }
 
 #pragma mark - action
@@ -442,6 +441,7 @@
         sex = nil;
         smoker = nil;
     }
+    
     smoker = @"N";
     IndexNo = [aaIndex intValue];
     
@@ -450,6 +450,7 @@
         [alert show];
     } else {
         
+        [_delegate saved:NO];
         nameField.text = aaName;
         sex = aaGender;
     
@@ -599,6 +600,7 @@
                 [SuccessAlert show];
                 
                 [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
+                [_delegate saved:YES];
                 
             } else {
                 NSLog(@"Failed LA2");
@@ -618,6 +620,7 @@
     [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
     self.deleteBtn.hidden = NO;
     inserted = YES;
+    [_delegate saved:YES];
 }
 
 -(void)updateRunCustCode

@@ -22,7 +22,7 @@
 
 @interface FSVerticalTabBarController : UIViewController <UITableViewDelegate>
 {
-    
+    NSUInteger clickIndex;
 }
 
 @property (nonatomic, readwrite, assign) id<FSTabBarControllerDelegate> delegate;

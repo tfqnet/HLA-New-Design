@@ -57,6 +57,8 @@ id RiderCount;
     SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", nil ];
     
     PlanEmpty = YES;
+    saved = YES;
+    payorSaved = YES;
     
     if (_LAController == nil) {
         self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
@@ -470,6 +472,24 @@ id RiderCount;
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1001 && buttonIndex == 0)
+    {
+        saved = YES;
+        [self selectBasicPlan];
+        [ListOfSubMenu removeObject:@"Quotation"];
+        //[SelectedRow addObject:@"6"];
+        [myTableView reloadData];
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+}
 
 #pragma mark - db
 
@@ -742,18 +762,35 @@ id RiderCount;
         previousPath = selectedPath;
         blocked = NO;
     }
+    
     else if (indexPath.row == 1) {
         [self select2ndLA];
     }
+    
     else if (indexPath.row == 2) {
         [self selectPayor];
     }
+    
     else if (indexPath.row == 3) { //basic plan
-        [self selectBasicPlan];
-        [ListOfSubMenu removeObject:@"Quotation"];
-        //[SelectedRow addObject:@"6"];
-        [myTableView reloadData];
+        
+        if (!saved) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+            [alert setTag:1001];
+            [alert show];
+        }
+        else if (!payorSaved) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+            [alert setTag:1001];
+            [alert show];
+        }
+        else {
+            [self selectBasicPlan];
+            [ListOfSubMenu removeObject:@"Quotation"];
+            //[SelectedRow addObject:@"6"];
+            [myTableView reloadData];
+        }
     }
+    
     else if (indexPath.row == 4) { //rider
         //[SelectedRow addObject:@"6"];
         [ListOfSubMenu removeObject:@"Quotation"];
@@ -795,6 +832,7 @@ id RiderCount;
         }
         [myTableView reloadData];
     }
+    
     else if (indexPath.row == 5) { //premium
         [self calculatedPrem];
         //[SelectedRow removeObject:@"6"];
@@ -1066,6 +1104,11 @@ id RiderCount;
     }
 }
 
+-(void)payorSaved:(BOOL)aaTrue
+{
+    payorSaved = aaTrue;
+}
+
 -(void)PayorDeleted
 {
     NSLog(@"::receive data Payor deleted!");
@@ -1098,6 +1141,11 @@ id RiderCount;
     else {
         [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
+}
+
+-(void)saved:(BOOL)aaTrue
+{
+    saved = aaTrue;
 }
 
 -(void)secondLADelete

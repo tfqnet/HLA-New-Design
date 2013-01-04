@@ -18,6 +18,7 @@
 -(void)PayorIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode;
 -(void)PayorDeleted;
 -(void) RiderAdded;
+-(void)payorSaved:(BOOL)aaTrue;
 @end
 
 @interface PayorViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {

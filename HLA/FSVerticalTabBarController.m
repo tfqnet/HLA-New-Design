@@ -108,11 +108,23 @@
         if (selectedIndex == 0) {
             
             AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-           
-            zzz.SICompleted = YES;
-            zzz.ExistPayor = YES;
-            [self presentViewController:selectedViewController animated:NO completion:Nil];
-            
+            if (!zzz.SICompleted) {
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!\n Leave this page?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+                [alert setTag:2001];
+                [alert show];
+            }
+            else if (!zzz.ExistPayor) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                [alert show];
+            }
+            else {
+                zzz.SICompleted = YES;
+                zzz.ExistPayor = YES;
+                [self presentViewController:selectedViewController animated:NO completion:Nil];
+                
+                [self updateTabBar];
+            }
         }
         else {
             
@@ -121,77 +133,106 @@
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 if (!zzz.SICompleted) {
                     
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil,nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!\n Leave this page?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
+                    [alert setTag:3001];
                     [alert show];
                 }
-                if (!zzz.ExistPayor) {
+                else if (!zzz.ExistPayor) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                     [alert show];
+                }
+                else {
+                    [self addChildViewController:selectedViewController];
+                    selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
+                                                                   0,
+                                                                   self.view.bounds.size.width-self.tabBarWidth,
+                                                                   self.view.bounds.size.height);
+                    selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+                    [self.view addSubview:selectedViewController.view];
+                    
+                    [self updateTabBar];
                 }
             }
             
             if (selectedIndex == 2) {
                 
+                [(SIListing *)selectedViewController RefreshZZZ];
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 if (!zzz.SICompleted) {
                     
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil,nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!\n Leave this page?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
+                    [alert setTag:3001];
                     [alert show];
                 }
-                if (!zzz.ExistPayor) {
+                else if (!zzz.ExistPayor) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                     [alert show];
                 }
-                [(SIListing *)selectedViewController RefreshZZZ];
+                else {
+                    [self addChildViewController:selectedViewController];
+                    selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
+                                                                   0,
+                                                                   self.view.bounds.size.width-self.tabBarWidth,
+                                                                   self.view.bounds.size.height);
+                    selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+                    [self.view addSubview:selectedViewController.view];
+                    
+                    [self updateTabBar];
+                }
             }
             
             if (selectedIndex == 3) {
                 
                 [(SIMenuViewController *)selectedViewController Reset];
                 
+                [self addChildViewController:selectedViewController];
+                selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
+                                                               0,
+                                                               self.view.bounds.size.width-self.tabBarWidth,
+                                                               self.view.bounds.size.height);
+                selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+                [self.view addSubview:selectedViewController.view];
+                
+                [self updateTabBar];
             }
-            
-            [self addChildViewController:selectedViewController];
-            selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
-                                                       0,
-                                                       self.view.bounds.size.width-self.tabBarWidth,
-                                                       self.view.bounds.size.height);
-            selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-            [self.view addSubview:selectedViewController.view];
-         
-            // remove previously selected view controller (if any)
-            if (-1 < _selectedIndex && _selectedIndex < INT_MAX)
-            {
-                UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
-                [previousViewController.view removeFromSuperview];
-                [previousViewController removeFromParentViewController];
-            }
-
-            // set new selected index
-            _selectedIndex = selectedIndex;
-        
-            // update tab bar
-            if (selectedIndex < [self.tabBar.items count])
-            {
-                self.tabBar.selectedItem = [self.tabBar.items objectAtIndex:selectedIndex];
-            }   
-        
-            // inform delegate
-            if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
-            {
-                [self.delegate tabBarController:self didSelectViewController:selectedViewController];
-            }
+            //move code to updateTabBar
         }
     }
 }
 
+-(void)updateTabBar
+{
+    UIViewController *selectedViewController = [self.viewControllers objectAtIndex:clickIndex];
+    
+    // remove previously selected view controller (if any)
+    if (-1 < _selectedIndex && _selectedIndex < INT_MAX)
+    {
+        UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
+        [previousViewController.view removeFromSuperview];
+        [previousViewController removeFromParentViewController];
+    }
+    
+    // set new selected index
+    _selectedIndex = clickIndex;
+    
+    // update tab bar
+    if (clickIndex < [self.tabBar.items count])
+    {
+        self.tabBar.selectedItem = [self.tabBar.items objectAtIndex:clickIndex];
+    }
+    
+    // inform delegate
+    if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
+    {
+        [self.delegate tabBarController:self didSelectViewController:selectedViewController];
+    }
+}
 
 - (void)_performInitialization
 {
     self.tabBarWidth = DEFAULT_TAB_BAR_HEIGHT;
     self.selectedIndex = INT_MAX;
 }
-
 
 #pragma mark -
 #pragma mark UIViewController
@@ -253,6 +294,8 @@
 #pragma mark <UITableViewDelegate>
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    clickIndex = indexPath.row;
+    
     if (indexPath.row == 4) {
         
         UIAlertView *alert = [[UIAlertView alloc] 
@@ -277,15 +320,35 @@
     {
         [self updateDateLogout];
     }
+    
     else  if (alertView.tag == 2001 && buttonIndex == 0)
     {
-        NSLog(@"Home!");
-        
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         zzz.SICompleted = YES;
-        UIViewController *selectedViewController = [self.viewControllers objectAtIndex:_selectedIndex];
+        zzz.ExistPayor = YES;
+        
+        UIViewController *selectedViewController = [self.viewControllers objectAtIndex:clickIndex];
         [self presentViewController:selectedViewController animated:NO completion:Nil];
         
+        [self updateTabBar];
+    }
+    
+    else if (alertView.tag == 3001 && buttonIndex == 0)
+    {
+        AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+        zzz.SICompleted = YES;
+        zzz.ExistPayor = YES;
+        
+        UIViewController *selectedViewController = [self.viewControllers objectAtIndex:clickIndex];
+        [self addChildViewController:selectedViewController];
+        selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
+                                                       0,
+                                                       self.view.bounds.size.width-self.tabBarWidth,
+                                                       self.view.bounds.size.height);
+        selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+        [self.view addSubview:selectedViewController.view];
+        
+        [self updateTabBar];
     }
 }
 

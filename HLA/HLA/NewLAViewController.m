@@ -1379,8 +1379,10 @@ id temp;
     }
     useExist = NO;
     statusLabel.text = @"";
-//    NSLog(@"namedb:%@, gender:%@",aaName,aaGender);
     IndexNo = [aaIndex intValue];
+    
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    zzz.ExistPayor = YES;
     
     NSLog(@"view new client");
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

@@ -31,6 +31,8 @@
     NSIndexPath *selectedPath;
     NSIndexPath *previousPath;
     BOOL blocked;
+    BOOL saved;
+    BOOL payorSaved;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
