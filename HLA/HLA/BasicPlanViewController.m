@@ -102,6 +102,12 @@
     if (ageClient > 50 && ageClient <=65)
     {
         [advanceIncomeSegment setEnabled:NO forSegmentAtIndex:0];
+        
+//        UIColor *disableTintColor = [UIColor greenColor];
+//        [[[advanceIncomeSegment subviews] objectAtIndex:0] setTintColor:disableTintColor];
+        
+//        [advanceIncomeSegment setBackgroundColor:[UIColor greenColor]];
+        
     }
     
     healthLoadingView.alpha = 0;

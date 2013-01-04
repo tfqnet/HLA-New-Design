@@ -44,7 +44,7 @@
 @synthesize prospectPopover = _prospectPopover;
 @synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile;
 @synthesize delegate = _delegate;
-@synthesize basicSINo;
+@synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker;
 
 id temp;
 - (void)viewDidLoad
@@ -93,6 +93,10 @@ id temp;
     else {
         NSLog(@"SINo not exist!");
     }
+    
+    if (requestIndexNo != 0) {
+        [self tempView];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -103,6 +107,7 @@ id temp;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+//    self.view.superview.bounds = CGRectMake(-98, 0, 1000, 748);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -212,7 +217,6 @@ id temp;
             LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
         
-        
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
     }
     else {
@@ -289,6 +293,58 @@ id temp;
     [_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andBasicTempHL:getTempHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.SICompleted = YES;
+}
+
+-(void)tempView
+{
+    IndexNo = requestIndexNo;
+    lastIdPayor = requestLastIDPay;
+    lastIdProfile = requestLastIDProf;
+    [self getProspectData];
+    
+    LANameField.text = NamePP;
+    DOB = DOBPP;
+    commDate = [self.requestCommDate description];
+    [self calculateAge];
+    LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOBPP];
+    LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
+    
+    sex = [self.requestSex description];
+    if ([sex isEqualToString:@"M"]) {
+        sexSegment.selectedSegmentIndex = 0;
+    } else {
+        sexSegment.selectedSegmentIndex = 1;
+    }
+    NSLog(@"sex:%@",sex);
+    
+    smoker = [self.requestSmoker description];
+    if ([smoker isEqualToString:@"Y"]) {
+        smokerSegment.selectedSegmentIndex = 0;
+    } else {
+        smokerSegment.selectedSegmentIndex = 1;
+    }
+    NSLog(@"smoker:%@",smoker);
+    
+    occuCode = OccpCodePP;
+    [self getOccLoadExist];
+    LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+    
+    if (occLoading == 0) {
+        LAOccLoadingField.text = @"STD";
+    } else {
+        LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
+    }
+    
+    if (occCPA_PA > 4) {
+        LACPAField.text = @"D";
+        LAPAField.text = @"D";
+    } else {
+        LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    }
+    [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+    Inserted = YES;
 }
 
 #pragma mark - Action
@@ -902,15 +958,6 @@ id temp;
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [failAlert show];
             }
-            
-            /*
-            dataInsert = [[NSMutableArray alloc] init];
-            SIHandler *ss = [[SIHandler alloc] init];
-            [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
-            for (NSUInteger i=0; i< dataInsert.count; i++) {
-                ss = [dataInsert objectAtIndex:i];
-                NSLog(@"stored sex:%@",ss.storedSex);
-            }*/
             
             [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
             

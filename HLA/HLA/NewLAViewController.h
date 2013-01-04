@@ -51,6 +51,13 @@
 
 //--request
 @property (nonatomic,strong) id requestSINo;
+@property (nonatomic, assign,readwrite) int requestIndexNo;
+@property (nonatomic, assign,readwrite) int requestLastIDPay;
+@property (nonatomic, assign,readwrite) int requestLastIDProf;
+@property (nonatomic,strong) id requestCommDate;
+@property (nonatomic,strong) id requestSex;
+@property (nonatomic,strong) id requestSmoker;
+
 @property (nonatomic, copy) NSString *getSINo;
 //--
 

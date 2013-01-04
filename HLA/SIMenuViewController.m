@@ -36,7 +36,7 @@
 @synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
 @synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance,requestSINo2;
 @synthesize RiderController = _RiderController;
-@synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor,getSex,getbasicTempHL;
+@synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor,getSex,getbasicTempHL,getSmoker;
 
 id RiderCount;
 
@@ -477,10 +477,46 @@ id RiderCount;
     if (alertView.tag == 1001 && buttonIndex == 0)
     {
         saved = YES;
-        [self selectBasicPlan];
+        payorSaved = YES;
         [ListOfSubMenu removeObject:@"Quotation"];
-        //[SelectedRow addObject:@"6"];
+        
+        [self selectBasicPlan];
         [myTableView reloadData];
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    else if (alertView.tag == 1002 && buttonIndex == 0)
+    {
+        saved = YES;
+        payorSaved = YES;
+        [ListOfSubMenu removeObject:@"Quotation"];
+        
+        self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
+        _RiderController.delegate = self;
+        self.RiderController.requestAge = getAge;
+        self.RiderController.requestSex = getSex;
+        self.RiderController.requestOccpCode = getOccpCode;
+        self.RiderController.requestOccpClass = getOccpClass;
+        
+        self.RiderController.requestSINo = getSINo;
+        self.RiderController.requestPlanCode = getPlanCode;
+        self.RiderController.requestCoverTerm = getTerm;
+        self.RiderController.requestBasicSA = getbasicSA;
+        self.RiderController.requestBasicHL = getbasicHL;
+        self.RiderController.requestBasicTempHL = getbasicTempHL;
+        self.RiderController.requestMOP = getMOP;
+        self.RiderController.requestAdvance = getAdvance;
+        
+        [self addChildViewController:self.RiderController];
+        [self.RightView addSubview:self.RiderController.view];
+        
+        previousPath = selectedPath;
+        blocked = NO;
         
         if (blocked) {
             [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -738,7 +774,8 @@ id RiderCount;
 {
     selectedPath = indexPath;
     NSLog(@"path:%@",selectedPath);
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0)     //life assured
+    {
         NSLog(@"select LA:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
         
         if (getSINo.length != 0) {
@@ -752,10 +789,22 @@ id RiderCount;
         }
         else {
             NSLog(@"no SI");
+            /*
             if (_LAController == nil) {
                 self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
                 _LAController.delegate = self;
             }
+            [self addChildViewController:self.LAController];
+            [self.RightView addSubview:self.LAController.view]; */
+            
+            self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+            _LAController.delegate = self;
+            self.LAController.requestIndexNo = getLAIndexNo;
+            self.LAController.requestLastIDPay = getIdPay;
+            self.LAController.requestLastIDProf = getIdProf;
+            self.LAController.requestCommDate = getCommDate;
+            self.LAController.requestSex = getSex;
+            self.LAController.requestSmoker = getSmoker;
             [self addChildViewController:self.LAController];
             [self.RightView addSubview:self.LAController.view];
         }
@@ -763,15 +812,18 @@ id RiderCount;
         blocked = NO;
     }
     
-    else if (indexPath.row == 1) {
+    else if (indexPath.row == 1)
+    {
         [self select2ndLA];
     }
     
-    else if (indexPath.row == 2) {
+    else if (indexPath.row == 2)
+    {
         [self selectPayor];
     }
     
-    else if (indexPath.row == 3) { //basic plan
+    else if (indexPath.row == 3)    //basic plan
+    { 
         
         if (!saved) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
@@ -784,16 +836,15 @@ id RiderCount;
             [alert show];
         }
         else {
-            [self selectBasicPlan];
             [ListOfSubMenu removeObject:@"Quotation"];
-            //[SelectedRow addObject:@"6"];
+            [self selectBasicPlan];
             [myTableView reloadData];
         }
     }
     
-    else if (indexPath.row == 4) { //rider
-        //[SelectedRow addObject:@"6"];
-        [ListOfSubMenu removeObject:@"Quotation"];
+    else if (indexPath.row == 4)    //rider
+    {
+        
         [self checkingPayor];   
         if (getAge > 70) {
             
@@ -807,7 +858,22 @@ id RiderCount;
             [alert show];
             blocked = YES;
         }
+        else if (!saved) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+            [alert setTag:1002];
+            [alert show];
+        }
+        else if (!payorSaved) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+            [alert setTag:1002];
+            [alert show];
+        }
         else {
+            
+            [ListOfSubMenu removeObject:@"Quotation"];
+            
             self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
             _RiderController.delegate = self;
             self.RiderController.requestAge = getAge;
@@ -829,18 +895,20 @@ id RiderCount;
             
             previousPath = selectedPath;
             blocked = NO;
+            [myTableView reloadData];
         }
-        [myTableView reloadData];
     }
     
-    else if (indexPath.row == 5) { //premium
+    else if (indexPath.row == 5)    //premium
+    {
         [self calculatedPrem];
         //[SelectedRow removeObject:@"6"];
         [ListOfSubMenu removeObject:@"Quotation"];
         [ListOfSubMenu addObject:@"Quotation"];
         [myTableView reloadData];
     }
-    else if (indexPath.row == 6) { //quotation
+    else if (indexPath.row == 6)    //quotation
+    {
         
         /*
         sqlite3_stmt *statement;
@@ -1067,6 +1135,7 @@ id RiderCount;
     NSLog(@"::receive data LAIndex:%d",aaIndexNo);
     getAge = aaAge;
     getSex = aaSex;
+    getSmoker = aaSmoker;
     getOccpClass = aaOccpClass;
     getOccpCode = aaOccpCode;
     getCommDate = aaCommDate;
@@ -1247,6 +1316,7 @@ id RiderCount;
     _LAController = nil;
     getAge = 0;
     getSex = nil;
+    getSmoker = nil;
     getOccpClass = 0;
     getOccpCode = nil;
     getCommDate = nil;

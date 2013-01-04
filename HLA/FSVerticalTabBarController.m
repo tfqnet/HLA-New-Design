@@ -110,7 +110,7 @@
             AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
             if (!zzz.SICompleted) {
                 
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!\n Leave this page?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
                 [alert setTag:2001];
                 [alert show];
             }
@@ -133,7 +133,7 @@
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 if (!zzz.SICompleted) {
                     
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!\n Leave this page?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
                     [alert setTag:3001];
                     [alert show];
                 }
@@ -160,7 +160,7 @@
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 if (!zzz.SICompleted) {
                     
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Basic Plan has not been added!\n Leave this page?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
                     [alert setTag:3001];
                     [alert show];
                 }
