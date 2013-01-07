@@ -13,13 +13,23 @@
 @end
 
 @implementation DateViewController
-@synthesize datePickerView;
+@synthesize datePickerView = _datePickerView;
 @synthesize msgDate,msgAge,selectedStrDate,selectedStrAge,Age,ANB;
 @synthesize delegate = _delegate;
 
+id msg, ComDate;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (msgDate != NULL ) {
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSDate *zzz = [dateFormatter dateFromString:msgDate];
+        [_datePickerView setDate:zzz animated:YES ];
+        
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -30,11 +40,21 @@
 #pragma mark - action
 - (IBAction)dateChange:(id)sender
 {
+    /*
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     NSString *pickerDate = [dateFormatter stringFromDate:[datePickerView date]];
+    msgDate = [[NSString alloc] initWithFormat:@"%@",pickerDate]; */
     
-    msgDate = [[NSString alloc] initWithFormat:@"%@",pickerDate];
+    if (_delegate != Nil) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSString *pickerDate = [dateFormatter stringFromDate:[_datePickerView date]];
+        
+        msgDate = [NSString stringWithFormat:@"%@",pickerDate];
+//        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+//        ComDate = [dateFormatter stringFromDate:[_datePickerView date]];
+    }
 }
 
 - (IBAction)donePressed:(id)sender
@@ -49,15 +69,15 @@
     
     [dateFormatter setDateFormat:@"yyyy"];
     NSString *currentYear = [dateFormatter stringFromDate:[NSDate date]];
-    NSString *birthYear = [dateFormatter stringFromDate:[datePickerView date]];
+    NSString *birthYear = [dateFormatter stringFromDate:[_datePickerView date]];
     
     [dateFormatter setDateFormat:@"MM"];
     NSString *currentMonth = [dateFormatter stringFromDate:[NSDate date]];
-    NSString *birthMonth = [dateFormatter stringFromDate:[datePickerView date]];
+    NSString *birthMonth = [dateFormatter stringFromDate:[_datePickerView date]];
     
     [dateFormatter setDateFormat:@"dd"];
     NSString *currentDay = [dateFormatter stringFromDate:[NSDate date]];
-    NSString *birthDay = [dateFormatter stringFromDate:[datePickerView date]];
+    NSString *birthDay = [dateFormatter stringFromDate:[_datePickerView date]];
     
     int yearN = [currentYear intValue];
     int yearB = [birthYear intValue];
@@ -111,7 +131,7 @@
     }
     
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    NSString *selectDate = [dateFormatter stringFromDate:[datePickerView date]];
+    NSString *selectDate = [dateFormatter stringFromDate:[_datePickerView date]];
     NSDate *startDate = [dateFormatter dateFromString:selectDate];
         
     NSString *todayDate = [dateFormatter stringFromDate:[NSDate date]];

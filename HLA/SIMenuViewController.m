@@ -263,6 +263,7 @@ id RiderCount;
             _PayorController.delegate = self;
         }
         self.PayorController.requestLAIndexNo = getLAIndexNo;
+        self.PayorController.requestLAAge = getAge;
         self.PayorController.requestCommDate = getCommDate;
         self.PayorController.requestSINo = getSINo;
         [self addChildViewController:self.PayorController];
@@ -292,6 +293,7 @@ id RiderCount;
                 _PayorController.delegate = self;
                 
                 self.PayorController.requestLAIndexNo = getLAIndexNo;
+                self.PayorController.requestLAAge = getAge;
                 self.PayorController.requestCommDate = getCommDate;
                 self.PayorController.requestSINo = getSINo;
                 [self addChildViewController:self.PayorController];
@@ -313,6 +315,7 @@ id RiderCount;
                     _PayorController.delegate = self;
                 }
                 self.PayorController.requestLAIndexNo = getLAIndexNo;
+                self.PayorController.requestLAAge = getAge;
                 self.PayorController.requestCommDate = getCommDate;
                 self.PayorController.requestSINo = getSINo;
                 [self addChildViewController:self.PayorController];
@@ -439,6 +442,9 @@ id RiderCount;
             blocked = YES;
         }
         else {
+            
+            [ListOfSubMenu removeObject:@"Quotation"];
+            [ListOfSubMenu addObject:@"Quotation"];
     
             PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
             premView.requestAge = getAge;
@@ -477,6 +483,7 @@ id RiderCount;
     if (alertView.tag == 1001 && buttonIndex == 0)
     {
         saved = YES;
+        _SecondLAController = nil;
         [ListOfSubMenu removeObject:@"Quotation"];
         [self selectBasicPlan];
         [myTableView reloadData];
@@ -505,6 +512,7 @@ id RiderCount;
     else if (alertView.tag == 2001 && buttonIndex == 0)
     {
         payorSaved = YES;
+        _PayorController = nil;
         [ListOfSubMenu removeObject:@"Quotation"];
         [self selectBasicPlan];
         [myTableView reloadData];
@@ -915,12 +923,16 @@ id RiderCount;
     
     else if (indexPath.row == 1)
     {
+        [ListOfSubMenu removeObject:@"Quotation"];
         [self select2ndLA];
+        [myTableView reloadData];
     }
     
     else if (indexPath.row == 2)
     {
+        [ListOfSubMenu removeObject:@"Quotation"];
         [self selectPayor];
+        [myTableView reloadData];
     }
     
     else if (indexPath.row == 3)    //basic plan
@@ -1002,9 +1014,7 @@ id RiderCount;
     else if (indexPath.row == 5)    //premium
     {
         [self calculatedPrem];
-        //[SelectedRow removeObject:@"6"];
-        [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu addObject:@"Quotation"];
+        
         [myTableView reloadData];
     }
     else if (indexPath.row == 6)    //quotation

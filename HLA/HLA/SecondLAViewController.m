@@ -185,6 +185,11 @@
     }
 }
 
+-(void)tempView
+{
+    
+}
+
 #pragma mark - action
 - (IBAction)doSelectProspect:(id)sender
 {
@@ -594,15 +599,10 @@
             {
                 NSLog(@"Done LA2");
                 [self updateRunCustCode];
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:1005];
-                [SuccessAlert show];
-                
                 [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
                 [_delegate saved:YES];
-                
-            } else {
+            }
+            else {
                 NSLog(@"Failed LA2");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -786,14 +786,10 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"SI update!");
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:1005];
-                [SuccessAlert show];
-                
                 [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
                 
-            } else {
+            }
+            else {
                 NSLog(@"SI update Failed!");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -828,11 +824,8 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Clt_Profile delete!");
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record deleted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert show];
-                
-            } else {
+            }
+            else {
                 NSLog(@"Clt_Profile delete Failed!");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in deleting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];

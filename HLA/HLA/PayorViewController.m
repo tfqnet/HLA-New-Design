@@ -29,7 +29,7 @@
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo,requestCommDate;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert,getSINo;
 @synthesize delegate = _delegate;
-@synthesize getLAIndexNo,requestLAIndexNo;
+@synthesize getLAIndexNo,requestLAIndexNo,requestLAAge,getLAAge;
 
 - (void)viewDidLoad
 {
@@ -40,6 +40,7 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
     getLAIndexNo = requestLAIndexNo;
+    getLAAge = requestLAAge;
     getCommDate = [self.requestCommDate description];
     getSINo = [self.requestSINo description];
     NSLog(@"Payor-SINo:%@, CommDate:%@",getSINo,getCommDate);
@@ -65,7 +66,6 @@
         }
     }
     
-    
     NSLog(@"delegate:%@",_delegate);
 }
 
@@ -76,7 +76,7 @@
 
 -(void)getSavedField
 {
-    BOOL valid;
+    BOOL valid = TRUE;
     
     if (![NamePP isEqualToString:clientName]) {
         valid = FALSE;
@@ -94,8 +94,8 @@
         valid = FALSE;
     }
     
-//    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
-//    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
+    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
+    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
     
     if (valid) {
     
@@ -608,12 +608,8 @@
                 
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 zzz.ExistPayor = YES;
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:2004];
-                [SuccessAlert show];
-                
-            } else {
+            }
+            else {
                 NSLog(@"Failed LA2");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -805,12 +801,8 @@
             {
                 NSLog(@"SI update!");
                 [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:2004];
-                [SuccessAlert show];
-                
-            } else {
+            }
+            else {
                 NSLog(@"SI update Failed!");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -845,13 +837,14 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Clt_Profile delete!");
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record deleted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert show];
-                
                 [_delegate PayorDeleted];
                 
-            } else {
+                if (getLAAge < 10) {
+                    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                    zzz.ExistPayor = NO;
+                }
+            }
+            else {
                 NSLog(@"Clt_Profile delete Failed!");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in deleting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];

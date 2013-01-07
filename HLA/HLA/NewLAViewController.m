@@ -45,6 +45,8 @@
 @synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile;
 @synthesize delegate = _delegate;
 @synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker;
+@synthesize LADate = _LADate;
+@synthesize datePopover = _datePopover;
 
 id temp;
 - (void)viewDidLoad
@@ -66,8 +68,6 @@ id temp;
     LADOBField.enabled = NO;
     LAOccpField.enabled = NO;
     useExist = NO;
-    date1 = NO;
-    date2 = NO;
     AgeChanged = NO;
     JobChanged = NO;
     
@@ -261,10 +261,7 @@ id temp;
             LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
             LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
-        
-//        statusLabel.text = @"Data changed. Please resave!";
-//        statusLabel.textColor = [UIColor redColor];
-        
+    
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
         
         if (age > 70) {
@@ -276,6 +273,15 @@ id temp;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information will synchronize to this SI." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert setTag:1004];
             [alert show];
+        }
+    }
+    
+    if (age < 10) {
+        [self checkingPayor];
+        if (payorSINo.length == 0) {
+            
+            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+            zzz.ExistPayor = NO;
         }
     }
 }
@@ -448,20 +454,17 @@ id temp;
 - (IBAction)btnCommDatePressed:(id)sender
 {   
     temp = btnCommDate.titleLabel.text;
+
+    if (_LADate == Nil) {
+        
+        self.LADate = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
+        _LADate.delegate = self;
+        _LADate.msgDate = temp;
+        self.datePopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
+    }
     
-    if(![popOverController isPopoverVisible]) {
-        date2 = YES;
-        DateViewController *datePick = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
-		popOverController = [[UIPopoverController alloc] initWithContentViewController:datePick];
-        datePick.delegate = self;
-		
-		[popOverController setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-        [popOverController presentPopoverFromRect:CGRectMake(223, 337, 300, 255) inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
-        popOverController.delegate = self;
-	}
-    else {
-		[popOverController dismissPopoverAnimated:YES];
-	}
+    [self.datePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    [self.datePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -838,11 +841,6 @@ id temp;
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Done LA2");
-
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:1006];
-                [SuccessAlert show];
-                
                 [self getLastIDPayor];
                 [self getLastIDProfile];
                 
@@ -947,13 +945,8 @@ id temp;
                         }
                     }
                 }
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:1006];
-                [SuccessAlert show];
-                
-                statusLabel.text = @"";
-            } else {
+            }
+            else {
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 [failAlert show];
@@ -991,10 +984,6 @@ id temp;
                         [alert show];
                     }
                 }
-                    
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                [SuccessAlert show];
-                
             }
             else {
                 
@@ -1484,41 +1473,18 @@ id temp;
 
 -(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB
 {
-    
-    
-    /*
-    if ([btnCommDate.titleLabel.text isEqualToString:@""]) {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-        
-        [btnCommDate setTitle:dateString forState:UIControlStateNormal];
+    if (aDate == NULL) {
+        [btnCommDate setTitle:temp forState:UIControlStateNormal];
+        commDate = temp;
     }
-   */ 
-    if (date1) {
-        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
-        LAAgeField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
-        DOB = aDate;
-        age = bAge;
-        ANB = aANB;
-        [popOverController dismissPopoverAnimated:YES];
-        date1 = NO;
-    } else if (date2) {
-        if (aDate == NULL) {
-            [btnCommDate setTitle:temp forState:UIControlStateNormal];
-            commDate = temp;
-        }
-        else {
-            [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
-            commDate = aDate;
-        }
-        
-        [self calculateAge];
-        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
-        
-        [popOverController dismissPopoverAnimated:YES];
-        date2 = NO;
+    else {
+        [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
+        commDate = aDate;
     }
+        
+    [self calculateAge];
+    LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    [self.datePopover dismissPopoverAnimated:YES];
 }
 
 

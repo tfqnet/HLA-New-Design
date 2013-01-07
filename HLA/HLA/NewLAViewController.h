@@ -30,13 +30,13 @@
     UITextField *activeField;
     UIPopoverController *popOverController;
     UIPopoverController *_prospectPopover;
+    UIPopoverController *_datePopover;
     ListingTbViewController *_ProspectList;
+    DateViewController *_LADate;
     id <NewLAViewControllerDelegate> _delegate;
     BOOL Saved;
     BOOL Inserted;
     BOOL useExist;
-    BOOL date1;
-    BOOL date2;
     BOOL AgeLess;
     BOOL DiffClient;
     BOOL AgeChanged;
@@ -62,7 +62,9 @@
 //--
 
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
+@property (nonatomic, retain) DateViewController *LADate;
 @property (nonatomic, retain) UIPopoverController *prospectPopover;
+@property (nonatomic, retain) UIPopoverController *datePopover;
 @property (retain, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, retain) UIPopoverController *popOverController;
 

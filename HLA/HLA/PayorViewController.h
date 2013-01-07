@@ -37,9 +37,11 @@
 
 //--request
 @property (nonatomic, assign,readwrite) int requestLAIndexNo;
+@property (nonatomic, assign,readwrite) int requestLAAge;
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) id requestCommDate;
 @property (nonatomic, assign,readwrite) int getLAIndexNo;
+@property (nonatomic, assign,readwrite) int getLAAge;
 @property(nonatomic , retain) NSString *getSINo;
 @property (nonatomic, copy) NSString *getCommDate;
 //--

@@ -102,11 +102,10 @@
     if (ageClient > 50 && ageClient <=65)
     {
         [advanceIncomeSegment setEnabled:NO forSegmentAtIndex:0];
+//        advanceIncomeSegment.segmentedControlStyle = UISegmentedControlStyleBar;
         
-//        UIColor *disableTintColor = [UIColor greenColor];
-//        [[[advanceIncomeSegment subviews] objectAtIndex:0] setTintColor:disableTintColor];
-        
-//        [advanceIncomeSegment setBackgroundColor:[UIColor greenColor]];
+//        [advanceIncomeSegment setTintColor:[UIColor redColor]];
+//        [[advanceIncomeSegment.subviews objectAtIndex:0] setTintColor:[UIColor redColor]];
         
     }
     
@@ -1009,15 +1008,12 @@
                     [self saveSecondLA];
                 }
                 
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:1004];
-                [SuccessAlert show];
-                
                 [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 zzz.SICompleted = YES;
                 
-            } else {
+            }
+            else {
                 NSLog(@"Failed Save basicPlan!");
                 
                 UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -1192,11 +1188,6 @@
                 [self getPlanCodePenta];
                 
                 [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
-                
-                UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//                [SuccessAlert setTag:1004];
-                [SuccessAlert show];
-                
             }
             else {
                 NSLog(@"BasicPlan update Failed!");
