@@ -606,6 +606,9 @@
                 [_delegate payorSaved:YES];
                 self.deleteBtn.hidden = NO;
                 
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                zzz.ExistPayor = YES;
+                
                 UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Record saved." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //                [SuccessAlert setTag:2004];
                 [SuccessAlert show];

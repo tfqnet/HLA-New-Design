@@ -477,9 +477,7 @@ id RiderCount;
     if (alertView.tag == 1001 && buttonIndex == 0)
     {
         saved = YES;
-        payorSaved = YES;
         [ListOfSubMenu removeObject:@"Quotation"];
-        
         [self selectBasicPlan];
         [myTableView reloadData];
         
@@ -490,9 +488,98 @@ id RiderCount;
             [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
+    else if (alertView.tag == 1001 && buttonIndex == 1)
+    {
+        saved = NO;
+        blocked = YES;
+        [myTableView reloadData];
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    
+    else if (alertView.tag == 2001 && buttonIndex == 0)
+    {
+        payorSaved = YES;
+        [ListOfSubMenu removeObject:@"Quotation"];
+        [self selectBasicPlan];
+        [myTableView reloadData];
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    else if (alertView.tag == 2001 && buttonIndex == 1)
+    {
+        payorSaved = NO;
+        blocked = YES;
+        [myTableView reloadData];
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    
     else if (alertView.tag == 1002 && buttonIndex == 0)
     {
         saved = YES;
+        [ListOfSubMenu removeObject:@"Quotation"];
+        
+        self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
+        _RiderController.delegate = self;
+        self.RiderController.requestAge = getAge;
+        self.RiderController.requestSex = getSex;
+        self.RiderController.requestOccpCode = getOccpCode;
+        self.RiderController.requestOccpClass = getOccpClass;
+        
+        self.RiderController.requestSINo = getSINo;
+        self.RiderController.requestPlanCode = getPlanCode;
+        self.RiderController.requestCoverTerm = getTerm;
+        self.RiderController.requestBasicSA = getbasicSA;
+        self.RiderController.requestBasicHL = getbasicHL;
+        self.RiderController.requestBasicTempHL = getbasicTempHL;
+        self.RiderController.requestMOP = getMOP;
+        self.RiderController.requestAdvance = getAdvance;
+        
+        [self addChildViewController:self.RiderController];
+        [self.RightView addSubview:self.RiderController.view];
+        
+        previousPath = selectedPath;
+        blocked = NO;
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    else if (alertView.tag == 1002 && buttonIndex == 1)
+    {
+        saved = NO;
+        blocked = YES;
+        [myTableView reloadData];
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    
+    else if (alertView.tag == 2002 && buttonIndex == 0)
+    {
         payorSaved = YES;
         [ListOfSubMenu removeObject:@"Quotation"];
         
@@ -525,6 +612,20 @@ id RiderCount;
             [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
+    else if (alertView.tag == 2002 && buttonIndex == 1)
+    {
+        payorSaved = NO;
+        blocked = YES;
+        [myTableView reloadData];
+        
+        if (blocked) {
+            [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        else {
+            [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    
 }
 
 #pragma mark - db
@@ -824,7 +925,6 @@ id RiderCount;
     
     else if (indexPath.row == 3)    //basic plan
     { 
-        
         if (!saved) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
             [alert setTag:1001];
@@ -832,7 +932,7 @@ id RiderCount;
         }
         else if (!payorSaved) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
-            [alert setTag:1001];
+            [alert setTag:2001];
             [alert show];
         }
         else {
@@ -867,7 +967,7 @@ id RiderCount;
         else if (!payorSaved) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
-            [alert setTag:1002];
+            [alert setTag:2002];
             [alert show];
         }
         else {
