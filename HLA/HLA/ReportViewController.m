@@ -146,7 +146,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     siNo = [row objectAtIndex:0];
     //NSLog(@"%@",siNo);
     
-    //sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM SI_Trad_Rider_Details Where SINo = '%@'",siNo];
     sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ORDER BY RiderCode ASC",siNo];
     
     _dataTable = [_db  ExecuteQuery:sqlStmt];
@@ -818,16 +817,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     
     //------- end ---------
-    /*
-    // PDS
-    pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('ENG_PDS1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
-    DBID = [_db ExecuteINSERT:sqlStmt];
-    if (DBID <= 0){
-        NSLog(@"Error inserting data into database.");
-    }
-    //---
-    */
+    
+    
     NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
     NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     

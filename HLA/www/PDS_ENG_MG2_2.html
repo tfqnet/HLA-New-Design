@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="format-detection" content="telephone=no">
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, target-densitydpi=device-dpi" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    var HMMRiderTerm = '';
+    var FirstAge = '';
+    //var cashPayment = 0;
+    
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+    
+    function successCallBack() {
+        alert("DEBUGGING: success");
+        
+    }
+    
+    function nullHandler(){};
+    
+    function onBodyLoad(){
+        //alert($('#aa').text())
+    	//alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+        calcTotal();
+    }
+    
+    function dbexe(){
+        db.transaction(function(transaction) {
+                       transaction.executeSql('SELECT * FROM SI_Temp_Trad_Details;', [], function(transaction, result) {
+                                              if (result != null && result.rows != null) {
+                                              var row;
+                                              for (var i = 0; i < result.rows.length; i++) {
+                                              var row = result.rows.item(i);
+                                              }
+        
+                                              }
+                                              },errorHandler);
+                       },errorHandler,nullHandler);
+    }
+    
+    function ListDBValues() {
+        
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;                    
+                    }
+                }
+                else{
+			alert('No data can be found');
+                    }
+                                   
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'MG_II'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    for(var i = 0; i <result.rows.length; i++){
+			var row = result.rows.item(i);
+			
+			    HMMRiderTerm = row.RiderTerm;
+			
+		    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                	
+			var now = new Date();
+			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+			$('#dateModified').html(displayDateFull);
+			$('#PrintDate').html(displayDate);
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql('SELECT * FROM SI_Store_Premium WHERE Type = "MG_II" AND FromAge IS NULL;', [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+		    var row = result.rows.item(0);
+		    $('#ValueA').html(row.Annually);                      
+		    $('#ValueB').html(row.SemiAnnually);
+		    $('#ValueC').html(row.Quarterly);
+		    $('#ValueD').html(row.Monthly);                      
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    if(result.rows.length == 1){
+	                  var row = result.rows.item(0);
+			 FirstAge = row.Age;
+			 $('#PayableAge').html(parseInt(HMMRiderTerm) + parseInt(FirstAge));                      
+                    }
+		    
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+        return;
+    }
+    
+    function calcTotal(){
+        //alert($('#row0col5').text())
+    }
+
+    function formatCurrency(num) {
+        if(num == '-'){
+            return ('-');
+        }
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+    
+    function replaceChar(char){
+        var temp, returnVal;
+        if (char == "0")
+            returnVal = "-"
+        else if (char == "")
+            returnVal = "-"
+        else
+            returnVal = char;
+        return returnVal;
+    }
+
+	 function isIncomeRider(amt,rider){
+		//rider.replace(/^\s+|\s$/g,"")
+		//$.trim(rider)
+		var temp;
+		temp = $.trim(rider)
+		//alert(temp + "x")
+        if (temp == "HLA Income Builder" || temp == "Income 20 Rider" || temp == "Income 30 Rider" || temp == "Income 40 Rider" || temp == "Income D-20 Rider" || temp == "Income D-30 Rider" || temp == "Income D-40 Rider" || temp == "Income E-20 Rider" || temp == "Income E-30 Rider"){
+        	return amt + " *";
+        }
+        else
+        	return amt + "&nbsp;&nbsp;";
+    }
+	
+
+</script>
+    <style type="text/css">
+    * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+    }  
+    </style>
+        
+</head>
+ 
+<body onload="onBodyLoad(),setPage()" >
+ <span id="lbUsers"></span>
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">
+  
+  <div class="welcome">
+  Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span>
+  </div>
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
+  
+</div>
+<hr/>
+<div class="main-content">
+    
+    <table>
+	
+	<tr>
+	    <td></td>
+	    <td>
+		<table border="1" style="border-collapse: collapse" width="100%">
+		    
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" width="60%" >Emergency Accidental Outpatient Treatment(within 30 days following such emergency treatment)</td>
+			<td rowspan="3" colspan="4" align="center">Reasonable & Customary Charges *<br/>Subject to co-insurance **</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Emergency Accidental Dental Treatment</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Outpatient Physiotherapy Treatment</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;"  >Outpatient Cancer Treatment</td>
+			<td align="center" >30,000</td>
+			<td align="center" >60,000</td>
+			<td align="center" >90,000</td>
+			<td align="center" >120,000</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Outpatient Kidney Dialysis Treatment</td>
+			<td align="center" >30,000</td>
+			<td align="center" >60,000</td>
+			<td align="center" >90,000</td>
+			<td align="center" >120,000</td>
+		    </tr>
+		    
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Overall Annual (per policy Year) limit</td>
+			<td align="center" >50,000</td>
+			<td align="center" >100,000</td>
+			<td align="center" >150,000</td>
+			<td align="center" >200,000</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Aggregate Term Limit</td>
+			<td align="center"  >150,000</td>
+			<td align="center" >300,000</td>
+			<td align="center" >450,000</td>
+			<td align="center"  >600,000</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Emergency Evacuation & Repatriation (limit per event)</td>
+			<td align="center"  >150,000</td>
+			<td align="center"   >150,000</td>
+			<td align="center" >150,000</td>
+			<td  align="center" >150,000</td>
+		    </tr>
+		    
+		</table>
+	    </td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>
+		<br/>
+		* Charges for medical care which is Medically Necessary shall be considered reasonable and customary to the extent that it does not exceed the general level of charges being made by other similar standing in the
+		locality where the charge is incurred, when furnishing like or comparable treatment, services or supplies to individual of the same sex and of comparable age for a similar Sickness, Disease or Injury and in
+		accordance with accepted medical standards and practice could not have been omitted without adversely affecting the Life Assured's medical condition.<br/>
+		
+		** You are required to bear the co-insurance amount of 10% of the amount claim per Any One Disability as admitted by the Company or the sum of RM300, whichever is higher, subject to the absolute maximum
+	        sum of RM3,000 (only applicable to plan 100 & plan 200).
+	    </td>
+	</tr>
+	
+	<tr>
+	    
+	    <td width="10"></td>
+	    <td>
+		<br/>
+		
+		<u><b>Renewal</b></u>
+		This rider is renewable at the option of the Policy Owner until the occurrence of any of the following:<br/>
+		-	non payment of premium or premium not made on time<br/>
+		-	fraud or misrepresentation of material fact during application<br/>
+		-	the Rider is cancelled at the request of the Policy Owner<br/>
+		-	total claims of the Rider have reached the lifetime limit specified (i.e. the Aggregate Term Limit) ,and/or on the death of the Life Assured.<br/>
+		-	the Life Assured ceases to qualify as a dependent based on the definition of the Rider.<br/>
+		-	on the Policy Anniversary Date immediately following the Life Assured attaining the coverage age limit of 100th birthday<br/>
+		-	termination of coverage of this rider for all policies in a certain market and the Company withdraws this rider completely from
+		the market in accordance with the Portfolio Withdrawal Condition<br/><br/>
+		
+	    </td>
+	</tr>
+	<tr>
+	    <td valign="top">3.</td>
+	    <td>
+		<b>How much premium do I have to pay?</b>
+	    </td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>
+		-	The total premium you have to pay and the policy term may vary depending on the underwriting requirements of the insurance company<br/><br/>
+		The estimated total premium that you have to pay:
+	    </td>
+	</tr>
+	<tr><td></td></tr>
+	<tr>
+	    <td></td>
+	    <td>
+		<table id="table-2" style="border-collapse: collapse" border="1" width="70%">
+		    <tr>
+			<td rowspan="2">Rider</td>
+			<td colspan="4">Initial Premium</td>
+		    </tr>
+		    <tr>
+			<td>Annual (RM)</td>
+			<td>Semi-annual (RM)</td>
+			<td>Quarterly (RM)</td>
+			<td>Monthly (RM)</td>
+		    </tr>
+		    <tr>
+			<td>HLA MedGLOBAL II</td>
+			<td><span id="ValueA">{ValueA}</span></td>
+			<td><span id="ValueB">{ValueB}</span></td>
+			<td><span id="ValueC">{ValueC}</span></td>
+			<td><span id="ValueD">{ValueD}</span></td>
+			
+		    </tr>
+		</table>    
+	    </td>
+	    
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td></td>
+	    <td>Premium duration:</td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>
+		<table id="table-3" style="border-collapse: collapse" border="1" width="50%">
+		    <tr>
+			<td>Rider</td>
+			<td>Premium payable until age</td>
+		    </tr>
+		    <tbody>
+			<td>HLA MedGLOBAL II</td>
+			<td><span id="PayableAge">{PayableAge}</span></td>
+		    </tbody>
+		</table>    
+	    </td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>-	Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.</td>
+	</tr>
+	
+    </table>
+	
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+	<tr>
+		<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+		This Product Disclosure Sheet consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the Product Disclosure Sheet. A prospective policy owner is advised to read and understand the
+		information printed on each and every page. <br/>
+		<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+		Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+		</td>
+    	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+    	<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+	</tr>
+</table>
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+ 
+</body>
+</html>
+
+

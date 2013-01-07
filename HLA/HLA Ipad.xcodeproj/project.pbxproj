@@ -53,6 +53,7 @@
 		C486D9F9163E7127009F8F21 /* www in Resources */ = {isa = PBXBuildFile; fileRef = C486D9F8163E7127009F8F21 /* www */; };
 		C486DAB8163FB928009F8F21 /* Databases.db in Resources */ = {isa = PBXBuildFile; fileRef = C486DAB7163FB928009F8F21 /* Databases.db */; };
 		C486DAD41641696A009F8F21 /* libCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C486DAD11641694B009F8F21 /* libCordova.a */; };
+		C4B84456169ACF4900E1A0D3 /* PDSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B84455169ACF4900E1A0D3 /* PDSViewController.m */; };
 		C4E5A470168AAA89007848CE /* ChgPwd_24.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A45E168AAA89007848CE /* ChgPwd_24.png */; };
 		C4E5A471168AAA89007848CE /* ChgPwd_32.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A45F168AAA89007848CE /* ChgPwd_32.png */; };
 		C4E5A472168AAA89007848CE /* ChgPwd_48.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A460168AAA89007848CE /* ChgPwd_48.png */; };
@@ -265,6 +266,8 @@
 		C486D9F8163E7127009F8F21 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
 		C486DAB7163FB928009F8F21 /* Databases.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Databases.db; sourceTree = "<group>"; };
 		C486DAC91641694B009F8F21 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = "../../Downloads/phonegap-phonegap-26d211b 3/lib/ios/CordovaLib/CordovaLib.xcodeproj"; sourceTree = "<group>"; };
+		C4B84454169ACF4900E1A0D3 /* PDSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDSViewController.h; sourceTree = "<group>"; };
+		C4B84455169ACF4900E1A0D3 /* PDSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDSViewController.m; sourceTree = "<group>"; };
 		C4E5A45E168AAA89007848CE /* ChgPwd_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_24.png; sourceTree = "<group>"; };
 		C4E5A45F168AAA89007848CE /* ChgPwd_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_32.png; sourceTree = "<group>"; };
 		C4E5A460168AAA89007848CE /* ChgPwd_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_48.png; sourceTree = "<group>"; };
@@ -851,6 +854,8 @@
 				C4EF087216496A5A000444BA /* pages.m */,
 				C4F8300B162FA84D00EF8FAA /* ReportViewController.h */,
 				C4F8300C162FA84D00EF8FAA /* ReportViewController.m */,
+				C4B84454169ACF4900E1A0D3 /* PDSViewController.h */,
+				C4B84455169ACF4900E1A0D3 /* PDSViewController.m */,
 			);
 			name = Report;
 			sourceTree = "<group>";
@@ -1230,6 +1235,7 @@
 				C4F45DFF165D0C8B0035CAA9 /* SettingSecurityQuestion.m in Sources */,
 				EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */,
 				EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */,
+				C4B84456169ACF4900E1A0D3 /* PDSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
