@@ -85,6 +85,7 @@ id RiderCount;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.myTableView.frame = CGRectMake(0, 0, 220, 748);
     [super viewWillAppear:animated];
 }
 
