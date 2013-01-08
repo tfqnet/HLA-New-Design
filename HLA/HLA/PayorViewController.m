@@ -74,6 +74,27 @@
 	return YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
+}
+
 -(void)getSavedField
 {
     BOOL valid = TRUE;
@@ -930,6 +951,7 @@
     [self setOccpField:nil];
     [self setDeleteBtn:nil];
     [self setGetCommDate:nil];
+    [self setMyToolBar:nil];
     [super viewDidUnload];
 }
 

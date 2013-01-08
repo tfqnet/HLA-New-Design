@@ -47,6 +47,8 @@ id RiderCount;
     [super viewDidLoad];
     [self resignFirstResponder];
     
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]]];
+    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -55,12 +57,17 @@ id RiderCount;
     [self.view addSubview:myTableView];
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
-    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
-    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", nil ];
+//    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
+//    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", nil ];
+     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", nil ];
     
     PlanEmpty = YES;
+    added = NO;
     saved = YES;
     payorSaved = YES;
+    
+    myTableView.rowHeight = 44;
+    [myTableView reloadData];
     
     if (_LAController == nil) {
         self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
@@ -72,10 +79,6 @@ id RiderCount;
     blocked = NO;
     selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
-    
-    for (int a=0; a<SelectedRow.count; a++) {
-        NSLog(@"rowInLoad:%@",[SelectedRow objectAtIndex:a]);
-    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -86,6 +89,8 @@ id RiderCount;
 - (void)viewWillAppear:(BOOL)animated
 {
     self.myTableView.frame = CGRectMake(0, 0, 220, 748);
+    [self hideSeparatorLine];
+    self.RightView.frame = CGRectMake(223, 0, 801, 748);
     [super viewWillAppear:animated];
 }
 
@@ -109,13 +114,20 @@ id RiderCount;
     if ([self.requestSINo isEqualToString:self.requestSINo2] || (self.requestSINo == NULL && self.requestSINo2 == NULL) ) {
         
         PlanEmpty = YES;
-        [SelectedRow addObject:@"4" ];
-        [SelectedRow addObject:@"5" ];
+        added = NO;
+//        [SelectedRow addObject:@"4" ];
+//        [SelectedRow addObject:@"5" ];
+        [ListOfSubMenu removeObject:@"Rider"];
+        [ListOfSubMenu removeObject:@"Premium"];
+        [ListOfSubMenu removeObject:@"Quotation"];
+        [ListOfSubMenu removeObject:@"PDS"];
         
         [self clearDataLA];
         [self clearDataPayor];
         [self clearData2ndLA];
         [self clearDataBasic];
+        
+        [self hideSeparatorLine];
         [self.myTableView reloadData];
         
         self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
@@ -131,38 +143,39 @@ id RiderCount;
     else {
         requestSINo2 = self.requestSINo;
     }
-    
-    for (int a=0; a<SelectedRow.count; a++) {
-        NSLog(@"rowInReset:%@",[SelectedRow objectAtIndex:a]);
-    }
 }
 
 -(void)toogleView
 {
-    if (PlanEmpty)
+    if (PlanEmpty && added)
     {
-        [SelectedRow addObject:@"4"];
-        [SelectedRow addObject:@"5"];
+        [ListOfSubMenu removeObject:@"Rider"];
+        [ListOfSubMenu removeObject:@"Premium"];
+//        [SelectedRow addObject:@"4"];
+//        [SelectedRow addObject:@"5"];
         
     }
-    else {
-        [SelectedRow removeObject:@"4"];
-        [SelectedRow removeObject:@"5"];
+    else if (!PlanEmpty && !added) {
+        [ListOfSubMenu addObject:@"Rider"];
+        [ListOfSubMenu addObject:@"Premium"];
+//        [SelectedRow removeObject:@"4"];
+//        [SelectedRow removeObject:@"5"];
         
+        added = YES;
         [self CalculateRider];
         
     }
-
-    /*
-    if ([SIshowQuotation isEqualToString:@"NO"] || SIshowQuotation == NULL ) {
-        [SelectedRow addObject:@"6"];
-    }
-    else {
-        //[SelectedRow removeObject:@"6"];
-    }
-    */
+    
+    [self hideSeparatorLine];
     
     [self.myTableView reloadData];
+}
+
+-(void)hideSeparatorLine
+{
+    CGRect frame = myTableView.frame;
+    frame.size.height = MIN(44 * [ListOfSubMenu count], 748);
+    myTableView.frame = frame;
 }
 
 
@@ -468,6 +481,7 @@ id RiderCount;
         
             previousPath = selectedPath;
             blocked = NO;
+            [self hideSeparatorLine];
         }
     }
     else if (getAge > 70) {
@@ -815,6 +829,7 @@ id RiderCount;
     
     //--text label
     
+    /*
     if (PlanEmpty) {
         if (indexPath.row == 4||indexPath.row == 5||indexPath.row == 6) {
             cell.textLabel.text = @"";
@@ -822,6 +837,19 @@ id RiderCount;
         else {
             cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
         }
+    }
+    else {
+        if (indexPath.row == 4) {
+            cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", RiderCount ];
+        }
+        else {
+            cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+        }
+    } */
+    
+    if (PlanEmpty) {
+        
+        cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     }
     else {
         if (indexPath.row == 4) {
@@ -907,14 +935,6 @@ id RiderCount;
         }
         else {
             NSLog(@"no SI");
-            /*
-            if (_LAController == nil) {
-                self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
-                _LAController.delegate = self;
-            }
-            [self addChildViewController:self.LAController];
-            [self.RightView addSubview:self.LAController.view]; */
-            
             self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
             _LAController.delegate = self;
             self.LAController.requestIndexNo = getLAIndexNo;
@@ -930,19 +950,21 @@ id RiderCount;
         blocked = NO;
     }
     
-    else if (indexPath.row == 1)
+    else if (indexPath.row == 1)    //2nd LA
     {
         [ListOfSubMenu removeObject:@"Quotation"];
         [ListOfSubMenu removeObject:@"PDS"];
         [self select2ndLA];
+        [self hideSeparatorLine];
         [myTableView reloadData];
     }
     
-    else if (indexPath.row == 2)
+    else if (indexPath.row == 2)    //Payor
     {
         [ListOfSubMenu removeObject:@"Quotation"];
         [ListOfSubMenu removeObject:@"PDS"];
         [self selectPayor];
+        [self hideSeparatorLine];
         [myTableView reloadData];
     }
     
@@ -962,6 +984,7 @@ id RiderCount;
             [ListOfSubMenu removeObject:@"Quotation"];
             [ListOfSubMenu removeObject:@"PDS"];
             [self selectBasicPlan];
+            [self hideSeparatorLine];
             [myTableView reloadData];
         }
     }
@@ -1020,6 +1043,7 @@ id RiderCount;
             
             previousPath = selectedPath;
             blocked = NO;
+            [self hideSeparatorLine];
             [myTableView reloadData];
         }
     }
@@ -1274,6 +1298,7 @@ id RiderCount;
     }
 }
 
+/*
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BOOL found = false;
@@ -1305,6 +1330,7 @@ id RiderCount;
         }
     }
 }
+ */
 
 #pragma mark - delegate source
 

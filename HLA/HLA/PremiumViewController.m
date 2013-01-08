@@ -129,13 +129,10 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
-//    self.view.superview.bounds = CGRectMake(-42, 20, 1024, 748);
-    self.view.superview.bounds = CGRectMake(-102, 0, 1000, 748);
+//    self.view.superview.bounds = CGRectMake(-102, 0, 1000, 748);
 
-    
     //[self.presentedViewController dismissModalViewControllerAnimated:YES ];
     
-
 }
 
 

@@ -90,9 +90,9 @@
 @property (nonatomic, retain) UIPopoverController *planPopover;
 @property (nonatomic, retain) UIPopoverController *deducPopover;
 @property (nonatomic,strong) UIPopoverController *popOverConroller;
+
 @property (retain, nonatomic) IBOutlet UIButton *btnPType;
 @property (retain, nonatomic) IBOutlet UIButton *btnAddRider;
-
 @property (retain, nonatomic) IBOutlet UILabel *termLabel;
 @property (retain, nonatomic) IBOutlet UILabel *sumLabel;
 @property (retain, nonatomic) IBOutlet UILabel *planLabel;
@@ -113,7 +113,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *minDisplayLabel;
 @property (retain, nonatomic) IBOutlet UILabel *maxDisplayLabel;
 @property (strong, nonatomic) IBOutlet UITextField *classField;
-
+@property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
 
 //get from popover
 @property (nonatomic,copy) NSString *pTypeCode;
@@ -173,6 +173,19 @@
 
 //setup tableview listing rider
 @property (retain, nonatomic) IBOutlet UITableView *myTableView;
+@property (retain, nonatomic) IBOutlet UILabel *titleRidCode;
+@property (retain, nonatomic) IBOutlet UILabel *titleSA;
+@property (retain, nonatomic) IBOutlet UILabel *titleTerm;
+@property (retain, nonatomic) IBOutlet UILabel *titleUnit;
+@property (strong, nonatomic) IBOutlet UILabel *titleClass;
+@property (strong, nonatomic) IBOutlet UILabel *titleLoad;
+@property (strong, nonatomic) IBOutlet UILabel *titleHL1K;
+@property (strong, nonatomic) IBOutlet UILabel *titleHL100;
+@property (strong, nonatomic) IBOutlet UILabel *titleHLP;
+@property (strong, nonatomic) IBOutlet UIButton *editBtn;
+@property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
+@property (strong, nonatomic) IBOutlet UILabel *titleHLPTerm;
+
 @property (retain, nonatomic) NSMutableArray *LRiderCode;
 @property (retain, nonatomic) NSMutableArray *LSumAssured;
 @property (retain, nonatomic) NSMutableArray *LTerm;
@@ -206,20 +219,6 @@
 @property(nonatomic , retain) NSMutableArray *LTypeRidHLTerm;
 @property(nonatomic , retain) NSMutableArray *LTypeRidHL100Term;
 @property(nonatomic , retain) NSMutableArray *LTypeOccpCode;
-
-@property (retain, nonatomic) IBOutlet UILabel *titleRidCode;
-@property (retain, nonatomic) IBOutlet UILabel *titleSA;
-@property (retain, nonatomic) IBOutlet UILabel *titleTerm;
-@property (retain, nonatomic) IBOutlet UILabel *titleUnit;
-@property (strong, nonatomic) IBOutlet UILabel *titleClass;
-@property (strong, nonatomic) IBOutlet UILabel *titleLoad;
-@property (strong, nonatomic) IBOutlet UILabel *titleHL1K;
-@property (strong, nonatomic) IBOutlet UILabel *titleHL100;
-@property (strong, nonatomic) IBOutlet UILabel *titleHLP;
-@property (strong, nonatomic) IBOutlet UIButton *editBtn;
-@property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
-@property (strong, nonatomic) IBOutlet UILabel *titleHLPTerm;
-
 
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;

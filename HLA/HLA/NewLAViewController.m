@@ -97,6 +97,7 @@ id temp;
     if (requestIndexNo != 0) {
         [self tempView];
     }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -106,6 +107,7 @@ id temp;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
     [super viewWillAppear:animated];
 //    self.view.superview.bounds = CGRectMake(-98, 0, 1000, 748);
 }
@@ -452,7 +454,12 @@ id temp;
 }
 
 - (IBAction)btnCommDatePressed:(id)sender
-{   
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    
+    [btnCommDate setTitle:dateString forState:UIControlStateNormal];
     temp = btnCommDate.titleLabel.text;
 
     if (_LADate == Nil) {
@@ -1421,9 +1428,11 @@ id temp;
     zzz.ExistPayor = YES;
     
     NSLog(@"view new client");
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    commDate = [dateFormatter stringFromDate:[NSDate date]];
+    if (!temp) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        commDate = [dateFormatter stringFromDate:[NSDate date]];
+    }
     
     DOB = aaDOB;
     [self calculateAge];
@@ -1481,9 +1490,12 @@ id temp;
         [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
         commDate = aDate;
     }
-        
-    [self calculateAge];
-    LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    
+    if (DOB.length != 0 || LADOBField.text.length != 0) {
+        [self calculateAge];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    }
+    
     [self.datePopover dismissPopoverAnimated:YES];
 }
 
@@ -1528,6 +1540,7 @@ id temp;
     [self setStatusLabel:nil];
     [self setLADOBField:nil];
     [self setLAOccpField:nil];
+    [self setMyToolBar:nil];
     [super viewDidUnload];
 }
 

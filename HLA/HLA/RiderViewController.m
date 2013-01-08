@@ -287,8 +287,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
     [super viewWillAppear:animated];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -4557,7 +4557,7 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(-30,0, 110, 50);
+    CGRect frame=CGRectMake(-31,0, 111, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [NSString stringWithFormat:@"    %@",[LTypeRiderCode objectAtIndex:indexPath.row]];
@@ -4682,10 +4682,12 @@
     if ([[LTypeRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
         hlpTerm = @"";
     } else {
-        hlpTerm = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
+//        hlpTerm = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
+        hlpTerm = [NSString stringWithFormat:@"    %@",[LTypeRidHLPTerm objectAtIndex:indexPath.row]];
     }
     label10.text=hlpTerm;
-    label10.textAlignment = UITextAlignmentCenter;
+//    label10.textAlignment = UITextAlignmentCenter;
+    label10.textAlignment = UITextAlignmentLeft;
     label10.tag = 2010;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label10];
@@ -4969,6 +4971,7 @@
     [self setTitleHLPTerm:nil];
     [self setPTypeOccp:nil];
     [self setClassField:nil];
+    [self setMyToolBar:nil];
     [super viewDidUnload];
 }
 

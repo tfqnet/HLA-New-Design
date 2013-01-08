@@ -149,6 +149,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
     [super viewWillAppear:animated];
 }
 
@@ -1422,6 +1423,7 @@
     [self setRequestOccpCode:nil];
     [self setMyScrollView:nil];
     [self setBtnPlan:nil];
+    [self setMyToolBar:nil];
     [super viewDidUnload];
 }
 

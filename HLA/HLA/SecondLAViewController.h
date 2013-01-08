@@ -59,6 +59,8 @@
 @property (strong, nonatomic) IBOutlet UITextField *DOBField;
 @property (strong, nonatomic) IBOutlet UITextField *OccpField;
 @property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
+@property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
+
 
 @property (nonatomic, assign,readwrite) int IndexNo;
 @property (nonatomic, copy) NSString *sex;

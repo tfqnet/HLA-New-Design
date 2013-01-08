@@ -33,6 +33,7 @@
     BOOL blocked;
     BOOL saved;
     BOOL payorSaved;
+    BOOL added;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;

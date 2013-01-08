@@ -97,6 +97,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *tempHLField;
 @property (retain, nonatomic) IBOutlet UITextField *tempHLTermField;
 @property (strong, nonatomic) IBOutlet UIScrollView *myScrollView;
+@property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
 
 //for SINo
 @property (nonatomic, assign,readwrite) int SILastNo;
@@ -108,7 +109,6 @@
 @property (nonatomic, copy) NSString *PYCustCode;
 @property (nonatomic, copy) NSString *secondLACustCode;
 @property (nonatomic, assign,readwrite) int IndexNo;
-
 
 @property (nonatomic, assign,readwrite) int termCover;
 @property (nonatomic, assign,readwrite) int minSA;
