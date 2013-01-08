@@ -42,5 +42,6 @@
 @property (nonatomic,strong) SIHandler *premH;
 @property (nonatomic,strong) BasicPlanHandler *premBH;
 @property (nonatomic, assign) int gPages;
+@property (nonatomic, assign) int Module;
 
 @end
