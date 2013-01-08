@@ -960,7 +960,7 @@ PostcodeContinue = TRUE;
     }
     
     
-    
+    /*
     if([[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         if ([self OptionalOccp] == FALSE) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -971,18 +971,14 @@ PostcodeContinue = TRUE;
             return false;
         }
         else {
-            /*
-            txtOfficeTown.text = @"";
-            txtOfficeState.text = @"";
-            txtOfficePostcode.text = @"";
-            txtOfficeCountry.text = @"";
-            SelectedOfficeStateCode = @"";
-             */
+     
         }
         
     }
+     */
     
     if (PostcodeContinue == TRUE) {
+        /*
         if([txtOfficePostcode.text isEqualToString:@""]){
             if ([self OptionalOccp] == FALSE) {
                 
@@ -995,17 +991,20 @@ PostcodeContinue = TRUE;
                 return false;   
             }
             else {
-                /*
-                txtOfficePostcode.text = @"";
-                txtOfficeState.text = @"";
-                txtOfficeCountry.text = @"";
-                txtOfficeTown.text = @"";
-                txtOfficeAddr1.text = @"";
-                txtOfficeAddr2.text = @"";
-                txtOfficeAddr3.text = @"";
-                 */
+               
             }
             
+        }
+         */
+        if(![[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+            if([txtOfficePostcode.text isEqualToString:@""]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [txtOfficePostcode becomeFirstResponder];
+            
+                [alert show];
+                return false;
+            }
         }
     }
     else {
@@ -1270,7 +1269,9 @@ PostcodeContinue = TRUE;
 }
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
+   
     OccupCodeSelected = OccupCode;
+   /*
     if ([self OptionalOccp] == TRUE) {
         lblOfficeAddr.text = @"Office Address";
         lblPostCode.text = @"Postcode";
@@ -1279,7 +1280,7 @@ PostcodeContinue = TRUE;
         lblOfficeAddr.text = @"Office Address*";
         lblPostCode.text = @"Postcode*";
     }
-    
+    */
     
 }
 

@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
 
 @class DataTable,DBController;
-@interface PDSViewController : UIViewController
+@interface PDSViewController : UIViewController{
+    NSString *databasePath, *RatesDatabasePath;
+    sqlite3 *contactDB;
+}
 
-
+@property (nonatomic,strong) id SINo;
 @property (strong, nonatomic) DBController* db;
 @property (strong, nonatomic) DataTable * dataTable;
 

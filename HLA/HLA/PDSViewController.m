@@ -17,6 +17,7 @@
 @implementation PDSViewController
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
+@synthesize SINo;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,31 +35,37 @@
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
+    
     NSString *siNo = @"";
     NSString *databaseName = @"hladb.sqlite";
     NSString *databaseName1 = @"0000000000000001.db";
     NSString *masterName = @"Databases.db";
     int pageNum = 0;
-    
     int riderCount = 0;
-    
     NSString *desc = @"Page";
     int DBID;
+    
+    [self deleteTemp]; //clear all temp data
+    [self InsertToSI_Temp_Trad];
+    [self InsertToSI_Temp_Trad_LA];
     
     self.db = [DBController sharedDatabaseController:databaseName];
     NSString *sqlStmt = [NSString stringWithFormat:@"SELECT SiNo FROM SI_Temp_Trad"];
     _dataTable = [_db  ExecuteQuery:sqlStmt];
     
     NSArray* row = [_dataTable.rows objectAtIndex:0];
-    siNo = [row objectAtIndex:0];
+    //siNo = [row objectAtIndex:0];
+    siNo = SINo;
     
-    // PDS
-    
+    /*
     sqlStmt = [NSString stringWithFormat:@"DELETE FROM SI_Temp_Pages_PDS"];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error Deleting data");
     }
+     */
     
     pageNum++;
     sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(htmlName, PageNum, PageDesc) VALUES ('ENG_PDS1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
@@ -200,7 +207,7 @@
     headerTitle = @"tblHeader;";
     
     sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' AND "
-               "RiderCode NOT IN ('MG_II','MG_IV','HB','HSP_II','CPA','PA','HMM','CIR') ORDER BY RiderCode ASC ",siNo];
+               "RiderCode NOT IN ('C+','MG_II','MG_IV','HB','HSP_II','CPA','PA','HMM','CIR') ORDER BY RiderCode ASC ",siNo];
     
     //NSLog(@"%@",sqlStmt);
     _dataTable = [_db  ExecuteQuery:sqlStmt];
@@ -520,6 +527,106 @@
     fileManager = Nil;
     
     
+}
+
+-(void)deleteTemp{
+    sqlite3_stmt *statement;
+    NSString *QuerySQL;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        QuerySQL = @"Delete from SI_Temp_Pages_PDS";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_Temp_trad";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        QuerySQL = @"Delete from SI_Temp_trad_LA";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(contactDB);
+    }
+    
+}
+
+-(void)InsertToSI_Temp_Trad{
+    sqlite3_stmt *statement;
+    NSString *QuerySQL;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        
+        QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad (\"SINo\") VALUES (\"%@\") ", SINo];
+        
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)InsertToSI_Temp_Trad_LA{
+    sqlite3_stmt *statement;
+    sqlite3_stmt *statement2;
+    sqlite3_stmt *statement3;
+    NSString *getCustomerCodeSQL;
+    NSString *getFromCltProfileSQL;
+    NSString *CustCode;
+    NSString *QuerySQL;
+    int Age;
+    
+    NSLog(@"insert to SI Temp Trad LA --- start");
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        getCustomerCodeSQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND sequence = %d ", SINo, 1];
+        
+        if(sqlite3_prepare_v2(contactDB, [getCustomerCodeSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW) {
+                CustCode  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                
+                getFromCltProfileSQL  = [NSString stringWithFormat:@"Select Name, Smoker, sex, ALB from clt_profile where custcode  = \"%@\"",  CustCode];
+                
+                if(sqlite3_prepare_v2(contactDB, [getFromCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+                    
+                    if (sqlite3_step(statement2) == SQLITE_ROW) {
+                        
+                        Age = sqlite3_column_int(statement2, 3);
+                        
+                        QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"Age\") "
+                                     " VALUES (\"%@\",\"%d\")", SINo,  Age];
+                        
+                        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
+                            if (sqlite3_step(statement3) == SQLITE_DONE) {
+                                
+                            }
+                            sqlite3_finalize(statement3);
+                        }
+                    }
+                    sqlite3_finalize(statement2);
+                }
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
 }
 
 - (void)didReceiveMemoryWarning

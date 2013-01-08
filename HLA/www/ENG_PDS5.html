@@ -89,7 +89,7 @@
         },errorHandler,nullHandler);
         
         db.transaction(function(transaction) {//display rider row
-                       transaction.executeSql("Select * from SI_Temp_Pages where htmlName = '" + page + "'", [], function(transaction, result) {
+                       transaction.executeSql("Select * from SI_Temp_Pages_PDS where htmlName = '" + page + "'", [], function(transaction, result) {
                                               if (result != null && result.rows != null) {
                                               var row = result.rows.item(0);
                                               
@@ -616,7 +616,7 @@ ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or i
     
     
     </td>
-    <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+    <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPagePDS">{currentPagePDS}</span> of <span class="totalPagesPDS">{totalPagesPDS}</span></td>
     <td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
     </tr>
 </table>

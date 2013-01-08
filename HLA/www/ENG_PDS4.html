@@ -102,7 +102,11 @@
         },errorHandler,nullHandler);
 	
         db.transaction(function(transaction) {
-            transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Basic Plan" as Desc, Annually, SemiAnnually, Quarterly, Monthly from SI_Store_Premium where Type in ("B") UNION select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly from SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND Type not in ("BOriginal");', [], function(transaction, result) {
+            transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Basic Plan" as Desc, Annually, ' +
+				   'SemiAnnually, Quarterly, Monthly from SI_Store_Premium where Type in ("B") UNION ' +
+				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly ' +
+				   'FROM SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND '+
+				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;', [], function(transaction, result) {
                 
 		if (result != null && result.rows != null) {
 		    
@@ -144,7 +148,7 @@
 	db.transaction(function(transaction) {
             //transaction.executeSql("SELECT * FROM Trad_Details where SINo = '" + siNo + "'", [], function(transaction, result) {
             transaction.executeSql("SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption from Trad_Details where SINo = '"+ siNo + "' " +  
-				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R') " +
+				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+') " +
 				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"') from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
 				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode ", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
@@ -406,7 +410,7 @@
 		    <b><span id="rptVersion">{rptVersion}</span></b> <br/>
 		    Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
 		</td>
-    	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+    	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPagePDS">{currentPagePDS}</span> of <span class="totalPagesPDS">{totalPagesPDS}</span></td>
     	<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
 	</tr>
 </table>

@@ -485,7 +485,7 @@ bool IsContinue = TRUE;
         }
         sqlite3_close(contactDB);   
     }
-    
+    /*
     if ([self OptionalOccp:pp.ProspectOccupationCode] == FALSE) {
         lblOfficeAddr.text = @"Office Address*";
         lblPostCode.text = @"Postcode*";
@@ -494,16 +494,9 @@ bool IsContinue = TRUE;
     else {
         lblOfficeAddr.text = @"Office Address";
         lblPostCode.text = @"Postcode";
-        /*
-        txtOfficeState.text = @"";
-        txtOfficeTown.text = @"";
-        txtOfficeCountry.text = @"";
-        txtOfficePostCode.text = @"";
-        txtOfiiceAddr1.text= @"";
-        txtOfficeAddr2.text = @"";
-        txtOfficeAddr3.text = @"";
-         */
+     
     }
+     */
 }
 
 -(void) PopulateState{
@@ -1215,7 +1208,7 @@ bool IsContinue = TRUE;
         return FALSE;
     }
     
-    
+    /*
     if([[txtOfiiceAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
             
@@ -1227,18 +1220,14 @@ bool IsContinue = TRUE;
             return false;
         }
         else {
-            /*
-            txtOfficeTown.text = @"";
-            txtOfficeState.text = @"";
-            txtOfficePostCode.text = @"";
-            txtOfficeCountry.text = @"";
-            SelectedOfficeStateCode = @"";
-             */
+     
         }
         
     }
-    
+    */
+     
     if (IsContinue == TRUE) {
+        /*
         if([txtOfficePostCode.text isEqualToString:@""]){
             if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -1254,6 +1243,21 @@ bool IsContinue = TRUE;
                 txtOfficeTown.text = @"";
                 txtOfficeCountry.text = @"";
             }
+            
+        }
+         */
+        if (![[txtOfiiceAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            if([txtOfficePostCode.text isEqualToString:@""]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [txtOfficePostCode becomeFirstResponder];
+                
+                [alert show];
+                return false;
+            }
+        }
+        else{
             
         }
     }
@@ -1504,7 +1508,7 @@ bool IsContinue = TRUE;
 - (void)OccupCodeSelected:(NSString *)OccupCode{
     OccupCodeSelected = OccupCode;
     strChanges = @"Yes";
-    
+    /*
     if ([self OptionalOccp:OccupCodeSelected] == TRUE ) {
         lblOfficeAddr.text = @"Office Address";
         lblPostCode.text = @"Postcode";
@@ -1513,6 +1517,7 @@ bool IsContinue = TRUE;
         lblOfficeAddr.text = @"Office Address*";
         lblPostCode.text = @"Postcode*";
     }
+     */
     [self resignFirstResponder];
     [self.view endEditing:YES];
     

@@ -81,6 +81,12 @@
                         planName = row.PlanName;
                         planCode = row.PlanCode;                    
                     }
+		    
+		    var now = new Date();
+			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+			$('#DateModified').html(displayDateFull);
+			$('#PrintDate').html(displayDate);
                 }
                 else{
                                    alert('No data can be found');
@@ -194,15 +200,16 @@
  
 <!-- Begin Header -->
 <div id="header">
-  <img src="img/HLA.png" />
+  
   <div class="welcome">
   Prepared By : <span id="agentName">{agentName}</span>
   <br/>Code : <span id="agentCode">{agentCode}</span>
   </div>
-  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
+  <div class="Content">Printed On : <span id="DateModified">{DateModified}</span></div>
   <!--<hr/>-->
-  <div class="hrule"></div>
+  
 </div>
+<hr/>
 <div class="main-content">
     
     <table>
@@ -325,7 +332,7 @@
 		<b><span id="rptVersion">{rptVersion}</span></b> <br/>
 		Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
 		</td>
-    	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+    	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPagePDS">{currentPagePDS}</span> of <span class="totalPagesPDS">{totalPagesPDS}</span></td>
     	<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
 	</tr>
 </table>
