@@ -839,7 +839,7 @@ bool IsContinue = TRUE;
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 1 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [txtContact1 becomeFirstResponder];
+                        [txtPrefix1 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -923,7 +923,7 @@ bool IsContinue = TRUE;
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 2 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [txtContact2 becomeFirstResponder];
+                        [txtPrefix2 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -985,8 +985,8 @@ bool IsContinue = TRUE;
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 3 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                        
-                        [txtContact3 becomeFirstResponder];
+                    
+                        [txtPrefix3 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -1060,7 +1060,7 @@ bool IsContinue = TRUE;
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 4 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [txtContact4 becomeFirstResponder];
+                        [txtPrefix4 becomeFirstResponder];
                         
                         [alert show];
                         return false;
@@ -1135,7 +1135,7 @@ bool IsContinue = TRUE;
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Prefix for contact no 5 must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
-                        [txtContact5 becomeFirstResponder];
+                        [txtPrefix5 becomeFirstResponder];
                         
                         [alert show];
                         return false;

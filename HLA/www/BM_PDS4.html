@@ -126,8 +126,8 @@
            
 			$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
                     }
-		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2"><b>Total Premium</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' + '</tr>');
-		    $('#table-Tax > tbody').append('<tr>' + '<td><b>Service tax chargeable</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
+		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2"><b>Jumlah Bayaran Premium</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' + '</tr>');
+		    $('#table-Tax > tbody').append('<tr>' + '<td><b>Cukai Perkhidmatan yang Dikenakan</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
                 }
             },errorHandler);
         },errorHandler,nullHandler);

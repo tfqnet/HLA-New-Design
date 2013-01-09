@@ -19,8 +19,8 @@
 @synthesize txtOldPwd;
 @synthesize txtNewPwd;
 @synthesize txtConfirmPwd;
-@synthesize outletSave;
-@synthesize lblMsg;
+@synthesize outletSave, outletTips;
+@synthesize lblMsg, lblTips;
 @synthesize passwordDB;
 @synthesize userID;
 @synthesize PasswordTipPopover = _PasswordTipPopover;
@@ -52,6 +52,13 @@
     [self validateExistingPwd];
     outletSave.hidden = YES;
     lblMsg.hidden = TRUE;
+    outletTips.hidden = TRUE;
+    UITapGestureRecognizer *gestureQOne = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(DisplayTips)];
+    gestureQOne.numberOfTapsRequired = 1;
+    
+    [lblTips addGestureRecognizer:gestureQOne ];
+    lblTips.userInteractionEnabled = YES;
+    
 }
 
 - (void)viewDidUnload
@@ -61,6 +68,8 @@
     [self setTxtConfirmPwd:nil];
     [self setOutletSave:nil];
     [self setLblMsg:nil];
+    [self setOutletTips:nil];
+    [self setLblTips:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -331,6 +340,18 @@
     [self.PasswordTipPopover setPopoverContentSize:CGSizeMake(950, 350)];    
     [self.PasswordTipPopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
+}
+
+-(void)DisplayTips{
+    
+    if (_PasswordTips == Nil) {
+        self.PasswordTips = [self.storyboard instantiateViewControllerWithIdentifier:@"Tip"];
+        _PasswordTips.delegate = self;
+        self.PasswordTipPopover = [[UIPopoverController alloc] initWithContentViewController:_PasswordTips];
+        
+    }
+    [self.PasswordTipPopover setPopoverContentSize:CGSizeMake(950, 350)];
+    [self.PasswordTipPopover presentPopoverFromRect:[lblTips frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 -(void)CloseWindow{

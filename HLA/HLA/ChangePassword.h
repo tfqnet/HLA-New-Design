@@ -31,6 +31,8 @@
 
 
 @property (nonatomic, copy) NSString *passwordDB;
+@property (weak, nonatomic) IBOutlet UIButton *outletTips;
+@property (weak, nonatomic) IBOutlet UILabel *lblTips;
 
 
 - (IBAction)btnTips:(id)sender;

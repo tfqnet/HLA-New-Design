@@ -1008,7 +1008,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="F80-oA-hKn">
-                                <rect key="frame" x="92" y="123" width="56" height="37"/>
+                                <rect key="frame" x="720" y="212" width="56" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" backgroundImage="f-spot-question-mark.png">
@@ -1030,6 +1030,13 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Z06-Qr-L10">
+                                <rect key="frame" x="76" y="115" width="83" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" red="0.0" green="0.15294118230000001" blue="0.99215692280000001" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -1038,7 +1045,9 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="lblMsg" destination="r5K-nL-cuX" id="60G-Ww-yUf"/>
+                        <outlet property="lblTips" destination="Z06-Qr-L10" id="XLg-pH-ATP"/>
                         <outlet property="outletSave" destination="ltn-TR-nrH" id="TeK-9C-AzD"/>
+                        <outlet property="outletTips" destination="F80-oA-hKn" id="O7T-z8-soc"/>
                         <outlet property="txtConfirmPwd" destination="hT9-a4-CWp" id="nRr-Jc-emq"/>
                         <outlet property="txtNewPwd" destination="pZM-zK-FeX" id="cZM-WF-BKr"/>
                         <outlet property="txtOldPwd" destination="QhI-AO-U3d" id="F0h-vP-dMI"/>
@@ -5012,7 +5021,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <relationship kind="action" name="btnDone:"/>
                 <relationship kind="action" name="btnTips:"/>
                 <relationship kind="outlet" name="lblMsg" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="lblTips" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="outletSave" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="outletTips" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="txtConfirmPwd" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtNewPwd" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtOldPwd" candidateClass="UITextField"/>
