@@ -162,10 +162,8 @@ id RiderCount;
 //        [SelectedRow removeObject:@"5"];
         
         added = YES;
-        [self CalculateRider];
-        
     }
-    
+    [self CalculateRider];
     [self hideSeparatorLine];
     
     [self.myTableView reloadData];

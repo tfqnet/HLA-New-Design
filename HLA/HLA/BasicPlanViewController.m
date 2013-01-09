@@ -102,11 +102,7 @@
     if (ageClient > 50 && ageClient <=65)
     {
         [advanceIncomeSegment setEnabled:NO forSegmentAtIndex:0];
-//        advanceIncomeSegment.segmentedControlStyle = UISegmentedControlStyleBar;
-        
-//        [advanceIncomeSegment setTintColor:[UIColor redColor]];
-//        [[advanceIncomeSegment.subviews objectAtIndex:0] setTintColor:[UIColor redColor]];
-        
+        [[advanceIncomeSegment.subviews objectAtIndex:0] setAlpha:0.5];
     }
     
     healthLoadingView.alpha = 0;
