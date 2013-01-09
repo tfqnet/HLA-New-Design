@@ -917,7 +917,6 @@ id RiderCount;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     selectedPath = indexPath;
-    NSLog(@"path:%@",selectedPath);
     if (indexPath.row == 0)     //life assured
     {
         NSLog(@"select LA:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
@@ -1335,7 +1334,7 @@ id RiderCount;
 
 -(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker
 {
-    NSLog(@"::receive data LAIndex:%d",aaIndexNo);
+    NSLog(@"::receive data LAIndex:%d, commDate:%@",aaIndexNo,aaCommDate);
     getAge = aaAge;
     getSex = aaSex;
     getSmoker = aaSmoker;

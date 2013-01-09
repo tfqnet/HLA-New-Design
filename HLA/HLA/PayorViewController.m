@@ -65,8 +65,6 @@
             self.deleteBtn.hidden = NO;
         }
     }
-    
-    NSLog(@"delegate:%@",_delegate);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

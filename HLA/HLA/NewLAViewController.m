@@ -1428,7 +1428,7 @@ id temp;
     zzz.ExistPayor = YES;
     
     NSLog(@"view new client");
-    if (!temp) {
+    if (commDate.length == 0) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
         commDate = [dateFormatter stringFromDate:[NSDate date]];
