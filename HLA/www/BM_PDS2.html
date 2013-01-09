@@ -20,7 +20,6 @@
     var planName = '';
     var cashPaymentD = '';
     var mcashPaymentD = '';
-    var FirstAge = '';
     //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
@@ -88,44 +87,67 @@
             },errorHandler);
         },errorHandler,nullHandler);
         
-	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
-                if (result != null && result.rows != null) {
-                    var row;
-                    if(result.rows.length == 1){
-	                  var row = result.rows.item(0);
-			 FirstAge = row.Age;
-                    }
-                }
-            },errorHandler);
-        },errorHandler,nullHandler);
-	
-	db.transaction(function(transaction) {
+        db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
-                	
-			var now = new Date();
+                	//$('#dateModified').html(row.UpdatedAt);
+			var now = new Date();	
 			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
 			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-			$('#dateModified').html(displayDateFull);
-			$('#PrintDate').html(displayDate);
-                }
-            },errorHandler);
-        },errorHandler,nullHandler);
-	
-	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'MG_II'", [], function(transaction, result) {
-                if (result != null && result.rows != null) {
-			var row = result.rows.item(0);
-			    
-			    $('#PlanOption').html(row.PlanOption);
-			    $('#RiderTerm').html(row.RiderTerm);
 			
-		    
+			$('#dateModified').html(displayDateFull);
+			
+			$('#PremPayYear').html(row.PremiumPaymentOption);
+			$('#AdvanceYearlyIncome').html(row.AdvanceYearlyIncome);
+			var zzz;
+			var desc;
+			var sss;
+			var rrr;
+			if(row.PremiumPaymentOption == '6'){
+			    if(row.AdvanceYearlyIncome == '60'){
+				zzz = parseFloat(row.BasicSA) * 18;
+				desc = '(60.0% of all future GYI yet to fall due)';
+			    }
+			    else if(row.AdvanceYearlyIncome == '75') {
+				zzz = parseFloat(row.BasicSA) * 12.75;
+				desc = '(85.0% of all future GYI yet to fall due)';
+			    }
+			    sss = parseFloat(row.BasicSA) * 4.5;
+			    rrr = parseFloat(row.BasicSA) * 4.5;
+			}
+			else if(row.PremiumPaymentOption == '9' ){
+			    if(row.AdvanceYearlyIncome == '60'){
+				zzz = parseFloat(row.BasicSA) * 18.75;
+				desc = '(62.5% of all future GYI yet to fall due)';
+			    }
+			    else if(row.AdvanceYearlyIncome == '75') {
+				zzz = parseFloat(row.BasicSA) * 13.5;
+				desc = '(90.0% of all future GYI yet to fall due)';
+			    }
+			    sss = parseFloat(row.BasicSA) * 6.5;
+			    rrr = parseFloat(row.BasicSA) * 6.5;
+			}
+			else if(row.PremiumPaymentOption == '12' ){
+			    if(row.AdvanceYearlyIncome == '60'){
+				zzz = parseFloat(row.BasicSA) * 19.5;
+				desc = '(65.0% of all future GYI yet to fall due)';
+			    }
+			    else if(row.AdvanceYearlyIncome == '75') {
+				zzz = parseFloat(row.BasicSA) * 14.25;
+				desc = '(95.0% of all future GYI yet to fall due)';
+			    }
+			    sss = parseFloat(row.BasicSA) * 8.5;
+			    rrr = parseFloat(row.BasicSA) * 8.5;
+			}
+			$('#BasicSA').html(zzz);
+			$('#AmountPayableDesc').html(desc);
+			$('#GuaranteedDeathOrTPDBenefit').html(sss);
+			$('#GuaranteedMaturityBenefit').html(rrr);
                 }
             },errorHandler);
         },errorHandler,nullHandler);
+        
         
         
         return;
@@ -187,7 +209,7 @@
         
 </head>
  
-<body onload="onBodyLoad(),setPage()" >
+<body onload="onBodyLoad(),setPage()">
  <span id="lbUsers"></span>
 <!-- Begin Wrapper -->
 <div id="wrapper">
@@ -195,146 +217,74 @@
 <!-- Begin Header -->
 <div id="header">
   
+  
   <div class="welcome">
-  Prepared By : <span id="agentName">{agentName}</span>
-  <br/>Code : <span id="agentCode">{agentCode}</span>
+     Prepared By : <span id="agentName">{agentName}</span>
+      <br/>Code : <span id="agentCode">{agentCode}</span>
   </div>
   <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
-  
+    
 </div>
-<div class="main-content">
 <hr/>
-<table id="table-design"> 
-    <tr>
-	<td width="800" style="text-align:left;padding: 0px 0px 0px 5px;"><b>PRODUCT DISCLOSURE SHEET</b></td>
-	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Hong Leong Assurance Berhad</b></td>
-    </tr>
-    <tr>
-	<td style="text-align:left;padding: 0px 0px 0px 5px;" rowspan="2"><b>Read this Product Disclosure Sheet before you decide to take up the
-	<i>HLA MedGLOBAL II Rider.</i>. Be sure to also read the general terms and conditions.</b></td>
-	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b>HLA MedGLOBAL II Rider.</b></td>
-    </tr>
-    <tr>
-	<td><b><span id="PrintDate">{PrintDate}</span></b></td>
-    </tr>
-</table>
-    <br/>
+<div class="main-content">
+
     <table>
 	<tr>
-	    <td width="10">1.</td>
-	    <td><b>What is this product about?</b></td>
-	</tr>
-	<tr>
-	    <td width="10"></td>
-	    <td>- This is a guaranteed renewable medical rider up to age 70 with coinsurance.
-		- This policy provides for hospitalisation & surgical expenses, and outpatient treatment benefits incurred due to illness covered under the policy.
-	    </td>
-	</tr>
-	
-	<tr>
-	    <td width="10" valign="top">2.</td>
-	    <td><b>What are the covers / benefits provided?</b></td>
-	</tr>
-	<tr>
-	    <td width="10" valign="top"></td>
 	    <td>
-		HLA MedGLOBAL IV Plus Rider is available in 4 plans which are MGII 100, MGII 200, MGII 300 and MGII 400. The plan selected is
-		<span id="PlanOption">{PlanOption}</span> plan. The duration of coverage of this rider is <span id="RiderTerm">{RiderTerm}</span> years or upon termination, whichever occurs first.<br/><br/>
-		
-	    </td>
-	</tr>
-	<tr>
-	    <td></td>
-	    <td>
-		<table  border="1" style="border-collapse: collapse" width="100%">
-		    <tr>
-			<td width="60%" style="padding: 0px 0px 5px 5px;" align="center">Designated Plan</td>
-			<td align="center">MGII 100<br/>(RM)</td>
-			<td align="center">MGII 200<br/>(RM)</td>
-			<td align="center">MGII 300<br/>(RM)</td>
-			<td align="center">MGII 400<br/>(RM)</td>
-		    </tr>
-		    <tr>
-			<td colspan="5" style="padding: 0px 0px 5px 5px;"><b>Hospital & Surgical</b></td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Hospital Room & Board<br/>(up to 150 days per any one disability)</td>
-			<td align="center">100</td>
-			<td align="center">200</td>
-			<td align="center">300</td>
-			<td align="center">400</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Daily Cash Allowance at Government Hospital<br/>(up to 60 days per any one disability)</td>
-			<td align="center">50</td>
-			<td align="center">100</td>
-			<td align="center">150</td>
-			<td align="center">200</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Daily Cash Home Nursing Care<br/>(per day, up to 180 days per lifetime)</td>
-			<td align="center">40</td>
-			<td align="center">60</td>
-			<td align="center">80</td>
-			<td align="center">100</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;" > Intensive Care Unit<br/>(up to 75 days per any one disability)</td>
-			<td  align="center"colspan="4" rowspan="14">Reasonable & Customary Charges *</td>
+			- Perkahwinan<br/>
+			- Bersalin<br/>
+			- Anak-anak diterima ke universiti<br/>
+			- Tamat pengajian/ Konvokasi anak-anak<br/>
+			- Perkahwinan anak-anak<br/>
+			- Pembelian kediaman baru<br/>
+			- Permulaan perniagaan<br/>
+			- Gangguan kepada perniagaan<br/>
+			- Pemunya Polisi/ Ibu Bapa/ Anak-anak dimasukkan ke hospital<br/>
+			- Kematian Ibu bapa/ Anak<br/>
+			- Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
+			- Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/>
 			
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Lodger Expenses<br/>(up to 150 days per any one disability)</td>
+			<br/>
+			Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
 			
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Hospital Supplies & Services</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Surgical Fees</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Anaesthetist Fee</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Operating Theatres</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">In-Hospital Physician Visit</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">In-Hospital Physiotherapy Treatment Fees</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Pre-Hospital Diagnostic Tests<br/>(within 60 days prior to hospitalisation)</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Pre-Hospital Specialist Consultation<br/>(within 60 days prior to hospitalisation)</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;" >Post-Hospitalisation Treatment<br/>(within 60 days following discharge from hospital)</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Organ Transplant</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Day Surgery Benefit</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Ambulance Fees</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Government Service Tax</td>
-			<td colspan="4" align="center">6% of Room & Board Benefit</td>
-		    </tr>
-		    <tr>
-			<td style="padding: 0px 0px 5px 5px;" colspan="5"><b>Outpatient Treatment Benefits</b></td>
-		    </tr>
-		    
-		</table>
+			Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang seterusnya serta merta berikutan pendahuluan tersebut
+			akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
+			
+			Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika ada) sebelum membuat apa-apa bayaran.<br/>
+			
+		ii)	Pemunya Polisi boleh mendahulukan semua PTT masa depan pada umur 60 atau 75 sekiranya polisi ini telah berkuat kuasa selama 10 tahun dan juga tertakluk kepada kecukupan Nilai Serahan Tunai Bersih polisi
+			tersebut. Amaun yang akan dibayar kepada Pemunya Polisi adalah seperti yang berikut. Setelah PTT didahulukan, semua pembayaran PTT masa depan akan dihentikan dan Faedah Kematian/ TPD Terjamin serta
+			Faedah Matang Terjamin akan dilaraskan seperti di bawah. Selain daripada itu, Nilai Serahan Tunai, Dividen Tunai, Dividen Terminal dan Dividen Terminal Istimewa akan dilaraskan.<br/>
+			<br/>
+			<br/>
+			<table border="1" style="border-collapse: collapse" width="80%">
+			    <tr>
+				<td align="center">Tempoh Pembayaran Premium</td>
+				<td align="center">Umur tercapai apabila membuat pendahuluan</td>
+				<td align="center">Amaun yang akan dibayar</td>
+				<td align="center">Faedah Kematian/TPD Terjamin</td>
+				<td align="center">Faedah Matang Terjamin</td>
+			    </tr>
+			    <tr>
+				<td align="center"><span id="PremPayYear">{PremPayYear}</span></td>
+				<td align="center"><span id="AdvanceYearlyIncome">{AdvanceYearlyIncome}</span></td>
+				<td align="center"><span id="BasicSA">{BasicSA}</span><br/><span id="AmountPayableDesc">{AmountPayableDesc}</span></td>
+				<td align="center"><span id="GuaranteedDeathOrTPDBenefit">{GuaranteedDeathOrTPDBenefit}</span></td>
+				<td align="center"><span id="GuaranteedMaturityBenefit">{GuaranteedMaturityBenefit}</span></td>
+			    </tr>
+			</table>
+			<br/>
+			<b>Faedah Matang</b><br/>
+			Polisi ini akan matang apabila Hayat Diinsuranskan masih hidup pada akhir tempoh polisi (umur 90). Faedah Matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin, Pendapatan TahunanT erjamin
+			Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika ada) akan dibayar.<br/>
+			<br/><br/>
+
+			<u><b>Attaching Rider(s)</b></u><br/><br/>
+			
+			
+			
 	    </td>
-	</tr>
-	
+	</tr>    
     </table>
 	
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">

@@ -1052,6 +1052,7 @@ id RiderCount;
     {
         [self calculatedPrem];
         
+        
         [myTableView reloadData];
     }
     else if (indexPath.row == 6)    //quotation
@@ -1155,9 +1156,9 @@ id RiderCount;
             NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
                                   "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
                                   "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
-                                  "A.sino = \"%@\" AND \"seq\" = 1 ", self.requestSINo];
+                                  "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
             
-            //NSLog(@"%@", QuerySQL);
+            
             
             if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
             {
@@ -1195,7 +1196,7 @@ id RiderCount;
                 //dispatch_async(downloadQueue, ^{
                 
                 ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
-                ReportPage.SINo = self.requestSINo;
+                ReportPage.SINo = getSINo;
                 [self presentViewController:ReportPage animated:NO completion:Nil];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1255,7 +1256,7 @@ id RiderCount;
             
             
             PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
-            
+            PDSPage.SINo = getSINo;
             [self presentViewController:PDSPage animated:NO completion:Nil];
             
             dispatch_async(dispatch_get_main_queue(), ^{

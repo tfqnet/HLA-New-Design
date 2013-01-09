@@ -104,7 +104,7 @@
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"]
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
-            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"]){
+            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"ICR"] ){
             riderInPageCount++;
             prevRider = curRider;
             
