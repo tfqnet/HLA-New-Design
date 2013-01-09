@@ -20,7 +20,8 @@
     var planName = '';
     var cashPaymentD = '';
     var mcashPaymentD = '';
-    var FirstAge = '';
+    var CRiderTerm = '';
+    var CRiderPrem = '';
     //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
@@ -68,6 +69,7 @@
             return;
         }
         
+        
         db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
@@ -81,55 +83,32 @@
                     }
                 }
                 else{
-			alert('No data can be found');
+                                   alert('No data can be found');
                     }
                                    
             },errorHandler);
         },errorHandler,nullHandler);
         
+	
+	
+	
+	
 	db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
-		    var ggg = row.UpdatedAt;
-		    //var now = new Date(ggg.substring(0, 10));
-		    var now = new Date();
-		    
-		    var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
-		    var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-		    
-                    $('#dateModified').html(displayDateFull);
-                    $('#dateModified2').html(displayDate);
+                	
+			var now = new Date();
+			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+			$('#dateModified').html(displayDateFull);
+			$('#PrintDate').html(displayDate);
                 }
             },errorHandler);
         },errorHandler,nullHandler);
 	
-        db.transaction(function(transaction) {
-            transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc from trad_rider_details as A, '+
-				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HB","HSP_II","CPA","PA","HMM","CIR") ;'
-				   , [], function(transaction, result) {
-                
-		if (result != null && result.rows != null) {
-		    
-		    if(result.rows.length == 0){
-			
-			document.getElementById('hide').style.visibility = "hidden";
-		    }
-		    else{
-			var row;
-			for (var i = 0; i < result.rows.length; i++) {
-			    var row = result.rows.item(i);
-			    
-			    $('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
-			}    
-		    }
-		    
-                }
-		else{
-		    document.getElementById('hide').style.visibility = "hidden";
-		}
-            },errorHandler);
-        },errorHandler,nullHandler);
+	
+        
         
         return;
     }
@@ -190,7 +169,7 @@
         
 </head>
  
-<body onload="onBodyLoad(),setPage()">
+<body onload="onBodyLoad(),setPage()" >
  <span id="lbUsers"></span>
 <!-- Begin Wrapper -->
 <div id="wrapper">
@@ -199,141 +178,84 @@
 <div id="header">
   
   <div class="welcome">
-     Prepared By : <span id="agentName">{agentName}</span>
-      <br/>Code : <span id="agentCode">{agentCode}</span>
+  Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span>
   </div>
   <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
-    
+  
 </div>
 <hr/>
 <div class="main-content">
-
+    
     <table>
-	<tr>
-	    <td>7.</td>
-	    <td>
-		<b>Bolehkah saya membatalkan polisi saya?</b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
 	
 	<tr>
-	    <td></td>
-	    <td>Anda boleh membatalkan polisi dengan memberi notis bertulis kepada Hong Leong Assurance Berhad. Setelah tempoh bertenang, nilai penyerahan tunai (jika ada) polisi anda akan dibayar kepada anda ketika anda
-		membatalkan polisi anda; namun begitu, amaun yang dibayar mungkin kurang daripada jumlah premium yang anda bayar.
-	    </td>
-	</tr>
-	
-	<tr id="hide">
-	    <td></td>
-	    <td>
-		<u><b>Attaching Rider(s)</b></u><br/>
-		<table border="1" style="border-collapse: collapse" id="table-Cancel" width="100%">
-		    <thead>
-			<tr>
-			    <td align="left"><b>Rider(s)</b></td>
-			    <td ><b>Cancellation Entitlement</b></td>
-			</tr>
-			
-		    </thead>
-		    <tbody>
-			<!--sql data here-->
-		    </tbody>
-		    
-		</table>
+	    <td width="10" valign="top">7.</td>
+	    <td valign="top"><b>Bolehkah saya membatalkan polisi saya?</b><br/><br/>
+		Anda boleh membatalkan rider anda dengan memberikan notis bertulis kepada syarikat insurans. Jika tiada tuntutan dibuat, anda akan menerima kembali premium yang ditetapkan.
 	    </td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-	    <td>8.</td>
-	    <td>
-		<b>Apakah yang perlu saya lakukan jika saya bertukar alamat dan nombor telefon?</b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Anda mestilah memaklumkan kami tentang sebarang perubahan maklumat perhubungan anda (termasuk maklumat tentang penama dan/atau pemegang amanah) bagi memastikan anda menerima semua
-		surat-menyurat sampai kepada anda dan/atau penama/pemegang amanah tepat pada masanya.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top">9. </td>
+	    <td valign="top">8.</td>
 	    <td valign="top">
-		<b>Di manakah boleh saya dapatkan maklumat lanjut?</b>
+		<b>Apakah yang perlu saya lakukan jika saya bertukar alamat dan nombor telefon?</b><br/><br/>
+		Anda mestilah memaklumkan kami tentang sebarang perubahan maklumat perhubungan anda (termasuk maklumat tentang penama dan/atau pemegang amanah) bagi memastikan anda menerima
+		semua surat-menyurat sampai kepada anda dan/atau penama/pemegang amanah tepat pada masanya.
+	    </td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td valign="top">9.</td>
+	    <td valign="top">
+		<b>Di manakah boleh saya dapatkan maklumat lanjut?</b><br/><br/>
+		Jika anda memerlukan maklumat lanjut tentang insurans perubatan dan kesihatan, sila rujuk buku panduan insuranceinfo tentang 'Insurans Perubatan Dan Kesihatan' yang disediakan di semua
+		cawangan kami atau anda boleh mendapatkannya daripada ejen insurans atau layari laman web www.insuranceinfo.com.my.
+	    </td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td width="10"></td>
+	    <td><b>Jika anda mempunyai sebarang pertanyaan, sila hubungi kami di:</b><br/></td>
+	</tr>
+	<tr>
+	    <td width="10"></td>
+	    <td><b>
+		Talian Perkhidmatan Pelanggan: 03-76501288 atau<br/><br/>
 		
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top">
-		Jika anda memerlukan maklumat lanjut tentang insurans hayat, sila rujuk buku panduan insuranceinfo tentang ‘Insurans Hayat’ yang disediakan di semua cawangan kami atau anda boleh mendapatkannya daripada
-		ejen insurans atau layari laman web www.insuranceinfo.com.my.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top">
-		Jika anda mempunyai sebarang pertanyaan, sila hubungi kami di:
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top"><b>Talian Perkhidmatan Pelanggan: 03-76501288 atau</b></td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		<b>Customer Service Department<br/>
-		Level 3, Tower B, PJ City Development<br/>
+		Customer Service Department<br/>
+        	Level 3, Tower B, PJ City Development<br/>
 		No 15A, Jalan 219, Seksyen 51A<br/>
 		46100 Petaling Jaya, Selangor<br/>
 		P.O.Box 120, 46710 Petaling Jaya<br/><br/>
+		
 		Tel: 03 - 7650 1818<br/>
-		Fax: 03 - 7650 1991<br/>
-		Website: www.hla.com.my<br/></b>
+        	Fax: 03 - 7650 1991<br/>
+		Laman Web: www.hla.com.my</b>
 	    </td>
 	</tr>
-	<tr><td></td></tr>
+	<tr><td>&nbsp;</td></tr>
 	<tr>
-	    <td>10.</td>
-	    <td>
-		<b>Jenis perlindungan lain seumpamanya yang disediakan</b>
-	    </td>
-	</tr>
-	<tr>
-	    <td></td>
-	    <td>
+	    <td width="10" valign="top">10.</td>
+	    <td><b>Jenis perlindungan lain seumpamanya yang disediakan</b><br/><br/>
 		Sila rujuk ejen kami untuk mengetahui jenis perlindungan lain seumpamanya yang disediakan.
 	    </td>
 	</tr>
-	<tr><td></td></tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td colspan="2" valign="top" ><b>NOTA PENTING:</b> <br/><br/>
+		
+		<b>ANDA HARUS MEMASTIKAN POLISI INI AKAN MEMENUHI KEPERLUAN ANDA. ANDA MESTILAH MEMILIH JENIS POLISI YANG PALING SESUAI DENGAN ANDA. ANDA HENDAKLAH MEMBACA DAN
+		    MEMAHAMI POLISI INSURANS DAN BERBINCANG DENGAN EJEN ATAU HUBUNGI TERUS SYARIKAT INSURANS UNTUK MENDAPATKAN MAKLUMAT LANJUT.<br/><br/></b>
+		
+		Maklumat yang disediakan dalam risalah pendedahan ini adalah sah setakat <span id="PrintDate">{PrintDate}</span>.
+	    </td>
+	</tr>
 	
-	<tr>
-	    <td></td>
-	    <td>
-		<b>NOTA PENTING:</b><br/>
-		<b>MEMBELI POLISI INSURANS HAYAT MERUPAKAN KOMITMEN KEWANGAN JANGKA PANJANG. ANDA MESTILAH MEMILIH JENIS POLISI YANG PALING SESUAI DENGAN ANDA. ANDA HENDAKLAH
-		    MEMBACA DAN MEMAHAMI POLISI INSURANS DAN BERBINCANG DENGAN EJEN ATAU HUBUNGI TERUS SYARIKAT INSURANS UNTUK MENDAPATKAN MAKLUMAT LANJUT.</b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Maklumat yang disediakan dalam risalah pendedahan ini adalah sah setakat <span id="dateModified2">{DateModified2}</span>
-	    </td>
-	</tr>
     </table>
 	
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
-    <tr>
+	<tr>
 	<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
 	    Risalah Pendedahan Produk ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada Risalah Pendedahan Produk. Bakal pemunya polisi
 	    adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat. <br/>

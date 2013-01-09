@@ -20,8 +20,8 @@
     var planName = '';
     var cashPaymentD = '';
     var mcashPaymentD = '';
-    var CRiderTerm = '';
-    var CRiderPrem = '';
+    var HMMRiderTerm = '';
+    var FirstAge = '';
     //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
@@ -81,27 +81,21 @@
                         planName = row.PlanName;
                         planCode = row.PlanCode;                    
                     }
-		    
-		    var now = new Date();
-			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
-			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-			$('#DateModified').html(displayDateFull);
-			$('#PrintDate').html(displayDate);
                 }
                 else{
-                                   alert('No data can be found');
+			alert('No data can be found');
                     }
                                    
             },errorHandler);
         },errorHandler,nullHandler);
         
 	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'C+'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'HMM'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     for(var i = 0; i <result.rows.length; i++){
 			var row = result.rows.item(i);
-			if(row.RiderCode == 'C+' ){
-			    CRiderTerm = row.RiderTerm;
+			if(row.RiderCode == 'HMM' ){
+			    HMMRiderTerm = row.RiderTerm;
 			}
 		    }
                 }
@@ -109,40 +103,46 @@
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'C+'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
-                    
-			var row = result.rows.item(0);
-			    CRiderPrem = row.Annually.replace(',', '');
-			    
+                    var row = result.rows.item(0);
+                	
+			var now = new Date();
+			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+			$('#dateModified').html(displayDateFull);
+			$('#PrintDate').html(displayDate);
                 }
             },errorHandler);
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
-	    
-	    var PolicyTerm;
-	    if(CRiderTerm > 20){
-		PolicyTerm = 20;
-	    }
-	    else{
-		PolicyTerm = CRiderTerm
-	    }
-	    
-            transaction.executeSql("SELECT * FROM Trad_Sys_Commission WHERE polTerm = '" + PolicyTerm + "' ORDER BY PolYear ASC", [], function(transaction, result) {
-		
+            transaction.executeSql('SELECT * FROM SI_Store_Premium WHERE Type = "HMM" AND FromAge IS NULL;', [], function(transaction, result) {
                 if (result != null && result.rows != null) {
-		    
-                    for(var i = 1; i <=result.rows.length; i++){
-			var row = result.rows.item(i-1);
-			$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(CRiderPrem)));                      
-			//$('#table-1 > tbody').append('<tr>' + '<td>Year ' + i + ' </td>' + '<td>' + formatCurrency(parseFloat(row.Rate)/100 * parseFloat(CRiderPrem)) + '</td>' + '</tr>');
-		    }
+                    var row;
+		    var row = result.rows.item(0);
+		    $('#ValueA').html(row.Annually);                      
+		    $('#ValueB').html(row.SemiAnnually);
+		    $('#ValueC').html(row.Quarterly);
+		    $('#ValueD').html(row.Monthly);                      
                 }
             },errorHandler);
         },errorHandler,nullHandler);
-        
-        
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    if(result.rows.length == 1){
+	                  var row = result.rows.item(0);
+			 FirstAge = row.Age;
+			 $('#PayableAge').html(parseInt(HMMRiderTerm) + parseInt(FirstAge));                      
+                    }
+		    
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
         return;
     }
     
@@ -214,121 +214,171 @@
   Prepared By : <span id="agentName">{agentName}</span>
   <br/>Code : <span id="agentCode">{agentCode}</span>
   </div>
-  <div class="Content">Printed On : <span id="DateModified">{DateModified}</span></div>
-  <!--<hr/>-->
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
   
 </div>
 <hr/>
 <div class="main-content">
     
     <table>
+	
 	<tr>
-	    <td width="10" valign="top">4.</td>
-	    <td valign="top"><b>What are the fees and charges I have to pay?</b></td>
-	</tr>
-	<tr>
-	    <td width="10" valign="top"></td>
-	    <td valign="top">
-		<table id="table-1" border="1" style="border-collapse: collapse" width="70%">
+	    <td></td>
+	    <td>
+		<table border="1" style="border-collapse: collapse" width="100%">
+		    
 		    <tr>
-			<td width="50%" >Type</td>
-			<td>Amount</td>
+			<td style="padding: 0px 0px 5px 5px;" width="60%" >Emergency Accidental Outpatient Treatment(within 30 days following such emergency treatment)</td>
+			<td rowspan="5" colspan="4" align="center">Reasonable & Customary Charges *</td>
 		    </tr>
 		    <tr>
-			<td>Direct Distribution Cost paid to insurance agents</td>
-			<td></td>
+			<td style="padding: 0px 0px 5px 5px;">Emergency Accidental Dental Treatment</td>
 		    </tr>
 		    <tr>
-			<td>Year 1</td>
-			<td><span id="Year1">{Year1}</span></td>
+			<td style="padding: 0px 0px 5px 5px;" >Outpatient Physiotherapy Treatment</td>
 		    </tr>
 		    <tr>
-			<td>Year 2</td>
-			<td><span id="Year2">{Year2}</span></td>
+			<td style="padding: 0px 0px 5px 5px;"  >Outpatient Cancer Treatment</td>
 		    </tr>
 		    <tr>
-			<td>Year 3</td>
-			<td><span id="Year3">{Year3}</span></td>
+			<td style="padding: 0px 0px 5px 5px;" >Outpatient Kidney Dialysis Treatment</td>
 		    </tr>
 		    <tr>
-			<td>Year 4</td>
-			<td><span id="Year4">{Year4}</span></td>
+			<td style="padding: 0px 0px 5px 5px;" >Home Nursing Care (up to 180 days per lifetime)</td>
+			<td align="center"  >40</td>
+			<td align="center" >60</td>
+			<td align="center" >80</td>
+			<td align="center" >100</td>
 		    </tr>
 		    <tr>
-			<td>Year 5</td>
-			<td><span id="Year5">{Year5}</span></td>
+			<td style="padding: 0px 0px 5px 5px;" >Overall Annual (per policy Year) limit</td>
+			<td align="center" >75,000</td>
+			<td align="center" >120,000</td>
+			<td align="center" >180,000</td>
+			<td align="center" >240,000</td>
 		    </tr>
 		    <tr>
-			<td>Year 6</td>
-			<td><span id="Year6">{Year6}</span></td>
+			<td style="padding: 0px 0px 5px 5px;" >Aggregate Term Limit</td>
+			<td align="center"  >300,000</td>
+			<td align="center" >600,000</td>
+			<td align="center" >900,000</td>
+			<td align="center"  >1,200,000</td>
 		    </tr>
 		    <tr>
-			<td>Year Thereafter</td>
-			<td><span id="Year7">{Year7}</span></td>
+			<td style="padding: 0px 0px 5px 5px;" >Emergency Evacuation & Repatriation (limit per event)</td>
+			<td align="center"  >150,000</td>
+			<td align="center"   >150,000</td>
+			<td align="center" >150,000</td>
+			<td  align="center" >150,000</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Deductible (RM) per disability</td>
+			<td colspan="4" align="center" >5,000<br/>10,000<br/>15,000</td>
+			
 		    </tr>
 		    
 		</table>
 	    </td>
 	</tr>
 	<tr>
-	    <td width="10" valign="top">5.</td>
-	    <td valign="top"><b>What are some of the key terms and conditions that I should be aware of?</b></td>
-	</tr>
-	<tr>
-	    <td width="10" valign="top"></td>
-	    <td valign="top">
-		-	Importance of disclosure - you must disclose all material facts such as medical condition, and state your age correctly.<br/>
-		-	Free-look period - you may cancel your policy by returning the policy within 15 days after you have received the policy.
-			The premiums that you have paid (less any medical fee incurred) will be refunded to you.<br/>
-		-	Qualifying / waiting period - the eligibility for benefits under the policy will only start 90 days after the effective date of the policy.<br/>
-		-	All applications are subject to underwriting approval.<br/><br/>
-		
-		Note: This list is non-exhaustive. Please refer to the policy contract for the terms and conditions under this policy.
-	    </td>
-	</tr>
-	<tr>
-	    <td width="10" valign="top">6.</td>
-	    <td valign="top"><b>What are the major exclusions under this policy?</b><br/><br/>
-		This rider does not cover the following occurrence:<br/><br/>
-		
-		<u><b>Cancer Benefit:</b></u><br/>
-		-	Pre-Existing Condition.<br/>
-		-	All Cancers presenting or diagnosed within the Waiting Period of 90 days.<br/>
-		-	All Cancers which are histologically classified as being:<br/>
-		-	Premalignant (for example cervical intraepithelial / CIN I, II, or III, essential thrombocythemia, polycythemia rubra vera) or having either borderline malignancy / low malignant potential and/or;<br/>
-		-	Carcinoma in situ (except Ductal carcinoma in situ breast, Carcinoma in situ cervix and Carcinoma in situ colon).<br/>
-		-	All skin Cancers except malignant melanoma with thickness in excess of 1.5 mm thickness or metastatic skin Cancers.<br/>
-		-	All Cancers associated with HIV infection.<br/>
-		-	Unreasonable failure to follow medical treatment.<br/>
-		-	All Cancers if Death of the Life Assured occurs within thirty (30) days following the date of diagnosis of Cancer.<br/><br/>
-
-		<i>Note: This list is non-exhaustive. Please refer to the policy contract for the full list of exclusions under this policy.</i>
+	    <td></td>
+	    <td>
+		<br/>
+		* Charges for medical care which is Medically Necessary shall be considered reasonable and customary to the extent that it does not exceed the general level of charges being made by other similar standing in the
+		locality where the charge is incurred, when furnishing like or comparable treatment, services or supplies to individual of the same sex and of comparable age for a similar Sickness, Disease or Injury and in
+		accordance with accepted medical standards and practice could not have been omitted without adversely affecting the Life Assured's medical condition.
 	    </td>
 	</tr>
 	
 	<tr>
-	    <td width="10" valign="top">7.</td>
-	    <td valign="top"><b>Can I cancel my policy?</b><br/><br/>
-		You may cancel the rider by giving a written notice to Hong Leong Assurance Berhad. After the free look period the cash surrender value
-		(if any) of your rider will be paid to you when you cancel the rider provided that no claim has been admitted prior to cancellation,
-		however the amount payable may be less than the total premiums you had paid.
+	    
+	    <td width="10"></td>
+	    <td>
+		<br/>
+		<u><b>Non-Deductible Benefit</b></u><br/>
+		The following benefits shall not be subject to deductible:<br/>
+		(a). Daily Cash amount for hospitalisation due to road accidents on a Malaysian Highway<br/>
+		(b). Daily Cash allowance for each day confined in a Government Hospital<br/>
+		(c). Outpatient Cancer Treatment<br/>
+		(d). Outpatient Kidney Dialysis Treatment<br/>
+		(e). Emergency Evacuation & Repatriation<br/><br/>
+		
+		<u><b>Renewal</b></u>
+		This rider is renewable at the option of the Policy Owner until the occurrence of any of the following:<br/>
+		-	non payment of premium or premium not made on time<br/>
+		-	fraud or misrepresentation of material fact during application<br/>
+		-	the Rider is cancelled at the request of the Policy Owner<br/>
+		-	total claims of the Rider have reached the lifetime limit specified (i.e. the Aggregate Term Limit) ,and/or on the death of the Life Assured.<br/>
+		-	the Life Assured ceases to qualify as a dependent based on the definition of the Rider.<br/>
+		-	on the Policy Anniversary Date immediately following the Life Assured attaining the coverage age limit of 100th birthday<br/>
+		-	termination of coverage of this rider for all policies in a certain market and the Company withdraws this rider completely from
+		the market in accordance with the Portfolio Withdrawal Condition<br/><br/>
+		
 	    </td>
 	</tr>
 	<tr>
-	    <td valign="top">8.</td>
-	    <td valign="top">
-		<b>What do I need to do if there are changes to my contact details?</b><br/><br/>
-		It is important that you inform us of any change in your contact details (including that of the nominee and/or trustee) to ensure that
-		all correspondences reach you and/or nominee/trustee in a timely manner.
+	    <td valign="top">3.</td>
+	    <td>
+		<b>How much premium do I have to pay?</b>
 	    </td>
 	</tr>
 	<tr>
-	    <td valign="top">9.</td>
-	    <td valign="top">
-		<b>Where can I get further information?</b><br/><br/>
-		Should you require additional information about medical & health insurance, please refer to the insurance info booklet on 'Medical & Health Insurance',
-		available at all our branches or you can obtain a copy from the insurance agent or visit www.insuranceinfo.com.my.
+	    <td></td>
+	    <td>
+		-	The total premium you have to pay and the policy term may vary depending on the underwriting requirements of the insurance company<br/><br/>
+		The estimated total premium that you have to pay:
 	    </td>
+	</tr>
+	<tr><td></td></tr>
+	<tr>
+	    <td></td>
+	    <td>
+		<table id="table-2" style="border-collapse: collapse" border="1" width="70%">
+		    <tr>
+			<td rowspan="2">Rider</td>
+			<td colspan="4">Initial Premium</td>
+		    </tr>
+		    <tr>
+			<td>Annual (RM)</td>
+			<td>Semi-annual (RM)</td>
+			<td>Quarterly (RM)</td>
+			<td>Monthly (RM)</td>
+		    </tr>
+		    <tr>
+			<td>HLA Major Medi rider</td>
+			<td><span id="ValueA">{ValueA}</span></td>
+			<td><span id="ValueB">{ValueB}</span></td>
+			<td><span id="ValueC">{ValueC}</span></td>
+			<td><span id="ValueD">{ValueD}</span></td>
+			
+		    </tr>
+		</table>    
+	    </td>
+	    
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td></td>
+	    <td>Premium duration:</td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>
+		<table id="table-3" style="border-collapse: collapse" border="1" width="50%">
+		    <tr>
+			<td>Rider</td>
+			<td>Premium payable until age</td>
+		    </tr>
+		    <tbody>
+			<td>HLA Major Medi rider</td>
+			<td><span id="PayableAge">{PayableAge}</span></td>
+		    </tbody>
+		</table>    
+	    </td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>-	Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.</td>
 	</tr>
 	
     </table>

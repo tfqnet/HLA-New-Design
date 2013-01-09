@@ -20,6 +20,7 @@
     var planName = '';
     var cashPaymentD = '';
     var mcashPaymentD = '';
+    var HMMRiderTerm = '';
     var FirstAge = '';
     //var cashPayment = 0;
     
@@ -68,6 +69,7 @@
             return;
         }
         
+        
         db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
@@ -88,49 +90,82 @@
         },errorHandler,nullHandler);
         
 	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'HSP_II'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
-		    var ggg = row.UpdatedAt;
-		    //var now = new Date(ggg.substring(0, 10));
-		    var now = new Date();
-		    
-		    var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
-		    var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-		    
-                    $('#dateModified').html(displayDateFull);
-                    $('#dateModified2').html(displayDate);
+    		    HMMRiderTerm = row.RiderTerm;
+		
                 }
             },errorHandler);
         },errorHandler,nullHandler);
 	
-        db.transaction(function(transaction) {
-            transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc from trad_rider_details as A, '+
-				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HB","HSP_II","CPA","PA","HMM","CIR") ;'
-				   , [], function(transaction, result) {
-                
-		if (result != null && result.rows != null) {
-		    
-		    if(result.rows.length == 0){
-			
-			document.getElementById('hide').style.visibility = "hidden";
-		    }
-		    else{
-			var row;
-			for (var i = 0; i < result.rows.length; i++) {
-			    var row = result.rows.item(i);
-			    
-			    $('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
-			}    
-		    }
-		    
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                	
+			var now = new Date();
+			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+			$('#dateModified').html(displayDateFull);
+			$('#PrintDate').html(displayDate);
                 }
-		else{
-		    document.getElementById('hide').style.visibility = "hidden";
-		}
             },errorHandler);
         },errorHandler,nullHandler);
-        
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql('SELECT * FROM SI_Store_Premium WHERE Type = "HSP_II" AND FromAge IS NULL;', [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+		    var row = result.rows.item(0);
+		    $('#ValueA').html(row.Annually);                      
+		    $('#ValueB').html(row.SemiAnnually);
+		    $('#ValueC').html(row.Quarterly);
+		    $('#ValueD').html(row.Monthly);
+		    HMMRiderPrem = row.Annually.replace(',', '');
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    if(result.rows.length == 1){
+	                  var row = result.rows.item(0);
+			 FirstAge = row.Age;
+			 $('#PayableAge').html(parseInt(HMMRiderTerm) + parseInt(FirstAge));                      
+                    }
+		    
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
+	    var PolicyTerm;
+	    if(HMMRiderTerm > 21){
+		PolicyTerm =20;
+	    }
+	    else{
+		PolicyTerm = HMMRiderTerm;
+	    }
+	    
+            transaction.executeSql("SELECT * FROM Trad_Sys_Commission WHERE polTerm = '" + PolicyTerm + "' ORDER BY PolYear ASC", [], function(transaction, result) {
+		
+                if (result != null && result.rows != null) {
+		    
+                    for(var i = 1; i <=result.rows.length; i++){
+			
+			var row = result.rows.item(i-1);
+			
+			$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(HMMRiderPrem)));                      
+			
+		    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
         return;
     }
     
@@ -190,7 +225,7 @@
         
 </head>
  
-<body onload="onBodyLoad(),setPage()">
+<body onload="onBodyLoad(),setPage()" >
  <span id="lbUsers"></span>
 <!-- Begin Wrapper -->
 <div id="wrapper">
@@ -199,141 +234,168 @@
 <div id="header">
   
   <div class="welcome">
-     Prepared By : <span id="agentName">{agentName}</span>
-      <br/>Code : <span id="agentCode">{agentCode}</span>
+  Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span>
   </div>
   <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
-    
+  
 </div>
 <hr/>
 <div class="main-content">
-
+    
     <table>
+	
+	
 	<tr>
-	    <td>7.</td>
+	    <td width="10" valign="top">3.</td>
 	    <td>
-		<b>Bolehkah saya membatalkan polisi saya?</b>
+		<b>Berapakah premium yang perlu saya bayar?</b>
+	    </td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>
+		-	Jumlah premium yang perlu anda bayar dan tempoh polisi mungkin berbeza mengikut keperluan penanggungjaminan syarikat insurans.<br/><br/>
+		Anggaran jumlah premium yang perlu anda bayar:
 	    </td>
 	</tr>
 	<tr><td></td></tr>
-	
 	<tr>
 	    <td></td>
-	    <td>Anda boleh membatalkan polisi dengan memberi notis bertulis kepada Hong Leong Assurance Berhad. Setelah tempoh bertenang, nilai penyerahan tunai (jika ada) polisi anda akan dibayar kepada anda ketika anda
-		membatalkan polisi anda; namun begitu, amaun yang dibayar mungkin kurang daripada jumlah premium yang anda bayar.
+	    <td>
+		<table id="table-2" style="border-collapse: collapse" border="1" width="70%">
+		    <tr>
+			<td rowspan="2">Rider</td>
+			<td colspan="4">Premium Awal</td>
+		    </tr>
+		    <tr>
+			<td>Tahunan (RM)</td>
+			<td>Setengah Tahunan (RM)</td>
+			<td>Suku Tahunan (RM)</td>
+			<td>Bulanan (RM)</td>
+		    </tr>
+		    <tr>
+			<td>Hospital & Surgical Plus II</td>
+			<td><span id="ValueA">{ValueA}</span></td>
+			<td><span id="ValueB">{ValueB}</span></td>
+			<td><span id="ValueC">{ValueC}</span></td>
+			<td><span id="ValueD">{ValueD}</span></td>
+			
+		    </tr>
+		</table>    
 	    </td>
+	    
 	</tr>
-	
-	<tr id="hide">
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td></td>
+	    <td>Tempoh premium:</td>
+	</tr>
+	<tr>
 	    <td></td>
 	    <td>
-		<u><b>Attaching Rider(s)</b></u><br/>
-		<table border="1" style="border-collapse: collapse" id="table-Cancel" width="100%">
-		    <thead>
-			<tr>
-			    <td align="left"><b>Rider(s)</b></td>
-			    <td ><b>Cancellation Entitlement</b></td>
-			</tr>
-			
-		    </thead>
+		<table id="table-3" style="border-collapse: collapse" border="1" width="50%">
+		    <tr>
+			<td>Rider</td>
+			<td>Premium akan dibayar sehingga umur</td>
+		    </tr>
 		    <tbody>
-			<!--sql data here-->
+			<td>Hospital & Surgical Plus II</td>
+			<td><span id="PayableAge">{PayableAge}</span></td>
 		    </tbody>
+		</table>    
+	    </td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>-	Premium adalah tidak terjamin dan tertakluk kepada semakan semula Syarikat pada bila-bila masa dan dari semasa ke semasa dengan memberi notis secara bertulis sekurang-kurangnya 90 hari
+		kepada anda.</td>
+	</tr>
+	<tr>
+	    <td width="10" valign="top">4.</td>
+	    <td valign="top"><b>Apakah yuran dan bayaran yang perlu saya bayar?</b></td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td width="10" valign="top"></td>
+	    <td valign="top">
+		<table id="table-1" border="1" style="border-collapse: collapse" width="70%">
+		    <tr>
+			<td width="50%" >Jenis</td>
+			<td>Jumlah</td>
+		    </tr>
+		    <tr>
+			<td>Kos Pengagihan Langsung yang dibayar kepada ejen insurans</td>
+			<td></td>
+		    </tr>
+		    <tr>
+			<td>Tahun 1</td>
+			<td><span id="Year1">{Year1}</span></td>
+		    </tr>
+		    <tr>
+			<td>Tahun 2</td>
+			<td><span id="Year2">{Year2}</span></td>
+		    </tr>
+		    <tr>
+			<td>Tahun 3</td>
+			<td><span id="Year3">{Year3}</span></td>
+		    </tr>
+		    <tr>
+			<td>Tahun 4</td>
+			<td><span id="Year4">{Year4}</span></td>
+		    </tr>
+		    <tr>
+			<td>Tahun 5</td>
+			<td><span id="Year5">{Year5}</span></td>
+		    </tr>
+		    <tr>
+			<td>Tahun 6</td>
+			<td><span id="Year6">{Year6}</span></td>
+		    </tr>
+		    <tr>
+			<td>Selepas itu</td>
+			<td><span id="Year7">{Year7}</span></td>
+		    </tr>
 		    
 		</table>
 	    </td>
 	</tr>
+	<tr>
+	    <td width="10" valign="top">5.</td>
+	    <td valign="top"><b>Apakah antara terma dan syarat utama yang perlu saya ketahui?</b></td>
+	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-	    <td>8.</td>
-	    <td>
-		<b>Apakah yang perlu saya lakukan jika saya bertukar alamat dan nombor telefon?</b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Anda mestilah memaklumkan kami tentang sebarang perubahan maklumat perhubungan anda (termasuk maklumat tentang penama dan/atau pemegang amanah) bagi memastikan anda menerima semua
-		surat-menyurat sampai kepada anda dan/atau penama/pemegang amanah tepat pada masanya.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top">9. </td>
+	    <td width="10" valign="top"></td>
 	    <td valign="top">
-		<b>Di manakah boleh saya dapatkan maklumat lanjut?</b>
+		- Kepentingan pendedahan - anda mestilah mendedahkan semua fakta penting seperti keadaan perubatan, dan nyatakan umur anda dengan betul.<br/>
+		- Tempoh bertenang - anda boleh membatalkan polisi anda dengan mengembalikan polisi dalam tempoh 15 hari setelah anda menerima polisi tersebut. Premium yang telah anda bayar (selepas tolak
+		perbelanjaan perubatan yang telah dibuat) akan dipulangkan kepada anda.<br/>
+		- Tempoh kelayakan / menunggu - kelayakan untuk faedah-faedah ditawarkan oleh polisi ini hanya akan bermula 30 hari selepas tarikh polisi berkuat kuasa.<br/>
+		- Melainkan dibaharui, perlindungan akan tamat pada tarikh tamat tempoh dan syarikat insurans tidak akan bertanggungan sama sekali bagi apa-apa perbelanjaan yang timbul selepas tarikh tamat
+		tempoh.<br/>
+		- Insurans bersama - anda perlu menanggung jumlah insurans bersama sebanyak 10% daripada jumlah yang dituntut bagi Setiap Satu Hilang Upaya seperti yang diberikan oleh Syarikat atau wang sejumlah
+		RM300, mengikut mana-mana yang lebih tinggi, tertakluk kepada jumlah maksimum mutlak sebanyak RM3,000 (hanya terpakai kepada pelan Standard)<br/><br/>
+		
+		<i>Nota: Senarai ini tidak lengkap. Sila rujuk kontrak polisi untuk mendapatkan terma dan syarat di bawah polisi ini</i>
+	    </td>
+	</tr>
+	<tr><td>&nbsp;</td></tr>
+	<tr>
+	    <td width="10" valign="top">6.</td>
+	    <td valign="top"><b>Apakah pengecualian utama di bawah polisi ini?</b><br/><br/>
+		Polisi ini tidak melindungi apa-apa Penghospitalan, Pembedahan atau bayaran yang disebabkan secara langsung atau tidak langsung, sepenuhnya atau sebahagiannya, oleh mana-mana satu daripada
+		kejadian berikut:<br/><br/>
+		
+		- Penyakit Pra-wujud.
 		
 	    </td>
 	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top">
-		Jika anda memerlukan maklumat lanjut tentang insurans hayat, sila rujuk buku panduan insuranceinfo tentang ‘Insurans Hayat’ yang disediakan di semua cawangan kami atau anda boleh mendapatkannya daripada
-		ejen insurans atau layari laman web www.insuranceinfo.com.my.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top">
-		Jika anda mempunyai sebarang pertanyaan, sila hubungi kami di:
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top"><b>Talian Perkhidmatan Pelanggan: 03-76501288 atau</b></td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		<b>Customer Service Department<br/>
-		Level 3, Tower B, PJ City Development<br/>
-		No 15A, Jalan 219, Seksyen 51A<br/>
-		46100 Petaling Jaya, Selangor<br/>
-		P.O.Box 120, 46710 Petaling Jaya<br/><br/>
-		Tel: 03 - 7650 1818<br/>
-		Fax: 03 - 7650 1991<br/>
-		Website: www.hla.com.my<br/></b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td>10.</td>
-	    <td>
-		<b>Jenis perlindungan lain seumpamanya yang disediakan</b>
-	    </td>
-	</tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Sila rujuk ejen kami untuk mengetahui jenis perlindungan lain seumpamanya yang disediakan.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
 	
-	<tr>
-	    <td></td>
-	    <td>
-		<b>NOTA PENTING:</b><br/>
-		<b>MEMBELI POLISI INSURANS HAYAT MERUPAKAN KOMITMEN KEWANGAN JANGKA PANJANG. ANDA MESTILAH MEMILIH JENIS POLISI YANG PALING SESUAI DENGAN ANDA. ANDA HENDAKLAH
-		    MEMBACA DAN MEMAHAMI POLISI INSURANS DAN BERBINCANG DENGAN EJEN ATAU HUBUNGI TERUS SYARIKAT INSURANS UNTUK MENDAPATKAN MAKLUMAT LANJUT.</b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Maklumat yang disediakan dalam risalah pendedahan ini adalah sah setakat <span id="dateModified2">{DateModified2}</span>
-	    </td>
-	</tr>
     </table>
 	
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
-    <tr>
+	<tr>
 	<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
 	    Risalah Pendedahan Produk ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada Risalah Pendedahan Produk. Bakal pemunya polisi
 	    adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat. <br/>

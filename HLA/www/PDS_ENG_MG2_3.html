@@ -133,6 +133,9 @@
 	    if(HMMRiderTerm > 21){
 		PolicyTerm =20;
 	    }
+	    else{
+		PolicyTerm = HMMRiderTerm;
+	    }
 	    
             transaction.executeSql("SELECT * FROM Trad_Sys_Commission WHERE polTerm = '" + PolicyTerm + "' ORDER BY PolYear ASC", [], function(transaction, result) {
 		

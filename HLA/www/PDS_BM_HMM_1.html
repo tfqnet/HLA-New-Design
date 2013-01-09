@@ -68,6 +68,7 @@
             return;
         }
         
+        
         db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
@@ -81,55 +82,54 @@
                     }
                 }
                 else{
-			alert('No data can be found');
+                                   alert('No data can be found');
                     }
                                    
             },errorHandler);
         },errorHandler,nullHandler);
         
 	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
-                    var row = result.rows.item(0);
-		    var ggg = row.UpdatedAt;
-		    //var now = new Date(ggg.substring(0, 10));
-		    var now = new Date();
-		    
-		    var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
-		    var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-		    
-                    $('#dateModified').html(displayDateFull);
-                    $('#dateModified2').html(displayDate);
+                    var row;
+                    if(result.rows.length == 1){
+	                  var row = result.rows.item(0);
+			 FirstAge = row.Age;
+                    }
                 }
             },errorHandler);
         },errorHandler,nullHandler);
 	
-        db.transaction(function(transaction) {
-            transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc from trad_rider_details as A, '+
-				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HB","HSP_II","CPA","PA","HMM","CIR") ;'
-				   , [], function(transaction, result) {
-                
-		if (result != null && result.rows != null) {
-		    
-		    if(result.rows.length == 0){
-			
-			document.getElementById('hide').style.visibility = "hidden";
-		    }
-		    else{
-			var row;
-			for (var i = 0; i < result.rows.length; i++) {
-			    var row = result.rows.item(i);
-			    
-			    $('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
-			}    
-		    }
-		    
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                	
+			var now = new Date();
+			var displayDate = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear();
+			var displayDateFull = now.getDate() + '/' + (now.getMonth() + 1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+			$('#dateModified').html(displayDateFull);
+			$('#PrintDate').html(displayDate);
                 }
-		else{
-		    document.getElementById('hide').style.visibility = "hidden";
-		}
             },errorHandler);
         },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'HMM'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    
+			var row = result.rows.item(0);
+			if(row.RiderCode == 'HMM' ){
+			    
+			    $('#PlanOption').html(row.PlanOption);
+			    $('#RiderTerm').html(row.RiderTerm);
+			
+			}
+		    
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
         
         return;
     }
@@ -190,7 +190,7 @@
         
 </head>
  
-<body onload="onBodyLoad(),setPage()">
+<body onload="onBodyLoad(),setPage()" >
  <span id="lbUsers"></span>
 <!-- Begin Wrapper -->
 <div id="wrapper">
@@ -199,141 +199,153 @@
 <div id="header">
   
   <div class="welcome">
-     Prepared By : <span id="agentName">{agentName}</span>
-      <br/>Code : <span id="agentCode">{agentCode}</span>
+  Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span>
   </div>
   <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
-    
+  
+  
 </div>
-<hr/>
 <div class="main-content">
 
+<table id="table-design"> 
+    <tr>
+	<td width="800" style="text-align:left;padding: 0px 0px 0px 5px;"><b>RISALAH PENDEDAHAN PRODUK</b></td>
+	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Hong Leong Assurance Berhad</b></td>
+    </tr>
+    <tr>
+	<td style="text-align:left;padding: 0px 0px 0px 5px;" rowspan="2"><b>Baca Risalah Pendedahan Produk ini sebelum anda membuat keputusan untuk mengambil Rider HLA Major Medi. Pastikan anda juga
+	    membaca terma dan syarat am.</b></td>
+	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b>HLA Major Medi rider</b></td>
+    </tr>
+    <tr>
+	<td><b><span id="PrintDate">{PrintDate}</span></b></td>
+    </tr>
+</table>
+    <br/>
     <table>
 	<tr>
-	    <td>7.</td>
+	    <td width="10">1.</td>
+	    <td><b>Apakah produk ini?</b></td>
+	</tr>
+	<tr>
+	    <td width="10"></td>
 	    <td>
-		<b>Bolehkah saya membatalkan polisi saya?</b>
+		- Ini merupakan rider perubatan pembaharuan terjamin sehingga umur 99 tahun dengan penolakan sebanyak RM 5000.
+		- Polisi ini memperuntukkan perbelanjaan penghospitalan & pembedahan, dan faedah rawatan pesakit luar disebabkan oleh penyakit yang di bawah perlindungan polisi ini.
 	    </td>
 	</tr>
-	<tr><td></td></tr>
 	
 	<tr>
-	    <td></td>
-	    <td>Anda boleh membatalkan polisi dengan memberi notis bertulis kepada Hong Leong Assurance Berhad. Setelah tempoh bertenang, nilai penyerahan tunai (jika ada) polisi anda akan dibayar kepada anda ketika anda
-		membatalkan polisi anda; namun begitu, amaun yang dibayar mungkin kurang daripada jumlah premium yang anda bayar.
+	    <td width="10" valign="top">2.</td>
+	    <td><b>Apakah perlindungan / faedah yang disediakan?</b></td>
+	</tr>
+	<tr>
+	    <td width="10" valign="top"></td>
+	    <td>
+		Rider HLA Major Medi boleh didapati dalam 4 pelan iaitu MM 150, MM 200, MM 300 dan MM 400. Pelan yang dipilih adalah pelan
+		<span id="PlanOption">{PlanOption}</span>. Tempoh diinsuranskan rider ini ialah <span id="RiderTerm">{RiderTerm}</span> tahun atau apabila
+		rider ditamatkan, yang mana berlaku dahulu.<br/><br/>
+		
 	    </td>
 	</tr>
-	
-	<tr id="hide">
+	<tr>
 	    <td></td>
 	    <td>
-		<u><b>Attaching Rider(s)</b></u><br/>
-		<table border="1" style="border-collapse: collapse" id="table-Cancel" width="100%">
-		    <thead>
-			<tr>
-			    <td align="left"><b>Rider(s)</b></td>
-			    <td ><b>Cancellation Entitlement</b></td>
-			</tr>
+		<table  border="1" style="border-collapse: collapse" width="100%">
+		    <tr>
+			<td width="60%" style="padding: 0px 0px 5px 5px;" align="center">Pelan Bakal</td>
+			<td align="center">MM 150<br/>(RM)</td>
+			<td align="center">MM 200<br/>(RM)</td>
+			<td align="center">MM 300<br/>(RM)</td>
+			<td align="center">MM 400<br/>(RM)</td>
+		    </tr>
+		    <tr>
+			<td colspan="5" style="padding: 0px 0px 5px 5px;"><b>Hospital & Pembedahan</b></td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bilik Hospital dan Makan<br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td align="center">150</td>
+			<td align="center">200</td>
+			<td align="center">300</td>
+			<td align="center">400</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Tunai Harian Penghospitalan disebabkan oleh Kemalangan Jalan Raya di Lebuhraya
+				Malaysia <br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td align="center">150</td>
+			<td align="center">200</td>
+			<td align="center">300</td>
+			<td align="center">400</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Elaun Tunai Harian di Hospital Kerajaan<br/>(hingga 60 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td align="center">50</td>
+			<td align="center">100</td>
+			<td align="center">150</td>
+			<td align="center">200</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" > Elaun Tunai Harian di Hospital Kerajaan<br/>(hingga 60 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td  align="center"colspan="4" rowspan="14">Bayaran Munasabah dan Biasa Diamalkan *</td>
 			
-		    </thead>
-		    <tbody>
-			<!--sql data here-->
-		    </tbody>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Perbelanjaan Penginap<br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bekalan dan Khidmat Hospital</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bayaran Pembedahan</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bayaran Pakar Bius</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bilik Bedah</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Lawatan Pakar Perubatan dalam Hospital</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Yuran Rawatan Fisioterapi dalam Hospital</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Ujian Diagnostik Prahospital<br/>(dalam tempoh 60 hari sebelum penghospitalan)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Rundingan Pakar Prahospital<br/>(dalam tempoh 60 hari sebelum penghospitalan)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Rawatan Selepas Penghospitalan<br/>(dalam tempoh 60 hari selepas keluar dari hospital)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Transplan Organ</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Pembedahan Harian</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bayaran Ambulans</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Cukai Perkhidmatan Kerajaan</td>
+			<td colspan="4" align="center">(Peratusan yang Berkenaan) x Faedah Bilik Hospital dan Makan</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" colspan="5"><b>Faedah Rawatan Pesakit Luar</b></td>
+		    </tr>
 		    
 		</table>
 	    </td>
 	</tr>
-	<tr><td>&nbsp;</td></tr>
-	<tr>
-	    <td>8.</td>
-	    <td>
-		<b>Apakah yang perlu saya lakukan jika saya bertukar alamat dan nombor telefon?</b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Anda mestilah memaklumkan kami tentang sebarang perubahan maklumat perhubungan anda (termasuk maklumat tentang penama dan/atau pemegang amanah) bagi memastikan anda menerima semua
-		surat-menyurat sampai kepada anda dan/atau penama/pemegang amanah tepat pada masanya.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top">9. </td>
-	    <td valign="top">
-		<b>Di manakah boleh saya dapatkan maklumat lanjut?</b>
-		
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top">
-		Jika anda memerlukan maklumat lanjut tentang insurans hayat, sila rujuk buku panduan insuranceinfo tentang ‘Insurans Hayat’ yang disediakan di semua cawangan kami atau anda boleh mendapatkannya daripada
-		ejen insurans atau layari laman web www.insuranceinfo.com.my.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top">
-		Jika anda mempunyai sebarang pertanyaan, sila hubungi kami di:
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td valign="top"></td>
-	    <td valign="top"><b>Talian Perkhidmatan Pelanggan: 03-76501288 atau</b></td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		<b>Customer Service Department<br/>
-		Level 3, Tower B, PJ City Development<br/>
-		No 15A, Jalan 219, Seksyen 51A<br/>
-		46100 Petaling Jaya, Selangor<br/>
-		P.O.Box 120, 46710 Petaling Jaya<br/><br/>
-		Tel: 03 - 7650 1818<br/>
-		Fax: 03 - 7650 1991<br/>
-		Website: www.hla.com.my<br/></b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td>10.</td>
-	    <td>
-		<b>Jenis perlindungan lain seumpamanya yang disediakan</b>
-	    </td>
-	</tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Sila rujuk ejen kami untuk mengetahui jenis perlindungan lain seumpamanya yang disediakan.
-	    </td>
-	</tr>
-	<tr><td></td></tr>
 	
-	<tr>
-	    <td></td>
-	    <td>
-		<b>NOTA PENTING:</b><br/>
-		<b>MEMBELI POLISI INSURANS HAYAT MERUPAKAN KOMITMEN KEWANGAN JANGKA PANJANG. ANDA MESTILAH MEMILIH JENIS POLISI YANG PALING SESUAI DENGAN ANDA. ANDA HENDAKLAH
-		    MEMBACA DAN MEMAHAMI POLISI INSURANS DAN BERBINCANG DENGAN EJEN ATAU HUBUNGI TERUS SYARIKAT INSURANS UNTUK MENDAPATKAN MAKLUMAT LANJUT.</b>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		Maklumat yang disediakan dalam risalah pendedahan ini adalah sah setakat <span id="dateModified2">{DateModified2}</span>
-	    </td>
-	</tr>
     </table>
 	
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
-    <tr>
+	<tr>
 	<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
 	    Risalah Pendedahan Produk ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada Risalah Pendedahan Produk. Bakal pemunya polisi
 	    adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat. <br/>
