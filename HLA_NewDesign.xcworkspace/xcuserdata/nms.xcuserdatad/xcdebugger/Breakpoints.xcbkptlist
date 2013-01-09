@@ -294,11 +294,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EditProspect.m"
-         timestampString = "379303502.212413"
+         timestampString = "379405971.363423"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1944"
-         endingLineNumber = "1944"
+         startingLineNumber = "1950"
+         endingLineNumber = "1950"
          landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1100,11 +1100,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EditProspect.m"
-         timestampString = "379303502.212413"
+         timestampString = "379405971.363423"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2013"
-         endingLineNumber = "2013"
+         startingLineNumber = "2019"
+         endingLineNumber = "2019"
          landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1288,6 +1288,19 @@
          startingLineNumber = "1757"
          endingLineNumber = "1757"
          landmarkName = "-InsertToSI_Temp_Trad_Details"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/HLA/EditProspect.m"
+         timestampString = "379405841.338453"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1732"
+         endingLineNumber = "1732"
+         landmarkName = "-EditTextFieldDidChange:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

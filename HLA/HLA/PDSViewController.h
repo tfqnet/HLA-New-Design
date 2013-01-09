@@ -16,6 +16,7 @@
 }
 
 @property (nonatomic,strong) id SINo;
+@property (nonatomic,strong) id PDSLanguage;
 @property (strong, nonatomic) DBController* db;
 @property (strong, nonatomic) DataTable * dataTable;
 

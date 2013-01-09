@@ -26,7 +26,7 @@
 @implementation PDSBrowserViewController
 @synthesize leftSelectedIndexPath, leftSidebarViewController;
 @synthesize delegate = _delegate;
-@synthesize gPages;
+@synthesize gPages, PDSLanguage;
 
 id databasePath;
 NSMutableArray *ItemPages;
@@ -66,7 +66,13 @@ NSMutableArray *ItemPages;
     
     CDVViewController* browserController_page = [CDVViewController new];
     browserController_page.wwwFolderName = @"www";
-    browserController_page.startPage = @"ENG_PDS1.html";//(NSString *)objectHTML;
+    if ([PDSLanguage isEqualToString:@"E"]) {
+        browserController_page.startPage = @"ENG_PDS1.html";
+    }
+    else{
+        browserController_page.startPage = @"BM_PDS1.html";
+    }
+    
     browserController_page.view.frame = CGRectMake(0, 0, 758, 1000);
     [self.view addSubview:browserController_page.view];
     browserController_page = nil;

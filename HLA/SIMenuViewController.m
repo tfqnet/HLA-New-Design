@@ -120,7 +120,8 @@ id RiderCount;
         [ListOfSubMenu removeObject:@"Rider"];
         [ListOfSubMenu removeObject:@"Premium"];
         [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"PDS"];
+        [ListOfSubMenu removeObject:@"English PDS"];
+        [ListOfSubMenu removeObject:@"Malay PDS"];
         
         [self clearDataLA];
         [self clearDataPayor];
@@ -458,9 +459,11 @@ id RiderCount;
         else {
             
             [ListOfSubMenu removeObject:@"Quotation"];
-            [ListOfSubMenu removeObject:@"PDS"];
+            [ListOfSubMenu removeObject:@"English PDS"];
+            [ListOfSubMenu removeObject:@"Malay PDS"];
             [ListOfSubMenu addObject:@"Quotation"];
-            [ListOfSubMenu addObject:@"PDS"];
+            [ListOfSubMenu addObject:@"English PDS"];
+            [ListOfSubMenu addObject:@"Malay PDS"];    
             
             PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
             premView.requestAge = getAge;
@@ -502,7 +505,9 @@ id RiderCount;
         saved = YES;
         _SecondLAController = nil;
         [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"PDS"];
+        [ListOfSubMenu removeObject:@"English PDS"];
+        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
         [self selectBasicPlan];
         [myTableView reloadData];
         
@@ -532,7 +537,8 @@ id RiderCount;
         payorSaved = YES;
         _PayorController = nil;
         [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"PDS"];
+        [ListOfSubMenu removeObject:@"English PDS"];
+        [ListOfSubMenu removeObject:@"Malay PDS"];
         [self selectBasicPlan];
         [myTableView reloadData];
         
@@ -561,7 +567,9 @@ id RiderCount;
     {
         saved = YES;
         [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"PDS"];
+        //[ListOfSubMenu removeObject:@"PDS"];
+        [ListOfSubMenu removeObject:@"English PDS"];
+        [ListOfSubMenu removeObject:@"Malay PDS"];
         
         self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
         _RiderController.delegate = self;
@@ -610,7 +618,9 @@ id RiderCount;
     {
         payorSaved = YES;
         [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"PDS"];
+        //[ListOfSubMenu removeObject:@"PDS"];
+        [ListOfSubMenu removeObject:@"English PDS"];
+        [ListOfSubMenu removeObject:@"Malay PDS"];
         
         self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
         _RiderController.delegate = self;
@@ -950,7 +960,9 @@ id RiderCount;
     else if (indexPath.row == 1)    //2nd LA
     {
         [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"PDS"];
+        //[ListOfSubMenu removeObject:@"PDS"];
+        [ListOfSubMenu removeObject:@"English PDS"];
+        [ListOfSubMenu removeObject:@"Malay PDS"];
         [self select2ndLA];
         [self hideSeparatorLine];
         [myTableView reloadData];
@@ -959,7 +971,9 @@ id RiderCount;
     else if (indexPath.row == 2)    //Payor
     {
         [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"PDS"];
+        //[ListOfSubMenu removeObject:@"PDS"];
+        [ListOfSubMenu removeObject:@"English PDS"];
+        [ListOfSubMenu removeObject:@"Malay PDS"];
         [self selectPayor];
         [self hideSeparatorLine];
         [myTableView reloadData];
@@ -979,7 +993,9 @@ id RiderCount;
         }
         else {
             [ListOfSubMenu removeObject:@"Quotation"];
-            [ListOfSubMenu removeObject:@"PDS"];
+            //[ListOfSubMenu removeObject:@"PDS"];
+            [ListOfSubMenu removeObject:@"English PDS"];
+            [ListOfSubMenu removeObject:@"Malay PDS"];
             [self selectBasicPlan];
             [self hideSeparatorLine];
             [myTableView reloadData];
@@ -1017,7 +1033,9 @@ id RiderCount;
         else {
             
             [ListOfSubMenu removeObject:@"Quotation"];
-            [ListOfSubMenu removeObject:@"PDS"];
+            //[ListOfSubMenu removeObject:@"PDS"];
+            [ListOfSubMenu removeObject:@"English PDS"];
+            [ListOfSubMenu removeObject:@"Malay PDS"];
             
             self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
             _RiderController.delegate = self;
@@ -1232,7 +1250,7 @@ id RiderCount;
         }
     }
     
-    else if (indexPath.row == 7) {   //PD
+    else if (indexPath.row == 7) {   //English PDS
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         spinner.center = CGPointMake(400, 350);
         
@@ -1254,6 +1272,7 @@ id RiderCount;
             
             PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
             PDSPage.SINo = getSINo;
+            PDSPage.PDSLanguage = @"E";
             [self presentViewController:PDSPage animated:NO completion:Nil];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1264,6 +1283,62 @@ id RiderCount;
                 
                 
                 PDSBrowserViewController *controller = [[PDSBrowserViewController alloc] init];
+                controller.PDSLanguage = @"E";
+                
+                //controller.title = @"Quotation";
+                //controller.delegate = self;
+                //controller.premH = premH;
+                //controller.premBH = premBH;
+                
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                UINavigationController *container = [[UINavigationController alloc] init];
+                [container setNavigationBarHidden:YES animated:NO];
+                [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+                
+                [self presentModalViewController:container animated:YES];
+                
+                UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+                [v removeFromSuperview];
+            });
+            
+            
+        });
+        
+    }
+    else if (indexPath.row == 8) {   //Malay PDS
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.center = CGPointMake(400, 350);
+        
+        spinner.hidesWhenStopped = YES;
+        [self.view addSubview:spinner];
+        UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+        spinnerLabel.text  = @" Please Wait...";
+        spinnerLabel.backgroundColor = [UIColor blackColor];
+        spinnerLabel.opaque = YES;
+        spinnerLabel.textColor = [UIColor whiteColor];
+        [self.view addSubview:spinnerLabel];
+        [spinner startAnimating];
+        
+        
+        //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+            //dispatch_async(downloadQueue, ^{
+            
+            
+            PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
+            PDSPage.SINo = getSINo;
+            PDSPage.PDSLanguage = @"M";
+            [self presentViewController:PDSPage animated:NO completion:Nil];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [spinner stopAnimating];
+                spinnerLabel.text = @"";
+                
+                [PDSPage dismissViewControllerAnimated:NO completion:Nil];
+                
+                
+                PDSBrowserViewController *controller = [[PDSBrowserViewController alloc] init];
+                controller.PDSLanguage = @"M";
                 
                 //controller.title = @"Quotation";
                 //controller.delegate = self;

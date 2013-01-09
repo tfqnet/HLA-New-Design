@@ -34,5 +34,6 @@
 //@property (nonatomic, strong) UILabel     *label;
 @property (nonatomic, strong) id<PDSBrowserDelegate> delegate;
 @property (nonatomic, assign) int gPages;
+@property (nonatomic,strong) id PDSLanguage;
 
 @end
