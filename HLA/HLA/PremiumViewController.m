@@ -720,11 +720,37 @@
             halfYearRider = (riderRate *ridSA /100 *halfFac) + (RiderHLHalfYear /10 *ridSA /100 *halfFac) + (fsar /1000 *OccpLoadH *halfFac);
             quarterRider = (riderRate *ridSA /100 *quarterFac) + (RiderHLQuarterly /10 *ridSA /100 *quarterFac) + (fsar /1000 *OccpLoadQ *quarterFac);
             monthlyRider = (riderRate *ridSA /100 *monthFac) + (RiderHLMonthly /10 *ridSA /100 *monthFac) + (fsar /1000 *OccpLoadM *monthFac); */
-             
-            annualRider = (riderRate *ridSA /100 *annFac) + (riderHLoad /10 *ridSA /100 *annFac);
-            halfYearRider = (riderRate *ridSA /100 *halfFac) + (riderHLoad /10 *ridSA /100 *halfFac);
-            quarterRider = (riderRate *ridSA /100 *quarterFac) + (riderHLoad /10 *ridSA /100 *quarterFac);
-            monthlyRider = (riderRate *ridSA /100 *monthFac) + (riderHLoad /10 *ridSA /100 *monthFac);
+            
+            double _ann = (riderRate *ridSA /100 *annFac);
+            double _half = (riderRate *ridSA /100 *halfFac);
+            double _quar = (riderRate *ridSA /100 *quarterFac);
+            double _month = (riderRate *ridSA /100 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad /10 *ridSA /100 *annFac);
+            double _HLHalf = (riderHLoad /10 *ridSA /100 *halfFac);
+            double _HLQuar = (riderHLoad /10 *ridSA /100 *quarterFac);
+            double _HLMonth = (riderHLoad /10 *ridSA /100 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + [str_HLMonth doubleValue];
         }
         else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
         {
@@ -746,10 +772,36 @@
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
             
-            annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadQ doubleValue]) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadM doubleValue]) + (riderHLoad *ridSA /1000 *monthFac);
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + [str_HLMonth doubleValue];
         }
         else if ([RidCode isEqualToString:@"ICR"])
         {
@@ -759,10 +811,36 @@
             quarterRider = (riderRate *ridSA /1000 *quarterFac) + ((OccpLoadQ *ridTerm) *ridSA /1000 *quarterFac) + (RiderHLQuarterly *ridSA /1000 *quarterFac);
             monthlyRider = (riderRate *ridSA /1000 *monthFac) + ((OccpLoadM *ridTerm) *ridSA /1000 *monthFac) + (RiderHLMonthly *ridSA /1000 *monthFac); */
             
-            annualRider = (riderRate *ridSA /1000 *annFac) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + + (riderHLoad *ridSA /1000 *monthFac);
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + [str_HLMonth doubleValue];
         }
         else if ([RidCode isEqualToString:@"ID20R"])
         {
@@ -784,10 +862,36 @@
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
             
-            annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadQ doubleValue]) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadM doubleValue]) + (riderHLoad *ridSA /1000 *monthFac);
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + [str_HLMonth doubleValue];
             
         }
         else if ([RidCode isEqualToString:@"ID30R"])
@@ -810,10 +914,36 @@
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
             
-            annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadQ doubleValue]) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadM doubleValue]) + (riderHLoad *ridSA /1000 *monthFac);
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + [str_HLMonth doubleValue];
             
         }
         else if ([RidCode isEqualToString:@"ID40R"])
@@ -836,10 +966,36 @@
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
             
-            annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadQ doubleValue]) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadM doubleValue]) + (riderHLoad *ridSA /1000 *monthFac);
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + [str_HLMonth doubleValue];
         }
         else if ([RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"HSP_II"]||[RidCode isEqualToString:@"HMM"])
         {
@@ -882,34 +1038,66 @@
             quarterRider = riderRate * (1 + riderHLoad/100) * selectUnit * quarterFac;
             monthlyRider = riderRate * (1 + riderHLoad/100) * selectUnit * monthFac;
         }
-        else if ([RidCode isEqualToString:@"PLCP"]||[RidCode isEqualToString:@"PTR"])
-        {
-            double calLoadA = occLoadRider *ridSA /1000 *annFac;
-            double calLoadH = occLoadRider *ridSA /1000 *halfFac;
-            double calLoadQ = occLoadRider *ridSA /1000 *quarterFac;
-            double calLoadM = occLoadRider *ridSA /1000 *monthFac;
-            NSString *strLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadA]];
-            NSString *strLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadH]];
-            NSString *strLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadQ]];
-            NSString *strLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadM]];
-            strLoadA = [strLoadA stringByReplacingOccurrencesOfString:@"," withString:@""];
-            strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
-            strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
-            strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
-            
-            annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadQ doubleValue]) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadM doubleValue]) + (riderHLoad *ridSA /1000 *monthFac);
-        }
         else if ([RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"])
         {
-            annualRider = (riderRate *ridSA /1000 *annFac) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + (riderHLoad *ridSA /1000 *monthFac);
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + [str_HLMonth doubleValue];
         }
         else {
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
             double calLoadA = occLoadRider *ridSA /1000 *annFac;
             double calLoadH = occLoadRider *ridSA /1000 *halfFac;
             double calLoadQ = occLoadRider *ridSA /1000 *quarterFac;
@@ -923,10 +1111,10 @@
             strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
             strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
             
-            annualRider = (riderRate *ridSA /1000 *annFac) + ([strLoadA doubleValue]) + (riderHLoad *ridSA /1000 *annFac);
-            halfYearRider = (riderRate *ridSA /1000 *halfFac) + ([strLoadH doubleValue]) + (riderHLoad *ridSA /1000 *halfFac);
-            quarterRider = (riderRate *ridSA /1000 *quarterFac) + ([strLoadQ doubleValue]) + (riderHLoad *ridSA /1000 *quarterFac);
-            monthlyRider = (riderRate *ridSA /1000 *monthFac) + ([strLoadM doubleValue]) + (riderHLoad *ridSA /1000 *monthFac);
+            annualRider = [str_ann doubleValue] + ([strLoadA doubleValue]) + [str_HLAnn doubleValue];
+            halfYearRider = [str_half doubleValue] + ([strLoadH doubleValue]) + [str_HLHalf doubleValue];
+            quarterRider = [str_quar doubleValue] + ([strLoadQ doubleValue]) + [str_HLQuar doubleValue];
+            monthlyRider = [str_month doubleValue] + ([strLoadM doubleValue]) + [str_HLMonth doubleValue];
             
             if ([RidCode isEqualToString:@"HSP_II"]) {
                 // For report part ---------- added by heng
