@@ -116,6 +116,7 @@
     
     if (self.IndexTab) {
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:IndexTab]);
+    
     }
     else {
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);

@@ -301,7 +301,7 @@
     _EditProspect.pp = pp;
         
     
-    _EditProspect.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    _EditProspect.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     _EditProspect.modalPresentationStyle = UIModalPresentationPageSheet; 
     [self presentModalViewController:_EditProspect animated:YES];
     _EditProspect.view.superview.frame = CGRectMake(50, 0, 970, 768);
@@ -324,9 +324,9 @@
         _ProspectViewController.delegate = self;
     }
     _ProspectViewController.modalPresentationStyle = UIModalPresentationPageSheet;
-    _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:_ProspectViewController animated:YES];
-    _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768); 
+    _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768);
 }
 /*
 - (IBAction)btnRefresh:(id)sender {

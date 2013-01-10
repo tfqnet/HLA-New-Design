@@ -930,17 +930,21 @@ PostcodeContinue = TRUE;
         }
     }
     
-    /*
+    
     if([[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [txtHomeAddr1 becomeFirstResponder];
-        //[self.view endEditing:TRUE];
+        if(![[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Home Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [txtHomeAddr1 becomeFirstResponder];
+            //[self.view endEditing:TRUE];
+            
+            [alert show];
+            return false;
+        }
         
-        [alert show];
-        return false;
+        
     }
-    */
+    
     
     if (PostcodeContinue == TRUE) {
         if(![[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
@@ -960,22 +964,24 @@ PostcodeContinue = TRUE;
     }
     
     
-    /*
     if([[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        if ([self OptionalOccp] == FALSE) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            [txtOfficeAddr1 becomeFirstResponder];
-            
-            [alert show];
-            return false;
-        }
-        else {
-     
+        if(![[txtOfficePostcode.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+            if ([self OptionalOccp] == FALSE) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Office Address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [txtOfficeAddr1 becomeFirstResponder];
+                
+                [alert show];
+                return false;
+            }
+            else {
+                
+            }
         }
         
+        
     }
-     */
+    
     
     if (PostcodeContinue == TRUE) {
         /*

@@ -89,6 +89,8 @@
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
 {
     self.selectedIndex = [self.viewControllers indexOfObject:selectedViewController];
+    
+    
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex

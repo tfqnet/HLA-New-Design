@@ -20,6 +20,7 @@
 {
     // use blue tint by default
     return _selectedImageTintColor != nil ? _selectedImageTintColor : [UIColor colorWithRed:41.0/255.0 green:147.0/255.0 blue:239.0/255.0 alpha:1.0];
+    
 }
 
 
