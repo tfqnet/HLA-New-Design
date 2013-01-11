@@ -941,6 +941,25 @@ bool IsContinue = TRUE;
             }
         }
     }
+    else{
+        if (![[txtPrefix2.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 2 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType2 becomeFirstResponder];
+            [alert show];
+            return FALSE;
+        }
+        
+        if (![[txtContact2.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 2 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType2 becomeFirstResponder];
+            [alert show];
+            return FALSE;
+        }
+    }
     
     if(![outletType3.titleLabel.text isEqualToString:@""]) {
         if ([txtPrefix3.text isEqualToString:@""]) {
@@ -1002,6 +1021,25 @@ bool IsContinue = TRUE;
                     return FALSE;
                 }
             }
+        }
+    }
+    else{
+        if (![[txtPrefix3.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 3 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType3 becomeFirstResponder];
+            [alert show];
+            return FALSE;
+        }
+        
+        if (![[txtContact3.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 3 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType3 becomeFirstResponder];
+            [alert show];
+            return FALSE;
         }
     }
     
@@ -1078,6 +1116,25 @@ bool IsContinue = TRUE;
             }
         }
     }
+    else{
+        if (![[txtPrefix4.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 4 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType4 becomeFirstResponder];
+            [alert show];
+            return FALSE;
+        }
+        
+        if (![[txtContact4.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 4 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType4 becomeFirstResponder];
+            [alert show];
+            return FALSE;
+        }
+    }
     
     if(![outletType5.titleLabel.text isEqualToString:@""]) {
         if ([txtPrefix5.text isEqualToString:@""]) {
@@ -1151,6 +1208,25 @@ bool IsContinue = TRUE;
                     return FALSE;
                 }
             }
+        }
+    }
+    else{
+        if (![[txtPrefix5.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 5 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType5 becomeFirstResponder];
+            [alert show];
+            return FALSE;
+        }
+        
+        if (![[txtContact5.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Type for contact no 5 is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            
+            [outletType5 becomeFirstResponder];
+            [alert show];
+            return FALSE;
         }
     }
     

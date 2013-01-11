@@ -11,6 +11,8 @@
 #import "ProspectProfile.h"
 #import "ProspectViewController.h"
 #import "EditProspect.h"
+#import "AppDelegate.h"
+#import "MainScreen.h"
 
 @interface ProspectListing ()
 
@@ -327,6 +329,13 @@
     _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:_ProspectViewController animated:YES];
     _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768);
+    
+    /*
+    AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    main.IndexTab = MenuOption.NewProspectIndex;
+    [self presentViewController:main animated:NO completion:nil];
+    */
 }
 /*
 - (IBAction)btnRefresh:(id)sender {

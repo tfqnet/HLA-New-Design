@@ -95,6 +95,7 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
+    AppDelegate *MenuOption = (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     if (selectedIndex != _selectedIndex && selectedIndex < [self.viewControllers count])
     {
         [self.view endEditing:YES];
@@ -107,7 +108,7 @@
         // add new view controller to hierarchy
         UIViewController *selectedViewController = [self.viewControllers objectAtIndex:selectedIndex];
         
-        if (selectedIndex == 0) {
+        if (selectedIndex == MenuOption.HomeIndex) {
             
             AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
             if (!zzz.SICompleted) {
@@ -130,7 +131,7 @@
         }
         else {
             
-            if (selectedIndex == 1) {
+            if (selectedIndex == MenuOption.ProspectListingIndex) {
                 
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 if (!zzz.SICompleted) {
@@ -156,7 +157,33 @@
                 }
             }
             
-            if (selectedIndex == 2) {
+            if (selectedIndex == MenuOption.NewProspectIndex) {
+                
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                if (!zzz.SICompleted) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
+                    [alert setTag:3001];
+                    [alert show];
+                }
+                else if (!zzz.ExistPayor) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                    [alert show];
+                }
+                else {
+                    [self addChildViewController:selectedViewController];
+                    selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
+                                                                   0,
+                                                                   self.view.bounds.size.width-self.tabBarWidth,
+                                                                   self.view.bounds.size.height);
+                    selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+                    [self.view addSubview:selectedViewController.view];
+                    
+                    [self updateTabBar];
+                }
+            }
+            
+            if (selectedIndex == MenuOption.SIListingIndex) {
                 
                 [(SIListing *)selectedViewController RefreshZZZ];
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
@@ -183,7 +210,7 @@
                 }
             }
             
-            if (selectedIndex == 3) {
+            if (selectedIndex == MenuOption.NewSIIndex) {
                 
                 [(SIMenuViewController *)selectedViewController Reset];
                 
@@ -298,7 +325,9 @@
 {
     clickIndex = indexPath.row;
     
-    if (indexPath.row == 4) {
+    AppDelegate *MenuOption = (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    
+    if (indexPath.row == MenuOption.ExitIndex) {
         
         UIAlertView *alert = [[UIAlertView alloc] 
                               initWithTitle: NSLocalizedString(@"Log Out",nil)
@@ -320,7 +349,17 @@
     
     if (alertView.tag == 1001 && buttonIndex == 0)
     {
+
         [self updateDateLogout];
+        
+    }
+    else if (alertView.tag == 1001 && buttonIndex == 1)
+    {
+        clickIndex = 3;
+        clickIndex = _selectedIndex;
+        [self updateTabBar];
+       
+        
     }
     
     else  if (alertView.tag == 2001 && buttonIndex == 0)

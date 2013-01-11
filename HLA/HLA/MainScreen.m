@@ -19,6 +19,7 @@
 #import "ReportViewController.h"
 #import "NewLAViewController.h"
 
+
 @interface MainScreen (){
      NSArray* viewControllers;
 }
@@ -64,9 +65,16 @@
     */
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
+    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect Listing" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
+
     [controllersToAdd addObject:ProspectListingPage];
     
+    /*
+    ProspectViewController* NewProspectPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
+    NewProspectPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New Prospect" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
+    [controllersToAdd addObject:NewProspectPage];
+    */
+     
     SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
     SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:SIListingPage];
@@ -106,6 +114,7 @@
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     */
     
+    
     //set the view controllers of the the tab bar controller
     [self setViewControllers:viewControllers];
     
@@ -115,6 +124,7 @@
     self.tabBar.backgroundGradientColors = colors;
     
     if (self.IndexTab) {
+        clickIndex = IndexTab;
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:IndexTab]);
     
     }
@@ -139,6 +149,7 @@
 }
 
 -(BOOL)tabBarController:(FSVerticalTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    
     if ([viewControllers indexOfObject:viewController] == 6) {
         return NO;
     }

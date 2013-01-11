@@ -14,6 +14,7 @@
 #import "Login.h"
 #import "NewLAViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
 
 const int numberOfModule = 4;
 
@@ -74,6 +75,7 @@ const int numberOfModule = 4;
     [gradientLayer setFrame:button.frame];
     [button.layer addSublayer:gradientLayer];
      */
+ 
     
     button.frame = CGRectMake(0, 0, 450.0f, 400.0f);
     
@@ -126,6 +128,8 @@ const int numberOfModule = 4;
                        cancelButtonTitle:@"OK"
                        otherButtonTitles:nil] autorelease] show];
     */
+    AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    
     if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //setting
         setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -136,7 +140,7 @@ const int numberOfModule = 4;
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 1) { //prospect
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 1;
+        zzz.IndexTab = MenuOption.ProspectListingIndex;
         [self presentViewController:zzz animated:NO completion:Nil];
         
     }
@@ -154,7 +158,7 @@ const int numberOfModule = 4;
         
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 2;
+        zzz.IndexTab = MenuOption.SIListingIndex;
         [self presentViewController:zzz animated:NO completion:Nil];
         
         /*

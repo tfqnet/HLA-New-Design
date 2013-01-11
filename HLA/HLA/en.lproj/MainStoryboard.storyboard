@@ -204,7 +204,7 @@
                         <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="image.png" id="9fG-Oj-NeQ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="20130108Login.png" id="9fG-Oj-NeQ">
                                 <rect key="frame" x="-31" y="-77" width="1055" height="825"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
@@ -213,7 +213,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="R62-ds-gqi">
-                                        <rect key="frame" x="726" y="533" width="204" height="37"/>
+                                        <rect key="frame" x="602" y="268" width="204" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <state key="normal" title="Login" backgroundImage="login.png">
@@ -228,28 +228,19 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" id="eQ4-6a-pKa">
-                                        <rect key="frame" x="703" y="485" width="270" height="31"/>
+                                        <rect key="frame" x="579" y="220" width="270" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" secureTextEntry="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" id="Ijs-Xp-1Xz">
-                                        <rect key="frame" x="703" y="446" width="270" height="31"/>
+                                        <rect key="frame" x="579" y="181" width="270" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" id="UYD-fc-vh3">
-                                        <rect key="frame" x="703" y="94" width="275" height="186"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <string key="text">At Hong Leong Assurance, we understand your needs and desires. Your wish to live a life with financial security and protection with your loved ones is our quest in introducing HLA Income Builder. This plan provides you and your family Protection, Savings and Guaranteed Yearly Income.</string>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
                                     <label opaque="NO" clipsSubviews="YES" contentMode="left" text="Forget Password ? " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="JDY-eF-v7K">
-                                        <rect key="frame" x="763" y="569" width="205" height="45"/>
+                                        <rect key="frame" x="639" y="304" width="205" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" red="0.0" green="0.15294118230000001" blue="0.99215692280000001" alpha="1" colorSpace="deviceRGB"/>
@@ -4963,12 +4954,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </scene>
     </scenes>
     <resources>
+        <image name="20130108Login.png" width="851" height="637"/>
         <image name="ChgPwd_128.png" width="128" height="128"/>
         <image name="Profile128.png" width="128" height="128"/>
         <image name="SecurityQuestion128.png" width="128" height="128"/>
         <image name="button.png" width="200" height="30"/>
         <image name="f-spot-question-mark.png" width="256" height="256"/>
-        <image name="image.png" width="1024" height="768"/>
         <image name="login.png" width="200" height="30"/>
         <image name="prospect_100.png" width="100" height="100"/>
         <image name="redBtn.png" width="308" height="101"/>

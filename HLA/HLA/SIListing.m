@@ -11,6 +11,7 @@
 #import "NewLAViewController.h"
 #import "MainScreen.h"
 #import "SIHandler.h"
+#import "AppDelegate.h"
 
 @interface SIListing ()
 
@@ -629,10 +630,12 @@
             
         }]; */
         
+        AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+        
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
 //        main.modalPresentationStyle = UIModalPresentationFullScreen;
 //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.IndexTab = 3;
+        main.IndexTab = MenuOption.NewSIIndex ;
         main.requestSINo = [SINO objectAtIndex:indexPath.row];
         [self presentViewController:main animated:NO completion:nil];
         
@@ -1304,10 +1307,12 @@
 //    _NewLAViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 //    [self presentModalViewController:_NewLAViewController animated:YES];
 //    _NewLAViewController.view.superview.frame = CGRectMake(100, 0, 970, 768);//50, 0, 970, 768
+    
+    AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
     //        main.modalPresentationStyle = UIModalPresentationFullScreen;
     //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    main.IndexTab = 3;
+    main.IndexTab = MenuOption.NewSIIndex;
     [self presentViewController:main animated:NO completion:nil];
 }
 

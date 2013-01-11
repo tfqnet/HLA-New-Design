@@ -66,13 +66,20 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{   
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight){
+{
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight || interfaceOrientation==UIInterfaceOrientationLandscapeLeft){
         return YES;
     }
     else {
         return NO;
     }
+     
+    //return (interfaceOrientation==UIInterfaceOrientationLandscapeRight);
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -378,13 +385,14 @@
 #pragma mark - keyboard display
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
-{
+{/*
     self.scrollViewLogin.frame = CGRectMake(0, 0, 1024, 748-352);
     self.scrollViewLogin.contentSize = CGSizeMake(1024, 748);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
     [self.scrollViewLogin scrollRectToVisible:textFieldRect animated:YES];
+  */
 }
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification

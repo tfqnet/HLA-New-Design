@@ -119,9 +119,8 @@ id RiderCount;
 //        [SelectedRow addObject:@"5" ];
         [ListOfSubMenu removeObject:@"Rider"];
         [ListOfSubMenu removeObject:@"Premium"];
-        [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"English PDS"];
-        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
+        [self RemovePDS];
         
         [self clearDataLA];
         [self clearDataPayor];
@@ -458,12 +457,12 @@ id RiderCount;
         }
         else {
             
-            [ListOfSubMenu removeObject:@"Quotation"];
-            [ListOfSubMenu removeObject:@"English PDS"];
-            [ListOfSubMenu removeObject:@"Malay PDS"];
+
+            [self RemovePDS];
             [ListOfSubMenu addObject:@"Quotation"];
-            [ListOfSubMenu addObject:@"English PDS"];
-            [ListOfSubMenu addObject:@"Malay PDS"];    
+            [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
+            [ListOfSubMenu addObject:@"   English"];
+            [ListOfSubMenu addObject:@"   Malay"];
             
             PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
             premView.requestAge = getAge;
@@ -504,9 +503,8 @@ id RiderCount;
     {
         saved = YES;
         _SecondLAController = nil;
-        [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"English PDS"];
-        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
+        [self RemovePDS];
         
         [self selectBasicPlan];
         [myTableView reloadData];
@@ -536,9 +534,8 @@ id RiderCount;
     {
         payorSaved = YES;
         _PayorController = nil;
-        [ListOfSubMenu removeObject:@"Quotation"];
-        [ListOfSubMenu removeObject:@"English PDS"];
-        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
+        [self RemovePDS];
         [self selectBasicPlan];
         [myTableView reloadData];
         
@@ -566,10 +563,9 @@ id RiderCount;
     else if (alertView.tag == 1002 && buttonIndex == 0)
     {
         saved = YES;
-        [ListOfSubMenu removeObject:@"Quotation"];
-        //[ListOfSubMenu removeObject:@"PDS"];
-        [ListOfSubMenu removeObject:@"English PDS"];
-        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
+        
+        [self RemovePDS];
         
         self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
         _RiderController.delegate = self;
@@ -617,10 +613,9 @@ id RiderCount;
     else if (alertView.tag == 2002 && buttonIndex == 0)
     {
         payorSaved = YES;
-        [ListOfSubMenu removeObject:@"Quotation"];
-        //[ListOfSubMenu removeObject:@"PDS"];
-        [ListOfSubMenu removeObject:@"English PDS"];
-        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
+        
+        [self RemovePDS];
         
         self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
         _RiderController.delegate = self;
@@ -959,10 +954,8 @@ id RiderCount;
     
     else if (indexPath.row == 1)    //2nd LA
     {
-        [ListOfSubMenu removeObject:@"Quotation"];
-        //[ListOfSubMenu removeObject:@"PDS"];
-        [ListOfSubMenu removeObject:@"English PDS"];
-        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
+        [self RemovePDS];
         [self select2ndLA];
         [self hideSeparatorLine];
         [myTableView reloadData];
@@ -970,10 +963,8 @@ id RiderCount;
     
     else if (indexPath.row == 2)    //Payor
     {
-        [ListOfSubMenu removeObject:@"Quotation"];
-        //[ListOfSubMenu removeObject:@"PDS"];
-        [ListOfSubMenu removeObject:@"English PDS"];
-        [ListOfSubMenu removeObject:@"Malay PDS"];
+        
+        [self RemovePDS];
         [self selectPayor];
         [self hideSeparatorLine];
         [myTableView reloadData];
@@ -992,10 +983,8 @@ id RiderCount;
             [alert show];
         }
         else {
-            [ListOfSubMenu removeObject:@"Quotation"];
-            //[ListOfSubMenu removeObject:@"PDS"];
-            [ListOfSubMenu removeObject:@"English PDS"];
-            [ListOfSubMenu removeObject:@"Malay PDS"];
+            
+            [self RemovePDS];
             [self selectBasicPlan];
             [self hideSeparatorLine];
             [myTableView reloadData];
@@ -1032,10 +1021,8 @@ id RiderCount;
         }
         else {
             
-            [ListOfSubMenu removeObject:@"Quotation"];
-            //[ListOfSubMenu removeObject:@"PDS"];
-            [ListOfSubMenu removeObject:@"English PDS"];
-            [ListOfSubMenu removeObject:@"Malay PDS"];
+            
+            [self RemovePDS];
             
             self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
             _RiderController.delegate = self;
@@ -1250,7 +1237,7 @@ id RiderCount;
         }
     }
     
-    else if (indexPath.row == 7) {   //English PDS
+    else if (indexPath.row == 8) {   //English PDS
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         spinner.center = CGPointMake(400, 350);
         
@@ -1305,7 +1292,7 @@ id RiderCount;
         });
         
     }
-    else if (indexPath.row == 8) {   //Malay PDS
+    else if (indexPath.row == 9) {   //Malay PDS
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         spinner.center = CGPointMake(400, 350);
         
@@ -1640,6 +1627,13 @@ id RiderCount;
     getbasicTempHL = nil;
     getPlanCode = nil;
     getAdvance = 0;
+}
+
+-(void)RemovePDS{
+    [ListOfSubMenu removeObject:@"Quotation"];
+    [ListOfSubMenu removeObject:@"Product Disclosure Sheet"];
+    [ListOfSubMenu removeObject:@"   English"];
+    [ListOfSubMenu removeObject:@"   Malay"];
 }
 
 @end

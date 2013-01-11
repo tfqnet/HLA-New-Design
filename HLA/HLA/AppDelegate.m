@@ -11,7 +11,7 @@
 @implementation AppDelegate
 @synthesize indexNo;
 @synthesize userRequest, MhiMessage;
-@synthesize SICompleted,ExistPayor;
+@synthesize SICompleted,ExistPayor, HomeIndex, ProspectListingIndex, NewProspectIndex,NewSIIndex, SIListingIndex, ExitIndex;
 
 @synthesize window = _window;
 
@@ -22,6 +22,13 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     SICompleted = YES;
     ExistPayor = YES;
     // Override point for customization after application launch.
+    
+    HomeIndex = 0;
+    ProspectListingIndex = 1;
+    //NewProspectIndex = 2;
+    SIListingIndex = 2;
+    NewSIIndex = 3;
+    ExitIndex = 4;
     
     //for ios6 start, will also clear out ios5.1
     NSFileManager *fileManager = [NSFileManager defaultManager];

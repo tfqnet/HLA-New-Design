@@ -12,6 +12,12 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, assign,readwrite) int indexNo;
+@property (nonatomic, assign,readwrite) int HomeIndex;
+@property (nonatomic, assign,readwrite) int ProspectListingIndex;
+@property (nonatomic, assign,readwrite) int NewProspectIndex;
+@property (nonatomic, assign,readwrite) int SIListingIndex;
+@property (nonatomic, assign,readwrite) int NewSIIndex;
+@property (nonatomic, assign,readwrite) int ExitIndex;
 @property (nonatomic,strong) id userRequest;
 @property (nonatomic,strong) id MhiMessage;
 @property (nonatomic,assign,readwrite) BOOL SICompleted;
