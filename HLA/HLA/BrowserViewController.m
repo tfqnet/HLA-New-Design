@@ -282,6 +282,8 @@ NSMutableArray *ItemPages;
     browserController = nil;
 }
 
+
+
 -(void)PrevPage{
     
     [self.navigationController setRevealedState:JTRevealedStateNo];
