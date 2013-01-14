@@ -79,8 +79,6 @@
 @property (nonatomic, assign,readwrite) int secondLAAge;
 @property (nonatomic, copy) NSString *secondLAOccpCode;
 //--
-
-//screen field
 @property (strong, nonatomic) IBOutlet UIButton *btnPlan;
 @property (retain, nonatomic) IBOutlet UITextField *termField;
 @property (retain, nonatomic) IBOutlet UITextField *yearlyIncomeField;

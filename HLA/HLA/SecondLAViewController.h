@@ -39,7 +39,6 @@
 @property (nonatomic, retain) UIPopoverController *popOverController;
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
 @property (nonatomic,strong) id <SecondLAViewControllerDelegate> delegate;
-
 //--request
 @property (nonatomic, assign,readwrite) int requestLAIndexNo;
 @property (nonatomic,strong) id requestSINo;
@@ -48,7 +47,6 @@
 @property(nonatomic , retain) NSString *getSINo;
 @property (nonatomic, copy) NSString *getCommDate;
 //--
-
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *smokerSegment;
@@ -60,7 +58,6 @@
 @property (strong, nonatomic) IBOutlet UITextField *OccpField;
 @property (strong, nonatomic) IBOutlet UIButton *deleteBtn;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
-
 
 @property (nonatomic, assign,readwrite) int IndexNo;
 @property (nonatomic, copy) NSString *sex;

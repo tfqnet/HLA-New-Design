@@ -88,6 +88,14 @@ id RiderCount;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    CGRect rectApp = [[UIScreen mainScreen] applicationFrame];
+    rectApp.origin = CGPointZero;
+    
+    self.view.superview.autoresizingMask =  UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    self.view.superview.autoresizesSubviews = YES;
+    self.RightView.superview.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    self.RightView.superview.autoresizesSubviews = YES;
+    
     self.myTableView.frame = CGRectMake(0, 0, 220, 748);
     [self hideSeparatorLine];
     self.RightView.frame = CGRectMake(223, 0, 801, 748);

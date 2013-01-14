@@ -12,8 +12,6 @@
 #import "BasicPlanHandler.h"
 #import "BrowserViewController.h"
 
-
-
 @interface PremiumViewController : UIViewController<BrowserDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
@@ -23,7 +21,6 @@
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
 @property (nonatomic,strong) SIHandler *premH;
 @property (nonatomic,strong) BasicPlanHandler *premBH;
-
 //--request
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic, assign,readwrite) int requestOccpClass;
@@ -47,7 +44,6 @@
 @property (nonatomic,strong) NSString *getBasicTempHL;
 @property (nonatomic,strong) NSString *getPlanCode;
 //--
-
 @property (nonatomic, assign,readwrite) int basicRate;
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;

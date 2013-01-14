@@ -57,7 +57,6 @@
 @property (nonatomic, retain) RiderPlanTb *planList;
 @property (nonatomic, retain) RiderDeducTb *deductList;
 @property (nonatomic,strong) id <RiderViewControllerDelegate> delegate;
-
 //--request
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) id requestPlanCode;
@@ -85,7 +84,6 @@
 @property (nonatomic, assign,readwrite) int getMOP;
 @property (nonatomic, assign,readwrite) int getAdvance;
 //--
-
 @property (nonatomic, retain) UIPopoverController *RiderListPopover;
 @property (nonatomic, retain) UIPopoverController *planPopover;
 @property (nonatomic, retain) UIPopoverController *deducPopover;
@@ -114,7 +112,6 @@
 @property (retain, nonatomic) IBOutlet UILabel *maxDisplayLabel;
 @property (strong, nonatomic) IBOutlet UITextField *classField;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
-
 //get from popover
 @property (nonatomic,copy) NSString *pTypeCode;
 @property (nonatomic, assign,readwrite) int PTypeSeq;
@@ -123,7 +120,6 @@
 @property (nonatomic,copy) NSString *pTypeOccp;
 @property (nonatomic,copy) NSString *riderCode;
 @property (nonatomic,copy) NSString *riderDesc;
-
 //setup form field
 @property(nonatomic , retain) NSMutableArray *FLabelCode;
 @property(nonatomic , retain) NSMutableArray *FLabelDesc;
@@ -192,16 +188,16 @@
 @property (retain, nonatomic) NSMutableArray *LPlanOpt;
 @property (retain, nonatomic) NSMutableArray *LUnits;
 @property(nonatomic , retain) NSMutableArray *LDeduct;
+@property(nonatomic , retain) NSMutableArray *LOccpCode;
 @property(nonatomic , retain) NSMutableArray *LRidHL1K;
+@property(nonatomic , retain) NSMutableArray *LRidHLTerm;
 @property(nonatomic , retain) NSMutableArray *LRidHL100;
+@property(nonatomic , retain) NSMutableArray *LRidHL100Term;
 @property(nonatomic , retain) NSMutableArray *LRidHLP;
 @property(nonatomic , retain) NSMutableArray *LRidHLPTerm;
 @property(nonatomic , retain) NSMutableArray *LSmoker;
 @property(nonatomic , retain) NSMutableArray *LSex;
 @property(nonatomic , retain) NSMutableArray *LAge;
-@property(nonatomic , retain) NSMutableArray *LRidHLTerm;
-@property(nonatomic , retain) NSMutableArray *LRidHL100Term;
-@property(nonatomic , retain) NSMutableArray *LOccpCode;
 
 @property (retain, nonatomic) NSMutableArray *LTypeRiderCode;
 @property (retain, nonatomic) NSMutableArray *LTypeSumAssured;
@@ -209,16 +205,16 @@
 @property (retain, nonatomic) NSMutableArray *LTypePlanOpt;
 @property (retain, nonatomic) NSMutableArray *LTypeUnits;
 @property(nonatomic , retain) NSMutableArray *LTypeDeduct;
+@property(nonatomic , retain) NSMutableArray *LTypeOccpCode;
 @property(nonatomic , retain) NSMutableArray *LTypeRidHL1K;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHLTerm;
 @property(nonatomic , retain) NSMutableArray *LTypeRidHL100;
+@property(nonatomic , retain) NSMutableArray *LTypeRidHL100Term;
 @property(nonatomic , retain) NSMutableArray *LTypeRidHLP;
 @property(nonatomic , retain) NSMutableArray *LTypeRidHLPTerm;
 @property(nonatomic , retain) NSMutableArray *LTypeSmoker;
 @property(nonatomic , retain) NSMutableArray *LTypeSex;
 @property(nonatomic , retain) NSMutableArray *LTypeAge;
-@property(nonatomic , retain) NSMutableArray *LTypeRidHLTerm;
-@property(nonatomic , retain) NSMutableArray *LTypeRidHL100Term;
-@property(nonatomic , retain) NSMutableArray *LTypeOccpCode;
 
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;

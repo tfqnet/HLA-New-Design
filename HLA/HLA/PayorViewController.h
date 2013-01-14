@@ -35,6 +35,11 @@
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
 @property (nonatomic,strong) id <PayorViewControllerDelegate> delegate;
 
+@property (nonatomic,strong) SIHandler *laHand;
+@property (nonatomic,strong) PayorHandler *payorHand;
+@property (nonatomic,strong) BasicPlanHandler *basicHand;
+@property (strong, nonatomic) NSMutableArray *dataInsert;
+
 //--request
 @property (nonatomic, assign,readwrite) int requestLAIndexNo;
 @property (nonatomic, assign,readwrite) int requestLAAge;
@@ -45,12 +50,6 @@
 @property(nonatomic , retain) NSString *getSINo;
 @property (nonatomic, copy) NSString *getCommDate;
 //--
-
-@property (nonatomic,strong) SIHandler *laHand;
-@property (nonatomic,strong) PayorHandler *payorHand;
-@property (nonatomic,strong) BasicPlanHandler *basicHand;
-@property (strong, nonatomic) NSMutableArray *dataInsert;
-
 @property (retain, nonatomic) IBOutlet UITextField *nameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *smokerSegment;
@@ -81,7 +80,6 @@
 @property (nonatomic, assign,readwrite) int clientID;
 @property (nonatomic, copy) NSString *OccpDesc;
 @property (nonatomic, copy) NSString *CheckRiderCode;
-
 
 @property(nonatomic , retain) NSString *NamePP;
 @property(nonatomic , retain) NSString *DOBPP;

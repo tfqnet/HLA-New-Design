@@ -925,13 +925,25 @@
 
 - (void)viewDidUnload
 {
+    [self resignFirstResponder];
+    [self setPopOverController:nil];
+    [self setProspectList:nil];
+    [self setDelegate:nil];
+    [self setRequestSINo:nil];
+    [self setRequestCommDate:nil];
+    [self setGetSINo:nil];
+    [self setGetCommDate:nil];
     [self setNameField:nil];
     [self setSexSegment:nil];
     [self setSmokerSegment:nil];
+    [self setDOBField:nil];
     [self setAgeField:nil];
+    [self setOccpField:nil];
     [self setOccpLoadField:nil];
     [self setCPAField:nil];
     [self setPAField:nil];
+    [self setDeleteBtn:nil];
+    [self setMyToolBar:nil];
     [self setSex:nil];
     [self setSmoker:nil];
     [self setDOB:nil];
@@ -943,13 +955,10 @@
     [self setClientName:nil];
     [self setOccpDesc:nil];
     [self setCheckRiderCode:nil];
-    [self setDOBField:nil];
-    [self setOccpField:nil];
-    [self setDOBField:nil];
-    [self setOccpField:nil];
-    [self setDeleteBtn:nil];
-    [self setGetCommDate:nil];
-    [self setMyToolBar:nil];
+    [self setNamePP:nil];
+    [self setDOBPP:nil];
+    [self setGenderPP:nil];
+    [self setOccpCodePP:nil];
     [super viewDidUnload];
 }
 
