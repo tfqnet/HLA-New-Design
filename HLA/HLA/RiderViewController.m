@@ -1601,10 +1601,10 @@
         //get rate
         [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
         
-        double BasicSA = getBasicSA;
-        double BasicHLoad = getBasicHL;
+//        double BasicSA = getBasicSA;
+//        double BasicHLoad = getBasicHL;
         double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
-        double PolicyTerm = getTerm;
+//        double PolicyTerm = getTerm;
         double riderHLoad;
         if ([[LRidHL1K objectAtIndex:i] doubleValue] > 0) {
             riderHLoad = [[LRidHL1K objectAtIndex:i] doubleValue];
@@ -1625,24 +1625,7 @@
         //calculate occupationLoading
         pTypeOccp = [LOccpCode objectAtIndex:i];
         [self getOccLoadRider];
-        double OccpLoadA = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * annFac;
-        double OccpLoadH = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * halfFac;
-        double OccpLoadQ = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * quarterFac;
-        double OccpLoadM = occLoadRider * ((PolicyTerm + 1)/2) * (BasicSA/1000) * monthFac;
-        NSLog(@"RiderOccpL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",OccpLoadA,OccpLoadH,OccpLoadQ,OccpLoadM);
-        
-        
-        //calculate rider health loading
-        double RiderHLAnnually = BasicHLoad * (BasicSA/1000) * annFac;
-        double RiderHLHalfYear = BasicHLoad * (BasicSA/1000) * halfFac;
-        double RiderHLQuarterly = BasicHLoad * (BasicSA/1000) * quarterFac;
-        double RiderHLMonthly = BasicHLoad * (BasicSA/1000) * monthFac;
-        NSLog(@"RiderHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",RiderHLAnnually,RiderHLHalfYear,RiderHLQuarterly,RiderHLMonthly);
-        double riderHLoadA = riderHLoad + RiderHLAnnually;
-        double riderHLoadH = riderHLoad + RiderHLHalfYear;
-        double riderHLoadQ = riderHLoad + RiderHLQuarterly;
-        double riderHLoadM = riderHLoad + RiderHLMonthly;
-        NSLog(@"newHL:%.2f",riderHLoadA);
+        NSLog(@"occpLoadRate:%d",occLoadRider);
         
         double annualRider;
         double halfYearRider;
@@ -1656,10 +1639,10 @@
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPremMonth) *12;
             NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
-            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + riderHLoadA/100);
-            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + riderHLoadH/100);
-            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + riderHLoadQ/100);
-            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 *0 + riderHLoadM/100);
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 *0 + riderHLoad/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 *0 + riderHLoad/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + (double)ridTerm/1000 *0 + riderHLoad/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + (double)ridTerm/1000 *0 + riderHLoad/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
             annualRider = annualRider_ * annFac;
@@ -1675,10 +1658,10 @@
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
 //            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
-            double annualRider_ = waiverAnnPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLAnnually/100);
-            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLHalfYear/100);
-            double quarterRider_ = waiverQuarPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLQuarterly/100);
-            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + ((double)ridTerm)/1000 * occLoadRider + RiderHLMonthly/100);
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + riderHLoad/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + riderHLoad/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + riderHLoad/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + riderHLoad/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
             annualRider = annualRider_ * annFac;
