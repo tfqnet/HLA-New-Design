@@ -113,6 +113,9 @@
 				zzz = parseFloat(row.BasicSA) * 12.75;
 				desc = '(85.0% of all future GYI yet to fall due)';
 			    }
+			    else{
+				document.getElementById('hide').style.visibility = "hidden";
+			    }
 			    sss = parseFloat(row.BasicSA) * 4.5;
 			    rrr = parseFloat(row.BasicSA) * 4.5;
 			}
@@ -125,6 +128,9 @@
 				zzz = parseFloat(row.BasicSA) * 13.5;
 				desc = '(90.0% of all future GYI yet to fall due)';
 			    }
+			    else{
+				document.getElementById('hide').style.visibility = "hidden";
+			    }
 			    sss = parseFloat(row.BasicSA) * 6.5;
 			    rrr = parseFloat(row.BasicSA) * 6.5;
 			}
@@ -136,6 +142,9 @@
 			    else if(row.AdvanceYearlyIncome == '75') {
 				zzz = parseFloat(row.BasicSA) * 14.25;
 				desc = '(95.0% of all future GYI yet to fall due)';
+			    }
+			    else{
+				document.getElementById('hide').style.visibility = "hidden";
 			    }
 			    sss = parseFloat(row.BasicSA) * 8.5;
 			    rrr = parseFloat(row.BasicSA) * 8.5;
@@ -252,6 +261,10 @@
 			
 			Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika ada) sebelum membuat apa-apa bayaran.<br/>
 			
+	    </td>
+	</tr>
+	<tr>
+	    <td>
 		ii)	Pemunya Polisi boleh mendahulukan semua PTT masa depan pada umur 60 atau 75 sekiranya polisi ini telah berkuat kuasa selama 10 tahun dan juga tertakluk kepada kecukupan Nilai Serahan Tunai Bersih polisi
 			tersebut. Amaun yang akan dibayar kepada Pemunya Polisi adalah seperti yang berikut. Setelah PTT didahulukan, semua pembayaran PTT masa depan akan dihentikan dan Faedah Kematian/ TPD Terjamin serta
 			Faedah Matang Terjamin akan dilaraskan seperti di bawah. Selain daripada itu, Nilai Serahan Tunai, Dividen Tunai, Dividen Terminal dan Dividen Terminal Istimewa akan dilaraskan.<br/>
@@ -280,17 +293,15 @@
 			<br/><br/>
 
 			<u><b>Rider yang Dilampirkan</b></u><br/><br/>
-			
-			
-			
+		
 	    </td>
-	</tr>    
+	</tr>
     </table>
 	
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
 	<tr>
 	    <td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
-		Risalah Pendedahan Produk ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada Risalah Pendedahan Produk. Bakal pemunya polisi
+		Risalah Pendedahan Produk ini mengandungi <span class="totalPagesPDS">{totalPagesPDS}</span> muka surat and setiap muka surat membentuk sebahagian daripada Risalah Pendedahan Produk. Bakal pemunya polisi
 		adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat. <br/>
 		<b><span id="rptVersion">{rptVersion}</span></b> <br/>
 		Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>

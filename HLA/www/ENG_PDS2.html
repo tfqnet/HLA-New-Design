@@ -113,6 +113,9 @@
 				zzz = parseFloat(row.BasicSA) * 12.75;
 				desc = '(85.0% of all future GYI yet to fall due)';
 			    }
+			    else{
+				document.getElementById('hide').style.visibility = "hidden";
+			    }
 			    sss = parseFloat(row.BasicSA) * 4.5;
 			    rrr = parseFloat(row.BasicSA) * 4.5;
 			}
@@ -125,6 +128,9 @@
 				zzz = parseFloat(row.BasicSA) * 13.5;
 				desc = '(90.0% of all future GYI yet to fall due)';
 			    }
+			    else{
+				document.getElementById('hide').style.visibility = "hidden";
+			    }
 			    sss = parseFloat(row.BasicSA) * 6.5;
 			    rrr = parseFloat(row.BasicSA) * 6.5;
 			}
@@ -136,6 +142,9 @@
 			    else if(row.AdvanceYearlyIncome == '75') {
 				zzz = parseFloat(row.BasicSA) * 14.25;
 				desc = '(95.0% of all future GYI yet to fall due)';
+			    }
+			    else{
+				document.getElementById('hide').style.visibility = "hidden";
 			    }
 			    sss = parseFloat(row.BasicSA) * 8.5;
 			    rrr = parseFloat(row.BasicSA) * 8.5;
@@ -249,6 +258,11 @@
 			order to offset the said advancement. <br/><br/>
 			
 			Upon surrender or death/ TPD claim. the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making any payment.<br/>
+			
+	    </td>
+	</tr>
+	<tr id="hide">
+	    <td>
 		ii)	Upon the Life Assured attains the age 60 or 75, the Policy Owner may advance all future GYI provided that the policy has been in force for 10 years, and provided that the policy has sufficient Net Cash Surrender<br/>
 			&nbsp;&nbsp;Value. The amount payable to Policy Owner shall be as illustrated below. Once the advancement of GYI is made, all the future GYI shall cease to be payable and the Guaranteed Death/TPD Benefit and Guaranteed<br/>
 			&nbsp;&nbsp;Maturity benefit shall be revised as below. In addition, Cash Surrender Value, Cash Dividend, Terminal Dividend and Special Terminal Dividend will be adjusted accordingly.<br/>
@@ -279,15 +293,15 @@
 			<u><b>Attaching Rider(s)</b></u><br/><br/>
 			
 			
-			
+		
 	    </td>
-	</tr>    
+	</tr>
     </table>
 	
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
 	<tr>
 		<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
-		This Product Disclosure Sheet consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the Product Disclosure Sheet. A prospective policy owner is advised to read and understand the
+		This Product Disclosure Sheet consists of <span class="totalPagesPDS">{totalPagesPDS}</span> pages and each page forms an integral part of the Product Disclosure Sheet. A prospective policy owner is advised to read and understand the
 		information printed on each and every page. <br/>
 		<b><span id="rptVersion">{rptVersion}</span></b> <br/>
 		Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
