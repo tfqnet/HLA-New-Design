@@ -902,7 +902,35 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    SINo = Nil;
+    YearlyIncome = Nil;
+    CashDividend = Nil;
+    CustCode = Nil;
+    Name = Nil;
+    strBasicAnnually = Nil, strBasicSemiAnnually = Nil, strBasicQuarterly = Nil, strBasicMonthly = Nil;
+    strOriBasicAnnually = Nil, strOriBasicSemiAnnually = Nil, strOriBasicQuarterly = Nil, strOriBasicMonthly = Nil;
+    sex = Nil, OccpClass = Nil;
+    OccLoading = Nil, aStrIncomeRiderAnnually = Nil, aStrIncomeRiderMonthly = Nil, aStrIncomeRiderQuarterly = Nil;
+    aStrIncomeRiderSemiAnnually = Nil, aStrOtherRiderAnnually = Nil, aStrOtherRiderMonthly = Nil;
+    aStrOtherRiderQuarterly =Nil, aStrOtherRiderSemiAnnually = nil;
+    IncomeRiderCode = Nil, IncomeRiderDesc = Nil, IncomeRiderPlanOption = Nil, IncomeRiderSA = Nil, IncomeRiderTerm = Nil;
+    OtherRiderCode = Nil, OtherRiderDeductible = Nil, OtherRiderDesc= Nil, OtherRiderPlanOption = Nil, OtherRiderSA = Nil;
+    OtherRiderTerm = Nil, SummaryGuaranteedAddEndValue = Nil, SummaryGuaranteedAddValue = Nil, SummaryGuaranteedDBValueA = Nil;
+    SummaryGuaranteedDBValueB = Nil, SummaryGuaranteedSurrenderValue = Nil, SummaryGuaranteedTotalGYI = Nil;
+    SummaryNonGuaranteedAccuCashDividendA = Nil, SummaryNonGuaranteedAccuCashDividendB = Nil, SummaryNonGuaranteedAccuYearlyIncomeA = nil;
+    SummaryNonGuaranteedAccuYearlyIncomeA = Nil, SummaryNonGuaranteedAccuYearlyIncomeB = Nil, SummaryNonGuaranteedDBValueA = Nil;
+    SummaryNonGuaranteedDBValueB = Nil, SummaryNonGuaranteedSurrenderValueA = Nil, SummaryNonGuaranteedSurrenderValueB =Nil;
+    _db = Nil, _dataTable = Nil;
+    UpdateTradDetail = Nil, gWaiverAnnual = Nil, gWaiverSemiAnnual = Nil, gWaiverQuarterly = Nil, gWaiverMonthly = Nil;
+    
     // Release any retained subviews of the main view.
+    
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

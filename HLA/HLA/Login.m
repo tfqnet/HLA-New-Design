@@ -52,6 +52,11 @@
     
     [self isFirstTimeLogin];
     
+
+    //NSString *path = [[NSBundle mainBundle] pathForResource:@"HLA Ipad-Info"  ofType:@"plist"];
+    //NSMutableDictionary *dictionary = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
+
+    
 }
 
 - (void)viewDidUnload

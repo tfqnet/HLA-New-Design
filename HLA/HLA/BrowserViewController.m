@@ -25,7 +25,7 @@
 @implementation BrowserViewController
 @synthesize leftSelectedIndexPath, leftSidebarViewController;
 @synthesize delegate = _delegate;
-@synthesize premH, premBH, gPages,Module;
+@synthesize gPages,Module;
 //@synthesize leftSidebarViewController;
 //@synthesize leftSelectedIndexPath;
 
@@ -120,7 +120,16 @@ NSMutableArray *ItemPages;
 {
     [super viewDidUnload];
     self.leftSidebarViewController = nil;
+    leftSelectedIndexPath = Nil;
+    
 }
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 /*
 -(void)viewWillAppear:(BOOL)animated{
     CDVViewController* browserController_page = [CDVViewController new];

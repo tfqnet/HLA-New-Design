@@ -108,7 +108,7 @@
     NSString *prevRider = @"";
     
     sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' AND RiderCode "
-               "NOT IN ('C+', 'HB', 'HMM', 'HSP_II', 'MG_II', 'MG_IV','CPA','PA') ORDER BY RiderCode ASC ",siNo];
+               "NOT IN ('C+', 'HMM', 'HSP_II', 'MG_II', 'MG_IV') ORDER BY RiderCode ASC ",siNo];
     //NSLog(@"%@",sqlStmt);
     _dataTable = [_db  ExecuteQuery:sqlStmt];
     
@@ -122,7 +122,8 @@
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"]
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
-            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"ICR"] ){
+            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"ICR"]
+            || [curRider isEqualToString:@"CIR"] ){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -225,7 +226,7 @@
     headerTitle = @"tblHeader;";
     
     sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' AND "
-               "RiderCode NOT IN ('C+','MG_II','MG_IV','HB','HSP_II','CPA','PA','HMM','CIR') ORDER BY RiderCode ASC ",siNo];
+               "RiderCode NOT IN ('C+','MG_II','MG_IV','HSP_II','HMM') ORDER BY RiderCode ASC ",siNo];
     
     //NSLog(@"%@",sqlStmt);
     _dataTable = [_db  ExecuteQuery:sqlStmt];
@@ -599,7 +600,7 @@
     NSString *prevRider = @"";
     
     sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' AND RiderCode "
-               "NOT IN ('C+', 'HB', 'HMM', 'HSP_II', 'MG_II', 'MG_IV','CPA','PA') ORDER BY RiderCode ASC ",siNo];
+               "NOT IN ('C+', 'HMM', 'HSP_II', 'MG_II', 'MG_IV') ORDER BY RiderCode ASC ",siNo];
     //NSLog(@"%@",sqlStmt);
     _dataTable = [_db  ExecuteQuery:sqlStmt];
     
@@ -613,7 +614,8 @@
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"]
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
-            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"ICR"] ){
+            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"ICR"]
+            || [curRider isEqualToString:@"CIR"]){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -1142,6 +1144,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewDidUnload{
+    [super viewDidUnload];
+    _dataTable = Nil;
+    _db = Nil;
+    SINo = Nil;
+    PDSLanguage = Nil;
 }
 
 @end

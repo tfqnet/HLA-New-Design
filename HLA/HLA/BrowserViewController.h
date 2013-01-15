@@ -39,8 +39,7 @@
 //@property (nonatomic, strong) UITableView *rightSidebarView;
 //@property (nonatomic, strong) UILabel     *label;
 @property (nonatomic, strong) id<BrowserDelegate> delegate;
-@property (nonatomic,strong) SIHandler *premH;
-@property (nonatomic,strong) BasicPlanHandler *premBH;
+
 @property (nonatomic, assign) int gPages;
 @property (nonatomic, assign) int Module;
 

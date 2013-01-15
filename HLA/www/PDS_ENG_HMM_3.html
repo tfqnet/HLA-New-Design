@@ -22,6 +22,8 @@
     var mcashPaymentD = '';
     var HMMRiderTerm = '';
     var HMMRiderPrem = '';
+    var FirstAge = '';
+    var PremList = [];
     //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
@@ -90,27 +92,100 @@
         },errorHandler,nullHandler);
         
 	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'HMM'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
-                    
-			var row = result.rows.item(0);
-			if(row.RiderCode == 'HMM' ){
-			    HMMRiderTerm = row.RiderTerm;
-			}
-		    
+                    var row;
+                    if(result.rows.length == 1){
+	                  var row = result.rows.item(0);
+			 FirstAge = row.Age;
+                    }
                 }
             },errorHandler);
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge IS NULL", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'HMM'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
-                    
-			var row = result.rows.item(0);
-			    HMMRiderPrem = row.Annually.replace(',', '');
-			    
+                    var row = result.rows.item(0);
+		    HMMRiderTerm = row.RiderTerm;
                 }
             },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
+		var zzz = (parseInt(FirstAge) + parseInt(1));
+		
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			
+			PremList[0] = row.Annually;
+		    }
+		},errorHandler);
+		
+		var zzz = (parseInt(FirstAge) + parseInt(2));
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			
+			PremList[1] = row.Annually;
+		    }
+		},errorHandler);
+		
+		var zzz = (parseInt(FirstAge) + parseInt(3));
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			
+			PremList[2] = row.Annually;
+		    }
+		},errorHandler);
+		
+		var zzz = (parseInt(FirstAge) + parseInt(4));
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			
+			PremList[3] = row.Annually;
+		    }
+		},errorHandler);
+		
+		var zzz = (parseInt(FirstAge) + parseInt(5));
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			
+			PremList[4] = row.Annually;
+		    }
+		},errorHandler);
+		
+		var zzz = (parseInt(FirstAge) + parseInt(6));
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			
+			PremList[5] = row.Annually;
+		    }
+		},errorHandler);
+		
+		var zzz = (parseInt(FirstAge) + parseInt(7));
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			
+			PremList[6] = row.Annually;
+		    }
+		},errorHandler);
+	
+	    
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
@@ -125,6 +200,8 @@
 			$('#PrintDate').html(displayDate);
                 }
             },errorHandler);
+	    
+	    
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
@@ -141,10 +218,12 @@
 		
                 if (result != null && result.rows != null) {
 		    
-                    for(var i = 1; i <=result.rows.length; i++){
+		    
+                    for(var i = 1; i <= 7; i++){
 			var row = result.rows.item(i-1);
-			$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(HMMRiderPrem)));                      
-			//$('#table-1 > tbody').append('<tr>' + '<td>Year ' + i + ' </td>' + '<td>' + formatCurrency(parseFloat(row.Rate)/100 * parseFloat(CRiderPrem)) + '</td>' + '</tr>');
+			//$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(HMMRiderPrem)));
+			
+			$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(PremList[i - 1])));                      
 		    }
                 }
             },errorHandler);

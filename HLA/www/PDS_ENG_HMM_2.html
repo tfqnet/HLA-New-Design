@@ -94,9 +94,10 @@
                 if (result != null && result.rows != null) {
                     for(var i = 0; i <result.rows.length; i++){
 			var row = result.rows.item(i);
-			if(row.RiderCode == 'HMM' ){
+			
 			    HMMRiderTerm = row.RiderTerm;
-			}
+			    $('#PlanOption').html(row.PlanOption);
+			    $('#Deductible').html(row.Deductible);
 		    }
                 }
             },errorHandler);
@@ -303,7 +304,7 @@
 		(d). Outpatient Kidney Dialysis Treatment<br/>
 		(e). Emergency Evacuation & Repatriation<br/><br/>
 		
-		<u><b>Renewal</b></u>
+		<u><b>Renewal</b></u><br/>
 		This rider is renewable at the option of the Policy Owner until the occurrence of any of the following:<br/>
 		-	non payment of premium or premium not made on time<br/>
 		-	fraud or misrepresentation of material fact during application<br/>
@@ -345,7 +346,7 @@
 			<td>Monthly (RM)</td>
 		    </tr>
 		    <tr>
-			<td>HLA Major Medi rider</td>
+			<td>HLA Major Medi rider &nbsp;<span id="PlanOption">{PlanOption}</span>&nbsp; with deductible<span id="Deductible">{Deductible}</span></td>
 			<td><span id="ValueA">{ValueA}</span></td>
 			<td><span id="ValueB">{ValueB}</span></td>
 			<td><span id="ValueC">{ValueC}</span></td>

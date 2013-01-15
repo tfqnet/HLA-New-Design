@@ -140,10 +140,10 @@
 			    sss = parseFloat(row.BasicSA) * 8.5;
 			    rrr = parseFloat(row.BasicSA) * 8.5;
 			}
-			$('#BasicSA').html(zzz);
+			$('#BasicSA').html(formatCurrency(zzz));
 			$('#AmountPayableDesc').html(desc);
-			$('#GuaranteedDeathOrTPDBenefit').html(sss);
-			$('#GuaranteedMaturityBenefit').html(rrr);
+			$('#GuaranteedDeathOrTPDBenefit').html(formatCurrency(sss));
+			$('#GuaranteedMaturityBenefit').html(formatCurrency(rrr));
                 }
             },errorHandler);
         },errorHandler,nullHandler);

@@ -96,25 +96,25 @@
 		    var row = result.rows.item(0);
 		    
 		    if(row.riders.charAt(row.riders.length-1) == ";"){
-		    rider = row.riders.slice(0, -1).split(";");
+			rider = row.riders.slice(0, -1).split(";");
 		    }
 		    else{
-		    rider = row.riders.split(";");
+			rider = row.riders.split(";");
 		    }
 				   
 				   
 		    //rider = row.riders.split(";");
 		    for(var i=0;i<rider.length;i++){
 		    //alert(rider[i]);
-		    temp = rider[i];
-		    if (temp == "C+"){
-			temp = "C"
-		    }
-		    else if (temp == "tblHeader"){
-		    $('#riderInPage').css('display','inline');
-		    }
+			temp = rider[i];
+			if (temp == "C+"){
+			    temp = "C"
+			}
+			else if (temp == "tblHeader"){
+			    $('#riderInPage').css('display','inline');
+			}
 		    
-		    $('#table-design1 tr.'+temp).css('display','table-row');
+			$('#table-design1 tr.'+temp).css('display','table-row');
 		    //$('#table-design1 tr.MG_IV').css('display','table-row');
 		    //$('#table-design1 tr.MG_II').css('display','table-row');
 		    //$('#table-design1 tr.PA').css('display','table-row');
@@ -155,47 +155,54 @@
 							  $('#cNursingCareAllowance').html('25% of Rider Sum Assured');
 							  }
 							  }
-							  },errorHandler);        				
+					},errorHandler);        				
 				   }
 				   if (temp == "HB"){
-				   transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
-							  if (result != null && result.rows != null) {
-							  var row = result.rows.item(0);
-							  $('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
-							  }
-							  },errorHandler);        				
+					transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+							       if (result != null && result.rows != null) {
+							       var row = result.rows.item(0);
+							       $('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
+							       }
+							       },errorHandler);        				
 				   }
 				   else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP"){
-				   $('#illness tr').css('display','table-row');
-				   }
-				   }
+					$('#illness tr').css('display','table-row');
+				    }
+		    }
 				   
-				   for (var j=0;j<rider.length;j++){
-				   //rider[j];
-				   //alert(rider[j]);
-				   var query =  "Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "' AND SINO = '" + siNo + "'"
-				   transaction.executeSql(query, [], function(transaction, result) {
+		    for (var j=0;j<rider.length;j++){
+		    //rider[j];
+		    //alert(rider[j]);
+			 var query =  "Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "' AND SINO = '" + siNo + "'"
+			 transaction.executeSql(query, [], function(transaction, result) {
+			 
+			      if (result.rows.length > 0) {
+			      //alert("got result");
+			      var row = result.rows.item(0);
+				 
+				 //alert(row.RiderTerm)
+				 $('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
+				 //$('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+				 if(row.SumAssured == ''){
+					      
+				    $('#' + row.RiderCode + 'RiderGYI').html(row.Units + ' unit(s)');
+					      
+			        }
+				   else{
+	    			      $('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+			    	   }
+				 
+			      }
+			      else{
+			      //alert("no result");
+			      }
+			 },errorHandler);
+		    }
 				   
-							  
-							  if (result.rows.length > 0) {
-							  //alert("got result");
-							  var row = result.rows.item(0);
-							     
-							     //alert(row.RiderTerm)
-							     $('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
-							     $('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
-							     
-							  }
-							  else{
-							  //alert("no result");
-							  }
-				   },errorHandler);
-				   }
 				   
-				   
-				   }
-				   },errorHandler);
-	    },errorHandler,nullHandler);
+		}
+	    },errorHandler);
+	},errorHandler,nullHandler);
 
         
         return;
@@ -204,7 +211,7 @@
 </head>
 
  
-<body onload="onBodyLoad()">
+<body onload="onBodyLoad(),setPage()">
 
 <body>
 <!-- Begin Wrapper -->
@@ -245,6 +252,139 @@
 </td>
 </tr> 
 <!--CCTR-Convertible Comprehensive Term Rider end--> 
+
+
+<!--CIR-Critical Illness Rider start--> 
+<tr class="CIR" id="CIR" style="display:table-row;">
+<td class="contentSmall">Critical Illness Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CIRRiderGYI">{CIRRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="CIRRiderTerm">{CIRRiderTerm}</span></td>
+<td class="content">
+RM <span id="CIRGYI">{CIRGYI}</span> akan dibayar apabila didiagnosis dengan mana-mana 36 penyakit kritikal yang melindungi hayat diinsuranskan dalam tempoh diinsuranskan.<br/>
+Premium tidak terjamin dan tertakluk kepada semakan semula Syarikat pada bila-bila masa dan dari semasa ke semasa dengan memberikan notis bertulis<br/>
+sekurang-kurangnya 90 hari kepada anda.<br/>
+Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
+
+<table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">1.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Strok</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">19.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hilang Pertuturan</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">2.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Serangan Jantung</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">20.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Otak</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">3.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Buah Pinggang Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">21.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Injap Jantung</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">4.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kanser</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">22.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Membawa Maut</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">5.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Pintasan Arteri Koronari</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">23.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">HIV Akibat Transfusi Darah</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">6.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Arteri Koronari Lain Yang Serius</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">24.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Meningitis Bakteria</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">7.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Angioplasti Dan Rawatan Pembedahan Lain Untuk Penyakit Arteri Koronari Utama *</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">25.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Trauma Kepala Utama</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">8.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kegagalan Hati Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">26.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Anemia Aplastik Kronik</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">9.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hepatitis Virus Fulminan</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">27.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Neuron Motor</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">10.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Koma</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">28.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Parkinson</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">11.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Tumor Otak Benigna</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">29.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Alzheimer/Gangguan Kemerosotan Otak Organik Tidak Boleh Pulih</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">12.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kelumpuhan/ Paraplegia</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">30.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Distrofi Otot</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">13.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kebutaan/Hilang Penglihatan Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">31.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pembedahan Aorta</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">14.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kepekakan/Hilang Pendengaran Menyeluruh</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">32.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Sklerosis Berbilang</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">15.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Melecur Teruk</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">33.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Hipertensi Arteri Pulmonari Primer</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">16.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Paru-Paru Tahap Akhir</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">34.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Penyakit Sistik Medulari</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">17.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Ensefalitis</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">35.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Kardiomiopathi Teruk</td>
+</tr>
+<tr>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">18.</td>
+<td width="50%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Pemindahan Organ Utama/Sumsum Tulang</td>
+<td width="4%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">36.</td>
+<td width="42%" style="padding: 0px 0px 1px 0px;text-align:left;border: 0px solid black;vertical-align: text-top;">Lupus Eritematosus Sistemik Dengan Lupus Nefritis</td>
+</tr>
+</table>
+
+<br/>
+*Pembayaran faedah di bawah penyakit ini terhad kepada 10% daripada perlindungan Penyakit Kritikal di bawah pelan ini tertakluk kepada maksimum RM25,000.<br/>
+Faedah ini akan dibayar sekali sahaja dan akan ditolak daripada pelindungan pelan ini, seterusnya akan mengurangkan jumlah bayaran sekali gus ketika kejadian<br/>
+Penyakit Kritikal.<br/><br/>
+
+</td>
+</tr>
+<!--CIR-Critical Illness Rider end-->
+
 
 <!--CIWP-Critical Illness WP Rider start--> 
 <tr class="CIWP" id="CIWP" style="display:table-row;">
@@ -374,6 +514,21 @@ Penyakit Kritikal.<br/><br/>
 </td></tr>
 <!--CIWP-Critical Illness WP Rider end-->
 
+<!--CPA-Compprehensive Personal Accident Rider start-->
+<tr class="CPA" id="CPA" style="display:table-row;">
+<td class="contentSmall">Comprehensive Personal Accident Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="CPARiderGYI">{CPARiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="CPARiderTerm">{CPARiderTerm}</span></td>
+<td class="content">
+Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau mengalami hilang upaya akibat kemalangan dalam tempoh diinsuranskan:<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh &amp; Kekal akibat kemalangan - rujuk jadual indeminiti<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang upaya menyeluruh sementara - indeminiti mingguan sebanyak RM8 bagi setiap 1,000 jumlah diinsuranskan<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang upaya separa sementara - indeminiti mingguan sebanyak RM2 bagi setiap 1,000 jumlah diinsuranskan<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pembayaran balik yuran &amp; perbelanjaan perubatan - sehingga RM20 bagi setiap 1,000 jumlah diinsuranskan<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indeminiti berganda - jumlah diinsuranskan yang akan dibayar digandakan jika Hayat Diinsuranskan meninggal dunia akibat kemalangan yang berlaku<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ketika Hayat Diinsuranskan di dalam Kenderaan Awam bergerak secara mekanikal dalam laluan darat yang ditetapkan, tidak termasuk Teksi<br/><br/>
+<!--CPA-Compprehensive Personal Accident Rider end-->
+
 
 <!--ETPD-Entended TPD Rider start-->
 <tr class="ETPD" id="ETPD" style="display:table-row;">
@@ -387,6 +542,19 @@ tahun pertama selepas bermulanya TPD.<br/><br/>
 </td>
 </tr>
 <!--ETPD-Entended TPD Rider end-->
+
+<!--HB-Hospitalisation Benefit start-->
+<tr class="HB" id="HB" style="display:table-row;">
+<td class="contentSmall">Hospitalisation Benefit</td>
+<td class="contentSmall" style="text-align:center;"><span id="HBRiderGYI">{HBRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="HBRiderTerm">{HBRiderTerm}</span></td>
+<td class="content">
+Faedah Hospitalisasi sebanyak RM <span id="HBBenefit">{HBBenefit}</span> setiap minggu akan dibayar jika hayat diinsuranskan dimasukkan ke hospital dalam tempoh diinsuranskan.<br/><br/>
+
+</td>
+</tr>
+<!--HB-Hospitalisation Benefit end-->
+
 
 <!--I20R-Income 20 Rider start-->
 <tr class="I20R" id="I20R" style="display:table-row;">
@@ -1149,6 +1317,25 @@ Penyakit Kritikal, Kematian atau TPD.<br/><br/>
 </td>
 </tr>
 <!--LCWP-Living Care Waiver of Premium Payor Rider end-->
+
+
+<!--PA-Personal Accident Rider start-->
+<tr class="PA" id="PA" style="display:table-row;">
+<td class="contentSmall">Personal Accident Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="PARiderGYI">{PARiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="PARiderTerm">{PARiderTerm}</span></td>
+<td class="content">
+
+Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau mengalami hilang upaya akibat kemalangan dalam tempoh diinsuranskan:<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian akibat Kemalangan - jumlah diinsuranskan daripada rider yang akan dibayar<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh &amp; Kekal akibat kemalangan - rujuk jadual indeminiti<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indeminiti berganda - jumlah diinsuranskan yang akan dibayar digandakan jika Hayat Diinsuranskan meninggal dunia akibat kemalangan berlaku ketika<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hayat Diinsuranskan di dalam Kenderaan Awam bergerak secara mekanikal dalam laluan darat yang ditetapkan, tidak termasuk Teksi<br/><br/>
+
+</td>
+</tr>
+<!--PA-Personal Accident Rider end-->
+
 
 <!--PR-Waiver of Premium Payor Rider start--> 
 <tr class="PR" id="PR" style="display:table-row;">

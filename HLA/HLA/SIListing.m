@@ -56,7 +56,7 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg18.jpg"]];
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     outletDelete.hidden = TRUE;
     outletDate.hidden = true;
     outletDone.hidden = true;

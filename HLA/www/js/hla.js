@@ -77,6 +77,15 @@ function setPageDesc(page){
         },errorHandler,nullHandler);
     
     db.transaction(function(transaction) {
+                   transaction.executeSql("Select PageNum from SI_Temp_Pages_PDS where htmlName = '" + sPage + "'", [], function(transaction, result) {
+                                          if (result != null && result.rows != null) {
+                                          var row = result.rows.item(0);
+                                          $('.currentPagePDS').html(row.PageNum);
+                                          }
+                                          },errorHandler);
+                   },errorHandler,nullHandler);
+    
+    db.transaction(function(transaction) {
                    transaction.executeSql("Select AgentLoginID,AgentCode from Agent_profile LIMIT 1", [], function(transaction, result) {
                                           if (result != null && result.rows != null) {
                                           var row = result.rows.item(0); 

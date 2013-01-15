@@ -88,7 +88,7 @@
     menuSIPage.menuLa2ndH = mainLa2ndH; */
     menuSIPage.requestSINo = [self.requestSINo description];
     menuSIPage.SIshowQuotation = showQuotation;
-    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
+    menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
 
