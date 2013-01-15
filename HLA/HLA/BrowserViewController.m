@@ -90,12 +90,8 @@ NSMutableArray *ItemPages;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 
         NSString *QuerySQL = @"";
-        if (Module == 1) {
+        
                 QuerySQL = [NSString stringWithFormat: @"Select htmlName from SI_Temp_Pages"];
-        }
-        else{
-           QuerySQL = [NSString stringWithFormat: @"Select htmlName from SI_Temp_Pages_PDS"];
-        }
         
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {

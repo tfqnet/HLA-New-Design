@@ -116,7 +116,7 @@
 	    
 		var zzz = (parseInt(FirstAge) + parseInt(1));
 		
-		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
 		    if (result != null && result.rows != null) {
 			var row = result.rows.item(0);
@@ -125,8 +125,13 @@
 		    }
 		},errorHandler);
 		
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
 		var zzz = (parseInt(FirstAge) + parseInt(2));
-		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
 		    if (result != null && result.rows != null) {
 			var row = result.rows.item(0);
@@ -135,8 +140,13 @@
 		    }
 		},errorHandler);
 		
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
 		var zzz = (parseInt(FirstAge) + parseInt(3));
-		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
 		    if (result != null && result.rows != null) {
 			var row = result.rows.item(0);
@@ -145,8 +155,13 @@
 		    }
 		},errorHandler);
 		
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
 		var zzz = (parseInt(FirstAge) + parseInt(4));
-		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
 		    if (result != null && result.rows != null) {
 			var row = result.rows.item(0);
@@ -155,8 +170,13 @@
 		    }
 		},errorHandler);
 		
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
 		var zzz = (parseInt(FirstAge) + parseInt(5));
-		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
 		    if (result != null && result.rows != null) {
 			var row = result.rows.item(0);
@@ -165,8 +185,13 @@
 		    }
 		},errorHandler);
 		
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
 		var zzz = (parseInt(FirstAge) + parseInt(6));
-		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
 		    if (result != null && result.rows != null) {
 			var row = result.rows.item(0);
@@ -175,8 +200,13 @@
 		    }
 		},errorHandler);
 		
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    
 		var zzz = (parseInt(FirstAge) + parseInt(7));
-		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge < '" + zzz +"' AND ToAge > '" + zzz  +"' ", [], function(transaction, result) {
+		
+		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
 		    if (result != null && result.rows != null) {
 			var row = result.rows.item(0);
@@ -184,8 +214,7 @@
 			PremList[6] = row.Annually;
 		    }
 		},errorHandler);
-	
-	    
+		
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
