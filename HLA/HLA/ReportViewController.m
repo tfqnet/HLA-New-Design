@@ -4697,7 +4697,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     
                     if (a <= 20 || (a > 20 && a % 5  == 0) || (a == [[IncomeRiderTerm objectAtIndex:i] intValue] && a%5 != 0) ) {
                         
-                        if (Age > 0){
+                        if (Age >= 0){
                             
                             inputAge = Age + a;
                             
