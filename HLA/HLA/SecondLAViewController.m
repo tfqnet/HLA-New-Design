@@ -328,24 +328,18 @@
             OccpLoadField.text = @"";
             CPAField.text = @"";
             PAField.text = @"";
-//            [self closeScreen];
         }
         else {
-            if (_delegate != nil) {
-            
-                _delegate = nil;
+            nameField.text = @"";
+            [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+            DOBField.text = @"";
+            ageField.text = @"";
+            OccpField.text= @"";
+            OccpLoadField.text = @"";
+            CPAField.text = @"";
+            PAField.text = @"";
                 
-                nameField.text = @"";
-                [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-                DOBField.text = @"";
-                ageField.text = @"";
-                OccpField.text= @"";
-                OccpLoadField.text = @"";
-                CPAField.text = @"";
-                PAField.text = @"";
-                
-                self.deleteBtn.hidden = YES;
-            }
+            self.deleteBtn.hidden = YES;
         }
         
         [_delegate secondLADelete];

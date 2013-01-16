@@ -413,10 +413,10 @@ id RiderCount;
             blocked = YES;
         }
         else {
-            if (_BasicController == nil) {
-                self.BasicController = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
-                _BasicController.delegate = self;
-            }
+            
+            self.BasicController = [self.storyboard instantiateViewControllerWithIdentifier:@"BasicPlanView"];
+            _BasicController.delegate = self;
+            
             self.BasicController.requestAge = getAge;
             self.BasicController.requestOccpCode = getOccpCode;
             self.BasicController.requestOccpClass = getOccpClass;
@@ -784,7 +784,7 @@ id RiderCount;
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 Name2ndLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                
+                NSLog(@"name2ndLA:%@",Name2ndLA);
             } else {
                 NSLog(@"error access get2ndLAName");
             }
@@ -808,7 +808,7 @@ id RiderCount;
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 NamePayor = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                
+                NSLog(@"namePayor:%@",NamePayor);
             } else {
                 NSLog(@"error access getPayorName");
             }

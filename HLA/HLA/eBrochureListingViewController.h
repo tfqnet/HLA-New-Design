@@ -10,7 +10,9 @@
 
 @interface eBrochureListingViewController : UITableViewController
 
-@property (strong,nonatomic) NSMutableArray *dataArray;
+@property (strong,nonatomic) NSMutableArray *arrTitle;
+@property (strong,nonatomic) NSMutableArray *arrNameFile;
+
 - (IBAction)btnClose:(id)sender;
 
 @end

@@ -13,35 +13,28 @@
 @end
 
 @implementation eBrochureViewController
-@synthesize outletWebview;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize outletWebview,fileName;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	
+    NSString *pdfFile = [NSString stringWithFormat:@"%@",[self.fileName description]];
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"Brochure_PremierLife" ofType:@"pdf"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:pdfFile ofType:@"pdf"];
     NSURL *targetURL = [NSURL fileURLWithPath:path];
     NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
+    [outletWebview setScalesPageToFit:YES];
     [outletWebview loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     [self setOutletWebview:nil];
     [super viewDidUnload];
 }

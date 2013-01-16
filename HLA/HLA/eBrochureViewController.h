@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface eBrochureViewController : UIViewController
+
 @property (weak, nonatomic) IBOutlet UIWebView *outletWebview;
+@property (strong, nonatomic) id fileName;
 
 @end
