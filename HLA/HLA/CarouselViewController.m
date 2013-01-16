@@ -15,6 +15,8 @@
 #import "NewLAViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
+#import "eBrochureViewController.h"
+#import "eBrochureListingViewController.h"
 
 const int numberOfModule = 4;
 
@@ -146,12 +148,10 @@ const int numberOfModule = 4;
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 2) {
-        /*
-        MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-        zzz.IndexTab = 3;
-        [self presentViewController:zzz animated:YES completion:Nil];
-        */
+        eBrochureListingViewController *BrochureListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eBrochureListing"];
+        BrochureListing.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:BrochureListing animated:NO completion:Nil];
+        
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 3) {

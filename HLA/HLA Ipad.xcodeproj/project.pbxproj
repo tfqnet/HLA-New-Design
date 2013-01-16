@@ -61,6 +61,19 @@
 		C4B84472169C63C500E1A0D3 /* 20130108Login.png in Resources */ = {isa = PBXBuildFile; fileRef = C4B8446D169C63C500E1A0D3 /* 20130108Login.png */; };
 		C4B84473169C63C500E1A0D3 /* 20130108Prospect.png in Resources */ = {isa = PBXBuildFile; fileRef = C4B8446E169C63C500E1A0D3 /* 20130108Prospect.png */; };
 		C4B84474169C63C500E1A0D3 /* 20130108SalesIllustration.png in Resources */ = {isa = PBXBuildFile; fileRef = C4B8446F169C63C500E1A0D3 /* 20130108SalesIllustration.png */; };
+		C4C501EF16A64C6300096156 /* Brochure_CSecure(Standalone).pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501E416A64C6300096156 /* Brochure_CSecure(Standalone).pdf */; };
+		C4C501F016A64C6300096156 /* Brochure_HLAIncomeBuilder_BM.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501E516A64C6300096156 /* Brochure_HLAIncomeBuilder_BM.pdf */; };
+		C4C501F116A64C6300096156 /* Brochure_HLAIncomeBuilder_Mand.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501E616A64C6300096156 /* Brochure_HLAIncomeBuilder_Mand.pdf */; };
+		C4C501F216A64C6300096156 /* Brochure_HSPII.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501E716A64C6300096156 /* Brochure_HSPII.pdf */; };
+		C4C501F316A64C6300096156 /* Brochure_MajorMedi.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501E816A64C6300096156 /* Brochure_MajorMedi.pdf */; };
+		C4C501F416A64C6300096156 /* Brochure_MajorMediPlus.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501E916A64C6300096156 /* Brochure_MajorMediPlus.pdf */; };
+		C4C501F516A64C6300096156 /* Brochure_MedGlobalII_Chi.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501EA16A64C6300096156 /* Brochure_MedGlobalII_Chi.pdf */; };
+		C4C501F616A64C6300096156 /* Brochure_MedGlobalII.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501EB16A64C6300096156 /* Brochure_MedGlobalII.pdf */; };
+		C4C501F716A64C6300096156 /* Brochure_MedGlobalIVP.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501EC16A64C6300096156 /* Brochure_MedGlobalIVP.pdf */; };
+		C4C501F816A64C6300096156 /* Brochure_PACare.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501ED16A64C6300096156 /* Brochure_PACare.pdf */; };
+		C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501EE16A64C6300096156 /* Brochure_PremierLife.pdf */; };
+		C4C5020116A64E1F00096156 /* eBrochureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C5020016A64E1F00096156 /* eBrochureViewController.m */; };
+		C4C5020416A652B000096156 /* eBrochureListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C5020316A652B000096156 /* eBrochureListingViewController.m */; };
 		C4E5A470168AAA89007848CE /* ChgPwd_24.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A45E168AAA89007848CE /* ChgPwd_24.png */; };
 		C4E5A471168AAA89007848CE /* ChgPwd_32.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A45F168AAA89007848CE /* ChgPwd_32.png */; };
 		C4E5A472168AAA89007848CE /* ChgPwd_48.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A460168AAA89007848CE /* ChgPwd_48.png */; };
@@ -284,6 +297,21 @@
 		C4B8446D169C63C500E1A0D3 /* 20130108Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20130108Login.png; sourceTree = "<group>"; };
 		C4B8446E169C63C500E1A0D3 /* 20130108Prospect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20130108Prospect.png; sourceTree = "<group>"; };
 		C4B8446F169C63C500E1A0D3 /* 20130108SalesIllustration.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 20130108SalesIllustration.png; sourceTree = "<group>"; };
+		C4C501E416A64C6300096156 /* Brochure_CSecure(Standalone).pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Brochure_CSecure(Standalone).pdf"; sourceTree = "<group>"; };
+		C4C501E516A64C6300096156 /* Brochure_HLAIncomeBuilder_BM.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_HLAIncomeBuilder_BM.pdf; sourceTree = "<group>"; };
+		C4C501E616A64C6300096156 /* Brochure_HLAIncomeBuilder_Mand.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_HLAIncomeBuilder_Mand.pdf; sourceTree = "<group>"; };
+		C4C501E716A64C6300096156 /* Brochure_HSPII.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_HSPII.pdf; sourceTree = "<group>"; };
+		C4C501E816A64C6300096156 /* Brochure_MajorMedi.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_MajorMedi.pdf; sourceTree = "<group>"; };
+		C4C501E916A64C6300096156 /* Brochure_MajorMediPlus.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_MajorMediPlus.pdf; sourceTree = "<group>"; };
+		C4C501EA16A64C6300096156 /* Brochure_MedGlobalII_Chi.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_MedGlobalII_Chi.pdf; sourceTree = "<group>"; };
+		C4C501EB16A64C6300096156 /* Brochure_MedGlobalII.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_MedGlobalII.pdf; sourceTree = "<group>"; };
+		C4C501EC16A64C6300096156 /* Brochure_MedGlobalIVP.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_MedGlobalIVP.pdf; sourceTree = "<group>"; };
+		C4C501ED16A64C6300096156 /* Brochure_PACare.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_PACare.pdf; sourceTree = "<group>"; };
+		C4C501EE16A64C6300096156 /* Brochure_PremierLife.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_PremierLife.pdf; sourceTree = "<group>"; };
+		C4C501FF16A64E1F00096156 /* eBrochureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eBrochureViewController.h; sourceTree = "<group>"; };
+		C4C5020016A64E1F00096156 /* eBrochureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eBrochureViewController.m; sourceTree = "<group>"; };
+		C4C5020216A652B000096156 /* eBrochureListingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eBrochureListingViewController.h; sourceTree = "<group>"; };
+		C4C5020316A652B000096156 /* eBrochureListingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eBrochureListingViewController.m; sourceTree = "<group>"; };
 		C4E5A45E168AAA89007848CE /* ChgPwd_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_24.png; sourceTree = "<group>"; };
 		C4E5A45F168AAA89007848CE /* ChgPwd_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_32.png; sourceTree = "<group>"; };
 		C4E5A460168AAA89007848CE /* ChgPwd_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_48.png; sourceTree = "<group>"; };
@@ -570,6 +598,35 @@
 			name = 20130108;
 			sourceTree = "<group>";
 		};
+		C4C501E216A64C4900096156 /* eBrochure */ = {
+			isa = PBXGroup;
+			children = (
+				C4C501E416A64C6300096156 /* Brochure_CSecure(Standalone).pdf */,
+				C4C501E516A64C6300096156 /* Brochure_HLAIncomeBuilder_BM.pdf */,
+				C4C501E616A64C6300096156 /* Brochure_HLAIncomeBuilder_Mand.pdf */,
+				C4C501E716A64C6300096156 /* Brochure_HSPII.pdf */,
+				C4C501E816A64C6300096156 /* Brochure_MajorMedi.pdf */,
+				C4C501E916A64C6300096156 /* Brochure_MajorMediPlus.pdf */,
+				C4C501EA16A64C6300096156 /* Brochure_MedGlobalII_Chi.pdf */,
+				C4C501EB16A64C6300096156 /* Brochure_MedGlobalII.pdf */,
+				C4C501EC16A64C6300096156 /* Brochure_MedGlobalIVP.pdf */,
+				C4C501ED16A64C6300096156 /* Brochure_PACare.pdf */,
+				C4C501EE16A64C6300096156 /* Brochure_PremierLife.pdf */,
+			);
+			name = eBrochure;
+			sourceTree = "<group>";
+		};
+		C4C501FB16A64D7700096156 /* eBrochure */ = {
+			isa = PBXGroup;
+			children = (
+				C4C501FF16A64E1F00096156 /* eBrochureViewController.h */,
+				C4C5020016A64E1F00096156 /* eBrochureViewController.m */,
+				C4C5020216A652B000096156 /* eBrochureListingViewController.h */,
+				C4C5020316A652B000096156 /* eBrochureListingViewController.m */,
+			);
+			name = eBrochure;
+			sourceTree = "<group>";
+		};
 		C4E5A45D168AAA4B007848CE /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -654,6 +711,7 @@
 		C4E9D19A1612C64900016053 /* HLA */ = {
 			isa = PBXGroup;
 			children = (
+				C4C501FB16A64D7700096156 /* eBrochure */,
 				C4B84457169B1A5B00E1A0D3 /* PDS */,
 				C41811251655E614006A05B9 /* Setting */,
 				C4F8302B162FCECC00EF8FAA /* html */,
@@ -717,6 +775,7 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4C501E216A64C4900096156 /* eBrochure */,
 				C4B8446A169C62E000E1A0D3 /* 20130108 */,
 				C4E5A45D168AAA4B007848CE /* Setting */,
 				C4F53545166EF490004DBF94 /* Rotation */,
@@ -1204,6 +1263,17 @@
 				C4B84473169C63C500E1A0D3 /* 20130108Prospect.png in Resources */,
 				C4B84474169C63C500E1A0D3 /* 20130108SalesIllustration.png in Resources */,
 				EFBE85DD16A5221900C49CED /* hladb.sqlite in Resources */,
+				C4C501EF16A64C6300096156 /* Brochure_CSecure(Standalone).pdf in Resources */,
+				C4C501F016A64C6300096156 /* Brochure_HLAIncomeBuilder_BM.pdf in Resources */,
+				C4C501F116A64C6300096156 /* Brochure_HLAIncomeBuilder_Mand.pdf in Resources */,
+				C4C501F216A64C6300096156 /* Brochure_HSPII.pdf in Resources */,
+				C4C501F316A64C6300096156 /* Brochure_MajorMedi.pdf in Resources */,
+				C4C501F416A64C6300096156 /* Brochure_MajorMediPlus.pdf in Resources */,
+				C4C501F516A64C6300096156 /* Brochure_MedGlobalII_Chi.pdf in Resources */,
+				C4C501F616A64C6300096156 /* Brochure_MedGlobalII.pdf in Resources */,
+				C4C501F716A64C6300096156 /* Brochure_MedGlobalIVP.pdf in Resources */,
+				C4C501F816A64C6300096156 /* Brochure_PACare.pdf in Resources */,
+				C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1284,6 +1354,8 @@
 				C4B84456169ACF4900E1A0D3 /* PDSViewController.m in Sources */,
 				C4B8445A169B1A8600E1A0D3 /* PDSBrowserViewController.m in Sources */,
 				C4B84460169B1F6200E1A0D3 /* PDSSidebarViewController.m in Sources */,
+				C4C5020116A64E1F00096156 /* eBrochureViewController.m in Sources */,
+				C4C5020416A652B000096156 /* eBrochureListingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
