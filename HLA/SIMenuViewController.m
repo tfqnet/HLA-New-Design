@@ -1505,7 +1505,7 @@ id RiderCount;
 
 -(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
 {
-    NSLog(@"::receive databasicSINo:%@",aaSINo);
+    NSLog(@"::receive databasicSINo:%@, advance:%d",aaSINo,aaAdvance);
     getSINo = aaSINo;
     getMOP = aaMOP;
     getTerm = aaCovered;

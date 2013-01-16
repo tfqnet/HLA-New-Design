@@ -111,7 +111,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         <items>
-                                            <navigationItem title="Change Password" id="Nxz-pw-InI">
+                                            <navigationItem id="Nxz-pw-InI">
                                                 <barButtonItem key="rightBarButtonItem" title="Next" id="Gcc-H4-AsT">
                                                     <connections>
                                                         <action selector="btnNext:" destination="5BD-GM-GkX" id="SG2-jX-nSf"/>
@@ -120,6 +120,13 @@
                                             </navigationItem>
                                         </items>
                                     </navigationBar>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Change Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u6O-Bh-oxR">
+                                        <rect key="frame" x="297" y="1" width="175" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                        <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -179,7 +186,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
-                                    <navigationItem title="Change Password: Security Tips" id="ba8-nt-cfp">
+                                    <navigationItem id="ba8-nt-cfp">
                                         <barButtonItem key="rightBarButtonItem" title="Close" id="cih-5F-3sa">
                                             <connections>
                                                 <action selector="BarButtonClose:" destination="lQZ-qK-jBt" id="lqX-AP-2EZ"/>
@@ -188,6 +195,13 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Change Password: Security Tips" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zwK-LS-RmH">
+                                <rect key="frame" x="355" y="0.0" width="315" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -263,6 +277,27 @@
                                             <action selector="btnReset:" destination="Gn2-qc-1Vc" eventType="touchUpInside" id="LaC-WB-zbW"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="iMobile Planner (TRAD)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5cG-GZ-c9h">
+                                        <rect key="frame" x="29" y="666" width="167" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="15"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Version 1.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oh7-G9-5gX">
+                                        <rect key="frame" x="195" y="666" width="116" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Last Updated: 16 January 2013" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zys-Fs-pL7">
+                                        <rect key="frame" x="29" y="686" width="253" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -271,6 +306,8 @@
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="labelUpdated" destination="zys-Fs-pL7" id="jNl-ZL-cwi"/>
+                        <outlet property="labelVersion" destination="oh7-G9-5gX" id="pno-1e-JiO"/>
                         <outlet property="lblForgotPwd" destination="JDY-eF-v7K" id="dze-JZ-7eD"/>
                         <outlet property="outletReset" destination="tB3-85-hmU" id="HGV-8R-Ue1"/>
                         <outlet property="scrollViewLogin" destination="Cmh-hN-UBq" id="XZU-Dt-lef"/>
@@ -300,7 +337,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
-                                    <navigationItem title="Home" id="cHd-nx-1UF">
+                                    <navigationItem id="cHd-nx-1UF">
                                         <barButtonItem key="rightBarButtonItem" title="Exit" id="Hpj-wg-Dei">
                                             <connections>
                                                 <action selector="btnExit:" destination="fXz-g2-Piq" id="H12-ua-vmj"/>
@@ -309,6 +346,13 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Home" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="plw-qR-7gZ">
+                                <rect key="frame" x="478" y="0.0" width="69" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -344,7 +388,7 @@
             <objects>
                 <viewController storyboardIdentifier="ForgotPwd" title="ForgotPwd" id="pe4-U5-Qve" customClass="ForgotPwd" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uEv-hL-YKR">
-                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                        <rect key="frame" x="0.0" y="20" width="540" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="v0V-RX-Pfa">
@@ -376,11 +420,11 @@
                                 </connections>
                             </button>
                             <navigationBar contentMode="scaleToFill" id="eZJ-rS-b8r">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
-                                    <navigationItem title="Retrieve Password" id="bZa-Yj-RKx">
+                                    <navigationItem id="bZa-Yj-RKx">
                                         <barButtonItem key="rightBarButtonItem" title="Close" id="vXS-wi-NXD">
                                             <connections>
                                                 <action selector="btnCancel:" destination="pe4-U5-Qve" id="ht9-UW-NKb"/>
@@ -403,11 +447,19 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Retrieve Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Kxn-fI-kFJ">
+                                <rect key="frame" x="177" y="0.0" width="186" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="lblSelectQues" destination="Yjl-lG-01O" id="Q8F-iK-GcZ"/>
                         <outlet property="lblStatusOne" destination="9Fw-AP-WtC" id="K0G-uX-evm"/>
@@ -452,7 +504,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
-                                    <navigationItem title="Settings" id="Aci-Mp-mrU">
+                                    <navigationItem id="Aci-Mp-mrU">
                                         <barButtonItem key="leftBarButtonItem" title="Close" id="1uO-FO-S2X">
                                             <connections>
                                                 <action selector="btnClose:" destination="CWO-Bz-98d" id="wVC-om-8le"/>
@@ -527,6 +579,13 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1FR-IG-s1G">
+                                <rect key="frame" x="481" y="0.0" width="89" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -557,7 +616,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         <items>
-                                            <navigationItem title="Settings - User Profile" id="bKU-F0-up0">
+                                            <navigationItem id="bKU-F0-up0">
                                                 <barButtonItem key="leftBarButtonItem" title="Close" id="Xly-1i-G15">
                                                     <connections>
                                                         <action selector="btnClose:" destination="Xma-Uf-txG" id="XeH-1Z-4Bu"/>
@@ -692,6 +751,13 @@
                                             <action selector="btnSave:" destination="Xma-Uf-txG" eventType="touchUpInside" id="mEg-u5-EwL"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Setting - User Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0cs-15-4xT">
+                                        <rect key="frame" x="270" y="5" width="211" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                        <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -845,7 +911,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         <items>
-                                            <navigationItem title="User Profile" id="3iO-jj-0Ql">
+                                            <navigationItem id="3iO-jj-0Ql">
                                                 <barButtonItem key="rightBarButtonItem" title="Done" id="c72-9x-k1h">
                                                     <connections>
                                                         <action selector="btnCancel:" destination="381-AA-ICO" id="iIr-Qt-LJB"/>
@@ -866,6 +932,13 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="User Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sSv-mU-1SG">
+                                        <rect key="frame" x="322" y="1" width="125" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                        <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -916,7 +989,7 @@
             <objects>
                 <viewController storyboardIdentifier="ChangePwd" title="ChangePwd" wantsFullScreenLayout="YES" id="Usq-Pz-nrv" customClass="ChangePassword" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ffQ-5f-pjH">
-                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="748"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New password" minimumFontSize="17" id="pZM-zK-FeX">
@@ -953,11 +1026,11 @@
                                 </connections>
                             </button>
                             <navigationBar contentMode="scaleToFill" id="8t9-pB-nis">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
-                                    <navigationItem title="Settings - Change Password" id="eN4-0n-U3U">
+                                    <navigationItem id="eN4-0n-U3U">
                                         <barButtonItem key="leftBarButtonItem" title="Close" id="Hnc-Qd-XgE">
                                             <connections>
                                                 <action selector="btnCancel:" destination="Usq-Pz-nrv" id="kiz-N5-OAU"/>
@@ -1036,12 +1109,19 @@
                                 <color key="textColor" red="0.0" green="0.15294118230000001" blue="0.99215692280000001" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Settings - Change Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3kF-ka-Vjz">
+                                <rect key="frame" x="250" y="0.0" width="268" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="lblMsg" destination="r5K-nL-cuX" id="60G-Ww-yUf"/>
                         <outlet property="lblTips" destination="Z06-Qr-L10" id="XLg-pH-ATP"/>
@@ -1073,7 +1153,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         <items>
-                                            <navigationItem title="Settings - Security Question" id="Ron-z4-6EE">
+                                            <navigationItem id="Ron-z4-6EE">
                                                 <barButtonItem key="leftBarButtonItem" title="Close" id="viz-O2-fUk">
                                                     <connections>
                                                         <action selector="ActionClose:" destination="HPZ-AH-16P" id="thb-1o-Ia1"/>
@@ -1212,6 +1292,13 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Settings - Security Question" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fij-Af-TOo">
+                                        <rect key="frame" x="206" y="0.0" width="283" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                        <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -1290,7 +1377,6 @@
                 <navigationController storyboardIdentifier="eBrochureListing" definesPresentationContext="YES" id="wxZ-la-ve3" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oUu-kg-afw">
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="6L3-DV-Yh5" kind="relationship" relationship="rootViewController" id="XBS-DB-uTn"/>
@@ -1400,7 +1486,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
-                                    <navigationItem title="Security Question" id="XfI-HX-KUF">
+                                    <navigationItem id="XfI-HX-KUF">
                                         <barButtonItem key="rightBarButtonItem" title="Next" id="8TM-RL-OkJ">
                                             <connections>
                                                 <action selector="btnCancel:" destination="dvM-1p-g76" id="gvx-42-NW5"/>
@@ -1504,6 +1590,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Security Question" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Gvl-FD-3Di">
+                                <rect key="frame" x="295" y="5" width="179" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -2041,7 +2134,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         <items>
-                                            <navigationItem title="Prospect Profile" id="ZeS-tg-YOz">
+                                            <navigationItem id="ZeS-tg-YOz">
                                                 <barButtonItem key="leftBarButtonItem" title="Cancel" id="Ocw-r0-gta">
                                                     <connections>
                                                         <action selector="ActionCancel:" destination="w1f-cC-g0i" id="bPt-lT-z2C"/>
@@ -2118,6 +2211,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Prospect Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="435-sU-O4o">
+                                        <rect key="frame" x="402" y="0.0" width="175" height="41"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                        <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -2462,7 +2562,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                 <items>
-                                    <navigationItem title="Sales Illustration Listing" id="ciw-El-srB">
+                                    <navigationItem id="ciw-El-srB">
                                         <barButtonItem key="rightBarButtonItem" title="Add New" id="T5O-ys-jR9">
                                             <connections>
                                                 <action selector="btnAddNewSI:" destination="upy-Sl-RlD" id="UYg-a6-IsO"/>
@@ -2575,6 +2675,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <action selector="btnReset:" destination="upy-Sl-RlD" eventType="touchUpInside" id="8dA-5P-Sub"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Sales Illustration Listing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pmx-7G-r6E">
+                                <rect key="frame" x="384" y="0.0" width="242" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -3192,7 +3299,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                         <items>
-                                            <navigationItem title="Edit Prospect Profile" id="5Fj-SY-1WP">
+                                            <navigationItem id="5Fj-SY-1WP">
                                                 <barButtonItem key="leftBarButtonItem" title="Cancel" id="xj5-LN-bbz">
                                                     <connections>
                                                         <action selector="btnCancel:" destination="cFG-Wv-6Fb" id="Xfa-4i-si3"/>
@@ -3271,6 +3378,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Edit Prospect Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TUA-yd-HYm">
+                                        <rect key="frame" x="347" y="0.0" width="218" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
+                                        <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                         </subviews>
@@ -3337,7 +3451,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="GvN-bs-n7T">
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="fU6-Z7-tEp" kind="relationship" relationship="rootViewController" id="e7I-W9-q3J"/>
@@ -5241,6 +5354,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <relationships>
                 <relationship kind="action" name="btnLogin:"/>
                 <relationship kind="action" name="btnReset:"/>
+                <relationship kind="outlet" name="labelUpdated" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="labelVersion" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="lblForgotPwd" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="outletReset" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="scrollViewLogin" candidateClass="UIScrollView"/>

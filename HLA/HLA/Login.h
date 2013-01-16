@@ -25,6 +25,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtUsername;
 @property (weak, nonatomic) IBOutlet UITextField *txtPassword;
 @property (weak, nonatomic) IBOutlet UILabel *lblForgotPwd;
+@property (strong, nonatomic) IBOutlet UILabel *labelVersion;
+@property (strong, nonatomic) IBOutlet UILabel *labelUpdated;
+
 - (IBAction)btnLogin:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;

@@ -26,48 +26,32 @@
 @synthesize txtPassword;
 @synthesize lblForgotPwd;
 @synthesize statusLogin,indexNo,agentID;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize labelUpdated,labelVersion;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"HLA_Rates.sqlite"]];
     [self makeDBCopy];
     
-    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forgotPassword:)];
     tapGesture.numberOfTapsRequired = 1;
     [lblForgotPwd addGestureRecognizer:tapGesture];
     
     [self isFirstTimeLogin];
-    
 
     //NSString *path = [[NSBundle mainBundle] pathForResource:@"HLA Ipad-Info"  ofType:@"plist"];
     //NSMutableDictionary *dictionary = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
-
     
-}
-
-- (void)viewDidUnload
-{
-    [self setTxtUsername:nil];
-    [self setTxtPassword:nil];
-    [self setLblForgotPwd:nil];
-    [self setScrollViewLogin:nil];
-    [self setOutletReset:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
+    NSString *version = [NSString stringWithFormat:
+                         @"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+    labelVersion.text = version;
+    labelUpdated.text = @"Last Updated: 16 January 2013";
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -112,6 +96,8 @@
 	[super viewDidDisappear:animated];
 }
 
+#pragma mark - handle db
+
 - (void)makeDBCopy 
 {	
     BOOL success;
@@ -146,74 +132,6 @@
 	
     
     
-}
-
-- (IBAction)btnLogin:(id)sender {
-    if (txtUsername.text.length <= 0) {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        
-        [txtUsername becomeFirstResponder];
-        
-    } 
-    else if (txtPassword.text.length <=0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        
-                [txtPassword becomeFirstResponder];
-    }
-    else {
-        
-        [self checkingFirstLogin];
-        NSLog(@"loginstatus:%d",statusLogin);
-        NSLog(@"indexNo:%d",indexNo);
-        NSLog(@"user:%@",agentID);
-        
-        if (statusLogin == 1 && indexNo != 0) {
-            
-            /*
-            FirstTimeViewController *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
-            newProfile.userID = indexNo;
-            //[self presentViewController:newProfile animated:YES completion:nil];
-            newProfile.modalPresentationStyle = UIModalPresentationPageSheet;
-            newProfile.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentModalViewController:newProfile animated:YES];
-            */
-            
-            SecurityQuestion *securityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
-            securityPage.userID = indexNo;
-            securityPage.FirstTimeLogin = 1;
-            securityPage.modalPresentationStyle = UIModalPresentationPageSheet;
-            securityPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentModalViewController:securityPage animated:NO];
-    
-            
-            
-        } else if (statusLogin == 0 && indexNo != 0) {
-            
-            txtUsername.text = @"";
-            txtPassword.text = @"";
-            
-            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-            zzz.indexNo = self.indexNo;
-            zzz.userRequest = agentID;
-            
-            /*
-            MainScreen *mainMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            mainMenu.userRequest = agentID;
-            mainMenu.indexNo = indexNo;
-            [self presentViewController:mainMenu animated:YES completion:nil];
-            */
-           
-            CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
-            [self presentViewController:carouselMenu animated:YES completion:Nil];
-            
-            [self updateDateLogin];
-            //            [self checkingLastLogout];
-        }
-    }
-
 }
 
 - (void)forgotPassword:(id)sender
@@ -289,7 +207,6 @@
         sqlite3_close(contactDB);
     }
 }
-
 
 -(void)checkingFirstLogin
 {
@@ -405,7 +322,84 @@
     self.scrollViewLogin.frame = CGRectMake(0, 0, 1024, 748);
 }
 
-- (IBAction)btnReset:(id)sender {
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    activeField = textField;
+    return YES;
+}
+
+#pragma mark - action
+
+- (IBAction)btnLogin:(id)sender {
+    if (txtUsername.text.length <= 0) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        [txtUsername becomeFirstResponder];
+        
+    }
+    else if (txtPassword.text.length <=0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        [txtPassword becomeFirstResponder];
+    }
+    else {
+        
+        [self checkingFirstLogin];
+        NSLog(@"loginstatus:%d",statusLogin);
+        NSLog(@"indexNo:%d",indexNo);
+        NSLog(@"user:%@",agentID);
+        
+        if (statusLogin == 1 && indexNo != 0) {
+            
+            /*
+             FirstTimeViewController *newProfile = [self.storyboard instantiateViewControllerWithIdentifier:@"firstTimeLogin"];
+             newProfile.userID = indexNo;
+             //[self presentViewController:newProfile animated:YES completion:nil];
+             newProfile.modalPresentationStyle = UIModalPresentationPageSheet;
+             newProfile.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+             [self presentModalViewController:newProfile animated:YES];
+             */
+            
+            SecurityQuestion *securityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
+            securityPage.userID = indexNo;
+            securityPage.FirstTimeLogin = 1;
+            securityPage.modalPresentationStyle = UIModalPresentationPageSheet;
+            securityPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentModalViewController:securityPage animated:NO];
+            
+            
+            
+        } else if (statusLogin == 0 && indexNo != 0) {
+            
+            txtUsername.text = @"";
+            txtPassword.text = @"";
+            
+            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+            zzz.indexNo = self.indexNo;
+            zzz.userRequest = agentID;
+            
+            /*
+             MainScreen *mainMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+             mainMenu.userRequest = agentID;
+             mainMenu.indexNo = indexNo;
+             [self presentViewController:mainMenu animated:YES completion:nil];
+             */
+            
+            CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+            [self presentViewController:carouselMenu animated:YES completion:Nil];
+            
+            [self updateDateLogin];
+            //            [self checkingLastLogout];
+        }
+    }
+    
+}
+
+- (IBAction)btnReset:(id)sender
+{
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     sqlite3_stmt *statement2;
@@ -427,8 +421,8 @@
                     if (sqlite3_step(statement2) == SQLITE_DONE){
                         
                         NSString *querySQL3 = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode = \"\", AgentName = \"\", "
-                                            " AgentContactNo = \"\", ImmediateLeaderCode = \"\", ImmediateLeaderName = \"\", BusinessRegNumber = \"\", "
-                                            " AgentEmail = \"\" "];
+                                               " AgentContactNo = \"\", ImmediateLeaderCode = \"\", ImmediateLeaderName = \"\", BusinessRegNumber = \"\", "
+                                               " AgentEmail = \"\" "];
                         if (sqlite3_prepare_v2(contactDB, [querySQL3 UTF8String], -1, &statement3, NULL) == SQLITE_OK)
                         {
                             if (sqlite3_step(statement3) == SQLITE_DONE){
@@ -443,10 +437,10 @@
                         }
                         
                     }
-                    sqlite3_finalize(statement2);    
+                    sqlite3_finalize(statement2);
                     
                 }
-                    
+                
                 
             } else {
                 NSLog(@"reset error");
@@ -455,13 +449,24 @@
         }
         sqlite3_close(contactDB);
     }
-
+    
 }
 
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+#pragma mark - memory
+
+- (void)viewDidUnload
 {
-    activeField = textField;
-    return YES;
+    [self setTxtUsername:nil];
+    [self setTxtPassword:nil];
+    [self setLblForgotPwd:nil];
+    [self setScrollViewLogin:nil];
+    [self setOutletReset:nil];
+    [self setLabelVersion:nil];
+    [self setLabelUpdated:nil];
+    [self setLabelUpdated:nil];
+    [self setLabelVersion:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
 }
 
 

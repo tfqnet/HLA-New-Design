@@ -588,13 +588,70 @@
         cashDividendSegment.selectedSegmentIndex = 1;
     }
     
-    if (advanceYearlyIncome == 60) {
-        advanceIncomeSegment.selectedSegmentIndex = 0;
-    } else if (advanceYearlyIncome == 75) {
-        advanceIncomeSegment.selectedSegmentIndex = 1;
-    } else if (advanceYearlyIncome == 0) {
-        advanceIncomeSegment.selectedSegmentIndex = 2;
+    //--handle advance segment
+    if (ageClient > 65) {
+        if (advanceYearlyIncome != 0) {
+            
+            advanceYearlyIncome = 0;
+            advanceIncomeSegment.selectedSegmentIndex = 2;
+            sqlite3_stmt *statement;
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+            {
+                NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET AdvanceYearlyIncome=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",advanceYearlyIncome,  @"datetime(\"now\", \"+8 hour\")", SINo];
+                
+                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                {
+                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        NSLog(@"BasicPlan update!");
+                    }
+                    else {
+                        NSLog(@"BasicPlan update Failed!");
+                    }
+                    sqlite3_finalize(statement);
+                }
+                sqlite3_close(contactDB);
+            }
+        }
     }
+    else if (ageClient > 50 && ageClient <=65)
+    {
+        if (advanceYearlyIncome == 60) {
+            advanceYearlyIncome = 0;
+            advanceIncomeSegment.selectedSegmentIndex = 2;
+            
+            sqlite3_stmt *statement;
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+            {
+                NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET AdvanceYearlyIncome=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",advanceYearlyIncome,  @"datetime(\"now\", \"+8 hour\")", SINo];
+                
+                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                {
+                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        NSLog(@"BasicPlan update!");
+                    }
+                    else {
+                        NSLog(@"BasicPlan update Failed!");
+                    }
+                    sqlite3_finalize(statement);
+                }
+                sqlite3_close(contactDB);
+            }
+        }
+    }
+    else {
+        if (advanceYearlyIncome == 60) {
+            advanceIncomeSegment.selectedSegmentIndex = 0;
+        }
+        else if (advanceYearlyIncome == 75) {
+            advanceIncomeSegment.selectedSegmentIndex = 1;
+        }
+        else if (advanceYearlyIncome == 0) {
+            advanceIncomeSegment.selectedSegmentIndex = 2;
+        }
+    }
+    //--end--
     
     if (getHL.length != 0) {
         //HLField.text = getHL;
@@ -618,11 +675,9 @@
     
     if (getHLTerm != 0) {
         HLTermField.text = [NSString stringWithFormat:@"%d",getHLTerm];
-
     }
     
     if (getTempHL.length != 0) {
-        //tempHLField.text = getTempHL;
         NSRange rangeofDot = [getTempHL rangeOfString:@"."];
         NSString *valueToDisplay = @"";
         
