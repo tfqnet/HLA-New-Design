@@ -207,6 +207,7 @@
 		EF05985C161A9428004A9095 /* RiderListTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05985A161A9428004A9095 /* RiderListTbViewController.m */; };
 		EF1343BD165C7CD600BF69B3 /* RiderDeducTb.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1343BC165C7CD600BF69B3 /* RiderDeducTb.m */; };
 		EF1343C1165C7CFD00BF69B3 /* RiderPlanTb.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */; };
+		EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
@@ -504,6 +505,7 @@
 		EF1343BC165C7CD600BF69B3 /* RiderDeducTb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderDeducTb.m; sourceTree = "<group>"; };
 		EF1343BF165C7CFD00BF69B3 /* RiderPlanTb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderPlanTb.h; sourceTree = "<group>"; };
 		EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderPlanTb.m; sourceTree = "<group>"; };
+		EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pdfData.plist; sourceTree = "<group>"; };
 		EF28C317161BE224009585CC /* SIMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMenuViewController.h; path = ../SIMenuViewController.h; sourceTree = "<group>"; };
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
 		EF28C321161C11C2009585CC /* SIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIHandler.h; path = ../SIHandler.h; sourceTree = "<group>"; };
@@ -748,6 +750,7 @@
 		C4E9D19B1612C64900016053 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */,
 				C4E9D19C1612C64900016053 /* iMobile Planner-Info.plist */,
 				C486D9D3163E6622009F8F21 /* Cordova.plist */,
 				C4E9D19D1612C64900016053 /* InfoPlist.strings */,
@@ -1274,6 +1277,7 @@
 				C4C501F716A64C6300096156 /* Brochure_MedGlobalIVP.pdf in Resources */,
 				C4C501F816A64C6300096156 /* Brochure_PACare.pdf in Resources */,
 				C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */,
+				EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
