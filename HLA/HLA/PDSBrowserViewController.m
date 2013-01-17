@@ -248,6 +248,10 @@ NSMutableArray *ItemPages;
     [self.navigationController setRevealedState:JTRevealedStateNo];
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
+    v = Nil;
+    
+    next.enabled = FALSE;
+    prev.enabled = FALSE;
     
     if (gPages + 1 < ItemPages.count) {
         gPages = gPages + 1;
@@ -261,10 +265,11 @@ NSMutableArray *ItemPages;
     browserController.wwwFolderName = @"www";
     browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
     browserController.view.frame = CGRectMake(0, 0, 1024, 700);
-    self.title = [NSString stringWithFormat:@"Page%d / %d", gPages + 1, ItemPages.count ];
+    self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
     [self.view addSubview:browserController.view];
     
     browserController = nil;
+    [self performSelector:@selector(enablePDSPreNext) withObject:Nil afterDelay:1.5];
 }
 
 -(void)PrevPage{
@@ -272,6 +277,10 @@ NSMutableArray *ItemPages;
     [self.navigationController setRevealedState:JTRevealedStateNo];
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
+    v = Nil;
+    
+    next.enabled = FALSE;
+    prev.enabled = FALSE;
     
     if (gPages - 1 >= 0 ) {
         gPages = gPages - 1;
@@ -285,20 +294,28 @@ NSMutableArray *ItemPages;
     browserController.wwwFolderName = @"www";
     browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
     browserController.view.frame = CGRectMake(0, 0, 1024, 700);
-    self.title = [NSString stringWithFormat:@"Page%d / %d", gPages + 1, ItemPages.count ];
+    self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
     [self.view addSubview:browserController.view];
     
     browserController = nil;
+    [self performSelector:@selector(enablePDSPreNext) withObject:Nil afterDelay:1.5];
 }
 
-
+-(void)enablePDSPreNext{
+    prev.enabled = TRUE;
+    next.enabled = TRUE;
+}
 
 - (NSIndexPath *)PDSlastSelectedIndexPathForSidebarViewController:(PDSSidebarViewController *)PDSsidebarViewController {
     return self.leftSelectedIndexPath;
 }
 
 -(void)CloseButtonAction{
-    //NSLog(@"%d", [self.view subviews].count);
+    
+    browserController = Nil;
+    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+    [v removeFromSuperview];
+    v = Nil;
     
     if ([self.view subviews].count > 1) {
         

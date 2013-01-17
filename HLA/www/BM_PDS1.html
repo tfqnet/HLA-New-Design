@@ -94,7 +94,8 @@
                 	//$('#dateModified').html(row.UpdatedAt);
 			//$('#PrintDate').html(row.UpdatedAt).replace('-', '/');
 			$('#PremPayYear').html(row.PremiumPaymentOption);
-			$('#BasicSA').html(row.BasicSA);
+			$('#BasicSA').html(formatCurrency(row.BasicSA));
+			$('#BasicSA1').html(formatCurrency(row.BasicSA));
 			$('#PolTerm').html(row.PolicyTerm);
 		
 		    var now = new Date();	
@@ -209,7 +210,7 @@
     
     <table>
 	<tr>
-	    <td width="10">1.</td>
+	    <td width="10"><b>1.</b></td>
 	    <td><b>Apakah produk ini?</b></td>
 	</tr>
 	<tr>
@@ -219,7 +220,7 @@
 	</tr>
 	
 	<tr>
-	    <td width="10">2.</td>
+	    <td width="10"><b>2.</b></td>
 	    <td><b>Apakah perlindungan / faedah yang disediakan?</b></td>
 	</tr>
 	<tr>
@@ -248,7 +249,7 @@
 		(ii)	Accumulated Guaranteed Yearly Income (if any), <br/>
 		(iii)	Accumulated Cash Dividend (if any) and<br/>
 		(iv)	Special Terminal Dividend (if any) <br/>
-		shall be payable.<br/>
+		akan dibayar.<br/>
 		<br/>
 		
 		Amaun tambahan sebanyak 300% daripada faedah TPD Terjamin akan dibayar atas TPD yang disebabkan oleh kemalangan.<br/>

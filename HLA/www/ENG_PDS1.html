@@ -94,7 +94,8 @@
                 	//$('#dateModified').html(row.UpdatedAt);
 			//$('#PrintDate').html(row.UpdatedAt).replace('-', '/');
 			$('#PremPayYear').html(row.PremiumPaymentOption);
-			$('#BasicSA').html(row.BasicSA);
+			$('#BasicSA').html(formatCurrency(row.BasicSA));
+			$('#BasicSA1').html(formatCurrency(row.BasicSA));
 			$('#PolTerm').html(row.PolicyTerm);
 		
 		    var now = new Date();	
@@ -293,7 +294,7 @@
 		The Total TPD Benefit per Life refers to TPD coverage of all in force policies for <u>each Life Assured</u> at the point of claim event.<br/>
 		<br/>
     		<b>Guaranteed Yearly Income</b><br/>
-		This plan provides Guaranteed Yearly Income of RM{BasicSA} starting from end of year 1 up to age 90.<br/>
+		This plan provides Guaranteed Yearly Income of RM<span id="BasicSA1">{BasicSA1}</span> starting from end of year 1 up to age 90.<br/>
 		<br/>
 		<b>Advancement of Future Guaranteed Yearly Income (GYI)</b><br/>
 		i)	Policy Owner may advance the next 5 years GYI upon happening of events as listed below; starting from the policy year where the first GYI is 

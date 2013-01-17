@@ -57,7 +57,7 @@
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-01-17"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-01-16"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -65,12 +65,18 @@
                                                         fromDate:StartDate
                                                           toDate:endDate
                                                          options:0];
-    if ([components day ] > 30) {
+    if ([components day ] > 30 ) {
          labelVersion.text = @"";
         lblForgotPwd.hidden = YES;
         labelUpdated.numberOfLines = 2;
             labelUpdated.text = @"Thank you for using iMobile Planner (beta release), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
         outletLogin.hidden = TRUE;
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Expire" message:@"Thank you for using iMobile Planner "
+                              "(beta release), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
+                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+        alert.tag = 1001;
+        [alert show];
     }
     else{
         
@@ -120,6 +126,14 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    if (alertView.tag = 1001) {
+        exit(0);
+    }
+    
 }
 
 #pragma mark - handle db

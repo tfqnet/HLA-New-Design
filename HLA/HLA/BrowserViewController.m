@@ -286,7 +286,7 @@ NSMutableArray *ItemPages;
     browserController.wwwFolderName = @"www";
     browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
     browserController.view.frame = CGRectMake(0, 0, 1024, 700);
-    self.title = [NSString stringWithFormat:@"Page%d / %d", gPages + 1, ItemPages.count ];
+    self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
     [self.view addSubview:browserController.view];
     
     browserController = nil;
@@ -318,7 +318,7 @@ NSMutableArray *ItemPages;
     browserController.wwwFolderName = @"www";
     browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
     browserController.view.frame = CGRectMake(0, 0, 1024, 700);
-    self.title = [NSString stringWithFormat:@"Page%d / %d", gPages + 1, ItemPages.count ];
+    self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
     [self.view addSubview:browserController.view];
     
     browserController = nil;

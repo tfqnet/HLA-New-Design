@@ -82,13 +82,13 @@ const int numberOfModule = 4;
     button.frame = CGRectMake(0, 0, 450.0f, 400.0f);
     
     //[button setTitle:[NSString stringWithFormat:@"%i", index] forState:UIControlStateNormal];
-    if (index % numberOfModule == 0) {
+    if (index % numberOfModule == 1) {
         //[button setTitle:[NSString stringWithFormat:@"Setting", index] forState:UIControlStateNormal];    
         //NSString *filename = [NSString stringWithFormat:@"btn_setting_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
         [button setBackgroundImage:[UIImage imageNamed:@"20130108Settings.png"] forState:UIControlStateNormal];  
     }
-    else if (index % numberOfModule == 1) {
+    else if (index % numberOfModule == 0) {
         //[button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_prospect_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
@@ -132,14 +132,14 @@ const int numberOfModule = 4;
     */
     AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     
-    if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //setting
+    if ([outletCarousel indexOfItemView:sender] % numberOfModule == 1) { //setting
         setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:zzz animated:NO completion:Nil];
         //[self.navigationController pushViewController:zzz animated:YES];
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 1) { //prospect
+    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //prospect
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.ProspectListingIndex;

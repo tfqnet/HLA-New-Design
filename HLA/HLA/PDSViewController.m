@@ -128,7 +128,7 @@
             prevRider = curRider;
             
             if(riderCount == 1){
-                //riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                riderInPage = [headerTitle stringByAppendingString:riderInPage];
             }
             
             riderInPage = [riderInPage stringByAppendingString:curRider];
@@ -242,7 +242,7 @@
         prevRider = curRider;
         
         if(riderCount == 1){
-            //riderInPage = [headerTitle stringByAppendingString:riderInPage];
+            riderInPage = [headerTitle stringByAppendingString:riderInPage];
         }
         
         riderInPage = [riderInPage stringByAppendingString:curRider];
@@ -620,7 +620,7 @@
             prevRider = curRider;
             
             if(riderCount == 1){
-                //riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                riderInPage = [headerTitle stringByAppendingString:riderInPage];
             }
             
             riderInPage = [riderInPage stringByAppendingString:curRider];
@@ -734,7 +734,7 @@
         prevRider = curRider;
         
         if(riderCount == 1){
-            //riderInPage = [headerTitle stringByAppendingString:riderInPage];
+            riderInPage = [headerTitle stringByAppendingString:riderInPage];
         }
         
         riderInPage = [riderInPage stringByAppendingString:curRider];

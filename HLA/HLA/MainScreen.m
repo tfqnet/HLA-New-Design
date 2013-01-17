@@ -65,7 +65,7 @@
     */
     
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"ProspectListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect Listing" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
+    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
 
     [controllersToAdd addObject:ProspectListingPage];
     
