@@ -15,8 +15,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C4E9D18F1612C64900016053"
                BuildableName = "HLA Ipad.app"
-               BlueprintName = "HLA Ipad"
-               ReferencedContainer = "container:HLA Ipad.xcodeproj">
+               BlueprintName = "iMobile Planner"
+               ReferencedContainer = "container:iMobile Planner.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,8 +33,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C4E9D18F1612C64900016053"
             BuildableName = "HLA Ipad.app"
-            BlueprintName = "HLA Ipad"
-            ReferencedContainer = "container:HLA Ipad.xcodeproj">
+            BlueprintName = "iMobile Planner"
+            ReferencedContainer = "container:iMobile Planner.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -52,8 +52,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C4E9D18F1612C64900016053"
             BuildableName = "HLA Ipad.app"
-            BlueprintName = "HLA Ipad"
-            ReferencedContainer = "container:HLA Ipad.xcodeproj">
+            BlueprintName = "iMobile Planner"
+            ReferencedContainer = "container:iMobile Planner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -70,8 +70,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C4E9D18F1612C64900016053"
             BuildableName = "HLA Ipad.app"
-            BlueprintName = "HLA Ipad"
-            ReferencedContainer = "container:HLA Ipad.xcodeproj">
+            BlueprintName = "iMobile Planner"
+            ReferencedContainer = "container:iMobile Planner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

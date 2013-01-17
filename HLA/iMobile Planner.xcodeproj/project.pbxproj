@@ -334,14 +334,14 @@
 		C4E7B387161B119E00066CBF /* SIListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIListing.m; sourceTree = "<group>"; };
 		C4E7B389161B147800066CBF /* siListingSortBy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = siListingSortBy.h; sourceTree = "<group>"; };
 		C4E7B38A161B147800066CBF /* siListingSortBy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = siListingSortBy.m; sourceTree = "<group>"; };
-		C4E9D1901612C64900016053 /* HLA Ipad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HLA Ipad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4E9D1901612C64900016053 /* iMobile Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iMobile Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E9D1941612C64900016053 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C4E9D1961612C64900016053 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C4E9D1981612C64900016053 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		C4E9D19C1612C64900016053 /* HLA Ipad-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HLA Ipad-Info.plist"; sourceTree = "<group>"; };
+		C4E9D19C1612C64900016053 /* iMobile Planner-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iMobile Planner-Info.plist"; sourceTree = "<group>"; };
 		C4E9D19E1612C64900016053 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C4E9D1A01612C64900016053 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C4E9D1A21612C64900016053 /* HLA Ipad-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HLA Ipad-Prefix.pch"; sourceTree = "<group>"; };
+		C4E9D1A21612C64900016053 /* iMobile Planner-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "iMobile Planner-Prefix.pch"; sourceTree = "<group>"; };
 		C4E9D1A31612C64900016053 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C4E9D1A41612C64900016053 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C4E9D1A71612C64900016053 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
@@ -682,7 +682,7 @@
 		C4E9D1911612C64900016053 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C4E9D1901612C64900016053 /* HLA Ipad.app */,
+				C4E9D1901612C64900016053 /* iMobile Planner.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -748,11 +748,11 @@
 		C4E9D19B1612C64900016053 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C4E9D19C1612C64900016053 /* HLA Ipad-Info.plist */,
+				C4E9D19C1612C64900016053 /* iMobile Planner-Info.plist */,
 				C486D9D3163E6622009F8F21 /* Cordova.plist */,
 				C4E9D19D1612C64900016053 /* InfoPlist.strings */,
 				C4E9D1A01612C64900016053 /* main.m */,
-				C4E9D1A21612C64900016053 /* HLA Ipad-Prefix.pch */,
+				C4E9D1A21612C64900016053 /* iMobile Planner-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1087,9 +1087,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C4E9D18F1612C64900016053 /* HLA Ipad */ = {
+		C4E9D18F1612C64900016053 /* iMobile Planner */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C4E9D1AE1612C64900016053 /* Build configuration list for PBXNativeTarget "HLA Ipad" */;
+			buildConfigurationList = C4E9D1AE1612C64900016053 /* Build configuration list for PBXNativeTarget "iMobile Planner" */;
 			buildPhases = (
 				C4E9D18C1612C64900016053 /* Sources */,
 				C4E9D18D1612C64900016053 /* Frameworks */,
@@ -1100,9 +1100,9 @@
 			dependencies = (
 				C486DAD316416962009F8F21 /* PBXTargetDependency */,
 			);
-			name = "HLA Ipad";
+			name = "iMobile Planner";
 			productName = HLA;
-			productReference = C4E9D1901612C64900016053 /* HLA Ipad.app */;
+			productReference = C4E9D1901612C64900016053 /* iMobile Planner.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1114,7 +1114,7 @@
 				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "InfoConnect Sdn Bhd";
 			};
-			buildConfigurationList = C4E9D18A1612C64900016053 /* Build configuration list for PBXProject "HLA Ipad" */;
+			buildConfigurationList = C4E9D18A1612C64900016053 /* Build configuration list for PBXProject "iMobile Planner" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1132,7 +1132,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				C4E9D18F1612C64900016053 /* HLA Ipad */,
+				C4E9D18F1612C64900016053 /* iMobile Planner */,
 			);
 		};
 /* End PBXProject section */
@@ -1450,8 +1450,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "HLA/HLA Ipad-Prefix.pch";
-				INFOPLIST_FILE = "HLA/HLA Ipad-Info.plist";
+				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
+				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1461,7 +1461,7 @@
 					"-all_load",
 					"-Obj-C",
 				);
-				PRODUCT_NAME = "HLA Ipad";
+				PRODUCT_NAME = "iMobile Planner";
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1471,8 +1471,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "HLA/HLA Ipad-Prefix.pch";
-				INFOPLIST_FILE = "HLA/HLA Ipad-Info.plist";
+				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
+				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1482,7 +1482,7 @@
 					"-all_load",
 					"-Obj-C",
 				);
-				PRODUCT_NAME = "HLA Ipad";
+				PRODUCT_NAME = "iMobile Planner";
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1491,7 +1491,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C4E9D18A1612C64900016053 /* Build configuration list for PBXProject "HLA Ipad" */ = {
+		C4E9D18A1612C64900016053 /* Build configuration list for PBXProject "iMobile Planner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4E9D1AC1612C64900016053 /* Debug */,
@@ -1500,7 +1500,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C4E9D1AE1612C64900016053 /* Build configuration list for PBXNativeTarget "HLA Ipad" */ = {
+		C4E9D1AE1612C64900016053 /* Build configuration list for PBXNativeTarget "iMobile Planner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C4E9D1AF1612C64900016053 /* Debug */,

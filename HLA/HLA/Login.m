@@ -57,7 +57,7 @@
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-01-06"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-01-17"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

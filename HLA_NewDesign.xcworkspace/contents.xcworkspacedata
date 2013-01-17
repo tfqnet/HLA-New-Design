@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:HLA/HLA Ipad.xcodeproj">
+      location = "group:HLA/iMobile Planner.xcodeproj">
    </FileRef>
 </Workspace>
