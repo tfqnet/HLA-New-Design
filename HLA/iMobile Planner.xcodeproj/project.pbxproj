@@ -1462,6 +1462,7 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
+				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1483,6 +1484,7 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
+				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
 			};
