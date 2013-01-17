@@ -2240,7 +2240,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         }
         
         for (int j =0; j<OtherRiderCode.count; j++) {
-            if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HMM" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_IV" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_II" ]) {
+            if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HMM" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_IV" ]
+                || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_II" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HSP_II" ] ) {
                 if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
                     double tempHMMRates;
                     

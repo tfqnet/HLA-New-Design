@@ -26,7 +26,7 @@
 @synthesize txtPassword;
 @synthesize lblForgotPwd;
 @synthesize statusLogin,indexNo,agentID;
-@synthesize labelUpdated,labelVersion;
+@synthesize labelUpdated,labelVersion,outletLogin;
 
 - (void)viewDidLoad
 {
@@ -47,11 +47,37 @@
     //NSString *path = [[NSBundle mainBundle] pathForResource:@"HLA Ipad-Info"  ofType:@"plist"];
     //NSMutableDictionary *dictionary = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
     
+    outletReset.hidden = YES;
+    
     NSString *version = [NSString stringWithFormat:
                          @"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
-    labelVersion.text = version;
-    labelUpdated.text = @"Last Updated: 16 January 2013";
+   // labelVersion.text = version;
+//    labelUpdated.text = @"Last Updated: 16 January 2013";
     
+     NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-01-06"];
+    
+    
+    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+                                                        fromDate:StartDate
+                                                          toDate:endDate
+                                                         options:0];
+    if ([components day ] > 30) {
+         labelVersion.text = @"";
+        lblForgotPwd.hidden = YES;
+        labelUpdated.numberOfLines = 2;
+            labelUpdated.text = @"Thank you for using iMobile Planner (beta release), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
+        outletLogin.hidden = TRUE;
+    }
+    else{
+        
+         labelVersion.text = version;
+        labelUpdated.text = @"Last Updated: 17 January 2013";
+                outletLogin.hidden = FALSE;
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -465,6 +491,7 @@
     [self setLabelUpdated:nil];
     [self setLabelUpdated:nil];
     [self setLabelVersion:nil];
+    [self setOutletLogin:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

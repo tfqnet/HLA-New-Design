@@ -94,7 +94,7 @@
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
     		    HMMRiderTerm = row.RiderTerm;
-		
+		    $('#PlanOption').html(row.PlanOption);
                 }
             },errorHandler);
         },errorHandler,nullHandler);
@@ -275,7 +275,7 @@
 			<td>Bulanan (RM)</td>
 		    </tr>
 		    <tr>
-			<td>Hospital & Surgical Plus II</td>
+			<td>Hospital & Surgical Plus II <span id="PlanOption">{PlanOption}</span></td>
 			<td><span id="ValueA">{ValueA}</span></td>
 			<td><span id="ValueB">{ValueB}</span></td>
 			<td><span id="ValueC">{ValueC}</span></td>
@@ -300,7 +300,7 @@
 			<td>Premium akan dibayar sehingga umur</td>
 		    </tr>
 		    <tbody>
-			<td>Hospital & Surgical Plus II</td>
+			<td>Hospital & Surgical Plus II </td>
 			<td><span id="PayableAge">{PayableAge}</span></td>
 		    </tbody>
 		</table>    

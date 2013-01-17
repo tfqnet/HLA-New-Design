@@ -85,7 +85,8 @@
         db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
-                    var row;
+                  
+		    var row;
                     var row = result.rows.item(0);
                     if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
         				$('.advanceYearlyIncome').hide();
@@ -102,24 +103,24 @@
         				},errorHandler);
 
 
-                    	if (parseInt(row.PremPayOpt) == 6){
-                    		$('#premiumPaymentTerm').html(row.PremPayOpt);
+                    	if (parseInt(row.PremiumPaymentOption) == 6){
+                    		$('#PremiumPaymentOption').html(row.PremiumPaymentOption);
                     		$('#attainedAge').html(row.AdvanceYearlyIncome);
                     		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18));
                     		$('#guaranteedPercent').html('60.0');
                     		//$('#guaranteedDeath').html();
                     		//$('#guaranteedMaturity').html();
                     	}
-                    	else if (parseInt(row.PremPayOpt) == 9){
-                    		$('#premiumPaymentTerm').html(row.PremPayOpt);
+                    	else if (parseInt(row.PremiumPaymentOption) == 9){
+                    		$('#PremiumPaymentOption').html(row.PremiumPaymentOption);
                     		$('#attainedAge').html(row.AdvanceYearlyIncome);
                     		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 18.75));
                     		$('#guaranteedPercent').html('62.5');
                     		//$('#guaranteedDeath').html();
                     		//$('#guaranteedMaturity').html();
                     	}
-                    	if (parseInt(row.PremPayOpt) == 12){
-                    		$('#premiumPaymentTerm').html(row.PremPayOpt);
+                    	if (parseInt(row.PremiumPaymentOption) == 12){
+                    		$('#PremiumPaymentOption').html(row.PremiumPaymentOption);
                     		$('#attainedAge').html(row.AdvanceYearlyIncome);
                     		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 19.5));
                     		$('#guaranteedPercent').html('65.0');
@@ -138,7 +139,7 @@
         				},errorHandler);
                     
                     	if (parseInt(row.PremiumPaymentOption) == 6){
-                    		$('#premiumPaymentTerm').html(row.PremiumPaymentOption);
+                    		$('#PremiumPaymentOption').html(row.PremiumPaymentOption);
                     		$('#attainedAge').html(row.AdvanceYearlyIncome);
                     		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 12.5));
                     		$('#guaranteedPercent').html('85.0');
@@ -146,7 +147,7 @@
                     		//$('#guaranteedMaturity').html();
                     	}
                     	else if (parseInt(row.PremiumPaymentOption) == 9){
-                    		$('#premiumPaymentTerm').html(row.PremiumPaymentOption);
+                    		$('#PremiumPaymentOption').html(row.PremiumPaymentOption);
                     		$('#attainedAge').html(row.AdvanceYearlyIncome);
                     		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 13.5));
                     		$('#guaranteedPercent').html('90.0');
@@ -154,7 +155,7 @@
                     		//$('#guaranteedMaturity').html();
                     	}
                     	if (parseInt(row.PremiumPaymentOption) == 12){
-                    		$('#premiumPaymentTerm').html(row.PremiumPaymentOption);
+                    		$('#PremiumPaymentOption').html(row.PremiumPaymentOption);
                     		$('#attainedAge').html(row.AdvanceYearlyIncome);
                     		$('#amountPayable').html(formatCurrency(parseFloat(formatCurrency(row.BasicSA).replace(",","")) * 14.25));
                     		$('#guaranteedPercent').html('95.0');
@@ -243,7 +244,7 @@ Tunai, Dividen Tunai, Dividen Terminal dan Dividen Terminal Istimewa akan dilara
 <td>Faedah Matang Terjamin</td>
 </tr>
 <tr>
-<td style="text-align:center;" id="premiumPaymentTerm">{premiumPaymentTerm}</td>
+<td style="text-align:center;" id="PremiumPaymentOption">{PremiumPaymentOption}</td>
 <td style="text-align:center;" id="attainedAge">{attainedAge}</td>
 <td style="text-align:center;"><span id="amountPayable">{amountPayable}</span><br/>(<span id="guaranteedPercent">{guaranteedPercent}</span>% dari semua PTT masa depan yang belum genap tempoh)</td>
 <td style="text-align:center;" id="guaranteedDeath">{guaranteedDeath}</td>

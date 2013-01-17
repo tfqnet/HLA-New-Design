@@ -117,6 +117,7 @@ NSMutableArray *ItemPages;
     [super viewDidUnload];
     self.leftSidebarViewController = nil;
     leftSelectedIndexPath = Nil;
+    browserController = Nil;
     
 }
 
@@ -265,9 +266,13 @@ NSMutableArray *ItemPages;
     browserController = nil;
     */
     
+    prev.enabled = false;
+    next.enabled= false;
+    
     [self.navigationController setRevealedState:JTRevealedStateNo];
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
+    v = Nil;
     
     if (gPages + 1 < ItemPages.count) {
         gPages = gPages + 1;
@@ -285,15 +290,21 @@ NSMutableArray *ItemPages;
     [self.view addSubview:browserController.view];
     
     browserController = nil;
+    
+    [self performSelector:@selector(enablePreNext) withObject:Nil afterDelay:1.5];
 }
 
 
 
 -(void)PrevPage{
     
+    prev.enabled = FALSE;
+    next.enabled = false;
+    
     [self.navigationController setRevealedState:JTRevealedStateNo];
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
+    v = Nil;
     
     if (gPages - 1 >= 0 ) {
             gPages = gPages - 1;
@@ -311,15 +322,25 @@ NSMutableArray *ItemPages;
     [self.view addSubview:browserController.view];
     
     browserController = nil;
+    
+    [self performSelector:@selector(enablePreNext) withObject:Nil afterDelay:1.5];
 }
 
+-(void)enablePreNext{
+    prev.enabled = TRUE;
+    next.enabled = TRUE;
+}
 
 - (NSIndexPath *)lastSelectedIndexPathForSidebarViewController:(SidebarViewController *)sidebarViewController {
     return self.leftSelectedIndexPath;
 }
 
 -(void)CloseButtonAction{
-    //NSLog(@"%d", [self.view subviews].count);
+
+    browserController = Nil;
+    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+    [v removeFromSuperview];
+    v = Nil;
     
     if ([self.view subviews].count > 1) {
         

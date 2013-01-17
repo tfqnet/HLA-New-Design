@@ -21,6 +21,9 @@
     var cashPaymentD = '';
     var mcashPaymentD = '';
     var FirstAge = '';
+    var PA = '';
+    var CustCode = '';
+    var Deductible = '';
     //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
@@ -88,6 +91,34 @@
         },errorHandler,nullHandler);
         
 	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_LAPayor where SINO = '" + siNo + "' AND PTypeCode = 'LA' AND Sequence = '1' ", [], function(transaction, result) {
+                
+		if (result != null && result.rows != null) {
+		    var row = result.rows.item(0);
+		     CustCode = row.CustCode;
+		     
+                }
+                else{
+			alert('No data can be found');
+                    }
+		                  
+            },errorHandler);
+	    
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            
+	    transaction.executeSql("select PA from clt_profile AS A, Adm_Occp_Loading as B where A.OccpCode = B.OccpCode AND custcode = '" + CustCode + "' ", [], function(transaction, result) {
+		if (result != null && result.rows != null) {
+		    var row = result.rows.item(0);
+		    PA = row.PA;
+		    
+		}
+	     
+	    },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
@@ -101,8 +132,20 @@
             },errorHandler);
         },errorHandler,nullHandler);
 	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'HMM' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    Deductible = row.Deductible;
+                }
+		else{
+		    Deductible = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
         db.transaction(function(transaction) {
-            transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Basic Plan" as Desc, Annually, ' +
+            transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Pelan Asas" as Desc, Annually, ' +
 				   'SemiAnnually, Quarterly, Monthly from SI_Store_Premium where Type in ("B") UNION ' +
 				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly ' +
 				   'FROM SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND '+
@@ -124,7 +167,16 @@
                         col7Total = col7Total + parseFloat(formatCurrency(row.Quarterly).replace(',','').replace('-', '0'));
                         col8Total = col8Total + parseFloat(formatCurrency(row.Monthly).replace(',','').replace('-', '0'));
            
-			$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			}
+			else if(row.Plan == 'HLA Major Medi' ){
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ') (Penolakan ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			}
+			else{
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			}
+			
                     }
 		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2"><b>Jumlah Bayaran Premium</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' + '</tr>');
 		    $('#table-Tax > tbody').append('<tr>' + '<td><b>Cukai Perkhidmatan yang Dikenakan</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');

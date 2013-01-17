@@ -29,6 +29,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelUpdated;
 
 - (IBAction)btnLogin:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *outletLogin;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

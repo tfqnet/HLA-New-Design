@@ -96,7 +96,7 @@
 			var row = result.rows.item(i);
 			
 			    HMMRiderTerm = row.RiderTerm;
-			
+			$('#PlanOption').html(row.PlanOption);
 		    }
                 }
             },errorHandler);
@@ -338,7 +338,7 @@
 			<td>Monthly (RM)</td>
 		    </tr>
 		    <tr>
-			<td>HLA MedGLOBAL II</td>
+			<td>HLA MedGLOBAL II <span id="PlanOption">{PlanOption}</span></td>
 			<td><span id="ValueA">{ValueA}</span></td>
 			<td><span id="ValueB">{ValueB}</span></td>
 			<td><span id="ValueC">{ValueC}</span></td>

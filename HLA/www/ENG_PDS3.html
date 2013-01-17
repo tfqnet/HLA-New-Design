@@ -184,12 +184,11 @@
 					   $('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
 					   if(row.SumAssured == ''){
 					      //$('#' + row.RiderCode + 'RiderGYI').html('-');
-					      
 						$('#' + row.RiderCode + 'RiderGYI').html(row.Units + ' unit(s)');
-					      
 					   }
 					   else{
 					      $('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+					      $('#QQQ' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
 					   }
 					   
 					   
@@ -246,7 +245,7 @@
     <td class="contentSmall" style="text-align:center;"><span id="CCTRRiderGYI">{CCTRGYI}</span></td>
     <td class="contentSmall" style="text-align:center;"><span id="CCTRRiderTerm">{CCTRRiderTerm}</span></td>
     <td class="content">
-    RM <span id="CCTRGYI">{CCTRRiderGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD<br/>
+    RM <span id="QQQCCTRRiderGYI">{CCTRRiderGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD<br/>
     provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further<br/>
     evidence of insurability.<br/><br/>
 
@@ -260,7 +259,7 @@
 <td class="contentSmall" style="text-align:center;"><span id="CIRRiderGYI">{CIRRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="CIRRiderTerm">{CIRRiderTerm}</span></td>
 <td class="content">
-RM <span id="CIRRiderGYI">{CIRRiderGYI}</span> is payable upon diagnosis of any of the 36 critical illnesses covered of the life assured during the coverage term.<br/>
+RM <span id="QQQCIRRiderGYI">{CIRRiderGYI}</span> is payable upon diagnosis of any of the 36 critical illnesses covered of the life assured during the coverage term.<br/>
 Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -567,7 +566,7 @@ In the event of accidental TPD (prior to attaining age 65) of the Life Assured, 
 Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
-Guaranteed Yearly Income of RM<span id="I20RGYI">{I20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+Guaranteed Yearly Income of RM <span id="QQQI20RRiderGYI">{I20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
@@ -610,7 +609,7 @@ In the event of accidental TPD (prior to attaining age 65) of the Life Assured, 
 Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
-Guaranteed Yearly Income of RM<span id="I30RGYI">{I30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+Guaranteed Yearly Income of RM<span id="QQQI30RRiderGYI">{I30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
@@ -652,7 +651,7 @@ In the event of accidental TPD (prior to attaining age 65) of the Life Assured, 
 Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</u></b><br/>
-Guaranteed Yearly Income of RM<span id="I40RGYI">{I40RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+Guaranteed Yearly Income of RM<span id="QQQI40RRiderGYI">{I40RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
@@ -687,7 +686,7 @@ Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 <td class="contentSmall" style="text-align:center;"><span id="ICRRiderGYI">{ICRRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="ICRRiderTerm">{ICRRiderTerm}</span></td>
 <td class="content">
-Upon TPD or diagnosis of any 36 critical illness of the life assured during the coverage period and the life assured remained disabled, RM <span id=""ICRGYI>{ICRGYI}</span> shall be<br/>
+Upon TPD or diagnosis of any 36 critical illness of the life assured during the coverage period and the life assured remained disabled, RM <span id="QQQICRRiderGYI">{ICRRiderGYI}</span> shall be<br/>
 payable annually up to age 65 or death of the life assured, whichever is earlier. The following 36 critical illnesses are covered<br/><br/>
 
 <table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
@@ -831,7 +830,7 @@ iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
 <br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/>
 <u><b>Guaranteed Yearly Income Benefit</u></b><br/>
-Guaranteed Yearly Income of RM<span id="ID20RGYI">{ID20RGYI}</span> payable starting from end of year 21 up to age 90.<br/><br/>
+Guaranteed Yearly Income of RM<span id="QQQID20RRiderGYI">{ID20RGYI}</span> payable starting from end of year 21 up to age 90.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
@@ -882,7 +881,7 @@ iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
 <br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/>
 <u><b>Guaranteed Yearly Income Benefit</u></b><br/>
-Guaranteed Yearly Income of RM<span id="ID30RGYI">{ID30RGYI}</span> payable starting from end of year 31 up to age 90.<br/><br/>
+Guaranteed Yearly Income of RM<span id="QQQID30RRiderGYI">{ID30RGYI}</span> payable starting from end of year 31 up to age 90.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
@@ -933,7 +932,7 @@ iv.&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any).<br/>
 <br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
-Guaranteed Yearly Income of RM<span id="ID40RGYI">{ID40RGYI}</span> payable starting from end of year 41 up to age 90.<br/><br/>
+Guaranteed Yearly Income of RM<span id="QQQID40RRiderGYI">{ID40RGYI}</span> payable starting from end of year 41 up to age 90.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
@@ -976,7 +975,7 @@ Guaranteed Yearly Income, 80 times of Guaranteed Yearly Income, Accumulated Guar
 Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
-Guaranteed Yearly Income of RM<span id="IE20RGYI">{IE20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+Guaranteed Yearly Income of RM<span id="QQQIE20RRiderGYI">{IE20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
@@ -1020,7 +1019,7 @@ Guaranteed Yearly Income, 80 times of Guaranteed Yearly Income, Accumulated Guar
 Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
-Guaranteed Yearly Income of RM<span id="IE30RGYI">{IE30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
+Guaranteed Yearly Income of RM<span id="QQQIE30RRiderGYI">{IE30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
 Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
@@ -1056,7 +1055,7 @@ Terminal Dividend (if any) shall be payable.<br/>
 <td class="contentSmall" style="text-align:center;"><span id="LCPRRiderGYI">{LCPRRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="LCPRRiderTerm">{LCPRRiderTerm}</span></td>
 <td class="content">
-RM <span id="LCPRGYI">{CIRGYI}</span> is payable upon the first occurrence death / TPD / diagnosis of any of the 36 critical illnesses of the life assured during the coverage period. TPD<br/>
+RM <span id="QQQLCPRRiderGYI">{CIRGYI}</span> is payable upon the first occurrence death / TPD / diagnosis of any of the 36 critical illnesses of the life assured during the coverage period. TPD<br/>
 benefit will be paid in accordance to TPD provision.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -1484,7 +1483,7 @@ period.<br/>
 <td class="contentSmall" style="text-align:center;"><span id="PLCPRiderGYI">{PLCPRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="PLCPRiderTerm">{PLCPRiderTerm}</span></td>
 <td class="content">
-RM <span id="PLCPGYI">{PLCPGYI}</span> is payable upon the first occurrence of death / TPD / diagnosis of any of the 36 critical illnesses of the payor during the coverage period.<br/>
+RM <span id="QQQPLCPRiderGYI">{PLCPGYI}</span> is payable upon the first occurrence of death / TPD / diagnosis of any of the 36 critical illnesses of the payor during the coverage period.<br/>
 Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -1634,7 +1633,7 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnes
 <td class="contentSmall" style="text-align:center;"><span id="PTRRiderGYI">{PTRRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
 <td class="content">
-RM <span id="PTRGYI">{PTRGYI}</span> is payable upon  death / TPD (prior to age 65) of the payor during the coverage period.<br/>
+RM <span id="QQQPTRRiderGYI">{PTRGYI}</span> is payable upon  death / TPD (prior to age 65) of the payor during the coverage period.<br/>
 <br/>
 
 </td>
@@ -1770,8 +1769,8 @@ Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Pet
             					if (result != null && result.rows != null) {
                 					var row = result.rows.item(0);
                 					//alert(row.RiderTerm)
-                					$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
-                					$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
+                					//$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
+                					//$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
 							
             					}
         					},errorHandler);
