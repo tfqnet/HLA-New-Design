@@ -213,10 +213,10 @@
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
 		EF6BF7E1167823DF00B5ACB9 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF6BF7E0167823DF00B5ACB9 /* HLA_Rates.sqlite */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
+		EFB32FC016A8EF83005A5AD7 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFB32FBF16A8EF83005A5AD7 /* hladb.sqlite */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
-		EFBE85DD16A5221900C49CED /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFBE85DC16A5221900C49CED /* hladb.sqlite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -514,13 +514,13 @@
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
 		EF6BF7E0167823DF00B5ACB9 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
+		EFB32FBF16A8EF83005A5AD7 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
 		EFB3D5861685604400A7B517 /* PayorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayorHandler.m; sourceTree = "<group>"; };
 		EFB3D5891686AE2200A7B517 /* SecondLAHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondLAHandler.h; sourceTree = "<group>"; };
 		EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLAHandler.m; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
-		EFBE85DC16A5221900C49CED /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -905,7 +905,7 @@
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
 				EF6BF7E0167823DF00B5ACB9 /* HLA_Rates.sqlite */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
-				EFBE85DC16A5221900C49CED /* hladb.sqlite */,
+				EFB32FBF16A8EF83005A5AD7 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1265,7 +1265,6 @@
 				C4B84472169C63C500E1A0D3 /* 20130108Login.png in Resources */,
 				C4B84473169C63C500E1A0D3 /* 20130108Prospect.png in Resources */,
 				C4B84474169C63C500E1A0D3 /* 20130108SalesIllustration.png in Resources */,
-				EFBE85DD16A5221900C49CED /* hladb.sqlite in Resources */,
 				C4C501EF16A64C6300096156 /* Brochure_CSecure(Standalone).pdf in Resources */,
 				C4C501F016A64C6300096156 /* Brochure_HLAIncomeBuilder_BM.pdf in Resources */,
 				C4C501F116A64C6300096156 /* Brochure_HLAIncomeBuilder_Mand.pdf in Resources */,
@@ -1278,6 +1277,7 @@
 				C4C501F816A64C6300096156 /* Brochure_PACare.pdf in Resources */,
 				C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */,
 				EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */,
+				EFB32FC016A8EF83005A5AD7 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
