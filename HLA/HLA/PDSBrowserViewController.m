@@ -181,6 +181,9 @@ NSMutableArray *ItemPages;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    UIAlertView *sss = [[UIAlertView alloc] initWithTitle:@"Memory warning"
+                                                  message:@"Not enough memory. Please restart the application" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+    [sss show];
 }
 
 @end

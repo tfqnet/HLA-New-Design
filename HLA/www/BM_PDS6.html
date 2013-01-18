@@ -105,8 +105,8 @@
         },errorHandler,nullHandler);
 	
         db.transaction(function(transaction) {
-            transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc from trad_rider_details as A, '+
-				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HB","HSP_II","CPA","PA","HMM","CIR") ;'
+            transaction.executeSql('select RiderDesc, "Jika anda menamatkan rider ini sebelum tempoh matang, anda akan mendapat kurang daripada jumlah yang telah anda bayar." as Desc from trad_rider_details as A, '+
+				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV", "C+","HSP_II","HMM") ;'
 				   , [], function(transaction, result) {
                 
 		if (result != null && result.rows != null) {
@@ -210,7 +210,7 @@
 
     <table>
 	<tr>
-	    <td>7.</td>
+	    <td><b>7.</b></td>
 	    <td>
 		<b>Bolehkah saya membatalkan polisi saya?</b>
 	    </td>
@@ -245,7 +245,7 @@
 	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-	    <td>8.</td>
+	    <td><b>8.</b></td>
 	    <td>
 		<b>Apakah yang perlu saya lakukan jika saya bertukar alamat dan nombor telefon?</b>
 	    </td>
@@ -260,7 +260,7 @@
 	</tr>
 	<tr><td></td></tr>
 	<tr>
-	    <td valign="top">9. </td>
+	    <td valign="top"><b>9.</b> </td>
 	    <td valign="top">
 		<b>Di manakah boleh saya dapatkan maklumat lanjut?</b>
 		
@@ -302,7 +302,7 @@
 	</tr>
 	<tr><td></td></tr>
 	<tr>
-	    <td>10.</td>
+	    <td><b>10.</b></td>
 	    <td>
 		<b>Jenis perlindungan lain seumpamanya yang disediakan</b>
 	    </td>

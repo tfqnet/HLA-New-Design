@@ -146,8 +146,8 @@
 	
         db.transaction(function(transaction) {
             transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Basic Plan" as Desc, Annually, ' +
-				   'SemiAnnually, Quarterly, Monthly from SI_Store_Premium where Type in ("B") UNION ' +
-				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly ' +
+				   'SemiAnnually, Quarterly, Monthly, "B" as RiderCode from SI_Store_Premium where Type in ("B") UNION ' +
+				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly, RiderCode ' +
 				   'FROM SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND '+
 				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;', [], function(transaction, result) {
                 
@@ -161,21 +161,38 @@
                                    col8Total = 0.00;
                     for (var i = 0; i < result.rows.length; i++) {
 			var row = result.rows.item(i);
+			var SA = '';
 			
                         col5Total = col5Total + parseFloat(formatCurrency(row.Annually).replace(',','').replace('-', '0'));
                         col6Total = col6Total + parseFloat(formatCurrency(row.SemiAnnually).replace(',','').replace('-', '0'));
                         col7Total = col7Total + parseFloat(formatCurrency(row.Quarterly).replace(',','').replace('-', '0'));
                         col8Total = col8Total + parseFloat(formatCurrency(row.Monthly).replace(',','').replace('-', '0'));
            
-			if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
-			}
-			else if(row.Plan == 'HLA Major Medi' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			if(row.RiderCode == 'PR' || row.Plan == 'Critical Illness WP Rider' || row.Plan == 'Living Care Waiver Of Premium Payor Rider' ){
+			    transaction.executeSql('SELECT * FROM Trad_Rider_Details WHERE SINO = "' + siNo + '" AND RiderCode = "' + row.RiderCode + '"  ', [], function(transaction, result1) {
+				
+				if (result1 != null && result1.rows != null) {
+				    
+				    var row1 = result1.rows.item(0);
+				    SA = row1.SumAssured;
+				    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+				}
+			    },errorHandler);
 			}
 			else{
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			    }
+			    else if(row.Plan == 'HLA Major Medi' ){
+				$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			    }
+			    
+			    else {
+				$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    }
 			}
+	   
+			
                     }
 		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2"><b>Total Premium</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' + '</tr>');
 		    $('#table-Tax > tbody').append('<tr>' + '<td><b>Service tax chargeable</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
@@ -292,7 +309,7 @@
 
     <table>
 	<tr>
-	    <td>3</td>
+	    <td><b>3.</b></td>
 	    <td>
 		<b>How much premium do I have to pay?</b>
 	    </td>
@@ -359,7 +376,7 @@
 	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-	    <td valign="top">4. </td>
+	    <td valign="top"><b>4.</b> </td>
 	    <td valign="top">
 		<b>What are the fees and charges I have to pay?</b>
 		<br/>
@@ -388,7 +405,7 @@
 	</tr>
 	<tr><td></td></tr>
 	<tr>
-	    <td valign="top">5. </td>
+	    <td valign="top"><b>5.</b> </td>
 	    <td valign="top">
 		<b>What are some of the key terms and conditions that I should be aware of?</b>
 		<br/><br/>
@@ -401,7 +418,7 @@
 	</tr>
 	<tr><td></td></tr>
 	<tr>
-	    <td valign="top">6.</td>
+	    <td valign="top"><b>6.</b></td>
 	    <td valign="top">What are the major exclusions under this policy?</td>
 	</tr>
 	<tr><td></td></tr>

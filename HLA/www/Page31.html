@@ -97,8 +97,8 @@
         				transaction.executeSql("select * from SI_Temp_Trad_Basic order by seqNo desc limit 1", [], function(transaction, result) {
             				if (result != null && result.rows != null) {
                 				var row = result.rows.item(0);
-                				$('#guaranteedDeath').html(row.col4);
-                    			$('#guaranteedMaturity').html(row.col3);
+                				$('#guaranteedDeath').html(formatCurrency(row.col4));
+                    			$('#guaranteedMaturity').html(formatCurrency(row.col3));
             				}
         				},errorHandler);
 
@@ -133,8 +133,8 @@
         				transaction.executeSql("select * from SI_Temp_Trad_Basic order by seqNo desc limit 1", [], function(transaction, result) {
             				if (result != null && result.rows != null) {
                 				var row = result.rows.item(0);
-                				$('#guaranteedDeath').html(row.col4);
-                    			$('#guaranteedMaturity').html(row.col3);
+                				$('#guaranteedDeath').html(formatCurrency(row.col4));
+                    			$('#guaranteedMaturity').html(formatCurrency(row.col3));
             				}
         				},errorHandler);
                     
