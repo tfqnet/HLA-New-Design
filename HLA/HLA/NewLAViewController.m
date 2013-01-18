@@ -455,12 +455,17 @@ id temp;
 
 - (IBAction)btnCommDatePressed:(id)sender
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-    
-    [btnCommDate setTitle:dateString forState:UIControlStateNormal];
-    temp = btnCommDate.titleLabel.text;
+    if (commDate.length==0) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+        
+        [btnCommDate setTitle:dateString forState:UIControlStateNormal];
+        temp = btnCommDate.titleLabel.text;
+    }
+    else {
+        temp = btnCommDate.titleLabel.text;
+    }
 
     if (_LADate == Nil) {
         
