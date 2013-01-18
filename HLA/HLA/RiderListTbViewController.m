@@ -43,7 +43,13 @@
     NSString *querySQL;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        if (self.requestOccpClass > 4) {
+        if (self.requestOccpClass == 4) {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT j.*, k.MinAge, k.MaxAge FROM"
+                        "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\" AND a.RiderCode != \"MG_IV\")j "
+                        "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"",[self.requestPtype description],self.requestSeq,self.requestAge,self.requestAge];
+        }
+        else if (self.requestOccpClass > 4) {
             querySQL = [NSString stringWithFormat:
                         @"SELECT j.*, k.MinAge, k.MaxAge FROM"
                         "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"HLAIB\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\" AND a.RiderCode != \"CPA\" AND a.RiderCode != \"PA\" AND a.RiderCode != \"HMM\" AND a.RiderCode != \"HB\" AND a.RiderCode != \"MG_II\" AND a.RiderCode != \"MG_IV\" AND a.RiderCode != \"HSP_II\")j "
@@ -62,6 +68,7 @@
         if (self.requestAge > 65) {
             querySQL = [querySQL stringByAppendingFormat:@" AND j.RiderCode != \"IE20R\""];
         }
+        NSLog(@"%@",querySQL);
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
