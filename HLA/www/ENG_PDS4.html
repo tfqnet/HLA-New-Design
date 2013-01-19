@@ -24,6 +24,9 @@
     var PA = '';
     var CustCode = '';
     var Deductible = '';
+    var LCWPSA = '';
+    var CIWPSA = '';
+    var PRSA = '';
     //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
@@ -144,6 +147,42 @@
             },errorHandler);
         },errorHandler,nullHandler);
 	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'LCWP' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    LCWPSA = row.SumAssured;
+                }
+		else{
+		    LCWPSA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'CIWP' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    CIWPSA = row.SumAssured;
+                }
+		else{
+		    CIWPSA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'PR' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    PRSA = row.SumAssured;
+                }
+		else{
+		    PRSA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
         db.transaction(function(transaction) {
             transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Basic Plan" as Desc, Annually, ' +
 				   'SemiAnnually, Quarterly, Monthly, "B" as RiderCode from SI_Store_Premium where Type in ("B") UNION ' +
@@ -161,37 +200,31 @@
                                    col8Total = 0.00;
                     for (var i = 0; i < result.rows.length; i++) {
 			var row = result.rows.item(i);
-			var SA = '';
 			
                         col5Total = col5Total + parseFloat(formatCurrency(row.Annually).replace(',','').replace('-', '0'));
                         col6Total = col6Total + parseFloat(formatCurrency(row.SemiAnnually).replace(',','').replace('-', '0'));
                         col7Total = col7Total + parseFloat(formatCurrency(row.Quarterly).replace(',','').replace('-', '0'));
                         col8Total = col8Total + parseFloat(formatCurrency(row.Monthly).replace(',','').replace('-', '0'));
            
-			if(row.RiderCode == 'PR' || row.Plan == 'Critical Illness WP Rider' || row.Plan == 'Living Care Waiver Of Premium Payor Rider' ){
-			    transaction.executeSql('SELECT * FROM Trad_Rider_Details WHERE SINO = "' + siNo + '" AND RiderCode = "' + row.RiderCode + '"  ', [], function(transaction, result1) {
-				
-				if (result1 != null && result1.rows != null) {
-				    
-				    var row1 = result1.rows.item(0);
-				    SA = row1.SumAssured;
-				    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
-				}
-			    },errorHandler);
+			
+			if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
+			$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
-			else{
-			    if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
-			    }
-			    else if(row.Plan == 'HLA Major Medi' ){
-				$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
-			    }
-			    
-			    else {
-				$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
-			    }
+			else if(row.Plan == 'HLA Major Medi' ){
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
-	   
+			else if(row.RiderCode == 'PR' ){
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + PRSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			}
+			else if(row.RiderCode == 'CIWP' ){
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + CIWPSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			}
+			else if(row.RiderCode == 'LCWP' ){
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + LCWPSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			}
+			else {
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			}
 			
                     }
 		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2"><b>Total Premium</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' + '</tr>');
@@ -208,22 +241,32 @@
 	                  var row = result.rows.item(0);
 			 FirstAge = row.Age;
                     }
-                    
                 }
             },errorHandler);
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
             //transaction.executeSql("SELECT * FROM Trad_Details where SINo = '" + siNo + "'", [], function(transaction, result) {
-            transaction.executeSql("SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption from Trad_Details where SINo = '"+ siNo + "' " +  
-				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II') " +
-				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"') from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
+            transaction.executeSql("SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
+				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II') " +
+				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
 				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode ", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     for(var i =0; i <result.rows.length; i++){
 	                var row = result.rows.item(i);
-			$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>'); 
+			if(row.RiderCode == 'CIWP'){
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + CIWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			}
+			else if(row.RiderCode == 'PR'){
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			}
+			else if(row.RiderCode == 'LCWP'){
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			}
+			else{
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			}
                     }
                 }
             },errorHandler);

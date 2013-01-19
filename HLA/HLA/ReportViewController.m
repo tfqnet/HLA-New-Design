@@ -1606,14 +1606,30 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             sqlite3_close(contactDB);
         }
+    /*
+    // to insert class info
     
+    NSString *Class = @"";
+    
+    SelectSQL = [ NSString stringWithFormat:@"Select PA from clt_profile AS A, Adm_Occp_Loading as B where "
+                 " A.OccpCode = B.OccpCode AND Custcode = (select Custcode from trad_Lapayor WHERE \"Sino\" = \"%@\" AND \"PTypeCode\" = \"LA\" AND \"sequence\" = \"1\")   "
+                 , SINo];
+    
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+        if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW) {
+                Class = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                
+                sqlite3_finalize(statement);
+            }
+        }
+        sqlite3_close(contactDB);
+    }
+    
+    //---------
+    */
     for (int a=0; a<OtherRiderCode.count; a++) {
-        /*
-        double annually =arc4random() % 5000 + 500;
-        double semiAnnually = annually * 0.5125;
-        double Quarterly = annually * 0.2625;
-        double monthly = annually * 0.0875;
-        */
+        
         NSString *strAnnually = @"";
         NSString *strSemiAnnually = @"";
         NSString *strQuarterly = @"";
@@ -1826,6 +1842,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     RiderDesc= [NSString stringWithFormat:@"%@ (Class %@) (Deductible %@ )", [OtherRiderDesc objectAtIndex:a],
                                 OccpClass ,[OtherRiderDeductible objectAtIndex:a] ];
 
+                }
+                else if ([[OtherRiderCode objectAtIndex:a ] isEqualToString:@"CPA" ] || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"PA" ]
+                         || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"HMM" ] || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"HSP_II" ]
+                         || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"MG_II" ] || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"MG_IV" ]){
+                    RiderDesc= [NSString stringWithFormat:@"%@ (Class %@)", [OtherRiderDesc objectAtIndex:a],
+                                OccpClass ];
                 }
                 else {
                     RiderDesc = [OtherRiderDesc objectAtIndex:a];
@@ -5019,8 +5041,25 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     [OtherRiderTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)]];
                     [OtherRiderDesc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)]];
                     //[OtherRiderSA addObject: [NSString stringWithFormat:@"%d", sqlite3_column_int(statement2, 3)]];
-                    [OtherRiderSA addObject: [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 3)]];
+                    //[OtherRiderSA addObject: [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 3)]];
                     
+                    NSString *tempOtherRiderSA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 3)];
+                    NSRange rangeofDotHL = [tempOtherRiderSA rangeOfString:@"."];
+                    NSString *Display = @"";
+                    if (rangeofDotHL.location != NSNotFound) {
+                        NSString *substring = [tempOtherRiderSA substringFromIndex:rangeofDotHL.location ];
+                        if (substring.length == 2 && [substring isEqualToString:@".0"]) {
+                            Display = [tempOtherRiderSA substringToIndex:rangeofDotHL.location ];
+                        }
+                        else {
+                            Display = tempOtherRiderSA;
+                        }
+                    }
+                    else {
+                        Display = tempOtherRiderSA;
+                    }
+                    
+                    [OtherRiderSA addObject: Display];
                     if ([[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)] isEqualToString:@"(null)" ]   ) {
                         [OtherRiderPlanOption addObject:@""]; 
                         
