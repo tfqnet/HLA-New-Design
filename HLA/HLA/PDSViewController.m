@@ -122,7 +122,7 @@
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"]
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
-            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"ICR"]
+            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"]
             || [curRider isEqualToString:@"CIR"] ){
             riderInPageCount++;
             prevRider = curRider;
@@ -192,7 +192,10 @@
                 riderInPageCount = 0;
                 riderInPage = @"";
             }
-            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] || [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
+            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
+                [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"]
+                || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PTR"] ||
+                [prevRider isEqualToString:@"SP_STD"]){
                 prevRider = [prevRider stringByAppendingString:@";"];
                 curRider = [prevRider stringByAppendingString:curRider];
                 riderInPageCount = 0;
@@ -614,7 +617,7 @@
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"]
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
-            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"ICR"]
+            [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"]
             || [curRider isEqualToString:@"CIR"]){
             riderInPageCount++;
             prevRider = curRider;
@@ -684,7 +687,10 @@
                 riderInPageCount = 0;
                 riderInPage = @"";
             }
-            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] || [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
+            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
+                [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"]
+                || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PTR"] ||
+                [prevRider isEqualToString:@"SP_STD"]){
                 prevRider = [prevRider stringByAppendingString:@";"];
                 curRider = [prevRider stringByAppendingString:curRider];
                 riderInPageCount = 0;

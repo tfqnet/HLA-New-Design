@@ -120,43 +120,7 @@
 		    //$('#table-design1 tr.PA').css('display','table-row');
 		    //alert(temp)
 		    
-				   if (temp == "C"){
-				   temp = "C+"	
-				   $('#table-design2Wide tr').css('display','table-row');
-				   transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "' ", [], function(transaction, result) {
-							  if (result != null && result.rows != null) {
-							  var row = result.rows.item(0);
-							  $('#CRiderTerm').html(row.RiderTerm);
-							  $('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 50) / 100));
-							  $('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 150) / 100));
-							  $('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 250) / 100));
-							  $('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
-							  if (row.PlanOption == "Level"){
-							  $('#cPlanOption').html('Level Cover');
-							  $('#cGuaranteedIncreasingSumAssured').hide();
-							  $('#cNoClaimBenefit').hide();
-							  }
-							  else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
-							  $('#cPlanOption').html('Increasing Cover');
-							  $('#cNoClaimBenefit').hide();
-							  }
-							  else if (row.PlanOption == "Level_NCB"){
-							  $('#cPlanOption').html('Level Cover with NCB');
-							  $('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
-							  $('#cGuaranteedIncreasingSumAssured').hide();
-							  }
-							  else if (row.PlanOption == "Increasing_NCB"){
-							  $('#cPlanOption').html('Increasing Cover with NCB');
-							  $('#cNoClaimAmount').html(formatCurrency(row.SA));
-							  //$('#cGuaranteedIncreasingSumAssured').hide();
-							  $('#cVeryEarlyTD').html('50% of Rider Sum Assured');
-							  $('#cEarlyTD').html('150% of Rider Sum Assured');
-							  $('#cAdvanceTD').html('250% of Rider Sum Assured');
-							  $('#cNursingCareAllowance').html('25% of Rider Sum Assured');
-							  }
-							  }
-							  },errorHandler);        				
-				   }
+				   
 				   if (temp == "HB"){
 				   transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
 							  if (result != null && result.rows != null) {
@@ -199,6 +163,111 @@
 				   },errorHandler);
 				   }
 				   
+				   
+			for(var y=0;y<(rider.length);y++){
+			
+			var temp1 = rider[y];
+			if(temp1 == 'CIWP'){
+			     
+			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'CIWP' )/100  as Total " +
+					    "from SI_Store_Premium where FromAge IS NULL " +
+					   "AND Type not in ('CIWP', 'LCWP', 'B', 'LCPR', 'CIR', 'PR', 'SP_STD', 'ICR', 'SP_PRE') ";
+			     
+			     transaction.executeSql(query2, [], function(transaction, result1) {
+				 
+				 if (result1.rows.length > 0) {
+				     
+				     var row = result1.rows.item(0);
+				     
+				     
+				     $('#' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     $('#QQQ' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     
+				 }
+				 
+			     },errorHandler);        				
+			 }
+			 else if(temp1 == 'LCWP'){
+			     
+			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'LCWP' )/100  as Total " +
+					    "from SI_Store_Premium where FromAge IS NULL " +
+					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
+			     
+			     transaction.executeSql(query2, [], function(transaction, result1) {
+				 
+				 if (result1.rows.length > 0) {
+				     
+				     var row = result1.rows.item(0);
+				     
+				     $('#' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     $('#QQQ' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     
+				 }
+				 
+			     },errorHandler);        				
+			 }
+			 else if(temp1 == 'PR'){
+			     
+			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'PR' )/100  as Total " +
+					    "from SI_Store_Premium where FromAge IS NULL " +
+					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
+			     
+			     transaction.executeSql(query2, [], function(transaction, result1) {
+				 
+				 if (result1.rows.length > 0) {
+				     
+				     var row = result1.rows.item(0);
+				     
+				     
+				     $('#' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     $('#QQQ' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     
+				 }
+				 
+			     },errorHandler);        				
+			 }
+			 else if(temp1 == 'SP_PRE'){
+			     
+			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'SP_PRE' )/100  as Total " +
+					    "from SI_Store_Premium where FromAge IS NULL " +
+					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
+			     
+			     transaction.executeSql(query2, [], function(transaction, result1) {
+				 
+				 if (result1.rows.length > 0) {
+				     
+				     var row = result1.rows.item(0);
+				     
+				     
+				     $('#' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     $('#QQQ' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     
+				 }
+				 
+			     },errorHandler);        				
+			 }
+			 else if(temp1 == 'SP_STD'){
+			     
+			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'SP_STD' )/100  as Total " +
+					    "from SI_Store_Premium where FromAge IS NULL " +
+					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
+			     
+			     transaction.executeSql(query2, [], function(transaction, result1) {
+				 
+				 if (result1.rows.length > 0) {
+				     
+				     var row = result1.rows.item(0);
+				     
+				     
+				     $('#' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     $('#QQQ' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     
+				 }
+				 
+			     },errorHandler);        				
+			 }
+			 
+		    }
 				   
 				   }
 				   },errorHandler);

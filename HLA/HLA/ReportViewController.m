@@ -32,6 +32,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize aStrIncomeRiderMonthly,aStrIncomeRiderQuarterly,aStrIncomeRiderSemiAnnually,aStrOtherRiderMonthly;
 @synthesize aStrOtherRiderQuarterly,aStrOtherRiderSemiAnnually,strBasicMonthly,strBasicQuarterly,strBasicSemiAnnually, OccLoading;
 @synthesize strOriBasicAnnually, strOriBasicMonthly,strOriBasicQuarterly,strOriBasicSemiAnnually;
+@synthesize HealthLoadingTerm, TempHealthLoading, TempHealthLoadingTerm, aStrBasicSA;
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
 
@@ -69,6 +70,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     aStrOtherRiderQuarterly = [[NSMutableArray alloc] init ];
     aStrIncomeRiderMonthly = [[NSMutableArray alloc] init ];
     aStrOtherRiderMonthly = [[NSMutableArray alloc] init ];
+    aStrBasicSA = [[NSMutableArray alloc] init ];
     
     SummaryGuaranteedTotalGYI = [[NSMutableArray alloc] init ];
     SummaryGuaranteedAddEndValue = [[NSMutableArray alloc] init ];
@@ -1533,6 +1535,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             NSString *HL1KSA = @"";
             NSString *TempHL1KSA = @"";
             
+            
                 SelectSQL = @"Select * from SI_Store_Premium where type = \"B\" ";
                 if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -1559,6 +1562,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 }
                 sqlite3_finalize(statement);
             }
+            
             /*
                 QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
@@ -1567,7 +1571,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                             ")", SINo, BasicSA,PolicyTerm,PremiumPaymentOption,annually, semiAnnually, Quarterly, monthly];
               */
             
-            SelectSQL = [NSString stringWithFormat:@"Select case when HL1KSA is '' then '0' else HL1KSA end as HL1KSA, case when TempHL1KSA is '' then '0' else TempHL1KSA end as TempHL1KSA from Trad_Details where Sino = \"%@\" ", SINo];
+            SelectSQL = [NSString stringWithFormat:@"Select case when HL1KSA is '' then '0' else HL1KSA end as HL1KSA, "
+                         "case when TempHL1KSA is '' then '0' else TempHL1KSA end as TempHL1KSA, HL1kSATerm, TempHL1kSATerm  from Trad_Details where Sino = \"%@\" ", SINo];
             
             if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                 if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -1587,6 +1592,63 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 totalHLoading = [NSString stringWithFormat:@"%.0f", [totalHLoading doubleValue]];
             }
             
+            if (![totalHLoading isEqualToString:@""]) {
+
+                for (int i = 1; i <= PolicyTerm;  i++) {
+                    
+                    double ActualPremium;
+                    
+                    if (i <= PremiumPaymentOption) {
+                        if (![HL1KSA isEqualToString:@"0"]) {
+                            if(i > [HealthLoadingTerm intValue ]){
+                                
+                                
+                                ActualPremium = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue]
+                                - ([HL1KSA doubleValue] * BasicSA/1000);
+                                
+                                //[aStrBasicSA addObject:strBasicAnnually];
+                            }
+                            else{
+                                ActualPremium = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+                            }
+                            
+                        }
+                        else{
+                            ActualPremium = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+                        }
+                        
+                        if (![TempHL1KSA isEqualToString:@"0"]) {
+                            if (i > [TempHealthLoadingTerm intValue ]) {
+                                ActualPremium = ActualPremium - ([TempHL1KSA doubleValue] * BasicSA/1000);
+                            }
+                            
+                        }
+                        
+                        [aStrBasicSA addObject: [NSString stringWithFormat:@"%.2f", ActualPremium]];
+                    }
+                    else{
+                        [aStrBasicSA addObject:@"0.00"];
+                    }
+                    
+                
+                }
+            }
+            else{
+                for (int i = 1; i <= PolicyTerm;  i++) {
+                    if (i <= PremiumPaymentOption) {
+                        [aStrBasicSA addObject:[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
+                    }
+                    else{
+                        [aStrBasicSA addObject:@"0.00"];
+                    }
+                    
+                }
+            }
+            /*
+            for (int i = 1; i <= PolicyTerm;  i++) {
+                NSLog(@"%@", [aStrBasicSA objectAtIndex:i-1]);
+            }
+            */
             
             QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                         "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
@@ -2217,7 +2279,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     for (int i =1; i <= PolicyTerm; i++) {
         
         if (i <= PremiumPaymentOption) {
-            [AnnualPremium addObject:strBasicAnnually ];
+            
+            
+            //[AnnualPremium addObject:strBasicAnnually ];
+            [AnnualPremium addObject:[aStrBasicSA objectAtIndex:i-1]];
+            
         }
         else {
             [AnnualPremium addObject:@"0.00"];
@@ -2333,7 +2399,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         double sumBasic = 0;
         double sumIncomeRider = 0, sumOtherRider = 0;
         if (i <= PremiumPaymentOption) {
-            sumBasic = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""  ] intValue ];
+            //sumBasic = [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""  ] intValue ];
+            sumBasic = [[aStrBasicSA objectAtIndex:i -1] doubleValue ];
         }
         
         for (int j =0; j<IncomeRiderCode.count; j++) {
@@ -2749,20 +2816,16 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSLog(@"insert to SI_Temp_Trad_Summary --- start");
     
     int inputAge;
+    /*
     double IncomeRiderPlusIncomeBuilder;
     
     if (aStrIncomeRiderAnnually.count >0) {
         IncomeRiderPlusIncomeBuilder =  [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-          //      + [[[aStrIncomeRiderAnnually objectAtIndex:0 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
         
         for (int i=0; i < aStrIncomeRiderAnnually.count; i++) {
             IncomeRiderPlusIncomeBuilder = IncomeRiderPlusIncomeBuilder +  
             [[[aStrIncomeRiderAnnually objectAtIndex:i ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
             
-            /*
-            EntireTotalPremiumPaid = EntireTotalPremiumPaid + 
-            [[[aStrIncomeRiderAnnually objectAtIndex:i ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
-            */
         }
         
     }
@@ -2770,17 +2833,34 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     else {
         IncomeRiderPlusIncomeBuilder =  [[strBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     }
-    /*
-    if (aStrOtherRiderAnnually.count > 0) {
-        for (int i=0; i < aStrOtherRiderAnnually.count; i++) {
-            
-            //for entire calculation for other rider
-            EntireTotalPremiumPaid = EntireTotalPremiumPaid + 
-            [[[aStrOtherRiderAnnually objectAtIndex:i ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
-            
-        }
-    }
     */
+    
+    NSMutableArray *IncomeRiderPlusIncomeBuilder = [[NSMutableArray alloc] init ];
+    if (aStrIncomeRiderAnnually.count >0) {
+        
+        for (int i = 1; i <=PremiumPaymentOption; i++) {
+            double dIncomeRiderPlusIncomeBuilder = 0.00;
+            
+            for (int j=0; j < aStrIncomeRiderAnnually.count; j++) {
+                dIncomeRiderPlusIncomeBuilder = dIncomeRiderPlusIncomeBuilder +
+                [[[aStrIncomeRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue];
+                
+            }
+            
+            dIncomeRiderPlusIncomeBuilder = dIncomeRiderPlusIncomeBuilder + [[aStrBasicSA objectAtIndex:i -1] doubleValue ];
+            
+            [IncomeRiderPlusIncomeBuilder addObject:[NSString stringWithFormat:@"%.9f", dIncomeRiderPlusIncomeBuilder] ];
+        }
+    
+    }
+    else{
+        for (int i = 1; i <=PremiumPaymentOption; i++) {
+            [IncomeRiderPlusIncomeBuilder addObject:[aStrBasicSA objectAtIndex:i -1] ];
+        }
+        
+    
+    }
+    
     double GYI;
     if (IncomeRiderCode.count > 0) {
       GYI =[[IncomeRiderSA objectAtIndex:0] doubleValue ] + (double)(BasicSA/1.00);   
@@ -2791,7 +2871,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
     for (int i =1; i <=PolicyTerm; i++) {
         if (i <= PremiumPaymentOption) {
-            [TotalIBPlusIR addObject:[NSString stringWithFormat:@"%.2f", IncomeRiderPlusIncomeBuilder] ];
+            //[TotalIBPlusIR addObject:[NSString stringWithFormat:@"%.2f", IncomeRiderPlusIncomeBuilder] ];
+            [TotalIBPlusIR addObject:[NSString stringWithFormat:@"%.2f", [[IncomeRiderPlusIncomeBuilder objectAtIndex:i-1 ] doubleValue ]] ];
         }
         else {
             [TotalIBPlusIR addObject:@"0.00"];
@@ -4964,7 +5045,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
             QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
-                                  "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",\"sex\",\"Class\",\"OccLoading\" from Trad_Details as A, "
+                                  "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",\"sex\",\"Class\",\"OccLoading\", \"HL1KSATerm\",\"TempHL1KSA\",\"TempHL1KSATerm\" from Trad_Details as A, "
                         "Clt_Profile as B, trad_LaPayor as C, Adm_Occp_Loading as D where A.Sino = C.Sino AND C.custCode = B.custcode AND "
                         "D.OccpCode = B.OccpCode AND A.sino = \"%@\" AND \"seq\" = 1 ", SINo];
         
@@ -4978,9 +5059,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 CashDividend = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 YearlyIncome = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
                 AdvanceYearlyIncome = sqlite3_column_int(statement, 5);
-                HealthLoading = sqlite3_column_int(statement, 6);
+                HealthLoading = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
                 OccpClass = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 8)];
-            
+                HealthLoadingTerm = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 10)];
+                TempHealthLoading = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 11)];
+                TempHealthLoadingTerm = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 12)];
                 
             }
             sqlite3_finalize(statement);

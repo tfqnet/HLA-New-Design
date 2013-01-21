@@ -22,7 +22,7 @@
 @property (nonatomic,strong) id Name;
 @property (nonatomic,strong) id strBasicAnnually, strBasicSemiAnnually, strBasicQuarterly, strBasicMonthly;
 @property (nonatomic,strong) id strOriBasicAnnually, strOriBasicSemiAnnually, strOriBasicQuarterly, strOriBasicMonthly;
-@property (nonatomic,strong) id sex, OccpClass;
+@property (nonatomic,strong) id sex, OccpClass,HealthLoading, HealthLoadingTerm, TempHealthLoading, TempHealthLoadingTerm ;
 @property (retain, nonatomic) NSMutableArray *OccLoading;
 //@property (nonatomic,strong) id strIncomeRiderAnnually;
 @property (retain, nonatomic) NSMutableArray *aStrIncomeRiderAnnually;
@@ -33,12 +33,13 @@
 @property (retain, nonatomic) NSMutableArray *aStrOtherRiderQuarterly;
 @property (retain, nonatomic) NSMutableArray *aStrIncomeRiderMonthly;
 @property (retain, nonatomic) NSMutableArray *aStrOtherRiderMonthly;
+@property (retain, nonatomic) NSMutableArray *aStrBasicSA;
 @property (nonatomic, assign) int Age;
 @property (nonatomic, assign) int PolicyTerm;
 @property (nonatomic, assign) int BasicSA;
 @property (nonatomic, assign) int PremiumPaymentOption;
 @property (nonatomic, assign) int AdvanceYearlyIncome;
-@property (nonatomic, assign) int HealthLoading;
+//@property (nonatomic, assign) int HealthLoading;
 @property (retain, nonatomic) NSMutableArray *IncomeRiderCode;
 @property (retain, nonatomic) NSMutableArray *IncomeRiderTerm;
 @property (retain, nonatomic) NSMutableArray *IncomeRiderDesc;
