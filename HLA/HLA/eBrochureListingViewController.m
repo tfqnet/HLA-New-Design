@@ -22,7 +22,20 @@
     [super viewDidLoad];
     
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pdfData" ofType:@"plist"]];
-    dataItems = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"pdfFiles"]];   
+    dataItems = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"pdfFiles"]];
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
+    
+    CGRect frame = CGRectMake(0, 0, 400, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+    label.font = [UIFont boldSystemFontOfSize:20];
+    label.textAlignment = UITextAlignmentCenter;
+    label.textColor = [CustomColor colorWithHexString:@"234A7D"];
+    label.text = @"eBrochure Listing";
+    self.navigationItem.titleView = label;
 }
 
 - (void)didReceiveMemoryWarning
@@ -186,7 +199,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     eBrochureViewController *Brochure = [self.storyboard instantiateViewControllerWithIdentifier:@"eBrochure"];
-    Brochure.title = [[[dataItems objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:0];
+//    Brochure.title = [[[dataItems objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:0];
+    Brochure.fileTitle = [[[dataItems objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:0];
     Brochure.fileName = [[[dataItems objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:1];
     
     [self.navigationController pushViewController:Brochure animated:YES];

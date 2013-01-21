@@ -7,13 +7,14 @@
 //
 
 #import "eBrochureViewController.h"
+#import "ColorHexCode.h"
 
 @interface eBrochureViewController ()
 
 @end
 
 @implementation eBrochureViewController
-@synthesize outletWebview,fileName;
+@synthesize outletWebview,fileName,fileTitle;
 
 - (void)viewDidLoad
 {
@@ -26,6 +27,18 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
     [outletWebview setScalesPageToFit:YES];
     [outletWebview loadRequest:request];
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    
+    CGRect frame = CGRectMake(0, 0, 400, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+    label.font = [UIFont boldSystemFontOfSize:20];
+    label.textAlignment = UITextAlignmentCenter;
+    label.textColor = [CustomColor colorWithHexString:@"234A7D"];
+    label.text = [NSString stringWithFormat:@"%@",[self.fileTitle description]];
+    self.navigationItem.titleView = label;
 }
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{

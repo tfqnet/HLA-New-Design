@@ -12,5 +12,5 @@
 
 @property (weak, nonatomic) IBOutlet UIWebView *outletWebview;
 @property (strong, nonatomic) id fileName;
-
+@property (strong, nonatomic) id fileTitle;
 @end
