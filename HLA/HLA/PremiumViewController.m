@@ -1389,10 +1389,10 @@
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
             NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
-            annualRider_ = waiverAnnPrem * (riderRate/100) + ((double)ridTerm/1000) *occLoadRider + (riderHLoad/100);
-            halfYearRider_ = waiverHalfPrem * (riderRate/100) + ((double)ridTerm/1000) *occLoadRider + (riderHLoad/100);
-            quarterRider_ = waiverQuarPrem * (riderRate/100) + ((double)ridTerm/1000) *occLoadRider + (riderHLoad/100);
-            monthlyRider_ = waiverMonthPrem * (riderRate/100) + ((double)ridTerm/1000)  *occLoadRider + (riderHLoad/100);
+            annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 *occLoadRider + riderHLoad/100);
+            halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 *occLoadRider + riderHLoad/100);
+            quarterRider_ = waiverQuarPrem * (riderRate/100 + (double)ridTerm/1000 *occLoadRider + riderHLoad/100);
+            monthlyRider_ = waiverMonthPrem * (riderRate/100 + (double)ridTerm/1000 *occLoadRider + riderHLoad/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
             annualRider = annualRider_ * annFac;

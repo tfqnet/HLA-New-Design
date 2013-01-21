@@ -279,18 +279,32 @@ id RiderCount;
         blocked = YES;
     }
     else if (getAge < 16 && getOccpCode.length != 0) {
-    
-        if (_PayorController == nil) {
+        
+        if ([getSINo isEqualToString:@"(null)"] || getSINo.length == 0) {
+            
+            if (_PayorController == nil) {
+                self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
+                _PayorController.delegate = self;
+            }
+            self.PayorController.requestLAIndexNo = getLAIndexNo;
+            self.PayorController.requestLAAge = getAge;
+            self.PayorController.requestCommDate = getCommDate;
+            self.PayorController.requestSINo = getSINo;
+            [self addChildViewController:self.PayorController];
+            [self.RightView addSubview:self.PayorController.view];
+        }
+        else {
+            
             self.PayorController = [self.storyboard instantiateViewControllerWithIdentifier:@"payorView"];
             _PayorController.delegate = self;
+            
+            self.PayorController.requestLAIndexNo = getLAIndexNo;
+            self.PayorController.requestLAAge = getAge;
+            self.PayorController.requestCommDate = getCommDate;
+            self.PayorController.requestSINo = getSINo;
+            [self addChildViewController:self.PayorController];
+            [self.RightView addSubview:self.PayorController.view];
         }
-        self.PayorController.requestLAIndexNo = getLAIndexNo;
-        self.PayorController.requestLAAge = getAge;
-        self.PayorController.requestCommDate = getCommDate;
-        self.PayorController.requestSINo = getSINo;
-        [self addChildViewController:self.PayorController];
-        [self.RightView addSubview:self.PayorController.view];
-        
         previousPath = selectedPath;
         blocked = NO;
     }

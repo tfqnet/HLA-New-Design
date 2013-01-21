@@ -1658,7 +1658,7 @@
             double waiverHalfPrem = ridSA/100 * (waiverHalfSum2+basicPremHalf) *2;
             double waiverQuarPrem = ridSA/100 * (waiverQuarSum2+basicPremQuar) *4;
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
-//            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
             
             double annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + riderHLoad/100);
             double halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + riderHLoad/100);

@@ -8,6 +8,7 @@
 
 #import "eBrochureListingViewController.h"
 #import "eBrochureViewController.h"
+#import "ColorHexCode.h"
 
 @interface eBrochureListingViewController ()
 
@@ -128,12 +129,15 @@
             break;
     }
     
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    
 	UIView *v = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.bounds.size.width, 40)];
-	[v setBackgroundColor:[UIColor lightGrayColor]];
+    [v setBackgroundColor:[CustomColor colorWithHexString:@"4F81BD"]];
     
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10,3, tableView.bounds.size.width - 10,40)];
 	label.text = title;
 //	label.textColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.60];
+    label.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     label.font = [UIFont fontWithName:@"TreBuchet MS" size:14];
 	label.backgroundColor = [UIColor clearColor];
 	[v addSubview:label];
@@ -149,9 +153,19 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }    
+    }
+    
     cell.textLabel.text = [[[dataItems objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:0];
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    
+    /*
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    if (indexPath.row % 2 == 0) {
+        cell.textLabel.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+    }
+    else {
+        cell.textLabel.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+    }*/
     
     return cell;
 }
@@ -174,7 +188,6 @@
     eBrochureViewController *Brochure = [self.storyboard instantiateViewControllerWithIdentifier:@"eBrochure"];
     Brochure.title = [[[dataItems objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:0];
     Brochure.fileName = [[[dataItems objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:1];
-    
     
     [self.navigationController pushViewController:Brochure animated:YES];
 }

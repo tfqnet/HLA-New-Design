@@ -320,6 +320,7 @@
             [self deleteLA];
             if (CheckRiderCode.length != 0) {
                 [self deleteRider];
+                [_delegate RiderAdded];
             }
             nameField.text = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];

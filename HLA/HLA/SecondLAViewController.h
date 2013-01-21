@@ -18,6 +18,7 @@
 -(void) LA2ndIndexNo:(int)aaIndexNo andSmoker:(NSString *)aaSmoker andSex:(NSString *)aaSex andDOB:(NSString *)aaDOB andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode;
 -(void)secondLADelete;
 -(void)saved:(BOOL)aaTrue;
+-(void) RiderAdded;
 @end
 
 @interface SecondLAViewController : UIViewController <ListingTbViewControllerDelegate,UIPopoverControllerDelegate> {

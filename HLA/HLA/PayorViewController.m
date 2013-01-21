@@ -114,8 +114,8 @@
         valid = FALSE;
     }
     
-    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
-    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
+//    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
+//    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
     
     if (valid) {
     
@@ -315,6 +315,7 @@
     }
     else if (alertView.tag == 2002 && buttonIndex == 0) //delete
     {
+        NSLog(@"delete 1");
         if (self.requestSINo) {
             [self checkingRider];
             [self deletePayor];
@@ -332,7 +333,7 @@
             PAField.text = @"";
         }
         else {
-        
+            NSLog(@"delete 2");
             nameField.text = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
             DOBField.text = @"";
@@ -758,7 +759,7 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT ProspectName, ProspectDOB, ProspectGender, ProspectOccupationCode FROM prospect_profile WHERE IndexNo= \"%d\"",IndexNo];
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
