@@ -44,7 +44,6 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
-//    searchBar.backgroundColor = [CustomColor colorWithHexString:@"A9BCF5"];
     searchBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
     
     CGRect frame = CGRectMake(0, 0, 400, 44);

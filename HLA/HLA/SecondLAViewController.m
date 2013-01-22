@@ -98,7 +98,7 @@
 
 -(void)getSavedField
 {
-    BOOL valid;
+    BOOL valid = TRUE;
     
     if (![NamePP isEqualToString:clientName]) {
         valid = FALSE;

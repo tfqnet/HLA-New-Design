@@ -24,6 +24,7 @@
     NSDictionary *dict = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"pdfData" ofType:@"plist"]];
     dataItems = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"pdfFiles"]];
     
+//    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
     
