@@ -1335,7 +1335,8 @@ PostcodeContinue = TRUE;
         
         [self resignFirstResponder];
         [self.view endEditing:YES];
-        [self dismissModalViewControllerAnimated:YES];
+        //[self dismissModalViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
     }
     else {
         if (buttonIndex == 0) {

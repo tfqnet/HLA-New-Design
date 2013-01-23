@@ -130,6 +130,11 @@
     [super viewDidUnload];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    [self ReloadTableData];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight || interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
@@ -256,12 +261,16 @@
     
     _EditProspect.pp = pp;
         
-    
+    /*
     _EditProspect.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     _EditProspect.modalPresentationStyle = UIModalPresentationPageSheet; 
     [self presentModalViewController:_EditProspect animated:YES];
     _EditProspect.view.superview.frame = CGRectMake(50, 0, 970, 768);
+    */
     
+    [self.navigationController pushViewController:_EditProspect animated:YES];
+    _EditProspect.navigationItem.title = @"Edit Prospect Profile";
+    _EditProspect.navigationItem.rightBarButtonItem = _EditProspect.outletDone;
 
 }
 
@@ -275,6 +284,7 @@
     //[self.navigationController pushViewController:pvc animated:YES ];
      */
     
+    /*
     if (_ProspectViewController == Nil) {
         self.ProspectViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
         _ProspectViewController.delegate = self;
@@ -283,13 +293,13 @@
     _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:_ProspectViewController animated:YES];
     _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768);
-    
-    /*
-    AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-    main.IndexTab = MenuOption.NewProspectIndex;
-    [self presentViewController:main animated:NO completion:nil];
     */
+    
+    ProspectViewController *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
+    [self.navigationController pushViewController:pvc animated:YES];
+    pvc.navigationItem.title = @"Prospect Profile";
+    pvc.navigationItem.rightBarButtonItem = pvc.outletDone;
+    
 }
 /*
 - (IBAction)btnRefresh:(id)sender {

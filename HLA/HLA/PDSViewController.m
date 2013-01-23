@@ -191,6 +191,7 @@
                     NSLog(@"Error inserting data into database.");
                 }
                 //NSLog(@"%@",sqlStmt);
+                prevRider= @"";
                 riderInPageCount = 0;
                 riderInPage = @"";
             }

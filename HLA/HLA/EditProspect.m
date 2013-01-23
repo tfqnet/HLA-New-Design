@@ -1663,7 +1663,7 @@ bool IsContinue = TRUE;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748-350);
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748-420);
     self.myScrollView.contentSize = CGSizeMake(1000, 748);
     
     CGRect textFieldRect = [activeField frame];
@@ -1793,7 +1793,8 @@ bool IsContinue = TRUE;
         }
         
         
-        [self dismissModalViewControllerAnimated:NO];
+        //[self dismissModalViewControllerAnimated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
     }
     
 }
@@ -2097,7 +2098,8 @@ bool IsContinue = TRUE;
             else if (alertView.tag == 2) {
                 [self resignFirstResponder];
                 [self.view endEditing:YES];
-                [self dismissModalViewControllerAnimated:YES];
+                //[self dismissModalViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:YES];
             }
             else if (alertView.tag == 1003) {
                 [self resignFirstResponder];

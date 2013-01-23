@@ -166,10 +166,31 @@ id RiderCount;
     else if (!PlanEmpty && !added) {
         [ListOfSubMenu addObject:@"Rider"];
         [ListOfSubMenu addObject:@"Premium"];
+        [ListOfSubMenu addObject:@"Quotation"];
+        [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
+        [ListOfSubMenu addObject:@"   English"];
+        [ListOfSubMenu addObject:@"   Malay"];
 //        [SelectedRow removeObject:@"4"];
 //        [SelectedRow removeObject:@"5"];
         
         added = YES;
+        
+        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+        premView.requestAge = getAge;
+        premView.requestOccpClass = getOccpClass;
+        premView.requestOccpCode = getOccpCode;
+        premView.requestSINo = getSINo;
+        premView.requestMOP = getMOP;
+        premView.requestTerm = getTerm;
+        premView.requestBasicSA = getbasicSA;
+        premView.requestBasicHL = getbasicHL;
+        premView.requestBasicTempHL = getbasicTempHL;
+        premView.requestPlanCode = getPlanCode;
+
+        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+        [zzz addSubview:premView.view];
+        
+
     }
     [self CalculateRider];
     [self hideSeparatorLine];
@@ -1219,6 +1240,7 @@ id RiderCount;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
                 //dispatch_async(downloadQueue, ^{
                 
+                
                 ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
                 ReportPage.SINo = getSINo;
                 [self presentViewController:ReportPage animated:NO completion:Nil];
@@ -1226,10 +1248,9 @@ id RiderCount;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [spinner stopAnimating];
                     spinnerLabel.text = @"";
-                    
+
                     [ReportPage dismissViewControllerAnimated:NO completion:Nil];
-                    
-                    
+
                     BrowserViewController *controller = [[BrowserViewController alloc] init];
                     controller.title = @"Quotation";
                     controller.Module = 1;

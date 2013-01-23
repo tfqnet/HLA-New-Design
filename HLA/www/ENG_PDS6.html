@@ -22,6 +22,11 @@
     var mcashPaymentD = '';
     var FirstAge = '';
     //var cashPayment = 0;
+    var LCWPSA = '';
+    var CIWPSA = '';
+    var PRSA = '';
+    var SP_STDSA = '';
+    var SP_PRESA = '';
     
     function errorHandler(transaction, error) {
         alert('Error: ' + error.message + ' code: ' + error.code);
@@ -104,6 +109,67 @@
             },errorHandler);
         },errorHandler,nullHandler);
 	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'LCWP' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    LCWPSA = row.SumAssured;
+                }
+		else{
+		    LCWPSA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'CIWP' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    CIWPSA = row.SumAssured;
+                }
+		else{
+		    CIWPSA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'PR' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    PRSA = row.SumAssured;
+                }
+		else{
+		    PRSA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'SP_PRE' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    SP_PRESA = row.SumAssured;
+                }
+		else{
+		    SP_PRESA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "' AND RiderCode = 'SP_STD' ", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row = result.rows.item(0);
+                    SP_STDSA = row.SumAssured;
+                }
+		else{
+		    SP_STDSA = '';
+		}
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
+	
         db.transaction(function(transaction) {
             transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc from trad_rider_details as A, '+
 				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HB","HSP_II","CPA","PA","HMM","CIR") ;'
@@ -120,7 +186,25 @@
 			for (var i = 0; i < result.rows.length; i++) {
 			    var row = result.rows.item(i);
 			    
-			    $('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    if(row.RiderCode == 'LCWP'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + LCWPSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'CIWP'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + CIWPSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'PR'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + PRSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'SP_PRE'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + SP_PRESA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'SP_STD'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + SP_STDSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    }
+			    else{
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    }
+			    
 			}    
 		    }
 		    
