@@ -925,6 +925,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     SummaryNonGuaranteedDBValueB = Nil, SummaryNonGuaranteedSurrenderValueA = Nil, SummaryNonGuaranteedSurrenderValueB =Nil;
     _db = Nil, _dataTable = Nil;
     UpdateTradDetail = Nil, gWaiverAnnual = Nil, gWaiverSemiAnnual = Nil, gWaiverQuarterly = Nil, gWaiverMonthly = Nil;
+    aStrBasicSA = Nil, HealthLoadingTerm = Nil, TempHealthLoading = Nil, TempHealthLoadingTerm = Nil;
     
     // Release any retained subviews of the main view.
     
@@ -1500,6 +1501,14 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         sqlite3_close(contactDB);
     }
     NSLog(@"insert to SI_Temp_Trad_LA --- End");
+    statement = Nil;
+    statement2 = Nil;
+    statement3 = Nil;
+    getCustomerCodeSQL = Nil;
+    getFromCltProfileSQL = Nil;
+    smoker = Nil;
+    QuerySQL = Nil;
+    
 }
 
 -(void)InsertToSI_Temp_Trad_Details{
@@ -1667,6 +1676,13 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 }
             
             sqlite3_close(contactDB);
+            
+            strAnnually = Nil;
+            strSemiAnnually = Nil;
+            strQuarterly = Nil;
+            strMonthly = Nil;
+            HL1KSA = Nil;
+            TempHL1KSA = Nil;
         }
     /*
     // to insert class info
@@ -1712,24 +1728,24 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
          
-        SelectSQL = [ NSString stringWithFormat:@"Select \"Type\", \"Annually\",\"SemiAnnually\",\"Quarterly\",\"Monthly\", \"Units\"  "
+            SelectSQL = [ NSString stringWithFormat:@"Select \"Type\", \"Annually\",\"SemiAnnually\",\"Quarterly\",\"Monthly\", \"Units\"  "
                      " from SI_Store_Premium as A, trad_rider_details as B where A.Type = B.riderCode AND \"type\" = \"%@\" "
                      " AND \"FromAge\" is NULL ", [OtherRiderCode objectAtIndex:a]];
         
-        if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-            if (sqlite3_step(statement) == SQLITE_ROW) {
-                strAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                strSemiAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
-                strQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
-                strMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
-                strUnits = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
-                 [aStrOtherRiderAnnually addObject:[strAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
-                 [aStrOtherRiderSemiAnnually addObject:[strSemiAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
-                 [aStrOtherRiderQuarterly addObject:[strQuarterly stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
-                 [aStrOtherRiderMonthly addObject:[strMonthly stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
+            if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement) == SQLITE_ROW) {
+                    strAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                    strSemiAnnually = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    strQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                    strMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                    strUnits = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+                    [aStrOtherRiderAnnually addObject:[strAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
+                    [aStrOtherRiderSemiAnnually addObject:[strSemiAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
+                    [aStrOtherRiderQuarterly addObject:[strQuarterly stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
+                    [aStrOtherRiderMonthly addObject:[strMonthly stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
+                }
+                sqlite3_finalize(statement);
             }
-            sqlite3_finalize(statement);
-        }
          
             if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"C+"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"CCTR"] ||
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"CIR"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"C+"] ||
@@ -1900,6 +1916,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             else {
                 NSString *RiderDesc = @"";
+                NSString *SA = @"";
                 if (![[OtherRiderDeductible objectAtIndex:a] isEqualToString:@"(null)" ]) {
                     RiderDesc= [NSString stringWithFormat:@"%@ (Class %@) (Deductible %@ )", [OtherRiderDesc objectAtIndex:a],
                                 OccpClass ,[OtherRiderDeductible objectAtIndex:a] ];
@@ -1913,6 +1930,16 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 }
                 else {
                     RiderDesc = [OtherRiderDesc objectAtIndex:a];
+                }
+                
+                if ( [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"HMM" ] || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"HSP_II" ]
+                    || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"MG_II" ] || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"MG_IV" ]
+                    || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"HB" ]){
+                    
+                    SA = @"-";
+                }
+                else{
+                    SA = [OtherRiderSA objectAtIndex:a];
                 }
                 
                 NSString *planOption = [OtherRiderPlanOption objectAtIndex:a];
@@ -1942,7 +1969,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                                 "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") VALUES ( "
                                 " \"%@\",\"%@\",\"DATA\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"\" "
-                                ")", SINo, seq, RiderDesc,planOption, strUnits, [OtherRiderSA objectAtIndex:a],
+                                ")", SINo, seq, RiderDesc,planOption, strUnits, SA,
                                 [OtherRiderTerm objectAtIndex:a], [OtherRiderTerm objectAtIndex:a], strAnnually,
                                 strSemiAnnually, strQuarterly, strMonthly, OtherHLoading];
                 }
@@ -1959,6 +1986,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             sqlite3_close(contactDB);
         }
         
+        strAnnually = Nil;
+        strSemiAnnually = Nil;
+        strQuarterly = Nil;
+        strMonthly = Nil;
+        strUnits = Nil;
+        seq = Nil, OtherHLoading= Nil;
     }
 
     for (int a=0; a<IncomeRiderCode.count; a++) {
@@ -2038,10 +2071,20 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             sqlite3_close(contactDB);
         }
+        strAnnually = Nil;
+        strSemiAnnually = Nil;
+        strQuarterly = Nil;
+        strMonthly = Nil;
+        seq = Nil, IncomeHLoading = Nil;
     }
     
     NSLog(@"insert to SI_Temp_Trad_Details --- End");
-    
+    statement = Nil;
+    QuerySQL = Nil;
+    RiderSQL = Nil;
+    SelectSQL =  Nil;
+    firstLifeLoading = Nil;
+    secondtLifeLoading = Nil;
 }
 
 -(void)InsertToSI_Temp_Trad_Basic{
@@ -2760,6 +2803,39 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         }
     } 
     
+    rates = Nil;
+    SurrenderRates = Nil;
+    SurrenderValue = Nil;
+    DBRates = Nil;
+    DBValue = Nil;
+    DBRatesEnd = Nil;
+    DBValueEnd = Nil;
+    aValue = Nil;
+    aValueEnd = Nil;
+    AnnualPremium = Nil;
+    arrayYearlyIncome = Nil;
+    TotalAllPremium = Nil;
+    CurrentCashDividendRatesA = Nil;
+    CurrentCashDividendValueA = Nil;
+    CurrentCashDividendRatesB = Nil;
+    CurrentCashDividendValueB = Nil;
+    AccuCashDividendValueA = Nil;
+    AccuCashDividendValueB = Nil;
+    AccuYearlyIncomeValueA = Nil;
+    AccuYearlyIncomeValueB = Nil;
+    tDividendRatesA = Nil;
+    tDividendValueA = Nil;
+    tDividendRatesB = Nil;
+    tDividendValueB = Nil;
+    speRatesA = Nil;
+    speValueA = Nil;
+    speRatesB = Nil;
+    speValueB = Nil;
+    TotalSurrenderValueA = Nil;
+    TotalSurrenderValueB = Nil;
+    TotalDBValueA = Nil;
+    TotalDBValueB = Nil;
+    
     NSLog(@"insert to SI_Temp_Trad_Basic --- End");
     
 }
@@ -2964,7 +3040,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     for (int a= 1; a<=PolicyTerm; a++) {
         
-        if (a <= 20 || (a > 20 && a % 5  == 0) || (a == PolicyTerm && a%5 != 0) ) {
+        if (a <= 20 || (a > 20 && a % 5  == 0) || (a == PolicyTerm && a%5 != 0) || a + Age == AdvanceYearlyIncome ) {
         
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 
@@ -3067,7 +3143,13 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     } 
     
     NSLog(@"insert to SI_Temp_Trad_Summary --- End");
-    
+    QuerySQL = Nil;
+    statement2 = Nil;
+    QuerySQL = Nil;
+    TotalIBPlusIR = Nil;
+    arrayYearlyIncome = Nil;
+    aValue = Nil;
+    aValueEnd = Nil;
 }
 
 -(void)InsertToSI_Temp_Trad_Rider{
@@ -3885,6 +3967,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         }
                     }
                 }
+                
+                
             }
             
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
@@ -3989,6 +4073,19 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 }
             }
            
+          
+            RiderCol1 = Nil;
+            RiderCol2 = Nil;
+            RiderCol3 = Nil;
+            RiderCol4 = Nil;
+            RiderCol5 = Nil;
+            RiderCol6 = Nil;
+            RiderCol7 = Nil;
+            RiderCol8 = Nil;
+            RiderCol9 = Nil;
+            RiderCol10 = Nil;
+            RiderCol11 = Nil;
+            RiderCol12 = Nil;
             
         }
         
@@ -4015,7 +4112,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     } 
     
     NSLog(@"insert to SI_Temp_Trad_Rider --- End");
-    
+    statement = Nil;
+    QuerySQL = Nil;
+    TotalRiderSurrenderValue = Nil;
       
 }
 
@@ -4963,6 +5062,37 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 sqlite3_close(contactDB);
             }
                 
+         
+            AnnualPremium = Nil;
+            YearlyIncomeEOF = Nil;
+            SurrenderRates = Nil;
+            SurrenderValue = Nil;
+            DBRates = Nil;
+            DBValue = Nil;
+            DBRatesEnd = Nil;
+            DBValueEnd = Nil;
+            aValue = Nil;
+            aValueEnd = Nil;
+            CurrentCashDividendRatesA = Nil;
+            CurrentCashDividendValueA = Nil;
+            CurrentCashDividendRatesB = Nil;
+            CurrentCashDividendValueB = Nil;
+            AccuCashDividendValueA = Nil;
+            AccuCashDividendValueB = Nil;
+            AccuYearlyIncomeValueA = Nil;
+            AccuYearlyIncomeValueB = Nil;
+            tDividendRatesA = Nil;
+            tDividendValueA = Nil;
+            tDividendRatesB = Nil;
+            tDividendValueB = Nil;
+            speRatesA = Nil;
+            speValueA = Nil;
+            speRatesB = Nil;
+            speValueB = Nil;
+            TotalSurrenderValueA = Nil;
+            TotalSurrenderValueB = Nil;
+            TotalDBValueA = Nil;
+            TotalDBValueB = Nil;
             
         }
     }
@@ -5030,7 +5160,16 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 
                 sqlite3_close(contactDB);
             }
+            
+            SAAnnual = Nil;
+            SASemiAnnual = Nil;
+            SAQuaterly = Nil;
+            SAMonthly = Nil;
+            
         }
+        
+        statement = Nil;
+        QuerySQL = Nil;
         
         NSLog(@"Update Trad Detail end");
     }

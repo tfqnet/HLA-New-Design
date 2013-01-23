@@ -47,17 +47,17 @@
     //NSString *path = [[NSBundle mainBundle] pathForResource:@"HLA Ipad-Info"  ofType:@"plist"];
     //NSMutableDictionary *dictionary = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
     
-    outletReset.hidden = YES;
+    //outletReset.hidden = YES;
     
-    NSString *version = [NSString stringWithFormat:
-                         @"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
-   // labelVersion.text = version;
-//    labelUpdated.text = @"Last Updated: 16 January 2013";
+   // NSString *version = [NSString stringWithFormat:
+     //                    @"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+   
+    NSString *version = @"Beta Version";
     
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-01-18"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-01-22"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -81,21 +81,17 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 18 January 2013";
+        labelUpdated.text = @"Last Updated: 22 January 2013";
                 outletLogin.hidden = FALSE;
     }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight || interfaceOrientation==UIInterfaceOrientationLandscapeLeft){
+	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight || interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
         return YES;
-    }
-    else {
-        return NO;
-    }
-     
-    //return (interfaceOrientation==UIInterfaceOrientationLandscapeRight);
+    
+    return NO;
 }
 
 -(NSUInteger)supportedInterfaceOrientations
@@ -269,7 +265,7 @@
                 txtPassword.text = @"";
                 
             } else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Username or Password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Username or Password" delegate:Nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
                 [alert show];
                 
             }
@@ -373,14 +369,14 @@
 - (IBAction)btnLogin:(id)sender {
     if (txtUsername.text.length <= 0) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is required" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         [txtUsername becomeFirstResponder];
         
     }
     else if (txtPassword.text.length <=0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password is required" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         [txtPassword becomeFirstResponder];
@@ -468,7 +464,7 @@
                             if (sqlite3_step(statement3) == SQLITE_DONE){
                                 
                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reset"
-                                                                                message:@"System has been restored to first time login mode" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                                message:@"System has been restored to first time login mode" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                                 [alert show];
                                 
                             }

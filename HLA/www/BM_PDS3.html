@@ -25,6 +25,7 @@
     var pageNum = '8';
     //var rider = "";
     var page = gup("page");
+    var FirstAge = '';
 
     function errorHandler(transaction, error) {
         alert('Error: ' + error.message + ' code: ' + error.code);
@@ -75,6 +76,17 @@
             },errorHandler);
         },errorHandler,nullHandler);
         
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    if(result.rows.length == 1){
+	                  var row = result.rows.item(0);
+			 FirstAge = row.Age;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
         
         //Details
         db.transaction(function(transaction) {
@@ -162,9 +174,16 @@
 					
 				        }
 				        else{
+					    if(row.RiderCode == 'PTR'){
+						$('#Special' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+						$('#Special2' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+					    }
+					    else{
+						$('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+						$('#QQQ' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+					    }
 					    
-					    $('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
-					    $('#QQQ' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+					    
 					}
 				    }
 			      }
@@ -229,7 +248,7 @@
 				     var row = result1.rows.item(0);
 				     
 				     
-				     $('#' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
+				     $('#PRRiderGYI').html(formatCurrency(row.Total));
 				     $('#QQQ' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
 				     
 				 }
@@ -276,7 +295,68 @@
 				 
 			     },errorHandler);        				
 			 }
-			 
+			 else if(temp1 == 'IE20R' ){
+			    
+			    if(FirstAge < 41){
+				$('#IERider').html('20');
+				$('#IERider2').html(4 * 20);
+			    }
+			    else if(FirstAge > 40 && FirstAge < 46){
+				$('#IERider').html('25');
+				$('#IERider2').html(4 * 25);
+			    }
+			    else if(FirstAge > 45 && FirstAge < 51){
+				$('#IERider').html('30');
+				$('#IERider2').html(4 * 30);
+			    }
+			    else if(FirstAge > 50 && FirstAge < 56){
+				$('#IERider').html('35');
+				$('#IERider2').html(4 * 35);
+			    }
+			    else if(FirstAge > 55 && FirstAge < 61){
+				$('#IERider').html('40');
+				$('#IERider2').html(4 * 40);
+			    }
+			    else if(FirstAge > 60 && FirstAge < 66){
+				$('#IERider').html('45');
+				$('#IERider2').html(4 * 45);
+			    }
+			    
+			 }
+			 else if(temp1 == 'IE30R' ){
+			    
+			    
+			    if(FirstAge < 41){
+				$('#IE30Rider').html('20');
+				$('#IE30Rider2').html(4 * 20);
+			    }
+			    else if(FirstAge > 40 && FirstAge < 46){
+				
+				$('#IE30Rider').html('25');
+				$('#IE30Rider2').html(4 * 25);
+			    }
+			    else if(FirstAge > 45 && FirstAge < 51){
+				
+				$('#IE30Rider').html('30');
+				$('#IE30Rider2').html(4 * 30);
+			    }
+			    else if(FirstAge > 50 && FirstAge < 56){
+				
+				$('#IE30Rider').html('35');
+				$('#IE30Rider2').html(4 * 35);
+			    }
+			    else if(FirstAge > 55 && FirstAge < 61){
+				
+				$('#IE30Rider').html('40');
+				$('#IE30Rider2').html(4 * 40);
+			    }
+			    else if(FirstAge > 60 && FirstAge < 66){
+				
+				$('#IE30Rider').html('45');
+				$('#IE30Rider2').html(4 * 45);
+			    }
+			    
+			 }
 		    }
 				   
 				   
@@ -469,7 +549,7 @@ Penyakit Kritikal.<br/><br/>
 <!--CIWP-Critical Illness WP Rider start--> 
 <tr class="CIWP" id="CIWP" style="display:table-row;">
     <td class="contentSmall">Critical Illness WP Rider</td>
-    <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderGYI">{CIWPRiderGYI}</span></td>
+    <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderGYI">{CIWPRiderGYI}</span><br/>(Tahunan)</td>
     <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
     <td class="content">
     Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider setelah didiagnosis dengan<br/>
@@ -616,7 +696,7 @@ Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau men
 <td class="contentSmall" style="text-align:center;"><span id="ETPDRiderGYI">{ETPDRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="ETPDRiderTerm">{ETPDRiderTerm}</span></td>
 <td class="content">
-Apabila Hayat Diinsuranskan mengalami TPD dalam tempoh diinsuranskan dan Hayat Diinsuranskan masih mengalami hilang upaya, RM <span id="QQQETPDRiderGYI">{ETPDGYI}</span> akan dibayar<br/>
+Apabila Hayat Diinsuranskan mengalami TPD dalam tempoh diinsuranskan dan Hayat Diinsuranskan masih mengalami hilang upaya, RM <span id="QQQETPDRiderGYI">{ETPDGYI}</span> akan dibayar
 setiap tahun sehingga umur 65 tahun atau Hayat Diinsuranskan meninggal dunia, mengikut mana-mana yang terdahulu.Pembayaran pertama adalah pada ulang<br/>
 tahun pertama selepas bermulanya TPD.<br/><br/>
 </td>
@@ -644,17 +724,17 @@ Faedah Hospitalisasi sebanyak RM <span id="HBBenefit">{HBBenefit}</span> setiap 
     <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</b></u><br/>
 
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
-akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)
 Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
-Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
-bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai
 Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
 Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
 Pendapatan Tahunan Terjamin yang berjumlah RM<span id="QQQI20RRiderGYI">{I20RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
 <u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
-Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana
 PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
@@ -669,12 +749,12 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
 seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika<br/>
+Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika
 ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/></td>
 </tr>
 <!--I20R-Income 20 Rider end-->
@@ -688,17 +768,17 @@ ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/></td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</b></u><br/>
 
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
-akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)
 Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
-Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
-bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai
 Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
 Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
 Pendapatan Tahunan Terjamin yang berjumlah RM<span id="QQQI30RRiderGYI">{I30RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
 <u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
-Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana
 PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
@@ -713,12 +793,12 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
 seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika<br/>
+Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika
 ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 </td>
 </tr>
@@ -732,17 +812,17 @@ ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
     
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
-akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada)
 Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
-Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
-bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai
 Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
 Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
 Pendapatan Tahunan Terjamin yang berjumlah RM<span id="QQQI40RRiderGYI">{I40RGYI}</span> akan dibayar bermula dari akhir tahun pertama sehingga tamat tempoh rider.<br/><br/>
 <u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
-Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana
 PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
@@ -757,12 +837,12 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
 seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika<br/>
+Faedah matang bersamaan dengan jumlah Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal (jika
 ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 </td>
 </tr>
@@ -905,14 +985,14 @@ Penyakit Kritikal.<br/><br/>
 <td class="contentSmall" style="text-align:center;"><span id="ID20RRiderTerm">{ID20RRiderTerm}</span></td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang
 akan dibayar adalah bersamaan dengan jumlah:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% daripada Pendapatan Tahunan Terjamin belum jelas atau 9 kali Pendapatan Tahunan Terjamin atau Nilai Serahan Tunai; yang mana tertinggi,<br/>
 ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
 iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
 iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
 <br/>
-Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah
 bersamaan dengan jumlah:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% daripada Pendapatan Tahunan Terjamin belum jelas atau 36 kali Pendapatan Tahunan Terjamin atau 4 kali Nilai Serahan Tunai; yang mana<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tertinggi,<br/>
@@ -924,7 +1004,7 @@ Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan 
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
 Pendapatan Tahunan Terjamin yang berjumlah RM<span id="QQQID20RiderRGYI">{ID20RGYI}</span> akan dibayar bermula dari akhir tahun ke-21 sehingga umur 90.<br/><br/>
 <u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
-Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana
 PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
@@ -939,12 +1019,12 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
 seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal<br/>
+Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal
 (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 </td>
 </tr>
@@ -957,7 +1037,7 @@ Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkump
 <td class="contentSmall" style="text-align:center;"><span id="ID30RRiderTerm">{ID30RRiderTerm}</span></td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang
 akan dibayar adalah bersamaan dengan jumlah:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% daripada Pendapatan Tahunan Terjamin belum jelas atau 9 kali Pendapatan Tahunan Terjamin atau Nilai Serahan Tunai; yang mana tertinggi,<br/>
 ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
@@ -976,7 +1056,7 @@ Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan 
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
 Pendapatan Tahunan Terjamin yang berjumlah RM<span id="QQQID30RRiderGYI">{ID30RGYI}</span> akan dibayar bermula dari akhir tahun ke-21 sehingga umur 90.<br/><br/>
 <u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
-Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana
 PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
@@ -991,12 +1071,12 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
 seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal<br/>
+Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal
 (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 </td>
 </tr>
@@ -1009,14 +1089,14 @@ Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkump
 <td class="contentSmall" style="text-align:center;"><span id="ID40RRiderTerm">{ID40RRiderTerm}</span></td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</b></u><br/>
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang
 akan dibayar adalah bersamaan dengan jumlah:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100% daripada Pendapatan Tahunan Terjamin belum jelas atau 9 kali Pendapatan Tahunan Terjamin atau Nilai Serahan Tunai; yang mana tertinggi,<br/>
 ii.&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
 iii.&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
 iv.&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada).<br/>
 <br/>
-Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah
 bersamaan dengan jumlah:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;400% daripada Pendapatan Tahunan Terjamin belum jelas atau 36 kali Pendapatan Tahunan Terjamin atau 4 kali Nilai Serahan Tunai; yang mana<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tertinggi,<br/>
@@ -1028,7 +1108,7 @@ Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan 
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
 Pendapatan Tahunan Terjamin yang berjumlah RM<span id="QQQID40RRiderGYI">{ID40RGYI}</span> akan dibayar bermula dari akhir tahun ke-21 sehingga umur 90.<br/><br/>
 <u><b>Pendahuluan Pendapatan Tahunan Terjamin (PTT) Masa Depan</u></b><br/>
-Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana<br/>
+Pemunya Polisi boleh mendahulukan PTT 5 tahun yang seterusnya apabila berlaku kejadian seperti yang disenaraikan di bawah, bermula dari tahun rider di mana
 PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perkahwinan<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bersalin<br/>
@@ -1043,12 +1123,12 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/><br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
 seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/><br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal<br/>
+Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal
 (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 </td>
 </tr>
@@ -1061,11 +1141,11 @@ Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkump
 <td class="contentSmall" style="text-align:center;"><span id="IE20RRiderTerm">{IE20RRiderTerm}</span></td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang<br/>
-akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, 20 kali Pendapatan Tahunan Terjamin, Pendapatan<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, <span id="IERider">{IERider}</span> kali Pendapatan Tahunan Terjamin, Pendapatan
 Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
-Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
-bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, 80 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, <span id="IERider2">{IERider2}</span> kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin
 Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
 Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
@@ -1086,12 +1166,12 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
-seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul<br/>
+Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul
 (jika ada) dan Dividen Terminal (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 </td>
 </tr>
@@ -1104,11 +1184,11 @@ Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Penda
 <td class="contentSmall" style="text-align:center;"><span id="IE30RRiderTerm">{IE30RRiderTerm}</span></td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</b></u><br/>
-Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang<br/>
-akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, 20 kali Pendapatan Tahunan Terjamin, Pendapatan<br/>
+Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang
+akan dibayar adalah bersamaan dengan jumlah 100% daripada Pendapatan Tahunan Terjamin belum jelas, <span id="IE30Rider">{IE30Rider}</span> kali Pendapatan Tahunan Terjamin, Pendapatan
 Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
-Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah<br/>
-bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, 80 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin<br/>
+Jika Hayat Diinsuranskan mengalami TPD yang disebabkan oleh kemalangan (sebelum umur 65 tahun), faedah TPD kemalangan yang akan dibayar adalah
+bersamaan dengan jumlah 400% daripada Pendapatan Tahunan Terjamin belum jelas, <span id="IE30Rider2">{IERider2}</span> kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin
 Terkumpul (jika ada), Dividen Tunai Terkumpul (jika ada) dan Dividen Terminal Istimewa (jika ada).<br/><br/>
 Faedah TPD akan dibayar berdasarkan peruntukan TPD seperti yang diillustrasikan bawah Penerangan Faedah Pelan Asas.<br/><br/>
 <u><b>Faedah Pendapatan Tahunan Terjamin</u></b><br/>
@@ -1129,16 +1209,16 @@ PTT pertama dibayar dan tertakluk kepada kecukupan Nilai Serahan Tunai Bersih.<b
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi didiagnos dengan penyakit kritikal<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pemunya Polisi mengalami kehilangan upaya menyeluruh sementara akibat penyakit atau kemalangan<br/><br/>
 Senarai di atas adalah tidak lengkap dan Syarikat boleh menambah lebih kejadian pada keputusan sendiri dari masa ke semasa.<br/>
-Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang<br/>
-seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.<br/>
-Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika<br/>
+Amaun yang dibayar kepada Pemunya Polisi adalah 85% daripada PTT 5 tahun yang seterusnya. Selepas itu, PTT yang genap tempoh untuk 5 tahun yang
+seterusnya serta merta berikutan pendahuluan tersebut akan dihentikan untuk membayar balik pendahuluan tersebut.
+Apabila penyerahan polisi atau kematian/ TPD, Syarikat akan menolak PTT yang telah didahulukan dengan bunga 5.67% setahun tetapi masih terhutang (jika
 ada) sebelum membuat apa-apa bayaran.<br/><br/>
 <u><b>Faedah Matang</u></b><br/>
-Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul<br/>
-(jika ada) dan Dividen Terminal (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
+Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Pendapatan Tahunan Terjamin Terkumpul (jika ada), Dividen Tunai Terkumpul
+(jika ada) dan Dividen Terminal (jika ada) akan dibayar atas kematangan pada akhir tempoh rider.
 </td>
 </tr>
-<!--IE20R-Income E-20 Rider end-->
+<!--IE20R-Income E-30 Rider end-->
 
 
 <!--LCPR-Living Care Plus Rider start--> 
@@ -1272,7 +1352,7 @@ Penyakit Kritikal, Kematian atau TPD.<br/><br/>
 <!--LCWP-Living Care Waiver of Premium Payor Rider start--> 
 <tr class="LCWP" id="LCWP" style="display:table-row;">
 <td class="contentSmall">Living Care Waiver of<br/>Premium Payor Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderGYI">{LCWPRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderGYI">{LCWPRiderGYI}</span><br/>(Tahunan)</td>
 <td class="contentSmall" style="text-align:center;"><span id="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
 <td class="content">
 
@@ -1420,7 +1500,7 @@ Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau men
 <!--PR-Waiver of Premium Payor Rider start--> 
 <tr class="PR" id="PR" style="display:table-row;">
 <td class="contentSmall">Waiver of Premium Payor Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderGYI">{PRRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="PRRiderGYI">{PRRiderGYI}</span><br/>(Tahunan)</td>
 <td class="contentSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
 <td class="content">
 Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila pembayar meninggal dunia /<br/>
@@ -1434,7 +1514,7 @@ mengalami TPD dalam tempoh diinsuranskan.
 <!--SP_PRE-WOP Spouse Rider (Premier) start--> 
 <tr class="SP_PRE" id="SP_PRE" style="display:table-row;">
 <td class="contentSmall">WOP Spouse Rider<br/>(Premier)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderGYI">{SP_PRERiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderGYI">{SP_PRERiderGYI}</span><br/>(Tahunan)</td>
 <td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderTerm">{SP_PRERiderTerm}</span></td>
 <td class="content">
 
@@ -1564,7 +1644,7 @@ Penyakit Kritikal, Kematian atau TPD.<br/><br/>
 <!--SP_STD-WOP Spouse Rider (Standard) start--> 
 <tr class="SP_STD" id="SP_STD" style="display:table-row;">
 <td class="contentSmall">WOP Spouse Rider<br/>(Standard)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderGYI">{SP_STDRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderGYI">{SP_STDRiderGYI}</span><br/>(Tahunan)</td>
 <td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
 <td class="content">
 Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila hayat diinsuranskan yang<br/>
@@ -1704,11 +1784,11 @@ Penyakit Kritikal, Kematian atau TPD.<br/><br/>
 
 <!--PTR-Payor Term Rider start--> 
 <tr class="PTR" id="PTR" style="display:table-row;">
-<td class="contentSmall">PTR</td>
-<td class="contentSmall" style="text-align:center;"><span id="PTRRiderGYI">{PTRRiderGYI}</span></td>
+<td class="contentSmall">Payor Term Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="SpecialPTRRiderGYI">{PTRRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
 <td class="content">
-RM <span id="QQQPTRRiderGYI">{QQQPTRRiderGYI}</span> akan dibayar apabila pembayar meninggal dunia / mengalami TPD (sebelum umur 65 tahun) dalam tempoh diinsuranskan.<br/>
+RM <span id="Special2PTRRiderGYI">{QQQPTRRiderGYI}</span> akan dibayar apabila pembayar meninggal dunia / mengalami TPD (sebelum umur 65 tahun) dalam tempoh diinsuranskan.<br/>
 <br/>
 
 </td>

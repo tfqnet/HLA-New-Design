@@ -6,12 +6,12 @@
 	<array>
 		<array>
 			<array>
-				<string>HLA IncomeBuilder_Mand</string>
-				<string>Brochure_HLAIncomeBuilder_Mand</string>
+				<string>HLA Income Builder (English + BM)</string>
+				<string>Brochure_HLAIncomeBuilder_BM</string>
 			</array>
 			<array>
-				<string>HLA IncomeBuilder_BM</string>
-				<string>Brochure_HLAIncomeBuilder_BM</string>
+				<string>HLA Income Builder (English + Chinese)</string>
+				<string>Brochure_HLAIncomeBuilder_Mand</string>
 			</array>
 		</array>
 		<array>
@@ -52,12 +52,12 @@
 		</array>
 		<array>
 			<array>
-				<string>HLA MedGLOBAL II_Chi</string>
-				<string>Brochure_MedGlobalII_Chi</string>
+				<string>HLA MedGLOBAL II (English + BM)</string>
+				<string>Brochure_MedGlobalII</string>
 			</array>
 			<array>
-				<string>HLA MedGLOBAL II</string>
-				<string>Brochure_MedGlobalII</string>
+				<string>HLA MedGLOBAL II (Chinese)</string>
+				<string>Brochure_MedGlobalII_Chi</string>
 			</array>
 		</array>
 		<array>

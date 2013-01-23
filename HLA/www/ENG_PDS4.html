@@ -24,6 +24,7 @@
     var PA = '';
     var CustCode = '';
     var Deductible = '';
+    var PlanOption = '';
     var LCWPSA = '';
     var CIWPSA = '';
     var PRSA = '';
@@ -142,9 +143,11 @@
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
                     Deductible = row.Deductible;
+		    PlanOption = row.PlanOption;
                 }
 		else{
 		    Deductible = '';
+		    PlanOption = '';
 		}
             },errorHandler);
         },errorHandler,nullHandler);
@@ -237,7 +240,7 @@
 			$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
 			else if(row.Plan == 'HLA Major Medi' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' ' + PlanOption + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
 			else if(row.RiderCode == 'PR' ){
 			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + PRSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    

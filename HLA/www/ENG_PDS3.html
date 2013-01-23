@@ -25,6 +25,7 @@
     var pageNum = '8';
     //var rider = "";
     var page = gup("page");
+    var FirstAge = '';
 
     function errorHandler(transaction, error) {
         alert('Error: ' + error.message + ' code: ' + error.code);
@@ -75,6 +76,17 @@
             },errorHandler);
         },errorHandler,nullHandler);
         
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    if(result.rows.length == 1){
+	                  var row = result.rows.item(0);
+			 FirstAge = row.Age;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
         
         //Details
         db.transaction(function(transaction) {
@@ -151,8 +163,14 @@
 						$('#' + row.RiderCode + 'RiderGYI').html(row.Units + ' unit(s)');
 					   }
 					   else{
-					      $('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
-					      $('#QQQ' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+						if(row.RiderCode == 'PTR'){
+						    $('#Special' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+						    $('#Special2' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+						}
+						else{
+						    $('#' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+						    $('#QQQ' + row.RiderCode + 'RiderGYI').html(formatCurrency(row.SumAssured+""));
+						}
 					   }
 					   
 					   
@@ -219,8 +237,8 @@
 				     var row = result1.rows.item(0);
 				     
 				     
+				     $('#PRRiderGYI').html(formatCurrency(row.Total));
 				     $('#' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
-				     $('#QQQ' + temp1 + 'RiderGYI').html(formatCurrency(row.Total));
 				     
 				 }
 				 
@@ -266,7 +284,74 @@
 				 
 			     },errorHandler);        				
 			 }
-			 
+			 else if(temp1 == 'IE20R' ){
+			    
+			    
+			    if(FirstAge < 41){
+				$('#IERider').html('20');
+				$('#IERider2').html(4 * 20);
+			    }
+			    else if(FirstAge > 40 && FirstAge < 46){
+				
+				$('#IERider').html('25');
+				$('#IERider2').html(4 * 25);
+			    }
+			    else if(FirstAge > 45 && FirstAge < 51){
+				
+				$('#IERider').html('30');
+				$('#IERider2').html(4 * 30);
+			    }
+			    else if(FirstAge > 50 && FirstAge < 56){
+				
+				$('#IERider').html('35');
+				$('#IERider2').html(4 * 35);
+			    }
+			    else if(FirstAge > 55 && FirstAge < 61){
+				
+				$('#IERider').html('40');
+				$('#IERider2').html(4 * 40);
+			    }
+			    else if(FirstAge > 60 && FirstAge < 66){
+				
+				$('#IERider').html('45');
+				$('#IERider2').html(4 * 45);
+			    }
+			    
+			 }
+			 else if(temp1 == 'IE30R' ){
+			    
+			    
+			    if(FirstAge < 41){
+				$('#IE30Rider').html('20');
+				$('#IE30Rider2').html(4 * 20);
+			    }
+			    else if(FirstAge > 40 && FirstAge < 46){
+				
+				$('#IE30Rider').html('25');
+				$('#IE30Rider2').html(4 * 25);
+			    }
+			    else if(FirstAge > 45 && FirstAge < 51){
+				
+				$('#IE30Rider').html('30');
+				$('#IE30Rider2').html(4 * 30);
+			    }
+			    else if(FirstAge > 50 && FirstAge < 56){
+				
+				$('#IE30Rider').html('35');
+				$('#IE30Rider2').html(4 * 35);
+			    }
+			    else if(FirstAge > 55 && FirstAge < 61){
+				
+				$('#IE30Rider').html('40');
+				$('#IE30Rider2').html(4 * 40);
+			    }
+			    else if(FirstAge > 60 && FirstAge < 66){
+				
+				$('#IE30Rider').html('45');
+				$('#IE30Rider2').html(4 * 45);
+			    }
+			    
+			 }
 		    }
 				   
 				   }
@@ -454,7 +539,7 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 <!--CIWP-Critical Illness WP Rider start--> 
 <tr class="CIWP" id="CIWP" style="display:table-row;">
     <td class="contentSmall">Critical Illness WP Rider</td>
-    <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderGYI">{CIWPRiderGYI}</span></td>
+    <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderGYI">{CIWPRiderGYI}</span><br/>(Annual)</td>
     <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
     <td class="content">
     The rider Sum Assured will be paid to reduce future premium up to expiry date of the rider upon diagnosis of any of the 36 critical illnesses covered of the life<br/>
@@ -601,7 +686,7 @@ The following benefits are payable upon death or disability of the life assured 
 <td class="contentSmall" style="text-align:center;"><span id="ETPDRiderGYI">{ETPDRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="ETPDRiderTerm">{ETPDRiderTerm}</span></td>
 <td class="content">
-Upon TPD of the Life Assured during the coverage term and the Life Assured remained disabled, RM <span id="QQQETPDRiderGYI">{ETPDGYI}</span> shall be payable annually up to age 65 or death of<br/>
+Upon TPD of the Life Assured during the coverage term and the Life Assured remained disabled, RM <span id="QQQETPDRiderGYI">{ETPDGYI}</span> shall be payable annually up to age 65 or death of
 the Life Assured, whichever is earlier.The first payment is on the 1st anniversary subsequent to the commencement of TPD.<br/><br/>
 
 </td>
@@ -628,16 +713,16 @@ Hospitalisation benefit of RM <span id="HBBenefit">{HBBenefit}</span> per week i
     <td class="content">
 <u><b>Death/TPD Benefit</b></u><br/>
 
-In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
-100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal<br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
+100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal
 Dividend (if any).<br/><br/>
-In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding
 Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
 Guaranteed Yearly Income of RM <span id="QQQI20RRiderGYI">{I20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
-Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
@@ -652,12 +737,12 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
 The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
 advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</b></u><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash
 Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
@@ -672,15 +757,15 @@ Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 <td class="content">
 <u><b>Death/TPD Benefit</b></u><br/>
 
-In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
 100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal<br/>Dividend (if any).<br/><br/>
-In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding
 Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
 Guaranteed Yearly Income of RM<span id="QQQI30RRiderGYI">{I30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
-Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
@@ -695,12 +780,12 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
 The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
 advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</b></u><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash
 Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
@@ -713,16 +798,16 @@ Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 <td class="contentSmall" style="text-align:center;"><span id="I40RRiderTerm">{I40RRiderTerm}</span></td>
 <td class="content">
 <u><b>Death/TPD Benefit</u></b><br/>
-In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
-100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal<br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
+100% of outstanding Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal
 Dividend (if any).<br/><br/>
-In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding
 Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</u></b><br/>
 Guaranteed Yearly Income of RM<span id="QQQI40RRiderGYI">{I40RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
-Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
@@ -737,12 +822,12 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
 The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
 advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</u></b><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of Accumulated Guaranteed Yearly Income (if any), Accumulated Cash
 Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
@@ -901,7 +986,7 @@ TPD benefit will be paid in accordance to TPD provision as illustrated under Des
 <u><b>Guaranteed Yearly Income Benefit</u></b><br/>
 Guaranteed Yearly Income of RM<span id="QQQID20RRiderGYI">{ID20RGYI}</span> payable starting from end of year 21 up to age 90.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</u></b><br/>
-Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
@@ -916,12 +1001,12 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
 The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
 advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</u></b><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly
 Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
@@ -967,12 +1052,12 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
 The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
 advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</b></u><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly
 Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
@@ -1003,7 +1088,7 @@ TPD benefit will be paid in accordance to TPD provision as illustrated under Des
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
 Guaranteed Yearly Income of RM<span id="QQQID40RRiderGYI">{ID40RGYI}</span> payable starting from end of year 41 up to age 90.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
-Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
@@ -1018,12 +1103,12 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/><
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/><br/>
 The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/><br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
 advancement shall cease to be payable in order to offset the said advancement.<br/><br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</u></b><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 9 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly
 Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
@@ -1036,17 +1121,17 @@ Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if an
 <td class="contentSmall" style="text-align:center;"><span id="IE20RRiderTerm">{IE20RRiderTerm}</span></td>
 <td class="content">
 <u><b>Death/TPD Benefit</u></b><br/>
-In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
-100% of outstanding Guaranteed Yearly Income, 20 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
+100% of outstanding Guaranteed Yearly Income, <span id="IERider">{IERider}</span> times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash
 Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
-In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
-Guaranteed Yearly Income, 80 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding
+Guaranteed Yearly Income, <span id="IERider2">{IERider2}</span> times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and
 Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
 Guaranteed Yearly Income of RM<span id="QQQIE20RRiderGYI">{IE20RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
-Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
@@ -1060,14 +1145,14 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/>
-The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
-advancement shall cease to be payable in order to offset the said advancement.<br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
+advancement shall cease to be payable in order to offset the said advancement.
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</b></u><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 10 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
-Income (if any), Accumulated Cash Dividend (if any) and<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 10 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly
+Income (if any), Accumulated Cash Dividend (if any) and
 Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
@@ -1080,17 +1165,17 @@ Terminal Dividend (if any) shall be payable.<br/>
 <td class="contentSmall" style="text-align:center;"><span id="IE30RRiderTerm">{IE30RRiderTerm}</span></td>
 <td class="content">
 <u><b>Death/TPD Benefit</b></u><br/>
-In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of<br/>
-100% of outstanding Guaranteed Yearly Income, 20 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash<br/>
+In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
+100% of outstanding Guaranteed Yearly Income, <span id="IE30Rider">{IE30Rider}</span> times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash
 Dividend (if any) and Special Terminal Dividend (if any).<br/><br/>
-In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding<br/>
-Guaranteed Yearly Income, 80 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and<br/>
+In the event of accidental TPD (prior to attaining age 65) of the Life Assured, the accidental TPD benefit payable shall be the sum of 400% of outstanding
+Guaranteed Yearly Income, <span id="IE30Rider2">{IE30Rider2}</span> times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly Income (if any), Accumulated Cash Dividend (if any) and
 Special Terminal Dividend (if any).<br/><br/>
 TPD benefit will be paid in accordance to TPD provision as illustrated under Descriptions of Basic Plan Benefits.<br/><br/>
 <u><b>Guaranteed Yearly Income Benefit</b></u><br/>
 Guaranteed Yearly Income of RM<span id="QQQIE30RRiderGYI">{IE30RGYI}</span> is payable starting from end of year 1 up to expiry.<br/><br/>
 <u><b>Advancement of Future Guaranteed Yearly Income (GYI)</b></u><br/>
-Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and<br/>
+Policy Owner may advance the next 5 years' GYI upon happening of events as listed below; starting from the rider year where the first GYI is payable and
 provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Marriage<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Child Birth<br/>
@@ -1104,18 +1189,18 @@ provided that the policy has acquired sufficient Net Cash Surrender Value.<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parent/children death<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner diagnosed with critical illness<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy owner suffers temporary total disablement due to illness or accident.<br/>
-The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.<br/>
-The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the<br/>
-advancement shall cease to be payable in order to offset the said advancement.<br/>
-Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making<br/>
+The above listed events are not exhaustive and the Company may include more events at its discretion from time to time.
+The amount payable to Policy Owner shall be 85% of the total next 5 years' GYI. Thereafter, the GYI due for the next 5 years immediately following the
+advancement shall cease to be payable in order to offset the said advancement.
+Upon surrender or death/ TPD claim, the Company will deduct the outstanding GYI advanced accrued with interest of 5.67% per annum (if any) before making
 any payment.<br/><br/>
 <u><b>Maturity Benefit</b></u><br/>
-Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 10 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly<br/>
-Income (if any), Accumulated Cash Dividend (if any) and<br/>
+Upon maturity at the end of the rider term, a maturity benefit equivalent to the sum of 10 times of Guaranteed Yearly Income, Accumulated Guaranteed Yearly
+Income (if any), Accumulated Cash Dividend (if any) and
 Terminal Dividend (if any) shall be payable.<br/>
 </td>
 </tr>
-<!--IE20R-Income E-20 Rider end-->
+<!--IE30R-Income E-30 Rider end-->
 
 
 <!--LCPR-Living Care Plus Rider start--> 
@@ -1248,7 +1333,7 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 <!--LCWP-Living Care Waiver of Premium Payor Rider start--> 
 <tr class="LCWP" id="LCWP" style="display:table-row;">
 <td class="contentSmall">Living Care Waiver of<br/>Premium Payor Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderGYI">{LCWPRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderGYI">{LCWPRiderGYI}</span><br/>(Annual)</td>
 <td class="contentSmall" style="text-align:center;"><span id="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
 <td class="content">
 
@@ -1394,7 +1479,7 @@ The following benefits are payable upon death or disability of the life assured 
 <!--PR-Waiver of Premium Payor Rider start--> 
 <tr class="PR" id="PR" style="display:table-row;">
 <td class="contentSmall">Waiver of Premium Payor Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderGYI">{PRRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="PRRiderGYI">{PRRiderGYI}</span><br/>(Annual)</td>
 <td class="contentSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
 <td class="content">
 The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the payor during the coverage period.<br/>
@@ -1407,7 +1492,7 @@ The rider sum assured will be paid to reduce future premium up to the expiry dat
 <!--SP_PRE-WOP Spouse Rider (Premier) start--> 
 <tr class="SP_PRE" id="SP_PRE" style="display:table-row;">
 <td class="contentSmall">WOP Spouse Rider<br/>(Premier)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderGYI">{SP_PRERiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderGYI">{SP_PRERiderGYI}</span><br/>(Annual)</td>
 <td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderTerm">{SP_PRERiderTerm}</span></td>
 <td class="content">
 
@@ -1535,7 +1620,7 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 <!--SP_STD-WOP Spouse Rider (Standard) start--> 
 <tr class="SP_STD" id="SP_STD" style="display:table-row;">
 <td class="contentSmall">WOP Spouse Rider<br/>(Standard)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderGYI">{SP_STDRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderGYI">{SP_STDRiderGYI}</span><br/>(Annual)</td>
 <td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
 <td class="content">
 The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the 2nd life assured during the coverage<br/>
@@ -1698,11 +1783,11 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnes
 
 <!--PTR-Payor Term Rider start--> 
 <tr class="PTR" id="PTR" style="display:table-row;">
-<td class="contentSmall">PTR</td>
-<td class="contentSmall" style="text-align:center;"><span id="PTRRiderGYI">{PTRRiderGYI}</span></td>
+<td class="contentSmall">Payor Term Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="SpecialPTRRiderGYI">{PTRRiderGYI}</span></td>
 <td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
 <td class="content">
-RM <span id="QQQPTRRiderGYI">{PTRGYI}</span> is payable upon  death / TPD (prior to age 65) of the payor during the coverage period.<br/>
+RM <span id="Special2PTRRiderGYI">{PTRGYI}</span> is payable upon  death / TPD (prior to age 65) of the payor during the coverage period.<br/>
 <br/>
 
 </td>
