@@ -713,7 +713,7 @@
     double dblPseudoBSA2 = dblPseudoBSA * 0.1;
     double dblPseudoBSA3 = dblPseudoBSA * 5;
     double dblPseudoBSA4 = dblPseudoBSA * 2;
-    int MaxUnit;
+    int MaxUnit = 0;
     //    NSLog(@"dblPseudoBSA:%.f, dblPseudoBSA3:%.f",maxRiderSA,dblPseudoBSA3);
     
     if ([riderCode isEqualToString:@"CCTR"])
@@ -779,6 +779,9 @@
         }
         else if (dblPseudoBSA > 75000) {
             MaxUnit = 10;
+        }
+        else {
+            MaxUnit = 0;
         }
         maxRiderSA = MaxUnit;
     }

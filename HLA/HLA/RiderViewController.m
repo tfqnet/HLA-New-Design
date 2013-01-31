@@ -667,7 +667,7 @@
     double dblPseudoBSA2 = dblPseudoBSA * 0.1;
     double dblPseudoBSA3 = dblPseudoBSA * 5;
     double dblPseudoBSA4 = dblPseudoBSA * 2;
-    int MaxUnit;
+    int MaxUnit = 0;
 //    NSLog(@"dblPseudoBSA:%.f, dblPseudoBSA3:%.f",maxRiderSA,dblPseudoBSA3);
     
     if ([riderCode isEqualToString:@"CCTR"])
@@ -733,6 +733,9 @@
         }
         else if (dblPseudoBSA > 75000) {
             MaxUnit = 10;
+        }
+        else {
+            MaxUnit = 0;
         }
         maxRiderSA = MaxUnit;
     }
@@ -1617,6 +1620,9 @@
         else if ([[LRidHLP objectAtIndex:i] doubleValue] > 0) {
             riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
         }
+        else {
+            riderHLoad = 0;
+        }
         NSLog(@"~waiverRate(%@):%.2f, waiverSum:%.3f, HL:%.3f",RidCode,riderRate,ridSA,riderHLoad);
         
         double annFac = 1;
@@ -1670,6 +1676,12 @@
             halfYearRider = halfYearRider_ * halfFac;
             quarterRider = quarterRider_ * quarterFac;
             monthlyRider = monthlyRider_ * monthFac;
+        }
+        else {
+            annualRider = 0;
+            halfYearRider = 0;
+            quarterRider = 0;
+            monthlyRider = 0;
         }
         
         NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
@@ -3266,6 +3278,9 @@
                         GYIRate = 0.00;
                     }
                 }
+                else {
+                    continue;
+                }
                             
                 _GYI = _riderSA * (GYIRate/100);
                 NSString *strGYI = [formatter stringFromNumber:[NSNumber numberWithDouble:_GYI]];
@@ -3353,6 +3368,9 @@
             else {
                 GYIRate = 0.00;
             }
+        }
+        else {
+            continue;
         }
              
         _GYI = _inputSA * (GYIRate/100);
