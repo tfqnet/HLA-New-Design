@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
 		C4660E63161F118B00BA4AFE /* ColorHexCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660E62161F118B00BA4AFE /* ColorHexCode.m */; };
 		C4660EB61625047800BA4AFE /* delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4660EA11625047800BA4AFE /* delete_button.png */; };
@@ -237,6 +238,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C40059F816BB678000B03041 /* CashPromiseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashPromiseViewController.h; sourceTree = "<group>"; };
+		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
 		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
 		C418112716561D87006A05B9 /* SettingUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserProfile.m; sourceTree = "<group>"; };
 		C4660E61161F118B00BA4AFE /* ColorHexCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorHexCode.h; sourceTree = "<group>"; };
@@ -959,6 +962,8 @@
 				C4F8300C162FA84D00EF8FAA /* ReportViewController.m */,
 				C4B84454169ACF4900E1A0D3 /* PDSViewController.h */,
 				C4B84455169ACF4900E1A0D3 /* PDSViewController.m */,
+				C40059F816BB678000B03041 /* CashPromiseViewController.h */,
+				C40059F916BB678000B03041 /* CashPromiseViewController.m */,
 			);
 			name = Report;
 			sourceTree = "<group>";
@@ -1360,6 +1365,7 @@
 				C4B84460169B1F6200E1A0D3 /* PDSSidebarViewController.m in Sources */,
 				C4C5020116A64E1F00096156 /* eBrochureViewController.m in Sources */,
 				C4C5020416A652B000096156 /* eBrochureListingViewController.m in Sources */,
+				C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
