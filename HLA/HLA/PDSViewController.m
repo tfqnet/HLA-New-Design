@@ -52,7 +52,15 @@
         
     }
     
+    dirPaths = Nil;
+    docsDir = Nil;
     
+    _dataTable = Nil;
+    _db = Nil;
+    SINo = Nil;
+    PDSLanguage = Nil;
+    databasePath = Nil;
+    contactDB = Nil;
 }
 
 -(void)EnglishPDS{
@@ -123,7 +131,7 @@
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"]  || [curRider isEqualToString:@"PR"] ||
             [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"] || [curRider isEqualToString:@"PTR"]
-            || [curRider isEqualToString:@"CIR"] ){
+            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] ){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -555,7 +563,32 @@
     [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:NULL];
     [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
     [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
+    
+
     fileManager = Nil;
+    masterFile = Nil;
+    databaseFile = Nil;
+    masterPathFromApp = Nil;
+    databasePathFromDoc = Nil;
+    library = Nil;
+    documents = Nil;
+    WebSQLSubdir = Nil;
+    WebSQLPath = Nil;
+    WebSQLDb = Nil;
+    _dataTable = Nil;
+    _db = Nil;
+    sqlStmt = Nil;
+    riderInPage = Nil;
+    headerTitle = Nil;
+    curRider = Nil;
+    prevRider = Nil;
+    dirPaths = Nil;
+    docsDir = Nil;
+    siNo = Nil;
+    databaseName = Nil;
+    databaseName1 = Nil;
+    masterName = Nil;
+    desc = Nil;
     
 }
 
@@ -627,7 +660,7 @@
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
             [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"] || [curRider isEqualToString:@"PTR"]
-            || [curRider isEqualToString:@"CIR"]){
+            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"]){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -693,6 +726,7 @@
                     NSLog(@"Error inserting data into database.");
                 }
                 //NSLog(@"%@",sqlStmt);
+                prevRider= @"";
                 riderInPageCount = 0;
                 riderInPage = @"";
             }
@@ -736,7 +770,7 @@
     headerTitle = @"tblHeader;";
     
     sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' AND "
-               "RiderCode NOT IN ('C+','MG_II','MG_IV','HB','HSP_II','CPA','PA','HMM','CIR') ORDER BY RiderCode ASC ",siNo];
+               "RiderCode NOT IN ('C+','MG_II','MG_IV','HSP_II','HMM') ORDER BY RiderCode ASC ",siNo];
     
     //NSLog(@"%@",sqlStmt);
     _dataTable = [_db  ExecuteQuery:sqlStmt];
@@ -1053,7 +1087,31 @@
     [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:NULL];
     [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
     [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
+    
     fileManager = Nil;
+    masterFile = Nil;
+    databaseFile = Nil;
+    masterPathFromApp = Nil;
+    databasePathFromDoc = Nil;
+    library = Nil;
+    documents = Nil;
+    WebSQLSubdir = Nil;
+    WebSQLPath = Nil;
+    WebSQLDb = Nil;
+    _dataTable = Nil;
+    _db = Nil;
+    sqlStmt = Nil;
+    riderInPage = Nil;
+    headerTitle = Nil;
+    curRider = Nil;
+    prevRider = Nil;
+    dirPaths = Nil;
+    docsDir = Nil;
+    siNo = Nil;
+    databaseName = Nil;
+    databaseName1 = Nil;
+    masterName = Nil;
+    desc = Nil;
     
 }
 
@@ -1092,6 +1150,8 @@
         sqlite3_close(contactDB);
     }
     
+    statement = Nil;
+    QuerySQL = Nil;
 }
 
 -(void)InsertToSI_Temp_Trad{
@@ -1110,6 +1170,9 @@
         }
         sqlite3_close(contactDB);
     }
+    
+    statement = Nil;
+    QuerySQL = Nil;
 }
 
 -(void)InsertToSI_Temp_Trad_LA{
@@ -1156,6 +1219,14 @@
         }
         sqlite3_close(contactDB);
     }
+    
+    statement = Nil;
+    statement2 = Nil;
+    statement3 = Nil;
+    getCustomerCodeSQL = Nil;
+    getFromCltProfileSQL= Nil;
+    CustCode= Nil;
+    QuerySQL= Nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -1170,6 +1241,8 @@
     _db = Nil;
     SINo = Nil;
     PDSLanguage = Nil;
+    databasePath = Nil;
+    contactDB = Nil;
 }
 
 @end

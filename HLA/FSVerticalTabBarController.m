@@ -21,6 +21,8 @@
 #import "PremiumViewController.h"
 #import "SIListing.h"
 #import "AppDelegate.h"
+#import "ProspectListing.h"
+#import "SIListing.h"
 
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
@@ -116,18 +118,23 @@
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
                 [alert setTag:2001];
                 [alert show];
+                alert = Nil;
             }
             else if (!zzz.ExistPayor) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                 [alert show];
+                alert = Nil;
             }
             else {
                 zzz.SICompleted = YES;
                 zzz.ExistPayor = YES;
                 [self presentViewController:selectedViewController animated:NO completion:Nil];
-                
+					
                 [self updateTabBar];
+				
+				
             }
+            zzz = Nil;
         }
         else {
             
@@ -139,10 +146,12 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
                     [alert setTag:3001];
                     [alert show];
+                    alert = Nil;
                 }
                 else if (!zzz.ExistPayor) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                     [alert show];
+                    alert = Nil;
                 }
                 else {
                     [self addChildViewController:selectedViewController];
@@ -155,6 +164,8 @@
                     
                     [self updateTabBar];
                 }
+                
+                zzz = Nil;
             }
             
             if (selectedIndex == MenuOption.NewProspectIndex) {
@@ -165,10 +176,12 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
                     [alert setTag:3001];
                     [alert show];
+                    alert = Nil;
                 }
                 else if (!zzz.ExistPayor) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                     [alert show];
+                    alert = Nil;
                 }
                 else {
                     [self addChildViewController:selectedViewController];
@@ -181,6 +194,7 @@
                     
                     [self updateTabBar];
                 }
+                zzz = Nil;
             }
             
             if (selectedIndex == MenuOption.SIListingIndex) {
@@ -192,10 +206,12 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
                     [alert setTag:3001];
                     [alert show];
+                    alert = Nil;
                 }
                 else if (!zzz.ExistPayor) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                     [alert show];
+                    alert = Nil;
                 }
                 else {
                     [self addChildViewController:selectedViewController];
@@ -208,6 +224,7 @@
                     
                     [self updateTabBar];
                 }
+                zzz = Nil;
             }
             
             if (selectedIndex == MenuOption.NewSIIndex) {
@@ -226,12 +243,18 @@
             }
             //move code to updateTabBar
         }
+        selectedViewController = Nil;
     }
+    
+    MenuOption = Nil;
 }
 
 -(void)updateTabBar
 {
     UIViewController *selectedViewController = [self.viewControllers objectAtIndex:clickIndex];
+	
+    
+
     
     // remove previously selected view controller (if any)
     if (-1 < _selectedIndex && _selectedIndex < INT_MAX)
@@ -239,7 +262,26 @@
         UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
         [previousViewController.view removeFromSuperview];
         [previousViewController removeFromParentViewController];
+        previousViewController = Nil;
+        
     }
+    
+    
+    if ([self.view subviews].count > 1) {
+
+		UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
+
+
+		
+		if (_selectedIndex == 2) {
+			//[(SIListing *)previousViewController SIListingClear];
+		}
+
+        [previousViewController.view removeFromSuperview];
+        [previousViewController removeFromParentViewController];
+        previousViewController = Nil;
+    }
+    
     
     // set new selected index
     _selectedIndex = clickIndex;
@@ -255,6 +297,7 @@
     {
         [self.delegate tabBarController:self didSelectViewController:selectedViewController];
     }
+    selectedViewController = Nil;
 }
 
 - (void)_performInitialization
@@ -297,7 +340,7 @@
     
     // return a ready view
     self.view = layoutContainerView;
-}
+}	
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -337,10 +380,13 @@
                               otherButtonTitles: NSLocalizedString(@"No",nil), nil];
         [alert setTag:1001];
         [alert show];
+        alert = Nil;
     }
     else {
         [self setSelectedIndex:indexPath.row];
     }
+    
+    MenuOption = Nil;
     
 }
 
@@ -432,6 +478,11 @@
         }
         sqlite3_close(contactDB);
     }
+    
+    databasePath = Nil;
+    contactDB = Nil, dirPaths = Nil, docsDir = Nil, databasePath= Nil, mainLogin = Nil, dateFormatter = Nil, dateString = Nil;
+    dbpath = Nil, statement = Nil, contactDB = Nil;
+    
     
     exit(0);
 }

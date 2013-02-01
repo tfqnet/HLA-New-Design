@@ -44,7 +44,7 @@
             
         db = openDatabase(shortName, version, displayName,maxSize);
         ListDBValues();
-        calcTotal();
+        //calcTotal();
     }
     
     function dbexe(){
@@ -266,8 +266,7 @@
 		    
                     for (var i = 0; i < result.rows.length; i++) {
                         var row = result.rows.item(i);
-			//$('#lbUsers').append('<br>' + row.UserId + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + row.FirstName+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + row.LastName);
-			//$('#lbUsers').append('<br>' + row.col0_1);
+			
 			//alert(row.col0_1);
 	     
 			//$('#table-data > tbody').append

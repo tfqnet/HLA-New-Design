@@ -13,7 +13,9 @@
 #import "PayorHandler.h"
 #import "SecondLAHandler.h"
 
-@interface MainScreen : FSVerticalTabBarController<FSTabBarControllerDelegate>
+@interface MainScreen : FSVerticalTabBarController<FSTabBarControllerDelegate>{
+	    
+}
 
 @property (nonatomic, assign,readwrite) int indexNo;
 @property (nonatomic,strong) id userRequest;
@@ -24,6 +26,8 @@
 @property (nonatomic,strong) BasicPlanHandler *mainBH;
 @property (nonatomic,strong) PayorHandler *mainPH;
 @property (nonatomic,strong) SecondLAHandler *mainLa2ndH;
+
+
 
 @property (nonatomic,strong) id showQuotation;
 @end

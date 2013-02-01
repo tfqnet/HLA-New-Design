@@ -49,12 +49,16 @@
                 NSString *htmlName = [NSString stringWithUTF8String:(char *)sqlite3_column_text(sqlStmt, 2)];
                 pages *pg = [[pages alloc] initPages:pageNum withPageDesc:pageDesc withHTMLName:htmlName];
                 [_dataArray addObject:pg];
+                
+                pageNum = Nil, pageDesc = Nil, htmlName = Nil, pg = Nil;
             }
         }
         sqlite3_finalize(sqlStmt);
+        sqlStmt = Nil, sql = Nil;
     }
     sqlite3_close(db2);
     
+    db2 = Nil, documents = Nil, databasePathFromDoc = Nil, databaseName = Nil;
     //pages *a = [_dataArray objectAtIndex:0];
     //NSLog(@"%@", a.htmlName);
     
@@ -142,6 +146,7 @@
     pages *pg = [_dataArray objectAtIndex:indexPath.row];
     cell.textLabel.text = pg.PageDesc;
     return cell;
+    
 }
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -160,8 +165,9 @@
         NSObject *objectHTML = [NSString stringWithFormat:@"%@", pg.htmlName];
         [self.sidebarDelegate sidebarViewController:self didSelectObject:object objectHTML:objectHTML atIndexPath:indexPath];
         
-        
-        
+        object = Nil;
+        objectHTML = Nil;
+        pg = Nil;
         
     }
 }

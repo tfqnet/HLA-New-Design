@@ -365,8 +365,8 @@ else{
         return;
     }
     
-    
-        function formatCurrency(num) {
+    /*
+    function formatCurrency(num) {
         num = num.toString().replace(/\$|\,/g, '');
         if (isNaN(num)) num = "0";
         sign = (num == (num = Math.abs(num)));
@@ -379,7 +379,7 @@ else{
         return (((sign) ? '' : '-') + '' + num + '.' + cents);
         //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
     }
-    
+    */
     
         </script>
 </head>
@@ -399,9 +399,9 @@ else{
 <div class="main-content">
 <table>
 <tr>
-<td width="80%" valign="top"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span></br>
+<td width="80%" valign="top"><p>Basic Plan</p> <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/>
 <span id="paymentDesc">{PaymentDescription}</span></td>
-<td width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i></br> <span id="laName">{LAName}</span></td>
+<td width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i><br/> <span id="laName">{LAName}</span></td>
 </tr>
 </table>
 <table id="table-data">
@@ -411,11 +411,6 @@ else{
 <th rowspan="3" class="contentSmall">Policy Year<br/><br/><i>Tahun Polisi</i></th>
 <th rowspan="3" class="contentSmall">Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
 <th rowspan="3" class="contentSmall">Total Annual Premium of IB &amp; IR(s) (Beg. of Year)<br/><br/><i>Jumlah Premium Tahunan untuk IB &amp; IR (Permulaan Tahun)</i></th>
-
-
-
-
-
 
 <th  colspan="6">Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Terjamin</i> (Set A)</th>
 <th  colspan="8">Not Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tidak Terjamin</i> (Set B)</th>
@@ -515,64 +510,68 @@ Guaranteed = Minimum you will receive regardless of the Company investment.<br/>
 Terjamin = Minimum yang akan anda perolehi tanpa bergantung kepada pencapaian pelaburan syarikat.
 </div>
 -->
-<table id="table-notes"><tr>
-<td width="50%" valign="top">
-<table style="border-collapse:collapse;border:0px solid black;width:100%;">
-<tr><td colspan="4"><u>HLA Income Builder &amp; Income Rider(s)</u><td></tr>
-<tr>
-<td>Total Premium Paid</td>
-<td><i>Jumlah Bayaran Premium</i></td>
-<td>: RM</td>
-<td id="TotPremPaid2">{TotPremPaid2}</td>
-<tr>
-<tr>
-<td>Projected Maturity Value</td>
-<td><i>Jangka Nilai Matang (Sce. A)</i></td>
-<td>: RM</td>
-<td id="SurrenderValueHigh2">{SurrenderValueHigh2}</td>
-<tr>
-<tr>
-<td>Projected Maturity Value</td>
-<td><i>Jangka Nilai Matang (Sce. B)</i></td>
-<td>: RM</td>
-<td id="SurrenderValueLow2">{SurrenderValueLow2}</td>
-<tr>
-<tr>
-<td>Total Yearly Income</td>
-<td><i>Jumlah Pendapatan Tahunan</i></td>
-<td>: RM</td>
-<td id="TotYearlyIncome2">{TotYearlyIncome2}</td>
-<tr>
-<tr><td colspan="4"><u>HLA Entire Policy (include all riders) <i>Keseluruhan Polisi (termasuk semua rider)</i></u><td></tr>
-<tr>
-<td>Total Premium Paid</td>
-<td><i>Jumlah Bayaran Premium</i></td>
-<td>: RM</td>
-<td id="TotPremPaid1">{TotPremPaid1}</td>
-<tr>
-<tr>
-<td>Projected Maturity Value</td>
-<td><i>Jangka Nilai Matang (Sce. A)</i></td>
-<td>: RM</td>
-<td id="SurrenderValueHigh1">{SurrenderValueHigh1}</td>
-<tr>
-<tr>
-<td>Projected Maturity Value</td>
-<td><i>Jangka Nilai Matang (Sce. B)</i></td>
-<td>: RM</td>
-<td id="SurrenderValueLow1">{SurrenderValueLow1}</td>
-<tr>
-<tr>
-<td>Total Yearly Income</td>
-<td><i>Jumlah Pendapatan Tahunan</i></td>
-<td>: RM</td>
-<td id="TotYearlyIncome1">{TotYearlyIncome1}</td>
-<tr>
+<table id="table-notes">
+    <tr>
+        <td width="50%" valign="top">
+            <table style="border-collapse:collapse;border:0px solid black;width:100%;">
+                <tr>
+                    <td colspan="4"><u>HLA Income Builder &amp; Income Rider(s)</u></td>
+                </tr>
+                <tr><td>Total Premium Paid</td>
+                    <td><i>Jumlah Bayaran Premium</i></td>
+                    <td>: RM</td>
+                    <td id="TotPremPaid2">{TotPremPaid2}</td>
+                </tr>
+                <tr>
+                    <td>Projected Maturity Value</td>
+                    <td><i>Jangka Nilai Matang (Sce. A)</i></td>
+                    <td>: RM</td>
+                    <td id="SurrenderValueHigh2">{SurrenderValueHigh2}</td>
+                </tr>
+                <tr>
+                    <td>Projected Maturity Value</td>
+                    <td><i>Jangka Nilai Matang (Sce. B)</i></td>
+                    <td>: RM</td>
+                    <td id="SurrenderValueLow2">{SurrenderValueLow2}</td>
+                </tr>
+                <tr>
+                    <td>Total Yearly Income</td>
+                    <td><i>Jumlah Pendapatan Tahunan</i></td>
+                    <td>: RM</td>
+                    <td id="TotYearlyIncome2">{TotYearlyIncome2}</td>
+                </tr>
+                <tr>
+                    <td colspan="4"><u>HLA Entire Policy (include all riders) <i>Keseluruhan Polisi (termasuk semua rider)</i></u></td>
+                </tr>
+                <tr>
+                    <td>Total Premium Paid</td>
+                    <td><i>Jumlah Bayaran Premium</i></td>
+                    <td>: RM</td>
+                    <td id="TotPremPaid1">{TotPremPaid1}</td>
+                </tr>
+                <tr>
+                    <td>Projected Maturity Value</td>
+                    <td><i>Jangka Nilai Matang (Sce. A)</i></td>
+                    <td>: RM</td>
+                    <td id="SurrenderValueHigh1">{SurrenderValueHigh1}</td>
+                </tr>
+                <tr>
+                    <td>Projected Maturity Value</td>
+                    <td><i>Jangka Nilai Matang (Sce. B)</i></td>
+                    <td>: RM</td>
+                    <td id="SurrenderValueLow1">{SurrenderValueLow1}</td>
+                </tr>
+                <tr>
+                    <td>Total Yearly Income</td>
+                    <td><i>Jumlah Pendapatan Tahunan</i></td>
+                    <td>: RM</td>
+                    <td id="TotYearlyIncome1">{TotYearlyIncome1}</td>
+                </tr>
+            </table>
+        </td>
+        <td width="50%" valign="top" id="investmentScenariosRight">{investmentScenariosRight}</td>
+    </tr>
 </table>
-</td>
-
-<td width="50%" valign="top" id="investmentScenariosRight">{investmentScenariosRight}</td></tr></table>
-
 
 <br/>
 
@@ -598,21 +597,18 @@ Terjamin = Minimum yang akan anda perolehi tanpa bergantung kepada pencapaian pe
 <br/><br/><br/>
     
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
-
-<tr>
-<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
-This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
-information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
-pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
-<b><span id="rptVersion">{rptVersion}</span></b> <br/>
-Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
-
-
-
-</td>
-<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
-<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
-</tr>
+    <tr>
+        <td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+            This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+            information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+            pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+            <b><span id="rptVersion">{rptVersion}</span></b> <br/>
+            Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+            
+        </td>
+        <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+        <td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+    </tr>
 </table>
 <!-- End Footer -->
  

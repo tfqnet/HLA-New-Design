@@ -10,9 +10,10 @@
 #import <sqlite3.h>
 #import "siListingSortBy.h"
 #import "SIDate.h"
-#import "FSVerticalTabBarController.h"
+
 
 @interface SIListing : UIViewController<UITableViewDelegate, UITableViewDataSource, siListingDelegate, SIDateDelegate>
+
 {
     NSString *databasePath;
     sqlite3 *contactDB;
@@ -30,6 +31,7 @@
 @property (nonatomic, retain) siListingSortBy *SortBy;
 @property (nonatomic, retain) UIPopoverController *Popover;
 @property (nonatomic, retain) SIDate *SIDate;
+
 @property (nonatomic, retain) UIPopoverController *SIDatePopover;
 @property (nonatomic, copy) NSString *DBDateFrom;
 @property (nonatomic, copy) NSString *DBDateTo;
@@ -64,10 +66,10 @@
 - (IBAction)btnDelete:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
-@property (weak, nonatomic) IBOutlet UIDatePicker *outletDate;
+
 @property (weak, nonatomic) IBOutlet UIButton *outletDone;
 - (IBAction)btnDone:(id)sender;
-- (IBAction)ActionDate:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UILabel *lblSINO;
 @property (weak, nonatomic) IBOutlet UILabel *lblDateCreated;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
@@ -81,5 +83,5 @@
 //added for Add New SI Listing button by Juliana
 - (IBAction)btnAddNewSI:(id)sender;
 -(void)RefreshZZZ;
-
+-(void)SIListingClear;
 @end

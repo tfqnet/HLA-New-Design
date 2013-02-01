@@ -33,6 +33,7 @@
 @property (nonatomic, readwrite, assign) CGFloat tabBarWidth;
 
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
+- (void)updateTabBar;
 
 
 @end

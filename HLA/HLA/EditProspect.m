@@ -33,10 +33,8 @@
 @synthesize txtContact3;
 @synthesize txtContact4;
 @synthesize txtContact5;
-@synthesize ContactTypePicker;
-@synthesize DobPicker;
 @synthesize txtRemark;
-@synthesize pickerToolbar;
+
 @synthesize txtHomeAddr1;
 @synthesize txtHomeAddr2;
 @synthesize txtHomeAddr3;
@@ -220,9 +218,7 @@ bool IsContinue = TRUE;
     [self setTxtOfficeCountry:nil];
     [self setTxtExactDuties:nil];
     [self setTxtRemark:nil];
-    [self setPickerToolbar:nil];
-    [self setContactTypePicker:nil];
-    [self setDobPicker:nil];
+
     [self setMyScrollView:nil];
     [self setOutletOccup:nil];
     [self setTxtContact1:nil];
@@ -643,6 +639,7 @@ bool IsContinue = TRUE;
     [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 
 }
+/*
 - (IBAction)btnDone:(id)sender {
     if (DobPicker.hidden == FALSE) { //DOB picker
         pickerToolbar.hidden = YES;
@@ -658,6 +655,7 @@ bool IsContinue = TRUE;
     }
 
 }
+ */
 - (IBAction)ActionGender:(id)sender {
     if ([segGender selectedSegmentIndex]==0) {
         gender = @"M";
@@ -678,6 +676,7 @@ bool IsContinue = TRUE;
     [alert show];
 }
 
+/*
 - (IBAction)ActionDobPicker:(id)sender {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
@@ -687,7 +686,7 @@ bool IsContinue = TRUE;
     NSString *msg = [NSString stringWithFormat:@"%@",pickerDate];
     [self.outletDOB setTitle:msg forState:UIControlStateNormal];
 }
-
+*/
 - (bool) Validation{
     
     if([[txtPreferredName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
@@ -1669,15 +1668,14 @@ bool IsContinue = TRUE;
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 15;
     [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
-    pickerToolbar.hidden = true;
-    DobPicker.hidden = TRUE;
+    
     txtRemark.hidden = FALSE;
 }
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
     self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
-    ContactTypePicker.hidden = true;
+    
 }
 /*
 - (IBAction)btnCancel:(id)sender {

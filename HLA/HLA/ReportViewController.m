@@ -104,13 +104,13 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
    
     [self getAllPreDetails]; // get all the details needed before proceed 
     
-    [self InsertHeaderBasicPlan]; //insert basic plan header into temp table bm and english
+    //[self InsertHeaderBasicPlan]; //insert basic plan header into temp table bm and english
                 
     if (IncomeRiderCode.count > 0) {
-        [self InsertHeaderRiderPlan];  //insert income rider header into temp table bm and english
+      //  [self InsertHeaderRiderPlan];  //insert income rider header into temp table bm and english
     }
     
-    [self InsertHeaderTB]; //insert summary of basic plan header into temp table bm and english
+    //[self InsertHeaderTB]; //insert summary of basic plan header into temp table bm and english
  
     [self InsertToSI_Temp_Trad_LA]; // for the front summary page 
  
@@ -896,16 +896,33 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:NULL];
     [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
     [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
-    fileManager = Nil;
- 
-    
-    
-}
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    SINo = Nil;
+    fileManager = Nil;
+    masterFile = Nil;
+    databaseFile = Nil;
+    masterPathFromApp = Nil;
+    databasePathFromDoc = Nil;
+    library = Nil;
+    documents = Nil;
+    WebSQLSubdir = Nil;
+    WebSQLPath = Nil;
+    WebSQLDb = Nil;
+    _dataTable = Nil;
+    _db = Nil;
+    sqlStmt = Nil;
+    riderInPage = Nil;
+    headerTitle = Nil;
+    curRider = Nil;
+    prevRider = Nil;
+    dirPaths = Nil;
+    docsDir = Nil;
+    siNo = Nil;
+    databaseName = Nil;
+    databaseName1 = Nil;
+    masterName = Nil;
+    desc = Nil;
+    
+    SINo = Nil, RatesDatabasePath = Nil;
     YearlyIncome = Nil;
     CashDividend = Nil;
     CustCode = Nil;
@@ -926,6 +943,35 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     _db = Nil, _dataTable = Nil;
     UpdateTradDetail = Nil, gWaiverAnnual = Nil, gWaiverSemiAnnual = Nil, gWaiverQuarterly = Nil, gWaiverMonthly = Nil;
     aStrBasicSA = Nil, HealthLoadingTerm = Nil, TempHealthLoading = Nil, TempHealthLoadingTerm = Nil;
+    databasePath = Nil, contactDB = Nil;
+    
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    SINo = Nil, RatesDatabasePath = Nil;
+    YearlyIncome = Nil;
+    CashDividend = Nil;
+    CustCode = Nil;
+    Name = Nil;
+    strBasicAnnually = Nil, strBasicSemiAnnually = Nil, strBasicQuarterly = Nil, strBasicMonthly = Nil;
+    strOriBasicAnnually = Nil, strOriBasicSemiAnnually = Nil, strOriBasicQuarterly = Nil, strOriBasicMonthly = Nil;
+    sex = Nil, OccpClass = Nil;
+    OccLoading = Nil, aStrIncomeRiderAnnually = Nil, aStrIncomeRiderMonthly = Nil, aStrIncomeRiderQuarterly = Nil;
+    aStrIncomeRiderSemiAnnually = Nil, aStrOtherRiderAnnually = Nil, aStrOtherRiderMonthly = Nil;
+    aStrOtherRiderQuarterly =Nil, aStrOtherRiderSemiAnnually = nil;
+    IncomeRiderCode = Nil, IncomeRiderDesc = Nil, IncomeRiderPlanOption = Nil, IncomeRiderSA = Nil, IncomeRiderTerm = Nil;
+    OtherRiderCode = Nil, OtherRiderDeductible = Nil, OtherRiderDesc= Nil, OtherRiderPlanOption = Nil, OtherRiderSA = Nil;
+    OtherRiderTerm = Nil, SummaryGuaranteedAddEndValue = Nil, SummaryGuaranteedAddValue = Nil, SummaryGuaranteedDBValueA = Nil;
+    SummaryGuaranteedDBValueB = Nil, SummaryGuaranteedSurrenderValue = Nil, SummaryGuaranteedTotalGYI = Nil;
+    SummaryNonGuaranteedAccuCashDividendA = Nil, SummaryNonGuaranteedAccuCashDividendB = Nil, SummaryNonGuaranteedAccuYearlyIncomeA = nil;
+    SummaryNonGuaranteedAccuYearlyIncomeA = Nil, SummaryNonGuaranteedAccuYearlyIncomeB = Nil, SummaryNonGuaranteedDBValueA = Nil;
+    SummaryNonGuaranteedDBValueB = Nil, SummaryNonGuaranteedSurrenderValueA = Nil, SummaryNonGuaranteedSurrenderValueB =Nil;
+    _db = Nil, _dataTable = Nil;
+    UpdateTradDetail = Nil, gWaiverAnnual = Nil, gWaiverSemiAnnual = Nil, gWaiverQuarterly = Nil, gWaiverMonthly = Nil;
+    aStrBasicSA = Nil, HealthLoadingTerm = Nil, TempHealthLoading = Nil, TempHealthLoadingTerm = Nil;
+    databasePath = Nil;
     
     // Release any retained subviews of the main view.
     
@@ -938,6 +984,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     UIAlertView *sss = [[UIAlertView alloc] initWithTitle:@"Memory warning"
                                                   message:@"Not enough memory. Please restart the application" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
     [sss show];
+    sss = Nil;
+    
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -1050,7 +1099,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         }
         
         sqlite3_close(contactDB);
-    }    
+    }
+    
+    statement = Nil;
+    QuerySQL = Nil;
     
 }
 
@@ -1416,6 +1468,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 }
                                 sqlite3_finalize(statement3);
                             }
+                            
+                            smoker = Nil;
                         }
                         sqlite3_finalize(statement2);
                     }
@@ -1454,6 +1508,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                             }
                             sqlite3_finalize(statement3);
                         }
+                        
+                        SecName = Nil;
+                        Secsmoker = Nil;
+                        Secsex = Nil;
                     }
                     sqlite3_finalize(statement2);
                 }
@@ -1492,6 +1550,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                             }
                             sqlite3_finalize(statement3);
                         }
+                        
+                        PYName = Nil;
+                        PYsmoker = Nil;
+                        PYsex = Nil;
                     }
                     sqlite3_finalize(statement2);
                 }
@@ -1683,6 +1745,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             strMonthly = Nil;
             HL1KSA = Nil;
             TempHL1KSA = Nil;
+            
+            
         }
     /*
     // to insert class info
@@ -2070,6 +2134,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 sqlite3_finalize(statement); 
             }
             sqlite3_close(contactDB);
+
         }
         strAnnually = Nil;
         strSemiAnnually = Nil;
@@ -2160,6 +2225,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         " AND PremPayOpt = \"%d\" AND age = \"%d\" ", PremiumPaymentOption, Age];
         }
         
+
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 [SurrenderRates addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
@@ -2319,6 +2385,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         sqlite3_close(contactDB);
     }
     
+    
+    
     for (int i =1; i <= PolicyTerm; i++) {
         
         if (i <= PremiumPaymentOption) {
@@ -2327,10 +2395,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             //[AnnualPremium addObject:strBasicAnnually ];
             [AnnualPremium addObject:[aStrBasicSA objectAtIndex:i-1]];
             
+            
         }
         else {
             [AnnualPremium addObject:@"0.00"];
         }
+        
         
         BasicTotalPremiumPaid = BasicTotalPremiumPaid + 
         [[[AnnualPremium objectAtIndex:i-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
@@ -2592,7 +2662,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         
         //----------- spe TD end ----------
-     
+        
         //----------- total surrender value ----------
         double dTotalSurrenderValueA = 0.00;
         double dTotalSurrenderValueB = 0.00;
@@ -2697,7 +2767,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             [[speValueB objectAtIndex:i - 1 ] doubleValue ];
             
         }
-        
+
         [TotalDBValueA addObject: [NSString stringWithFormat:@"%.3f", dTotalDBValueA ]];
         [TotalDBValueB addObject: [NSString stringWithFormat:@"%.3f", dTotalDBValueB ]];        
         
@@ -2708,7 +2778,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
     }
 
-    
+
     
     for (int a= 1; a<=PolicyTerm; a++) {
         
@@ -2796,6 +2866,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     }
                     sqlite3_finalize(statement); 
                 }
+                
+                strAccuCDA = Nil;
+                strAccuCDB = Nil;
+                strAccuYIA = Nil;
+                strAccuYIB = Nil;
+                DBYearlyIncome = Nil;
             }
             sqlite3_close(contactDB);
         }
@@ -2835,6 +2911,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     TotalSurrenderValueB = Nil;
     TotalDBValueA = Nil;
     TotalDBValueB = Nil;
+    QuerySQL = Nil;
     
     NSLog(@"insert to SI_Temp_Trad_Basic --- End");
     
@@ -2873,6 +2950,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             sqlite3_close(contactDB);
         }
     NSLog(@"insert to SI_Temp_Trad_Overall --- End");
+    statement = Nil;
+    QuerySQL = Nil;
     
 }
 
@@ -3948,6 +4027,15 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                             }
                         }
                     
+                    Rate = Nil;
+                    tempRiderCode = Nil;
+                    tempRiderDesc = Nil;
+                    tempRiderPlanOption = Nil;
+                    tempCol1 = Nil;
+                    tempCol2 = Nil;
+                    tempCol3 = Nil;
+                    tempCol4 = Nil;
+                    
                 }
                 else {
                     if (Rider == 1) {
@@ -4068,6 +4156,21 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         }
                         sqlite3_finalize(statement);
                     }
+                        
+                        strSeqNo = Nil;
+                        value1 = Nil;
+                        value2 = Nil;
+                        value3 = Nil;
+                        value4 = Nil;
+                        value5 = Nil;
+                        value6 = Nil;
+                        value7 = Nil;
+                        value8 = Nil;
+                        value9 = Nil;
+                        value10 = Nil;
+                        value11 = Nil;
+                        value12 = Nil;
+                        
                     sqlite3_close(contactDB);
                 } 
                 }
@@ -5055,6 +5158,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                 sqlite3_finalize(statement); 
                             }
                             
+                            strAccuCDA = Nil;
+                            strAccuCDB = Nil;
+                            strAccuYIA = Nil;
+                            strAccuYIB = Nil;
                             
                         }
                     }
@@ -5093,8 +5200,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             TotalSurrenderValueB = Nil;
             TotalDBValueA = Nil;
             TotalDBValueB = Nil;
-            
+            QuerySQL = Nil;
+            strIncRiderCode = Nil;
         }
+        
     }
     
     NSLog(@"insert to SI_Temp_Trad_RideriLLus --- End");
@@ -5165,6 +5274,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             SASemiAnnual = Nil;
             SAQuaterly = Nil;
             SAMonthly = Nil;
+            formatter = Nil;
             
         }
         
@@ -5293,11 +5403,19 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     
                     [OtherRiderDeductible addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 5)]];
                     
+                    tempOtherRiderSA = Nil;
+                    Display = Nil;
                 }
+                
+                zzz = Nil;
             }
             sqlite3_finalize(statement2);
         }     
         sqlite3_close(contactDB);
     }
+    
+    statement = Nil;
+    statement2 = Nil;
+    QuerySQL = Nil;
 }
 @end

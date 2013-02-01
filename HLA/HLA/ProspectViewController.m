@@ -25,8 +25,7 @@
 @synthesize lblPostCode;
 @synthesize outletDone;
 @synthesize outletType1;
-@synthesize pickerToolbar;
-@synthesize outletContactType;
+
 @synthesize txtRemark;
 @synthesize txtEmail;
 @synthesize txtContact1;
@@ -38,7 +37,7 @@
 @synthesize outletType3;
 @synthesize outletType4;
 @synthesize outletType5;
-@synthesize outletDobPicker;
+
 @synthesize outletDOB;
 @synthesize txtHomeAddr1;
 @synthesize txtHomeAddr2;
@@ -107,12 +106,14 @@ bool PostcodeContinue = TRUE;
     txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     //ContactType = [[NSArray alloc] init];
-    ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
+    //ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
     outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     
+    CustomColor = Nil;
+    
 }
-
+/*
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)picker;
 {
     return 1;
@@ -157,7 +158,7 @@ bool PostcodeContinue = TRUE;
     }
     
 }
-
+*/
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -208,9 +209,7 @@ bool PostcodeContinue = TRUE;
     [self setTxtOfficeCountry:nil];
     [self setTxtExactDuties:nil];
     [self setOutletOccup:nil];
-    [self setOutletDobPicker:nil];
-    [self setOutletContactType:nil];
-    [self setPickerToolbar:nil];
+
     [self setTxtRemark:nil];
     [self setMyScrollView:nil];
     [self setTxtEmail:nil];
@@ -302,6 +301,9 @@ bool PostcodeContinue = TRUE;
     [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
     
+    dateFormatter = Nil;
+    dateString = Nil;
+    
 }
 - (IBAction)btnOccup:(id)sender {
     if (_OccupationList == nil) {
@@ -313,30 +315,23 @@ bool PostcodeContinue = TRUE;
     [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
-- (IBAction)ActionDobDate:(id)sender {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    
-    NSString *pickerDate = [dateFormatter stringFromDate:[outletDobPicker date]];
-    
-    NSString *msg = [NSString stringWithFormat:@"%@",pickerDate];
-    [self.outletDOB setTitle:msg forState:UIControlStateNormal];
-}
+/*
 - (IBAction)btnDone:(id)sender {
+    
     if (outletDobPicker.hidden == FALSE) { //DOB picker
         pickerToolbar.hidden = YES;
         outletDobPicker.hidden = YES;
         txtRemark.hidden = FALSE;
     }
-    else { // Contact type picker
+    else {
         pickerToolbar.hidden = true;
-        //ContactTypePicker.hidden = true;
+        
         outletContactType.hidden = true;
         txtRemark.hidden = FALSE;
     }
 
 }
-
+*/
 
 - (BOOL)disablesAutomaticKeyboardDismissal {
     return NO;
@@ -356,7 +351,6 @@ bool PostcodeContinue = TRUE;
     if ([self Validation] == TRUE) {
         
         sqlite3_stmt *statement;
-        
         const char *dbpath = [databasePath UTF8String];
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
@@ -390,14 +384,20 @@ bool PostcodeContinue = TRUE;
                 sqlite3_finalize(statement);
             }
             else {
-                NSLog(@"%@", insertSQL);
+                
                 NSLog(@"Error Statement");
             }
-            sqlite3_close(contactDB);        
+            sqlite3_close(contactDB);
+            
+            insertSQL = Nil, insert_stmt = Nil;
         }
         else {
             NSLog(@"Error Open");
         }
+        
+        statement = Nil;
+        dbpath = Nil;
+        
         
     }
     
@@ -1272,7 +1272,7 @@ PostcodeContinue = TRUE;
                 NSLog(@"Error get last ID statement");
             }
              */
-            NSString *insertContactSQL;
+            NSString *insertContactSQL = @"";
             if (a==0) {
                  insertContactSQL = [NSString stringWithFormat:
                                               @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
@@ -1314,6 +1314,8 @@ PostcodeContinue = TRUE;
             else {
                 NSLog(@"Error - 3");
             }
+            
+            insert_contactStmt = Nil, insertContactSQL = Nil;
 
         }
          
@@ -1324,6 +1326,11 @@ PostcodeContinue = TRUE;
     SuccessAlert.tag = 1;
     [SuccessAlert show];
     
+    statement2 = Nil;
+    statement3 = Nil;
+    lastID = Nil;
+    contactCode = Nil;
+    dbpath = Nil;
     
 }
 
@@ -1469,8 +1476,8 @@ PostcodeContinue = TRUE;
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 15;
     [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
-    pickerToolbar.hidden = true;
-    outletDobPicker.hidden = TRUE;
+    //pickerToolbar.hidden = true;
+    //outletDobPicker.hidden = TRUE;
     txtRemark.hidden = FALSE;
 }
 
@@ -1478,7 +1485,7 @@ PostcodeContinue = TRUE;
 {
     self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
     //ContactTypePicker.hidden = true;
-    outletContactType.hidden = true;
+    //outletContactType.hidden = true;
     
 }
 
@@ -1884,7 +1891,10 @@ PostcodeContinue = TRUE;
                     message:@"Entered date cannot be greater than today." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
         [alert show];
         [outletDOB setTitle:@"" forState:UIControlStateNormal ];
+        alert = Nil;
     }
+    
+    df = Nil, d = Nil, d2 = Nil;
 }
 
 -(void)CloseWindow{

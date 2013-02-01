@@ -67,6 +67,14 @@ NSMutableArray *ItemPages;
     browserController_page.startPage = @"Page1.html";//(NSString *)objectHTML;
     browserController_page.view.frame = CGRectMake(0, 0, 758, 1000);
     [self.view addSubview:browserController_page.view];
+    
+	[browserController_page.webView loadHTMLString:@"" baseURL:nil];
+    [browserController_page.webView stopLoading];
+    [browserController_page.webView removeFromSuperview];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [browserController_page dispose];
     browserController_page = nil;
     
     self.navigationItem.revealSidebarDelegate = self;
@@ -103,10 +111,71 @@ NSMutableArray *ItemPages;
         
         }
         sqlite3_close(contactDB);
+        
+        QuerySQL = Nil;
     }
+    
+	
+	
+    statement = Nil;
+    dirPaths = Nil;
+    docsDir = Nil;
+    barButton = Nil;
+    contactDB = Nil;
+    left = Nil;
+    barButton = Nil;
+    
+    browserController = Nil;
+    databasePath = Nil;
+    browserController_page.webView = Nil;
+    browserController_page.webView.delegate = Nil;
+
 }
 
-
+-(void)Testing{
+	int imageName = 0;
+	double webViewHeight = 1024.00;
+	CGRect screenRect = self.view.frame;
+	
+	double currentWebViewHeight = webViewHeight;
+	while (currentWebViewHeight > 0)
+	{
+		imageName ++;
+		
+		UIGraphicsBeginImageContext(screenRect.size);
+		
+		CGContextRef ctx = UIGraphicsGetCurrentContext();
+		[[UIColor blackColor] set];
+		CGContextFillRect(ctx, screenRect);
+		
+		[self.view.layer renderInContext:ctx];
+		
+		UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+		
+		UIGraphicsEndImageContext();
+		
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *documentsDirectory = [paths objectAtIndex:0];
+		NSString *pngPath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.png",imageName]];
+		
+		//NSLog(@"%@", documentsDirectory);
+		
+		if(currentWebViewHeight < 960)
+		{
+			CGRect lastImageRect = CGRectMake(0, 960 - currentWebViewHeight, self.view.frame.size.width, currentWebViewHeight);
+			CGImageRef lastImageRef = CGImageCreateWithImageInRect([newImage CGImage], lastImageRect);
+			newImage = [UIImage imageWithCGImage:lastImageRef];
+			CGImageRelease(lastImageRef);
+		}
+		
+		[UIImagePNGRepresentation(newImage) writeToFile:pngPath atomically:YES];
+		
+		//[self.webView stringByEvaluatingJavaScriptFromString:@"window.scrollBy(0,960);"];
+		currentWebViewHeight -= 960;
+	}
+	
+	
+}
 
 -(void)presentModal{
     //NSLog(@"sssss");
@@ -118,7 +187,9 @@ NSMutableArray *ItemPages;
     self.leftSidebarViewController = nil;
     leftSelectedIndexPath = Nil;
     browserController = Nil;
-    
+    databasePath = Nil;
+    ItemPages = Nil;
+    prev = Nil, next = Nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -248,7 +319,17 @@ NSMutableArray *ItemPages;
     browserController.startPage = (NSString *)objectHTML;
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
+    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+
+    [browserController dispose];
     browserController = nil;
+    browserController.webView = Nil;
+    browserController.webView.delegate = Nil;
+    controller = Nil;
+    
     
 }
 
@@ -273,10 +354,11 @@ NSMutableArray *ItemPages;
     next.enabled= false;
     
     [self.navigationController setRevealedState:JTRevealedStateNo];
+
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
     v = Nil;
-    
+     
     if (gPages + 1 < ItemPages.count) {
         gPages = gPages + 1;
         //next.enabled = TRUE;
@@ -290,11 +372,26 @@ NSMutableArray *ItemPages;
     browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
     browserController.view.frame = CGRectMake(0, 0, 1024, 700);
     self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
+    
     [self.view addSubview:browserController.view];
     
-    browserController = nil;
     
-    [self performSelector:@selector(enablePreNext) withObject:Nil afterDelay:1.5];
+
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    
+    [browserController.webView loadHTMLString:@"" baseURL:nil];
+    [browserController.webView stopLoading];
+    [browserController.webView removeFromSuperview];
+
+    [browserController dispose ];
+    browserController.webView = Nil;
+    browserController.webView.delegate = Nil;
+    browserController = Nil;
+    
+    
+    [self performSelector:@selector(enableNext) withObject:Nil afterDelay:1.5];
 }
 
 
@@ -322,16 +419,45 @@ NSMutableArray *ItemPages;
     browserController.startPage = [NSString stringWithFormat: @"%@", [ItemPages objectAtIndex:gPages]];
     browserController.view.frame = CGRectMake(0, 0, 1024, 700);
     self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
+    
+    
+
     [self.view addSubview:browserController.view];
     
+    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    
+    [browserController.webView loadHTMLString:@"" baseURL:nil];
+    [browserController.webView stopLoading];
+    [browserController.webView removeFromSuperview];
+        [browserController dispose ];
+    browserController.webView = Nil;
+    browserController.webView.delegate = Nil;
     browserController = nil;
     
-    [self performSelector:@selector(enablePreNext) withObject:Nil afterDelay:1.5];
+    
+    [self performSelector:@selector(enablePre) withObject:Nil afterDelay:1.5];
 }
 
--(void)enablePreNext{
+-(void)enableNext{
+    if (gPages + 1 != ItemPages.count) {
+        next.enabled = TRUE;
+    }
+    
+	//[self Testing];
     prev.enabled = TRUE;
+    
+}
+
+-(void)enablePre{
     next.enabled = TRUE;
+    
+    if (gPages - 1 > 0 ){
+        prev.enabled = TRUE;
+    }
+    
 }
 
 - (NSIndexPath *)lastSelectedIndexPathForSidebarViewController:(SidebarViewController *)sidebarViewController {
@@ -340,10 +466,28 @@ NSMutableArray *ItemPages;
 
 -(void)CloseButtonAction{
 
-    browserController = Nil;
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    
+    [browserController.webView loadHTMLString:@"" baseURL:nil];
+    [browserController.webView stopLoading];
+    [browserController.webView removeFromSuperview];
+    [browserController dispose ];
+    browserController.webView = Nil;
+    browserController.webView.delegate = Nil;
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
     v = Nil;
+    
+    leftSelectedIndexPath = Nil;
+    browserController = Nil;
+    databasePath = Nil;
+    ItemPages = Nil;
+    prev = Nil, next = Nil;
+    _delegate = Nil;
+    leftSidebarViewController.dataArray = Nil;
+    leftSidebarViewController = Nil;
     
     if ([self.view subviews].count > 1) {
         
@@ -360,5 +504,6 @@ NSMutableArray *ItemPages;
 
     
 }
+
 
 @end

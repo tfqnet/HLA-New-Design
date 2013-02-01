@@ -12,6 +12,7 @@
 #import "MainScreen.h"
 #import "SIHandler.h"
 #import "AppDelegate.h"
+#import "FSVerticalTabBarController.h"
 
 @interface SIListing ()
 
@@ -28,7 +29,6 @@
 @synthesize outletDateFrom;
 @synthesize outletDelete;
 @synthesize myTableView;
-@synthesize outletDate;
 @synthesize outletDone;
 @synthesize btnSortBy;
 @synthesize outletDateTo;
@@ -41,24 +41,27 @@
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
 
+
+
 //@synthesize NewLAViewController =_NewLAViewController;
+int DateOption;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
+
     [super viewDidLoad];
     
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     outletDelete.hidden = TRUE;
-    outletDate.hidden = true;
+
     outletDone.hidden = true;
     DBDateFrom = @"";
     DBDateTo = @"";
@@ -177,6 +180,9 @@
     ItemToBeDeleted = [[NSMutableArray alloc] init];
     indexPaths = [[NSMutableArray alloc] init];
     
+    dirPaths = Nil;
+    docsDir = Nil;
+    CustomColor = Nil;
 
 }
 
@@ -273,8 +279,8 @@
             SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
         }
         
-        const char *SelectSI = [SIListingSQL UTF8String];
-        if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
+        //const char *SelectSI = [SIListingSQL UTF8String];
+        if(sqlite3_prepare_v2(contactDB, [SIListingSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             
             SINO = [[NSMutableArray alloc] init ];
             DateCreated = [[NSMutableArray alloc] init ];
@@ -300,12 +306,24 @@
                 [BasicSA addObject:ItemBasicSA ];
                 [SIStatus addObject:ItemStatus];
                 [CustomerCode addObject:ItemCustomerCode];
+                
+                SINumber = Nil;
+                ItemDateCreated = Nil;
+                ItemName = Nil;
+                ItemPlanName = Nil;
+                ItemBasicSA = Nil;
+                ItemStatus = Nil;
+                ItemCustomerCode = Nil;
             }
             
             sqlite3_finalize(statement);
         }
         
         sqlite3_close(contactDB);
+        
+        SIListingSQL = Nil;
+        Sorting = Nil;
+        
     }
     
     if (SINO.count == 0) {
@@ -316,6 +334,10 @@
         [outletEdit setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
         outletEdit.enabled = TRUE;
     }
+    
+    statement = Nil;
+    dbpath = Nil;
+    
 }
 
 - (void)viewDidUnload
@@ -327,7 +349,7 @@
     [self setBtnSortBy:nil];
     [self setOutletDelete:nil];
     [self setMyTableView:nil];
-    [self setOutletDate:nil];
+
     [self setOutletDone:nil];
     [self setLblSINO:nil];
     [self setLblDateCreated:nil];
@@ -339,6 +361,31 @@
     [self setOutletEdit:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    
+    databasePath = Nil, OrderBy = Nil, lblBasicSA = Nil, lblDateCreated = Nil, lblName = Nil, lblPlan = Nil, lblSINO = Nil;
+    contactDB = Nil;
+    _SortBy = Nil;
+    _Popover = Nil;
+    _SIDate = Nil;
+    _SIDatePopover = Nil;
+    
+    ItemToBeDeleted = Nil;
+    indexPaths = Nil;
+    SINO = Nil;
+    DateCreated = Nil;
+    Name = Nil;
+    PlanName= Nil;
+    BasicSA= Nil;
+    SIStatus= Nil;
+    CustomerCode= Nil;
+    
+    FilteredSINO= Nil;
+    FilteredDateCreated= Nil;
+    FilteredName= Nil;
+    FilteredPlanName= Nil;
+    FilteredBasicSA= Nil;
+    FilteredSIStatus= Nil;
+    FilteredCustomerCode= Nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -573,6 +620,8 @@
     
     return cell;
     
+    CustomColor = Nil;
+    
 }
 
 
@@ -596,7 +645,7 @@
                 gotRowSelected = TRUE;
                 break;
             }
-            
+
         }
         
         if (!gotRowSelected) {
@@ -611,7 +660,7 @@
         NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
         [ItemToBeDeleted addObject:zzz];
         [indexPaths addObject:indexPath];
-        
+        zzz = Nil;
  
     }
     else {
@@ -633,15 +682,19 @@
         AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-//        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        //main.modalPresentationStyle = UIModalPresentationPageSheet;
 //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         main.IndexTab = MenuOption.NewSIIndex ;
         main.requestSINo = [SINO objectAtIndex:indexPath.row];
-        [self presentViewController:main animated:NO completion:nil];
         
+		[self presentViewController:main animated:NO completion:nil];
+		
+		MenuOption = Nil;
+        main = Nil;
+
+		
     }
     
-        
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -670,6 +723,7 @@
         [ItemToBeDeleted removeObject:zzz];
         [indexPaths removeObject:indexPath];
         
+        zzz = Nil;
     }
 }
 
@@ -689,7 +743,8 @@
         DBDateFrom = d;
     }
     */
-    outletDate.tag = 1;
+    
+    DateOption = 1;
     if (_SIDate == Nil) {
         
         self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
@@ -705,7 +760,7 @@
 - (IBAction)btnDateTo:(id)sender {
     //outletDate.hidden = false;
     //outletDone.hidden = false;
-    outletDate.tag = 2;
+    
     
     /*
     if ([DBDateTo isEqualToString:@""]) {
@@ -719,7 +774,7 @@
     }
      */
     
-
+    DateOption = 2;
     if (_SIDate == Nil) {
         
         self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
@@ -908,10 +963,21 @@
                     [BasicSA addObject:ItemBasicSA ];
                     [SIStatus addObject:ItemStatus];
                     [CustomerCode addObject:ItemCustomerCode];
+                    
+                    SINumber = Nil;
+                    ItemDateCreated = Nil;
+                    ItemName = Nil;
+                    ItemPlanName = Nil;
+                    ItemBasicSA = Nil;
+                    ItemStatus = Nil;
+                    ItemCustomerCode = Nil;
                       
                 }
                 
                 sqlite3_finalize(statement);
+                
+                SIListingSQL = Nil;
+                Sorting = Nil;
             }
             else {
                 
@@ -919,10 +985,18 @@
             }
             
             sqlite3_close(contactDB);
+            
+            
         }
         else {
             NSLog(@"cannot open DB");
         }
+        
+        dirPaths = Nil;
+        docsDir = Nil;
+        statement = Nil;
+        dbpath = Nil;
+        statement = Nil;
         
         //isFilter = TRUE;
         if (SINO.count == 0) {
@@ -937,6 +1011,10 @@
     
     [myTableView reloadData];
     }
+    
+    df = Nil;
+    d = Nil;
+    d2 = Nil;
 }
 
 - (IBAction)btnEdit:(id)sender {
@@ -1073,6 +1151,8 @@
                         [FilteredCustomerCode removeObjectAtIndex:value];
                     }
                     
+                    DeleteLAPayorSQL = Nil;
+                    DeleteCltProfileSQL = Nil;
                     
                 }
                 sqlite3_close(contactDB);
@@ -1094,6 +1174,14 @@
             
             ItemToBeDeleted = [[NSMutableArray alloc] init];
             indexPaths = [[NSMutableArray alloc] init];
+            
+            dirPaths = Nil;
+            docsDir = Nil;
+            statement = Nil;
+            statement2 = Nil;
+            dbpath = Nil;
+            sorted = Nil;
+            
         }
         
     }
@@ -1118,6 +1206,8 @@
             if (RecCount > 1) {
                 break;
             }
+            
+            selectedIndexPath = Nil;
         }
         
     }
@@ -1132,6 +1222,9 @@
                               otherButtonTitles: NSLocalizedString(@"No",nil), nil];
         alert.tag = 1;
         [alert show];
+        
+        deleteMsg = Nil;
+        alert = Nil;
 
     }
     else {
@@ -1144,16 +1237,19 @@
                               otherButtonTitles: NSLocalizedString(@"No",nil), nil];
         alert.tag = 1;
         [alert show];
+        
+        deleteMsg = Nil;
+        alert = Nil;
     }
     
-   
+    FirstSINo = Nil;
     
 }
 - (IBAction)btnDone:(id)sender {
-    outletDate.hidden = true;
+
     outletDone.hidden = true;
 }
-
+/*
 - (IBAction)ActionDate:(id)sender {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
@@ -1177,8 +1273,11 @@
         
     }
   
+    dateFormatter = Nil;
+    pickerDate = Nil;
+    msg = Nil;
 }
-
+*/
 - (void) SortBySelected:(NSMutableArray *)SortBySelected{
     
     //NSLog(@"%@", [SortBySelected objectAtIndex:0 ]);
@@ -1231,6 +1330,7 @@
             
         }
     }
+    
    
 }
 - (IBAction)btnSortBy:(id)sender {
@@ -1246,7 +1346,10 @@
 }
 
 -(void)DateSelected:(NSString *)strDate:(NSString *)dbDate{
-    if (outletDate.tag == 1) {
+    
+
+    
+    if (DateOption == 1) {
         [outletDateFrom setTitle:strDate forState:UIControlStateNormal];
         DBDateFrom = dbDate;
     }
@@ -1254,6 +1357,7 @@
         [outletDateTo setTitle:strDate forState:UIControlStateNormal];
         DBDateTo = dbDate;
     }
+     
 }
 
 -(void)CloseWindow{
@@ -1314,11 +1418,37 @@
     //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     main.IndexTab = MenuOption.NewSIIndex;
     [self presentViewController:main animated:NO completion:nil];
+    
+    MenuOption = Nil;
+    main = Nil;
 }
 
 -(void)RefreshZZZ{
     [self LoadAllResult];
     [myTableView reloadData];
+}
+
+-(void)SIListingClear{
+	myTableView = Nil;
+	SINO =Nil;
+	DateCreated=Nil;
+	Name =Nil;
+	PlanName=Nil;
+	SIStatus=Nil;
+	CustomerCode=Nil;
+	BasicSA =Nil;
+	FilteredSINO =Nil;
+	FilteredDateCreated=Nil;
+	FilteredName=Nil;
+	FilteredPlanName=Nil;
+	FilteredBasicSA=Nil;
+	FilteredSIStatus=Nil;
+	FilteredCustomerCode=Nil;
+	DBDateFrom = Nil, DBDateTo = Nil, OrderBy = Nil, _SIDate = Nil, _SIDatePopover = Nil, _SortBy = Nil;
+	ItemToBeDeleted = Nil, indexPaths = Nil;
+	lblBasicSA = Nil, lblDateCreated = Nil, lblName = Nil, lblPlan = Nil, lblSINO = Nil;
+	outletDateFrom = Nil, outletDateTo = Nil, outletDelete = Nil, outletDone = Nil, outletEdit = Nil;
+	outletGender = Nil;
 }
 
 @end

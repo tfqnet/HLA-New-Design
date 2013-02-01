@@ -65,10 +65,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtExactDuties;
 - (IBAction)btnOccup:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextView *txtRemark;
-@property (weak, nonatomic) IBOutlet UIToolbar *pickerToolbar;
-- (IBAction)btnDone:(id)sender;
-@property (weak, nonatomic) IBOutlet UIPickerView *ContactTypePicker;
-@property (weak, nonatomic) IBOutlet UIDatePicker *DobPicker;
 @property (strong, nonatomic) NSArray* ContactType;
 @property (nonatomic, copy) NSString *ContactTypeTracker;
 @property (nonatomic, retain) OccupationList *OccupationList;
@@ -83,7 +79,7 @@
 - (IBAction)ActionGender:(id)sender;
 - (IBAction)btnDelete:(id)sender;
 
-- (IBAction)ActionDobPicker:(id)sender;
+
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

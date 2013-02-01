@@ -114,6 +114,7 @@
 		    rider = row.riders.split(";");
 		    }
 				   
+		    document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
 				   
 		    //rider = row.riders.split(";");
 		    for(var i=0;i<rider.length;i++){
@@ -380,7 +381,7 @@
 </div>
 <div class="main-content">
 
-<div id="pageLength" class="pageLength" style="position:relative;height:800px;">
+<div id="pageLength" class="pageLength" style="position:relative;">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -1797,22 +1798,19 @@ RM <span id="Special2PTRRiderGYI">{PTRGYI}</span> is payable upon  death / TPD (
 </table><br/>
 </div>
 
-
-
 </div><br/><br/><br/>
+
 <table style="border-collapse:collapse;border:0px solid black;width:100%;" class="tblFooter">
-
-<tr>
-<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
-This Product Disclosure Sheet consists of <span class="totalPagesPDS">{totalPagesPDS}</span> pages and each page forms an integral part of the Product Disclosure Sheet. A prospective policy owner is advised to read and understand the
-information printed on each and every page. <br/>
-<b><span id="rptVersion">{rptVersion}</span></b> <br/>
-Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
-
-</td>
-<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPagePDS">{currentPagePDS}</span> of <span class="totalPagesPDS">{totalPagesPDS}</span></td>
-<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
-</tr>
+    <tr>
+	<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+	    This Product Disclosure Sheet consists of <span class="totalPagesPDS">{totalPagesPDS}</span> pages and each page forms an integral part of the Product Disclosure Sheet. A prospective policy owner is advised to read and understand the
+	    information printed on each and every page. <br/>
+	    <b><span id="rptVersion">{rptVersion}</span></b> <br/>
+	    Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+	</td>
+	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPagePDS">{currentPagePDS}</span> of <span class="totalPagesPDS">{totalPagesPDS}</span></td>
+	<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+    </tr>
 </table>
 
 <script>
@@ -1868,68 +1866,9 @@ Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Pet
             			//$('#table-design1 tr.PA').css('display','table-row');
             			//alert(temp)
 
-            			if (temp == "C"){
-            				temp = "C+"	
-            				$('#table-design2Wide tr').css('display','table-row');
-        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
-            					if (result != null && result.rows != null) {
-                					var row = result.rows.item(0);
-                						$('#CRiderTerm').html(row.RiderTerm);
-                						$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 50) / 100));
-                						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 150) / 100));
-                						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 250) / 100));
-                						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
-                						if (row.PlanOption == "Level"){
-                							$('#cPlanOption').html('Level Cover');
-                							$('#cGuaranteedIncreasingSumAssured').hide();
-                							$('#cNoClaimBenefit').hide();
-                						}
-                						else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
-                							$('#cPlanOption').html('Increasing Cover');
-                							$('#cNoClaimBenefit').hide();
-                						}
-                						else if (row.PlanOption == "Level_NCB"){
-                							$('#cPlanOption').html('Level Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
-                							$('#cGuaranteedIncreasingSumAssured').hide();
-                						}
-                						else if (row.PlanOption == "Increasing_NCB"){
-                							$('#cPlanOption').html('Increasing Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
-                							//$('#cGuaranteedIncreasingSumAssured').hide();
-                							$('#cVeryEarlyTD').html('50% of Rider Sum Assured');
-                							$('#cEarlyTD').html('150% of Rider Sum Assured');
-                							$('#cAdvanceTD').html('250% of Rider Sum Assured');
-                							$('#cNursingCareAllowance').html('25% of Rider Sum Assured');
-                						}
-            					}
-        					},errorHandler);        				
-            			}
-            			if (temp == "HB"){
-        					transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
-            					if (result != null && result.rows != null) {
-                					var row = result.rows.item(0);
-                						$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
-            					}
-        					},errorHandler);        				
-            			}
-            			else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP"){
-            				$('#illness tr').css('display','table-row');
-            			}
+            			
+            			
             		}
-            		
-            		for (var j=0;j<rider.length;j++){
-        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
-            					if (result != null && result.rows != null) {
-                					var row = result.rows.item(0);
-                					//alert(row.RiderTerm)
-                					//$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
-                					//$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
-							
-            					}
-        					},errorHandler);
-            		}
-            		
             		
             	}
         	},errorHandler);

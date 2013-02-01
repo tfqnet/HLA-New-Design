@@ -84,7 +84,17 @@
         labelUpdated.text = @"Last Updated: 22 January 2013";
                 outletLogin.hidden = FALSE;
     }
+    
+    dirPaths = Nil;
+    docsDir = Nil;
+    version = Nil;
+    endDate =  Nil;
+    formatter = Nil;
+    StartDate = Nil;
+    gregorianCalendar = Nil;
+    components = Nil;
 }
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -92,11 +102,6 @@
         return YES;
     
     return NO;
-}
-
--(NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -148,6 +153,7 @@
         if (!success) {
             NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
         }
+        defaultDBPath = Nil;
     }
     else {
         
@@ -157,6 +163,7 @@
             if (!success) {
                 NSAssert1(0, @"Failed to create writable Rates database file with message '%@'.", [error localizedDescription]);
             }
+            RatesDBPath = Nil;
         }
         else {
             return;
@@ -165,7 +172,8 @@
         
     }
     
-	
+	fileManager = Nil;
+    error = Nil;
     
     
 }
@@ -178,6 +186,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"User ID is required" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
         [alert show];
+        alert = Nil;
     }
     else {
         if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
@@ -193,21 +202,25 @@
                     [self presentModalViewController:forgotView animated:NO];
                     forgotView.view.superview.bounds = CGRectMake(0, 0, 550, 600);
                     
-                    
+                    forgotView = Nil;
                 }
                 else {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                 message:@"Username does not exist. Unable to retrieve password." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
                     [alert show];
+                    alert = Nil;
                 }
                 sqlite3_finalize(statement);
             }
            
             sqlite3_close(contactDB);
+            querySQL = Nil;
+            
         }    
         
         
     }
+    statement = Nil;
         
 }
 
@@ -241,7 +254,11 @@
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
+        query_stmt = Nil;
+        querySQL = Nil;
     }
+    dbpath = Nil;
+    statement = Nil;
 }
 
 -(void)checkingFirstLogin
@@ -267,12 +284,18 @@
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Username or Password" delegate:Nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
                 [alert show];
+                alert = Nil;
                 
             }
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
+        querySQL = Nil;
+        query_stmt = Nil;
     }
+    
+    dbpath = Nil;
+    statement = Nil;
 }
 
 -(void)updateDateLogin
@@ -302,7 +325,15 @@
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
+        
+        query_stmt = Nil;
+        querySQL = Nil;
     }
+    
+    dateFormatter = Nil;
+    dateString = Nil;
+    dbpath = Nil;
+    statement = Nil;
 }
 
 -(void)checkingLastLogout
@@ -330,6 +361,8 @@
                 
                 
                 NSLog(@"%@",logoutDate);
+                dateFormatter = Nil;
+                logoutDate = Nil;
                 
             } else {
                 NSLog(@"error check logout");
@@ -337,7 +370,10 @@
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
+        querySQL = Nil, query_stmt = Nil;
     }
+    
+    dbpath = Nil, statement = Nil;
 }
 
 #pragma mark - keyboard display
@@ -373,6 +409,7 @@
         [alert show];
         
         [txtUsername becomeFirstResponder];
+        alert = Nil;
         
     }
     else if (txtPassword.text.length <=0) {
@@ -380,6 +417,7 @@
         [alert show];
         
         [txtPassword becomeFirstResponder];
+        alert = Nil;
     }
     else {
         
@@ -399,6 +437,10 @@
              [self presentModalViewController:newProfile animated:YES];
              */
             
+            databasePath = Nil;
+            RatesDatabasePath = Nil;
+            contactDB = Nil;
+            
             SecurityQuestion *securityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
             securityPage.userID = indexNo;
             securityPage.FirstTimeLogin = 1;
@@ -406,7 +448,9 @@
             securityPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentModalViewController:securityPage animated:NO];
             
-            
+            securityPage = Nil;
+            scrollViewLogin = Nil;
+            activeField = Nil;
             
         } else if (statusLogin == 0 && indexNo != 0) {
             
@@ -428,9 +472,19 @@
             [self presentViewController:carouselMenu animated:YES completion:Nil];
             
             [self updateDateLogin];
-            //            [self checkingLastLogout];
+            
+            databasePath = Nil;
+            RatesDatabasePath = Nil;
+            zzz = Nil;
+            carouselMenu = Nil;
+            contactDB = Nil;
+            scrollViewLogin = Nil;
+            activeField = Nil;
+            
         }
     }
+    
+    
     
 }
 
@@ -504,6 +558,8 @@
     [self setOutletLogin:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    databasePath = Nil;
+    RatesDatabasePath = Nil;
 }
 
 

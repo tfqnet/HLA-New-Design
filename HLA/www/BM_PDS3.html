@@ -1800,7 +1800,8 @@ RM <span id="Special2PTRRiderGYI">{QQQPTRRiderGYI}</span> akan dibayar apabila p
 
 
 
-</div><br/><br/><br/>
+</div><br/>
+
 <table style="border-collapse:collapse;border:0px solid black;width:100%;" class="tblFooter">
     <tr>
 	    <td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
@@ -1868,67 +1869,11 @@ RM <span id="Special2PTRRiderGYI">{QQQPTRRiderGYI}</span> akan dibayar apabila p
             			//$('#table-design1 tr.PA').css('display','table-row');
             			//alert(temp)
 
-            			if (temp == "C"){
-            				temp = "C+"	
-            				$('#table-design2Wide tr').css('display','table-row');
-        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
-            					if (result != null && result.rows != null) {
-                					var row = result.rows.item(0);
-                						$('#CRiderTerm').html(row.RiderTerm);
-                						$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 50) / 100));
-                						$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 150) / 100));
-                						$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 250) / 100));
-                						$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
-                						if (row.PlanOption == "Level"){
-                							$('#cPlanOption').html('Level Cover');
-                							$('#cGuaranteedIncreasingSumAssured').hide();
-                							$('#cNoClaimBenefit').hide();
-                						}
-                						else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
-                							$('#cPlanOption').html('Increasing Cover');
-                							$('#cNoClaimBenefit').hide();
-                						}
-                						else if (row.PlanOption == "Level_NCB"){
-                							$('#cPlanOption').html('Level Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
-                							$('#cGuaranteedIncreasingSumAssured').hide();
-                						}
-                						else if (row.PlanOption == "Increasing_NCB"){
-                							$('#cPlanOption').html('Increasing Cover with NCB');
-                							$('#cNoClaimAmount').html(formatCurrency(row.SA));
-                							//$('#cGuaranteedIncreasingSumAssured').hide();
-                							$('#cVeryEarlyTD').html('50% of Rider Sum Assured');
-                							$('#cEarlyTD').html('150% of Rider Sum Assured');
-                							$('#cAdvanceTD').html('250% of Rider Sum Assured');
-                							$('#cNursingCareAllowance').html('25% of Rider Sum Assured');
-                						}
-            					}
-        					},errorHandler);        				
-            			}
-            			if (temp == "HB"){
-        					transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "'", [], function(transaction, result) {
-            					if (result != null && result.rows != null) {
-                					var row = result.rows.item(0);
-                						$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
-            					}
-        					},errorHandler);        				
-            			}
-            			else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP"){
-            				$('#illness tr').css('display','table-row');
-            			}
+            			
+            			
             		}
             		
-            		for (var j=0;j<rider.length;j++){
-        					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "'", [], function(transaction, result) {
-            					if (result != null && result.rows != null) {
-                					var row = result.rows.item(0);
-                					//alert(row.RiderTerm)
-                					$('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
-                					$('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
-							
-            					}
-        					},errorHandler);
-            		}
+            		
             		
             		
             	}

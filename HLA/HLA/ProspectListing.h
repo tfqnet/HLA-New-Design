@@ -28,4 +28,5 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 -(void) ReloadTableData;
+-(void) Clear;
 @end

@@ -175,20 +175,7 @@ id RiderCount;
         
         added = YES;
         
-        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-        premView.requestAge = getAge;
-        premView.requestOccpClass = getOccpClass;
-        premView.requestOccpCode = getOccpCode;
-        premView.requestSINo = getSINo;
-        premView.requestMOP = getMOP;
-        premView.requestTerm = getTerm;
-        premView.requestBasicSA = getbasicSA;
-        premView.requestBasicHL = getbasicHL;
-        premView.requestBasicTempHL = getbasicTempHL;
-        premView.requestPlanCode = getPlanCode;
-
-        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
-        [zzz addSubview:premView.view];
+        
         
 
     }
@@ -998,7 +985,7 @@ id RiderCount;
     else if (indexPath.row == 1)    //2nd LA
     {
         
-        [self RemovePDS];
+        //[self RemovePDS];
         [self select2ndLA];
         [self hideSeparatorLine];
         [myTableView reloadData];
@@ -1007,7 +994,7 @@ id RiderCount;
     else if (indexPath.row == 2)    //Payor
     {
         
-        [self RemovePDS];
+        //[self RemovePDS];
         [self selectPayor];
         [self hideSeparatorLine];
         [myTableView reloadData];
@@ -1027,7 +1014,7 @@ id RiderCount;
         }
         else {
             
-            [self RemovePDS];
+            //[self RemovePDS];
             [self selectBasicPlan];
             [self hideSeparatorLine];
             [myTableView reloadData];
@@ -1065,7 +1052,7 @@ id RiderCount;
         else {
             
             
-            [self RemovePDS];
+            //[self RemovePDS];
             
             self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
             _RiderController.delegate = self;
@@ -1192,6 +1179,24 @@ id RiderCount;
             [alert show];
         }
          */
+        
+        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+        premView.requestAge = getAge;
+        premView.requestOccpClass = getOccpClass;
+        premView.requestOccpCode = getOccpCode;
+        premView.requestSINo = getSINo;
+        premView.requestMOP = getMOP;
+        premView.requestTerm = getTerm;
+        premView.requestBasicSA = getbasicSA;
+        premView.requestBasicHL = getbasicHL;
+        premView.requestBasicTempHL = getbasicTempHL;
+        premView.requestPlanCode = getPlanCode;
+        
+        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+        [zzz addSubview:premView.view];
+        
+        premView = Nil, zzz = Nil;
+        
         sqlite3_stmt *statement;
         BOOL cont = FALSE;
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -1218,6 +1223,8 @@ id RiderCount;
                 sqlite3_finalize(statement);
             }
             sqlite3_close(contactDB);
+            
+            
         }
         
         if (cont == TRUE) {
@@ -1236,9 +1243,8 @@ id RiderCount;
             [spinner startAnimating];
             
             
-            //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+            
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-                //dispatch_async(downloadQueue, ^{
                 
                 
                 ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
@@ -1254,9 +1260,7 @@ id RiderCount;
                     BrowserViewController *controller = [[BrowserViewController alloc] init];
                     controller.title = @"Quotation";
                     controller.Module = 1;
-                    //controller.delegate = self;
-                    //controller.premH = premH;
-                    //controller.premBH = premBH;
+                    
                     
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
                     UINavigationController *container = [[UINavigationController alloc] init];
@@ -1265,22 +1269,54 @@ id RiderCount;
                     
                     [self presentModalViewController:container animated:YES];
                     
+                    navController = Nil;
+                    container = Nil;
+                    controller = Nil;
+                    
                     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
                     [v removeFromSuperview];
+                    v = Nil;
                 });
                 
+                ReportPage = Nil;
                 
             });
+            
+            spinner = Nil;
+            
+            
+            
             
         }
         else {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
             [alert show];
+            alert = Nil;
         }
+        
+        statement = Nil;
     }
     
     else if (indexPath.row == 8) {   //English PDS
+        
+        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+        premView.requestAge = getAge;
+        premView.requestOccpClass = getOccpClass;
+        premView.requestOccpCode = getOccpCode;
+        premView.requestSINo = getSINo;
+        premView.requestMOP = getMOP;
+        premView.requestTerm = getTerm;
+        premView.requestBasicSA = getbasicSA;
+        premView.requestBasicHL = getbasicHL;
+        premView.requestBasicTempHL = getbasicTempHL;
+        premView.requestPlanCode = getPlanCode;
+        
+        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+        [zzz addSubview:premView.view];
+        
+        premView = Nil, zzz= Nil;
+        
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         spinner.center = CGPointMake(400, 350);
         
@@ -1327,15 +1363,42 @@ id RiderCount;
                 
                 [self presentModalViewController:container animated:YES];
                 
+                controller = Nil;
+
                 UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
                 [v removeFromSuperview];
+                v = Nil;
+                
+                navController = Nil;
+                container = Nil;
             });
+            
+            PDSPage = Nil;
             
             
         });
+        spinner = Nil;
         
     }
     else if (indexPath.row == 9) {   //Malay PDS
+        
+        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+        premView.requestAge = getAge;
+        premView.requestOccpClass = getOccpClass;
+        premView.requestOccpCode = getOccpCode;
+        premView.requestSINo = getSINo;
+        premView.requestMOP = getMOP;
+        premView.requestTerm = getTerm;
+        premView.requestBasicSA = getbasicSA;
+        premView.requestBasicHL = getbasicHL;
+        premView.requestBasicTempHL = getbasicTempHL;
+        premView.requestPlanCode = getPlanCode;
+        
+        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+        [zzz addSubview:premView.view];
+        
+        premView = Nil, zzz= Nil;
+        
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         spinner.center = CGPointMake(400, 350);
         
@@ -1382,13 +1445,18 @@ id RiderCount;
                 
                 [self presentModalViewController:container animated:YES];
                 
+                controller = Nil, navController = Nil, container = Nil;
                 UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
                 [v removeFromSuperview];
+                v = Nil;
             });
+            
+            PDSPage = Nil;
             
             
         });
         
+        spinner = Nil;
     }
     
 //    [tableView reloadData];

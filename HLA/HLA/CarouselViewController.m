@@ -27,6 +27,7 @@ const int numberOfModule = 4;
 @implementation CarouselViewController
 @synthesize outletCarousel;
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -119,6 +120,7 @@ const int numberOfModule = 4;
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     return button;
 
+    button = Nil;
 }
 
 - (void)buttonTapped:(UIButton *)sender
@@ -136,7 +138,7 @@ const int numberOfModule = 4;
         setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:zzz animated:NO completion:Nil];
-        //[self.navigationController pushViewController:zzz animated:YES];
+        zzz = Nil;
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //prospect
@@ -144,6 +146,7 @@ const int numberOfModule = 4;
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.ProspectListingIndex;
         [self presentViewController:zzz animated:NO completion:Nil];
+        zzz= Nil;
         
     }
     
@@ -151,7 +154,7 @@ const int numberOfModule = 4;
         eBrochureListingViewController *BrochureListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eBrochureListing"];
         BrochureListing.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:BrochureListing animated:NO completion:Nil];
-        
+        BrochureListing = Nil;
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 3) {
@@ -160,7 +163,7 @@ const int numberOfModule = 4;
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.SIListingIndex;
         [self presentViewController:zzz animated:NO completion:Nil];
-        
+        zzz= Nil;
         /*
         //--edited by bob
         NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
@@ -175,6 +178,9 @@ const int numberOfModule = 4;
          */
         
     }
+    
+    outletCarousel = Nil;
+    MenuOption = Nil;
     
     
 }
@@ -224,9 +230,15 @@ const int numberOfModule = 4;
             sqlite3_finalize(statement);
         }
         sqlite3_close(contactDB);
+        query_stmt = Nil;
+        querySQL = Nil;
     }
     
+    databasePath = Nil, dbpath = Nil, statement = Nil;
+    dirPaths = Nil, docsDir = Nil, mainLogin = Nil, dateFormatter = Nil, dateString = Nil;
     exit(0);
+    
+    
 }
 
 - (IBAction)btnExit:(id)sender {
@@ -238,5 +250,8 @@ const int numberOfModule = 4;
                           otherButtonTitles: NSLocalizedString(@"No",nil), nil];
     
     [alert show ];
+    alert = Nil;
 }
+
+
 @end

@@ -20,7 +20,6 @@
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
-    //UIPickerView *ContactTypePicker;
     OccupationList *_OccupationList;
     ContactTypeClass *_ContactTypeClass;
     SIDate *_SIDate;
@@ -79,11 +78,8 @@
 - (IBAction)btnContact4:(id)sender;
 - (IBAction)btnContact5:(id)sender;
 
-@property (weak, nonatomic) IBOutlet UIDatePicker *outletDobPicker;
-- (IBAction)ActionDobDate:(id)sender;
-@property (weak, nonatomic) IBOutlet UIPickerView *outletContactType;
-- (IBAction)btnDone:(id)sender;
-@property (weak, nonatomic) IBOutlet UIToolbar *pickerToolbar;
+
+
 - (IBAction)btnSave:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletType1;
 - (IBAction)btnContact1:(id)sender;

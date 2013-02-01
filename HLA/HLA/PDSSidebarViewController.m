@@ -58,6 +58,12 @@
     sqlite3_close(db2);
     
 
+    databaseName = Nil;
+    documents = Nil;
+    databasePathFromDoc = Nil;
+    db2 = Nil;
+    
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -72,6 +78,10 @@
         NSIndexPath *indexPath = [self.sidebarDelegate PDSlastSelectedIndexPathForSidebarViewController:self];
         [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
+}
+
+-(void)viewDidUnload{
+    _dataArray = Nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -169,9 +179,9 @@
         NSObject *objectHTML = [NSString stringWithFormat:@"%@", pg.htmlName];
         [self.sidebarDelegate PDSsidebarViewController:self didSelectObject:object objectHTML:objectHTML atIndexPath:indexPath];
         
-        
-        
-        
+        object = Nil;
+        objectHTML = Nil;
+        pg = Nil;
         
     }
 }

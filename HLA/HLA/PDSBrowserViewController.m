@@ -75,6 +75,11 @@ NSMutableArray *ItemPages;
     
     browserController_page.view.frame = CGRectMake(0, 0, 758, 1000);
     [self.view addSubview:browserController_page.view];
+    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [browserController_page dispose];
     browserController_page = nil;
     
     self.navigationItem.revealSidebarDelegate = self;
@@ -112,13 +117,25 @@ NSMutableArray *ItemPages;
             
         }
         sqlite3_close(contactDB);
+        
+        QuerySQL = Nil;
     }
+    
+    contactDB = Nil;
+    dirPaths = Nil;
+    docsDir = Nil;
+    databasePath = Nil;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
     self.leftSidebarViewController = nil;
+    ItemPages = Nil;
+    browserController = Nil;
+    PDSLanguage = Nil;
+    databasePath = Nil;
+    
 }
 
 #if EXPERIEMENTAL_ORIENTATION_SUPPORT
@@ -184,6 +201,7 @@ NSMutableArray *ItemPages;
     UIAlertView *sss = [[UIAlertView alloc] initWithTitle:@"Memory warning"
                                                   message:@"Not enough memory. Please restart the application" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
     [sss show];
+    sss = Nil;
 }
 
 @end
@@ -226,27 +244,19 @@ NSMutableArray *ItemPages;
     browserController.startPage = (NSString *)objectHTML;
     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
     [controller.view addSubview:browserController.view];
+    
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [browserController dispose];
+    
     browserController = nil;
+    controller = Nil;
     
 }
 
 
 -(void)NextPage{
-    
-    /*
-     BrowserViewController *controller = [[BrowserViewController alloc] init];
-     [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
-     controller.delegate = _delegate;
-     
-     
-     browserController = [CDVViewController new];
-     browserController.wwwFolderName = @"www";
-     browserController.startPage = [NSString stringWithFormat: @"Page%d.html", 2];
-     browserController.view.frame = CGRectMake(0, 0, 758, 1000);
-     [self.view addSubview:browserController.view];
-     
-     browserController = nil;
-     */
     
     [self.navigationController setRevealedState:JTRevealedStateNo];
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
@@ -271,8 +281,12 @@ NSMutableArray *ItemPages;
     self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
     [self.view addSubview:browserController.view];
     
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [browserController dispose];
     browserController = nil;
-    [self performSelector:@selector(enablePDSPreNext) withObject:Nil afterDelay:1.5];
+    [self performSelector:@selector(enablePDSNext) withObject:Nil afterDelay:1.5];
 }
 
 -(void)PrevPage{
@@ -300,13 +314,30 @@ NSMutableArray *ItemPages;
     self.title = [NSString stringWithFormat:@"Page %d / %d", gPages + 1, ItemPages.count ];
     [self.view addSubview:browserController.view];
     
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [browserController dispose];
     browserController = nil;
-    [self performSelector:@selector(enablePDSPreNext) withObject:Nil afterDelay:1.5];
+    [self performSelector:@selector(enablePDSPre) withObject:Nil afterDelay:1.5];
+}
+\
+-(void)enablePDSNext{
+    if (gPages + 1 != ItemPages.count) {
+        next.enabled = TRUE;
+    }
+    
+    prev.enabled = TRUE;
+    
 }
 
--(void)enablePDSPreNext{
-    prev.enabled = TRUE;
+-(void)enablePDSPre{
     next.enabled = TRUE;
+    
+    if (gPages - 1 > 0 ){
+        prev.enabled = TRUE;
+    }
+    
 }
 
 - (NSIndexPath *)PDSlastSelectedIndexPathForSidebarViewController:(PDSSidebarViewController *)PDSsidebarViewController {
@@ -315,10 +346,24 @@ NSMutableArray *ItemPages;
 
 -(void)CloseButtonAction{
     
+
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+    [browserController dispose];
     browserController = Nil;
+    
+    
     UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
     [v removeFromSuperview];
     v = Nil;
+    
+    leftSidebarViewController.dataArray = Nil;
+    self.leftSidebarViewController = nil;
+    ItemPages = Nil;
+    browserController = Nil;
+    PDSLanguage = Nil;
+    databasePath = Nil;
     
     if ([self.view subviews].count > 1) {
         

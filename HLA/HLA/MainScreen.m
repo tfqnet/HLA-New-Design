@@ -30,6 +30,7 @@
 @synthesize userRequest;
 @synthesize IndexTab,mainLaH,mainBH,mainPH,mainLa2ndH;
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -131,12 +132,24 @@
     else {
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);
     }
+    
+    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, ProspectListingPage = Nil, LogoutPage = Nil, menuSIPage = Nil;
+    
 }
 
 - (void)viewDidUnload
 {
+    userRequest = Nil;
+    mainBH = Nil;
+    mainLa2ndH = Nil;
+    mainLaH = Nil;
+    mainPH = Nil;
+    showQuotation = Nil;
+    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

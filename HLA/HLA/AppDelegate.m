@@ -56,6 +56,10 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     fileManager = Nil;
     //for ios6 end
     
+    documents = Nil, viewerPlistFromApp = Nil, viewerPlistFromDoc = Nil;
+    library = Nil, databaseName1 = Nil, WebSQLDb1 = Nil, WebSQLPath1 = Nil, WebSQLSubdir1 = Nil, masterFile = Nil;
+    databaseFile = Nil;
+    
     return YES;
 }
 							
