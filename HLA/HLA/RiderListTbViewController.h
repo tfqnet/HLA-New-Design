@@ -29,6 +29,7 @@
 
 //request from previous controller
 @property (nonatomic,strong) id requestPtype;
+@property (nonatomic,strong) id requestPlan;
 @property (nonatomic, assign,readwrite) int requestSeq;
 @property (nonatomic, assign,readwrite) int requestOccpClass;
 @property (nonatomic, assign,readwrite) int requestAge;

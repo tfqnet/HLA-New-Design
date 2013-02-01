@@ -205,7 +205,7 @@
     double BasicHLHalfYear_ = [[BasicHLHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLQuarterly_ = [[BasicHLQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     double BasicHLMonthly_ = [[BasicHLMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
-    NSLog(@"BasicHL A:%.2f, S:%.2f, Q:%.2f, M:%.2f",BasicHLAnnually_, BasicHLHalfYear_, BasicHLQuarterly_, BasicHLMonthly_);
+//    NSLog(@"BasicHL A:%.2f, S:%.2f, Q:%.2f, M:%.2f",BasicHLAnnually_, BasicHLHalfYear_, BasicHLQuarterly_, BasicHLMonthly_);
     
     //calculate LSD
     double _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
@@ -1520,7 +1520,7 @@
                 LSDRate =  sqlite3_column_int(statement, 0);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getLSDRate");
             }
             sqlite3_finalize(statement);
         }
@@ -1836,7 +1836,7 @@
                 occLoad =  sqlite3_column_int(statement, 0);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getOccLoad");
             }
             sqlite3_finalize(statement);
         }
@@ -1862,7 +1862,7 @@
                 occLoadRider =  sqlite3_column_int(statement, 0);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getOccLoadRider");
             }
             sqlite3_finalize(statement);
         }

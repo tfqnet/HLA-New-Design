@@ -60,6 +60,7 @@
 //--request
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic,strong) id requestPlanCode;
+@property (nonatomic,strong) id requestPlanChoose;
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestSex;
 @property (nonatomic,strong) id requestOccpCode;
@@ -73,6 +74,7 @@
 
 @property (nonatomic,strong) NSString *getSINo;
 @property (nonatomic,strong) NSString *getPlanCode;
+@property (nonatomic,strong) NSString *getPlanChoose;
 @property (nonatomic, assign,readwrite) int getAge;
 @property (nonatomic,strong) NSString *getSex;
 @property (nonatomic,strong) NSString *getOccpCode;

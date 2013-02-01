@@ -38,7 +38,7 @@
 @synthesize get2ndLAAge,get2ndLADOB,get2ndLAOccp,get2ndLASex,get2ndLASmoker,getOccpClass;
 @synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance,requestSINo2;
 @synthesize RiderController = _RiderController;
-@synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor,getSex,getbasicTempHL,getSmoker;
+@synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor,getSex,getbasicTempHL,getSmoker,getBasicPlan;
 
 id RiderCount;
 
@@ -1063,6 +1063,7 @@ id RiderCount;
         
             self.RiderController.requestSINo = getSINo;
             self.RiderController.requestPlanCode = getPlanCode;
+            self.RiderController.requestPlanChoose = getBasicPlan;
             self.RiderController.requestCoverTerm = getTerm;
             self.RiderController.requestBasicSA = getbasicSA;
             self.RiderController.requestBasicHL = getbasicHL;
@@ -1606,7 +1607,7 @@ id RiderCount;
     }
 }
 
--(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance
+-(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance andBasicPlan:(NSString *)aabasicPlan
 {
     NSLog(@"::receive databasicSINo:%@, advance:%d",aaSINo,aaAdvance);
     getSINo = aaSINo;
@@ -1616,6 +1617,7 @@ id RiderCount;
     getbasicHL = aaBasicHL;
     getbasicTempHL = aaBasicTempHL;
     getPlanCode = aaPlanCode;
+    getBasicPlan = aabasicPlan;
     getAdvance = aaAdvance;
     
     if (getbasicSA.length != 0)
@@ -1683,6 +1685,7 @@ id RiderCount;
     [self setGetbasicSA:nil];
     [self setGetbasicHL:nil];
     [self setGetPlanCode:nil];
+    [self setGetBasicPlan:nil];
     [super viewDidUnload];
 }
 
@@ -1737,6 +1740,7 @@ id RiderCount;
     getbasicHL = nil;
     getbasicTempHL = nil;
     getPlanCode = nil;
+    getBasicPlan = nil;
     getAdvance = 0;
 }
 

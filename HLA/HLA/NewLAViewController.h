@@ -17,7 +17,7 @@
 @protocol NewLAViewControllerDelegate
 -(void) LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker;
 
--(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance;
+-(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance andBasicPlan:(NSString *)aabasicPlan;
 
 -(void) RiderAdded;
 -(void)secondLADelete;
@@ -67,7 +67,6 @@
 @property (nonatomic, retain) UIPopoverController *datePopover;
 @property (retain, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, retain) UIPopoverController *popOverController;
-
 //LA Field
 @property (retain, nonatomic) IBOutlet UITextField *LANameField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *sexSegment;
@@ -84,6 +83,7 @@
 
 @property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, copy) NSString *CustCode;
+@property (nonatomic,strong) NSString *planChoose;
 
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, copy) NSString *occuCode;

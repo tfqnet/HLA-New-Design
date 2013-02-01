@@ -65,26 +65,24 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
+    //request LA details
     ageClient = requestAge;
     OccpCode = [self.requestOccpCode description];
     OccpClass = requestOccpClass;
     idPay = requestIDPay;
     idProf = requestIDProf;
-    
     PayorIndexNo = requestIndexPay;
     PayorSmoker = [self.requestSmokerPay description];
     PayorSex = [self.requestSexPay description];
     PayorDOB = [self.requestDOBPay description];
     PayorAge = requestAgePay;
     PayorOccpCode = [self.requestOccpPay description];
-    
     secondLAIndexNo = requestIndex2ndLA;
     secondLASmoker = [self.requestSmoker2ndLA description];
     secondLASex = [self.requestSex2ndLA description];
     secondLADOB = [self.requestDOB2ndLA description];
     secondLAAge = requestAge2ndLA;
     secondLAOccpCode = [self.requestOccp2ndLA description];
-    
     SINo = [self.requestSINo description];
     NSLog(@"BASIC-SINo:%@, age:%d, job:%@",SINo,ageClient,OccpCode);
     NSLog(@"BASIC-idPayor:%d, idProfile:%d",idPay,idProf);
@@ -96,6 +94,7 @@
     planChoose = [[NSString alloc] initWithFormat:@"%@",planList.selectedCode];
     [self.btnPlan setTitle:planList.selectedDesc forState:UIControlStateNormal];
     
+    //for HLAIB
     if (ageClient > 65) {
         advanceIncomeSegment.enabled = NO;
     }
@@ -502,33 +501,6 @@
     }
 }
 
-/*
--(void)closeScreen
-{
-    if (dataInsert.count != 0) {
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            BasicPlanHandler *ss = [dataInsert objectAtIndex:i];
-            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            main.modalPresentationStyle = UIModalPresentationFullScreen;
-            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainLaH = basicH;
-            main.mainBH = ss;
-            main.mainPH = basicPH;
-            main.IndexTab = 3;
-            main.showQuotation = @"NO";
-            [self presentViewController:main animated:YES completion:nil];
-        }
-    } else {
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.mainLaH = basicH;
-        main.IndexTab = 3;
-        [self presentViewController:main animated:YES completion:nil];
-    }
-}
-*/
-
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 1001 && buttonIndex == 0) {
@@ -703,7 +675,7 @@
     }
     [self getPlanCodePenta];
     
-    [_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+    [_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome andBasicPlan:planChoose];
 }
 
 -(void)calculateSA
@@ -991,29 +963,32 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT SINo,PolicyTerm,BasicSA,PremiumPaymentOption,CashDividend,YearlyIncome,AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",SINo];
+                @"SELECT SINo, PlanCode, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",SINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 getSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                getPolicyTerm = sqlite3_column_int(statement, 1);
-                getSumAssured = sqlite3_column_double(statement, 2);
-                MOP = sqlite3_column_int(statement, 3);
-                cashDividend = [[NSString alloc ] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
-                yearlyIncome = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
-                advanceYearlyIncome = sqlite3_column_int(statement, 6);
+                planChoose = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                getPolicyTerm = sqlite3_column_int(statement, 2);
+                getSumAssured = sqlite3_column_double(statement, 3);
+                MOP = sqlite3_column_int(statement, 4);
+                cashDividend = [[NSString alloc ] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
+                yearlyIncome = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
+                advanceYearlyIncome = sqlite3_column_int(statement, 7);
                 
-                const char *getHL2 = (const char*)sqlite3_column_text(statement, 7);
+                const char *getHL2 = (const char*)sqlite3_column_text(statement, 8);
                 getHL = getHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getHL2];
-                getHLTerm = sqlite3_column_int(statement, 8);
+                getHLTerm = sqlite3_column_int(statement, 9);
                 
-                const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 9);
+                const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 10);
                 getTempHL = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
-                getTempHLTerm = sqlite3_column_int(statement, 10);
+                getTempHLTerm = sqlite3_column_int(statement, 11);
+                
+//                NSLog(@"basicPlan:%@",planChoose);
                 
             } else {
-                NSLog(@"error access Trad_Details");
+                NSLog(@"error access getExistingBasic");
             }
             sqlite3_finalize(statement);
         }
@@ -1045,9 +1020,9 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt) VALUES (\"%@\", \"HLAIB\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@)", SINo,  termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")"];
+        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt) VALUES (\"%@\", \"%@\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@)", SINo, planChoose, termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")"];
 
-//        NSLog(@"%@",insertSQL);
+        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -1064,7 +1039,7 @@
                     [self saveSecondLA];
                 }
                 
-                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome andBasicPlan:planChoose];
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 zzz.SICompleted = YES;
                 
@@ -1243,7 +1218,7 @@
                 NSLog(@"BasicPlan update!");
                 [self getPlanCodePenta];
                 
-                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome andBasicPlan:planChoose];
             }
             else {
                 NSLog(@"BasicPlan update Failed!");
@@ -1298,7 +1273,7 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"HLAIB\" AND PremPayOpt=\"%d\"",MOP];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"%@\" AND PremPayOpt=\"%d\"",planChoose, MOP];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

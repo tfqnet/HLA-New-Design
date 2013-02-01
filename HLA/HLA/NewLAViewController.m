@@ -42,7 +42,7 @@
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
 @synthesize termCover,planCode,arrExistRiderCode;
 @synthesize prospectPopover = _prospectPopover;
-@synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile;
+@synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile,planChoose;
 @synthesize delegate = _delegate;
 @synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker;
 @synthesize LADate = _LADate;
@@ -296,9 +296,28 @@ id temp;
     NSString *sumAss = [formatter stringFromNumber:[NSNumber numberWithDouble:getSumAssured]];
     sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
     
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET PolicyTerm=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",termCover,  @"datetime(\"now\", \"+8 hour\")", getSINo];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"termCover update!");
+            }
+            else {
+                NSLog(@"termCover update Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
     [self getPlanCodePenta];
     
-    [_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andBasicTempHL:getTempHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome];
+    [_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL andBasicTempHL:getTempHL andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome andBasicPlan:planChoose];
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.SICompleted = YES;
 }
@@ -1140,26 +1159,27 @@ id temp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT SINo, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",getSINo];
+                @"SELECT SINo, PlanCode, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",getSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 basicSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-                getPolicyTerm = sqlite3_column_int(statement, 1);
-                getSumAssured = sqlite3_column_double(statement, 2);
-                MOP = sqlite3_column_int(statement, 3);
-                cashDividend = [[NSString alloc ] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
-                yearlyIncome = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
-                advanceYearlyIncome = sqlite3_column_int(statement, 6);
+                planChoose = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                getPolicyTerm = sqlite3_column_int(statement, 2);
+                getSumAssured = sqlite3_column_double(statement, 3);
+                MOP = sqlite3_column_int(statement, 4);
+                cashDividend = [[NSString alloc ] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
+                yearlyIncome = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
+                advanceYearlyIncome = sqlite3_column_int(statement, 7);
                 
-                const char *getHL2 = (const char*)sqlite3_column_text(statement, 7);
+                const char *getHL2 = (const char*)sqlite3_column_text(statement, 8);
                 getHL = getHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getHL2];
-                getHLTerm = sqlite3_column_int(statement, 8);
+                getHLTerm = sqlite3_column_int(statement, 9);
                 
-                const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 9);
+                const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 10);
                 getTempHL = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
-                getTempHLTerm = sqlite3_column_int(statement, 10);
+                getTempHLTerm = sqlite3_column_int(statement, 11);
                 
             } else {
                 NSLog(@"error access Trad_Details");
@@ -1563,7 +1583,8 @@ id temp;
     [self setGenderPP:nil];
     [self setDOBPP:nil];
     [self setOccpCodePP:nil];
-    [self setArrExistRiderCode:nil];    
+    [self setArrExistRiderCode:nil];
+    [self setPlanChoose:nil];
     [super viewDidUnload];
 }
 

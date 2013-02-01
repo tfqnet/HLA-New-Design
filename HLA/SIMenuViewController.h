@@ -84,6 +84,7 @@
 @property (nonatomic, retain) NSString *getbasicHL;
 @property (nonatomic, retain) NSString *getbasicTempHL;
 @property (nonatomic, retain) NSString *getPlanCode;
+@property (nonatomic, retain) NSString *getBasicPlan;
 @property (nonatomic ,assign ,readwrite) int getAdvance;
 
 //----

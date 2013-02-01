@@ -79,7 +79,7 @@
 @synthesize planCondition,deducCondition,incomeRiderCode,incomeRiderTerm, LRidHLTerm, LRidHLPTerm, LRidHL100Term,LOccpCode;
 @synthesize occLoadRider,LTypeAge,LTypeDeduct,LTypeOccpCode,LTypePlanOpt,LTypeRiderCode,LTypeRidHL100,LTypeRidHL100Term,LTypeRidHL1K,LTypeRidHLP,LTypeRidHLPTerm,LTypeRidHLTerm,LTypeSex,LTypeSmoker,LTypeSumAssured,LTypeTerm,LTypeUnits;
 @synthesize occLoadType,classField,payorRidCode,getSINo,getPlanCode,getAge,getTerm,getBasicSA,getMOP,requestAdvance,getAdvance;
-@synthesize requestOccpClass,getOccpClass;
+@synthesize requestOccpClass,getOccpClass,requestPlanChoose,getPlanChoose;
 @synthesize delegate = _delegate;
 @synthesize requestSex,getSex,requestOccpCode,getOccpCode,requestBasicHL,getBasicHL,requestBasicTempHL,getBasicTempHL;
 
@@ -101,6 +101,7 @@
     
     getSINo = [self.requestSINo description];
     getPlanCode = [self.requestPlanCode description];
+    getPlanChoose = [self.requestPlanChoose description];
     getAge = self.requestAge;
     getSex = [self.requestSex description];
     getTerm = self.requestCoverTerm;
@@ -111,7 +112,7 @@
     getAdvance = self.requestAdvance;
     getOccpClass = self.requestOccpClass;
     getOccpCode = [self.requestOccpCode description];
-    NSLog(@"Rider-Sum:%.2f,Age:%d,covered:%d,SINo:%@, planCode:%@, MOP:%d, advance:%d, occpClass:%d",getBasicSA,getAge,getTerm,getSINo,getPlanCode,getMOP,getAdvance,getOccpClass);
+    NSLog(@"Rider-Sum:%.2f,Age:%d,covered:%d,SINo:%@, planCode:%@, planChoose:%@, MOP:%d, advance:%d, occpClass:%d", getBasicSA, getAge, getTerm, getSINo, getPlanCode, getPlanChoose, getMOP, getAdvance, getOccpClass);
     
     deducBtn.hidden = YES;
     deleteBtn.hidden = TRUE;
@@ -1961,6 +1962,7 @@
     self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
     _RiderList.delegate = self;
     _RiderList.requestPtype = self.pTypeCode;
+    _RiderList.requestPlan = getPlanChoose;
     _RiderList.requestSeq = self.PTypeSeq;
     _RiderList.requestOccpClass = getOccpClass;
     _RiderList.requestAge = self.pTypeAge;
@@ -2067,41 +2069,6 @@
     }
      
 }
-
-/*
-- (IBAction)goBack:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if (dataInsert.count != 0) {
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            BasicPlanHandler *ss = [dataInsert objectAtIndex:i];
-            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            main.modalPresentationStyle = UIModalPresentationFullScreen;
-            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainLaH = riderH;
-            main.mainBH = ss;
-            main.IndexTab = 3;
-            main.showQuotation = @"NO";
-            [self presentViewController:main animated:YES completion:nil];
-        }
-    }
-    else {
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.mainLaH = riderH;
-        main.mainBH = riderBH;
-        main.IndexTab = 3;
-        main.showQuotation = @"NO";
-        [self presentModalViewController:main animated:YES];
-    }
-}*/
 
 - (IBAction)editPressed:(id)sender
 {
@@ -4024,7 +3991,7 @@
                 occLoad =  sqlite3_column_int(statement, 0);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getOccLoad");
             }
             sqlite3_finalize(statement);
         }
@@ -4047,7 +4014,7 @@
                 occLoadRider =  sqlite3_column_int(statement, 0);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getOccLoadRider");
             }
             sqlite3_finalize(statement);
         }
@@ -4073,7 +4040,7 @@
                 NSLog(@"class:%d , cpa:%d, load:%d",occClass,occCPA,occLoadType);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getCPAClassType");
             }
             sqlite3_finalize(statement);
         }
@@ -4096,7 +4063,7 @@
                 NSLog(@"maxStored:%d",storedMaxTerm);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getMaxRiderTerm");
             }
             sqlite3_finalize(statement);
         }
@@ -4145,7 +4112,7 @@
                 LSDRate =  sqlite3_column_int(statement, 0);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getLSDRate");
             }
             sqlite3_finalize(statement);
         }
@@ -4369,7 +4336,7 @@
                 OccpCat = [OccpCat stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 NSLog(@"occpCat:\"%@\"",OccpCat);
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getOccpCatCode");
             }
             sqlite3_finalize(statement);
         }
@@ -4391,7 +4358,7 @@
                 CombNo =  sqlite3_column_int(statement, 0);
 //                NSLog(@"CombNo:%d",CombNo);
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getCombNo");
             }
             sqlite3_finalize(statement);
         }
@@ -4413,7 +4380,7 @@
                 CombNo =  sqlite3_column_int(statement, 0);
 //                NSLog(@"listCombNo:%d",CombNo);
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getListCombNo");
             }
             sqlite3_finalize(statement);
         }
@@ -4436,7 +4403,7 @@
 //                NSLog(@"Benefit:%d",RBBenefit);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getRBBenefit");
             }
             sqlite3_finalize(statement);
         }
@@ -4459,7 +4426,7 @@
 //                NSLog(@"Benefit:%d",RBBenefit);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getListRBBenefit");
             }
             sqlite3_finalize(statement);
         }
@@ -4483,7 +4450,7 @@
                 NSLog(@"Limit:%d, group:%d",RBLimit,RBGroup);
                 
             } else {
-                NSLog(@"error access Trad_LSD_HLAIB");
+                NSLog(@"error access getRBLimit");
             }
             sqlite3_finalize(statement);
         }

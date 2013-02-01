@@ -20,8 +20,8 @@
     self = [super init];
     if (self != nil) {
         
-        ListOfPlan = [[NSMutableArray alloc] initWithObjects:@"HLA Income Builder", nil ];
-        ListOfCode = [[NSMutableArray alloc] initWithObjects:@"HLAIB", nil ];
+        ListOfPlan = [[NSMutableArray alloc] initWithObjects:@"HLA Income Builder", @"HLA Cash Promise", nil ];
+        ListOfCode = [[NSMutableArray alloc] initWithObjects:@"HLAIB", @"HLACP", nil ];
     
     }
     return self;
