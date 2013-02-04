@@ -4103,7 +4103,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT LSD FROM Trad_Sys_LSD_HLAIB WHERE PremPayOpt=\"%d\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",getMOP,sumAss,sumAss];
+                              @"SELECT Rate FROM Trad_Sys_Basic_LSD WHERE PlanCode=\"%@\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",getPlanCode,sumAss,sumAss];
 //        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -4179,6 +4179,30 @@
     {
         NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND Sex=\"%@\"",aaplan,aaterm,aaterm,sex];
         
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateSex:(NSString *)aaplan
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromMortality=0 AND Sex=\"%@\" AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,sex,age,age];
+        
+        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
