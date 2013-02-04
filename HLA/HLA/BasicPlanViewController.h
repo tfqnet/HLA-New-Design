@@ -39,7 +39,6 @@
 @property (nonatomic,strong) PayorHandler *basicPH;
 @property (nonatomic,strong) SecondLAHandler *basicLa2ndH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
-
 //--request from previous
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestOccpCode;
@@ -86,16 +85,32 @@
 @property (retain, nonatomic) IBOutlet UILabel *maxSALabel;
 @property (retain, nonatomic) IBOutlet UIButton *btnHealthLoading;
 @property (retain, nonatomic) IBOutlet UIView *healthLoadingView;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *MOPSegment;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *incomeSegment;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *advanceIncomeSegment;
-@property (retain, nonatomic) IBOutlet UISegmentedControl *cashDividendSegment;
 @property (retain, nonatomic) IBOutlet UITextField *HLField;
 @property (retain, nonatomic) IBOutlet UITextField *HLTermField;
 @property (retain, nonatomic) IBOutlet UITextField *tempHLField;
 @property (retain, nonatomic) IBOutlet UITextField *tempHLTermField;
 @property (strong, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
+@property (strong, nonatomic) IBOutlet UILabel *labelMOP;
+@property (strong, nonatomic) IBOutlet UILabel *labelYearlyIncome;
+@property (strong, nonatomic) IBOutlet UILabel *labelCashDiv;
+@property (strong, nonatomic) IBOutlet UILabel *labelAdvance;
+@property (retain, nonatomic) IBOutlet UISegmentedControl *MOPSegment;
+@property (retain, nonatomic) IBOutlet UISegmentedControl *incomeSegment;
+@property (retain, nonatomic) IBOutlet UISegmentedControl *cashDividendSegment;
+@property (retain, nonatomic) IBOutlet UISegmentedControl *advanceIncomeSegment;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *incomeSgmntCP;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *cashDivSgmntCP;
+
+- (IBAction)btnPlanPressed:(id)sender;
+- (IBAction)btnShowHealthLoadingPressed:(id)sender;
+- (IBAction)doSavePlan:(id)sender;
+- (IBAction)MOPSegmentPressed:(id)sender;
+- (IBAction)incomeSegmentPressed:(id)sender;
+- (IBAction)advanceIncomeSegmentPressed:(id)sender;
+- (IBAction)cashDividendSegmentPressed:(id)sender;
+- (IBAction)incomeSgmntCPPressed:(id)sender;
+- (IBAction)cashDivSgmntCPPressed:(id)sender;
 
 //for SINo
 @property (nonatomic, assign,readwrite) int SILastNo;
@@ -117,12 +132,19 @@
 @property(nonatomic , retain) NSString *DOBPP;
 @property(nonatomic , retain) NSString *GenderPP;
 @property(nonatomic , retain) NSString *OccpCodePP;
-
 //use to calculate
 @property (nonatomic, assign,readwrite) int MOP;
+@property (nonatomic, assign,readwrite) int MOPHLAIB;
+@property (nonatomic, assign,readwrite) int MOPHLACP;
 @property (nonatomic, copy) NSString *yearlyIncome;
+@property (nonatomic, copy) NSString *yearlyIncomeHLAIB;
+@property (nonatomic, copy) NSString *yearlyIncomeHLACP;
 @property (nonatomic, copy) NSString *cashDividend;
+@property (nonatomic, copy) NSString *cashDividendHLAIB;
+@property (nonatomic, copy) NSString *cashDividendHLACP;
 @property (nonatomic, assign,readwrite) int advanceYearlyIncome;
+@property (nonatomic, assign,readwrite) int advanceYearlyIncomeHLAIB;
+@property (nonatomic, assign,readwrite) int advanceYearlyIncomeHLACP;
 @property (nonatomic, assign,readwrite) int basicRate;      //mark
 @property (nonatomic,strong) NSString *planCode;
 //to display
@@ -145,14 +167,6 @@
 @property (nonatomic, assign,readwrite) double _maxRiderSA;
 @property (nonatomic, assign,readwrite) double maxRiderSA;
 @property (nonatomic, assign,readwrite) int GYI;
-
-- (IBAction)btnPlanPressed:(id)sender;
-- (IBAction)btnShowHealthLoadingPressed:(id)sender;
-- (IBAction)doSavePlan:(id)sender;
-- (IBAction)MOPSegmentPressed:(id)sender;
-- (IBAction)incomeSegmentPressed:(id)sender;
-- (IBAction)advanceIncomeSegmentPressed:(id)sender;
-- (IBAction)cashDividendSegmentPressed:(id)sender;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

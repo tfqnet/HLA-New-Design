@@ -30,14 +30,14 @@
 @synthesize btnHealthLoading;
 @synthesize healthLoadingView;
 @synthesize MOPSegment;
-@synthesize incomeSegment;
+@synthesize incomeSegment,incomeSgmntCP,cashDivSgmntCP;
 @synthesize advanceIncomeSegment;
 @synthesize cashDividendSegment;
 @synthesize HLField;
 @synthesize HLTermField;
 @synthesize tempHLField;
 @synthesize tempHLTermField;
-@synthesize myScrollView;
+@synthesize myScrollView,labelAdvance,labelCashDiv,labelMOP,labelYearlyIncome;
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
@@ -51,7 +51,8 @@
 @synthesize requestAge2ndLA,requestDOB2ndLA,requestIndex2ndLA,requestOccp2ndLA,requestSex2ndLA,requestSmoker2ndLA;
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 @synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
-@synthesize requestOccpClass,OccpClass;
+@synthesize requestOccpClass,OccpClass,MOPHLAIB,MOPHLACP,yearlyIncomeHLAIB,yearlyIncomeHLACP,cashDividendHLAIB,cashDividendHLACP;
+@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP;
 
 #pragma mark - Cycle View
 
@@ -94,7 +95,6 @@
     planChoose = [[NSString alloc] initWithFormat:@"%@",planList.selectedCode];
     [self.btnPlan setTitle:planList.selectedDesc forState:UIControlStateNormal];
     
-    //for HLAIB
     if (ageClient > 65) {
         advanceIncomeSegment.enabled = NO;
     }
@@ -105,10 +105,13 @@
         [[advanceIncomeSegment.subviews objectAtIndex:0] setAlpha:0.5];
     }
     
-    healthLoadingView.alpha = 0;
-    showHL = NO;
     useExist = NO;
     termField.enabled = NO;
+    incomeSgmntCP.hidden = YES;
+    cashDivSgmntCP.hidden = YES;
+    
+    healthLoadingView.alpha = 0;
+    showHL = NO;
     [self getTermRule];
     
     if (self.requestSINo) {
@@ -116,6 +119,7 @@
         if (getSINo.length != 0) {
             NSLog(@"view selected field");
             [self getExistingBasic];
+            [self tooglePlan];
             [self toogleExistingField];
         } else {
             NSLog(@"create new");
@@ -207,7 +211,6 @@
     return YES;
 }
 
-
 #pragma mark - Action
 
 - (IBAction)btnPlanPressed:(id)sender
@@ -226,6 +229,120 @@
 	}
 }
 
+- (IBAction)MOPSegmentPressed:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if ([MOPSegment selectedSegmentIndex]==0) {
+        MOPHLAIB = 6;
+    }
+    else if (MOPSegment.selectedSegmentIndex == 1){
+        MOPHLAIB = 9;
+    }
+    else if (MOPSegment.selectedSegmentIndex == 2) {
+        MOPHLAIB = 12;
+    }
+    NSLog(@"MOP:%d",MOPHLAIB);
+}
+
+- (IBAction)incomeSegmentPressed:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (incomeSegment.selectedSegmentIndex == 0) {
+        yearlyIncomeHLAIB = @"ACC";
+    }
+    else if (incomeSegment.selectedSegmentIndex == 1) {
+        yearlyIncomeHLAIB = @"POF";
+    }
+    NSLog(@"yearlyIncome:%@",yearlyIncomeHLAIB);
+}
+
+- (IBAction)cashDividendSegmentPressed:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (cashDividendSegment.selectedSegmentIndex == 0) {
+        cashDividendHLAIB = @"ACC";
+    }
+    else if (cashDividendSegment.selectedSegmentIndex == 1) {
+        cashDividendHLAIB = @"POF";
+    }
+    NSLog(@"cashDiv:%@",cashDividendHLAIB);
+}
+
+- (IBAction)advanceIncomeSegmentPressed:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (advanceIncomeSegment.selectedSegmentIndex == 0) {
+        advanceYearlyIncomeHLAIB = 60;
+    }
+    else if (advanceIncomeSegment.selectedSegmentIndex == 1) {
+        advanceYearlyIncomeHLAIB = 75;
+    }
+    else if (advanceIncomeSegment.selectedSegmentIndex == 2) {
+        advanceYearlyIncomeHLAIB = 0;
+    }
+    NSLog(@"advance:%d",advanceYearlyIncomeHLAIB);
+}
+
+- (IBAction)incomeSgmntCPPressed:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (incomeSgmntCP.selectedSegmentIndex == 0) {
+        yearlyIncomeHLACP = @"ACC";
+    }
+    else if (incomeSgmntCP.selectedSegmentIndex == 1) {
+        yearlyIncomeHLACP = @"POF";
+    }
+    NSLog(@"yearlyIncomeCP:%@",yearlyIncomeHLACP);
+}
+
+- (IBAction)cashDivSgmntCPPressed:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (cashDivSgmntCP.selectedSegmentIndex == 0) {
+        cashDividendHLACP = @"ACC";
+    }
+    else if (cashDivSgmntCP.selectedSegmentIndex == 1) {
+        cashDividendHLACP = @"POF";
+    }
+    NSLog(@"cashDivCP:%@",cashDividendHLACP);
+}
+
 - (IBAction)btnShowHealthLoadingPressed:(id)sender
 {
     if (showHL) {
@@ -242,79 +359,6 @@
             healthLoadingView.alpha = 1;
         }];
         showHL = YES;
-    }
-}
-
-- (IBAction)MOPSegmentPressed:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if ([MOPSegment selectedSegmentIndex]==0) {
-        MOP = 6;
-    }
-    else if (MOPSegment.selectedSegmentIndex == 1){
-        MOP = 9;
-    }
-    else if (MOPSegment.selectedSegmentIndex == 2) {
-        MOP = 12;
-    }
-}
-
-- (IBAction)incomeSegmentPressed:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if (incomeSegment.selectedSegmentIndex == 0) {
-        yearlyIncome = @"ACC";
-    }
-    else if (incomeSegment.selectedSegmentIndex == 1) {
-        yearlyIncome = @"POF";
-    }
-}
-
-- (IBAction)advanceIncomeSegmentPressed:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if (advanceIncomeSegment.selectedSegmentIndex == 0) {
-        advanceYearlyIncome = 60;
-    }
-    else if (advanceIncomeSegment.selectedSegmentIndex == 1) {
-        advanceYearlyIncome = 75;
-    }
-    else if (advanceIncomeSegment.selectedSegmentIndex == 2) {
-        advanceYearlyIncome = 0;
-    }
-}
-
-- (IBAction)cashDividendSegmentPressed:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if (cashDividendSegment.selectedSegmentIndex == 0) {
-        cashDividend = @"ACC";
-    } else if (cashDividendSegment.selectedSegmentIndex == 1) {
-        cashDividend = @"POF";
     }
 }
 
@@ -346,6 +390,20 @@
     if (rangeofDotTempHL.location != NSNotFound) {
         substringTempHL = [tempHLField.text substringFromIndex:rangeofDotTempHL.location ];
     }
+    
+    if ([planChoose isEqualToString:@"HLAIB"]) {
+        MOP = MOPHLAIB;
+        yearlyIncome = yearlyIncomeHLAIB;
+        cashDividend = cashDividendHLAIB;
+        advanceYearlyIncome = advanceYearlyIncomeHLAIB;
+    }
+    else {
+        MOP = MOPHLACP;
+        yearlyIncome = yearlyIncomeHLACP;
+        cashDividend = cashDividendHLACP;
+        advanceYearlyIncome = advanceYearlyIncomeHLACP;
+    }
+    NSLog(@"MOP:%d, yearlyIncome:%@, cashDividend:%@, advanceYearlyIncome:%d",MOP,yearlyIncome,cashDividend,advanceYearlyIncome);
     
     if (OccpCode.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -529,7 +587,6 @@
     }
 }
 
-
 #pragma mark - Toogle view
 
 -(void)toogleExistingField
@@ -541,90 +598,119 @@
     sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
     
     yearlyIncomeField.text = [[NSString alloc] initWithFormat:@"%@",sumAss];
-    if (MOP == 6) {
-        MOPSegment.selectedSegmentIndex = 0;
-    } else if (MOP == 9) {
-        MOPSegment.selectedSegmentIndex = 1;
-    } else if (MOP == 12) {
-        MOPSegment.selectedSegmentIndex = 2;
-    }
     
-    if ([yearlyIncome isEqualToString:@"ACC"]) {
-        incomeSegment.selectedSegmentIndex = 0;
-    } else if ([yearlyIncome isEqualToString:@"POF"]) {
-        incomeSegment.selectedSegmentIndex = 1;
-    }
-    
-    if ([cashDividend isEqualToString:@"ACC"]) {
-        cashDividendSegment.selectedSegmentIndex = 0;
-    } else if ([cashDividend isEqualToString:@"POF"]) {
-        cashDividendSegment.selectedSegmentIndex = 1;
-    }
-    
-    //--handle advance segment
-    if (ageClient > 65) {
-        if (advanceYearlyIncome != 0) {
-            
-            advanceYearlyIncome = 0;
-            advanceIncomeSegment.selectedSegmentIndex = 2;
-            sqlite3_stmt *statement;
-            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-            {
-                NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET AdvanceYearlyIncome=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",advanceYearlyIncome,  @"datetime(\"now\", \"+8 hour\")", SINo];
+    if ([planChoose isEqualToString:@"HLAIB"]) {
+        
+        MOPHLAIB = MOP;
+        if (MOPHLAIB == 6) {
+            MOPSegment.selectedSegmentIndex = 0;
+        }
+        else if (MOPHLAIB == 9) {
+            MOPSegment.selectedSegmentIndex = 1;
+        }
+        else if (MOPHLAIB == 12) {
+            MOPSegment.selectedSegmentIndex = 2;
+        }
+        
+        yearlyIncomeHLAIB = yearlyIncome;
+        if ([yearlyIncomeHLAIB isEqualToString:@"ACC"]) {
+            incomeSegment.selectedSegmentIndex = 0;
+        }
+        else if ([yearlyIncomeHLAIB isEqualToString:@"POF"]) {
+            incomeSegment.selectedSegmentIndex = 1;
+        }
+        
+        cashDividendHLAIB = cashDividend;
+        if ([cashDividendHLAIB isEqualToString:@"ACC"]) {
+            cashDividendSegment.selectedSegmentIndex = 0;
+        }
+        else if ([cashDividendHLAIB isEqualToString:@"POF"]) {
+            cashDividendSegment.selectedSegmentIndex = 1;
+        }
+        
+        //--handle advance segment
+        if (ageClient > 65) {
+            if (advanceYearlyIncome != 0) {
                 
-                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                advanceYearlyIncome = 0;
+                advanceIncomeSegment.selectedSegmentIndex = 2;
+                sqlite3_stmt *statement;
+                if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
                 {
-                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET AdvanceYearlyIncome=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",advanceYearlyIncome,  @"datetime(\"now\", \"+8 hour\")", SINo];
+                    
+                    if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
                     {
-                        NSLog(@"BasicPlan update!");
+                        if (sqlite3_step(statement) == SQLITE_DONE)
+                        {
+                            NSLog(@"BasicPlan update!");
+                        }
+                        else {
+                            NSLog(@"BasicPlan update Failed!");
+                        }
+                        sqlite3_finalize(statement);
                     }
-                    else {
-                        NSLog(@"BasicPlan update Failed!");
-                    }
-                    sqlite3_finalize(statement);
+                    sqlite3_close(contactDB);
                 }
-                sqlite3_close(contactDB);
             }
         }
-    }
-    else if (ageClient > 50 && ageClient <=65)
-    {
-        if (advanceYearlyIncome == 60) {
-            advanceYearlyIncome = 0;
-            advanceIncomeSegment.selectedSegmentIndex = 2;
-            
-            sqlite3_stmt *statement;
-            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-            {
-                NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET AdvanceYearlyIncome=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",advanceYearlyIncome,  @"datetime(\"now\", \"+8 hour\")", SINo];
+        else if (ageClient > 50 && ageClient <=65)
+        {
+            if (advanceYearlyIncome == 60) {
+                advanceYearlyIncome = 0;
+                advanceIncomeSegment.selectedSegmentIndex = 2;
                 
-                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                sqlite3_stmt *statement;
+                if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
                 {
-                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET AdvanceYearlyIncome=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",advanceYearlyIncome,  @"datetime(\"now\", \"+8 hour\")", SINo];
+                    
+                    if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
                     {
-                        NSLog(@"BasicPlan update!");
+                        if (sqlite3_step(statement) == SQLITE_DONE)
+                        {
+                            NSLog(@"BasicPlan update!");
+                        }
+                        else {
+                            NSLog(@"BasicPlan update Failed!");
+                        }
+                        sqlite3_finalize(statement);
                     }
-                    else {
-                        NSLog(@"BasicPlan update Failed!");
-                    }
-                    sqlite3_finalize(statement);
+                    sqlite3_close(contactDB);
                 }
-                sqlite3_close(contactDB);
             }
         }
+        else {
+            if (advanceYearlyIncome == 60) {
+                advanceIncomeSegment.selectedSegmentIndex = 0;
+            }
+            else if (advanceYearlyIncome == 75) {
+                advanceIncomeSegment.selectedSegmentIndex = 1;
+            }
+            else if (advanceYearlyIncome == 0) {
+                advanceIncomeSegment.selectedSegmentIndex = 2;
+            }
+        }
+        //--end--
     }
     else {
-        if (advanceYearlyIncome == 60) {
-            advanceIncomeSegment.selectedSegmentIndex = 0;
+        
+        yearlyIncomeHLACP = yearlyIncome;
+        if ([yearlyIncomeHLACP isEqualToString:@"ACC"]) {
+            incomeSgmntCP.selectedSegmentIndex = 0;
         }
-        else if (advanceYearlyIncome == 75) {
-            advanceIncomeSegment.selectedSegmentIndex = 1;
+        else if ([yearlyIncomeHLACP isEqualToString:@"POF"]) {
+            incomeSgmntCP.selectedSegmentIndex = 1;
         }
-        else if (advanceYearlyIncome == 0) {
-            advanceIncomeSegment.selectedSegmentIndex = 2;
+        
+        cashDividendHLACP = cashDividend;
+        if ([cashDividendHLACP isEqualToString:@"ACC"]) {
+            cashDivSgmntCP.selectedSegmentIndex = 0;
+        }
+        else if ([cashDividendHLACP isEqualToString:@"POF"]) {
+            cashDivSgmntCP.selectedSegmentIndex = 1;
         }
     }
-    //--end--
     
     if (getHL.length != 0) {
         //HLField.text = getHL;
@@ -676,6 +762,57 @@
     [self getPlanCodePenta];
     
     [_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:yearlyIncomeField.text andBasicHL:HLField.text andBasicTempHL:tempHLField.text andMOP:MOP andPlanCode:planCode andAdvance:advanceYearlyIncome andBasicPlan:planChoose];
+}
+
+-(void)tooglePlan
+{
+    NSLog(@"tooglePlan");
+    [self getTermRule];
+    
+    if ([planChoose isEqualToString:@"HLAIB"]) {
+        
+        incomeSgmntCP.hidden = YES;
+        cashDivSgmntCP.hidden = YES;
+        labelMOP.text = @"Premium Payment Option :";
+        labelYearlyIncome.text = @"Yearly Income :";
+        labelCashDiv.text = @"Cash Dividend :";
+        labelAdvance.text = @"Advance Yearly Income (Age) :";
+        MOPSegment.hidden = NO;
+        incomeSegment.hidden = NO;
+        cashDividendSegment.hidden = NO;
+        advanceIncomeSegment.hidden = NO;
+        [MOPSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        [incomeSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        [cashDividendSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        
+        if (ageClient > 65) {
+            advanceIncomeSegment.enabled = NO;
+        }
+        
+        if (ageClient > 50 && ageClient <=65)
+        {
+            [advanceIncomeSegment setEnabled:NO forSegmentAtIndex:0];
+            [[advanceIncomeSegment.subviews objectAtIndex:0] setAlpha:0.5];
+        }
+    }
+    else {
+        
+        incomeSgmntCP.hidden = NO;
+        cashDivSgmntCP.hidden = NO;
+        labelMOP.text = @"Yearly Income :";
+        labelYearlyIncome.text = @"Cash Dividend :";
+        labelCashDiv.text = @"";
+        labelAdvance.text = @"";
+        MOPSegment.hidden = YES;
+        incomeSegment.hidden = YES;
+        cashDividendSegment.hidden = YES;
+        advanceIncomeSegment.hidden = YES;
+        [incomeSgmntCP setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        [cashDivSgmntCP setSelectedSegmentIndex:UISegmentedControlNoSegment];
+        
+        MOPHLACP = 6;
+        advanceYearlyIncomeHLACP = 0;
+    }
 }
 
 -(void)calculateSA
@@ -923,7 +1060,7 @@
                     [alert show];
                 }
             } else {
-                NSLog(@"error access Trad_Mtn");
+                NSLog(@"error access getTermRule");
             }
             sqlite3_finalize(statement);
         }
@@ -1210,7 +1347,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Details SET PolicyTerm=\"%@\", BasicSA=\"%@\", PremiumPaymentOption=\"%d\", CashDividend=\"%@\", YearlyIncome=\"%@\", AdvanceYearlyIncome=\"%d\", HL1KSA=\"%@\", HL1KSATerm=\"%d\", TempHL1KSA=\"%@\", TempHL1KSATerm=\"%d\", UpdatedAt=%@ WHERE SINo=\"%@\"",termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome,advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")", SINo];
-//        NSLog(@"%@",querySQL);
+        
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -1359,7 +1497,7 @@
                 NSLog(@"expiryAge(%@):%d,minTerm:%d,maxTerm:%d,minSA:%d,maxSA:%d",riderCode,expAge,minTerm,maxTerm,minSATerm,maxSATerm);
                 
             } else {
-                NSLog(@"error access Trad_Mtn");
+                NSLog(@"error access getRiderTermRule");
             }
             sqlite3_finalize(statement);
         }
@@ -1405,8 +1543,23 @@
 
 -(void)Planlisting:(PlanList *)inController didSelectCode:(NSString *)aaCode andDesc:(NSString *)aaDesc
 {
+    if (![aaCode isEqualToString:planChoose]) {
+        MOPHLAIB = 0;
+        MOPHLACP = 0;
+        yearlyIncomeHLAIB = nil;
+        yearlyIncomeHLACP = nil;
+        cashDividendHLAIB = nil;
+        cashDividendHLACP = nil;
+        advanceYearlyIncomeHLAIB = 0;
+        advanceYearlyIncomeHLACP = 0;
+    }
     planChoose = [[NSString alloc] initWithFormat:@"%@",aaCode];
     [self.btnPlan setTitle:aaDesc forState:UIControlStateNormal];
+    
+    [self tooglePlan];
+    if (getSumAssured != 0) {
+        [self toogleExistingField];
+    }
     
     [popoverController dismissPopoverAnimated:YES];
 }
@@ -1486,6 +1639,16 @@
     [self setLRiderCode:nil];
     [self setLSumAssured:nil];
     [self setRiderCode:nil];
+    [self setLabelMOP:nil];
+    [self setLabelYearlyIncome:nil];
+    [self setLabelCashDiv:nil];
+    [self setLabelAdvance:nil];
+    [self setIncomeSgmntCP:nil];
+    [self setCashDivSgmntCP:nil];
+    [self setLabelMOP:nil];
+    [self setLabelYearlyIncome:nil];
+    [self setLabelCashDiv:nil];
+    [self setLabelAdvance:nil];
     [super viewDidUnload];
 }
 
