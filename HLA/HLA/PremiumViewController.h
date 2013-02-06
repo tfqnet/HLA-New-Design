@@ -32,6 +32,7 @@
 @property (nonatomic,strong) id requestBasicHL;
 @property (nonatomic,strong) id requestBasicTempHL;
 @property (nonatomic,strong) id requestPlanCode;
+@property (nonatomic,strong) id requestBasicPlan;
 
 @property (nonatomic, assign,readwrite) int getAge;
 @property (nonatomic, assign,readwrite) int getOccpClass;
@@ -43,6 +44,7 @@
 @property (nonatomic,strong) NSString *getBasicHL;
 @property (nonatomic,strong) NSString *getBasicTempHL;
 @property (nonatomic,strong) NSString *getPlanCode;
+@property (nonatomic,strong) NSString *getBasicPlan;
 //--
 @property (nonatomic, assign,readwrite) int basicRate;
 @property (nonatomic, assign,readwrite) int age;
@@ -90,6 +92,26 @@
 @property (nonatomic, assign,readwrite) double basicPremMonth;
 
 //display in table prem
+@property (nonatomic,strong) NSString *BasicAnnually;
+@property (nonatomic,strong) NSString *BasicHalfYear;
+@property (nonatomic,strong) NSString *BasicQuarterly;
+@property (nonatomic,strong) NSString *BasicMonthly;
+@property (nonatomic,strong) NSString *OccpLoadA;
+@property (nonatomic,strong) NSString *OccpLoadH;
+@property (nonatomic,strong) NSString *OccpLoadQ;
+@property (nonatomic,strong) NSString *OccpLoadM;
+@property (nonatomic,strong) NSString *BasicHLAnnually;
+@property (nonatomic,strong) NSString *BasicHLHalfYear;
+@property (nonatomic,strong) NSString *BasicHLQuarterly;
+@property (nonatomic,strong) NSString *BasicHLMonthly;
+@property (nonatomic,strong) NSString *LSDAnnually;
+@property (nonatomic,strong) NSString *LSDHalfYear;
+@property (nonatomic,strong) NSString *LSDQuarterly;
+@property (nonatomic,strong) NSString *LSDMonthly;
+@property (nonatomic,strong) NSString *basicTotalA;
+@property (nonatomic,strong) NSString *basicTotalS;
+@property (nonatomic,strong) NSString *basicTotalQ;
+@property (nonatomic,strong) NSString *basicTotalM;
 @property (nonatomic,strong) NSMutableArray *annualRiderTot;
 @property (nonatomic,strong) NSMutableArray *quarterRiderTot;
 @property (nonatomic,strong) NSMutableArray *halfRiderTot;

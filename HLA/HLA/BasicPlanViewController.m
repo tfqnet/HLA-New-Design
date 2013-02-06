@@ -1049,8 +1049,14 @@
                 minSA = sqlite3_column_int(statement, 4);
                 maxSA = sqlite3_column_int(statement, 5);
                 
-                termCover = maxTermB - ageClient;
+                if ([planChoose isEqualToString:@"HLAIB"]) {
+                    termCover = maxTermB - ageClient;
+                }
+                else {
+                    termCover = maxTermB;
+                }
                 termField.text = [[NSString alloc] initWithFormat:@"%d",termCover];
+                
                 
                 if (ageClient < minAge) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Age Last Birthday must be greater than or equal to %d for this product.",minAge] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -1411,14 +1417,21 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"%@\" AND PremPayOpt=\"%d\"",planChoose, MOP];
+        NSString *querySQL = nil;
+        if ([planChoose isEqualToString:@"HLAIB"]) {
+            querySQL = [NSString stringWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"%@\" AND PremPayOpt=\"%d\"",planChoose, MOP];
+        }
+        else {
+            querySQL = [NSString stringWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE SIPlanCode=\"%@\"",planChoose];
+        }
+        
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 planCode =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
             } else {
-                NSLog(@"error access PentaPlanCode");
+                NSLog(@"error access getPlanCodePenta");
             }
             sqlite3_finalize(statement);
         }

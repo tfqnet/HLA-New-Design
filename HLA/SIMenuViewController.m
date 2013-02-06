@@ -487,7 +487,6 @@ id RiderCount;
         }
         else {
             
-
             [self RemovePDS];
             [ListOfSubMenu addObject:@"Quotation"];
             [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
@@ -506,6 +505,7 @@ id RiderCount;
             premView.requestBasicHL = getbasicHL;
             premView.requestBasicTempHL = getbasicTempHL;
             premView.requestPlanCode = getPlanCode;
+            premView.requestBasicPlan = getBasicPlan;
             [self addChildViewController:premView];
             [self.RightView addSubview:premView.view];
         
@@ -1609,7 +1609,7 @@ id RiderCount;
 
 -(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance andBasicPlan:(NSString *)aabasicPlan
 {
-    NSLog(@"::receive databasicSINo:%@, advance:%d",aaSINo,aaAdvance);
+    NSLog(@"::receive databasicSINo:%@, advance:%d, pentaCode:%@",aaSINo,aaAdvance,aaPlanCode);
     getSINo = aaSINo;
     getMOP = aaMOP;
     getTerm = aaCovered;
