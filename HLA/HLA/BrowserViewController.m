@@ -138,6 +138,7 @@ NSMutableArray *ItemPages;
 	CGRect screenRect = self.view.frame;
 	
 	double currentWebViewHeight = webViewHeight;
+
 	while (currentWebViewHeight > 0)
 	{
 		imageName ++;

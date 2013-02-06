@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="format-detection" content="telephone=no">
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script> 
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    //var cashPayment = 0;
+    var colType = 0;
+    var pageNum = '8';
+        
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+    }
+        
+    function ListDBValues() {
+            
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        //Details
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    
+		    $('#dateModified').html(row.UpdatedAt);
+		    $('#advYearlyIncome').html(row.PremiumPaymentOption);
+		    $('#guaranteedYearlyIncome').html(formatCurrency(row.BasicSA));
+		    
+                	if ($.trim(row.CashDividend) == 'ACC')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                	
+                		if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                	else if (row.CashDividend == 'POF')
+                	{
+                		$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+                	    if (parseInt(row.YearlyIncome) == 'POF')
+                		{
+                		}
+                		else
+                		{
+                			if (parseInt(row.AdvanceYearlyIncome) == 0){
+                			}
+                		}
+                	}
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+        
+        return;
+    }
+</script>
+</head>
+ 
+<body onload="onBodyLoad(), setPage()">
+ 
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+    <tr>
+    <td width="80%"><p>Basic Plan</p> <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/>
+	<span id="paymentDesc">{PaymentDescription}</span></td>
+    <td width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i><br/> <span id="laName">{LAName}</span></td>
+    </tr>
+</table>
+<!--<p>Basic PlanPelan Asas: HLA Income Builder &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Yearly Income Pay Out) (Cash Dividend Pay Out) (Pendapatan Tahunan Dibayar)(Dividen Tunai Dibayar)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Life Assured Hayat Diinsuranskan: Mat</p>
+-->
+
+
+<b>Description of Basic Plan Benefits</b><br/><br/>
+
+This is a 25-year participating endowment plan with Guaranteed Yearly Income (GYI). The Guaranteed Yearly Income is payable from end of 1st policy year until maturity.
+The premium payment term of this plan is limited to 6 years only.<br/><br/>
+
+<u><b>Death Benefit</b></u><br/>
+In the event of Death of the Life Assured, the Death benefit equivalent to the sum of the following shall be payable:<br/>
+(i)&nbsp;&nbsp;&nbsp;&nbsp;Guaranteed Death Benefit as shown in table below:<br/>
+    <tr>
+	<td>
+	    <table width="80%" style="border-collapse: collapse">
+		<tr>
+		    <td width="30%">Entry Age</td>
+		    <td width="70%">Guaranteed Death Benefit</td>
+		</tr>
+		<tr>
+		    <td>0 to 40</td>
+		    <td>100% of outstanding GYI + 100% of Guaranteed Maturity Benefit</td>
+		</tr>
+		<tr>
+		    <td>41 to 60</td>
+		    <td>Maximum of [(100% of outstanding GYI + 50% of Guaranteed Maturity Benefit), 100% of Guaranteed Maturity Benefit]</td>
+		</tr>
+	    </table>   
+	</td>
+    </tr>
+(ii)&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+(iii)&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend (if any) and<br/>
+(iv)&nbsp;&nbsp;&nbsp;Fund Value (if any), and<br/>
+(iv)&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any)<br/>
+<br/><br/>
+
+<u><b>Total and Permanent Disability Benefit</b></u><br/>
+In the event of TPD (natural causes) (prior to attaining age 65) of the Life Assured, the TPD benefit payable shall be 100% of the Total Premium Paid.
+In addition, all future premium due thereafter shall be waived. All other benefits shall remain intact after a TPD claim. <br/>
+
+<u><b>Guaranteed Yearly Income</b></u><br/>
+This plan provides Guaranteed Yearly Income of RM<<GYI Purchased>> starting from end of 1st year up to maturity.<br/>
+<br/>
+
+<u><b>Maturity Benefit</b></u><br/>
+The Policy will mature upon survival of the Life Assured at the end of the policy term. A Maturity Benefit equivalent to the sum of the following shall be payable:<br/>
+<br/>
+(i)&nbsp;&nbsp;&nbsp;&nbsp;Guaranteed Maturity Benefit as shown in table below:<br/>
+    <tr>
+	<td>
+	    <table width="80%" style="border-collapse: collapse">
+		<tr>
+		    <td width="30%">Entry Age</td>
+		    <td width="70%">Guaranteed Maturity Benefit</td>
+		</tr>
+		<tr>
+		    <td>0 to 50</td>
+		    <td>12.5 times of Guaranteed Yearly Income</td>
+		</tr>
+		<tr>
+		    <td>51 to 60</td>
+		    <td>11 times of Guaranteed Yearly Income</td>
+		</tr>
+	    </table>   
+	</td>
+    </tr>
+(ii)&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+(iii)&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend (if any)<br/>
+(iv)&nbsp;&nbsp;&nbsp;Fund Value (if any), and<br/>
+(iv)&nbsp;&nbsp;&nbsp;Special Terminal Dividend (if any)<br/>
+
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+    <tr>
+	<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+	    This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+	    information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+	    pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+	    <b><span id="rptVersion">{rptVersion}</span></b> <br/>
+	    Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+	    
+	</td>
+	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+	<td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+    </tr>
+</table>
+
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>

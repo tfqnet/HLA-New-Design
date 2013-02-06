@@ -7,6 +7,8 @@
 //
 
 #import "CashPromiseViewController.h"
+#import "DBController.h"
+#import "DataTable.h"
 
 @interface CashPromiseViewController ()
 
@@ -21,7 +23,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize strBasicAnnually, aStrOtherRiderAnnually, SummaryGuaranteedAddValue;
 @synthesize SummaryGuaranteedDBValueA, SummaryGuaranteedDBValueB,SummaryGuaranteedSurrenderValue, OccpClass;
 @synthesize SummaryGuaranteedTotalGYI, SummaryNonGuaranteedAccuCashDividendA,SummaryNonGuaranteedAccuCashDividendB;
-@synthesize SummaryGuaranteedAddEndValue, SummaryNonGuaranteedAccuYearlyIncomeA, SummaryNonGuaranteedAccuYearlyIncomeB;
+@synthesize SummaryNonGuaranteedAccuYearlyIncomeA, SummaryNonGuaranteedAccuYearlyIncomeB;
 @synthesize SummaryNonGuaranteedDBValueA, SummaryNonGuaranteedDBValueB, SummaryNonGuaranteedSurrenderValueA,SummaryNonGuaranteedSurrenderValueB;
 @synthesize BasicMaturityValueA, BasicMaturityValueB, BasicTotalPremiumPaid, BasicTotalYearlyIncome, TotalPremiumBasicANDIncomeRider;
 @synthesize EntireMaturityValueA,EntireMaturityValueB,EntireTotalPremiumPaid,EntireTotalYearlyIncome, OtherRiderDeductible;
@@ -63,7 +65,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     aStrBasicSA = [[NSMutableArray alloc] init ];
     
     SummaryGuaranteedTotalGYI = [[NSMutableArray alloc] init ];
-    SummaryGuaranteedAddEndValue = [[NSMutableArray alloc] init ];
     SummaryGuaranteedAddValue = [[NSMutableArray alloc] init ];
     SummaryGuaranteedDBValueA = [[NSMutableArray alloc] init ];
     SummaryGuaranteedDBValueB = [[NSMutableArray alloc] init ];
@@ -108,7 +109,477 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     [self InsertToSI_Temp_Trad_Overall];
     
     [self UpdateToSI_Temp_Trad_Details];
+
+    NSString *siNo = @"";
+    NSString *databaseName = @"hladb.sqlite";
+    NSString *databaseName1 = @"0000000000000001.db";
+    NSString *masterName = @"Databases.db";
     
+    self.db = [DBController sharedDatabaseController:databaseName];
+    
+    NSString *sqlStmt = [NSString stringWithFormat:@"SELECT SiNo FROM SI_Temp_Trad"];
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
+    
+    NSArray* row = [_dataTable.rows objectAtIndex:0];
+    siNo = [row objectAtIndex:0];
+    //NSLog(@"%@",siNo);
+    
+    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ORDER BY RiderCode ASC",siNo];
+    
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
+    
+    int pageNum = 3;
+    int riderCount = 0;
+    int riderCountStart = 19; //rider html page number
+    NSString *desc = @"Page";
+    int DBID;
+    //desc = [desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]];
+    //NSLog(@"%@", desc);
+    
+    sqlStmt = @"Delete from SI_Temp_Pages where PageNum NOT in ('1', '2', '3') ";
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    
+    for (row in _dataTable.rows) 
+    {
+            riderCount++;
+            if (riderCount % 3 == 1){
+                pageNum++;
+                riderCountStart++;
+                
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('%@',%d,'%@')",
+						   [desc stringByAppendingString:[NSString stringWithFormat:@"%d.html",riderCountStart]],pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+            }
+        
+    }
+    
+    //description of basic plan, 2 pages
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page30.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    /*
+	pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page31.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    */
+    //rider benefits
+    riderCount = 0; //reset rider count
+    int descRiderCountStart = 100; //start of rider description page
+    int riderInPageCount = 0; //number of rider in a page, maximum 3
+    NSString *riderInPage = @""; //rider in a page, write to db
+    //NSString *riderInPage1 = @"";
+    NSString *curRider; //current rider
+    NSString *prevRider; //previous rider
+    NSString *headerTitle = @"tblHeader;";
+    
+    
+    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ORDER BY RiderCode ASC ",siNo];
+    //NSLog(@"%@",sqlStmt);
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
+    
+    for (row in _dataTable.rows) 
+    {
+        riderCount++;
+        curRider = [row objectAtIndex:0];
+        
+        //NSLog(@"%@",curRider);
+        
+        if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"] ||
+			[curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"] ||
+			[curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
+			[curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"]){
+            riderInPageCount++;
+            prevRider = curRider;
+            
+            if(riderCount == 1){
+                riderInPage = [headerTitle stringByAppendingString:riderInPage];
+            }
+            
+            riderInPage = [riderInPage stringByAppendingString:curRider];
+            riderInPage = [riderInPage stringByAppendingString:@";"];
+            if (riderInPageCount == 3){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                //if(riderCount == 1)
+				//  riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            
+            if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            
+            if (riderInPageCount == 2 && riderCount == _dataTable.rows.count) {
+                pageNum++;
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+        }
+        else{
+            if (riderInPageCount == 2){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                if(riderCount == 1)
+                    riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] || [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
+                prevRider = [prevRider stringByAppendingString:@";"];
+                curRider = [prevRider stringByAppendingString:curRider];
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            //NSLog(@"%@",curRider);
+            pageNum++;
+            if(riderCount == 1)
+                curRider = [headerTitle stringByAppendingString:curRider];
+            descRiderCountStart++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",curRider,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            //NSLog(@"%@",sqlStmt);
+        }
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page40.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page41.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page42.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+	
+    // malay version here page201.html ---> page 220
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page50.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page51.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    riderCount = 0; //reset rider count
+    descRiderCountStart = 200; //start of rider description page
+    riderInPageCount = 0; //number of rider in a page, maximum 3
+    riderInPage = @""; //rider in a page, write to db
+    //NSString *riderInPage1 = @"";
+    curRider = @""; //current rider
+    prevRider = @""; //previous rider
+    headerTitle = @"tblHeader;";
+    
+    for (row in _dataTable.rows) //income rider
+    {
+        riderCount++;
+        curRider = [row objectAtIndex:0];
+        
+        //NSLog(@"%@",curRider);
+        
+        if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"] ||
+			[curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"] ||
+			[curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
+			[curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"]){
+            riderInPageCount++;
+            prevRider = curRider;
+            
+            if(riderCount == 1){
+                riderInPage = [headerTitle stringByAppendingString:riderInPage];
+            }
+            riderInPage = [riderInPage stringByAppendingString:curRider];
+            riderInPage = [riderInPage stringByAppendingString:@";"];
+            if (riderInPageCount == 3){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                //if(riderCount == 1)
+				//riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            /*
+			 if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
+			 NSLog(@"%@",riderInPage);
+			 }
+			 */
+            if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            
+            if (riderInPageCount == 2 && riderCount == _dataTable.rows.count) {
+                pageNum++;
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+        }
+        else{
+            if (riderInPageCount == 2){
+                //NSLog(@"%@",riderInPage);
+                pageNum++;
+                if(riderCount == 1)
+                    riderInPage = [headerTitle stringByAppendingString:riderInPage];
+                descRiderCountStart++;
+                sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+                DBID = [_db ExecuteINSERT:sqlStmt];
+                if (DBID <= 0){
+                    NSLog(@"Error inserting data into database.");
+                }
+                //NSLog(@"%@",sqlStmt);
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] || [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
+                prevRider = [prevRider stringByAppendingString:@";"];
+                curRider = [prevRider stringByAppendingString:curRider];
+                riderInPageCount = 0;
+                riderInPage = @"";
+            }
+            //NSLog(@"%@",curRider);
+            pageNum++;
+            if(riderCount == 1)
+                curRider = [headerTitle stringByAppendingString:curRider];
+            descRiderCountStart++;
+            sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",curRider,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+            DBID = [_db ExecuteINSERT:sqlStmt];
+            if (DBID <= 0){
+                NSLog(@"Error inserting data into database.");
+            }
+            //NSLog(@"%@",sqlStmt);
+        }
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page60.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page61.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page62.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+    
+    
+    //------- end ---------
+    
+    
+    NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+    NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    
+    NSString *WebSQLSubdir;
+    NSString *WebSQLPath;
+    NSString *WebSQLDb;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (IsAtLeastiOSVersion(@"6.0")){
+        
+        /*
+		 WebSQLSubdir = @"WebKit/LocalStorage";
+		 WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+		 WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+         */
+        NSString *viewerPlist = [library stringByAppendingPathComponent:@"viewer.plist"];
+        BOOL plistExist = [fileManager fileExistsAtPath:viewerPlist];
+        if (!plistExist){
+            NSLog(@"not exist!");
+            NSString *viewerPlistFromDoc = [documents stringByAppendingPathComponent:@"viewer.plist"];
+            [fileManager copyItemAtPath:viewerPlistFromDoc toPath:viewerPlist error:nil];
+            
+            databaseName = @"hladb.sqlite";//actual
+            databaseName1 = @"hladb.sqlite";//dummy
+            WebSQLSubdir = @"Caches";
+            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+            
+            
+            
+        }
+        else{
+            NSLog(@"exist!");
+            
+            databaseName = @"hladb.sqlite";//actual
+            databaseName1 = @"hladb.sqlite";//dummy
+            WebSQLSubdir = @"WebKit/LocalStorage";
+            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+            
+            
+        }
+        
+    }
+    else{
+        /*
+		 WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
+		 WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+		 WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+         */
+        databaseName = @"hladb.sqlite";//actual
+        databaseName1 = @"hladb.sqlite";//dummy
+        WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
+        WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+        WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+    }
+    
+    NSString *masterFile = [WebSQLPath stringByAppendingPathComponent:masterName];
+    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName1];
+    
+    [fileManager removeItemAtPath:databaseFile error:nil];
+    [fileManager removeItemAtPath:masterFile error:nil];
+    
+    //NSString *databasePathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
+    NSString *masterPathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:masterName];
+    
+    
+    NSString *databasePathFromDoc = [docsDir stringByAppendingPathComponent:databaseName];
+    //NSString *masterPathFromDoc = [docsDir stringByAppendingPathComponent:masterName];
+    
+    [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:NULL];
+    [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
+    [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
+	
+    fileManager = Nil;
+    masterFile = Nil;
+    databaseFile = Nil;
+    masterPathFromApp = Nil;
+    databasePathFromDoc = Nil;
+    library = Nil;
+    documents = Nil;
+    WebSQLSubdir = Nil;
+    WebSQLPath = Nil;
+    WebSQLDb = Nil;
+    _dataTable = Nil;
+    _db = Nil;
+    sqlStmt = Nil;
+    riderInPage = Nil;
+    headerTitle = Nil;
+    curRider = Nil;
+    prevRider = Nil;
+    dirPaths = Nil;
+    docsDir = Nil;
+    siNo = Nil;
+    databaseName = Nil;
+    databaseName1 = Nil;
+    masterName = Nil;
+    desc = Nil;
+    
+    SINo = Nil, RatesDatabasePath = Nil;
+    YearlyIncome = Nil;
+    CashDividend = Nil;
+    CustCode = Nil;
+    Name = Nil;
+    strBasicAnnually = Nil, strBasicSemiAnnually = Nil, strBasicQuarterly = Nil, strBasicMonthly = Nil;
+    strOriBasicAnnually = Nil, strOriBasicSemiAnnually = Nil, strOriBasicQuarterly = Nil, strOriBasicMonthly = Nil;
+    sex = Nil, OccpClass = Nil;
+    OccLoading = Nil, aStrOtherRiderAnnually = Nil, aStrOtherRiderMonthly = Nil;
+    aStrOtherRiderQuarterly =Nil, aStrOtherRiderSemiAnnually = nil;
+    OtherRiderCode = Nil, OtherRiderDeductible = Nil, OtherRiderDesc= Nil, OtherRiderPlanOption = Nil, OtherRiderSA = Nil;
+    OtherRiderTerm = Nil, SummaryGuaranteedAddValue = Nil, SummaryGuaranteedDBValueA = Nil;
+    SummaryGuaranteedDBValueB = Nil, SummaryGuaranteedSurrenderValue = Nil, SummaryGuaranteedTotalGYI = Nil;
+    SummaryNonGuaranteedAccuCashDividendA = Nil, SummaryNonGuaranteedAccuCashDividendB = Nil, SummaryNonGuaranteedAccuYearlyIncomeA = nil;
+    SummaryNonGuaranteedAccuYearlyIncomeA = Nil, SummaryNonGuaranteedAccuYearlyIncomeB = Nil, SummaryNonGuaranteedDBValueA = Nil;
+    SummaryNonGuaranteedDBValueB = Nil, SummaryNonGuaranteedSurrenderValueA = Nil, SummaryNonGuaranteedSurrenderValueB =Nil;
+    _db = Nil, _dataTable = Nil;
+    UpdateTradDetail = Nil, gWaiverAnnual = Nil, gWaiverSemiAnnual = Nil, gWaiverQuarterly = Nil, gWaiverMonthly = Nil;
+    aStrBasicSA = Nil, HealthLoadingTerm = Nil, TempHealthLoading = Nil, TempHealthLoadingTerm = Nil;
+    databasePath = Nil, contactDB = Nil;
+    
+	
 }
 
 - (void)didReceiveMemoryWarning
@@ -829,7 +1300,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSMutableArray *DBRatesEnd = [[NSMutableArray alloc] init ];
     NSMutableArray *DBValueEnd = [[NSMutableArray alloc] init ];
     NSMutableArray *aValue = [[NSMutableArray alloc] init ];
-    NSMutableArray *aValueEnd = [[NSMutableArray alloc] init ];
     NSMutableArray *AnnualPremium = [[NSMutableArray alloc] init ];
     NSMutableArray *arrayYearlyIncome = [[NSMutableArray alloc] init ];
     NSMutableArray *TotalAllPremium = [[NSMutableArray alloc] init ];
@@ -872,7 +1342,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //---------------- surrender value
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CSV where advOption = \"N\" "
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CSV where PlanCode = 'HLACP' AND  "
                         " AND age = \"%d\" ", Age];
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -882,7 +1352,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             sqlite3_finalize(statement);
         }
         
-        
+        /*
         //------------------------ DB start of the year
 
             QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_DB where advOption = \"N\" "
@@ -913,10 +1383,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             sqlite3_finalize(statement);
         }
+		 */
         //------------------------------------- cash dividend high
         
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where advOption = \"N\" AND fromAge = \"%d\" AND Type = \"H\" ", Age];
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where PlanCode = 'HLACP' AND fromAge = \"%d\" AND Type = \"H\" ", Age];
         
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -928,7 +1399,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //--------------------------------  cash dividend low
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where advOption = \"N\" "
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where PlanCode = 'HLACP' "
                         " AND fromAge = \"%d\" AND Type = \"L\" ",  Age];
         
         
@@ -941,7 +1412,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //--------------------------------  t Dividen payable on surrender high
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_TD where advOption = \"N\" "
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_TD where PlanCode = 'HLACP' "
                         " AND Age = \"%d\" AND Type = \"H\" ", Age];
         
         
@@ -954,7 +1425,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //--------------------------------  t Dividen payable on surrender low
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_TD where advOption = \"N\" "
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_TD where PlanCode = 'HLACP' "
                         " AND Age = \"%d\" AND Type = \"L\" ", Age];
         
         
@@ -967,7 +1438,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //--------------------------------  high
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_speTD where advOption = \"N\" "
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_speTD where PlanCode = 'HLACP' "
                         " AND Age = \"%d\" AND Type = \"H\" ", Age];
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -979,7 +1450,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //--------------------------------  low
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_speTD where advOption = \"N\" "
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_speTD where PlanCode = 'HLACP' "
                         " AND Age = \"%d\" AND Type = \"L\" ", Age];
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -991,7 +1462,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         sqlite3_close(contactDB);
     }
     
-    
+	double TotalAD;
     
     for (int i =1; i <= PolicyTerm; i++) {
         
@@ -1088,72 +1559,22 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         [SummaryGuaranteedDBValueB addObject:[DBValueEnd objectAtIndex:i-1]];
         
         //------------------------
-        int TPDThresholdBEGYr;
-        int TotalAD;
-        if (i+ Age - 1 <= 6) {
-            TPDThresholdBEGYr = 100000;
+
+
+        if (i+ Age <= 64) {
+            if (i == 1) {
+				TotalAD = [[aStrBasicSA objectAtIndex:0]doubleValue ];
+			}
+			else{
+				TotalAD = TotalAD + [[aStrBasicSA objectAtIndex:0]doubleValue ];
+			}
         }
-        else if (i + Age - 1 <= 14) {
-            TPDThresholdBEGYr = 500000;
-        }
-        else if (i + Age - 1 <= 64) {
-            TPDThresholdBEGYr = 3500000;
-        }
-        else if (i + Age - 1 > 64) {
-            TPDThresholdBEGYr = 0;
-        }
+		else{
+			TotalAD = 0.00;
+		}
         
-        if (i + Age <= 65 && [[DBValue objectAtIndex:i - 1] intValue] * 4 > TPDThresholdBEGYr ) {
-            TotalAD = TPDThresholdBEGYr  - [[DBValue objectAtIndex:i - 1] intValue];
-        }
-        
-        else if (i + Age <= 65 && [[DBValue objectAtIndex:i - 1] intValue] * 4 <= TPDThresholdBEGYr ) {
-            TotalAD = [[DBValue objectAtIndex:i - 1] intValue] * 3;
-        }
-        else if (i + Age > 65) {
-            TotalAD = 0;
-        }
-        
-        if (TotalAD < 0) {
-            TotalAD = 0;
-        }
-        [aValue addObject: [NSString stringWithFormat:@"%d", TotalAD] ];
+        [aValue addObject: [NSString stringWithFormat:@"%.3f", TotalAD] ];
         [SummaryGuaranteedAddValue addObject:[aValue objectAtIndex:i-1]];
-        //-----------------------------------
-        
-        //------------------------
-        int TPDThresholdEndYr;
-        int TotalADEnd;
-        if (i+ Age  <= 6) {
-            TPDThresholdEndYr = 100000;
-        }
-        else if (i + Age <= 14) {
-            TPDThresholdEndYr = 500000;
-        }
-        else if (i + Age <= 64) {
-            TPDThresholdEndYr = 3500000;
-        }
-        else if (i + Age  > 64) {
-            TPDThresholdEndYr = 0;
-        }
-        
-        if (i + Age <= 64 && [[DBValueEnd objectAtIndex:i - 1] intValue] * 4 > TPDThresholdEndYr ) {
-            TotalADEnd = TPDThresholdEndYr  - [[DBValueEnd objectAtIndex:i - 1] intValue];
-        }
-        
-        else if (i + Age <= 64 && [[DBValueEnd objectAtIndex:i - 1] intValue] * 4 <= TPDThresholdEndYr ) {
-            TotalADEnd = [[DBValueEnd objectAtIndex:i - 1] intValue] * 3;
-        }
-        else if (i + Age > 64) {
-            TotalADEnd = 0;
-        }
-        
-        if (TotalADEnd < 0) {
-            TotalADEnd = 0;
-        }
-        [aValueEnd addObject: [NSString stringWithFormat:@"%d", TotalADEnd] ];
-        [SummaryGuaranteedAddEndValue addObject:[aValueEnd objectAtIndex:i-1]];
-        
         //-----------------------------------
         
         //---------------- total premium paid ----------
@@ -1480,11 +1901,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 					QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Basic (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
 								"\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
 								"\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\",\"col22\") VALUES ( "
-								" \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\", "
+								" \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\", "
 								"\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%@\",\"%@\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\")",
 								SINo, a, a, inputAge, [AnnualPremium objectAtIndex:a -1],DBYearlyIncome, round([[SurrenderValue objectAtIndex:a-1] doubleValue ]),
 								[DBValue objectAtIndex:a-1], round([[DBValueEnd objectAtIndex:a-1] doubleValue ]),
-								[aValue objectAtIndex:a-1 ], [aValueEnd objectAtIndex:a-1],
+								[aValue objectAtIndex:a-1 ],
 								round([[TotalSurrenderValueA objectAtIndex:a-1 ] doubleValue ]), round([[TotalSurrenderValueB objectAtIndex:a-1] doubleValue ]),
 								round( [[TotalDBValueA objectAtIndex:a-1 ] doubleValue ]), round( [[TotalDBValueB objectAtIndex:a-1 ] doubleValue ]),
 								[TotalAllPremium objectAtIndex:a-1],
@@ -1521,7 +1942,6 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     DBRatesEnd = Nil;
     DBValueEnd = Nil;
     aValue = Nil;
-    aValueEnd = Nil;
     AnnualPremium = Nil;
     arrayYearlyIncome = Nil;
     TotalAllPremium = Nil;
@@ -1681,6 +2101,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								[tempCol3 addObject:@"Guaranteed Surrender Value" ];
 								[tempCol4 addObject:@"-" ];
 							}
+							else if ([tempRiderCode isEqualToString:@"EDB"] ) {
+								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
+								[tempCol2 addObject:@"Death Benefit" ];
+								[tempCol3 addObject:@"Cash Surrender Value" ];
+								[tempCol4 addObject:@"-" ];
+							}
+							else if ([tempRiderCode isEqualToString:@"ETPDB"] ) {
+								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
+								[tempCol2 addObject:@"TPD Benefit" ];
+								[tempCol3 addObject:@"OAD Benefit" ];
+								[tempCol4 addObject:@"Cash Surrender Value" ];
+							}
 							else {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
 								[tempCol2 addObject:@"-" ];
@@ -1755,6 +2187,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								[tempCol2 addObject:@"Jumlah Diinsuranskan" ];
 								[tempCol3 addObject:@"Nilai Penyerahan Terjamin" ];
 								[tempCol4 addObject:@"-" ];
+							}
+							else if ([tempRiderCode isEqualToString:@"EDB"] ) {
+								[tempCol1 addObject:@"Premium Tahunan (Permulaan Tahun)" ];
+								[tempCol2 addObject:@"Kematian TPD" ];
+								[tempCol3 addObject:@"Nilai Penyerahan Tunai" ];
+								[tempCol4 addObject:@"-" ];
+							}
+							else if ([tempRiderCode isEqualToString:@"ETPDB"] ) {
+								[tempCol1 addObject:@"Premium Tahunan (Permulaan Tahun)" ];
+								[tempCol2 addObject:@"Faedah TPD" ];
+								[tempCol3 addObject:@"Faedah OAD" ];
+								[tempCol4 addObject:@"Nilai Penyerahan Tunai" ];
 							}
 							else {
 								[tempCol1 addObject:@"Premium Tahunan (Permulaan Tahun)" ];
@@ -2193,6 +2637,138 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								tempTotalRiderSurrenderValue = tempTotalRiderSurrenderValue + [[tempCol3 objectAtIndex:i] doubleValue ];
 								[TotalRiderSurrenderValue replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%.3f", tempTotalRiderSurrenderValue]];
 							}
+							else if ([tempRiderCode isEqualToString:@"EDB"]) {
+								
+								double DBenefit = 0.00;
+								
+								if (Age + i + 1 == 1) {
+									DBenefit = tempRiderSA * 0.2;
+								}
+								else if (Age + i + 1 == 2){
+									DBenefit = tempRiderSA * 0.4;
+								}
+								else if (Age + i + 1 == 3){
+									DBenefit = tempRiderSA * 0.6;
+								}
+								else if (Age + i + 1 == 4){
+									DBenefit = tempRiderSA * 0.8;
+								}
+								else{
+									DBenefit = tempRiderSA;
+								}
+								
+								if (i == 0) {
+									if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
+										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
+													, tempRiderCode, Age, tempRiderTerm ];
+										
+										if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+											while (sqlite3_step(statement) == SQLITE_ROW) {
+												[Rate addObject: [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+												
+											}
+											sqlite3_finalize(statement);
+										}
+										sqlite3_close(contactDB);
+									}
+									
+									if (Rate.count < PolicyTerm) {
+										
+										int rowsToAdd = PolicyTerm - Rate.count;
+										for (int u =0; u<rowsToAdd; u++) {
+											[Rate addObject:@"0.00"];
+										}
+									}
+								}
+								
+								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", DBenefit] ];
+								[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
+								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+								
+								
+							}
+							else if ([tempRiderCode isEqualToString:@"ETPDB"]) {
+								
+								double TPDBenefit = 0.00;
+								double OADBenefit = 0.00;
+								
+								if (Age + i + 1 <= 64 ) {
+									if (Age + i + 1 == 1) {
+										TPDBenefit = tempRiderSA * 0.2;
+									}
+									else if (Age + i + 1 == 2){
+										TPDBenefit = tempRiderSA * 0.4;
+									}
+									else if (Age + i + 1 == 3){
+										TPDBenefit = tempRiderSA * 0.6;
+									}
+									else if (Age + i + 1 == 4){
+										TPDBenefit = tempRiderSA * 0.8;
+									}
+									else{
+										TPDBenefit = tempRiderSA;
+									}
+								}
+								else{
+									TPDBenefit = 0.00;
+								}
+								
+								if (Age + i + 1 < 7 && TPDBenefit > 100000) {
+									TPDBenefit = 100000;
+								}
+								else if (Age + i + 1 >= 7 && Age + i + 1 < 15 && TPDBenefit > 500000){
+									TPDBenefit = 500000;
+								}
+								else if (Age + i + 1 >= 15 && TPDBenefit > 3500000){
+									TPDBenefit = 3500000;
+								}
+								//---------end --------------
+								
+								if (Age + i + 1 > 64) {
+									OADBenefit  = tempRiderSA;
+								}
+								else {
+									OADBenefit  = 0;
+								}
+								
+								if (OADBenefit > 1000000) {
+									OADBenefit = 1000000;
+								}
+								
+								// -------- end ---------------
+								if (i == 0) {
+									if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
+										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
+													, tempRiderCode, Age, tempRiderTerm ];
+										
+										if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+											while (sqlite3_step(statement) == SQLITE_ROW) {
+												[Rate addObject: [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+												
+											}
+											sqlite3_finalize(statement);
+										}
+										sqlite3_close(contactDB);
+									}
+									
+									if (Rate.count < PolicyTerm) {
+										
+										int rowsToAdd = PolicyTerm - Rate.count;
+										for (int u =0; u<rowsToAdd; u++) {
+											[Rate addObject:@"0.00"];
+										}
+									}
+								}
+								
+								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", TPDBenefit]];
+								[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", OADBenefit]];
+								[tempCol4 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00 ]];
+								
+								
+							}
+							
 							else if ([tempRiderCode isEqualToString:@"HMM"] || [tempRiderCode isEqualToString:@"MG_II"] || [tempRiderCode isEqualToString:@"MG_IV"]  || [tempRiderCode isEqualToString:@"HSP_II"] ) {
 								double tempHMMRates;
 								
@@ -2297,6 +2873,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								[tempCol2 addObject:[NSString stringWithFormat:@"0"]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"0"]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+							}
+							else if ([tempRiderCode isEqualToString:@"EDB"]) {
+								[tempCol1 addObject:[NSString stringWithFormat:@"0.00"]];
+								[tempCol2 addObject:[NSString stringWithFormat:@"0"]];
+								[tempCol3 addObject:[NSString stringWithFormat:@"0"]];
+								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+							}
+							else if ([tempRiderCode isEqualToString:@"ETPDB"]) {
+								[tempCol1 addObject:[NSString stringWithFormat:@"0.00"]];
+								[tempCol2 addObject:[NSString stringWithFormat:@"0"]];
+								[tempCol3 addObject:[NSString stringWithFormat:@"0"]];
+								[tempCol4 addObject:[NSString stringWithFormat:@"0"]];
 							}
 							else {
 								[tempCol1 addObject:[NSString stringWithFormat:@"0.00"]];
@@ -2466,8 +3054,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 							}
 							sqlite3_finalize(statement);
 						}
-                        
-                        strSeqNo = Nil;
+
                         value1 = Nil;
                         value2 = Nil;
                         value3 = Nil;
@@ -2483,6 +3070,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         
 						sqlite3_close(contactDB);
 					}
+					strSeqNo = Nil;
                 }
             }
 			
@@ -2556,7 +3144,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     " \"TotalPremPaid2\",\"SurrenderValueHigh2\",\"SurrenderValueLow2\",\"TotalYearlyIncome2\") VALUES "
                     " (\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%d\",\"%.3f\",\"%.8f\", "
                     " \"%.9f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%.3f\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\",\"%d\") ",
-                    SINo, Name, @"HLAIB", @"HLA Income Builder", @"Participating Whole Life Plan with Guaranteed Yearly Income and",
+                    SINo, Name, @"HLACP", @"HLA Cash Promise", @"Participating Whole Life Plan with Guaranteed Yearly Income and",
                     @"Pelan Penyertaan Sepanjang Hayat dengan Pendapatan Tahunan Terjamin dan ", @"", strEngYearlyIncome, @"", strBMYearlyIncome,
                     @"", @"", @"Occ Loading (per 1k SA)", @"Caj Tambahan Perkerjaan (1k JAD)",
                     PolicyTerm, BasicTotalPremiumPaid,

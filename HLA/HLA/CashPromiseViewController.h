@@ -47,7 +47,6 @@
 @property (retain, nonatomic) NSMutableArray *SummaryGuaranteedDBValueA;
 @property (retain, nonatomic) NSMutableArray *SummaryGuaranteedDBValueB;
 @property (retain, nonatomic) NSMutableArray *SummaryGuaranteedAddValue;
-@property (retain, nonatomic) NSMutableArray *SummaryGuaranteedAddEndValue;
 @property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedAccuYearlyIncomeA;
 @property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedAccuYearlyIncomeB;
 @property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedAccuCashDividendA;

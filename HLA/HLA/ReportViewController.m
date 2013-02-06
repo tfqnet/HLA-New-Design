@@ -4272,8 +4272,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             NSMutableArray *TotalDBValueB = [[NSMutableArray alloc] init ];
             
             
-                NSString *strIncRiderCode = [IncomeRiderCode objectAtIndex:i];
-                double dRiderSA = [[IncomeRiderSA objectAtIndex:i] doubleValue ];
+			NSString *strIncRiderCode = [IncomeRiderCode objectAtIndex:i];
+			double dRiderSA = [[IncomeRiderSA objectAtIndex:i] doubleValue ];
             int iTerm = [[IncomeRiderTerm objectAtIndex:i] intValue ];
             
                 int inputAge = 0;
@@ -4293,6 +4293,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         NSLog(@"wrong statement");
                     }
                     
+
+					
                       //-------  cash dividend high
                     QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_CD where  "
                                 "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"H\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
@@ -4303,7 +4305,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         }
                         sqlite3_finalize(statement);
                     }
-                    
+
                     //-------  cash dividend low
                     QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Rider_IBR_CD where  "
                                 "plancode = \"%@\" AND PremPayOpt = \"%d\" AND Age = \"%d\" AND Type = \"L\" ORDER by polyear asc ", strIncRiderCode, PremiumPaymentOption, Age];
@@ -4359,6 +4361,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         sqlite3_finalize(statement);
                     }
                     sqlite3_close(contactDB);
+					
+					
                 }
                 
                     NSLog(@"getting rates for csv done");
@@ -5091,7 +5095,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         NSLog(@"income rider for summary calculation done");
             
             
-            
+
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 for (int a= 1; a<=[[IncomeRiderTerm objectAtIndex:i] intValue]; a++) {
                     

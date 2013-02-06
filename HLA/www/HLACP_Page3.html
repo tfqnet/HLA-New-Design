@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="format-detection" content="telephone=no">
+<title>HLA</title>
+<meta name="viewport" content="user-scalable=1, initial-scale=1, maximum-scale=5, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<link rel="shortcut icon" href="Image/logo.png">
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var db;
+    var shortName = 'WebSqlDB';
+    var version = '1.0';
+    var displayName = 'WebSqlDB';
+    var maxSize = 65535;
+    var siNo = '';
+    var planCode = '';
+    var planName = '';
+    var cashPaymentD = '';
+    var mcashPaymentD = '';
+    var colType = 0;
+        
+    function errorHandler(transaction, error) {
+        alert('Error: ' + error.message + ' code: ' + error.code);
+    }
+        
+    function successCallBack() {
+        alert("DEBUGGING: success");
+    }
+        
+    function nullHandler(){};
+        
+    function onBodyLoad(){
+        //alert("DEBUGGING: we are in the onBodyLoad() function");
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+            
+        db = openDatabase(shortName, version, displayName,maxSize);
+        ListDBValues();
+    }
+    
+    function CurrencyNoCents(num) {
+        if(num == '-'){
+            return ('-');
+        }
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = num.toString();
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+    
+    function ListDBValues() {
+            
+        if (!window.openDatabase) {
+            alert('Databases are not supported in this browser.');
+            return;
+        }
+        
+                //HLA Income Builder
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    for (var i = 0; i < result.rows.length; i++) {
+                        var row = result.rows.item(i);
+                        $('#SICode').html(row.SINo);
+                        siNo = row.SINo;
+                        $('#planName').html(row.PlanName);
+                        planName = row.PlanName;
+                        planCode = row.PlanCode;
+                        $('#laName').html(row.LAName);
+                        cashPaymentD = row.CashPaymentD;
+                        mcashPaymentD = row.MCashPaymentD;
+                        
+                        
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        
+                //Details
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                    var row = result.rows.item(0);
+                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
+                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Cash Promie</i>');
+                    }
+                	
+                    $('#dateModified').html(row.UpdatedAt);
+                	
+                    if ($.trim(row.CashDividend) == 'ACC')//payment description
+                    {
+                        $('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                        $('#col1').html('Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i>');
+
+                        if (parseInt(row.YearlyIncome) == 'POF')
+                        {
+                                $('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
+                                $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
+                                $('#col4').html('-<br/><br/>-');
+                                
+                                $('#col4A').html('-');
+                                $('#col4B').html('-');
+                                colType = 1;
+                        }
+                        else
+                        {
+                            $('#col2').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(11)</i>');
+                                $('#col3').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(12)</i>');
+                                $('#col4').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(13)</i>');
+                                colType = 2;
+                        }
+                    }
+                    else if (row.CashDividend == 'POF')
+                    {
+                	$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');                	    
+                	if (parseInt(row.YearlyIncome) == 'POF')
+                	{
+                            $('#col1').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(10)</i>');
+                            $('#col2').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(11)</i>');
+                            $('#col3').html('-<br/><br/>-');
+                            $('#col4').html('-<br/><br/>-');
+                            $('#col3A').html('-');
+                            $('#col3B').html('-');
+                            $('#col4A').html('-');
+                            $('#col4B').html('-');
+                            colType = 3;
+                	}
+                    	else
+            		{
+                            $('#col1').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(10)</i>');
+                            $('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
+                            $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
+                            $('#col4').html('-<br/><br/>-');
+                            $('#col4A').html('-');
+                            $('#col4B').html('-');
+                            colType = 4;
+                	}
+                    }
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+            
+        db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM SI_Temp_Trad_Basic where DataType = 'DATA'", [], function(transaction, result) {
+            if (result != null && result.rows != null) {
+                var row;
+                                                  
+                for (var i = 0; i < result.rows.length; i++) {
+                    var row = result.rows.item(i);
+                    //alert(colType)
+                    if (colType == 1){
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + CurrencyNoCents(row.col22) + '</td></tr>');
+                    }
+                    else if (colType == 2){
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + CurrencyNoCents(row.col22) + '</td></tr>');
+                    }
+                    else if (colType == 3){
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + CurrencyNoCents(row.col22) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    }
+                    else if (colType == 4){
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + CurrencyNoCents(row.col22) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    }
+                    
+                    //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td></tr>');
+                                                  
+                }
+            }
+            },errorHandler);
+        },errorHandler,nullHandler);
+        return;
+    }
+</script>
+</head>
+ 
+<body onload="onBodyLoad(),setPage(),writeInvestmentScenarios()">
+ 
+<!-- Begin Wrapper -->
+<div id="wrapper">
+ 
+<!-- Begin Header -->
+<div id="header">    
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span>
+  <br/>Code : <span id="agentCode">{agentCode}</span></div>  
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div><br/> 
+  <div class="hrule"></div>
+</div>
+<div class="main-content">
+<table>
+<tr>
+<td width="80%"><p>Basic Plan</p> <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/><span id="paymentDesc">{PaymentDescription}</span></td>
+<td width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i><br/> <span id="laName">{LAName}</span></td>
+</tr>
+</table>
+<!--<div align="center"><span id="advanceYearlyIncome"></span></div>-->
+<table id="table-data">
+<thead>
+<tr><th colspan="12"><span id="advanceYearlyIncome"></span></th></tr>
+
+<tr>
+<th rowspan="3" class="content"><br/>Policy Year<br/><br/><i>Tahun Polisi</i></th>
+<th rowspan="3" class="content"><br/>Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
+<th  colspan="10">Not Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tidak Terjamin</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Set B)</th>
+
+</tr>
+<tr>
+
+<th colspan="2" class="content">Current Year Cash Dividend<br/><br/>
+<i>Dividen Tunai Tahun Semasa<br/>(9)</i></th>
+
+<!--
+<th colspan="2" class="content" id="col1">Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i></th>
+<th colspan="2" class="content" id="col2">Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i></th>
+<th colspan="2" class="content" id="col3">Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i></th>
+<th colspan="2" class="content" id="col4">-<br/><br/>-</th>
+-->
+
+<th colspan="2" class="content" id="col1">{col1}</th>
+<th colspan="2" class="content" id="col2">{col2}</th>
+<th colspan="2" class="content" id="col3">{col3}</th>
+<th colspan="2" class="content" id="col4">{col4}</th>
+</tr>
+<tr>
+<th>Sce. A</th>
+<th>Sce. B</th>
+
+<th id="col1A">Sce. A</th>
+<th id="col1B">Sce. B</th>
+
+<th id="col2A">Sce. A</th>
+<th id="col2B">Sce. B</th>
+
+<th id="col3A">Sce. A</th>
+<th id="col3B">Sce. B</th>
+
+<th id="col4A">Sce. A</th>
+<th id="col4B">Sce. B</th>
+</tr>
+
+</thead>
+<tbody>
+<!--
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>4</td><td>35</td><td>55</td><td>5</td><td>7,006</td><td>6,853</td><td>0</td><td>0</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+-->
+</tbody>
+</table>
+    
+<br/>
+<span id="investmentScenarios"></span>
+<!--
+<table id="table-notes">
+<tr>
+    <td width="50%">&nbsp;</td>
+    <td width="50%">The Illustration show the possible level of benefits you may expect on two investment scenarios :<br/>
+        <i>Illustrasi ini menunjukkan jangkaan tahap faedah berdasarkan dua senario pelaburan :</i><br/>
+        1. Scenario A (Sce. A) = Assumes the participating fund earns 6.50% every year<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<i>Senario A (Sce. A) = Anggapan dana penyertaan memperolehi 6.50% setiap tahun</i><br/>
+        2. Scenario B (Sce. B) = Assumes the participating fund earns 4.50% every year<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<i>Senario B (Sce. B) = Anggapan dana penyertaan memperolehi 4.50% setiap tahun</i><br/><br/>
+        <div style="width:600px;height:30px;border:2px solid black;padding: 5px 0px 0px 5px">
+            Guaranteed = Minimum you will receive regardless of the Company investment.<br/>
+            <i>Terjamin = Minimum yang akan anda perolehi tanpa bergantung kepada pencapaian pelaburan syarikat.</i>
+        </div></td>
+</tr>
+</table>-->
+<br/><br/><br/>
+    
+<table style="border-collapse:collapse;border:0px solid black;width:100%;">
+
+    <tr>
+        <td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
+            This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
+            information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+            pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+            <b><span id="rptVersion">{rptVersion}</span></b> <br/>
+            Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
+            </td>
+        <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+        <td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;">Ref: <span id=SICode>{SINo}</span></td>
+    </tr>
+</table>
+<!-- End Footer -->
+ 
+<!-- End Wrapper -->
+</div>
+ 
+</body>
+</html>
