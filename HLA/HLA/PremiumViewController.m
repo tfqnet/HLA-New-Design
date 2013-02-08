@@ -314,23 +314,11 @@
     double BasicHLMonthly_ = [[BasicHLMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
     NSLog(@"BasicHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",BasicHLAnnually_, BasicHLHalfYear_, BasicHLQuarterly_, BasicHLMonthly_);
     
-    //calculate LSD
-    double _LSDAnnually = 0;
-    double _LSDHalfYear = 0;
-    double _LSDQuarterly = 0;
-    double _LSDMonthly = 0;
-    if ([getBasicPlan isEqualToString:@"HLAIB"]) {
-        _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
-        _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
-        _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
-        _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
-    }
-    else {
-        _LSDAnnually = LSDRate * (BasicSA/1000);
-        _LSDHalfYear = LSDRate * (BasicSA/1000);
-        _LSDQuarterly = LSDRate * (BasicSA/1000);
-        _LSDMonthly = LSDRate * (BasicSA/1000);
-    }
+    //calculate LSD    
+    double _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
+    double _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
+    double _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
+    double _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
     NSString *LSDAnnually2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDAnnually]];
     NSString *LSDHalfYear2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
     NSString *LSDQuarterly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];
@@ -537,7 +525,7 @@
                 pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",RidCode];
             }
             
-            NSLog(@"%@",pentaSQL);
+//            NSLog(@"%@",pentaSQL);
             const char *query_stmt = [pentaSQL UTF8String];
             if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
             {

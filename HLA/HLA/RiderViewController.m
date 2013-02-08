@@ -647,14 +647,18 @@
         termField.text = [NSString stringWithFormat:@"%d",maxTerm];
         termField.textColor = [UIColor darkGrayColor];
     }
-    
     else if ([riderCode isEqualToString:@"ID20R"]||[riderCode isEqualToString:@"ID30R"]||[riderCode isEqualToString:@"ID40R"]||[riderCode isEqualToString:@"MG_II"]||[riderCode isEqualToString:@"MG_IV"]||[riderCode isEqualToString:@"HB"]||[riderCode isEqualToString:@"HSP_II"]||[riderCode isEqualToString:@"CPA"]||[riderCode isEqualToString:@"PA"]||[riderCode isEqualToString:@"HMM"])
     {
         maxRiderTerm = fmin(period,getTerm);
         termField.text = [NSString stringWithFormat:@"%.f",maxRiderTerm];
         termField.textColor = [UIColor darkGrayColor];
     }
-    
+    else if ([riderCode isEqualToString:@"EDB"]||[riderCode isEqualToString:@"ETPDB"])
+    {
+        maxRiderTerm = maxTerm;
+        termField.text = [NSString stringWithFormat:@"%d",maxTerm];
+        termField.textColor = [UIColor darkGrayColor];
+    }
     else {
         maxRiderTerm = fmin(period,getTerm);
     }
@@ -739,6 +743,11 @@
             MaxUnit = 0;
         }
         maxRiderSA = MaxUnit;
+    }
+    else if ([riderCode isEqualToString:@"ETPDB"]) {
+        double max = basicPremAnn * 10;
+        _maxRiderSA = fmin(max, maxSATerm);
+        maxRiderSA = _maxRiderSA;
     }
     else {
         _maxRiderSA = maxSATerm;
@@ -829,22 +838,10 @@
     NSLog(@"BasicHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",BasicHLAnnually_, BasicHLHalfYear_, BasicHLQuarterly_, BasicHLMonthly_);
     
     //calculate LSD
-    double _LSDAnnually = 0;
-    double _LSDHalfYear = 0;
-    double _LSDQuarterly = 0;
-    double _LSDMonthly = 0;
-    if ([getPlanChoose isEqualToString:@"HLAIB"]) {
-        _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
-        _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
-        _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
-        _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
-    }
-    else {
-        _LSDAnnually = LSDRate * (BasicSA/1000);
-        _LSDHalfYear = LSDRate * (BasicSA/1000);
-        _LSDQuarterly = LSDRate * (BasicSA/1000);
-        _LSDMonthly = LSDRate * (BasicSA/1000);
-    }
+    double _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
+    double _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
+    double _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
+    double _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
     NSString *LSDAnnually2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDAnnually]];
     NSString *LSDHalfYear2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
     NSString *LSDQuarterly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];

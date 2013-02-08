@@ -68,6 +68,8 @@
         if (self.requestAge > 65) {
             querySQL = [querySQL stringByAppendingFormat:@" AND j.RiderCode != \"IE20R\""];
         }
+        
+        querySQL = [querySQL stringByAppendingFormat:@" order by j.RiderCode asc"];
 //        NSLog(@"%@",querySQL);
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)

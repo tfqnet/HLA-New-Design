@@ -119,6 +119,9 @@
         if (getSINo.length != 0) {
             NSLog(@"view selected field");
             [self getExistingBasic];
+            if ([planChoose isEqualToString:@"HLACP"]) {
+                [self.btnPlan setTitle:@"HLA Cash Promise" forState:UIControlStateNormal];
+            }
             [self tooglePlan];
             [self toogleExistingField];
         } else {

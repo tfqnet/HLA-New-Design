@@ -212,8 +212,8 @@
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
-		EF90FED616C1ECDC003345BE /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF90FED516C1ECDC003345BE /* hladb.sqlite */; };
 		EF90FED816C1ECEB003345BE /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF90FED716C1ECEB003345BE /* HLA_Rates.sqlite */; };
+		EF90FEDC16C34D48003345BE /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EF90FEDB16C34D48003345BE /* hladb.sqlite */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
@@ -515,8 +515,8 @@
 		EF28C322161C11C2009585CC /* SIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIHandler.m; path = ../SIHandler.m; sourceTree = "<group>"; };
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
-		EF90FED516C1ECDC003345BE /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EF90FED716C1ECEB003345BE /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
+		EF90FEDB16C34D48003345BE /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
 		EFB3D5861685604400A7B517 /* PayorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayorHandler.m; sourceTree = "<group>"; };
@@ -906,7 +906,7 @@
 			isa = PBXGroup;
 			children = (
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
-				EF90FED516C1ECDC003345BE /* hladb.sqlite */,
+				EF90FEDB16C34D48003345BE /* hladb.sqlite */,
 				EF90FED716C1ECEB003345BE /* HLA_Rates.sqlite */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
 			);
@@ -1281,8 +1281,8 @@
 				C4C501F816A64C6300096156 /* Brochure_PACare.pdf in Resources */,
 				C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */,
 				EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */,
-				EF90FED616C1ECDC003345BE /* hladb.sqlite in Resources */,
 				EF90FED816C1ECEB003345BE /* HLA_Rates.sqlite in Resources */,
+				EF90FEDC16C34D48003345BE /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
