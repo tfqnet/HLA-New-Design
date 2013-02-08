@@ -41,8 +41,6 @@
 @synthesize selectedIndex = _selectedIndex;
 @synthesize tabBarWidth = _tabBarWidth;
 
-
-
 - (FSVerticalTabBar *)tabBar
 {
     if (_tabBar == nil)
@@ -53,7 +51,6 @@
     }
     return _tabBar;
 }
-
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {
@@ -91,8 +88,6 @@
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
 {
     self.selectedIndex = [self.viewControllers indexOfObject:selectedViewController];
-    
-    
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
@@ -131,8 +126,6 @@
                 [self presentViewController:selectedViewController animated:NO completion:Nil];
 					
                 [self updateTabBar];
-				
-				
             }
             zzz = Nil;
         }
@@ -253,9 +246,6 @@
 {
     UIViewController *selectedViewController = [self.viewControllers objectAtIndex:clickIndex];
 	
-    
-
-    
     // remove previously selected view controller (if any)
     if (-1 < _selectedIndex && _selectedIndex < INT_MAX)
     {
@@ -263,15 +253,12 @@
         [previousViewController.view removeFromSuperview];
         [previousViewController removeFromParentViewController];
         previousViewController = Nil;
-        
     }
-    
+ 
     
     if ([self.view subviews].count > 1) {
 
 		UIViewController *previousViewController = [self.viewControllers objectAtIndex:_selectedIndex];
-
-
 		
 		if (_selectedIndex == 2) {
 			//[(SIListing *)previousViewController SIListingClear];
@@ -282,6 +269,27 @@
         previousViewController = Nil;
     }
     
+    
+    // set new selected index
+    _selectedIndex = clickIndex;
+    
+    // update tab bar
+    if (clickIndex < [self.tabBar.items count])
+    {
+        self.tabBar.selectedItem = [self.tabBar.items objectAtIndex:clickIndex];
+    }
+    
+    // inform delegate
+    if ([self.delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])
+    {
+        [self.delegate tabBarController:self didSelectViewController:selectedViewController];
+    }
+    selectedViewController = Nil;
+}
+
+-(void)updateTabBar2
+{
+    UIViewController *selectedViewController = [self.viewControllers objectAtIndex:clickIndex];
     
     // set new selected index
     _selectedIndex = clickIndex;
@@ -392,20 +400,20 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    
     if (alertView.tag == 1001 && buttonIndex == 0)
     {
-
         [self updateDateLogout];
-        
     }
+    
     else if (alertView.tag == 1001 && buttonIndex == 1)
     {
-        clickIndex = 3;
-        clickIndex = _selectedIndex;
-        [self updateTabBar];
-       
+//        clickIndex = 3;
+//        clickIndex = _selectedIndex;
+//        [self updateTabBar];
         
+        //--edited by bob
+        clickIndex = _selectedIndex;
+        [self updateTabBar2];
     }
     
     else  if (alertView.tag == 2001 && buttonIndex == 0)
@@ -418,6 +426,12 @@
         [self presentViewController:selectedViewController animated:NO completion:Nil];
         
         [self updateTabBar];
+    }
+    
+    else  if (alertView.tag == 2001 && buttonIndex == 1)
+    {
+        clickIndex = _selectedIndex;
+        [self updateTabBar2];
     }
     
     else if (alertView.tag == 3001 && buttonIndex == 0)
@@ -436,6 +450,12 @@
         [self.view addSubview:selectedViewController.view];
         
         [self updateTabBar];
+    }
+    
+    else  if (alertView.tag == 3001 && buttonIndex == 1)
+    {
+        clickIndex = _selectedIndex;
+        [self updateTabBar2];
     }
 }
 
