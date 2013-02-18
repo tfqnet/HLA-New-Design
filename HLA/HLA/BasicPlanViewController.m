@@ -52,7 +52,7 @@
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 @synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
 @synthesize requestOccpClass,OccpClass,MOPHLAIB,MOPHLACP,yearlyIncomeHLAIB,yearlyIncomeHLACP,cashDividendHLAIB,cashDividendHLACP;
-@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP;
+@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge;
 
 #pragma mark - Cycle View
 
@@ -177,8 +177,10 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
-    self.myScrollView.contentSize = CGSizeMake(1024, 704);
+//    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
+//    self.myScrollView.contentSize = CGSizeMake(1024, 704);
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 960-264);
+    self.myScrollView.contentSize = CGSizeMake(768, 960);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
@@ -189,7 +191,7 @@
 {
     minSALabel.text = @"";
     maxSALabel.text = @"";
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704);
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 960);
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -411,6 +413,10 @@
     if (OccpCode.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1001];
+        [alert show];
+    }
+    else if (ageClient > maxAge) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Age Last Birthday must be less than or equal to %d for this product.",maxAge] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if (yearlyIncomeField.text.length <= 0) {
@@ -1047,7 +1053,7 @@
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
                 int minAge =  sqlite3_column_int(statement, 0);
-                int maxAge =  sqlite3_column_int(statement, 1);
+                maxAge =  sqlite3_column_int(statement, 1);
                 int maxTermB  =  sqlite3_column_int(statement, 3);
                 minSA = sqlite3_column_int(statement, 4);
                 maxSA = sqlite3_column_int(statement, 5);

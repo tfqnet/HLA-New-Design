@@ -124,6 +124,7 @@
 @property (nonatomic, assign,readwrite) int IndexNo;
 
 @property (nonatomic, assign,readwrite) int termCover;
+@property (nonatomic, assign,readwrite) int maxAge;
 @property (nonatomic, assign,readwrite) int minSA;
 @property (nonatomic, assign,readwrite) int maxSA;
 @property (nonatomic,strong) NSString *planChoose;
