@@ -64,7 +64,13 @@ NSMutableArray *ItemPages;
     
     CDVViewController* browserController_page = [CDVViewController new];
     browserController_page.wwwFolderName = @"www";
-    browserController_page.startPage = @"Page1.html";//(NSString *)objectHTML;
+	if (Module == 0) {
+			browserController_page.startPage = @"Page1.html";//(NSString *)objectHTML;
+	}
+	else{
+		browserController_page.startPage = @"HLACP_Page1.html";//(NSString *)objectHTML;
+	}
+    
     browserController_page.view.frame = CGRectMake(0, 0, 758, 1000);
     [self.view addSubview:browserController_page.view];
     

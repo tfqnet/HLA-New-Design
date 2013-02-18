@@ -1279,8 +1279,16 @@ id RiderCount;
 
                     BrowserViewController *controller = [[BrowserViewController alloc] init];
                     controller.title = @"Quotation";
-                    controller.Module = 1;
-                    
+
+					
+					if([getBasicPlan isEqualToString:@"HLACP" ]){
+						
+						controller.Module = 1;
+					}
+					else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+						controller.Module = 0;
+					}
+					
                     
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
                     UINavigationController *container = [[UINavigationController alloc] init];

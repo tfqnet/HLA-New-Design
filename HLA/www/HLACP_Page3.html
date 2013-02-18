@@ -94,7 +94,7 @@
                     var row;
                     var row = result.rows.item(0);
                     if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
-                        $('#advanceYearlyIncome').html('Illustration of HLA Income Builder&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Cash Promie</i>');
+                        $('#advanceYearlyIncome').html('Illustration of HLA Cash Promise&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Cash Promise</i>');
                     }
                 	
                     $('#dateModified').html(row.UpdatedAt);
@@ -167,10 +167,10 @@
                     	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>');
                     }
                     else if (colType == 3){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>'  +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + CurrencyNoCents(row.col22) + '</td><td>' + '-' + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>'  +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
                     else if (colType == 4){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + CurrencyNoCents(row.col22) + '</td><td>' + '-' + '</td></tr>');
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
                     
                     //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td></tr>');
@@ -216,20 +216,20 @@
 </tr>
 <tr>
 
-<th colspan="2" class="content">Current Year Cash Dividend<br/><br/>
-<i>Dividen Tunai Tahun Semasa<br/>(9)</i></th>
-
-<!--
-<th colspan="2" class="content" id="col1">Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i></th>
-<th colspan="2" class="content" id="col2">Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i></th>
-<th colspan="2" class="content" id="col3">Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i></th>
-<th colspan="2" class="content" id="col4">-<br/><br/>-</th>
--->
-
-<th colspan="2" class="content" id="col1">{col1}</th>
-<th colspan="2" class="content" id="col2">{col2}</th>
-<th colspan="2" class="content" id="col3">{col3}</th>
-<th colspan="2" class="content" id="col4">{col4}</th>
+    <th colspan="2" class="content">Current Year Cash Dividend<br/><br/>
+    <i>Dividen Tunai Tahun Semasa<br/>(9)</i></th>
+    
+    <!--
+    <th colspan="2" class="content" id="col1">Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i></th>
+    <th colspan="2" class="content" id="col2">Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i></th>
+    <th colspan="2" class="content" id="col3">Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i></th>
+    <th colspan="2" class="content" id="col4">-<br/><br/>-</th>
+    -->
+    
+    <th colspan="2" class="content" id="col1">{col1}</th>
+    <th colspan="2" class="content" id="col2">{col2}</th>
+    <th colspan="2" class="content" id="col3">{col3}</th>
+    <th colspan="2" class="content" id="col4">{col4}</th>
 </tr>
 <tr>
 <th>Sce. A</th>

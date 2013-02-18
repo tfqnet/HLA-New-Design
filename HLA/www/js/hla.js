@@ -1,5 +1,5 @@
 function setPage(){
-	$('#rptVersion').html('Win MP (Trad) Version 6.7 (Agency) - Last Updated 03 Oct 2012 - E&amp;OE-');
+	$('#rptVersion').html('Win MP (Trad) Version 6.8.1 (Agency) - Last Updated 07 Feb 2013 - E&amp;OE-');
 
         db.transaction(function(transaction) {
             transaction.executeSql('select count(*) as pCount from SI_Temp_Pages', [], function(transaction, result) {
