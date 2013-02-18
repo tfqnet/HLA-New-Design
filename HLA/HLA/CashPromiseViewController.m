@@ -128,7 +128,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     _dataTable = [_db  ExecuteQuery:sqlStmt];
     
-    int pageNum = 3;
+    int pageNum = 0;
     int riderCount = 0;
     int riderCountStart = 19; //rider html page number
     NSString *desc = @"Page";
@@ -136,9 +136,31 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     //desc = [desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]];
     //NSLog(@"%@", desc);
     
-    sqlStmt = @"Delete from SI_Temp_Pages where PageNum NOT in ('1', '2', '3') ";
+//    sqlStmt = @"Delete from SI_Temp_Pages where PageNum NOT in ('1', '2', '3') ";
+	    sqlStmt = @"Delete from SI_Temp_Pages";
     DBID = [_db ExecuteINSERT:sqlStmt];
     
+	pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+
+	pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+	
+	pageNum++;
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page3.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    DBID = [_db ExecuteINSERT:sqlStmt];
+    if (DBID <= 0){
+        NSLog(@"Error inserting data into database.");
+    }
+	
     for (row in _dataTable.rows) 
     {
             riderCount++;
@@ -298,14 +320,14 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
-    
+    /*
     pageNum++;
     sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page42.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
-	
+	*/
     // malay version here page201.html ---> page 220
     
     pageNum++;
@@ -314,12 +336,13 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
+	/*
     pageNum++;
     sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page51.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
-    }
+    }*/
     
     riderCount = 0; //reset rider count
     descRiderCountStart = 200; //start of rider description page
@@ -445,14 +468,14 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
-    
+    /*
     pageNum++;
     sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page62.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
-    
+    */
     
     //------- end ---------
     
@@ -1330,21 +1353,16 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
         //------------------- GYI
         
-		QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_GYI where advOption = \"N\" "];
-        
-		
-        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-            while (sqlite3_step(statement) == SQLITE_ROW) {
-                [rates addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
-            }
-            sqlite3_finalize(statement);
-        }
-        
+		for (int a = 0; a< PolicyTerm; a++) {
+			[rates addObject:[NSString stringWithFormat:@"%d.00", BasicSA]];
+		}
+			
         //---------------- surrender value
         
-            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CSV where PlanCode = 'HLACP' AND  "
+            QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CSV where PlanCode = 'HLACP'  "
                         " AND age = \"%d\" ", Age];
         
+
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 [SurrenderRates addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
@@ -1352,6 +1370,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             sqlite3_finalize(statement);
         }
         
+		
+		
         /*
         //------------------------ DB start of the year
 
@@ -1397,6 +1417,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             sqlite3_finalize(statement);
         }
         
+		
+		
+		
         //--------------------------------  cash dividend low
         
             QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_CD where PlanCode = 'HLACP' "
@@ -1410,6 +1433,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             sqlite3_finalize(statement);
         }
         
+		if (CurrentCashDividendRatesB.count == 0) {
+			NSLog(@" CurrentCashDividendRatesA rates = 0");
+		}
+		
         //--------------------------------  t Dividen payable on surrender high
         
             QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_TD where PlanCode = 'HLACP' "
@@ -1422,6 +1449,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             sqlite3_finalize(statement);
         }
+		
+		if (tDividendRatesA.count == 0) {
+			NSLog(@" tDividendRatesA rates = 0");
+		}
         
         //--------------------------------  t Dividen payable on surrender low
         
@@ -1435,7 +1466,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             sqlite3_finalize(statement);
         }
+
+		if (tDividendRatesB.count == 0) {
+			NSLog(@" tDividendRatesB rates = 0");
+		}
         
+		
         //--------------------------------  high
         
             QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_speTD where PlanCode = 'HLACP' "
@@ -1448,6 +1484,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             sqlite3_finalize(statement);
         }
         
+		if (speRatesA.count == 0) {
+			NSLog(@" speRatesA rates = 0");
+		}
+		
         //--------------------------------  low
         
             QuerySQL = [NSString stringWithFormat: @"Select rate from trad_sys_Basic_speTD where PlanCode = 'HLACP' "
@@ -1459,15 +1499,31 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             sqlite3_finalize(statement);
         }
+		
+		if (speRatesB.count == 0) {
+			NSLog(@" speRatesB rates = 0");
+		}
+        
+
+		
         sqlite3_close(contactDB);
     }
     
 	double TotalAD;
     
+	if (PolicyTerm > 25) {
+		PolicyTerm = 25;
+	}
+	
     for (int i =1; i <= PolicyTerm; i++) {
         
-        
-		[AnnualPremium addObject:[aStrBasicSA objectAtIndex:i-1]];
+		if (i <= 6) {
+			[AnnualPremium addObject:[aStrBasicSA objectAtIndex:i-1]];
+		}
+		else{
+			[AnnualPremium addObject:@"0.00"];
+		}
+		
         
         BasicTotalPremiumPaid = BasicTotalPremiumPaid +
         [[[AnnualPremium objectAtIndex:i-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
@@ -1478,15 +1534,17 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         TotalPremiumBasicANDIncomeRider = TotalPremiumBasicANDIncomeRider +
         [[[AnnualPremium objectAtIndex:i-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
         
-		[arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d.00", BasicSA * ([[rates objectAtIndex:0] intValue] / 100)]];
-        
+		[arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d.00", BasicSA]];
+	
         BasicTotalYearlyIncome = BasicTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ];
         EntireTotalYearlyIncome = EntireTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex: i-1] doubleValue ];
-        
+
         [SummaryGuaranteedTotalGYI addObject:[[arrayYearlyIncome objectAtIndex:i-1] stringByReplacingOccurrencesOfString:@"#" withString:@"" ]];
+
         [SurrenderValue addObject:[NSString stringWithFormat:@"%.9f", [[SurrenderRates objectAtIndex:i-1] doubleValue ] * BasicSA/1000 ]];
+
         [SummaryGuaranteedSurrenderValue addObject:[SurrenderValue objectAtIndex:i-1]];
-		
+		        				
 		// --------------------
 		if (Age <= 40) {
 			
@@ -1516,7 +1574,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 				[DBValue addObject:[NSString stringWithFormat:@"%.3f", 10.0 * BasicSA]];
 			}
 		}
-		
+
 		//-------------------
 		
 		if (Age <= 40) {
@@ -1561,17 +1619,23 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         //------------------------
 
 
-        if (i+ Age <= 64) {
-            if (i == 1) {
-				TotalAD = [[aStrBasicSA objectAtIndex:0]doubleValue ];
+		if (i <= 6) {
+			if (i+ Age <= 64) {
+				if (i == 1) {
+					TotalAD = [[aStrBasicSA objectAtIndex:0]doubleValue ];
+				}
+				else{
+					TotalAD = TotalAD + [[aStrBasicSA objectAtIndex:0]doubleValue ];
+				}
 			}
 			else{
-				TotalAD = TotalAD + [[aStrBasicSA objectAtIndex:0]doubleValue ];
+				TotalAD = 0.00;
 			}
-        }
+		}
 		else{
 			TotalAD = 0.00;
 		}
+        
         
         [aValue addObject: [NSString stringWithFormat:@"%.3f", TotalAD] ];
         [SummaryGuaranteedAddValue addObject:[aValue objectAtIndex:i-1]];
@@ -1580,9 +1644,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         //---------------- total premium paid ----------
         
         double sumBasic = 0;
-        double sumIncomeRider = 0, sumOtherRider = 0;
+        double sumOtherRider = 0;
         
-		sumBasic = [[aStrBasicSA objectAtIndex:i -1] doubleValue ];
+		sumBasic = [[AnnualPremium objectAtIndex:i -1] doubleValue ];
         
         for (int j =0; j<OtherRiderCode.count; j++) {
             if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HMM" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_IV" ]
@@ -1617,10 +1681,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 			
         }
         
-        double TotalBasicAndRider = sumBasic + sumIncomeRider + sumOtherRider;
+        double TotalBasicAndRider = sumBasic + sumOtherRider;
         [TotalAllPremium addObject: [NSString stringWithFormat:@"%.2f", TotalBasicAndRider ]];
         
-        
+
         //----------------- total premium paid end ----------
         
         //------------- current cash dividend
@@ -1635,8 +1699,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //------ accu cash dividend
         if ([CashDividend isEqualToString:@"ACC"]) {
-            double CDInterestRateHigh = 0.055;
-            double CDInterestRateLow = 0.035;
+            double CDInterestRateHigh = 0.0525;
+            double CDInterestRateLow = 0.0325;
             
             if (i == 1) {
                 [AccuCashDividendValueA addObject:[CurrentCashDividendValueA objectAtIndex:i -1 ]];
@@ -1663,22 +1727,14 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         [SummaryNonGuaranteedAccuCashDividendB addObject:[AccuCashDividendValueB objectAtIndex:i-1]];
         
         //------- accucash dividend end --------
-        
+
         //------ accu yearly income ------
         if ([YearlyIncome isEqualToString:@"ACC"]) {
-           /*
-			double CDInterestRateHigh = 0.055;
-            double CDInterestRateLow = 0.035;
            
-            if (AdvanceYearlyIncome > 0 && i + Age >= AdvanceYearlyIncome) {
-                
-                [AccuYearlyIncomeValueA addObject:[NSString stringWithFormat:@"%.8f",
-												   [[AccuYearlyIncomeValueA objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateHigh) ] ];
-                [AccuYearlyIncomeValueB addObject:[NSString stringWithFormat:@"%.9f",
-												   [[AccuYearlyIncomeValueB objectAtIndex:i-2] doubleValue] * (1 + CDInterestRateLow) ] ];
-                
-            }
-            else {
+			double CDInterestRateHigh = 0.0525;
+            double CDInterestRateLow = 0.0325;
+           
+            
                 if (i == 1) {
                     [AccuYearlyIncomeValueA addObject:[arrayYearlyIncome objectAtIndex:i -1]];
                     [AccuYearlyIncomeValueB addObject:[arrayYearlyIncome objectAtIndex:i -1]];
@@ -1692,8 +1748,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 													   + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ] ] ];
                     
                 }
-            }
-            */
+            
+            
         }
         else {
             [AccuYearlyIncomeValueA addObject:@"-"];
@@ -1722,7 +1778,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         
         //----------- spe TD end ----------
-        
+
         //----------- total surrender value ----------
         double dTotalSurrenderValueA = 0.00;
         double dTotalSurrenderValueB = 0.00;
@@ -1782,7 +1838,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         }
         
         //------------ total surrender value end ------
-        
+
         //----------- total DB value ----------
         double dTotalDBValueA = 0;
         double dTotalDBValueB = 0;
@@ -1900,7 +1956,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 					
 					QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Basic (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
 								"\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
-								"\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\",\"col22\") VALUES ( "
+								"\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\") VALUES ( "
 								" \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\", "
 								"\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%@\",\"%@\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\")",
 								SINo, a, a, inputAge, [AnnualPremium objectAtIndex:a -1],DBYearlyIncome, round([[SurrenderValue objectAtIndex:a-1] doubleValue ]),
@@ -1914,6 +1970,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								strAccuYIA, strAccuYIB,
 								round([[tDividendValueA objectAtIndex:a-1] doubleValue ]), round([[tDividendValueB objectAtIndex:a-1 ] doubleValue ]),
 								round([[speValueA objectAtIndex:a-1] doubleValue ]), round( [[speValueB objectAtIndex:a-1] doubleValue]) ];
+					
 					
 					if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 						if (sqlite3_step(statement) == SQLITE_DONE) {

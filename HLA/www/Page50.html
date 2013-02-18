@@ -67,6 +67,15 @@
                         cashPaymentD = row.CashPaymentD;
                         mcashPaymentD = row.MCashPaymentD;
                     }
+		    
+		    if(planCode == 'HLACP'){
+			document.getElementById('HLACP').style.visibility = "visible";
+			document.getElementById('HLACP').style.height = "600px";
+		    }
+		    else if(planCode == 'HLAIB'){
+			document.getElementById('HLAIB').style.visibility = "visible";
+			document.getElementById('HLAIB').style.height = "800px";
+		    }
                 }
             },errorHandler);
         },errorHandler,nullHandler);
@@ -138,9 +147,9 @@
 <div class="main-content">
 <table>
 <tr>
-<td width="80%"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span></br>
+<td width="80%">Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/>
     <span id="paymentDesc">{PaymentDescription}</span></td>
-<td width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i></br> <span id="laName">{LAName}</span></td>
+<td width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i><br/> <span id="laName">{LAName}</span></td>
 </tr>
 </table>
 <!--<p>Basic PlanPelan Asas: HLA Income Builder &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Yearly Income Pay Out) (Cash Dividend Pay Out) (Pendapatan Tahunan Dibayar)(Dividen Tunai Dibayar)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Life Assured Hayat Diinsuranskan: Mat</p>
@@ -148,9 +157,10 @@
 
 
 <b><i>Penerangan Faedah Pelan Asas</i></b><br/><br/>
+<div id="HLAIB" style="visibility: hidden;height: 0px">
 <i>
 Produk ini merupakan pelan penyertaan sepanjang hayat sehingga umur 90 tahun dengan pembayaran Pendapatan Tahunan Terjamin dan tempoh pembayaran premium terhad kepada 6 tahun.<br/>
-Pendapatan Tahunan Terjamin akan dibayar bermula dari akhir tahun pertama sehingga kematangan pada umur 90.<br/><br/>
+Pendapatan Tahunan Terjamin akan dibayar bermula dari akhir tahun pertama sehingga kematangan pada umur 90.</i><br/><br/>
 
 <u><b>Faedah Kematian</b></u><br/>
 Jika Hayat Diinsuranskan meninggal dunia, faedah Kematian bersamaan dengan jumlah:<br/>
@@ -219,6 +229,92 @@ The above listed events are not exhaustive and the Company may include more even
 -->
     </i>
 <br/>
+</div>
+
+<div id="HLACP" style="visibility: hidden;height: 0px">
+<i>Produk ini merupakan pelan penyertaan endowmen 25 tahun dengan pembayaran Pendapatan Tahunan Terjamin. Pendapatan Tahunan Terjamin akan dibayar bermula dari akhir tahun pertama sehingga kematangan.
+Tempoh pembayaran premium untuk pelan ini terhad kepada 6 tahun sahaja.</i><br/><br/>
+
+<u><b>Faedah Kematian</b></u><br/>
+Jika Hayat Diinsuranskan meninggal dunia, faedah Kematian akan dibayar bersamaan dengan jumlah daripada yang berikut:<br/>
+(i)&nbsp;&nbsp;&nbsp;&nbsp;Faedah Kematian Terjamin seperti yang ditunjukkan dalam jadual di bawah:<br/>
+    <tr>
+	<td width="10">&nbsp;</td>
+	<td>
+	    <table width="60%" style="border-collapse: collapse; margin-left: 20px" border="1">
+		<tr>
+		    <td width="20%">Umur Kemasukan<br/>(Harijadi Lepas)</td>
+		    <td width="80%">Faedah Kematian Terjamin</td>
+		</tr>
+		<tr>
+		    <td>0 sehingga 40</td>
+		    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 12.50 kali Pendapatan Tahunan Terjamin</td>
+		</tr>
+		<tr>
+		    <td>41 sehingga 50</td>
+		    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 6.25 kali Pendapatan Tahunan Terjamin</td>
+		</tr>
+		<tr>
+		    <td>51 sehingga 60</td>
+		    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 5.50 kali Pendapatan Tahunan Terjamin</td>
+		</tr>
+		<tr>
+		    <td>61 sehingga 63</td>
+		    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 5.00 kali Pendapatan Tahunan Terjamin</td>
+		</tr>
+	    </table>   
+	</td>
+    </tr>
+    &nbsp;&nbsp;&nbsp;&nbsp;Dalam apa jua kejadian, Faedah Kematian Terjamin tidak akan kurang daripada Faedah Matang Terjamin,<br/>
+(ii)&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+(iii)&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+(iv)&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada)<br/>
+akan dibayar.<br/><br/>
+
+<u><b><i>Faedah Hilang Upaya Menyeluruh dan Kekal</i></b></u><br/>
+Jika Hayat Diinsuranskan mengalami Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun dalam tempoh pembayaran premium (TPD), faedah TPD akan dibayar adalah 100% daripada Jumlah
+Premium Asas yang telah Dibayar sehingga tarikh genap tempoh premium sebelum tarikh kejadian yang mengakibatkan TPD. Di samping itu, semua premium asas masa depan yang perlu dibayar bermula dari tarikh
+genap tempoh premium serta-merta selepas tarikh kejadian yang mengakibatkan TPD akan dikecualikan. Semua faedah lain akan tetap tidak berubah selepas tuntutan TPD.<br/><br/>
+
+Had Faedah TPD setiap Hayat tidak berkenaan untuk pelan asas ini.<br/><br/>
+
+<i>Nota: TPD merujuk kepada Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun dalam tempoh pembayaran premium. Definisi ini diguna pakai secara konsisten merentasi semua kolateral pemasaran
+bagi HLA Cash Promise.</i>
+
+<u><b>Pendapatan Tahunan Terjamin</b></u><br/>
+Pelan ini membayar Pendapatan Tahunan Terjamin yang berjumlah RM1,200.00 bermula dari akhir tahun pertama sehingga kematangan, termasuk kedua-dua tarikh.<br/>
+(i)&nbsp;&nbsp;&nbsp;&nbsp;Faedah Matang Terjamin seperti yang ditunjukkan dalam jadual di bawah:<br/>
+    <tr>
+	<td width="10">&nbsp;</td>
+	<td>
+	    <table width="60%" style="border-collapse: collapse; margin-left: 20px" border="1">
+		<tr>
+		    <td width="20%">Umur Kemasukan<br/>(Harijadi Lepas)</td>
+		    <td width="80%">Faedah Matang Terjamin</td>
+		</tr>
+		<tr>
+		    <td>0 sehingga 50</td>
+		    <td>12.50 kali Pendapatan Tahunan Terjamin</td>
+		</tr>
+		<tr>
+		    <td>51 sehingga 60</td>
+		    <td>11.00 kali Pendapatan Tahunan Terjamin</td>
+		</tr>
+		<tr>
+		    <td>61 sehingga 63</td>
+		    <td>10.00 kali Pendapatan Tahunan Terjamin</td>
+		</tr>
+		
+	    </table>   
+	</td>
+    </tr>
+    
+(ii)&nbsp;&nbsp;&nbsp;&nbsp;Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+(iii)&nbsp;&nbsp;&nbsp;Dividen Tunai Terkumpul (jika ada) dan<br/>
+(iv)&nbsp;&nbsp;&nbsp;Dividen Terminal Istimewa (jika ada)<br/>
+akan dibayar.<br/><br/>
+
+</div>
 
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
 

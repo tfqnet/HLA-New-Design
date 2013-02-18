@@ -108,7 +108,11 @@
                                               var row;
                                               for (var i = 0; i < result.rows.length; i++) {
                                               var row = result.rows.item(i);
-                                              $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + formatCurrency(row.col2) + '</td><td>' + CurrencyNoCents(row.col3) + '</td><td>' + CurrencyNoCents(row.col4) + '</td><td>' + CurrencyNoCents(row.col5) + '</td><td>' + CurrencyNoCents(row.col6) + '</td><td>' + CurrencyNoCents(row.col7) + '</td><td>' + CurrencyNoCents(row.col8) + '</td><td>' + CurrencyNoCents(row.col9) + '</td><td>' + CurrencyNoCents(row.col10) + '</td><td>' + CurrencyNoCents(row.col11) + '</td><td>' + formatCurrency(row.col12) + '</td></tr>');
+                                              $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' +
+                                                    formatCurrency(row.col2) + '</td><td>' + CurrencyNoCents(row.col3) + '</td><td>' + CurrencyNoCents(row.col4) +
+                                                    '</td><td>' + CurrencyNoCents(row.col5) + '</td><td>' + CurrencyNoCents(row.col6) + '</td><td>' +
+                                                    CurrencyNoCents(row.col7) + '</td><td>' + CurrencyNoCents(row.col8) + '</td><td>' + CurrencyNoCents(row.col9) +
+                                                    '</td><td>' + CurrencyNoCents(row.col10) + '</td><td>' + CurrencyNoCents(row.col11) + '</td></tr>');
                                               }
                                               }
                                               },errorHandler);
@@ -309,7 +313,7 @@
 <div class="main-content">
 <table>
 <tr>
-<td  width="80%"><p>Basic Plan</p> <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/><span id="paymentDesc">{PaymentDescription}</span></td>
+<td  width="80%"><p>Basic Plan <i>Pelan Asas</i>: <span id="planName">{PlanName}</span><br/><span id="paymentDesc">{PaymentDescription}</span></td>
 <td  width="20%">Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i><br/> <span id="laName">{LAName}</span></td>
 </tr>
 </table>
@@ -318,76 +322,44 @@
 <!--<div align="center"><span id="advanceYearlyIncome"></span></div>-->
 <table id="table-data">
 <thead>
-    <tr><th colspan="18"><span id="advanceYearlyIncome"></span></th></tr>
-<tr>
-    <th rowspan="3" class="contentSmall"><br/>Policy Year<br/><br/><i>Tahun Polisi</i></th>
-    <th rowspan="3" class="contentSmall"><br/>Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
-
-<!--
-<th rowspan="3">Policy Year<br/><br/><i>TahunPolisi</i></th>
-<th rowspan="3">Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
--->
+    <tr><th colspan="17"><span id="advanceYearlyIncome"></span></th></tr>
+    <tr>
+        <th rowspan="3" class="contentSmall"><br/>Policy Year<br/><br/><i>Tahun Polisi</i></th>
+        <th rowspan="3" class="contentSmall"><br/>Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
     
+        <th  colspan="6">Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Terjamin</i> (Set A)</th>
+        <th  colspan="5">Not Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tidak Terjamin</i> (Set B)</th>
     
-<th  colspan="7">Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Terjamin</i> (Set A)</th>
-<th  colspan="5">Not Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tidak Terjamin</i> (Set B)</th>
-
-</tr>
-<tr>
-<th rowspan="2" class="contentSmall">Annual Premium
-(Beg. of Year)<br/><br/><i>Premium
-Tahunan
-(Permulaan
-Tahun)
-<br/>(1)</i></th>
-
-<th rowspan="2" class="contentSmall">Yearly Income
-(End of Year)<br/><br/><i>Pendapatan
-Tahunan (Akhir
-Tahun)
-<br/>(2)</i></th>
-
-<th rowspan="2" class="contentSmall">Surrender Value
-(End of Year)<br/><br/><i>Nilai
-Penyerahan
-(Akhir Tahun)
-<br/>(3)</i></th>
-
-<th colspan="2" class="content">Death Benefit 
-<br/><br/><i>Faedah Kematian/TPD
-Tahun<br/>(4)</i></th>
-
-<th colspan="2" class="content">TPD
-Benefit ^<br/><br/><i>Faedah TPD
-<br/>(5)</i></th>
-
-<th COLSPAN=2 class="content">Total Surrender Value (End of Year)<span id="cashPayment1"></span><br/><br/><i>Jumlah Nilai Penyerahan (Akhir Tahun)
-<br/><span id="totalSurrenderValue">{totalSurrenderValue}</span></i></th>
-
-<th COLSPAN=2 class="content">Total Death Benefit (End of Year)*^<span id="cashPayment2"></span><br/><br/><i>Jumlah Faedah Kematian/TPD (Akhir Tahun)
-<br/><span id="tpdBenefit">{tpdBenefit}</span></i></th>
-
-<th rowspan="2" class="content">Total Annual Premium (Include all riders) (Beg. of Year)<br/><br/><i>Jumlah Premium Tahunan(Termasuk semua rider)(Permulaan Tahun)
-<br/>(8)</i></th>
-
-</tr>
-<tr>
-<th class="contentSmall">Beg. of Year<br/>
-<i>Permulaan Tahun
-<br/>(4A)</i>
-</th>
-<th class="contentSmall">End of Year<br/><i>Akhir Tahun
-<br/>(4B)</i></th>
-<th class="contentSmall">Beg. of Year<br/>
-<i>Permulaan Tahun
-<br/>(5A)</i></th>
-<th class="contentSmall">End of Year<br/><i>Akhir Tahun
-<br/>(5B)</i></th>
-<th class="content">Sce. A</th>
-<th class="content">Sce. B</th>
-<th class="content">Sce. A</th>
-<th class="content">Sce. B</th>
-</tr>
+    </tr>
+    <tr>
+        <th rowspan="2" class="contentSmall">Annual Premium(Beg. of Year)<br/><br/><i>Premium Tahunan (Permulaan Tahun) <br/>(1)</i></th>
+        
+        <th rowspan="2" class="contentSmall">Yearly Income (End of Year)<br/><br/><i>Pendapatan Tahunan (Akhir Tahun)<br/>(2)</i></th>
+        
+        <th rowspan="2" class="contentSmall">Surrender Value (End of Year)<br/><br/><i>Nilai Penyerahan (Akhir Tahun)<br/>(3)</i></th>
+        
+        <th colspan="2" class="content">Death Benefit <br/><br/><i>Faedah Kematian/TPD Tahun<br/>(4)</i></th>
+        
+        <th rowspan="2" class="content">TPD Benefit ^<br/><br/><i>Faedah TPD <br/>(5)</i></th>
+        
+        <th COLSPAN=2 class="content">Total Surrender Value (End of Year)<span id="cashPayment1"></span><br/><br/><i>Jumlah Nilai Penyerahan (Akhir Tahun)
+        <br/><span id="totalSurrenderValue">{totalSurrenderValue}</span></i></th>
+        
+        <th COLSPAN=2 class="content">Total Death Benefit (End of Year)*^<span id="cashPayment2"></span><br/><br/><i>Jumlah Faedah Kematian/TPD (Akhir Tahun)
+        <br/><span id="tpdBenefit">{tpdBenefit}</span></i></th>
+        
+        <th rowspan="2" class="content">Total Annual Premium (Include all riders) (Beg. of Year)<br/><br/><i>Jumlah Premium Tahunan(Termasuk semua rider)(Permulaan Tahun)
+        <br/>(8)</i></th>
+    
+    </tr>
+    <tr>
+        <th class="contentSmall">Beg. of Year<br/><i>Permulaan Tahun<br/>(4A)</i></th>
+        <th class="contentSmall">End of Year<br/><i>Akhir Tahun<br/>(4B)</i></th>    
+        <th class="content">Sce. A</th>
+        <th class="content">Sce. B</th>
+        <th class="content">Sce. A</th>
+        <th class="content">Sce. B</th>
+    </tr>
 </thead>
 <tbody>
 <!--sql data here-->

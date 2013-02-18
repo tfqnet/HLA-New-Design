@@ -18,6 +18,7 @@
 #import "BrowserViewController.h"
 #import "PDSBrowserViewController.h"
 #import "PDSViewController.h"
+#import "CashPromiseViewController.h"
 
 @interface SIMenuViewController ()
 
@@ -1246,17 +1247,35 @@ id RiderCount;
             
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-                
-                
-                ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
-                ReportPage.SINo = getSINo;
-                [self presentViewController:ReportPage animated:NO completion:Nil];
-                
+
+				ReportViewController *ReportPage;
+				CashPromiseViewController *CPReportPage;
+				
+                if([getBasicPlan isEqualToString:@"HLACP" ]){
+					CPReportPage = [[CashPromiseViewController alloc] init ];
+					CPReportPage.SINo = getSINo;
+					[self presentViewController:CPReportPage animated:NO completion:Nil];
+					
+				}
+				else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+					ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+					ReportPage.SINo = getSINo;
+					[self presentViewController:ReportPage animated:NO completion:Nil];
+				}
+					
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [spinner stopAnimating];
                     spinnerLabel.text = @"";
 
-                    [ReportPage dismissViewControllerAnimated:NO completion:Nil];
+					if([getBasicPlan isEqualToString:@"HLACP" ]){
+						
+						[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+					}
+					else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+						[ReportPage dismissViewControllerAnimated:NO completion:Nil];
+					}
+					
+                    
 
                     BrowserViewController *controller = [[BrowserViewController alloc] init];
                     controller.title = @"Quotation";
@@ -1280,6 +1299,7 @@ id RiderCount;
                 });
                 
                 ReportPage = Nil;
+				CPReportPage = Nil;
                 
             });
             
