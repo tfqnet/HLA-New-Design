@@ -177,8 +177,6 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-//    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
-//    self.myScrollView.contentSize = CGSizeMake(1024, 704);
     self.myScrollView.frame = CGRectMake(0, 44, 768, 960-264);
     self.myScrollView.contentSize = CGSizeMake(768, 960);
     
