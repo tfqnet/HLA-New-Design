@@ -199,7 +199,7 @@
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
                     NSLog(@"Error inserting data into database.");
-                }
+                }	
                 //NSLog(@"%@",sqlStmt);
                 prevRider= @"";
                 riderInPageCount = 0;

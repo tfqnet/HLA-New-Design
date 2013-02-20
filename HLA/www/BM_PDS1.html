@@ -105,6 +105,8 @@
 			$('#PremPayYear').html(row.PremiumPaymentOption);
 			$('#BasicSA').html(formatCurrency(row.BasicSA));
 			$('#BasicSA1').html(formatCurrency(row.BasicSA));
+			$('#BasicSA3').html(formatCurrency(row.BasicSA));
+			$('#BasicSA4').html(formatCurrency(row.BasicSA));
 			$('#PolTerm').html(row.PolicyTerm);
 		
 		    var now = new Date();	
@@ -113,6 +115,7 @@
 		    
                     $('#DateModified').html(displayDateFull);
                     $('#PrintDate').html(displayDate);
+		    $('#PrintDate2').html(displayDate);
                 }
             },errorHandler);
         },errorHandler,nullHandler);
