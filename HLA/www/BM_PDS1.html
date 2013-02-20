@@ -79,6 +79,15 @@
                         planName = row.PlanName;
                         planCode = row.PlanCode;                    
                     }
+		    
+		    if(planCode == 'HLACP'){
+			document.getElementById('HLACP').style.visibility = "visible";
+			document.getElementById('HLACP').style.height = "700px";
+		    }
+		    else if(planCode == 'HLAIB'){
+			document.getElementById('HLAIB').style.visibility = "visible";
+			document.getElementById('HLAIB').style.height = "800px";
+		    }
                 }
                 else{
                                    alert('No data can be found');
@@ -191,7 +200,9 @@
 <div class="main-content">
 <div align="center"></div><br/>
 <div align="center"></div><br/>
-<table id="table-design"> 
+
+<div id="HLAIB" style="height: 0px;visibility: hidden;">
+    <table id="table-design"> 
 
 <tr>
     <td width="800" style="text-align:left;padding: 0px 0px 0px 5px;"><b>RISALAH PENDEDAHAN PRODUK</b></td>
@@ -290,7 +301,165 @@
 	    </td>
 	</tr>    
     </table>
+    
+</div>
+
+<div id="HLACP" style="height: 0px;visibility: hidden;">
+    <table id="table-design"> 
+	<tr>
+	    <td width="800" style="text-align:left;padding: 0px 0px 0px 5px;"><b>RISALAH PENDEDAHAN PRODUK</b></td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Hong Leong Assurance Berhad</b></td>
+	    
+	</tr>
+	<tr>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Baca Risalah Pendedahan Produk ini sebelum anda membuat keputusan untuk mengambil <i>HLA Cash Promise</i>. Pastikan anda juga
+		membaca terma dan syarat am.</b></td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>HLA Cash Promise<br/><span id="PrintDate2">{PrintDate}</span></b></td>
+	</tr>
+    
+    </table>
+    <br/>
+    <table>
+	<tr>
+	    <td width="10"><b>1.</b></td>
+	    <td><b>Apakah produk ini?</b></td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>Produk ini merupakan pelan penyertaan endowmen 25 tahun dengan pembayaran Pendapatan Tahunan Terjamin. Pendapatan Tahunan Terjamin akan dibayar bermula dari akhir tahun polisi pertama sehingga
+		kematangan. Tempoh pembayaran premium untuk pelan ini terhad kepada 6 tahun sahaja.</td>
+	</tr>
 	
+	<tr>
+	    <td><b>2.</b></td>
+	    <td><b>Apakah perlindungan / faedah yang disediakan?</b></td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>
+		<table width="100%" border="0">
+		    <tr>
+			<td width="10"><b>A)</b></td>
+			<td colspan="2"><u><b>Pelan Asas</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td colspan="2">
+			    Pendapatan Tahunan Terjamin bagi pelan ini adalah RM<span id="BasicSA3">{BasicSA}</span> dan tempoh diinsuranskan ialah 25 tahun atau atas penamatan, yang mana berlaku dahulu.
+			</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td width="10"><b>I)</b></td>
+			<td><u><b>Faedah Kematian</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>Jika Hayat Diinsuranskan meninggal dunia, faedah Kematian akan dibayar bersamaan dengan jumlah daripada yang berikut:<br/>
+			    (i)	Faedah Kematian Terjamin seperti yang ditunjukkan dalam jadual di bawah:<br/>
+				    <table width="70%" style="border-collapse: collapse; margin-left: 20px" border="1">
+					<tr>
+					    <td width="20%">Umur Kemasukan<br/>(Harijadi Lepas)</td>
+					    <td width="80%">Faedah Kematian Terjamin</td>
+					</tr>
+					<tr>
+					    <td>0 sehingga 40</td>
+					    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 12.50 kali Pendapatan Tahunan Terjamin</td>
+					</tr>
+					<tr>
+					    <td>41 sehingga 50</td>
+					    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 6.25 kali Pendapatan Tahunan Terjamin</td>
+					</tr>
+					<tr>
+					    <td>51 sehingga 60</td>
+					    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 5.50 kali Pendapatan Tahunan Terjamin</td>
+					</tr>
+					<tr>
+					    <td>61 sehingga 63</td>
+					    <td>100% daripada Pendapatan Tahunan Terjamin Belum Jelas + 5.00 kali Pendapatan Tahunan Terjamin</td>
+					</tr>
+				    </table>   
+			    (ii) Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+			    (iii) Dividen Tunai Terkumpul (jika ada), dan<br/>
+			    (iv) Dividen Terminal Istimewa (jika ada)
+			</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td width="10"><b>II)</b></td>
+			<td><u><b>Faedah Hilang Upaya Menyeluruh dan Kekal</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>Jika Hayat Diinsuranskan mengalami Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun dalam tempoh pembayaran premium (TPD), faedah TPD akan dibayar adalah 100% daripada
+			    Jumlah Premium Asas yang telah Dibayar sehingga tarikh genap tempoh premium sebelum tarikh kejadian yang mengakibatkan TPD. Di samping itu, semua premium asas masa depan yang perlu dibayar
+			    bermula dari tarikh genap tempoh premium serta-merta selepas tarikh kejadian yang mengakibatkan TPD akan dikecualikan. Semua faedah lain akan tetap tidak berubah selepas tuntutan TPD.
+			    <br/><br/>
+			    Had Faedah TPD setiap Hayat tidak berkenaan untuk pelan asas ini.
+			    <br/><br/>
+			    Nota: TPD merujuk kepada Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun dalam tempoh pembayaran premium. Definisi ini diguna pakai secara konsisten merentasi semua kolateral
+			    pemasaran bagi HLA Cash Promise.
+			    
+			</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td width="10"><b>III)</b></td>
+			<td><u><b>Pendapatan Tahunan Terjamin</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>Pelan ini membayar Pendapatan Tahunan Terjamin yang berjumlah RM<span id="BasicSA4">{BasicSA}</span> bermula dari akhir tahun polisi pertama sehingga kematangan, termasuk kedua-dua tarikh.
+			    </td>
+		    </tr>
+		    
+		    <tr>
+			<td></td>
+			<td width="10"><b>IV)</b></td>
+			<td><u><b>Faedah Matang</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>Polisi ini akan matang apabila Hayat Diinsuranskan masih hidup pada akhir tempoh polisi. Faedah Matang bersamaan dengan jumlah daripada yang berikut:</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>(i) Faedah Kematian Terjamin seperti yang ditunjukkan dalam jadual di bawah:<br/>
+			    <table width="60%" style="border-collapse: collapse; margin-left: 20px" border="1">
+				<tr>
+				    <td width="20%">Umur Kemasukan<br/>(Harijadi Lepas)</td>
+				    <td width="80%">Faedah Matang Terjamin</td>
+				</tr>
+				<tr>
+				    <td>0 sehingga 50</td>
+				    <td>12.50 kali Pendapatan Tahunan Terjamin</td>
+				</tr>
+				<tr>
+				    <td>51 sehingga 60</td>
+				    <td>11.0 kali Pendapatan Tahunan Terjamin</td>
+				</tr>
+				<tr>
+				    <td>61 sehingga 63</td>
+				    <td>10.0 kali Pendapatan Tahunan Terjamin</td>
+				</tr>
+			    </table>
+			    (ii) Pendapatan Tahunan Terjamin Terkumpul (jika ada),<br/>
+			    (iii) Dividen Tunai Terkumpul (jika ada), dan<br/>
+			    (iv) Dividen Terminal (jika ada)
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>    
+    </table>
+    
+</div>
+
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
 	<tr>
 	    <td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">

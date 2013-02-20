@@ -1368,6 +1368,12 @@ id RiderCount;
             PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
             PDSPage.SINo = getSINo;
             PDSPage.PDSLanguage = @"E";
+			if([getBasicPlan isEqualToString:@"HLACP" ]){
+				PDSPage.PDSPlanCode = @"HLACP";
+			}
+			else{
+				PDSPage.PDSPlanCode = @"HLAIB";
+			}
             [self presentViewController:PDSPage animated:NO completion:Nil];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1450,6 +1456,12 @@ id RiderCount;
             PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
             PDSPage.SINo = getSINo;
             PDSPage.PDSLanguage = @"M";
+			if([getBasicPlan isEqualToString:@"HLACP" ]){
+				PDSPage.PDSPlanCode = @"HLACP";
+			}
+			else{
+				PDSPage.PDSPlanCode = @"HLAIB";
+			}
             [self presentViewController:PDSPage animated:NO completion:Nil];
             
             dispatch_async(dispatch_get_main_queue(), ^{

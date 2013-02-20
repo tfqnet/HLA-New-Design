@@ -17,7 +17,7 @@
 @implementation PDSViewController
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
-@synthesize SINo, PDSLanguage;
+@synthesize SINo, PDSLanguage, PDSPlanCode;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -100,12 +100,14 @@
         NSLog(@"Error inserting data into database.");
     }
     
-    pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(htmlName, PageNum, PageDesc) VALUES ('ENG_PDS2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
-    DBID = [_db ExecuteINSERT:sqlStmt];
-    if (DBID <= 0){
-        NSLog(@"Error inserting data into database.");
-    }
+	if (![PDSPlanCode isEqualToString:@"HLACP"]) {
+		pageNum++;
+		sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(htmlName, PageNum, PageDesc) VALUES ('ENG_PDS2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+		DBID = [_db ExecuteINSERT:sqlStmt];
+		if (DBID <= 0){
+			NSLog(@"Error inserting data into database.");
+		}
+	}
     
     riderCount = 0; //reset rider count
     int descRiderCountStart = 10; //start of rider description page
@@ -131,7 +133,7 @@
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"]  || [curRider isEqualToString:@"PR"] ||
             [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"] || [curRider isEqualToString:@"PTR"]
-            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] ){
+            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"] ){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -206,7 +208,7 @@
             if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
                 [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"]
                 || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PTR"] ||
-                [prevRider isEqualToString:@"SP_STD"]){
+                [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"EDB"] || [prevRider isEqualToString:@"ETPDB"]){
                 
                 
                 prevRider = [prevRider stringByAppendingString:@";"];
@@ -629,13 +631,15 @@
         NSLog(@"Error inserting data into database.");
     }
     
-    pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(htmlName, PageNum, PageDesc) VALUES ('BM_PDS2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
-    DBID = [_db ExecuteINSERT:sqlStmt];
-    if (DBID <= 0){
-        NSLog(@"Error inserting data into database.");
-    }
-    
+	if (![PDSPlanCode isEqualToString:@"HLACP"]) {
+		pageNum++;
+		sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(htmlName, PageNum, PageDesc) VALUES ('BM_PDS2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+		DBID = [_db ExecuteINSERT:sqlStmt];
+		if (DBID <= 0){
+			NSLog(@"Error inserting data into database.");
+		}
+	}
+	
     riderCount = 0; //reset rider count
     int descRiderCountStart = 10; //start of rider description page
     int riderInPageCount = 0; //number of rider in a page, maximum 3
@@ -660,7 +664,7 @@
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
             [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"] || [curRider isEqualToString:@"PTR"]
-            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"]){
+            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"]){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -733,7 +737,7 @@
             if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
                 [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"]
                 || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PTR"] ||
-                [prevRider isEqualToString:@"SP_STD"]){
+                [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"EDB"]){
                 prevRider = [prevRider stringByAppendingString:@";"];
                 if (riderCount == 2) {
                     prevRider = [headerTitle stringByAppendingString:prevRider];
@@ -1159,7 +1163,7 @@
     NSString *QuerySQL;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
         
-        QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad (\"SINo\") VALUES (\"%@\") ", SINo];
+        QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad (\"SINo\", \"PlanCode\") VALUES (\"%@\", \"%@\") ", SINo, PDSPlanCode];
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE) {

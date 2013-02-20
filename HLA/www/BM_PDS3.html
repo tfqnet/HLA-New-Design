@@ -114,7 +114,8 @@
 			rider = row.riders.split(";");
 		    }
 				   
-				   
+		    document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
+		       
 		    //rider = row.riders.split(";");
 		    for(var i=0;i<(rider.length);i++){
 		    //alert(rider[i]);
@@ -386,7 +387,7 @@
 </div>
 <div class="main-content">
 
-<div id="pageLength" class="pageLength" style="position:relative;height:800px;">
+<div id="pageLength" class="pageLength" style="position:relative;">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -394,8 +395,8 @@
 </script> 
 <tr class="tblHeader" id="tblHeader" style="display:table-row;">
     <th class="contentSmall"><i><b>Riders</b></i></th>
-    <th class="Sum Assured/Benefit"><i><b>Jumlah Diinsuranskan/Faedah</b></i></th>
-    <th class="contentSmall" style="text-align:center;"><i><b>Tempoh Diinsuranskan</b></i></th>
+    <th class="Sum Assured/Benefit" width="10%"><i><b>Jumlah Diinsuranskan/Faedah</b></i></th>
+    <th class="contentSmall" width="10%" style="text-align:center;"><i><b>Tempoh Diinsuranskan</b></i></th>
     <th class="content"><i><b>Huraian Faedah</b></i></th>
 </tr>
  
@@ -702,6 +703,66 @@ tahun pertama selepas bermulanya TPD.<br/><br/>
 </td>
 </tr>
 <!--ETPD-Entended TPD Rider end-->
+
+<!--EDB-Enhanced Death Benefit Rider-->
+<tr class="EDB" id="EDB" style="display:table-row;">
+<td class="contentSmall">Enhanced Death Benefit Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="EDBRiderGYI">{EDBRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="EDBRiderTerm">{EDBRiderTerm}</span></td>
+<td class="content">
+Jika Hayat Diinsuranskan meninggal dunia, sejumlah amaun bersamaan dengan RM<span id="QQQEDBRiderGYI">{EDBDGYI}</span> akan dibayar.<br/> LIEN Juvenil akan dikenakan.
+
+</td>
+</tr>
+<!--EDB--Enhanced Death Benefit Rider end-->
+
+<!--ETPDB-Enhanced TPD Benefit Rider-->
+<tr class="ETPDB" id="ETPDB" style="display:table-row;">
+<td class="contentSmall">Enhanced TPD Benefit Rider</td>
+<td class="contentSmall" style="text-align:center;"><span id="ETPDBRiderGYI">{ETPDBRiderGYI}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="ETPDBRiderTerm">{ETPDBRiderTerm}</span></td>
+<td class="content">
+Jika Hayat Diinsuranskan mengalami Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun (TPD) atau Ketidakupayaan Masa Tua selepas
+mencapai umur 65 tahun (OAD), sejumlah amaun bersamaan dengan RM<span id="QQQETPDBRiderGYI">{ETPDBGYI}</span> akan dibayar.
+LIEN Juvenil akan dikenakan.<br/>
+<u>Peruntukan untuk Faedah TPD</u><br/>
+Faedah TPD akan dibayar berdasarkan kepada peruntukan TPD seperti di bawah:
+    <table id="illness" class="illness" style="border-collapse:collapse;border: 1px solid black;width: 60%;" >
+	<tr>
+	    <td width=50%>Umur Tercapai ketika Mengalami TPD</td>
+	    <td width=50%>Had Faedah TPD setiap Hayat</td>
+	</tr>
+	<tr>
+	    <td>Kurang daripada 7</td>
+	    <td>RM100,000</td>
+	</tr>
+	<tr>
+	    <td>7 sehingga kurang daripada 15</td>
+	    <td>RM500,000</td>
+	</tr>
+	<tr>
+	    <td>15 sehingga kurang daripada 65</td>
+	    <td>RM3,500,000</td>
+	</tr>
+    </table>
+    <br/>
+	Jumlah Faedah TPD setiap Hayat yang dibayar bagi semua polisi yang menginsuranskan Hayat yang Diinsuranskan tidak akan melebihi Had Faedah TPD setiap
+	Hayat seperti yang dinyatakan di atas. Jumlah Faedah TPD setiap Hayat merujuk kepada perlindungan TPD bagi semua polisi yang berkuat kuasa atas <u>setiap Hayat yang Diinsuranskan</u> ketika tuntutan dibuat selepas Lien Juvenil diaplikasikan.
+    <br/><br/>
+ 
+    
+    <u>Peruntukan untuk Faedah OAD</u><br/>
+    Jumlah Faedah OAD setiap Hayat yang dibayar bagi semua polisi yang menginsuranskan Hayat yang Diinsuranskan dihad kepada RM1,000,000 setiap Hayat.
+Jumlah Faedah OAD setiap Hayat merujuk kepada perlindungan OAD bagi semua polisi yang berkuat kuasa atas <u>setiap Hayat yang Diinsuranskan</u> tuntutan dibuat.<br/><br/>
+    
+    Nota: TPD merujuk kepada Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun dan OAD merujuk kepada Ketidakupayaan Masa Tua selepas
+    mencapai umur 65 tahun. Kedua-dua definisi ini diguna pakai secara konsisten merentasi semua kolateral pemasaran bagi Enhanced TPD Benefit Rider.
+    
+</td>
+
+</tr>
+<!--ETPDB--Enhanced TPD Benefit Rider end-->
+
 
 <!--HB-Hospitalisation Benefit start-->
 <tr class="HB" id="HB" style="display:table-row;">

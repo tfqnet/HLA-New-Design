@@ -70,7 +70,7 @@
 		    
 		    if(planCode == 'HLACP'){
 			document.getElementById('HLACP').style.visibility = "visible";
-			document.getElementById('HLACP').style.height = "600px";
+			document.getElementById('HLACP').style.height = "650px";
 		    }
 		    else if(planCode == 'HLAIB'){
 			document.getElementById('HLAIB').style.visibility = "visible";
@@ -80,6 +80,15 @@
             },errorHandler);
         },errorHandler,nullHandler);
         
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details where SINo = '" + siNo + "' AND PlanCode = 'HLACP'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                        var row = result.rows.item(0);
+                        $('#GYIPurchased').html(formatCurrency(row.BasicSA));
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
         
         //Details
         db.transaction(function(transaction) {
@@ -128,6 +137,23 @@
         
         
         return;
+    }
+    
+    function formatCurrency(num) {
+        if(num == '-'){
+            return ('-');
+        }
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
     }
 </script>
 </head>
@@ -231,7 +257,7 @@ The above listed events are not exhaustive and the Company may include more even
 <br/>
 </div>
 
-<div id="HLACP" style="visibility: hidden;height: 0px">
+<div id="HLACP" style="visibility: hidden;font-style: italic;height: 0px">
 <i>Produk ini merupakan pelan penyertaan endowmen 25 tahun dengan pembayaran Pendapatan Tahunan Terjamin. Pendapatan Tahunan Terjamin akan dibayar bermula dari akhir tahun pertama sehingga kematangan.
 Tempoh pembayaran premium untuk pelan ini terhad kepada 6 tahun sahaja.</i><br/><br/>
 
@@ -279,10 +305,10 @@ genap tempoh premium serta-merta selepas tarikh kejadian yang mengakibatkan TPD 
 Had Faedah TPD setiap Hayat tidak berkenaan untuk pelan asas ini.<br/><br/>
 
 <i>Nota: TPD merujuk kepada Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun dalam tempoh pembayaran premium. Definisi ini diguna pakai secara konsisten merentasi semua kolateral pemasaran
-bagi HLA Cash Promise.</i>
+bagi HLA Cash Promise.</i><br/><br/>
 
 <u><b>Pendapatan Tahunan Terjamin</b></u><br/>
-Pelan ini membayar Pendapatan Tahunan Terjamin yang berjumlah RM1,200.00 bermula dari akhir tahun pertama sehingga kematangan, termasuk kedua-dua tarikh.<br/>
+Pelan ini membayar Pendapatan Tahunan Terjamin yang berjumlah RM<span id="GYIPurchased">{GYIPurchased}</span> bermula dari akhir tahun pertama sehingga kematangan, termasuk kedua-dua tarikh.<br/>
 (i)&nbsp;&nbsp;&nbsp;&nbsp;Faedah Matang Terjamin seperti yang ditunjukkan dalam jadual di bawah:<br/>
     <tr>
 	<td width="10">&nbsp;</td>
@@ -325,8 +351,6 @@ information printed on each and every page. <i>Illustrasi Jualan ini mengandungi
 pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
 <b><span id="rptVersion">{rptVersion}</span></b> <br/>
 Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
-
-
 
 </td>
 <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>

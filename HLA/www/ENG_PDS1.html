@@ -79,6 +79,15 @@
                         planName = row.PlanName;
                         planCode = row.PlanCode;                    
                     }
+		    
+		    if(planCode == 'HLACP'){
+			document.getElementById('HLACP').style.visibility = "visible";
+			document.getElementById('HLACP').style.height = "700px";
+		    }
+		    else if(planCode == 'HLAIB'){
+			document.getElementById('HLAIB').style.visibility = "visible";
+			document.getElementById('HLAIB').style.height = "800px";
+		    }
                 }
                 else{
                                    alert('No data can be found');
@@ -88,7 +97,7 @@
         },errorHandler,nullHandler);
         
         db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "' AND PlanCode = '" + planCode  + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row = result.rows.item(0);
                 	//$('#dateModified').html(row.UpdatedAt);
@@ -96,6 +105,8 @@
 			$('#PremPayYear').html(row.PremiumPaymentOption);
 			$('#BasicSA').html(formatCurrency(row.BasicSA));
 			$('#BasicSA1').html(formatCurrency(row.BasicSA));
+			$('#BasicSA3').html(formatCurrency(row.BasicSA));
+			$('#BasicSA4').html(formatCurrency(row.BasicSA));
 			$('#PolTerm').html(row.PolicyTerm);
 		
 		    var now = new Date();	
@@ -104,14 +115,13 @@
 		    
                     $('#DateModified').html(displayDateFull);
                     $('#PrintDate').html(displayDate);
+		    $('#PrintDate2').html(displayDate);
                 }
             },errorHandler);
         },errorHandler,nullHandler);
         
         //$('#dbValues').html('');
         //$('#lbUsers').append('<br/>' + 'UserId' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'firstName' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'lastName');
-        
-        
         
         return;
     }
@@ -191,19 +201,19 @@
 <div class="main-content">
 <div align="center"></div><br/>
 <div align="center"></div><br/>
-<table id="table-design"> 
 
-<tr>
-    <td width="800" style="text-align:left;padding: 0px 0px 0px 5px;"><b>PRODUCT DISCLOSURE SHEET</b></td>
-    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Hong Leong Assurance Berhad</b></td>
+<div id="HLAIB" style="height: 0px;visibility: hidden;">
+    <table id="table-design"> 
+	<tr>
+	    <td width="800" style="text-align:left;padding: 0px 0px 0px 5px;"><b>PRODUCT DISCLOSURE SHEET</b></td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Hong Leong Assurance Berhad</b></td>
+	</tr>
+	<tr>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Read this Product Disclosure Sheet before you decide to take up the PlanName. Be sure to also read the general terms and conditions.</b></td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>HLA Income Builder<br/><span id="PrintDate">{PrintDate}</span></b></td>
+	</tr>
     
-</tr>
-<tr>
-    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Read this Product Disclosure Sheet before you decide to take up the PlanName. Be sure to also read the general terms and conditions.</b></td>
-    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>HLA Income Builder<br/><span id="PrintDate">{PrintDate}</span></b></td>
-</tr>
-    
-</table>
+    </table>
     
     <br/>
     
@@ -303,7 +313,165 @@
 	    </td>
 	</tr>    
     </table>
+    
+</div>
 	
+<div id="HLACP" style="height: 0px;visibility: hidden;">
+    <table id="table-design"> 
+	<tr>
+	    <td width="800" style="text-align:left;padding: 0px 0px 0px 5px;"><b>PRODUCT DISCLOSURE SHEET</b></td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Hong Leong Assurance Berhad</b></td>
+	</tr>
+	<tr>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Read this Product Disclosure Sheet before you decide to take up the HLA Cash Promise. Be sure to also read the general terms and conditions.</b></td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>HLA Cash Promise<br/><span id="PrintDate2">{PrintDate}</span></b></td>
+	</tr>
+    </table>
+    
+    <br/>
+    
+    <table>
+	<tr>
+	    <td width="10"><b>1.</b></td>
+	    <td><b>What is this product about?</b></td>
+	</tr>
+	<tr>
+	    <td>&nbsp;</td>
+	    <td>This is a 25-year participating endowment plan with Guaranteed Yearly Income. The Guaranteed Yearly Income is payable from end of 1st policy year up to maturity. The premium payment term of this plan is limited
+		to 6 years only.</td>
+	</tr>
+	<tr>
+	    <td><b>2.</b></td>
+	    <td><b>What are the covers / benefits provided?</b></td>
+	</tr>
+	<tr>
+	    <td>&nbsp;</td>
+	    <td>
+		<table width="100%" border="0">
+		    <tr>
+			<td width="10"><b>A)</b></td>
+			<td colspan="2"><u><b>Basic Plan</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td colspan="2">
+			    The Guaranteed Yearly Income for this plan is RM<span id="BasicSA3">{BasicSA}</span> and the
+			    duration of the coverage is 25 years or upon termination, whichever occurs first.<br/>    
+			</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td width="10"><b>I)</b></td>
+			<td><u><b>Death Benefit</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>In the event of Death of the Life Assured, the Death benefit equivalent to the sum of the following shall be payable:<br/>
+			    (i)	Guaranteed Death Benefit as shown in table below:<br/>
+				    <table width="60%" style="border-collapse: collapse; margin-left: 20px" border="1">
+					<tr>
+					    <td width="20%">Entry Age<br/>(Last Birthday)</td>
+					    <td width="80%">Guaranteed Death Benefit</td>
+					</tr>
+					<tr>
+					    <td>0 to 40</td>
+					    <td>100% of outstanding Guaranteed Yearly Income + 12.50 times of Guaranteed Yearly Income</td>
+					</tr>
+					<tr>
+					    <td>41 to 50</td>
+					    <td>100% of Outstanding Guaranteed Yearly Income + 6.25 times of Guaranteed Yearly Income</td>
+					</tr>
+					<tr>
+					    <td>51 to 60</td>
+					    <td>100% of Outstanding Guaranteed Yearly Income + 5.50 times of Guaranteed Yearly Income</td>
+					</tr>
+					<tr>
+					    <td>61 to 63</td>
+					    <td>100% of Outstanding Guaranteed Yearly Income + 5.00 times of Guaranteed Yearly Income</td>
+					</tr>
+				    </table>   
+			    (ii) Accumulated Guaranteed Yearly Income (if any),<br/>
+			    (iii)Accumulated Cash Dividend (if any) and <br/>
+			    (iv) Special Terminal Dividend (if any) <br/>
+			</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td width="10"><b>II)</b></td>
+			<td><u><b>Total and Permanent Disability Benefit</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>In the event of Death of the Life Assured, the Death benefit equivalent to the sum of the following shall be payable:<br/>
+			    In the event of Total and Permanent Disability of the Life Assured prior to attaining age 65 during the premium payment term (TPD), the TPD benefit payable shall be 100% of the Total Basic Premium
+			    Paid up to the premium due date prior to the event date that gives rise to TPD. In addition, all future basic premium due starting from the premium due date immediately following the event date that
+			    gives rise to TPD shall be waived. All other benefits shall remain intact after a TPD claim.
+			    <br/><br/>
+			    
+			    TPD Benefit Limit per life is not applicable to this basic plan.<br/><br/>
+			    
+			    Note: TPD refers to Total & Permanent Disability prior to attaining age 65 during the premium payment term. This definition applies consistently across all marketing collaterals for HLA Cash Promise.
+			    
+			</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td width="10"><b>III)</b></td>
+			<td><u><b>Guaranteed Yearly Income Benefit</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>This plan provides Guaranteed Yearly Income of RM<span id="BasicSA4">{BasicSA}</span> starting from end of of 1st policy year up to maturity, inclusive of both dates.</td>
+		    </tr>
+		    
+		    <tr>
+			<td></td>
+			<td width="10"><b>IV)</b></td>
+			<td><u><b>Maturity Benefit</b></u></td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>The Policy will mature upon survival of the Life Assured at the end of the policy term. A Maturity Benefit equivalent to the
+			sum of of the following shall be payable:</td>
+		    </tr>
+		    <tr>
+			<td></td>
+			<td></td>
+			<td>(i) Guaranteed Maturity Benefit as shown in table below:<br/>
+			    <table width="60%" style="border-collapse: collapse; margin-left: 20px" border="1">
+				<tr>
+				    <td width="20%">Entry Age<br/>(Last Birthday)</td>
+				    <td width="80%">Guaranteed Maturity Benefit</td>
+				</tr>
+				<tr>
+				    <td>0 to 50</td>
+				    <td>12.5 times of Guaranteed Yearly Income</td>
+				</tr>
+				<tr>
+				    <td>51 to 60</td>
+				    <td>11.0 times of Guaranteed Yearly Income</td>
+				</tr>
+				<tr>
+				    <td>61 to 63</td>
+				    <td>10.0 times of Guaranteed Yearly Income</td>
+				</tr>
+			    </table>
+			    (ii) Accumulated Guaranteed Yearly Income (if any),<br/>
+			    (iii) Accumulated Cash Dividend (if any), and<br/>
+			    (iv) Terminal Dividend (if any)
+			</td>
+		    </tr>
+		</table>
+	    </td>
+	</tr>    
+    </table>
+    
+</div>
+
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
 	<tr>
 		<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">

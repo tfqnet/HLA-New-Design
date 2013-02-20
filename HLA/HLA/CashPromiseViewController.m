@@ -1674,8 +1674,23 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             else{
                 if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
                     
-                    sumOtherRider = sumOtherRider +
-                    [[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+					if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"EDB" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"ETPDB" ]) {
+						
+						if (i <= 6) {
+							sumOtherRider = sumOtherRider +
+							[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+						}
+						else{
+							sumOtherRider = sumOtherRider + 0.00;
+						}
+						
+					}
+					else{
+						sumOtherRider = sumOtherRider +
+						[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+					}
+					
+                    
                 }
             }
 			
@@ -1898,8 +1913,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     for (int a= 1; a<=PolicyTerm; a++) {
         
-        if (a <= 20 || (a > 20 && a % 5  == 0) || (a == PolicyTerm && a%5 != 0) ) {
-			
+        //if (a <= 20 || (a > 20 && a % 5  == 0) || (a == PolicyTerm && a%5 != 0) ) {
+		if (a <= 25) {
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 				if (Age >= 0){
 					
@@ -2716,9 +2731,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								
 								if (i == 0) {
 									if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
-										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
-													, tempRiderCode, Age, tempRiderTerm ];
-										
+										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" "
+													" AND Term = \"%d\" AND Sex = \"%@\""
+													, tempRiderCode, Age, tempRiderTerm, sex];
+
 										if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 											while (sqlite3_step(statement) == SQLITE_ROW) {
 												[Rate addObject: [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
@@ -2738,10 +2754,19 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
-								[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", DBenefit] ];
-								[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
-								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+								if (i + 1 <= 6) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", DBenefit] ];
+									[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
+									[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+								}
+								else{
+									[tempCol1 addObject:[NSString stringWithFormat:@"0.00"]];
+									[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", DBenefit] ];
+									[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
+									[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+								}
+								
 								
 								
 							}
@@ -2796,8 +2821,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								// -------- end ---------------
 								if (i == 0) {
 									if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
-										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
-													, tempRiderCode, Age, tempRiderTerm ];
+										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\" AND Sex = \"%@\" "
+													, tempRiderCode, Age, tempRiderTerm, sex ];
 										
 										if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 											while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -2818,10 +2843,19 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
-								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", TPDBenefit]];
-								[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", OADBenefit]];
-								[tempCol4 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00 ]];
+								if (i + 1 <= 6) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", TPDBenefit]];
+									[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", OADBenefit]];
+									[tempCol4 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00 ]];
+									
+								}
+								else{
+									[tempCol1 addObject:[NSString stringWithFormat:@"0.00"]];
+									[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", TPDBenefit]];
+									[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", OADBenefit]];
+									[tempCol4 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00 ]];
+								}
 								
 								
 							}
@@ -3071,8 +3105,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             for (int j=1; j <= PolicyTerm; j++) {
                 
-                if (j <= 20 || (j > 20 && j % 5  == 0) || (j == PolicyTerm && j%5 != 0) ) {
-                    int currentAge = Age + j;
+                //if (j <= 20 || (j > 20 && j % 5  == 0) || (j == PolicyTerm && j%5 != 0) ) {
+                if (j <= 25) {
+					int currentAge = Age + j;
                     
                     NSString *strSeqNo = @"";
                     if (j < 10) {

@@ -100,7 +100,8 @@
                                               rider = row.riders.split(";");
                                               }
                                               
-                                              
+                                              document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';
+					      
                                               //rider = row.riders.split(";");
                                               for(var i=0;i<rider.length;i++){
 						//alert(rider[i]);
@@ -173,7 +174,7 @@
 </div>
 <div class="main-content">
 
-<div id="pageLength" class="pageLength" style="position:relative;height:800px;">
+<div id="pageLength" class="pageLength" style="position:relative;">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -270,6 +271,32 @@ i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca 
 </tr>
 <!--ETPD-Entended TPD Rider end-->
 
+<!--EDB-Enhanced Death Benefit Rider-->
+<tr class="EDB" id="EDB" style="display:table-row;">
+<td class="contentSmall">Enhanced Death Benefit Rider</td>
+<td class="content">
+Rider ini tidak melindungi kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula, mengikut
+mana-mana yang terkemudian
+
+</td>
+</tr>
+<!--EDB--Enhanced Death Benefit Rider end-->
+
+<!--ETPDB-Enhanced TPD Benefit Rider-->
+<tr class="ETPDB" id="ETPDB" style="display:table-row;">
+<td class="contentSmall">Enhanced TPD Benefit Rider</td>
+<td class="content">
+    Rider ini tidak melindungi Hilang Upaya Menyeluruh dan Kekal dan Ketidakupayaan Masa Tua yang berpunca secara langsung atau tidak langsung:<br/>
+    (a) daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+    (b) daripada apa-apa gangguan saraf atau penyakit mental;<br/>
+    (c) daripada membuat penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang, dalam mana-mana penerbangan
+    komersil berjadual tetap); atau<br/>
+    (d) daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang diisytiharkan atau tidak diisytiharkan,
+    rusuhan atau kekecohan awam.
+</td>
+
+</tr>
+<!--ETPDB--Enhanced TPD Benefit Rider end-->
 
 <!--CPA-Compprehensive Personal Accident Rider start-->
 <tr class="CPA" id="CPA" style="display:table-row;">

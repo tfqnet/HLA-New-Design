@@ -100,6 +100,7 @@
                                               rider = row.riders.split(";");
                                               }
                                               
+					      document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';	
                                               
                                               //rider = row.riders.split(";");
                                               for(var i=0;i<rider.length;i++){
@@ -173,7 +174,7 @@
 </div>
 <div class="main-content">
 
-<div id="pageLength" class="pageLength" style="position:relative;height:800px;">
+<div id="pageLength" class="pageLength" style="position:relative;">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -293,6 +294,31 @@ xv.&nbsp;&nbsp;Any dental treatment not necessitated by injury covered under thi
     </td>
 </tr>
 <!--ETPD-Entended TPD Rider end-->
+
+<!--EDB-Enhanced Death Benefit Rider-->
+<tr class="EDB" id="EDB" style="display:table-row;">
+<td class="contentSmall">Enhanced Death Benefit Rider</td>
+<td class="content">
+This rider does not cover the death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.
+
+</td>
+</tr>
+<!--EDB--Enhanced Death Benefit Rider end-->
+
+<!--ETPDB-Enhanced TPD Benefit Rider-->
+<tr class="ETPDB" id="ETPDB" style="display:table-row;">
+<td class="contentSmall">Enhanced TPD Benefit Rider</td>
+<td class="content">
+    This rider does not cover the Total and Permanent Disability and Old Age Disablement resulted directly or indirectly:<br/>
+    (a) from any self-inflicted bodily injury while sane or insane;<br/>
+    (b) from any nervous disorder or mental illness;<br/>
+    (c) from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a commercial airline); or<br/>
+    (d) from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots or civil commotion.    
+</td>
+
+</tr>
+<!--ETPDB--Enhanced TPD Benefit Rider end-->
+
 
 <!--HB-Hospitalisation Benefit start-->
 <tr class="HB" id="HB" style="display:table-row;">

@@ -213,11 +213,24 @@
         },errorHandler,nullHandler);
 	
         db.transaction(function(transaction) {
-            transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Basic Plan" as Desc, Annually, ' +
+	    var Query;
+	    
+	    if(planCode == 'HLAIB'){
+		Query = 'SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Basic Plan" as Desc, Annually, ' +
 				   'SemiAnnually, Quarterly, Monthly, "B" as RiderCode from SI_Store_Premium where Type in ("B") UNION ' +
 				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly, RiderCode ' +
 				   'FROM SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND '+
-				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;', [], function(transaction, result) {
+				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;';
+	    }
+	    else if(planCode == 'HLACP'){
+		Query = 'SELECT "1" as zzz,  "HLA Cash Promise" as Plan, "Basic Plan" as Desc, Annually, ' +
+				   'SemiAnnually, Quarterly, Monthly, "B" as RiderCode from SI_Store_Premium where Type in ("B") UNION ' +
+				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly, RiderCode ' +
+				   'FROM SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND '+
+				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;';
+	    }
+	    
+            transaction.executeSql(Query, [], function(transaction, result) {
                 
 		if (result != null && result.rows != null) {
 		    
@@ -281,11 +294,22 @@
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
-            //transaction.executeSql("SELECT * FROM Trad_Details where SINo = '" + siNo + "'", [], function(transaction, result) {
-            transaction.executeSql("SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
+            var Query;
+	    
+	    if(planCode == 'HLAIB'){
+		Query = "SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
 				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II') " +
 				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
-				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode ", [], function(transaction, result) {
+				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode "
+	    }
+	    else if(planCode == 'HLACP'){
+		Query = "SELECT * FROM (select '1' as No, 'HLA Cash Promise' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
+				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II','EDB', 'ETPDB') " +
+				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
+				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R','EDB', 'ETPDB')   ) as zzz ORDER BY No, PlanCode "
+	    }
+	    
+            transaction.executeSql(Query, [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     for(var i =0; i <result.rows.length; i++){
@@ -443,10 +467,10 @@
 	<tr>
 	    <td></td>
 	    <td>
-		<table border="1"  style="border-collapse:collapse;" id="table-PremiumDuration" width="100%" >
+		<table border="1"  style="border-collapse:collapse;" id="table-PremiumDuration" width="70%" >
 		    <thead>
 			<tr>
-			    <td><b>Plan/Rider</b></td>
+			    <td width=><b>Plan/Rider</b></td>
 			    <td><b>Type</b></td>
 			    <td><b>Premium payable until age</b></td>
 			</tr>
@@ -503,51 +527,51 @@
 	<tr><td></td></tr>
 	<tr>
 	    <td valign="top"><b>6.</b></td>
-	    <td valign="top">What are the major exclusions under this policy?</td>
+	    <td valign="top"><b>What are the major exclusions under this policy?</b></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr>
 	    <td></td>
 	    <td>
-		<u><b>Basic Plan</b></u>
-	    </td>
-	</tr>
-	<tr><td></td></tr>
-	<tr>
-	    <td></td>
-	    <td>
-		<u><b>Death Benefit</b></u>
-	    </td>
-	</tr>
-	<tr>
-	    <td></td>
-	    <td>
-		If the Life Assured whether sane or insane, commits suicide within twelve (12) months from the Issue Date or the Reinstatement Date,
-		whichever is the later, this Policy shall become void and we shall return the premiums paid without interest after deducting any amount due to us under this Policy.
+		<b>&nbsp;&nbsp;A) <u>Basic Plan</u></b>
 	    </td>
 	</tr>
 	<tr><td></td></tr>
 	<tr>
 	    <td></td>
 	    <td>
-		<u><b>Total & Permanent Disability</b></u>
+		<b>&nbsp;&nbsp;&nbsp;&nbsp;I)&nbsp; <u>Death Benefit</u></b>
 	    </td>
 	</tr>
 	<tr>
 	    <td></td>
 	    <td>
-		The policy shall not cover Total & Permanent Disability resulted directly or indirectly;<br/>
-		- 	from any self-inflicted bodily injury while sane or insane;<br/>
-		-	from any nervous disorder or mental illness;<br/>
-		-	from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a commercial airline); or<br/>
-		- 	from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots or civil commotion.<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the Life Assured whether sane or insane, commits suicide within twelve (12) months from the Issue Date or the Reinstatement Date,<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is the later, this Policy shall become void and we shall return the premiums paid without interest after deducting any amount due to us under this Policy.
+	    </td>
+	</tr>
+	<tr><td></td></tr>
+	<tr>
+	    <td></td>
+	    <td>
+		<b>&nbsp;&nbsp;&nbsp;&nbsp;II)&nbsp; <u>Total & Permanent Disability</u></b>
+	    </td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td style="margin-left: 10px">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The policy shall not cover Total & Permanent Disability resulted directly or indirectly;<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- from any self-inflicted bodily injury while sane or insane;<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- from any nervous disorder or mental illness;<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a commercial airline); or<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots or civil commotion.<br/>
 
 	    </td>
 	</tr>
 	<tr>
 	    <td></td>
 	    <td>
-		<u><b>Attaching Rider(s)</b></u>	
+		<b>&nbsp;&nbsp;B) <u>Attaching Rider(s)</u></b>
 	    </td>
 	</tr>
 	

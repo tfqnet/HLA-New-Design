@@ -214,12 +214,25 @@
 	
 	
         db.transaction(function(transaction) {
-            transaction.executeSql('SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Pelan Asas" as Desc, Annually, ' +
+            var Query;
+	    
+	    if(planCode == 'HLAIB'){
+		Query = 'SELECT "1" as zzz,  "HLA Income Builder" as Plan, "Pelan Asas" as Desc, Annually, ' +
 				   'SemiAnnually, Quarterly, Monthly, "B" as RiderCode from SI_Store_Premium where Type in ("B") UNION ' +
 				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly, RiderCode ' +
 				   'FROM SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND '+
-				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;', [], function(transaction, result) {
-                
+				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;';
+	    }
+	    else if(planCode == 'HLACP'){
+		Query = 'SELECT "1" as zzz,  "HLA Cash Promise" as Plan, "Pelan Asas" as Desc, Annually, ' +
+				   'SemiAnnually, Quarterly, Monthly, "B" as RiderCode from SI_Store_Premium where Type in ("B") UNION ' +
+				   'select "2" as zzz, riderdesc, "Rider", Annually, SemiAnnually, Quarterly, Monthly, RiderCode ' +
+				   'FROM SI_Store_Premium as A, Trad_Sys_Rider_Profile as B where A.Type = B.Ridercode AND '+
+				   'Type not in ("BOriginal") AND SemiAnnually IS NOT NULL;';
+	    }
+	    
+            transaction.executeSql(Query, [], function(transaction, result) {
+            
 		if (result != null && result.rows != null) {
 		    
                     var row;
@@ -282,11 +295,23 @@
         },errorHandler,nullHandler);
 	
 	db.transaction(function(transaction) {
-            //transaction.executeSql("SELECT * FROM Trad_Details where SINo = '" + siNo + "'", [], function(transaction, result) {
-            transaction.executeSql("SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Pelan Asas' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
+            
+            var Query;
+	    
+	    if(planCode == 'HLAIB'){
+		Query = "SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Pelan Asas' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
 				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II') " +
 				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
-				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode ", [], function(transaction, result) {
+				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode "
+	    }
+	    else if(planCode == 'HLACP'){
+		Query = "SELECT * FROM (select '1' as No, 'HLA Cash Promise' as PlanCode, 'Pelan Asas' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
+				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II','EDB', 'ETPDB') " +
+				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
+				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R','EDB', 'ETPDB')   ) as zzz ORDER BY No, PlanCode "
+	    }
+	    
+            transaction.executeSql(Query, [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     for(var i =0; i <result.rows.length; i++){
@@ -444,7 +469,7 @@
 	<tr>
 	    <td></td>
 	    <td>
-		<table border="1"  style="border-collapse:collapse;" id="table-PremiumDuration" width="100%" >
+		<table border="1"  style="border-collapse:collapse;" id="table-PremiumDuration" width="70%" >
 		    <thead>
 			<tr>
 			    <td><b>Pelan/Rider</b></td>
@@ -527,7 +552,7 @@
 	<tr>
 	    <td></td>
 	    <td>
-		<u><b>Attaching Rider(s)</b></u>	
+		<u><b>Rider yang Dilampirkan</b></u>	
 	    </td>
 	</tr>
 	

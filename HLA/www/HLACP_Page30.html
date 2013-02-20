@@ -72,6 +72,16 @@
             },errorHandler);
         },errorHandler,nullHandler);
         
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Details where SINo = '" + siNo + "' AND PlanCode = 'HLACP'", [], function(transaction, result) {
+                if (result != null && result.rows != null) {
+                    var row;
+                        var row = result.rows.item(0);
+                        $('#GYIPurchased').html(formatCurrency(row.BasicSA));
+                }
+            },errorHandler);
+        },errorHandler,nullHandler);
+	
         
         //Details
         db.transaction(function(transaction) {
@@ -116,6 +126,24 @@
         
         return;
     }
+    
+    function formatCurrency(num) {
+        if(num == '-'){
+            return ('-');
+        }
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+
 </script>
 </head>
  
@@ -188,7 +216,7 @@ TPD Benefit Limit per life is not applicable to this basic plan.<br/><br/>
 Note: TPD refers to Total & Permanent Disability prior to attaining age 65 during the premium payment term. This definition applies consistently across all marketing collaterals for HLA Cash Promise.<br/><br/>
 
 <u><b>Guaranteed Yearly Income</b></u><br/>
-This plan provides Guaranteed Yearly Income of RM<<GYI Purchased>> starting from end of 1st year up to maturity.<br/>
+This plan provides Guaranteed Yearly Income of RM<span id="GYIPurchased">{GYIPurchased}</span>  starting from end of 1st year up to maturity.<br/>
 <br/>
 
 <u><b>Maturity Benefit</b></u><br/>
