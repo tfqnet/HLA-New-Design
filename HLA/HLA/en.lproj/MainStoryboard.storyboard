@@ -3609,7 +3609,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Advance Yearly Income (Age) :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="17" adjustsFontSizeToFit="NO" id="hhw-8K-bIR">
-                                        <rect key="frame" x="70" y="315" width="312" height="43"/>
+                                        <rect key="frame" x="70" y="320" width="312" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -3649,17 +3649,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Yearly Income :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="17" adjustsFontSizeToFit="NO" id="qZS-SA-eD2">
-                                        <rect key="frame" x="70" y="219" width="156" height="43"/>
+                                        <rect key="frame" x="70" y="223" width="156" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" id="Gfj-ph-1VB">
-                                        <rect key="frame" x="374" y="219" width="287" height="44"/>
+                                        <rect key="frame" x="374" y="223" width="287" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
-                                            <segment title="Accumulation"/>
+                                            <segment title="Accumulate"/>
                                             <segment title="Pay Out"/>
                                         </segments>
                                         <connections>
@@ -3667,17 +3667,17 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Cash Dividend :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="17" adjustsFontSizeToFit="NO" id="0vQ-l4-w21">
-                                        <rect key="frame" x="70" y="267" width="267" height="43"/>
+                                        <rect key="frame" x="70" y="271" width="267" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" id="m4w-1l-KTQ">
-                                        <rect key="frame" x="374" y="267" width="287" height="44"/>
+                                        <rect key="frame" x="374" y="271" width="287" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
-                                            <segment title="Accumulation"/>
+                                            <segment title="Accumulate"/>
                                             <segment title="Pay Out"/>
                                         </segments>
                                         <connections>
@@ -3685,7 +3685,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </segmentedControl>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" id="N9g-ts-SOQ">
-                                        <rect key="frame" x="374" y="315" width="287" height="44"/>
+                                        <rect key="frame" x="374" y="320" width="287" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="60"/>
@@ -3697,7 +3697,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </segmentedControl>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mMD-V1-h2G">
-                                        <rect key="frame" x="64" y="396" width="80" height="33"/>
+                                        <rect key="frame" x="64" y="371" width="80" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="15"/>
                                         <state key="normal" title="Show" backgroundImage="button.png">
@@ -3712,14 +3712,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Add Health Loading" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="KWX-Is-Aqj">
-                                        <rect key="frame" x="165" y="396" width="356" height="37"/>
+                                        <rect key="frame" x="165" y="371" width="356" height="37"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="20"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" id="uFp-dL-6BN">
-                                        <rect key="frame" x="58" y="437" width="680" height="152"/>
+                                        <rect key="frame" x="58" y="412" width="680" height="152"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Health Loading (Per 1k SA) :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="vqs-Uk-hKq">
@@ -3730,7 +3730,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="xsV-An-LdJ">
-                                                <rect key="frame" x="456" y="7" width="218" height="31"/>
+                                                <rect key="frame" x="422" y="7" width="218" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -3746,7 +3746,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ENr-EM-AoK">
-                                                <rect key="frame" x="456" y="42" width="218" height="31"/>
+                                                <rect key="frame" x="422" y="42" width="218" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -3759,7 +3759,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="FuO-JG-db5">
-                                                <rect key="frame" x="456" y="77" width="218" height="31"/>
+                                                <rect key="frame" x="422" y="77" width="218" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -3775,7 +3775,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="qIS-HC-n7X">
-                                                <rect key="frame" x="456" y="113" width="218" height="31"/>
+                                                <rect key="frame" x="422" y="113" width="218" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -3805,28 +3805,57 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <action selector="btnPlanPressed:" destination="tj9-Su-5O4" eventType="touchUpInside" id="0PQ-Sg-jBD"/>
                                         </connections>
                                     </button>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" id="UGe-No-oRq">
-                                        <rect key="frame" x="374" y="171" width="287" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <segments>
-                                            <segment title="Accumulation"/>
-                                            <segment title="Pay Out"/>
-                                        </segments>
-                                        <connections>
-                                            <action selector="incomeSgmntCPPressed:" destination="tj9-Su-5O4" eventType="valueChanged" id="Eot-jT-5Hd"/>
-                                        </connections>
-                                    </segmentedControl>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" id="Il7-aF-k8N">
-                                        <rect key="frame" x="374" y="219" width="287" height="44"/>
+                                        <rect key="frame" x="374" y="223" width="287" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
-                                            <segment title="Accumulation"/>
+                                            <segment title="Accumulate"/>
                                             <segment title="Pay Out"/>
                                         </segments>
                                         <connections>
                                             <action selector="cashDivSgmntCPPressed:" destination="tj9-Su-5O4" eventType="valueChanged" id="rrK-LD-QYd"/>
                                         </connections>
                                     </segmentedControl>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Accumulate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dku-TZ-cXw">
+                                        <rect key="frame" x="374" y="165" width="97" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pay Out" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AEO-9z-i0u">
+                                        <rect key="frame" x="517" y="165" width="97" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="hVt-nn-Fs0">
+                                        <rect key="frame" x="374" y="189" width="97" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="YDk-PU-tKq">
+                                        <rect key="frame" x="517" y="189" width="97" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gUW-MV-gFA">
+                                        <rect key="frame" x="615" y="189" width="30" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ba7-7f-grv">
+                                        <rect key="frame" x="472" y="189" width="30" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Ryz-rw-YUS">
@@ -3866,15 +3895,20 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="cashDividendSegment" destination="m4w-1l-KTQ" id="1Nm-Kl-yH2"/>
                         <outlet property="healthLoadingView" destination="uFp-dL-6BN" id="9hv-8g-WJ0"/>
                         <outlet property="incomeSegment" destination="Gfj-ph-1VB" id="C6C-w5-ab3"/>
-                        <outlet property="incomeSgmntCP" destination="UGe-No-oRq" id="bxJ-1y-jme"/>
-                        <outlet property="labelAdvance" destination="hhw-8K-bIR" id="85N-lN-BHt"/>
-                        <outlet property="labelCashDiv" destination="0vQ-l4-w21" id="BQC-S6-tqb"/>
-                        <outlet property="labelMOP" destination="0XJ-vM-IbR" id="fLd-Sx-8IT"/>
-                        <outlet property="labelYearlyIncome" destination="qZS-SA-eD2" id="Ffd-e8-2X3"/>
+                        <outlet property="labelFive" destination="qZS-SA-eD2" id="2Io-aZ-EiS"/>
+                        <outlet property="labelFour" destination="0XJ-vM-IbR" id="RkI-qp-dz8"/>
+                        <outlet property="labelParAcc" destination="Dku-TZ-cXw" id="aix-A1-430"/>
+                        <outlet property="labelParPayout" destination="AEO-9z-i0u" id="bUQ-rV-OUG"/>
+                        <outlet property="labelPercent1" destination="Ba7-7f-grv" id="joe-vp-wFJ"/>
+                        <outlet property="labelPercent2" destination="gUW-MV-gFA" id="oii-s2-lZq"/>
+                        <outlet property="labelSeven" destination="hhw-8K-bIR" id="ia7-Z2-5sF"/>
+                        <outlet property="labelSix" destination="0vQ-l4-w21" id="mft-oW-8Px"/>
                         <outlet property="maxSALabel" destination="wpA-ZS-n8D" id="5Nn-dr-weU"/>
                         <outlet property="minSALabel" destination="jt9-NX-ABn" id="EVs-Dg-hqs"/>
                         <outlet property="myScrollView" destination="crT-Nm-bh7" id="yGh-OS-l0h"/>
                         <outlet property="myToolBar" destination="Ryz-rw-YUS" id="zLc-cp-d24"/>
+                        <outlet property="parAccField" destination="hVt-nn-Fs0" id="JF7-Od-Kvg"/>
+                        <outlet property="parPayoutField" destination="YDk-PU-tKq" id="bcd-oB-Bk5"/>
                         <outlet property="tempHLField" destination="FuO-JG-db5" id="8ij-wU-5ge"/>
                         <outlet property="tempHLTermField" destination="qIS-HC-n7X" id="nu1-ZT-8Tm"/>
                         <outlet property="termField" destination="LfL-X5-km1" id="rmF-u3-aaq"/>

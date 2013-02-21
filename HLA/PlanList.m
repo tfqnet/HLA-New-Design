@@ -30,12 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-
-- (void)viewDidUnload
-{
-    [self setDelegate:nil];
-    [super viewDidUnload];
+    NSLog(@"viewPlan!");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -96,6 +91,12 @@
 -(NSString *)selectedDesc
 {
     return [ListOfPlan objectAtIndex:selectedIndex];
+}
+
+- (void)viewDidUnload
+{
+    [self setDelegate:nil];
+    [super viewDidUnload];
 }
 
 @end

@@ -30,19 +30,19 @@
 @synthesize btnHealthLoading;
 @synthesize healthLoadingView;
 @synthesize MOPSegment;
-@synthesize incomeSegment,incomeSgmntCP,cashDivSgmntCP;
+@synthesize incomeSegment,cashDivSgmntCP;
 @synthesize advanceIncomeSegment;
 @synthesize cashDividendSegment;
 @synthesize HLField;
 @synthesize HLTermField;
 @synthesize tempHLField;
 @synthesize tempHLTermField;
-@synthesize myScrollView,labelAdvance,labelCashDiv,labelMOP,labelYearlyIncome;
+@synthesize myScrollView,labelSix,labelSeven,labelFour,labelFive;
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
 @synthesize planCode,requestOccpCode,basicH,dataInsert,basicBH,basicPH,basicLa2ndH;
-@synthesize popoverController,SINo,LACustCode,PYCustCode,SIDate,SILastNo,CustDate,CustLastNo;
+@synthesize SINo,LACustCode,PYCustCode,SIDate,SILastNo,CustDate,CustLastNo;
 @synthesize NamePP,DOBPP,OccpCodePP,GenderPP,secondLACustCode,IndexNo,PayorIndexNo,secondLAIndexNo;
 @synthesize delegate = _delegate;
 @synthesize requestAge,OccpCode,requestIDPay,requestIDProf,idPay,idProf;
@@ -51,11 +51,15 @@
 @synthesize requestAge2ndLA,requestDOB2ndLA,requestIndex2ndLA,requestOccp2ndLA,requestSex2ndLA,requestSmoker2ndLA;
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 @synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
-@synthesize requestOccpClass,OccpClass,MOPHLAIB,MOPHLACP,yearlyIncomeHLAIB,yearlyIncomeHLACP,cashDividendHLAIB,cashDividendHLACP;
+@synthesize requestOccpClass,OccpClass,MOPHLAIB,MOPHLACP,yearlyIncomeHLAIB,cashDividendHLAIB,cashDividendHLACP;
 @synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge;
+@synthesize planList = _planList;
+@synthesize planPopover = _planPopover;
+@synthesize labelParAcc,labelParPayout,labelPercent1,labelPercent2,parAccField,parPayoutField,getParAcc,getParPayout;
 
 #pragma mark - Cycle View
 
+id temp;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -88,12 +92,13 @@
     NSLog(@"BASIC-SINo:%@, age:%d, job:%@",SINo,ageClient,OccpCode);
     NSLog(@"BASIC-idPayor:%d, idProfile:%d",idPay,idProf);
     
-    if (!planList) {
-        planList = [[PlanList alloc] init];
-        planList.delegate = self;
+    if (_planList == nil) {
+        self.planList = [[PlanList alloc] init];
+        _planList.delegate = self;
     }
-    planChoose = [[NSString alloc] initWithFormat:@"%@",planList.selectedCode];
-    [self.btnPlan setTitle:planList.selectedDesc forState:UIControlStateNormal];
+    planChoose = [[NSString alloc] initWithFormat:@"%@",self.planList.selectedCode];
+    [self.btnPlan setTitle:self.planList.selectedDesc forState:UIControlStateNormal];
+    temp = btnPlan.titleLabel.text;
     
     if (ageClient > 65) {
         advanceIncomeSegment.enabled = NO;
@@ -107,8 +112,13 @@
     
     useExist = NO;
     termField.enabled = NO;
-    incomeSgmntCP.hidden = YES;
     cashDivSgmntCP.hidden = YES;
+    labelParAcc.hidden = YES;
+    labelParPayout.hidden = YES;
+    labelPercent1.hidden = YES;
+    labelPercent2.hidden = YES;
+    parAccField.hidden = YES;
+    parPayoutField.hidden = YES;
     
     healthLoadingView.alpha = 0;
     showHL = NO;
@@ -121,6 +131,7 @@
             [self getExistingBasic];
             if ([planChoose isEqualToString:@"HLACP"]) {
                 [self.btnPlan setTitle:@"HLA Cash Promise" forState:UIControlStateNormal];
+                temp = btnPlan.titleLabel.text;
             }
             [self tooglePlan];
             [self toogleExistingField];
@@ -189,6 +200,53 @@
 {
     minSALabel.text = @"";
     maxSALabel.text = @"";
+    
+    if (parAccField.text.length != 0||parPayoutField.text.length != 0) {
+        
+        NSRange rangeofDot = [parAccField.text rangeOfString:@"."];
+        NSString *substring = @"";
+        if (rangeofDot.location != NSNotFound) {
+            substring = [parAccField.text substringFromIndex:rangeofDot.location ];
+        }
+        
+        NSRange rangeofDot2 = [parPayoutField.text rangeOfString:@"."];
+        NSString *substring2 = @"";
+        if (rangeofDot2.location != NSNotFound) {
+            substring2 = [parPayoutField.text substringFromIndex:rangeofDot2.location ];
+        }
+        
+        int maxInc = 100;
+        int totalInc = 0;
+        int parAcc = 0;
+        int parPayout = 0;
+        
+        parAcc = [parAccField.text intValue];
+        parPayout = [parPayoutField.text intValue];
+        totalInc = parAcc + parPayout;
+        
+        if (totalInc > 100) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+        
+        else if (substring.length > 1||substring2.length > 1) {
+            
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        }
+        else {
+            if (parAccField.text.length != 0 && parPayoutField.text.length == 0 && parAcc <=100) {
+                parPayout = maxInc - parAcc;
+                parPayoutField.text = [NSString stringWithFormat:@"%d",parPayout];
+            }
+        
+            if (parPayoutField.text.length != 0 && parAccField.text.length == 0 && parPayout <=100) {
+                parAcc = maxInc - parAcc;
+                parAccField.text = [NSString stringWithFormat:@"%d",parAcc];
+            }
+        }
+    }
+    
     self.myScrollView.frame = CGRectMake(0, 44, 768, 960);
 }
 
@@ -217,19 +275,13 @@
 #pragma mark - Action
 
 - (IBAction)btnPlanPressed:(id)sender
-{    
-    if(![popoverController isPopoverVisible]){
+{
+    self.planList = [[PlanList alloc] init];
+    _planList.delegate = self;
+    self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
         
-		PlanList *popView = [[PlanList alloc] init];
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:popView];
-        popView.delegate = self;
-		
-		[popoverController setPopoverContentSize:CGSizeMake(350.0f, 200.0f)];
-        [popoverController presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	}
-    else{
-		[popoverController dismissPopoverAnimated:YES];
-	}
+    [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 200.0f)];
+    [self.planPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)MOPSegmentPressed:(id)sender
@@ -310,24 +362,6 @@
     NSLog(@"advance:%d",advanceYearlyIncomeHLAIB);
 }
 
-- (IBAction)incomeSgmntCPPressed:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    if (incomeSgmntCP.selectedSegmentIndex == 0) {
-        yearlyIncomeHLACP = @"ACC";
-    }
-    else if (incomeSgmntCP.selectedSegmentIndex == 1) {
-        yearlyIncomeHLACP = @"POF";
-    }
-    NSLog(@"yearlyIncomeCP:%@",yearlyIncomeHLACP);
-}
-
 - (IBAction)cashDivSgmntCPPressed:(id)sender
 {
     [self resignFirstResponder];
@@ -383,6 +417,10 @@
     NSString *substringHL = @"";
     NSRange rangeofDotTempHL = [tempHLField.text rangeOfString:@"."];
     NSString *substringTempHL = @"";
+    NSRange rangeofDotAcc = [parAccField.text rangeOfString:@"."];
+    NSString *substringAcc = @"";
+    NSRange rangeofDotPayout = [parPayoutField.text rangeOfString:@"."];
+    NSString *substringPayout = @"";
     
     if (rangeofDotSUM.location != NSNotFound) {
         substringSUM = [yearlyIncomeField.text substringFromIndex:rangeofDotSUM.location ];
@@ -393,7 +431,14 @@
     if (rangeofDotTempHL.location != NSNotFound) {
         substringTempHL = [tempHLField.text substringFromIndex:rangeofDotTempHL.location ];
     }
+    if (rangeofDotAcc.location != NSNotFound) {
+        substringAcc = [parAccField.text substringFromIndex:rangeofDotAcc.location ];
+    }
+    if (rangeofDotPayout.location != NSNotFound) {
+        substringPayout = [parPayoutField.text substringFromIndex:rangeofDotPayout.location ];
+    }
     
+    int maxParIncome = 0;
     if ([planChoose isEqualToString:@"HLAIB"]) {
         MOP = MOPHLAIB;
         yearlyIncome = yearlyIncomeHLAIB;
@@ -402,9 +447,11 @@
     }
     else {
         MOP = MOPHLACP;
-        yearlyIncome = yearlyIncomeHLACP;
+        yearlyIncome = @"PAR";
         cashDividend = cashDividendHLACP;
         advanceYearlyIncome = advanceYearlyIncomeHLACP;
+        
+        maxParIncome = [parAccField.text intValue] + [parPayoutField.text intValue];
     }
     NSLog(@"MOP:%d, yearlyIncome:%@, cashDividend:%@, advanceYearlyIncome:%d",MOP,yearlyIncome,cashDividend,advanceYearlyIncome);
     
@@ -451,6 +498,20 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Yearly Income Option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
+    
+    else if ([planChoose isEqualToString:@"HLACP"] && (parAccField.text.length==0||parPayoutField.text.length==0)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([planChoose isEqualToString:@"HLACP"] && maxParIncome > 100) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if ([planChoose isEqualToString:@"HLACP"] && (substringAcc.length > 1 || substringPayout.length > 1)) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    
     else if (cashDividend.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Cash Dividend option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -702,13 +763,8 @@
     }
     else {
         
-        yearlyIncomeHLACP = yearlyIncome;
-        if ([yearlyIncomeHLACP isEqualToString:@"ACC"]) {
-            incomeSgmntCP.selectedSegmentIndex = 0;
-        }
-        else if ([yearlyIncomeHLACP isEqualToString:@"POF"]) {
-            incomeSgmntCP.selectedSegmentIndex = 1;
-        }
+        parAccField.text = [NSString stringWithFormat:@"%d",getParAcc];
+        parPayoutField.text = [NSString stringWithFormat:@"%d",getParPayout];
         
         cashDividendHLACP = cashDividend;
         if ([cashDividendHLACP isEqualToString:@"ACC"]) {
@@ -778,12 +834,17 @@
     
     if ([planChoose isEqualToString:@"HLAIB"]) {
         
-        incomeSgmntCP.hidden = YES;
         cashDivSgmntCP.hidden = YES;
-        labelMOP.text = @"Premium Payment Option :";
-        labelYearlyIncome.text = @"Yearly Income :";
-        labelCashDiv.text = @"Cash Dividend :";
-        labelAdvance.text = @"Advance Yearly Income (Age) :";
+        labelFour.text = @"Premium Payment Option :";
+        labelFive.text = @"Yearly Income :";
+        labelSix.text = @"Cash Dividend :";
+        labelSeven.text = @"Advance Yearly Income (Age) :";
+        labelParAcc.hidden = YES;
+        labelParPayout.hidden = YES;
+        labelPercent1.hidden = YES;
+        labelPercent2.hidden = YES;
+        parPayoutField.hidden = YES;
+        parAccField.hidden = YES;
         MOPSegment.hidden = NO;
         incomeSegment.hidden = NO;
         cashDividendSegment.hidden = NO;
@@ -804,17 +865,21 @@
     }
     else {
         
-        incomeSgmntCP.hidden = NO;
         cashDivSgmntCP.hidden = NO;
-        labelMOP.text = @"Yearly Income :";
-        labelYearlyIncome.text = @"Cash Dividend :";
-        labelCashDiv.text = @"";
-        labelAdvance.text = @"";
+        labelFour.text = @"Yearly Income :";
+        labelFive.text = @"Cash Dividend :";
+        labelSix.text = @"";
+        labelSeven.text = @"";
+        labelParAcc.hidden = NO;
+        labelParPayout.hidden = NO;
+        labelPercent1.hidden = NO;
+        labelPercent2.hidden = NO;
+        parPayoutField.hidden = NO;
+        parAccField.hidden = NO;
         MOPSegment.hidden = YES;
         incomeSegment.hidden = YES;
         cashDividendSegment.hidden = YES;
         advanceIncomeSegment.hidden = YES;
-        [incomeSgmntCP setSelectedSegmentIndex:UISegmentedControlNoSegment];
         [cashDivSgmntCP setSelectedSegmentIndex:UISegmentedControlNoSegment];
         
         MOPHLACP = 6;
@@ -1113,7 +1178,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT SINo, PlanCode, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM Trad_Details WHERE SINo=\"%@\"",SINo];
+                @"SELECT SINo, PlanCode, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome,HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm,PartialAcc,PartialPayout FROM Trad_Details WHERE SINo=\"%@\"",SINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -1134,7 +1199,8 @@
                 const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 10);
                 getTempHL = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
                 getTempHLTerm = sqlite3_column_int(statement, 11);
-                
+                getParAcc = sqlite3_column_int(statement, 12);
+                getParPayout = sqlite3_column_int(statement, 13);
 //                NSLog(@"basicPlan:%@",planChoose);
                 
             } else {
@@ -1170,7 +1236,7 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt) VALUES (\"%@\", \"%@\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@)", SINo, planChoose, termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")"];
+        @"INSERT INTO Trad_Details (SINo,  PlanCode, PTypeCode, Seq, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm, CreatedAt,UpdatedAt,PartialAcc,PartialPayout) VALUES (\"%@\", \"%@\", \"LA\", \"1\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", %@ , %@,%d,%d)", SINo, planChoose, termField.text, yearlyIncomeField.text, MOP, cashDividend, yearlyIncome, advanceYearlyIncome, HLField.text, [HLTermField.text intValue], tempHLField.text, [tempHLTermField.text intValue], @"datetime(\"now\", \"+8 hour\")",@"datetime(\"now\", \"+8 hour\")",[parAccField.text intValue],[parPayoutField.text intValue]];
 
         NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1563,25 +1629,31 @@
 
 -(void)Planlisting:(PlanList *)inController didSelectCode:(NSString *)aaCode andDesc:(NSString *)aaDesc
 {
+    
+    if (aaCode == NULL) {
+        [btnPlan setTitle:temp forState:UIControlStateNormal];
+    }
+    else {
+        [self.btnPlan setTitle:aaDesc forState:UIControlStateNormal];
+        planChoose = [[NSString alloc] initWithFormat:@"%@",aaCode];
+    }
+    
     if (![aaCode isEqualToString:planChoose]) {
         MOPHLAIB = 0;
         MOPHLACP = 0;
         yearlyIncomeHLAIB = nil;
-        yearlyIncomeHLACP = nil;
         cashDividendHLAIB = nil;
         cashDividendHLACP = nil;
         advanceYearlyIncomeHLAIB = 0;
         advanceYearlyIncomeHLACP = 0;
     }
-    planChoose = [[NSString alloc] initWithFormat:@"%@",aaCode];
-    [self.btnPlan setTitle:aaDesc forState:UIControlStateNormal];
     
     [self tooglePlan];
     if (getSumAssured != 0) {
         [self toogleExistingField];
     }
     
-    [popoverController dismissPopoverAnimated:YES];
+    [self.planPopover dismissPopoverAnimated:YES];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -1601,7 +1673,8 @@
 - (void)viewDidUnload
 {
     [self resignFirstResponder];
-    [self setPopoverController:nil];
+    [self setPlanPopover:nil];
+    [self setPlanList:nil];
     [self setDelegate:nil];
     [self setRequestOccpCode:nil];
     [self setRequestSINo:nil];
@@ -1659,16 +1732,20 @@
     [self setLRiderCode:nil];
     [self setLSumAssured:nil];
     [self setRiderCode:nil];
-    [self setLabelMOP:nil];
-    [self setLabelYearlyIncome:nil];
-    [self setLabelCashDiv:nil];
-    [self setLabelAdvance:nil];
-    [self setIncomeSgmntCP:nil];
+    [self setLabelFive:nil];
     [self setCashDivSgmntCP:nil];
-    [self setLabelMOP:nil];
-    [self setLabelYearlyIncome:nil];
-    [self setLabelCashDiv:nil];
-    [self setLabelAdvance:nil];
+    [self setLabelFour:nil];
+    [self setLabelSix:nil];
+    [self setLabelSeven:nil];
+    [self setLabelFive:nil];
+    [self setLabelSix:nil];
+    [self setLabelSeven:nil];
+    [self setLabelParAcc:nil];
+    [self setLabelParPayout:nil];
+    [self setLabelPercent1:nil];
+    [self setLabelPercent2:nil];
+    [self setParAccField:nil];
+    [self setParPayoutField:nil];
     [super viewDidUnload];
 }
 

@@ -24,15 +24,16 @@
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
-    UIPopoverController *popoverController;
-    PlanList *planList;
+    UIPopoverController *_planPopover;
+    PlanList *_planList;
     BOOL showHL;
     BOOL useExist;
     BOOL newSegment;
     id <BasicPlanViewControllerDelegate> _delegate;
 }
 
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, retain) UIPopoverController *planPopover;
+@property (nonatomic, retain) PlanList *planList;
 @property (nonatomic,strong) id <BasicPlanViewControllerDelegate> delegate;
 @property (nonatomic,strong) SIHandler *basicH;
 @property (nonatomic,strong) BasicPlanHandler *basicBH;
@@ -91,15 +92,20 @@
 @property (retain, nonatomic) IBOutlet UITextField *tempHLTermField;
 @property (strong, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
-@property (strong, nonatomic) IBOutlet UILabel *labelMOP;
-@property (strong, nonatomic) IBOutlet UILabel *labelYearlyIncome;
-@property (strong, nonatomic) IBOutlet UILabel *labelCashDiv;
-@property (strong, nonatomic) IBOutlet UILabel *labelAdvance;
+@property (strong, nonatomic) IBOutlet UILabel *labelFour;
+@property (strong, nonatomic) IBOutlet UILabel *labelFive;
+@property (strong, nonatomic) IBOutlet UILabel *labelSix;
+@property (strong, nonatomic) IBOutlet UILabel *labelSeven;
+@property (strong, nonatomic) IBOutlet UILabel *labelParAcc;
+@property (strong, nonatomic) IBOutlet UILabel *labelParPayout;
+@property (strong, nonatomic) IBOutlet UILabel *labelPercent1;
+@property (strong, nonatomic) IBOutlet UILabel *labelPercent2;
+@property (strong, nonatomic) IBOutlet UITextField *parAccField;
+@property (strong, nonatomic) IBOutlet UITextField *parPayoutField;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *MOPSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *incomeSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *cashDividendSegment;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *advanceIncomeSegment;
-@property (strong, nonatomic) IBOutlet UISegmentedControl *incomeSgmntCP;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *cashDivSgmntCP;
 
 - (IBAction)btnPlanPressed:(id)sender;
@@ -109,7 +115,6 @@
 - (IBAction)incomeSegmentPressed:(id)sender;
 - (IBAction)advanceIncomeSegmentPressed:(id)sender;
 - (IBAction)cashDividendSegmentPressed:(id)sender;
-- (IBAction)incomeSgmntCPPressed:(id)sender;
 - (IBAction)cashDivSgmntCPPressed:(id)sender;
 
 //for SINo
@@ -139,7 +144,6 @@
 @property (nonatomic, assign,readwrite) int MOPHLACP;
 @property (nonatomic, copy) NSString *yearlyIncome;
 @property (nonatomic, copy) NSString *yearlyIncomeHLAIB;
-@property (nonatomic, copy) NSString *yearlyIncomeHLACP;
 @property (nonatomic, copy) NSString *cashDividend;
 @property (nonatomic, copy) NSString *cashDividendHLAIB;
 @property (nonatomic, copy) NSString *cashDividendHLACP;
@@ -156,6 +160,8 @@
 @property (nonatomic,copy) NSString *getTempHL;
 @property (nonatomic,assign,readwrite) int getTempHLTerm;
 @property (nonatomic,assign,readwrite) int getHLTerm;
+@property (nonatomic,assign,readwrite) int getParAcc;
+@property (nonatomic,assign,readwrite) int getParPayout;
 
 @property (retain, nonatomic) NSMutableArray *LRiderCode;
 @property (retain, nonatomic) NSMutableArray *LSumAssured;
