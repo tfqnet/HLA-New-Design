@@ -142,7 +142,35 @@
 							  }
 							  },errorHandler);        				
 				   }
-				   else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP"){
+				   else if(temp == "LCWP"  ){
+					$('#illness tr').css('display','table-row');
+					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+					    if (result != null && result.rows != null) {
+					    var row = result.rows.item(0);
+						
+						if(row.PTypeCode == "LA"){
+						    $('#InsuredLives').html('2nd Life Assured');
+						}
+						else{
+						    $('#InsuredLives').html('Payor');
+						}
+					    }
+					},errorHandler);        				
+				    }
+				    else if(temp == "PR"){
+					transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+					    if (result != null && result.rows != null) {
+						var row = result.rows.item(0);
+						if(row.PTypeCode == "LA"){
+						    $('#PRInsuredLives').html('2nd Life Assured');
+						}
+						else{
+						    $('#PRInsuredLives').html('Payor');
+						}
+					    }
+					},errorHandler);        				
+				    }
+				   else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "SP_PRE" || temp == "PLCP"){
 				   $('#illness tr').css('display','table-row');
 				   }
 				   }
@@ -387,32 +415,34 @@
 //$('#table-design1').css('display','none');
 //$('#table-design1 tr').css('display','table-row');
 </script> 
-<tr class="tblHeader" id="tblHeader" style="display:table-row;">
-    <th class="contentSmall"><b>Riders</b></th>
-    <th class="Sum Assured/Benefit"><b>Sum Assured/Benefit</b></th>
-    <th class="contentSmall" style="text-align:center;"><b>Coverage Period</b></th>
-    <th class="content"><b>Description of Benefits</b></th>
-</tr>
+    <tr class="tblHeader" id="tblHeader" style="display:table-row;">
+	<th class="contentExtraSmall"><b>Riders</b></th>
+	<th class="contentExtraSmall"><b>Sum Assured/Benefit</b></th>
+	<th class="contentExtraSmall"><b>Coverage Period</b></th>
+	<th class="contentExtraSmall"><b>Insured Lives</b></th>
+	<th class="content"><b>Description of Benefits</b></th>
+    </tr>
  
 <!--CCTR-Convertible Comprehensive Term Rider start--> 
-<tr class="CCTR" id="CCTR" style="display:table-row;">
-    <td class="contentSmall">Convertible Comprehensive Term Rider</td>
-    <td class="contentSmall" style="text-align:center;"><span id="CCTRRiderGYI">{CCTRGYI}</span></td>
-    <td class="contentSmall" style="text-align:center;"><span id="CCTRRiderTerm">{CCTRRiderTerm}</span></td>
-    <td class="content">
-    RM <span id="QQQCCTRRiderGYI">{CCTRRiderGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD<br/>
-    provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further<br/>
-    evidence of insurability.<br/><br/>
-
-</td>
-</tr> 
+    <tr class="CCTR" id="CCTR" style="display:table-row;">
+	<td class="contentExtraSmall">Convertible Comprehensive Term Rider</td>
+	<td class="contentExtraSmall" style="text-align:center;"><span id="CCTRRiderGYI">{CCTRGYI}</span></td>
+	<td class="contentExtraSmall" style="text-align:center;"><span id="CCTRRiderTerm">{CCTRRiderTerm}</span></td>
+	<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
+	<td class="content">
+	RM <span id="QQQCCTRRiderGYI">{CCTRRiderGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD<br/>
+	provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further<br/>
+	evidence of insurability.<br/><br/>
+	</td>
+    </tr> 
 <!--CCTR-Convertible Comprehensive Term Rider end--> 
 
 <!--CIR-Critical Illness Rider start--> 
 <tr class="CIR" id="CIR" style="display:table-row;">
-<td class="contentSmall">Critical Illness Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="CIRRiderGYI">{CIRRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="CIRRiderTerm">{CIRRiderTerm}</span></td>
+<td class="contentExtraSmall">Critical Illness Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="CIRRiderGYI">{CIRRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="CIRRiderTerm">{CIRRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 RM <span id="QQQCIRRiderGYI">{CIRRiderGYI}</span> is payable upon diagnosis of any of the 36 critical illnesses covered of the life assured during the coverage term.<br/>
 Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
@@ -539,9 +569,10 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 
 <!--CIWP-Critical Illness WP Rider start--> 
 <tr class="CIWP" id="CIWP" style="display:table-row;">
-    <td class="contentSmall">Critical Illness WP Rider</td>
-    <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderGYI">{CIWPRiderGYI}</span><br/>(Annual)</td>
-    <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
+    <td class="contentExtraSmall">Critical Illness WP Rider</td>
+    <td class="contentExtraSmall" style="text-align:center;"><span id="CIWPRiderGYI">{CIWPRiderGYI}</span><br/>(Annual)</td>
+    <td class="contentExtraSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
+    <td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
     <td class="content">
     The rider Sum Assured will be paid to reduce future premium up to expiry date of the rider upon diagnosis of any of the 36 critical illnesses covered of the life<br/>
     assured during the coverage period.<br/>
@@ -666,9 +697,10 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 
 <!--CPA-Compprehensive Personal Accident Rider start-->
 <tr class="CPA" id="CPA" style="display:table-row;">
-<td class="contentSmall">Comprehensive Personal Accident Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="CPARiderGYI">{CPARiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="CPARiderTerm">{CPARiderTerm}</span></td>
+<td class="contentExtraSmall">Comprehensive Personal Accident Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="CPARiderGYI">{CPARiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="CPARiderTerm">{CPARiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 The following benefits are payable upon death or disability of the life assured caused by an accident during the coverage period:<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total &amp; Permanent Disability due to accident - refer to schedule of indemnities<br/>
@@ -683,9 +715,10 @@ The following benefits are payable upon death or disability of the life assured 
 
 <!--ETPD-Entended TPD Rider start-->
 <tr class="ETPD" id="ETPD" style="display:table-row;">
-<td class="contentSmall">Extended TPD Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="ETPDRiderGYI">{ETPDRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ETPDRiderTerm">{ETPDRiderTerm}</span></td>
+<td class="contentExtraSmall">Extended TPD Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ETPDRiderGYI">{ETPDRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ETPDRiderTerm">{ETPDRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 Upon TPD of the Life Assured during the coverage term and the Life Assured remained disabled, RM <span id="QQQETPDRiderGYI">{ETPDGYI}</span> shall be payable annually up to age 65 or death of
 the Life Assured, whichever is earlier.The first payment is on the 1st anniversary subsequent to the commencement of TPD.<br/><br/>
@@ -696,11 +729,12 @@ the Life Assured, whichever is earlier.The first payment is on the 1st anniversa
 
 <!--EDB-Enhanced Death Benefit Rider-->
 <tr class="EDB" id="EDB" style="display:table-row;">
-<td class="contentSmall">Enhanced Death Benefit Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="EDBRiderGYI">{EDBRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="EDBRiderTerm">{EDBRiderTerm}</span></td>
+<td class="contentExtraSmall">Enhanced Death Benefit Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="EDBRiderGYI">{EDBRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="EDBRiderTerm">{EDBRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
-In the event of Death of the Life Assured, a lump sum amount equivalent to RM <span id="EDBGYI">{EDBDGYI}</span> be payable.<br/> Juvenile LIEN rule is applicable.
+In the event of Death of the Life Assured, a lump sum amount equivalent to RM <span id="QQQEDBRiderGYI">{QQQEDBRiderDGYI}</span> be payable.<br/> Juvenile LIEN rule is applicable.
 
 </td>
 </tr>
@@ -708,9 +742,10 @@ In the event of Death of the Life Assured, a lump sum amount equivalent to RM <s
 
 <!--ETPDB-Enhanced TPD Benefit Rider-->
 <tr class="ETPDB" id="ETPDB" style="display:table-row;">
-<td class="contentSmall">Enhanced TPD Benefit Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="ETPDBRiderGYI">{ETPDBRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ETPDBRiderTerm">{ETPDBRiderTerm}</span></td>
+<td class="contentExtraSmall">Enhanced TPD Benefit Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ETPDBRiderGYI">{ETPDBRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ETPDBRiderTerm">{ETPDBRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 In the event of Total and Permanent Disability (TPD) (prior to age 65) of the Life Assured, a lump sum amount equivalent to RM <span id="ETPDBGYI">{ETPDBGYI}</span> be payable.
 Juvenile LIEN rule is applicable.<br/>
@@ -755,9 +790,10 @@ TPD Benefit will be paid in accordance to TPD provision as below:
 
 <!--HB-Hospitalisation Benefit start-->
 <tr class="HB" id="HB" style="display:table-row;">
-<td class="contentSmall">Hospitalisation Benefit</td>
-<td class="contentSmall" style="text-align:center;"><span id="HBRiderGYI">{HBRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="HBRiderTerm">{HBRiderTerm}</span></td>
+<td class="contentExtraSmall">Hospitalisation Benefit</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="HBRiderGYI">{HBRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="HBRiderTerm">{HBRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 Hospitalisation benefit of RM <span id="HBBenefit">{HBBenefit}</span> per week is payable if the life assured hospitalized during the coverage period.<br/><br/>
 </td>
@@ -767,9 +803,10 @@ Hospitalisation benefit of RM <span id="HBBenefit">{HBBenefit}</span> per week i
 
 <!--I20R-Income 20 Rider start-->
 <tr class="I20R" id="I20R" style="display:table-row;">
-    <td class="contentSmall">Income 20 Rider</td>
-    <td class="contentSmall" style="text-align:center;"><span id="I20RRiderGYI">{I20RRiderGYI}</span></td>
-    <td class="contentSmall" style="text-align:center;"><span id="I20RRiderTerm">{I20RRiderTerm}</span></td>
+    <td class="contentExtraSmall">Income 20 Rider</td>
+    <td class="contentExtraSmall" style="text-align:center;"><span id="I20RRiderGYI">{I20RRiderGYI}</span></td>
+    <td class="contentExtraSmall" style="text-align:center;"><span id="I20RRiderTerm">{I20RRiderTerm}</span></td>
+    <td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
     <td class="content">
 <u><b>Death/TPD Benefit</b></u><br/>
 
@@ -811,9 +848,10 @@ Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 
 <!--I30R-Income 30 Rider start-->
 <tr class="I30R" id="I30R" style="display:table-row;">
-<td class="contentSmall">Income 30 Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="I30RRiderGYI">{I30RRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="I30RRiderTerm">{I30RRiderTerm}</span></td>
+<td class="contentExtraSmall">Income 30 Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="I30RRiderGYI">{I30RRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="I30RRiderTerm">{I30RRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 <u><b>Death/TPD Benefit</b></u><br/>
 
@@ -853,9 +891,10 @@ Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 
 <!--I40R-Income 40 Rider start-->
 <tr class="I40R" id="I40R" style="display:table-row;">
-<td class="contentSmall">Income 40 Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="I40RRiderGYI">{I40RRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="I40RRiderTerm">{I40RRiderTerm}</span></td>
+<td class="contentExtraSmall">Income 40 Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="I40RRiderGYI">{I40RRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="I40RRiderTerm">{I40RRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 <u><b>Death/TPD Benefit</u></b><br/>
 In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
@@ -896,9 +935,10 @@ Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 
 <!--ICR-Income Care Rider start-->
 <tr class="ICR" id="ICR" style="display:table-row;">
-<td class="contentSmall">Income Care Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="ICRRiderGYI">{ICRRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ICRRiderTerm">{ICRRiderTerm}</span></td>
+<td class="contentExtraSmall">Income Care Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ICRRiderGYI">{ICRRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ICRRiderTerm">{ICRRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 Upon TPD or diagnosis of any 36 critical illness of the life assured during the coverage period and the life assured remained disabled, RM <span id="QQQICRRiderGYI">{ICRRiderGYI}</span> shall be<br/>
 payable annually up to age 65 or death of the life assured, whichever is earlier. The following 36 critical illnesses are covered<br/><br/>
@@ -1023,9 +1063,10 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 
 <!--ID20R-Income D-20 Rider start-->
 <tr class="ID20R" id="ID20R" style="display:table-row;">
-<td class="contentSmall">Income D-20 Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="ID20RRiderGYI">{ID20RRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ID20RRiderTerm">{ID20RRiderTerm}</span></td>
+<td class="contentExtraSmall">Income D-20 Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ID20RRiderGYI">{ID20RRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ID20RRiderTerm">{ID20RRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 <u><b>Death/TPD Benefit</u></b><br/>
 In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of:<br/>
@@ -1074,9 +1115,10 @@ Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if an
 
 <!--ID30R-Income D-30 Rider start-->
 <tr class="ID30R" id="ID30R" style="display:table-row;">
-<td class="contentSmall">Income D-30 Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="ID30RRiderGYI">{ID30RRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ID30RRiderTerm">{ID30RRiderTerm}</span></td>
+<td class="contentExtraSmall">Income D-30 Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ID30RRiderGYI">{ID30RRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ID30RRiderTerm">{ID30RRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 <u><b>Death/TPD Benefit</u></b><br/>
 In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of:<br/>
@@ -1125,9 +1167,10 @@ Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if an
 
 <!--ID40R-Income D-40 Rider start-->
 <tr class="ID40R" id="ID40R" style="display:table-row;">
-<td class="contentSmall">Income D-40 Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="ID40RRiderGYI">{ID40RRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ID40RRiderTerm">{ID40RRiderTerm}</span></td>
+<td class="contentExtraSmall">Income D-40 Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ID40RRiderGYI">{ID40RRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="ID40RRiderTerm">{ID40RRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 <u><b>Death/TPD Benefit</b></u><br/>
 In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of:<br/>
@@ -1176,9 +1219,10 @@ Income (if any), Accumulated Cash Dividend (if any) and Terminal Dividend (if an
 
 <!--IE20R-Income E-20 Rider start-->
 <tr class="IE20R" id="IE20R" style="display:table-row;">
-<td class="contentSmall">Income E-20 Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="IE20RRiderGYI">{IE20RRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="IE20RRiderTerm">{IE20RRiderTerm}</span></td>
+<td class="contentExtraSmall">Income E-20 Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="IE20RRiderGYI">{IE20RRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="IE20RRiderTerm">{IE20RRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 <u><b>Death/TPD Benefit</u></b><br/>
 In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
@@ -1220,9 +1264,10 @@ Terminal Dividend (if any) shall be payable.<br/>
 
 <!--IE30R-Income E-30 Rider start-->
 <tr class="IE30R" id="IE30R" style="display:table-row;">
-<td class="contentSmall">Income E-30 Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="IE30RRiderGYI">{IE30RRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="IE30RRiderTerm">{IE30RRiderTerm}</span></td>
+<td class="contentExtraSmall">Income E-30 Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="IE30RRiderGYI">{IE30RRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="IE30RRiderTerm">{IE30RRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 <u><b>Death/TPD Benefit</b></u><br/>
 In the event of Death/TPD (natural causes) (prior to attaining age 65) of the Life Assured, the Death/TPD (natural causes) benefit payable shall be the sum of
@@ -1265,9 +1310,10 @@ Terminal Dividend (if any) shall be payable.<br/>
 
 <!--LCPR-Living Care Plus Rider start--> 
 <tr class="LCPR" id="LCPR" style="display:table-row;">
-<td class="contentSmall">Living Care Plus Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="LCPRRiderGYI">{LCPRRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LCPRRiderTerm">{LCPRRiderTerm}</span></td>
+<td class="contentExtraSmall">Living Care Plus Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="LCPRRiderGYI">{LCPRRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="LCPRRiderTerm">{LCPRRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 RM <span id="QQQLCPRRiderGYI">{CIRGYI}</span> is payable upon the first occurrence death / TPD / diagnosis of any of the 36 critical illnesses of the life assured during the coverage period. TPD<br/>
 benefit will be paid in accordance to TPD provision.<br/>
@@ -1392,9 +1438,10 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 
 <!--LCWP-Living Care Waiver of Premium Payor Rider start--> 
 <tr class="LCWP" id="LCWP" style="display:table-row;">
-<td class="contentSmall">Living Care Waiver of<br/>Premium Payor Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderGYI">{LCWPRiderGYI}</span><br/>(Annual)</td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
+<td class="contentExtraSmall">Living Care Waiver of<br/>Premium Payor Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="LCWPRiderGYI">{LCWPRiderGYI}</span><br/>(Annual)</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="InsuredLives">{InsuredLives}</span></td>
 <td class="content">
 
 The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
@@ -1520,9 +1567,10 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 
 <!--PA-Personal Accident Rider start-->
 <tr class="PA" id="PA" style="display:table-row;">
-<td class="contentSmall">Personal Accident Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="PARiderGYI">{PARiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PARiderTerm">{PARiderTerm}</span></td>
+<td class="contentExtraSmall">Personal Accident Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PARiderGYI">{PARiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PARiderTerm">{PARiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 
 The following benefits are payable upon death or disability of the life assured caused by an accident during the coverage period:<br/>
@@ -1538,9 +1586,10 @@ The following benefits are payable upon death or disability of the life assured 
 
 <!--PR-Waiver of Premium Payor Rider start--> 
 <tr class="PR" id="PR" style="display:table-row;">
-<td class="contentSmall">Waiver of Premium Payor Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderGYI">{PRRiderGYI}</span><br/>(Annual)</td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
+<td class="contentExtraSmall">Waiver of Premium Payor Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PRRiderGYI">{PRRiderGYI}</span><br/>(Annual)</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PRInsuredLives">{PRInsuredLives}</span></td>
 <td class="content">
 The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the payor during the coverage period.<br/>
 <br/>
@@ -1551,9 +1600,10 @@ The rider sum assured will be paid to reduce future premium up to the expiry dat
 
 <!--SP_PRE-WOP Spouse Rider (Premier) start--> 
 <tr class="SP_PRE" id="SP_PRE" style="display:table-row;">
-<td class="contentSmall">WOP Spouse Rider<br/>(Premier)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderGYI">{SP_PRERiderGYI}</span><br/>(Annual)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderTerm">{SP_PRERiderTerm}</span></td>
+<td class="contentExtraSmall">WOP Spouse Rider<br/>(Premier)</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="SP_PRERiderGYI">{SP_PRERiderGYI}</span><br/>(Annual)</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="SP_PRERiderTerm">{SP_PRERiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">2nd Life Assured</td>
 <td class="content">
 
 The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
@@ -1679,9 +1729,10 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 
 <!--SP_STD-WOP Spouse Rider (Standard) start--> 
 <tr class="SP_STD" id="SP_STD" style="display:table-row;">
-<td class="contentSmall">WOP Spouse Rider<br/>(Standard)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderGYI">{SP_STDRiderGYI}</span><br/>(Annual)</td>
-<td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
+<td class="contentExtraSmall">WOP Spouse Rider<br/>(Standard)</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="SP_STDRiderGYI">{SP_STDRiderGYI}</span><br/>(Annual)</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">2nd Life Assured</td>
 <td class="content">
 The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the 2nd life assured during the coverage<br/>
 period.<br/>
@@ -1693,9 +1744,10 @@ period.<br/>
 
 <!--PLCP-Payor Living Care PLus Rider start--> 
 <tr class="PLCP" id="PLCP" style="display:table-row;">
-<td class="contentSmall">Payor Living Care PLus Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="PLCPRiderGYI">{PLCPRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PLCPRiderTerm">{PLCPRiderTerm}</span></td>
+<td class="contentExtraSmall">Payor Living Care PLus Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PLCPRiderGYI">{PLCPRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PLCPRiderTerm">{PLCPRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Payor</td>
 <td class="content">
 RM <span id="QQQPLCPRiderGYI">{PLCPGYI}</span> is payable upon the first occurrence of death / TPD / diagnosis of any of the 36 critical illnesses of the payor during the coverage period.<br/>
 Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
@@ -1843,9 +1895,10 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnes
 
 <!--PTR-Payor Term Rider start--> 
 <tr class="PTR" id="PTR" style="display:table-row;">
-<td class="contentSmall">Payor Term Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="SpecialPTRRiderGYI">{PTRRiderGYI}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
+<td class="contentExtraSmall">Payor Term Rider</td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="SpecialPTRRiderGYI">{PTRRiderGYI}</span></td>
+<td class="contentExtraSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
+<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 RM <span id="Special2PTRRiderGYI">{PTRGYI}</span> is payable upon  death / TPD (prior to age 65) of the payor during the coverage period.<br/>
 <br/>

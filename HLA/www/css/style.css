@@ -152,10 +152,10 @@
     font-size: 8px;
 }
 #table-data td {
-	padding: 5px 5px 5px 0;
+	
 	text-align:right;
          border: 1px solid black;
-	 height: 8px;
+	 height: 5px;
 }
 
 #table-data thead th {
@@ -287,6 +287,14 @@
     border: 1px solid black; 
 }
 
+#table-design1 th.contentExtraSmall {
+	width:7%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+	border: 1px solid black; 
+}
+
+
 #table-design1 td.content {
 	width:88%;
 	padding: 5px 5px 5px 5px;
@@ -297,6 +305,14 @@
 
 #table-design1 td.contentSmall {
 	width:12%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black;
+    vertical-align: text-top;
+}
+
+#table-design1 td.contentExtraSmall {
+	width:7%;
 	padding: 5px 5px 5px 5px;
 	text-align:left;
     border: 1px solid black;

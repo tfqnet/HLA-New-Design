@@ -57,7 +57,7 @@
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-01-22"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-02-21"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -81,7 +81,7 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 7 February 2013"; 
+        labelUpdated.text = @"Last Updated: 21 February 2013";
                 outletLogin.hidden = FALSE;
     }
     

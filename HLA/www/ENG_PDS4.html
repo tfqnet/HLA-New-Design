@@ -303,9 +303,9 @@
 				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode "
 	    }
 	    else if(planCode == 'HLACP'){
-		Query = "SELECT * FROM (select '1' as No, 'HLA Cash Promise' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
-				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II','EDB', 'ETPDB') " +
-				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
+		Query = "SELECT * FROM (select '1' as No, 'HLA Cash Promise' as PlanCode, 'Basic Plan' as Type, PremiumPaymentOption, 'B' as RiderCode, 'LA' as 'PTypeCode', '1' as Seq from Trad_Details where SINo = '"+ siNo + "' " +  
+				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode, A.PTypeCode, A.Seq from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II','EDB', 'ETPDB') " +
+				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode, A.PTypeCode, A.Seq from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
 				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R','EDB', 'ETPDB')   ) as zzz ORDER BY No, PlanCode "
 	    }
 	    
@@ -315,22 +315,22 @@
                     for(var i =0; i <result.rows.length; i++){
 	                var row = result.rows.item(i);
 			if(row.RiderCode == 'CIWP'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + CIWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + CIWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Life Assured</td>'  + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'PR'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'LCWP'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'SP_PRE'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>2nd Life Assured</td>'  + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'SP_STD'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>2nd Life Assured</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else{
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
                     }
                 }
@@ -345,6 +345,20 @@
         //alert($('#row0col5').text())
     }
 
+    function Insured(PersonType, Sequence){
+        if(PersonType == 'LA'){
+	    if(Sequence == '1'){
+		return 'Life Assured';
+	    }
+	    else{
+		return '2nd Life Assured';
+	    }
+	}
+	else{
+	    return 'Payor';
+	}
+    }
+    
     function formatCurrency(num) {
         if(num == '-'){
             return ('-');
@@ -472,7 +486,8 @@
 			<tr>
 			    <td width=><b>Plan/Rider</b></td>
 			    <td><b>Type</b></td>
-			    <td><b>Premium payable until age</b></td>
+			    <td><b>Insured Lives</b></td>
+			    <td><b>Premium payable until Insured Life's age</b></td>
 			</tr>
 		    </thead>
 		    <tbody>

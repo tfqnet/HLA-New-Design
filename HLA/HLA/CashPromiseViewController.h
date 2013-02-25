@@ -34,6 +34,9 @@
 @property (nonatomic, assign) int PolicyTerm;
 @property (nonatomic, assign) int BasicSA;
 
+@property (nonatomic, assign) int PartialAcc;
+@property (nonatomic, assign) int PartialPayout;
+
 @property (retain, nonatomic) NSMutableArray *OtherRiderCode;
 @property (retain, nonatomic) NSMutableArray *OtherRiderTerm;
 @property (retain, nonatomic) NSMutableArray *OtherRiderDesc;

@@ -27,7 +27,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize SummaryNonGuaranteedDBValueA, SummaryNonGuaranteedDBValueB, SummaryNonGuaranteedSurrenderValueA,SummaryNonGuaranteedSurrenderValueB;
 @synthesize BasicMaturityValueA, BasicMaturityValueB, BasicTotalPremiumPaid, BasicTotalYearlyIncome, TotalPremiumBasicANDIncomeRider;
 @synthesize EntireMaturityValueA,EntireMaturityValueB,EntireTotalPremiumPaid,EntireTotalYearlyIncome, OtherRiderDeductible;
-@synthesize aStrOtherRiderMonthly;
+@synthesize aStrOtherRiderMonthly, PartialAcc, PartialPayout;
 @synthesize aStrOtherRiderQuarterly,aStrOtherRiderSemiAnnually,strBasicMonthly,strBasicQuarterly,strBasicSemiAnnually, OccLoading;
 @synthesize strOriBasicAnnually, strOriBasicMonthly,strOriBasicQuarterly,strOriBasicSemiAnnually;
 @synthesize HealthLoadingTerm, TempHealthLoading, TempHealthLoadingTerm, aStrBasicSA;
@@ -224,7 +224,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             if(riderCount == 1){
                 riderInPage = [headerTitle stringByAppendingString:riderInPage];
-            }
+            } 
             
             riderInPage = [riderInPage stringByAppendingString:curRider];
             riderInPage = [riderInPage stringByAppendingString:@";"];
@@ -1346,6 +1346,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSMutableArray *TotalSurrenderValueB = [[NSMutableArray alloc] init ];
     NSMutableArray *TotalDBValueA = [[NSMutableArray alloc] init ];
     NSMutableArray *TotalDBValueB = [[NSMutableArray alloc] init ];
+    NSMutableArray *TotalPartialYearlyIncome = [[NSMutableArray alloc] init ];
+    NSMutableArray *YearlyIncomePayout = [[NSMutableArray alloc] init ];
     
     NSLog(@"insert to SI_Temp_Trad_Basic --- start");
     
@@ -1534,8 +1536,15 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         TotalPremiumBasicANDIncomeRider = TotalPremiumBasicANDIncomeRider +
         [[[AnnualPremium objectAtIndex:i-1 ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
         
-		[arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d.00", BasicSA]];
-	
+		// --------------------------
+		//[arrayYearlyIncome addObject:[NSString stringWithFormat:@"%d.00",  BasicSA]];
+		[arrayYearlyIncome addObject:[NSString stringWithFormat:@"%.2f",  PartialAcc/100.00 * BasicSA]];
+		
+		[YearlyIncomePayout addObject:[NSString stringWithFormat:@"%.2f", PartialPayout/100.00 * BasicSA ]];
+		[TotalPartialYearlyIncome addObject:[NSString stringWithFormat:@"%d", BasicSA ]];
+		
+		// ---------------------------------
+		
         BasicTotalYearlyIncome = BasicTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ];
         EntireTotalYearlyIncome = EntireTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex: i-1] doubleValue ];
 
@@ -1971,9 +1980,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 					
 					QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Basic (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
 								"\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
-								"\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\") VALUES ( "
+								"\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\",\"col22\",\"col23\" ) VALUES ( "
 								" \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\", "
-								"\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%@\",\"%@\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\")",
+								"\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%@\",\"%@\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\", \"%.0f\", \"%.0f\")",
 								SINo, a, a, inputAge, [AnnualPremium objectAtIndex:a -1],DBYearlyIncome, round([[SurrenderValue objectAtIndex:a-1] doubleValue ]),
 								[DBValue objectAtIndex:a-1], round([[DBValueEnd objectAtIndex:a-1] doubleValue ]),
 								[aValue objectAtIndex:a-1 ],
@@ -1984,7 +1993,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								strAccuCDA, strAccuCDB,
 								strAccuYIA, strAccuYIB,
 								round([[tDividendValueA objectAtIndex:a-1] doubleValue ]), round([[tDividendValueB objectAtIndex:a-1 ] doubleValue ]),
-								round([[speValueA objectAtIndex:a-1] doubleValue ]), round( [[speValueB objectAtIndex:a-1] doubleValue]) ];
+								round([[speValueA objectAtIndex:a-1] doubleValue ]), round( [[speValueB objectAtIndex:a-1] doubleValue]),
+								round([[YearlyIncomePayout objectAtIndex:a-1] doubleValue]), round( [[TotalPartialYearlyIncome objectAtIndex:a-1] doubleValue])];
 					
 					
 					if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -2038,6 +2048,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     TotalDBValueA = Nil;
     TotalDBValueB = Nil;
     QuerySQL = Nil;
+	TotalPartialYearlyIncome = nil;
+	YearlyIncomePayout = nil;
     
     NSLog(@"insert to SI_Temp_Trad_Basic --- End");
     
@@ -3218,15 +3230,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
         NSString *strEngYearlyIncome = @"";
         NSString *strBMYearlyIncome = @"";
-        
-        if (![YearlyIncome isEqualToString:@"ACC"]) {
-            strEngYearlyIncome = @"(Yearly Income Pay Out)";
-            strBMYearlyIncome = @"(Pendapatan Tahunan Dibayar)";
-        }
-        else {
-            strEngYearlyIncome = @"(Yearly Income Accumulation)";
-            strBMYearlyIncome = @"(Pendapatan Tahunan Terkumpul)";
-        }
+
+            strEngYearlyIncome = [NSString stringWithFormat: @"(Yearly Income %d%% Accumulate & %d%% Pay Out)", PartialAcc, PartialPayout];
+            strBMYearlyIncome = [NSString stringWithFormat: @"(Pendapatan Tahunan  %d%% Terkumpul & %d%% Dibayar)", PartialAcc, PartialPayout];
         
         QuerySQL = [NSString stringWithFormat:@"INSERT INTO SI_Temp_trad(\"SINo\",\"LAName\",\"PlanCode\",\"PlanName\",\"PlanDesc\", "
                     " \"MPlanDesc\",\"CashPaymentT\",\"CashPaymentD\",\"MCashPaymentT\",\"MCashPaymentD\",\"HLoadingT\",\"MHLoadingT\", "
@@ -3368,7 +3374,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 		QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
-					"\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",\"sex\",\"Class\",\"OccLoading\", \"HL1KSATerm\",\"TempHL1KSA\",\"TempHL1KSATerm\" from Trad_Details as A, "
+					"\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",\"sex\",\"Class\",\"OccLoading\", \"HL1KSATerm\",\"TempHL1KSA\",\"TempHL1KSATerm\" "
+					", \"PartialAcc\", \"PartialPayout\"  from Trad_Details as A, "
 					"Clt_Profile as B, trad_LaPayor as C, Adm_Occp_Loading as D where A.Sino = C.Sino AND C.custCode = B.custcode AND "
 					"D.OccpCode = B.OccpCode AND A.sino = \"%@\" AND \"seq\" = 1 ", SINo];
         
@@ -3385,12 +3392,21 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 HealthLoadingTerm = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 10)];
                 TempHealthLoading = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 11)];
                 TempHealthLoadingTerm = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 12)];
+				PartialAcc = sqlite3_column_int(statement, 13);
+                PartialPayout = sqlite3_column_int(statement, 14);
                 
+				
             }
             sqlite3_finalize(statement);
             
         }
         
+		if (PartialPayout == 100) {
+			YearlyIncome = @"POF";
+		}else{
+			YearlyIncome = @"ACC";
+		}
+		
         QuerySQL = [ NSString stringWithFormat:@"select \"OccLoading\" from Trad_Details as A, "
                     "Clt_Profile as B, trad_LaPayor as C, Adm_Occp_Loading as D where A.Sino = C.Sino AND C.custCode = B.custcode AND "
                     "D.OccpCode = B.OccpCode AND A.sino = \"%@\" AND \"seq\" = 1 ORDER By sequence ASC ", SINo];
@@ -3400,6 +3416,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 [OccLoading addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+				
             }
             sqlite3_finalize(statement);
             

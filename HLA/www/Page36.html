@@ -133,6 +133,7 @@
 						rider = row.riders.split(";");
 					}
                 	
+			document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
                 	
             		//rider = row.riders.split(";");
             		for(var i=0;i<rider.length;i++){
@@ -195,7 +196,35 @@
             					}
         					},errorHandler);        				
             			}
-            			else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP" || temp == "ETPDB"){
+				else if(temp == "LCWP"  ){
+				    $('#illness tr').css('display','table-row');
+				    transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+					if (result != null && result.rows != null) {
+					var row = result.rows.item(0);
+					    
+					    if(row.PTypeCode == "LA"){
+						$('#InsuredLives').html('Hayat Diinsuranskan ke-2');
+					    }
+					    else{
+						$('#InsuredLives').html('Pemunya polisi');
+					    }
+					}
+				    },errorHandler);        				
+				}
+				else if(temp == "PR"){
+				    transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+					if (result != null && result.rows != null) {
+					    var row = result.rows.item(0);
+					    if(row.PTypeCode == "LA"){
+						$('#PRInsuredLives').html('Hayat Diinsuranskan ke-2');
+					    }
+					    else{
+						$('#PRInsuredLives').html('Pemunya polisi');
+					    }
+					}
+				    },errorHandler);        				
+				}
+            			else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "SP_PRE" || temp == "PLCP" || temp == "ETPDB"){
             				$('#illness tr').css('display','table-row');
             			}
             		}
@@ -253,7 +282,7 @@
 
 
 
-<div id="pageLength" class="pageLength" style="position:relative;height:870px;">
+<div id="pageLength" class="pageLength" style="position:relative;">
 <table id="table-design1" style="font-style: italic;"  >
 <script>
 //$('#table-design1').css('display','none');
@@ -262,12 +291,14 @@
 <tr class="tblHeader" id="tblHeader" style="display:table-row;">
 <th class="contentSmall"><b>Riders</b></th>
 <th class="contentSmall" style="text-align:center;"><b>Tempoh Diinsuranskan</b></th>
+<th class="contentSmall" style="text-align:center;"><b>Hayat-hayat yang Diinsuranskan</b></th>
 <th class="content"><b>Huraian Faedah</b></th>
 </tr>
 
 <tr class="C" id="C" style="display:table-row;">
 <td class="contentSmall">C+ secure (<span id="cPlanOption">{cPlanOption}</span>)</td>
 <td class="contentSmall" style="text-align:center;"><span id="CRiderTerm">{C+RiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u>Faedah Kanser</u><br>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah Faedah seperti yang dinyatakan dalam jadual di bawah akan dibayar apabila Hayat Diinsuranskan didiagnosis dengan kanser yang di<br/>
@@ -335,6 +366,7 @@ vii.&nbsp;&nbsp;&nbsp;Semua Kanser jika Hayat Diinsuranskan meninggal dunia dala
 <tr class="CCTR" id="CCTR" style="display:table-row;">
 <td class="contentSmall">Convertible Comprehensive Term Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="CCTRRiderTerm">{CCTRRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 RM <span id="CCTRGYI">{CCTRGYI}</span> akan dibayar apabila hayat diinsuranskan meninggal dunia / mengalami TPD (sebelum umur 65 tahun) dalam tempoh diinsuranskan. Dalam<br/>
 tempoh rider dan sebelum mencecah umur 60 tahun, hayat diinsuranskan boleh menukar polisi ini kepada pelan sepanjang hayat atau endowmen tanpa<br/>
@@ -359,6 +391,7 @@ ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca
 <tr class="CIR" id="CIR" style="display:table-row;">
 <td class="contentSmall">Critical Illness Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="CIRRiderTerm">{CIRRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 RM <span id="CIRGYI">{CIRGYI}</span> akan dibayar apabila didiagnosis dengan mana-mana 36 penyakit kritikal yang melindungi hayat diinsuranskan dalam tempoh diinsuranskan.<br/>
 Premium tidak terjamin dan tertakluk kepada semakan semula Syarikat pada bila-bila masa dan dari semasa ke semasa dengan memberikan notis bertulis<br/>
@@ -503,6 +536,7 @@ v.&nbsp;&nbsp;&nbsp;&nbsp;Hayat diinsuranskan meninggal dunia dalam tempoh 28 ha
 <tr class="CIWP" id="CIWP" style="display:table-row;">
 <td class="contentSmall">Critical Illness WP Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider setelah didiagnosis dengan<br/>
 mana-mana 36 penyakit kritikal yang melindungi hayat diinsuranskan dalam tempoh diinsuranskan. Premium tidak terjamin dan tertakluk kepada semakan<br/>
@@ -643,6 +677,7 @@ v.&nbsp;&nbsp;&nbsp;&nbsp;Hayat diinsuranskan meninggal dunia dalam tempoh 28 ha
 <tr class="CPA" id="CPA" style="display:table-row;">
 <td class="contentSmall">Comprehensive Personal Accident Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="CPARiderTerm">{CPARiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau mengalami hilang upaya akibat kemalangan dalam tempoh diinsuranskan:<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh &amp; Kekal akibat kemalangan - rujuk jadual indeminiti<br/>
@@ -684,6 +719,7 @@ xv.&nbsp;&nbsp;Sebarang rawatan gigi yang tidak diperlukan untuk merawati kecede
 <tr class="ETPD" id="ETPD" style="display:table-row;">
 <td class="contentSmall">Extended TPD Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="ETPDRiderTerm">{ETPDRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Apabila Hayat Diinsuranskan mengalami TPD dalam tempoh diinsuranskan dan Hayat Diinsuranskan masih mengalami hilang upaya, RM <span id="ETPDGYI">{ETPDGYI}</span> akan dibayar<br/>
 setiap tahun sehingga umur 65 tahun atau Hayat Diinsuranskan meninggal dunia, mengikut mana-mana yang terdahulu.Pembayaran pertama adalah pada ulang<br/>
@@ -705,6 +741,7 @@ i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca 
 <tr class="EDB" id="EDB" style="display:table-row;">
 <td class="contentSmall">Enhanced Death Benefit Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="EDBRiderTerm">{EDBRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Jika Hayat Diinsuranskan meninggal dunia, sejumlah amaun bersamaan dengan RM<span id="EDBGYI">{EDBDGYI}</span> akan dibayar.<br/> LIEN Juvenil akan dikenakan.
 
@@ -716,6 +753,7 @@ Jika Hayat Diinsuranskan meninggal dunia, sejumlah amaun bersamaan dengan RM<spa
 <tr class="ETPDB" id="ETPDB" style="display:table-row;">
 <td class="contentSmall">Enhanced TPD Benefit Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="ETPDBRiderTerm">{ETPDBRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Jika Hayat Diinsuranskan mengalami Hilang Upaya Menyeluruh dan Kekal sebelum mencapai umur 65 tahun (TPD) atau Ketidakupayaan Masa Tua selepas
 mencapai umur 65 tahun (OAD), sejumlah amaun bersamaan dengan RM<span id="ETPDBGYI">{ETPDBGYI}</span> akan dibayar.
@@ -763,6 +801,7 @@ Jumlah Faedah OAD setiap Hayat merujuk kepada perlindungan OAD bagi semua polisi
 <tr class="HB" id="HB" style="display:table-row;">
 <td class="contentSmall">Hospitalisation Benefit</td>
 <td class="contentSmall" style="text-align:center;"><span id="HBRiderTerm">{HBRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Faedah Hospitalisasi sebanyak RM <span id="HBBenefit">{HBBenefit}</span> setiap minggu akan dibayar jika hayat diinsuranskan dimasukkan ke hospital dalam tempoh diinsuranskan.<br/><br/>
 Faedah penghospitalan tersebut tidak akan dibayar:<br/>
@@ -793,6 +832,7 @@ vi.&nbsp;&nbsp;&nbsp;kemasukan ke hospital disebabkan penyakit atau kecederaan y
 <tr class="HMM" id="HMM" style="display:table-row;">
 <td class="contentSmall">Major Medi Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="HMMRiderTerm">{HMMRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Polisi ini memperuntukkan perbelanjaan penghospitalan &amp; pembedahan dan faedah rawatan pesakit luar disebabkan oleh penyakit yang di bawah perlindungan<br/>
 polisi ini.<br/><br/>
@@ -810,6 +850,7 @@ ditanggung oleh diri pemegang polisi.<br/>
 <tr class="HSP_II" id="HSP_II" style="display:table-row;">
 <td class="contentSmall">Hospital &amp; Surgical Plus<br/>II Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="HSP_IIRiderTerm">{HSP_IIRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Polisi ini memperuntukkan perbelanjaan penghospitalan &amp; pembedahan dan faedah rawatan pesakit luar disebabkan oleh penyakit yang di bawah perlindungan<br/>
 polisi ini.<br/><br/>
@@ -829,6 +870,7 @@ oleh Syarikat dari masa ke semasa.<br/>
 <tr class="I20R" id="I20R" style="display:table-row;">
 <td class="contentSmall">Income 20 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="I20RRiderTerm">{I20RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 
@@ -873,6 +915,7 @@ ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 <tr class="I30R" id="I30R" style="display:table-row;">
 <td class="contentSmall">Income 30 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="I30RRiderTerm">{I30RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 
@@ -916,6 +959,7 @@ ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 <tr class="I40R" id="I40R" style="display:table-row;">
 <td class="contentSmall">Income 40 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="I40RRiderTerm">{I40RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 
@@ -960,6 +1004,7 @@ ada) akan dibayar atas kematangan pada akhir tempoh rider.<br/>
 <tr class="ICR" id="ICR" style="display:table-row;">
 <td class="contentSmall">Income Care Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="ICRRiderTerm">{ICRRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Apabila Hayat Diinsuranskan mengalami TPD atau didiagnosis dengan mana-mana 36 penyakit kritikal dalam tempoh diinsuranskan dan hayat diinsuranskan<br/>
 masih mengalami hilang upaya, RM <span id=""ICRGYI>{ICRGYI}</span> akan dibayar setiap tahun sehingga umur 65 tahun atau hayat diinsuranskan meninggal dunia, mengikut<br/>
@@ -1102,6 +1147,7 @@ v.&nbsp;&nbsp;&nbsp;&nbsp;Hayat diinsuranskan meninggal dunia dalam tempoh 28 ha
 <tr class="ID20R" id="ID20R" style="display:table-row;">
 <td class="contentSmall">Income D-20 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="ID20RRiderTerm">{ID20RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
@@ -1153,6 +1199,7 @@ Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkump
 <tr class="ID30R" id="ID30R" style="display:table-row;">
 <td class="contentSmall">Income D-30 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="ID30RRiderTerm">{ID30RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
@@ -1204,6 +1251,7 @@ Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkump
 <tr class="ID40R" id="ID40R" style="display:table-row;">
 <td class="contentSmall">Income D-40 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="ID40RRiderTerm">{ID40RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semula jadi) yang<br/>
@@ -1255,6 +1303,7 @@ Faedah matang bersamaan dengan jumlah 9 kali Pendapatan Tahunan Terjamin Terkump
 <tr class="IE20R" id="IE20R" style="display:table-row;">
 <td class="contentSmall">Income E-20 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="IE20RRiderTerm">{IE20RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang<br/>
@@ -1297,6 +1346,7 @@ Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Penda
 <tr class="IE30R" id="IE30R" style="display:table-row;">
 <td class="contentSmall">Income E-30 Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="IE30RRiderTerm">{IE30RRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 <u><b>Faedah Kematian/ Hilang Upaya Menyeluruh dan Kekal</u></b><br/>
 Jika Hayat Diinsuranskan meninggal dunia atau mengalami TPD (punca semula jadi) (sebelum umur 65 tahun), faedah Kematian/TPD (punca semuala jadi) yang<br/>
@@ -1340,6 +1390,7 @@ Faedah matang bersamaan dengan jumlah 10 kali Pendapatan Tahunan Terjamin, Penda
 <tr class="LCPR" id="LCPR" style="display:table-row;">
 <td class="contentSmall">Living Care Plus Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="LCPRRiderTerm">{LCPRRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 RM <span id="LCPRGYI">{CIRGYI}</span> akan dibayar apabila pertama kali hayat diinsuranskan meninggal dunia / mengalami TPD / didiagnosis dengan mana-mana 36 penyakit kritikal<br/>
 dalam tempoh diinsuranskan. Faedah TPD akan dibayar berdasarkan Peruntukan TPD.<br/>
@@ -1491,6 +1542,7 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Penge
 <tr class="MG_II" id="MG_II" style="display:table-row;">
 <td class="contentSmall">MedGlobal II</td>
 <td class="contentSmall" style="text-align:center;"><span id="MG_IIRiderTerm">{MG_IIRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Rujuk kepada Jadual Faedah di dalam Risalah Pendedahan Produk untuk butiran. Premium adalah tidak terjamin dan bergantung kepada umur tercapai Hayat<br/>
 Diinsuranskan. Semua bayaran faedah-faedah (kecuali Bilik Hospital dan Makan, Tunai Harian Hospital Kerajaan, Cukai Perkhidmatan Kerajaan, Pemindahan<br/>
@@ -1506,6 +1558,7 @@ oleh Syarikat dari masa ke semasa.<br/>
 <tr class="MG_IV" id="MG_IV" style="display:table-row;">
 <td class="contentSmall">MedGlobal IV Plus</td>
 <td class="contentSmall" style="text-align:center;"><span id="MG_IVRiderTerm">{MG_IVRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 Polisi ini memperuntukkan perbelanjaan penghospitalan &amp; pembedahan dan faedah rawatan pesakit luar disebabkan oleh penyakit yang di bawah perlindungan<br/>
 polisi ini.<br/>
@@ -1519,6 +1572,7 @@ Diinsuranskan.<br/>
 <tr class="PA" id="PA" style="display:table-row;">
 <td class="contentSmall">Personal Accident Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="PARiderTerm">{PARiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan</td>
 <td class="content">
 
 Faedah berikut akan dibayar apabila hayat diinsuranskan meninggal dunia atau mengalami hilang upaya akibat kemalangan dalam tempoh diinsuranskan:<br/>
@@ -1562,6 +1616,7 @@ xv.&nbsp;&nbsp;Sebarang rawatan gigi yang tidak diperlukan untuk merawati kecede
 <tr class="LCWP" id="LCWP" style="display:table-row;">
 <td class="contentSmall">Living Care Waiver of<br/>Premium Payor Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="InsuredLives">{InsuredLives}</span></td>
 <td class="content">
 
 Jumlah rider diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila pembayar meninggal dunia /<br/>
@@ -1714,6 +1769,7 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Penge
 <tr class="PR" id="PR" style="display:table-row;">
 <td class="contentSmall">Waiver of Premium Payor Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;"><span id="PRInsuredLives">{PRInsuredLives}</span></td>
 <td class="content">
 Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila pembayar meninggal dunia /<br/>
 mengalami TPD dalam tempoh diinsuranskan.<br/>
@@ -1736,6 +1792,7 @@ ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secar
 <tr class="SP_PRE" id="SP_PRE" style="display:table-row;">
 <td class="contentSmall">WOP Spouse Rider<br/>(Premier)</td>
 <td class="contentSmall" style="text-align:center;"><span id="SP_PRERiderTerm">{SP_PRERiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan ke-2</td>
 <td class="content">
 
 Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila hayat diinsuranskan yang<br/>
@@ -1889,6 +1946,7 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Penge
 <tr class="SP_STD" id="SP_STD" style="display:table-row;">
 <td class="contentSmall">WOP Spouse Rider<br/>(Standard)</td>
 <td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Hayat Diinsuranskan ke-2</td>
 <td class="content">
 Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan sehingga tarikh tamat tempoh rider apabila hayat diinsuranskan yang<br/>
 kedua meninggal dunia / mengalami TPD dalam tempoh diinsuranskan.<br/>
@@ -1911,6 +1969,7 @@ ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secar
 <tr class="PLCP" id="PLCP" style="display:table-row;">
 <td class="contentSmall">Payor Living Care PLus Rider</td>
 <td class="contentSmall" style="text-align:center;"><span id="PLCPRiderTerm">{PLCPRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Pemunya Polisi</td>
 <td class="content">
 RM <span id="PLCPGYI">{PLCPGYI}</span> akan dibayar apabila pertama kali pembayar meninggal dunia / mengalami TPD / didiagnosis dengan mana-mana 36 penyakit kritikal dalam<br/>
 tempoh diinsuranskan. Sebanyak 36 penyakit kritikal berikut dilindungi:<br/><br/>
@@ -2061,6 +2120,7 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Selain kejadian pertama kali penyakit kritikal. Penge
 <tr class="PTR" id="PTR" style="display:table-row;">
 <td class="contentSmall">PTR</td>
 <td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm">{PTRRiderTerm}</span></td>
+<td class="contentSmall" style="text-align:center;">Pemunya Polisi</td>
 <td class="content">
 RM <span id="PTRGYI">{PTRGYI}</span> akan dibayar apabila pembayar meninggal dunia / mengalami TPD (sebelum umur 65 tahun) dalam tempoh diinsuranskan.<br/>
 <br/>

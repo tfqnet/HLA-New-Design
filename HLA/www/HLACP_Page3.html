@@ -89,43 +89,44 @@
         
                 //Details
         db.transaction(function(transaction) {
-            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+            transaction.executeSql("SELECT * FROM Trad_Details WHERE SINo = '" + siNo + "' AND PlanCode = '" + planCode + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
                     var row = result.rows.item(0);
-                    if (parseInt(row.AdvanceYearlyIncome) == 0){ //title
-                        $('#advanceYearlyIncome').html('Illustration of HLA Cash Promise&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Cash Promise</i>');
-                    }
-                	
+                    
+                    $('#advanceYearlyIncome').html('Illustration of HLA Cash Promise&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Cash Promise</i>');
+                    
                     $('#dateModified').html(row.UpdatedAt);
                 	
                     if ($.trim(row.CashDividend) == 'ACC')//payment description
                     {
-                        $('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulation)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+                        $('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Accumulate)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
                         $('#col1').html('Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i>');
 
-                        if (parseInt(row.YearlyIncome) == 'POF')
+                        if (row.YearlyIncome == 'POF')
                         {
-                                $('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
-                                $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
-                                $('#col4').html('-<br/><br/>-');
-                                
-                                $('#col4A').html('-');
-                                $('#col4B').html('-');
-                                colType = 1;
+                            $('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
+                            $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
+                            $('#col4').html('-<br/><br/>-');
+                            $('#col4A').html('-');
+                            $('#col4B').html('-');
+                            colType = 2;
+                            document.getElementById('ShowGYI').style.visibility = 'hidden';
+                            document.getElementById('ShowGYI').style.height = '0px';
                         }
                         else
                         {
-                            $('#col2').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(11)</i>');
-                                $('#col3').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(12)</i>');
-                                $('#col4').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(13)</i>');
-                                colType = 2;
+                            $('#col2').html('Accumulated Yearly Income *<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(11)</i>');
+                            $('#col3').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(12)</i>');
+                            $('#col4').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(13)</i>');
+                            colType = 1;
+                            document.getElementById('ShowGYI').style.height = '50px';
                         }
                     }
                     else if (row.CashDividend == 'POF')
                     {
                 	$('#paymentDesc').html(cashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + mcashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');                	    
-                	if (parseInt(row.YearlyIncome) == 'POF')
+                	if (row.YearlyIncome == 'POF')
                 	{
                             $('#col1').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(10)</i>');
                             $('#col2').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(11)</i>');
@@ -136,16 +137,20 @@
                             $('#col4A').html('-');
                             $('#col4B').html('-');
                             colType = 3;
+                            
+                            document.getElementById('ShowGYI').style.visibility = 'hidden';
+                            document.getElementById('ShowGYI').style.height = '0px';
                 	}
                     	else
             		{
-                            $('#col1').html('Accumulated Yearly Income<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(10)</i>');
+                            $('#col1').html('Accumulated Yearly Income *<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(10)</i>');
                             $('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
                             $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
                             $('#col4').html('-<br/><br/>-');
                             $('#col4A').html('-');
                             $('#col4B').html('-');
                             colType = 4;
+                            document.getElementById('ShowGYI').style.height = '50px';
                 	}
                     }
                 }
@@ -156,20 +161,20 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_Basic where DataType = 'DATA'", [], function(transaction, result) {
             if (result != null && result.rows != null) {
                 var row;
-                                                  
+                    
                 for (var i = 0; i < result.rows.length; i++) {
                     var row = result.rows.item(i);
-                    //alert(colType)
-                    if (colType == 1){
+                    
+                    if (colType == 1){ // GYI:ACC CD:ACC
                     	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>');
                     }
-                    else if (colType == 2){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>');
+                    else if (colType == 2){ // GYI:POF CD:ACC
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>' );
                     }
-                    else if (colType == 3){
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>'  +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    else if (colType == 3){ // GYI:POF CD:POF
+                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>'  +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
-                    else if (colType == 4){
+                    else if (colType == 4){ // GYI:ACC CD:POF
                     	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
                     }
                     
@@ -209,16 +214,13 @@
 <tr><th colspan="12"><span id="advanceYearlyIncome"></span></th></tr>
 
 <tr>
-<th rowspan="3" class="content"><br/>Policy Year<br/><br/><i>Tahun Polisi</i></th>
-<th rowspan="3" class="content"><br/>Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
-<th  colspan="10">Not Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tidak Terjamin</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Set B)</th>
-
+    <th rowspan="3" class="content"><br/>Policy Year<br/><br/><i>Tahun Polisi</i></th>
+    <th rowspan="3" class="content"><br/>Life Ass'd Age at end of Year<br/><br/><i>Umur Hayat Diinsuranskan pada Akhir Tahun</i></th>
+    <th  colspan="10">Not Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tidak Terjamin</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Set B)</th>
 </tr>
 <tr>
-
     <th colspan="2" class="content">Current Year Cash Dividend<br/><br/>
-    <i>Dividen Tunai Tahun Semasa<br/>(9)</i></th>
-    
+        <i>Dividen Tunai Tahun Semasa<br/>(9)</i></th>
     <!--
     <th colspan="2" class="content" id="col1">Accumulated Cash Dividend<br/><br/><i>Dividen Tunai Terkumpul<br/>(10)</i></th>
     <th colspan="2" class="content" id="col2">Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i></th>
@@ -232,20 +234,20 @@
     <th colspan="2" class="content" id="col4">{col4}</th>
 </tr>
 <tr>
-<th>Sce. A</th>
-<th>Sce. B</th>
-
-<th id="col1A">Sce. A</th>
-<th id="col1B">Sce. B</th>
-
-<th id="col2A">Sce. A</th>
-<th id="col2B">Sce. B</th>
-
-<th id="col3A">Sce. A</th>
-<th id="col3B">Sce. B</th>
-
-<th id="col4A">Sce. A</th>
-<th id="col4B">Sce. B</th>
+    <th>Sce. A</th>
+    <th>Sce. B</th>
+    
+    <th id="col1A">Sce. A</th>
+    <th id="col1B">Sce. B</th>
+    
+    <th id="col2A">Sce. A</th>
+    <th id="col2B">Sce. B</th>
+    
+    <th id="col3A">Sce. A</th>
+    <th id="col3B">Sce. B</th>
+    
+    <th id="col4A">Sce. A</th>
+    <th id="col4B">Sce. B</th>
 </tr>
 
 </thead>
@@ -273,23 +275,32 @@
 <br/>
 
 <!--<span id="investmentScenarios"></span>-->
+<table id="ShowGYI" style="height: 0px;">
+    <tr>
+        <td>
+            * The amount shown in this column is inclusive of the Guaranteed Yearly Income amount Accumulated with the company as shown in column (2A).
+            Only the interest payable on accumulated Guaranteed Yearly Income is not guaranteed. <br/>
+            * Amaun yang ditunjukkan dalam lajur ini adalah termasuk amaun Pendapatan Tahunan Terjamin yang Terkumpul dengan Syarikat seperti yang ditunjukkan
+            dalam lajur (2A). Hanya faedah yang dibayar ke atas Pendapatan Tahunan Terjamin terkumpul adalah tidak terjamin
+        </td>
+    </tr>
+</table>
 
 <table id="table-notes">
-<tr>
-    <td width="50%">&nbsp;</td>
-    <td width="50%">The Illustration show the possible level of benefits you may expect on two investment scenarios :<br/>
-        <i>Illustrasi ini menunjukkan jangkaan tahap faedah berdasarkan dua senario pelaburan :</i><br/>
-        1. Scenario A (Sce. A) = Assumes the participating fund earns 6.25% every year<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;<i>Senario A (Sce. A) = Anggapan dana penyertaan memperolehi 6.25% setiap tahun</i><br/>
-        2. Scenario B (Sce. B) = Assumes the participating fund earns 4.25% every year<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;<i>Senario B (Sce. B) = Anggapan dana penyertaan memperolehi 4.25% setiap tahun</i><br/><br/>
-        <div style="width:600px;height:30px;border:2px solid black;padding: 5px 0px 0px 5px">
-            Guaranteed = Minimum you will receive regardless of the Company investment.<br/>
-            <i>Terjamin = Minimum yang akan anda perolehi tanpa bergantung kepada pencapaian pelaburan syarikat.</i>
-        </div></td>
-</tr>
+    <tr>
+        <td width="50%">&nbsp;</td>
+        <td width="50%">The Illustration show the possible level of benefits you may expect on two investment scenarios :<br/>
+            <i>Illustrasi ini menunjukkan jangkaan tahap faedah berdasarkan dua senario pelaburan :</i><br/>
+            1. Scenario A (Sce. A) = Assumes the participating fund earns 6.25% every year<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;<i>Senario A (Sce. A) = Anggapan dana penyertaan memperolehi 6.25% setiap tahun</i><br/>
+            2. Scenario B (Sce. B) = Assumes the participating fund earns 4.25% every year<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;<i>Senario B (Sce. B) = Anggapan dana penyertaan memperolehi 4.25% setiap tahun</i><br/><br/>
+            <div style="width:600px;height:30px;border:2px solid black;padding: 5px 0px 0px 5px">
+                Guaranteed = Minimum you will receive regardless of the Company investment.<br/>
+                <i>Terjamin = Minimum yang akan anda perolehi tanpa bergantung kepada pencapaian pelaburan syarikat.</i>
+            </div></td>
+    </tr>
 </table>
-<br/><br/><br/>
     
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
 
