@@ -92,37 +92,18 @@ id temp;
     NSLog(@"BASIC-SINo:%@, age:%d, job:%@",SINo,ageClient,OccpCode);
     NSLog(@"BASIC-idPayor:%d, idProfile:%d",idPay,idProf);
     
-    if (_planList == nil) {
-        self.planList = [[PlanList alloc] init];
-        _planList.delegate = self;
-    }
+    
+    self.planList = [[PlanList alloc] init];
+    _planList.delegate = self;
     planChoose = [[NSString alloc] initWithFormat:@"%@",self.planList.selectedCode];
     [self.btnPlan setTitle:self.planList.selectedDesc forState:UIControlStateNormal];
     temp = btnPlan.titleLabel.text;
     
-    if (ageClient > 65) {
-        advanceIncomeSegment.enabled = NO;
-    }
-    
-    if (ageClient > 50 && ageClient <=65)
-    {
-        [advanceIncomeSegment setEnabled:NO forSegmentAtIndex:0];
-        [[advanceIncomeSegment.subviews objectAtIndex:0] setAlpha:0.5];
-    }
-    
     useExist = NO;
     termField.enabled = NO;
-    cashDivSgmntCP.hidden = YES;
-    labelParAcc.hidden = YES;
-    labelParPayout.hidden = YES;
-    labelPercent1.hidden = YES;
-    labelPercent2.hidden = YES;
-    parAccField.hidden = YES;
-    parPayoutField.hidden = YES;
-    
     healthLoadingView.alpha = 0;
     showHL = NO;
-    [self getTermRule];
+    [self tooglePlan];
     
     if (self.requestSINo) {
         [self checkingExisting];
@@ -154,6 +135,8 @@ id temp;
         [self getProspectData];
         NSLog(@"2ndLAAge:%d",secondLAAge);
     }
+    
+    _planList = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -276,9 +259,11 @@ id temp;
 
 - (IBAction)btnPlanPressed:(id)sender
 {
-    self.planList = [[PlanList alloc] init];
-    _planList.delegate = self;
-    self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
+    if (_planList == nil) {
+        self.planList = [[PlanList alloc] init];
+        _planList.delegate = self;
+        self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
+    }
         
     [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 200.0f)];
     [self.planPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];

@@ -26,11 +26,11 @@
     NSString *databasePath;
     NSString *RatesDatabasePath;
     sqlite3 *contactDB;
-    UIPopoverController *popOverConroller;
+    UIPopoverController *_pTypePopOver;
     UIPopoverController *_RiderListPopover;
     UIPopoverController *_planPopover;
     UIPopoverController *_deducPopover;
-    RiderPTypeTbViewController *listPType;
+    RiderPTypeTbViewController *_PTypeList;
     RiderListTbViewController *_RiderList;
     RiderPlanTb *_planList;
     RiderDeducTb *_deductList;
@@ -50,12 +50,18 @@
     NSMutableArray *indexPaths;
 }
 
+@property (nonatomic, retain) UIPopoverController *RiderListPopover;
+@property (nonatomic, retain) UIPopoverController *planPopover;
+@property (nonatomic, retain) UIPopoverController *deducPopover;
+@property (nonatomic,strong) UIPopoverController *pTypePopOver;
+
 @property (nonatomic,strong) BasicPlanHandler *riderBH;
 @property (nonatomic,strong) SIHandler *riderH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 @property (nonatomic, retain) RiderListTbViewController *RiderList;
 @property (nonatomic, retain) RiderPlanTb *planList;
 @property (nonatomic, retain) RiderDeducTb *deductList;
+@property (nonatomic, retain) RiderPTypeTbViewController *PTypeList;
 @property (nonatomic,strong) id <RiderViewControllerDelegate> delegate;
 //--request
 @property (nonatomic,strong) id requestSINo;
@@ -86,10 +92,7 @@
 @property (nonatomic, assign,readwrite) int getMOP;
 @property (nonatomic, assign,readwrite) int getAdvance;
 //--
-@property (nonatomic, retain) UIPopoverController *RiderListPopover;
-@property (nonatomic, retain) UIPopoverController *planPopover;
-@property (nonatomic, retain) UIPopoverController *deducPopover;
-@property (nonatomic,strong) UIPopoverController *popOverConroller;
+
 
 @property (retain, nonatomic) IBOutlet UIButton *btnPType;
 @property (retain, nonatomic) IBOutlet UIButton *btnAddRider;

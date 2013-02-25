@@ -53,7 +53,7 @@
 @synthesize btnPType;
 @synthesize btnAddRider;
 @synthesize requestPlanCode,requestSINo,requestAge,requestCoverTerm,requestBasicSA;
-@synthesize pTypeCode,PTypeSeq,pTypeDesc,riderCode,riderDesc,popOverConroller;
+@synthesize pTypeCode,PTypeSeq,pTypeDesc,riderCode,riderDesc;
 @synthesize FLabelCode,FLabelDesc,FRidName,FInputCode,FFieldName,FTbName,FCondition;
 @synthesize expAge,minSATerm,maxSATerm,minTerm,maxTerm,maxRiderTerm,planOption,deductible,maxRiderSA;
 @synthesize inputHL1KSA,inputHL1KSATerm,inputHL100SA,inputHL100SATerm,inputHLPercentage,inputHLPercentageTerm;
@@ -82,6 +82,8 @@
 @synthesize requestOccpClass,getOccpClass,requestPlanChoose,getPlanChoose;
 @synthesize delegate = _delegate;
 @synthesize requestSex,getSex,requestOccpCode,getOccpCode,requestBasicHL,getBasicHL,requestBasicTempHL,getBasicTempHL;
+@synthesize PTypeList = _PTypeList;
+@synthesize pTypePopOver = _pTypePopOver;
 
 #pragma mark - Cycle View
 
@@ -121,17 +123,16 @@
     PtypeChange = NO;
     
     if (requestSINo) {
-        if (!listPType) {
-            listPType = [[RiderPTypeTbViewController alloc]initWithString:getSINo];
-            listPType.delegate = self;
-        }
-        pTypeCode = [[NSString alloc] initWithFormat:@"%@",listPType.selectedCode];
-        PTypeSeq = [listPType.selectedSeqNo intValue];
-        pTypeDesc = [[NSString alloc] initWithFormat:@"%@",listPType.selectedDesc];
-        pTypeAge = [listPType.selectedAge intValue];
-        pTypeOccp = [[NSString alloc] initWithFormat:@"%@",listPType.selectedOccp];
+        self.PTypeList = [[RiderPTypeTbViewController alloc]initWithString:getSINo];
+        _PTypeList.delegate = self;
+        pTypeCode = [[NSString alloc] initWithFormat:@"%@",self.PTypeList.selectedCode];
+        PTypeSeq = [self.PTypeList.selectedSeqNo intValue];
+        pTypeDesc = [[NSString alloc] initWithFormat:@"%@",self.PTypeList.selectedDesc];
+        pTypeAge = [self.PTypeList.selectedAge intValue];
+        pTypeOccp = [[NSString alloc] initWithFormat:@"%@",self.PTypeList.selectedOccp];
         [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
     }
+    _PTypeList = nil;
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
@@ -1982,18 +1983,14 @@
 
 - (IBAction)btnPTypePressed:(id)sender
 {
-    if(![popOverConroller isPopoverVisible]){
+    if(_PTypeList == nil){
         
-		RiderPTypeTbViewController *popView = [[RiderPTypeTbViewController alloc] initWithString:getSINo];
-		popOverConroller = [[UIPopoverController alloc] initWithContentViewController:popView];
-        popView.delegate = self;
-		
-		[popOverConroller setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];        
-        [popOverConroller presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		self.PTypeList = [[RiderPTypeTbViewController alloc] initWithString:getSINo];
+        _PTypeList.delegate = self;
+        self.pTypePopOver = [[UIPopoverController alloc] initWithContentViewController:_PTypeList];
 	}
-    else{
-		[popOverConroller dismissPopoverAnimated:YES];
-	}
+    [self.pTypePopOver setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+    [self.pTypePopOver presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)btnAddRiderPressed:(id)sender
@@ -4608,7 +4605,7 @@
     [self getCPAClassType];
     
     [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];
-    [popOverConroller dismissPopoverAnimated:YES];
+    [self.pTypePopOver dismissPopoverAnimated:YES];
     NSLog(@"dasdasdadas RIDERVC pType:%@, seq:%d, desc:%@",pTypeCode,PTypeSeq,pTypeDesc);
     [self getListingRiderByType];
     [myTableView reloadData];
@@ -5120,7 +5117,10 @@
 
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    self.popOverConroller = nil;
+    self.pTypePopOver = nil;
+    self.RiderListPopover = nil;
+    self.planPopover = nil;
+    self.deducPopover = nil;
 }
 
 - (void)viewDidUnload
@@ -5145,7 +5145,7 @@
     [self setRiderListPopover:nil];
     [self setPlanPopover:nil];
     [self setDeducPopover:nil];
-    [self setPopOverConroller:nil];
+    [self setPTypePopOver:nil];
     [self setBtnPType:nil];
     [self setBtnAddRider:nil];
     [self setTermLabel:nil];

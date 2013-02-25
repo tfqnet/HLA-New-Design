@@ -56,6 +56,7 @@ id RiderCount;
     
     //--for table view
     [self.view addSubview:myTableView];
+    [self.view addSubview:RightView];
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
 //    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
@@ -89,6 +90,7 @@ id RiderCount;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    /*
     CGRect rectApp = [[UIScreen mainScreen] applicationFrame];
     rectApp.origin = CGPointZero;
     
@@ -96,6 +98,9 @@ id RiderCount;
     self.view.superview.autoresizesSubviews = YES;
     self.RightView.superview.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.RightView.superview.autoresizesSubviews = YES;
+    */
+    
+    self.view.autoresizesSubviews = NO;
     
     self.myTableView.frame = CGRectMake(0, 0, 220, 748);
     [self hideSeparatorLine];
