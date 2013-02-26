@@ -183,7 +183,7 @@ id temp;
 {
     minSALabel.text = @"";
     maxSALabel.text = @"";
-    
+    /*
     if (parAccField.text.length != 0||parPayoutField.text.length != 0) {
         
         NSRange rangeofDot = [parAccField.text rangeOfString:@"."];
@@ -228,7 +228,7 @@ id temp;
                 parAccField.text = [NSString stringWithFormat:@"%d",parAcc];
             }
         }
-    }
+    } */
     
     self.myScrollView.frame = CGRectMake(0, 44, 768, 960);
 }
@@ -255,10 +255,51 @@ id temp;
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString *newString     = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSArray  *arrayOfString = [newString componentsSeparatedByString:@"."];
+    if ([arrayOfString count] > 2 )
+    {
+        return NO;
+    }
+    
+    NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+        return NO;
+    }
+    
+    if ([textField isEqual:parAccField]) {
+        
+        int maxInc = 100;
+        int parAcc = 0;
+        int parPayout = 0;
+        NSString *strAcc = [parAccField.text stringByReplacingCharactersInRange:range withString:string];
+        
+        parAcc = [strAcc intValue];
+        parPayout = maxInc - parAcc;
+        parPayoutField.text = [NSString stringWithFormat:@"%d",parPayout];
+        
+        if (parAcc > 100) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    }
+    
+    return YES;
+}
+
 #pragma mark - Action
 
 - (IBAction)btnPlanPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (_planList == nil) {
         self.planList = [[PlanList alloc] init];
         _planList.delegate = self;
@@ -404,8 +445,6 @@ id temp;
     NSString *substringTempHL = @"";
     NSRange rangeofDotAcc = [parAccField.text rangeOfString:@"."];
     NSString *substringAcc = @"";
-    NSRange rangeofDotPayout = [parPayoutField.text rangeOfString:@"."];
-    NSString *substringPayout = @"";
     
     if (rangeofDotSUM.location != NSNotFound) {
         substringSUM = [yearlyIncomeField.text substringFromIndex:rangeofDotSUM.location ];
@@ -418,9 +457,6 @@ id temp;
     }
     if (rangeofDotAcc.location != NSNotFound) {
         substringAcc = [parAccField.text substringFromIndex:rangeofDotAcc.location ];
-    }
-    if (rangeofDotPayout.location != NSNotFound) {
-        substringPayout = [parPayoutField.text substringFromIndex:rangeofDotPayout.location ];
     }
     
     int maxParIncome = 0;
@@ -489,18 +525,23 @@ id temp;
         [alert show];
     }
     
-    else if ([planChoose isEqualToString:@"HLACP"] && (parAccField.text.length==0||parPayoutField.text.length==0)) {
+    //----------
+    else if ([planChoose isEqualToString:@"HLACP"] && parAccField.text.length==0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [parAccField becomeFirstResponder];
     }
-    else if ([planChoose isEqualToString:@"HLACP"] && (maxParIncome > 100 || maxParIncome != 100)) {
+    else if ([planChoose isEqualToString:@"HLACP"] && (maxParIncome != 100||[parAccField.text intValue] > 100)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [parAccField becomeFirstResponder];
     }
-    else if ([planChoose isEqualToString:@"HLACP"] && (substringAcc.length > 1 || substringPayout.length > 1)) {
+    else if ([planChoose isEqualToString:@"HLACP"] && substringAcc.length > 1) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
+        [parAccField becomeFirstResponder];
     }
+    //--------------
     
     else if (cashDividend.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Cash Dividend option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -825,9 +866,9 @@ id temp;
     if ([planChoose isEqualToString:@"HLAIB"]) {
         
         cashDivSgmntCP.hidden = YES;
-        labelFour.text = @"Premium Payment Option :";
-        labelFive.text = @"Yearly Income :";
-        labelSix.text = @"Cash Dividend :";
+        labelFour.text = @"Premium Payment Option* :";
+        labelFive.text = @"Yearly Income* :";
+        labelSix.text = @"Cash Dividend* :";
         labelSeven.text = @"Advance Yearly Income (Age) :";
         labelParAcc.hidden = YES;
         labelParPayout.hidden = YES;
@@ -855,9 +896,10 @@ id temp;
     }
     else {
         
+        parPayoutField.enabled = NO;
         cashDivSgmntCP.hidden = NO;
-        labelFour.text = @"Yearly Income :";
-        labelFive.text = @"Cash Dividend :";
+        labelFour.text = @"Yearly Income* :";
+        labelFive.text = @"Cash Dividend* :";
         labelSix.text = @"";
         labelSeven.text = @"";
         labelParAcc.hidden = NO;
@@ -1644,19 +1686,6 @@ id temp;
     }
     
     [self.planPopover dismissPopoverAnimated:YES];
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSString *newString     = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    NSArray  *arrayOfString = [newString componentsSeparatedByString:@"."];
-    
-    if ([arrayOfString count] > 2 )
-    {
-        return NO;
-    }
-    
-    return YES;
 }
 
 #pragma mark - Memory Management

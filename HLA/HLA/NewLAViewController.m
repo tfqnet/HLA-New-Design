@@ -59,6 +59,8 @@ id temp;
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     NSLog(@"%@",databasePath);
     
+    [self updateDB];
+    
     LANameField.enabled = NO;
     sexSegment.enabled = NO;
     LAAgeField.enabled = NO;
@@ -779,6 +781,27 @@ id temp;
 
 
 #pragma mark - Handle Data
+
+-(void)updateDB
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"UPDATE Trad_Sys_Mtn SET MaxAge= \"63\" WHERE PlanCode=\"HLACP\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateDB success!");
+                
+            } else {
+                NSLog(@"updateDB failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
 
 -(void)getOccLoading
 {

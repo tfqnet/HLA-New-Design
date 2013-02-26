@@ -376,6 +376,23 @@
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString *newString     = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSArray  *arrayOfString = [newString componentsSeparatedByString:@"."];
+    if ([arrayOfString count] > 2 )
+    {
+        return NO;
+    }
+    
+    NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 -(void)displayedMinMax
 {    
     if ([sumField isFirstResponder] == TRUE) {
@@ -2439,7 +2456,7 @@
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     
     NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
-    
+    NSCharacterSet *setHLACP = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     NSRange rangeofDot = [sumField.text rangeOfString:@"."];
     NSString *substring = @"";
     
@@ -2465,6 +2482,14 @@
         [alert show];
         [sumField becomeFirstResponder];
     }
+    //--
+    else if ([getPlanChoose isEqualToString:@"HLACP"] && [sumField.text rangeOfCharacterFromSet:setHLACP].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
+        [alert show];
+        [sumField becomeFirstResponder];
+    }
+    
     else if (incomeRider && substring.length > 3) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Guaranteed Yearly Income only allow 2 decimal." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert setTag:1006];
@@ -5044,10 +5069,13 @@
             HLToDisplay = [LTypeRidHL1K objectAtIndex:indexPath.row];
         }
         
-        if (![[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
+        if (![[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] && ![HLToDisplay isEqualToString:@"0"]) {
             HLField.text = HLToDisplay;
         }
-    
+        else {
+            HLField.text = @"";
+        }
+        
         if (  ![[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
             HLTField.text = [LTypeRidHLTerm objectAtIndex:indexPath.row];
         }
