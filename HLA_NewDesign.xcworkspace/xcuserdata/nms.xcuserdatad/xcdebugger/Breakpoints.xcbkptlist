@@ -1321,11 +1321,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "383198839.781414"
+         timestampString = "383539781.223313"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1553"
-         endingLineNumber = "1553"
+         startingLineNumber = "1556"
+         endingLineNumber = "1556"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1334,12 +1334,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "383198839.852588"
+         timestampString = "383539781.223313"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1554"
-         endingLineNumber = "1554"
+         startingLineNumber = "1557"
+         endingLineNumber = "1557"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/SIMenuViewController.m"
+         timestampString = "383540996.055564"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1253"
+         endingLineNumber = "1253"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

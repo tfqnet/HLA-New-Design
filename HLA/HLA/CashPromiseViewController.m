@@ -1545,9 +1545,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 		
 		// ---------------------------------
 		
-        BasicTotalYearlyIncome = BasicTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ];
-        EntireTotalYearlyIncome = EntireTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex: i-1] doubleValue ];
+        //BasicTotalYearlyIncome = BasicTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex:i -1] doubleValue ];
+        //EntireTotalYearlyIncome = EntireTotalYearlyIncome + [[arrayYearlyIncome objectAtIndex: i-1] doubleValue ];
 
+		BasicTotalYearlyIncome = BasicTotalYearlyIncome + [[TotalPartialYearlyIncome objectAtIndex:i -1] doubleValue ];
+        EntireTotalYearlyIncome = EntireTotalYearlyIncome + [[TotalPartialYearlyIncome objectAtIndex: i-1] doubleValue ];
+		
         [SummaryGuaranteedTotalGYI addObject:[[arrayYearlyIncome objectAtIndex:i-1] stringByReplacingOccurrencesOfString:@"#" withString:@"" ]];
 
         [SurrenderValue addObject:[NSString stringWithFormat:@"%.9f", [[SurrenderRates objectAtIndex:i-1] doubleValue ] * BasicSA/1000 ]];

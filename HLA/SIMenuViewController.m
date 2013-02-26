@@ -1247,9 +1247,8 @@ id RiderCount;
             spinnerLabel.opaque = YES;
             spinnerLabel.textColor = [UIColor whiteColor];
             [self.view addSubview:spinnerLabel];
+			[self.view setUserInteractionEnabled:NO];
             [spinner startAnimating];
-            
-            
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
 
@@ -1271,6 +1270,7 @@ id RiderCount;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [spinner stopAnimating];
                     spinnerLabel.text = @"";
+					[self.view setUserInteractionEnabled:YES];
 
 					if([getBasicPlan isEqualToString:@"HLACP" ]){
 						
@@ -1319,14 +1319,14 @@ id RiderCount;
             spinner = Nil;
             
             
-            
-            
         }
         else {
+			
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
             [alert show];
             alert = Nil;
+			 
         }
         
         statement = Nil;
@@ -1362,6 +1362,7 @@ id RiderCount;
         spinnerLabel.opaque = YES;
         spinnerLabel.textColor = [UIColor whiteColor];
         [self.view addSubview:spinnerLabel];
+		[self.view setUserInteractionEnabled:NO];
         [spinner startAnimating];
         
         
@@ -1384,6 +1385,7 @@ id RiderCount;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [spinner stopAnimating];
                 spinnerLabel.text = @"";
+				[self.view setUserInteractionEnabled:YES];
                 
                 [PDSPage dismissViewControllerAnimated:NO completion:Nil];
                 
@@ -1450,6 +1452,7 @@ id RiderCount;
         spinnerLabel.opaque = YES;
         spinnerLabel.textColor = [UIColor whiteColor];
         [self.view addSubview:spinnerLabel];
+		[self.view setUserInteractionEnabled:NO];
         [spinner startAnimating];
         
         
@@ -1472,6 +1475,7 @@ id RiderCount;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [spinner stopAnimating];
                 spinnerLabel.text = @"";
+				[self.view setUserInteractionEnabled:YES];
                 
                 [PDSPage dismissViewControllerAnimated:NO completion:Nil];
                 
