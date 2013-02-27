@@ -308,7 +308,6 @@
                                    
 		    if(showHLoading == false){
 				
-			
 			if(showOccLoading == false){
 			    $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'  + '<td></td>' +
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
@@ -323,7 +322,6 @@
 				'<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' +
 				'<td>&nbsp;</td>' + '</tr>');
 			}
-			
 		    }
 		    else{
 			
@@ -420,42 +418,46 @@
  
 <!-- Begin Header -->
 <div id="header">
-  <img src="img/HLA.png" />
-  <div class="welcome">
-  Prepared By : <span id="agentName">{agentName}</span>
-  <br/>Code : <span id="agentCode">{agentCode}</span>
-  </div>
-  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span></div>
+
+  
+  <div class="welcome">Prepared By : <span id="agentName">{agentName}</span><br/>Code : <span id="agentCode">{agentCode}</span></div>
+  <div class="Content">Printed On : <span id="dateModified">{DateModified}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="img/HLA.png" /></div>
+    
   <!--<hr/>-->
-  <div class="hrule"></div>
+  <div></div>
 </div>
 <div class="main-content">
-<div align="center">HLA Cash Promise</div><br/>
-<div align="center">Participating Whole Life Plan with Guaranteed Yearly Income and Limited 6 Years Premium Payment Term&nbsp;&nbsp;&nbsp;<i>Pelan Penyertaan Sepanjang Hayat dengan Pendapatan Tahunan Terjamin dan Tempoh Pembayaran Premium Terhad kepada 6 Tahun</i></div><br/>
-<table id="table-design"> 
-
-<tr>
-    <td style="text-align:left;padding: 0px 0px 0px 5px;">Insured Lives<br/><i>Hayat-hayat yang Diinsuranskan</i></td>
-    <td style="text-align:left;padding: 0px 0px 0px 5px;">Name<br/><i>Nama</i></td>
-    <td style="text-align:right;padding: 5px 5px 5px 5px;">Age (Last Birthday)<br/><i>Umur (Harijadi Lepas)</i></td>
-    <td style="text-align:right;padding: 5px 5px 5px 5px;">Gender<br/><i>Jantina</i></td>
-    <td style="text-align:right;padding: 5px 5px 5px 5px;">Smoker<br/><i>Perokok</i></td>
-  </tr>
-<tr>
-    <td style="text-align:left;padding: 0px 0px 0px 5px;" id="LADesc">{LADesc}</td>
-    <td style="text-align:left;padding: 0px 0px 0px 5px;" id="LAName">{LANAME}</td>
-    <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LAAge">{LAAge}</td>
-    <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LASex">{LASex}</td>
-    <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LASmoker">{LASmoker}</td>
-    
-  </tr>
-    
-</table>
+    <br/><br/>
+    <div align="center">HLA Cash Promise</div>	
+    <div align="center">Participating Endowment Plan with Guaranteed Yearly Income and Limited 6 Years Premium Payment Term<br/>
+    <i>Pelan Penyertaan Endowmen dengan Pendapatan Tahunan Terjamin  dan Tempoh Pembayaran Premium Terhad kepada 6 Tahun</i></div><br/>
+    <table id="table-design"> 
+	<tr>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;">Insured Lives<br/><i>Hayat-hayat yang Diinsuranskan</i></td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;">Name<br/><i>Nama</i></td>
+	    <td style="text-align:right;padding: 5px 5px 5px 5px;">Age (Last Birthday)<br/><i>Umur (Harijadi Lepas)</i></td>
+	    <td style="text-align:right;padding: 5px 5px 5px 5px;">Gender<br/><i>Jantina</i></td>
+	    <td style="text-align:right;padding: 5px 5px 5px 5px;">Smoker<br/><i>Perokok</i></td>
+	  </tr>
+	<tr>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;" id="LADesc">{LADesc}</td>
+	    <td style="text-align:left;padding: 0px 0px 0px 5px;" id="LAName">{LANAME}</td>
+	    <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LAAge">{LAAge}</td>
+	    <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LASex">{LASex}</td>
+	    <td style="text-align:right;padding: 5px 5px 5px 5px;" id="LASmoker">{LASmoker}</td>
+	    
+	</tr>
+    </table>
     
     <br/>
 
-<table id="table-data">
-    <thead>
+    <table id="table-data">
+        <thead>
 	<tr>
 	    <td colspan="6">&nbsp;</td>
 	    <td id="dynamic" colspan="6" style="text-align:left;padding-left:60px;"><b><u>Initial Premium</u></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b><u><i>Bayaran Premium Asal (RM)</i></u></b></td>
@@ -566,44 +568,36 @@ syarat-syarat yang ditentukan oleh Hong Leong Assurance. <b>Kesemua permohonan a
 <br/><br/><br/></div>
 
 <table style="border-collapse:collapse;border:2px solid black;width:100%;">
-<tr>
-<td colspan="2" align="center" style="font-family:Arial;font-size:10px;"><b>HONG LEONG ASSURANCE BERHAD</b></td>
-</tr>
-<tr>
-<td width="90%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 5px;">
-
-
-Hong Leong Assurance Berhad is a member of Perbadanan Insurans Deposit Malaysia (PIDM). As a member of PIDM, some of the benefits insured under the takaful certificates or insurance policies offered by Hong Leong Assurance Berhad are
-protected against loss of part or all of takaful or insurance benefits by PIDM, in the unlikely event of an insurer member failure. For further details of the protection limits and the scope of coverage, please obtain a PIDM information brochure
-from Hong Leong Assurance Berhad or visit PIDM website (www.pidm.gov.my) or call PIDM toll free line (1-800-88-1266).<br/>
-<i>Hong Leong Assurance Berhad ialah ahli Perbadanan Insurans Deposit Malaysia (PIDM). Sebagai ahli PIDM, sebahagian daripada manfaat yang diinsuranskan di bawah sijil takaful atau polisi insurans yang ditawarkan oleh Hong Leong
-Assurance Berhad dilindungi daripada kehilangan sebahagian atau kesemua manfaat takaful atau insurans oleh PIDM, sekiranya berlaku kegagalan ahli penginsurans. Untuk maklumat lanjut mengenai had dan skop perlindungan ini, sila
-dapatkan risalah maklumat PIDM daripada Hong Leong Assurance Berhad atau layari laman web PIDM (www.pidm.gov.my) atau hubungi talian bebas tol PIDM (1-800-88-1266).</i>
-
-
-</td>
-<td width="10%" style="font-family:Arial;font-size:10px;font-weight:normal;text-align:center"><img src="img/PIDM.png"/></td>
-</tr>
+    <tr>
+        <td colspan="2" align="center" style="font-family:Arial;font-size:8px;"><b>HONG LEONG ASSURANCE BERHAD</b></td>
+    </tr>
+    <tr>
+	<td width="90%" style="font-family:Arial;font-size:8px;font-weight:normal;padding: 5px 5px 5px 5px;">
+	
+	Hong Leong Assurance Berhad is a member of Perbadanan Insurans Deposit Malaysia (PIDM). As a member of PIDM, some of the benefits insured under the takaful certificates or insurance policies offered by Hong Leong Assurance Berhad are
+	protected against loss of part or all of takaful or insurance benefits by PIDM, in the unlikely event of an insurer member failure. For further details of the protection limits and the scope of coverage, please obtain a PIDM information brochure
+	from Hong Leong Assurance Berhad or visit PIDM website (www.pidm.gov.my) or call PIDM toll free line (1-800-88-1266).<br/>
+	<i>Hong Leong Assurance Berhad ialah ahli Perbadanan Insurans Deposit Malaysia (PIDM). Sebagai ahli PIDM, sebahagian daripada manfaat yang diinsuranskan di bawah sijil takaful atau polisi insurans yang ditawarkan oleh Hong Leong
+	Assurance Berhad dilindungi daripada kehilangan sebahagian atau kesemua manfaat takaful atau insurans oleh PIDM, sekiranya berlaku kegagalan ahli penginsurans. Untuk maklumat lanjut mengenai had dan skop perlindungan ini, sila
+	dapatkan risalah maklumat PIDM daripada Hong Leong Assurance Berhad atau layari laman web PIDM (www.pidm.gov.my) atau hubungi talian bebas tol PIDM (1-800-88-1266).</i>
+        </td>
+        <td width="10%" style="font-family:Arial;font-size:10px;font-weight:normal;text-align:center"><img src="img/PIDM.png"/></td>
+    </tr>
 </table>
 
-
-
 <table style="border-collapse:collapse;border:0px solid black;width:100%;">
-
-<tr>
-<td width="80%" style="font-family:Arial;font-size:10px;font-weight:normal;padding: 5px 5px 5px 0px;">
-This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the<br/>
-information printed on each and every page. <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
-pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
-<b><span id="rptVersion">{rptVersion}</span></b> <br/>
-    Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
-
-
-
-</td>
-    <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:10px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
-    <td width="13%" align="right" valign="bottom" style="font-family:Arial;font-size:12px;font-weight:normal;"><img src="img/barcode.png"/><br/>Ref: <span id=SICode>{SINo}</span></td>
-</tr>
+    <tr>
+	<td width="93%" style="font-family:Arial;font-size:8px;font-weight:normal;padding: 5px 5px 5px 0px;">
+	    This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the
+	    information printed on each and every page.<br/>
+	    <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+	    pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+	    <b><span id="rptVersion">{rptVersion}</span></b> <br/>
+	    Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46710 Petaling Jaya, Malaysia.<br/>
+	    Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my
+	</td>
+	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:8px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+    </tr>
 </table>
 <!-- End Footer -->
  

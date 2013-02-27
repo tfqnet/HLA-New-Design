@@ -21,6 +21,8 @@
     var cashPaymentD = '';
     var mcashPaymentD = '';
     var FirstAge = '';
+    var SecondAge = '';
+    var PayorAge = '';
     var PA = '';
     var CustCode = '';
     var Deductible = '';
@@ -285,10 +287,23 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
-                    if(result.rows.length == 1){
-	                  var row = result.rows.item(0);
-			 FirstAge = row.Age;
-                    }
+		    for(var i = 0; i < result.rows.length; i++){
+			if(i == 0){
+	                  var row = result.rows.item(i);
+			  FirstAge = row.Age;
+		        }
+			
+			if(i == 1){
+	                  var row = result.rows.item(i);
+			    if(row.PTypeCode == 'PY'){
+				PayorAge = row.Age;  
+			    }
+			    else{
+				SecondAge = row.Age;  
+			    }
+		        }
+		    }
+                    
                 }
             },errorHandler);
         },errorHandler,nullHandler);
@@ -318,19 +333,36 @@
 			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + CIWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Life Assured</td>'  + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'PR'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    if(row.PTypeCode == 'LA'){
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
+			    }
+			    else{
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
+			    }
 			}
 			else if(row.RiderCode == 'LCWP'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    if(row.PTypeCode == 'LA'){
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
+			    }
+			    else{
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
+			    }
 			}
 			else if(row.RiderCode == 'SP_PRE'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>2nd Life Assured</td>'  + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>2nd Life Assured</td>'  + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'SP_STD'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>2nd Life Assured</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>2nd Life Assured</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
 			}
 			else{
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    if(row.PTypeCode == 'LA'){
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    }
+			    else{
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
+			    }
+			    
+			    
 			}
                     }
                 }
