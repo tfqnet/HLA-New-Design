@@ -278,11 +278,33 @@ id temp;
         
         parAcc = [strAcc intValue];
         parPayout = maxInc - parAcc;
-        parPayoutField.text = [NSString stringWithFormat:@"%d",parPayout];
         
         if (parAcc > 100) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
+            parPayoutField.text = @"0";
+        }
+        else {
+            parPayoutField.text = [NSString stringWithFormat:@"%d",parPayout];
+        }
+    }
+    
+    if ([textField isEqual:parPayoutField]) {
+        int maxInc = 100;
+        int parAcc = 0;
+        int parPayout = 0;
+        NSString *strPayout = [parPayoutField.text stringByReplacingCharactersInRange:range withString:string];
+        
+        parPayout = [strPayout intValue];
+        parAcc = maxInc - parPayout;
+        
+        if (parPayout > 100) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            parAccField.text = @"0";
+        }
+        else {
+            parAccField.text = [NSString stringWithFormat:@"%d",parAcc];
         }
     }
     
@@ -445,6 +467,8 @@ id temp;
     NSString *substringTempHL = @"";
     NSRange rangeofDotAcc = [parAccField.text rangeOfString:@"."];
     NSString *substringAcc = @"";
+    NSRange rangeofDotPayout = [parPayoutField.text rangeOfString:@"."];
+    NSString *substringPayout = @"";
     
     if (rangeofDotSUM.location != NSNotFound) {
         substringSUM = [yearlyIncomeField.text substringFromIndex:rangeofDotSUM.location ];
@@ -457,6 +481,9 @@ id temp;
     }
     if (rangeofDotAcc.location != NSNotFound) {
         substringAcc = [parAccField.text substringFromIndex:rangeofDotAcc.location ];
+    }
+    if (rangeofDotPayout.location != NSNotFound) {
+        substringPayout = [parPayoutField.text substringFromIndex:rangeofDotPayout.location ];
     }
     
     int maxParIncome = 0;
@@ -526,20 +553,35 @@ id temp;
     }
     
     //----------
-    else if ([planChoose isEqualToString:@"HLACP"] && parAccField.text.length==0) {
+    else if ([planChoose isEqualToString:@"HLACP"] && parAccField.text.length==0 ) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
     }
-    else if ([planChoose isEqualToString:@"HLACP"] && (maxParIncome != 100||[parAccField.text intValue] > 100)) {
+    else if ([planChoose isEqualToString:@"HLACP"] && parPayoutField.text.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [parPayoutField becomeFirstResponder];
+    }
+    else if ([planChoose isEqualToString:@"HLACP"] && [parAccField.text intValue] > 100) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
+    }
+    else if ([planChoose isEqualToString:@"HLACP"] && [parPayoutField.text intValue] > 100) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [parPayoutField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && substringAcc.length > 1) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
+    }
+    else if ([planChoose isEqualToString:@"HLACP"] && substringPayout.length > 1) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [parPayoutField becomeFirstResponder];
     }
     //--------------
     
@@ -896,7 +938,7 @@ id temp;
     }
     else {
         
-        parPayoutField.enabled = NO;
+//        parPayoutField.enabled = NO;
         cashDivSgmntCP.hidden = NO;
         labelFour.text = @"Yearly Income* :";
         labelFive.text = @"Cash Dividend* :";
