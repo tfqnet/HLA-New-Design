@@ -51,7 +51,7 @@
 @synthesize minDisplayLabel;
 @synthesize maxDisplayLabel;
 @synthesize btnPType;
-@synthesize btnAddRider;
+@synthesize btnAddRider,tempHLField,tempHLTField,tempHLLabel,tempHLTLabel,myScrollView;
 @synthesize requestPlanCode,requestSINo,requestAge,requestCoverTerm,requestBasicSA;
 @synthesize pTypeCode,PTypeSeq,pTypeDesc,riderCode,riderDesc;
 @synthesize FLabelCode,FLabelDesc,FRidName,FInputCode,FFieldName,FTbName,FCondition;
@@ -117,6 +117,7 @@
     NSLog(@"Rider-Sum:%.2f,Age:%d,covered:%d,SINo:%@, planCode:%@, planChoose:%@, MOP:%d, advance:%d, occpClass:%d", getBasicSA, getAge, getTerm, getSINo, getPlanCode, getPlanChoose, getMOP, getAdvance, getOccpClass);
     
     deducBtn.hidden = YES;
+    planBtn.hidden = YES;
     deleteBtn.hidden = TRUE;
     deleteBtn.enabled = FALSE;
     incomeRider = NO;
@@ -136,7 +137,7 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(53,395, 80, 50);
+    CGRect frame=CGRectMake(53,454, 80, 50);
     titleRidCode.text = @"Rider";
     titleRidCode.frame = frame;
     titleRidCode.textAlignment = UITextAlignmentCenter;
@@ -144,25 +145,25 @@
     titleRidCode.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleRidCode.numberOfLines = 2;
     
-    CGRect frame2=CGRectMake(133,395, 105, 50);
+    CGRect frame2=CGRectMake(133,454, 105, 50);
     titleSA.frame = frame2;
     titleSA.textAlignment = UITextAlignmentCenter;
     titleSA.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleSA.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame3=CGRectMake(238,395, 62, 50);
+    CGRect frame3=CGRectMake(238,454, 62, 50);
     titleTerm.frame = frame3;
     titleTerm.textAlignment = UITextAlignmentCenter;
     titleTerm.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleTerm.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame4=CGRectMake(300,395, 62, 50);
+    CGRect frame4=CGRectMake(300,454, 62, 50);
     titleUnit.frame = frame4;
     titleUnit.textAlignment = UITextAlignmentCenter;
     titleUnit.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleUnit.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame5=CGRectMake(362,395, 62, 50);
+    CGRect frame5=CGRectMake(362,454, 62, 50);
     titleClass.text = @"Occ \nClass";
     titleClass.frame = frame5;
     titleClass.textAlignment = UITextAlignmentCenter;
@@ -170,7 +171,7 @@
     titleClass.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleClass.numberOfLines = 2;
 
-    CGRect frame6=CGRectMake(424,395, 62, 50);
+    CGRect frame6=CGRectMake(424,454, 62, 50);
     titleLoad.text = @"Occp \nLoading";
     titleLoad.frame = frame6;
     titleLoad.textAlignment = UITextAlignmentCenter;
@@ -178,13 +179,13 @@
     titleLoad.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleLoad.numberOfLines = 2;
     
-    CGRect frame7=CGRectMake(486,395, 63, 50);
+    CGRect frame7=CGRectMake(486,454, 63, 50);
     titleHL1K.frame = frame7;
     titleHL1K.textAlignment = UITextAlignmentCenter;
     titleHL1K.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHL1K.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame8=CGRectMake(549,395, 63, 50);
+    CGRect frame8=CGRectMake(549,454, 63, 50);
     titleHL100.text = @"HL(SA)\nterm";
     titleHL100.frame = frame8;
     titleHL100.textAlignment = UITextAlignmentCenter;
@@ -192,13 +193,13 @@
     titleHL100.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleHL100.numberOfLines = 2;
     
-    CGRect frame9=CGRectMake(612,395, 63, 50);
+    CGRect frame9=CGRectMake(612,454, 63, 50);
     titleHLP.frame = frame9;
     titleHLP.textAlignment = UITextAlignmentCenter;
     titleHLP.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHLP.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame10=CGRectMake(675,395, 64, 50);
+    CGRect frame10=CGRectMake(675,454, 64, 50);
     titleHLPTerm.text = @"HL %\nTerm";
     titleHLPTerm.frame = frame10;
     titleHLPTerm.textAlignment = UITextAlignmentCenter;
@@ -298,6 +299,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
@@ -313,10 +316,22 @@
 }
 
 #pragma mark - keyboard display
+
+-(void)keyboardDidShow:(NSNotificationCenter *)notification
+{
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 453-100);
+    self.myScrollView.contentSize = CGSizeMake(768, 403);
+    CGRect textFieldRect = [activeField frame];
+    textFieldRect.origin.y += 10;
+    [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
+}
+
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
     minDisplayLabel.text = @"";
     maxDisplayLabel.text = @"";
+    
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 453);
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -451,20 +466,20 @@
     NSUInteger i;
     for (i=0; i<[FLabelCode count]; i++) {
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"RITM"]]) {
-            termLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            termLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             term = YES;
         }
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"SUMA"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"SUAS"]]) {
-            sumLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            sumLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             
             sumA = YES;
         }
         
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"GYIRM"]]) {
-            sumLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            sumLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             sumA = YES;
             incomeRider = YES;
         }
@@ -472,7 +487,7 @@
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLOP"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"PLCH"]]) {
-            planLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            planLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             plan = YES;
             
             planCondition = [FCondition objectAtIndex:i];
@@ -483,12 +498,12 @@
         cpaField.enabled = NO;
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"UNIT"]]) {
-            unitLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            unitLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             unit = YES;
         }
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"DEDUC"]]) {
-            unitLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            unitLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             deduc = YES;
             
             deducCondition = [FCondition objectAtIndex:i];
@@ -500,15 +515,28 @@
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
-            HLLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            HLLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             hload = YES;
         }
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1KT"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10T"]] ||
             [[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLPT"]]) {
-            HLTLabel.text = [NSString stringWithFormat:@"%@",[FLabelDesc objectAtIndex:i]];
+            HLTLabel.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
             hloadterm = YES;
+        }
+        
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
+            tempHLLabel.text = @"Temporary Health Loading (Per 1K SA) :";
+            tempHLTLabel.text = @"Temporary Health Loading (Per 1K SA) Term :";
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10"]]) {
+            tempHLLabel.text = @"Temporary Health Loading (Per 100 SA) :";
+            tempHLTLabel.text = @"Temporary Health Loading (Per 100 SA) Term :";
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
+            tempHLLabel.text = @"Temporary Health Loading (%) :";
+            tempHLTLabel.text = @"Temporary Health Loading (%) Term :";
         }
     }
     [self replaceActive];
@@ -551,7 +579,7 @@
     }
     else {
         planLabel.textColor = [UIColor grayColor];
-        planLabel.text = @"PA Class";
+        planLabel.text = @"PA Class :";
         planBtn.enabled = NO;
         planBtn.hidden = YES;
         classField.hidden = NO;
@@ -589,7 +617,7 @@
     }
     
     if (!unit && !deduc) {
-        unitLabel.text = @"Units";
+        unitLabel.text = @"Units :";
         unitLabel.textColor = [UIColor grayColor];
         deducBtn.hidden = YES;
         unitField.hidden = NO;
@@ -5154,6 +5182,8 @@
 - (void)viewDidUnload
 {
     [self resignFirstResponder];
+    [self setTempHLField:nil];
+    [self setTempHLTField:nil];
     [self setDataInsert:nil];
     [self setRiderList:nil];
     [self setPlanList:nil];
@@ -5307,6 +5337,11 @@
     [self setIncomeRiderSA:nil];
     [self setIncomeRiderCode:nil];
     [self setIncomeRiderTerm:nil];
+    [self setTempHLField:nil];
+    [self setTempHLTField:nil];
+    [self setTempHLLabel:nil];
+    [self setTempHLTLabel:nil];
+    [self setMyScrollView:nil];
     [super viewDidUnload];
 }
 

@@ -48,6 +48,7 @@
     BOOL PtypeChange;
     NSMutableArray *ItemToBeDeleted;
     NSMutableArray *indexPaths;
+    UITextField *activeField;
 }
 
 @property (nonatomic, retain) UIPopoverController *RiderListPopover;
@@ -93,7 +94,7 @@
 @property (nonatomic, assign,readwrite) int getAdvance;
 //--
 
-
+@property (strong, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (retain, nonatomic) IBOutlet UIButton *btnPType;
 @property (retain, nonatomic) IBOutlet UIButton *btnAddRider;
 @property (retain, nonatomic) IBOutlet UILabel *termLabel;
@@ -104,6 +105,8 @@
 @property (retain, nonatomic) IBOutlet UILabel *occpLabel;
 @property (retain, nonatomic) IBOutlet UILabel *HLLabel;
 @property (retain, nonatomic) IBOutlet UILabel *HLTLabel;
+@property (strong, nonatomic) IBOutlet UILabel *tempHLLabel;
+@property (strong, nonatomic) IBOutlet UILabel *tempHLTLabel;
 @property (retain, nonatomic) IBOutlet UITextField *termField;
 @property (retain, nonatomic) IBOutlet UITextField *sumField;
 @property (retain, nonatomic) IBOutlet UITextField *cpaField;
@@ -111,6 +114,8 @@
 @property (retain, nonatomic) IBOutlet UITextField *occpField;
 @property (retain, nonatomic) IBOutlet UITextField *HLField;
 @property (retain, nonatomic) IBOutlet UITextField *HLTField;
+@property (strong, nonatomic) IBOutlet UITextField *tempHLField;
+@property (strong, nonatomic) IBOutlet UITextField *tempHLTField;
 @property (retain, nonatomic) IBOutlet UIButton *planBtn;
 @property (retain, nonatomic) IBOutlet UIButton *deducBtn;
 @property (retain, nonatomic) IBOutlet UILabel *minDisplayLabel;
