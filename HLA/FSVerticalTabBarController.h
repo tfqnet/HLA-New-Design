@@ -32,8 +32,10 @@
 @property (nonatomic, readwrite, assign) NSUInteger selectedIndex;
 @property (nonatomic, readwrite, assign) CGFloat tabBarWidth;
 
+
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)updateTabBar;
-
+-(void)Test;
+-(void)Reset;
 
 @end

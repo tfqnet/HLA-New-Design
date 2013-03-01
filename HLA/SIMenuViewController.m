@@ -40,7 +40,7 @@
 @synthesize getMOP,getTerm,getbasicHL,getPlanCode,getAdvance,requestSINo2;
 @synthesize RiderController = _RiderController;
 @synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor,getSex,getbasicTempHL,getSmoker,getBasicPlan;
-
+@synthesize FS = _FS;
 id RiderCount;
 
 - (void)viewDidLoad
@@ -1234,8 +1234,11 @@ id RiderCount;
             
         }
         
+		self.FS = [FSVerticalTabBarController alloc];
+		_FS.delegate = self;
+		
         if (cont == TRUE) {
-            
+
             UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             spinner.center = CGPointMake(400, 350);
             
@@ -1249,7 +1252,11 @@ id RiderCount;
             [self.view addSubview:spinnerLabel];
 			[self.view setUserInteractionEnabled:NO];
             [spinner startAnimating];
-            
+        
+			
+			[_FS Test ];
+			
+			
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
 
 				ReportViewController *ReportPage;
@@ -1271,6 +1278,7 @@ id RiderCount;
                     [spinner stopAnimating];
                     spinnerLabel.text = @"";
 					[self.view setUserInteractionEnabled:YES];
+					[_FS Reset];
 
 					if([getBasicPlan isEqualToString:@"HLACP" ]){
 						
@@ -1799,5 +1807,6 @@ id RiderCount;
     [ListOfSubMenu removeObject:@"   English"];
     [ListOfSubMenu removeObject:@"   Malay"];
 }
+
 
 @end

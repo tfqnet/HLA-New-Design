@@ -31,6 +31,7 @@
 - (void)_performInitialization;
 @end
 
+int rrr;
 
 @implementation FSVerticalTabBarController
 
@@ -40,6 +41,7 @@
 @synthesize viewControllers = _viewControllers;
 @synthesize selectedIndex = _selectedIndex;
 @synthesize tabBarWidth = _tabBarWidth;
+
 
 - (FSVerticalTabBar *)tabBar
 {
@@ -374,28 +376,33 @@
 #pragma mark <UITableViewDelegate>
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    clickIndex = indexPath.row;
+	if(rrr == 2){
+		
+	}
+	else{
+	
+		clickIndex = indexPath.row;
     
-    AppDelegate *MenuOption = (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+		AppDelegate *MenuOption = (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     
-    if (indexPath.row == MenuOption.ExitIndex) {
+		if (indexPath.row == MenuOption.ExitIndex) {
         
-        UIAlertView *alert = [[UIAlertView alloc] 
+			UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: NSLocalizedString(@"Log Out",nil)
                               message: NSLocalizedString(@"Are you sure you want to log out?",nil)
                               delegate: self
                               cancelButtonTitle: NSLocalizedString(@"Yes",nil)
                               otherButtonTitles: NSLocalizedString(@"No",nil), nil];
-        [alert setTag:1001];
-        [alert show];
-        alert = Nil;
-    }
-    else {
-        [self setSelectedIndex:indexPath.row];
-    }
+			[alert setTag:1001];
+			[alert show];
+			alert = Nil;
+		}
+		else {
+			[self setSelectedIndex:indexPath.row];
+		}
     
-    MenuOption = Nil;
-    
+		MenuOption = Nil;
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -518,7 +525,13 @@
     }
     
     if (result) {
-        return indexPath;
+		if (rrr == 2) {
+			return tableView.indexPathForSelectedRow;
+		}
+		else{
+			return indexPath;
+		}
+        
     }
     else {
         return tableView.indexPathForSelectedRow;
@@ -530,5 +543,16 @@
     return NO;
 }
 
+-(void)Test{
+	
+	rrr = 2;
+	
+}
+
+-(void)Reset{
+	
+	rrr = 0;
+	
+}
 
 @end

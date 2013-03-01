@@ -19,7 +19,9 @@
 #import "BasicPlanViewController.h"
 #import "RiderViewController.h"
 
-@interface SIMenuViewController : UIViewController <NewLAViewControllerDelegate,PayorViewControllerDelegate,SecondLAViewControllerDelegate,BasicPlanViewControllerDelegate,RiderViewControllerDelegate> {
+#import "FSVerticalTabBarController.h"
+
+@interface SIMenuViewController : UIViewController <FSTabBarControllerDelegate,NewLAViewControllerDelegate,PayorViewControllerDelegate,SecondLAViewControllerDelegate,BasicPlanViewControllerDelegate,RiderViewControllerDelegate> {
     NSString *databasePath;
     sqlite3 *contactDB;
     BOOL PlanEmpty;
@@ -28,6 +30,7 @@
     SecondLAViewController *_SecondLAController;
     BasicPlanViewController *_BasicController;
     RiderViewController *_RiderController;
+	FSVerticalTabBarController *_FS;
     NSIndexPath *selectedPath;
     NSIndexPath *previousPath;
     BOOL blocked;
@@ -43,6 +46,7 @@
 @property (nonatomic, retain) SecondLAViewController *SecondLAController;
 @property (nonatomic, retain) BasicPlanViewController *BasicController;
 @property (nonatomic,retain) RiderViewController *RiderController;
+@property (nonatomic,retain) FSVerticalTabBarController *FS;
 
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
 @property (retain, nonatomic) NSMutableArray *SelectedRow;
