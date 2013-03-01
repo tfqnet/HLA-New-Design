@@ -92,10 +92,10 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
-                    if(result.rows.length == 1){
+                    //if(result.rows.length == 1){
 	                  var row = result.rows.item(0);
 			 FirstAge = row.Age;
-                    }
+                    //}
                 }
             },errorHandler);
         },errorHandler,nullHandler);
@@ -307,8 +307,8 @@
 	    <td>
 		<table id="table-1" border="1" style="border-collapse: collapse" width= "70%">
 		    <tr>
-			<td>Diagnosis</td>
-			<td>Amount Payable</td>
+			<td><b>Diagnosis</b></td>
+			<td><b>Amount Payable</b></td>
 		    </tr>
 		    <tr>
 			<td>Very Early Cancers</td>
@@ -356,7 +356,6 @@
 		<span id="OptionalText1">{OptionalText1}</span>
 	    </td>
 	</tr>
-	<tr><td></td></tr>
 	<tr>
 	    <td><b>3.</b></td>
 	    <td><b>How much premium do I have to pay?</b></td>
@@ -377,14 +376,14 @@
 	    <td>
 		<table id="table-2" style="border-collapse: collapse" border="1" width="70%">
 		    <tr>
-			<td rowspan="2">Rider</td>
-			<td colspan="4">Initial Premium</td>
+			<td rowspan="2"><b>Rider</b></td>
+			<td colspan="4"><b>Initial Premium</b></td>
 		    </tr>
 		    <tr>
-			<td>Annual (RM)</td>
-			<td>Semi-annual (RM)</td>
-			<td>Quarterly (RM)</td>
-			<td>Monthly (RM)</td>
+			<td><b>Annual (RM)</b></td>
+			<td><b>Semi-annual (RM)</b></td>
+			<td><b>Quarterly (RM)</b></td>
+			<td><b>Monthly (RM)</b></td>
 		    </tr>
 		    <tr>
 			<td>C+ Secure with <span id="PlanOption2">{PlanOption2}</span></td>
@@ -406,8 +405,8 @@
 	    <td>
 		<table id="table-3" style="border-collapse: collapse" border="1" width="50%">
 		    <tr>
-			<td>Rider</td>
-			<td>Premium payable until age</td>
+			<td><b>Rider</b></td>
+			<td><b>Premium payable until age</b></td>
 		    </tr>
 		    <tbody>
 			<td>C+ Secure with <span id="PlanOption3">{PlanOption3}</span></td>

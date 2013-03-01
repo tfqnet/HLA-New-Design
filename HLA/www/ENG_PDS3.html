@@ -59,6 +59,10 @@
         
         db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+		if(page != 'ENG_PDS11.html'){
+		    document.getElementById('FrontPage').style.visibility = "hidden";
+		}
+		
                 if (result != null && result.rows != null) {
                     var row;
                     for (var i = 0; i < result.rows.length; i++) {
@@ -414,7 +418,10 @@
 <script>
 //$('#table-design1').css('display','none');
 //$('#table-design1 tr').css('display','table-row');
-</script> 
+</script>
+<div id="FrontPage">
+    <b>B) Attaching Rider(s)</b>
+</div>
     <tr class="tblHeader" id="tblHeader" style="display:table-row;">
 	<th class="contentExtraSmall"><b>Riders</b></th>
 	<th class="contentExtraSmall"><b>Sum Assured/Benefit</b></th>
@@ -431,7 +438,7 @@
 	<td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 	<td class="content">
 	RM <span id="QQQCCTRRiderGYI">{CCTRRiderGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD<br/>
-	provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further<br/>
+	provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further
 	evidence of insurability.<br/><br/>
 	</td>
     </tr> 
@@ -560,7 +567,7 @@ The following 36 critical illnesses are covered:<br/><br/>
 </table>
 
 <br/>
-*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable
 once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI.<br/><br/>
 </td>
 </tr>
@@ -940,7 +947,7 @@ Dividend (if any) and Terminal Dividend (if any) shall be payable.<br/>
 <td class="contentExtraSmall" style="text-align:center;"><span id="ICRRiderTerm">{ICRRiderTerm}</span></td>
 <td class="contentExtraSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
-Upon TPD or diagnosis of any 36 critical illness of the life assured during the coverage period and the life assured remained disabled, RM <span id="QQQICRRiderGYI">{ICRRiderGYI}</span> shall be<br/>
+Upon TPD or diagnosis of any 36 critical illness of the life assured during the coverage period and the life assured remained disabled, RM <span id="QQQICRRiderGYI">{ICRRiderGYI}</span> shall be
 payable annually up to age 65 or death of the life assured, whichever is earlier. The following 36 critical illnesses are covered<br/><br/>
 
 <table id="illness" class="illness" style="border-collapse:collapse;border: 0px solid black;width: 100%;">
@@ -1054,7 +1061,7 @@ payable annually up to age 65 or death of the life assured, whichever is earlier
 </tr>
 </table>
 <br/>
-*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable
 once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI or TPD.<br/><br/>
 </td>
 </tr>
@@ -1444,7 +1451,7 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 <td class="contentExtraSmall" style="text-align:center;"><span id="InsuredLives">{InsuredLives}</span></td>
 <td class="content">
 
-The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered
 of the payor during the coverage period.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -1559,7 +1566,7 @@ The following 36 critical illnesses are covered:<br/><br/>
 </tr>
 </table>
 <br/>
-*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable
 once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI, Death or TPD.<br/><br/>
 </td>
 </tr>
@@ -1576,8 +1583,8 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 The following benefits are payable upon death or disability of the life assured caused by an accident during the coverage period:<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Accidental Death - sum assured of this rider payable<br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total &amp; Permanent Disability due to accident - refer to schedule of indemnities<br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Double indemnity - sum assured payable is doubled if accidental death of Life Assured occurred while the Life Assured is on mechanically propelled Public<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Conveyance over an established route on land, excluding Taxis<br/><br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Double indemnity - sum assured payable is doubled if accidental death of Life Assured occurred while the Life Assured is on mechanically propelled
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Public Conveyance over an established route on land, excluding Taxis<br/><br/>
 
 </td>
 </tr>
@@ -1591,7 +1598,7 @@ The following benefits are payable upon death or disability of the life assured 
 <td class="contentExtraSmall" style="text-align:center;"><span id="PRRiderTerm">{PRRiderTerm}</span></td>
 <td class="contentExtraSmall" style="text-align:center;"><span id="PRInsuredLives">{PRInsuredLives}</span></td>
 <td class="content">
-The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the payor during the coverage period.<br/>
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the payor during the coverage period.
 <br/>
 
 </td>
@@ -1606,7 +1613,7 @@ The rider sum assured will be paid to reduce future premium up to the expiry dat
 <td class="contentExtraSmall" style="text-align:center;">2nd Life Assured</td>
 <td class="content">
 
-The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered
 of the 2nd life assured during the coverage period.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -1721,7 +1728,7 @@ The following 36 critical illnesses are covered:<br/><br/>
 </tr>
 </table>
 <br/>
-*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable
 once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI, Death or TPD.<br/><br/>
 </td>
 </tr>
@@ -1734,8 +1741,8 @@ once only and shall be deducted from the coverage of this plan, thereby reducing
 <td class="contentExtraSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
 <td class="contentExtraSmall" style="text-align:center;">2nd Life Assured</td>
 <td class="content">
-The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the 2nd life assured during the coverage<br/>
-period.<br/>
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the 2nd life assured during the coverage
+period.
 <br/>
 
 </td>
@@ -1749,7 +1756,7 @@ period.<br/>
 <td class="contentExtraSmall" style="text-align:center;"><span id="PLCPRiderTerm">{PLCPRiderTerm}</span></td>
 <td class="contentExtraSmall" style="text-align:center;">Payor</td>
 <td class="content">
-RM <span id="QQQPLCPRiderGYI">{PLCPGYI}</span> is payable upon the first occurrence of death / TPD / diagnosis of any of the 36 critical illnesses of the payor during the coverage period.<br/>
+RM <span id="QQQPLCPRiderGYI">{PLCPGYI}</span> is payable upon the first occurrence of death / TPD / diagnosis of any of the 36 critical illnesses of the payor during the coverage period.
 Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -1866,7 +1873,7 @@ The following 36 critical illnesses are covered:<br/><br/>
 </tr>
 </table>
 <br/>
-*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable<br/>
+*Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable
 once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI, Death or TPD.<br/><br/>
 This rider does not cover the following occurrences:<br/>
 

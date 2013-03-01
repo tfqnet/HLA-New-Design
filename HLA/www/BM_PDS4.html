@@ -21,6 +21,8 @@
     var cashPaymentD = '';
     var mcashPaymentD = '';
     var FirstAge = '';
+    var SecondAge = '';
+    var PayorAge = '';
     var PA = '';
     var CustCode = '';
     var Deductible = '';
@@ -285,10 +287,22 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
-                    if(result.rows.length == 1){
-	                  var row = result.rows.item(0);
-			 FirstAge = row.Age;
-                    }
+                    for(var i = 0; i < result.rows.length; i++){
+			if(i == 0){
+	                  var row = result.rows.item(i);
+			  FirstAge = row.Age;
+		        }
+			
+			if(i == 1){
+	                  var row = result.rows.item(i);
+			    if(row.PTypeCode == 'PY'){
+				PayorAge = row.Age;  
+			    }
+			    else{
+				SecondAge = row.Age;  
+			    }
+		        }
+		    }
                     
                 }
             },errorHandler);
@@ -297,7 +311,7 @@
 	db.transaction(function(transaction) {
             
             var Query;
-	    
+	    /*
 	    if(planCode == 'HLAIB'){
 		Query = "SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Pelan Asas' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
 				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II') " +
@@ -310,7 +324,19 @@
 				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode, A.PTypeCode, A.Seq from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
 				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R','EDB', 'ETPDB')   ) as zzz ORDER BY No, PlanCode "
 	    }
-	    
+	    */
+	    if(planCode == 'HLAIB'){
+		Query = "SELECT * FROM (select '1' as No, 'HLA Income Builder' as PlanCode, 'Pelan Asas' as Type, PremiumPaymentOption, 'B' as RiderCode from Trad_Details where SINo = '"+ siNo + "' " +  
+				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II') " +
+				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
+				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R')   ) as zzz ORDER BY No, PlanCode "
+	    }
+	    else if(planCode == 'HLACP'){
+		Query = "SELECT * FROM (select '1' as No, 'HLA Cash Promise' as PlanCode, 'Pelan Asas' as Type, PremiumPaymentOption, 'B' as RiderCode, 'LA' as 'PTypeCode', '1' as Seq from Trad_Details where SINo = '"+ siNo + "' " +  
+				   "UNION select '2',  RiderDesc, 'Rider' as type, Riderterm, A.RiderCode, A.PTypeCode, A.Seq from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B where A.RiderCode = B.RiderCode AND SINo = '"+ siNo +"' AND A.RiderCode not in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R', 'C+', 'MG_IV', 'MG_II', 'HMM', 'HSP_II','EDB', 'ETPDB') " +
+				   "UNION SELECT '2',  RiderDesc, 'Rider' as type, ( select premiumpaymentoption from trad_details where sino = '"+ siNo+"'), A.RiderCode, A.PTypeCode, A.Seq from Trad_Rider_Details as A, Trad_Sys_Rider_Profile as B WHERE A.RiderCode = B.RiderCode AND sino = '"+ siNo +"' " +
+				   "AND A.Ridercode in ('I20R','I30R','I40R','IE20R','IE30R','ID20R','ID30R','ID40R','EDB', 'ETPDB')   ) as zzz ORDER BY No, PlanCode "
+	    }
             transaction.executeSql(Query, [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;

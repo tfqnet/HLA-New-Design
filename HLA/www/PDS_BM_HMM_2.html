@@ -133,11 +133,11 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
-                    if(result.rows.length == 1){
+                    //if(result.rows.length == 1){
 	                  var row = result.rows.item(0);
 			 FirstAge = row.Age;
 			 $('#PayableAge').html(parseInt(HMMRiderTerm) + parseInt(FirstAge));                      
-                    }
+                    //}
 		    
                 }
             },errorHandler);
@@ -334,14 +334,14 @@
 	    <td>
 		<table id="table-2" style="border-collapse: collapse" border="1" width="70%">
 		    <tr>
-			<td rowspan="2">Rider</td>
-			<td colspan="4">Premium Awal</td>
+			<td rowspan="2"><b>Rider</b></td>
+			<td colspan="4"><b>Premium Awal</b></td>
 		    </tr>
 		    <tr>
-			<td>Tahunan (RM)</td>
-			<td>Setengah Tahunan (RM)</td>
-			<td>Suku Tahunan (RM)</td>
-			<td>Bulanan (RM)</td>
+			<td><b>Tahunan (RM)</b></td>
+			<td><b>Setengah Tahunan (RM)</b></td>
+			<td><b>Suku Tahunan (RM)</b></td>
+			<td><b>Bulanan (RM)</b></td>
 		    </tr>
 		    <tr>
 			<td>Rider HLA Major Medi <span id="PlanOption">{PlanOption}</span> &nbsp; dengan penolakan sebanyak &nbsp;<span id="Deductible">{Deductible}</span></td>
@@ -365,8 +365,8 @@
 	    <td>
 		<table id="table-3" style="border-collapse: collapse" border="1" width="50%">
 		    <tr>
-			<td>Rider</td>
-			<td>Premium akan dibayar sehingga umur</td>
+			<td><b>Rider</b></td>
+			<td><b>Premium akan dibayar sehingga umur</b></td>
 		    </tr>
 		    <tbody>
 			<td>Rider HLA Major Medi</td>

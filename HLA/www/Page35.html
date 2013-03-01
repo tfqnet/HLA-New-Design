@@ -121,27 +121,28 @@
         
         db.transaction(function(transaction) {//display rider row
                        transaction.executeSql("Select * from SI_Temp_Pages where htmlName = '" + page + "'", [], function(transaction, result) {
-                                              if (result != null && result.rows != null) {
-                                              var row = result.rows.item(0);
+                                    if (result != null && result.rows != null) {
+                                            var row = result.rows.item(0);
                                               
-                                              if(row.riders.charAt(row.riders.length-1) == ";"){
-                                              rider = row.riders.slice(0, -1).split(";");
-                                              }
-                                              else{
-                                              rider = row.riders.split(";");
-                                              }
+                                            if(row.riders.charAt(row.riders.length-1) == ";"){
+						rider = row.riders.slice(0, -1).split(";");
+                                            }
+                                            else{
+						rider = row.riders.split(";");
+                                            }
                                               
-					      document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
+					      //document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
                                               
+					      
                                               //rider = row.riders.split(";");
-                                              for(var i=0;i<rider.length;i++){
+                                        for(var i=0;i<rider.length;i++){
                                               //alert(rider[i]);
                                               temp = rider[i];
                                               if (temp == "C+"){
-                                              temp = "C"
+						temp = "C"
                                               }
                                               else if (temp == "tblHeader"){
-                                              $('#riderInPage').css('display','inline');
+						$('#riderInPage').css('display','inline');
                                               }
                                               
                                               $('#table-design1 tr.'+temp).css('display','table-row');
@@ -150,109 +151,108 @@
                                               //$('#table-design1 tr.PA').css('display','table-row');
                                               //alert(temp)
                                               
-                                              if (temp == "C"){
-                                              temp = "C+"	
-                                              $('#table-design2Wide tr').css('display','table-row');
-                                              transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "' ", [], function(transaction, result) {
-                                                                     if (result != null && result.rows != null) {
-                                                                     var row = result.rows.item(0);
-                                                                     $('#CRiderTerm').html(row.RiderTerm);
-                                                                     $('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 50) / 100));
-                                                                     $('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 150) / 100));
-                                                                     $('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 250) / 100));
-                                                                     $('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
-                                                                     if (row.PlanOption == "Level"){
-                                                                     $('#cPlanOption').html('Level Cover');
-                                                                     $('#cGuaranteedIncreasingSumAssured').hide();
-                                                                     $('#cNoClaimBenefit').hide();
-                                                                     }
-                                                                     else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
-                                                                     $('#cPlanOption').html('Increasing Cover');
-                                                                     $('#cNoClaimBenefit').hide();
-                                                                     }
-                                                                     else if (row.PlanOption == "Level_NCB"){
-                                                                     $('#cPlanOption').html('Level Cover with NCB');
-                                                                     $('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
-                                                                     $('#cGuaranteedIncreasingSumAssured').hide();
-                                                                     }
-                                                                     else if (row.PlanOption == "Increasing_NCB"){
-                                                                     $('#cPlanOption').html('Increasing Cover with NCB');
-                                                                     $('#cNoClaimAmount').html(formatCurrency(row.SA));
-                                                                     //$('#cGuaranteedIncreasingSumAssured').hide();
-                                                                     $('#cVeryEarlyTD').html('50% of Rider Sum Assured');
-                                                                     $('#cEarlyTD').html('150% of Rider Sum Assured');
-                                                                     $('#cAdvanceTD').html('250% of Rider Sum Assured');
-                                                                     $('#cNursingCareAllowance').html('25% of Rider Sum Assured');
-                                                                     }
-                                                                     }
-                                                                     },errorHandler);        				
-						}
-						    if (temp == "HB"){
-							transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
-							    if (result != null && result.rows != null) {
-							    var row = result.rows.item(0);
-								$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
-							    }
-							},errorHandler);        				
+                                            if (temp == "C"){
+						temp = "C+"	
+						$('#table-design2Wide tr').css('display','table-row');
+						transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "' ", [], function(transaction, result) {
+                                                    if (result != null && result.rows != null) {
+                                                        var row = result.rows.item(0);
+							$('#CRiderTerm').html(row.RiderTerm);
+							$('#cVeryEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 50) / 100));
+							$('#cEarly').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 150) / 100));
+							$('#cAdvance').html(formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 250) / 100));
+							$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
+							if (row.PlanOption == "Level"){
+							    $('#cPlanOption').html('Level Cover');
+							    $('#cGuaranteedIncreasingSumAssured').hide();
+							    $('#cNoClaimBenefit').hide();
+							}
+							else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
+							    $('#cPlanOption').html('Increasing Cover');
+							    $('#cNoClaimBenefit').hide();
+							}
+							else if (row.PlanOption == "Level_NCB"){
+							    $('#cPlanOption').html('Level Cover with NCB');
+							    $('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
+							    $('#cGuaranteedIncreasingSumAssured').hide();
+							}
+							else if (row.PlanOption == "Increasing_NCB"){
+							    $('#cPlanOption').html('Increasing Cover with NCB');
+							    $('#cNoClaimAmount').html(formatCurrency(row.SA));
+							    //$('#cGuaranteedIncreasingSumAssured').hide();
+							    $('#cVeryEarlyTD').html('50% of Rider Sum Assured');
+							    $('#cEarlyTD').html('150% of Rider Sum Assured');
+							    $('#cAdvanceTD').html('250% of Rider Sum Assured');
+							    $('#cNursingCareAllowance').html('25% of Rider Sum Assured');
+                                                        }
 						    }
-						    else if(temp == "LCWP"  ){
-							$('#illness tr').css('display','table-row');
-							transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
-							    if (result != null && result.rows != null) {
-							    var row = result.rows.item(0);
-								
-								if(row.PTypeCode == "LA"){
-								    $('#InsuredLives').html('2nd Life Assured');
-								}
-								else{
-								    $('#InsuredLives').html('Payor');
-								}
-							    }
-							},errorHandler);        				
+                                                },errorHandler);        				
+					    }
+					    if (temp == "HB"){
+						transaction.executeSql("Select Units from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+						    if (result != null && result.rows != null) {
+						    var row = result.rows.item(0);
+							$('#HBBenefit').html(formatCurrency(parseInt(row.Units) * 45));
 						    }
-						    else if(temp == "PR"){
-							transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
-							    if (result != null && result.rows != null) {
-								var row = result.rows.item(0);
-								if(row.PTypeCode == "LA"){
-								    $('#PRInsuredLives').html('2nd Life Assured');
-								}
-								else{
-								    $('#PRInsuredLives').html('Payor');
-								}
-							    }
-							},errorHandler);        				
+						},errorHandler);        				
+					    }
+					    else if(temp == "LCWP"  ){
+						$('#illness tr').css('display','table-row');
+						transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+						    if (result != null && result.rows != null) {
+						    var row = result.rows.item(0);
+							
+							if(row.PTypeCode == "LA"){
+							    $('#InsuredLives').html('2nd Life Assured');
+							}
+							else{
+							    $('#InsuredLives').html('Payor');
+							}
 						    }
-						    else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP" || temp == "ETPDB"){
-							$('#illness tr').css('display','table-row');
+						},errorHandler);        				
+					    }
+					    else if(temp == "PR"){
+						transaction.executeSql("Select * from Trad_Rider_Details where RiderCode = '" + temp + "' AND SINO = '" + siNo + "'", [], function(transaction, result) {
+						    if (result != null && result.rows != null) {
+							var row = result.rows.item(0);
+							if(row.PTypeCode == "LA"){
+							    $('#PRInsuredLives').html('2nd Life Assured');
+							}
+							else{
+							    $('#PRInsuredLives').html('Payor');
+							}
 						    }
-						}
+						},errorHandler);        				
+					    }
+					    else if(temp == "CIR" || temp == "CIWP" || temp == "ICR" || temp == "LCPR" || temp == "LCWP" || temp == "SP_PRE" || temp == "PLCP" || temp == "ETPDB"){
+						$('#illness tr').css('display','table-row');
+					    }
+					}
                                               
-                                              for (var j=0;j<rider.length;j++){
+                                        for (var j=0;j<rider.length;j++){
                                               //rider[j];
                                               //alert(rider[j]);
-                                              var query =  "Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "' AND SINO = '" + siNo + "'"
-                                              transaction.executeSql(query, [], function(transaction, result) {
+					    var query =  "Select * from Trad_Rider_Details where RiderCode = '" + rider[j] + "' AND SINO = '" + siNo + "'"
+					    transaction.executeSql(query, [], function(transaction, result) {
+			                                                 
+						if (result.rows.length > 0) {
+									 //alert("got result");
+						    var row = result.rows.item(0);
+						       
+						       //alert(row.RiderTerm)
+						    $('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
+						    $('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
+						}
+						else{
+						//alert("no result");
+						}
+                                            },errorHandler);
+                                        }
                                               
-                                                                     
-                                                                     if (result.rows.length > 0) {
-                                                                     //alert("got result");
-                                                                     var row = result.rows.item(0);
-                                                                        
-                                                                        //alert(row.RiderTerm)
-                                                                        $('#' + row.RiderCode + 'RiderTerm').html(row.RiderTerm);
-                                                                        $('#' + row.RiderCode + 'GYI').html(formatCurrency(row.SumAssured+""));
-                                                                     }
-                                                                     else{
-                                                                     //alert("no result");
-                                                                     }
-                                              },errorHandler);
-                                              }
                                               
-                                              
-                                              }
-                                              },errorHandler);
-                       },errorHandler,nullHandler);
+                                    }
+                        },errorHandler);
+        },errorHandler,nullHandler);
     	
         
         return;
@@ -291,7 +291,7 @@
 
 
 
-<div id="pageLength" class="pageLength" style="position:relative;">
+<div id="pageLength" class="pageLength" style="position:relative;height: 750px">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -307,44 +307,44 @@
 <!--c+ start-->
 <!--<tr class="c" id="c" style="display:table-row;">-->
 <tr class="C" id="C" style="display:table-row;">
-<td class="contentSmall">C+ secure (<span id="cPlanOption">{cPlanOption}</span>)</td>
-<td class="contentSmall" style="text-align:center;"><span id="CRiderTerm">{C+RiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;">Life Assured</td>
-<td class="content">
-<u>Cancer Benefit</u><br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The amount of Benefits as described in the table below shall be payable upon diagnosis of cancer covered of the Life Assured during the coverage period.<br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon admission of a claim, all future premiums shall be waived thereafter.<br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment Schedule:<br/><br/>
-<div style="margin-left: 18px;" class="paymentScheduleTable">
-<table class="table-design2Wide" id="table-design2Wide">
-    <tr><td style="text-align:left;">Diagnosis</td><td style="text-align:left;">Amount Payable</td></tr>
-    <tr><td style="text-align:left;">Very Early Cancers</td><td style="text-align:left;" id="cVeryEarlyTD">RM <span id="cVeryEarly">{cVeryEarly}</span></td></tr>
-    <tr><td style="text-align:left;">Early Cancers</td><td style="text-align:left;" id="cEarlyTD">RM <span id="cEarly">{cEarly}</span></td></tr>
-    <tr><td style="text-align:left;">Advanced Cancers</td><td style="text-align:left;" id="cAdvanceTD">RM <span id="cAdvance">{cAdvance}</span></td></tr>
-</table>
-</div>
-<br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The amount payable in respect of each cancer stage shall be reduced by any prior payments for cancer of same organ or type and shall be<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limited to 300% of the Rider Sum Assured.<br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For Very Early Cancers and Early Cancers, multiple claims are allowed for the same category stage, subject to that the claim is for a different<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type of cancer affecting a different organ.<br/><br/>
-<u>Nursing Care Allowance</u><br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should the Life Assured upon diagnosis by a registered Medical Practitioner to be suffering from Advanced Cancer, the Company shall upon<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receipt of proof of the said event, pays Policy Owner or his lawful assignee an annual payment equivalent to <span id="cNursingCareAllowance">RM {cNursingCareAllowance}</span> for a period of 2 years<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subject to the survival of Life Assured.<br/><br/>
-<u>Extension of Coverage for Advanced Cancer</u><br>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A period of 2 Policy Years shall be extended after the Expiry Date to cover Advanced Cancers if there were valid claims of either Very Early<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancers and/or Early Cancers of the same type or the same organ admitted prior to the Expiry Date.<br/><br/>
-
-<div id="cGuaranteedIncreasingSumAssured">
-<u>Guaranteed Increasing Sum Assured</u><br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Rider's Sum Assured shall increase by 10% every 2 years with the first such increase staring on 2nd Anniversary of the Commencement Date of this<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>
-</div>
+    <td class="contentSmall">C+ secure (<span id="cPlanOption">{cPlanOption}</span>)</td>
+    <td class="contentSmall" style="text-align:center;"><span id="CRiderTerm">{C+RiderTerm}</span></td>
+    <td class="contentSmall" style="text-align:center;">Life Assured</td>
+    <td class="content">
+    <u>Cancer Benefit</u><br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The amount of Benefits as described in the table below shall be payable upon diagnosis of cancer covered of the Life Assured during the coverage period.<br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon admission of a claim, all future premiums shall be waived thereafter.<br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment Schedule:<br/><br/>
+    <div style="margin-left: 18px;" class="paymentScheduleTable">
+    <table class="table-design2Wide" id="table-design2Wide">
+	<tr><td style="text-align:left;">Diagnosis</td><td style="text-align:left;">Amount Payable</td></tr>
+	<tr><td style="text-align:left;">Very Early Cancers</td><td style="text-align:left;" id="cVeryEarlyTD">RM <span id="cVeryEarly">{cVeryEarly}</span></td></tr>
+	<tr><td style="text-align:left;">Early Cancers</td><td style="text-align:left;" id="cEarlyTD">RM <span id="cEarly">{cEarly}</span></td></tr>
+	<tr><td style="text-align:left;">Advanced Cancers</td><td style="text-align:left;" id="cAdvanceTD">RM <span id="cAdvance">{cAdvance}</span></td></tr>
+    </table>
+    </div>
+    <br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The amount payable in respect of each cancer stage shall be reduced by any prior payments for cancer of same organ or type and shall
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;be limited to 300% of the Rider Sum Assured.<br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For Very Early Cancers and Early Cancers, multiple claims are allowed for the same category stage, subject to that the claim is for a
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;different type of cancer affecting a different organ.<br/><br/>
+    <u>Nursing Care Allowance</u><br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should the Life Assured upon diagnosis by a registered Medical Practitioner to be suffering from Advanced Cancer, the Company shall
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;upon receipt of proof of the said event, pays Policy Owner or his lawful assignee an annual payment equivalent to <span id="cNursingCareAllowance">RM {cNursingCareAllowance}</span> for a period of
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 years subject to the survival of Life Assured.<br/><br/>
+    <u>Extension of Coverage for Advanced Cancer</u><br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A period of 2 Policy Years shall be extended after the Expiry Date to cover Advanced Cancers if there were valid claims of either Very
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Early Cancers and/or Early Cancers of the same type or the same organ admitted prior to the Expiry Date.<br/><br/>
+    
+    <div id="cGuaranteedIncreasingSumAssured">
+    <u>Guaranteed Increasing Sum Assured</u><br/>
+    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Rider's Sum Assured shall increase by 10% every 2 years with the first such increase staring on 2nd Anniversary of the Commencement Date of this
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>
+    </div>
 
 <div id="cNoClaimBenefit">
 <u>No Claim Benefit</u><br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date, the Company will pay the<br/>
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date, the Company will pay the
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner a No Claim benefit equivalent to RM <span id="cNoClaimAmount">{cNoClaimAmount}</span><br/><br/>
 </div>
 
@@ -354,14 +354,15 @@ This rider does not cover the following occurrence:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pre-Existing Condition.<br/>
 ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;All Cancers presenting or diagnosed within the Waiting Period of 90 days.<br/>
 iii.&nbsp;&nbsp;&nbsp;&nbsp;All Cancers which are histologically classified as being:<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premalignant (for example cervical intraepithelial / CIN I, II, or III, essential thrombocythemia, polycythemia rubra vera) or having either<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;borderline malignancy / low malignant potential and/or;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premalignant (for example cervical intraepithelial / CIN I, II, or III, essential thrombocythemia, polycythemia rubra vera) or having
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;either borderline malignancy / low malignant potential and/or;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Carcinoma in situ (except Ductal carcinoma in situ breast, Carcinoma in situ cervix and Carcinoma in situ colon).<br/>
 iv.&nbsp;&nbsp;&nbsp;&nbsp;All skin Cancers except malignant melanoma with thickness in excess of 1.5 mm thickness or metastatic skin Cancers.<br/>
 v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;All Cancers associated with HIV infection.<br/>
 vi.&nbsp;&nbsp;&nbsp;&nbsp;Unreasonable failure to follow medical treatment.<br/>
 vii.&nbsp;&nbsp;&nbsp;All Cancers if Death of the Life Assured occurs within thirty (30) days following the date of diagnosis of Cancer.<br/>
-</td></tr>
+    </td>
+</tr>
 <!--c+ end-->
 
 
@@ -372,18 +373,18 @@ vii.&nbsp;&nbsp;&nbsp;All Cancers if Death of the Life Assured occurs within thi
 <td class="contentSmall" style="text-align:center;"><span id="CCTRRiderTerm">{CCTRRiderTerm}</span></td>
 <td class="contentSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
-RM <span id="CCTRGYI">{CCTRGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD<br/>
-provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further<br/>
+RM <span id="CCTRGYI">{CCTRGYI}</span> is payable upon death / TPD (prior to age 65) of the life assured during the coverage term. TPD benefit will be paid in accordance to TPD
+provision. During the term of the rider and before attaining age 60, the life assured may convert the policy to a whole life plan or endowment without further
 evidence of insurability.<br/><br/>
 This rider does not cover the following occurrences:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during the first 12 months from the date of issuance or reinstatement date, whichever is later.<br/>
 ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;undeclared war, riots or civil commotion.<br/>
 </td>
 </tr> 
 <!--CCTR-Convertible Comprehensive Term Rider end--> 
@@ -514,9 +515,10 @@ The following 36 critical illnesses are covered:<br/><br/>
 *Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable
 once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI.<br/><br/>
 This rider does not cover the following occurrences:<br/>
-i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
-ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;later<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date,whichever is later<br/>
 iii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
@@ -536,7 +538,7 @@ v.&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured within 28 days following the
 <td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
 <td class="contentSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
-The rider Sum Assured will be paid to reduce future premium up to expiry date of the rider upon diagnosis of any of the 36 critical illnesses covered of the life<br/>
+The rider Sum Assured will be paid to reduce future premium up to expiry date of the rider upon diagnosis of any of the 36 critical illnesses covered of the life
 assured during the coverage period.<br/>
 Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written notice.<br/>
 The following 36 critical illnesses are covered :<br/><br/>
@@ -654,9 +656,10 @@ The following 36 critical illnesses are covered :<br/><br/>
 *Benefit payment under this illness is limited to 10% of the Critical Illness coverage under this plan subject to a maximum of RM 25,000. This benefit is payable
 once only and shall be deducted from the coverage of this plan, thereby reducing the amount of lump sum payment upon CI.<br/><br/>
 This rider does not cover the following occurrences:<br/>
-i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
-ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;later<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date,whichever is later<br/>
 iii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
@@ -833,10 +836,10 @@ acts as his own insurer/ amount to be borne by policyholder.<br/>
 <td class="contentSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
 This policy provides for hospitalisation and surgical expenses, and outpatient treatment benefits incurred due to illness covered under the policy.<br/><br/>
-Refer to Schedule of Benefits in Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the attained age of the Life Assured. All<br/>
-payments of Benefits (with the exception of Hospital Room & Board and Emergency Medical Evacuation & Repatriation) as described in the Schedule Of Benefits<br/>
-are subject to co-insurance amount of 10% of the amount of claim per Disability as admitted by the Company or the sum of RM300/-, whichever is the higher,<br/>
-subject to the absolute maximum sum of RM3,000 (inclusive of deductibles). The absolute maximum limit of RM3,000 shall not be applicable to a plan which<br/>
+Refer to Schedule of Benefits in Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the attained age of the Life Assured. All
+payments of Benefits (with the exception of Hospital Room & Board and Emergency Medical Evacuation & Repatriation) as described in the Schedule Of Benefits
+are subject to co-insurance amount of 10% of the amount of claim per Disability as admitted by the Company or the sum of RM300/-, whichever is the higher,
+subject to the absolute maximum sum of RM3,000 (inclusive of deductibles). The absolute maximum limit of RM3,000 shall not be applicable to a plan which
 provides for total annual benefits exceeding RM100,000. This co-insurance may be reviewed by the Company as its sole discretion from time to time.<br/>
 </td>
 </tr>
@@ -1099,13 +1102,14 @@ This rider does not cover the following occurrences:<br/>
 i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a
-commercial airline); or<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots
-or civil commotion<br/>
-ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
-iii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,
-whichever is later.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of a commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;undeclared war, riots or civil commotion<br/>
+ii.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;later<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date, whichever is later.<br/>
 iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
@@ -1366,7 +1370,7 @@ Terminal Dividend (if any) shall be payable.<br/>
 <td class="contentSmall" style="text-align:center;"><span id="LCPRRiderTerm">{LCPRRiderTerm}</span></td>
 <td class="contentSmall" style="text-align:center;">Life Assured</td>
 <td class="content">
-RM <span id="LCPRGYI">{CIRGYI}</span> is payable upon the first occurrence death / TPD / diagnosis of any of the 36 critical illnesses of the life assured during the coverage period. TPD<br/>
+RM <span id="LCPRGYI">{CIRGYI}</span> is payable upon the first occurrence death / TPD / diagnosis of any of the 36 critical illnesses of the life assured during the coverage period. TPD
 benefit will be paid in accordance to TPD provision.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -1490,13 +1494,14 @@ i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during 
 ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
-iii.&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is later<br/>
-iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement date,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichever is later<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;undeclared war, riots or civil commotion<br/>
+iii.&nbsp;&nbsp;&nbsp;&nbsp;An episode of coronary artery or ischaemic heart disease that occurred before the Issue Date or any reinstatement date, whichever is
+&nbsp;&nbsp;&nbsp;&nbsp;later<br/>
+iv.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness other than those specified under item (iii) below within 30 days from the Issue Date or any reinstatement
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date, whichever is later<br/>
 v.&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis of the critical illness specified below within 60 days from the Issue Date or any reinstatement date, whichever is later:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Angioplasty and other invasive treatment for coronary artery disease<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cancer<br/>
@@ -1584,7 +1589,7 @@ xv.&nbsp;&nbsp;Any dental treatment not necessitated by injury covered under thi
 <td class="contentSmall" style="text-align:center;"><span id="InsuredLives">{InsuredLives}</span></td>
 <td class="content">
 
-The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered
 of the payor during the coverage period.<br/>
 The following 36 critical illnesses are covered:<br/><br/>
 
@@ -1739,10 +1744,10 @@ i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Death of the life assured due to suicide during 
 ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or indirectly:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any self-inflicted bodily injury while sane or insane;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from any nervous disorder or mental illness;<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of a<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;commercial airline); or<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or undeclared war, riots<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or civil commotion<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from flying in an aircraft (except as an aircrew member of, or as an ordinary fare paying passenger, on a regularly scheduled flight of
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a commercial airline); or<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from anything whatsoever while as a member of the armed forces, police and paramilitary forces as a result of declared or
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;undeclared war, riots or civil commotion<br/>
 </td>
 </tr>
 <!--PR-Waiver of Premium Payor Rider end-->

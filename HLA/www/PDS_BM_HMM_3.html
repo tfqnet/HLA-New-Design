@@ -95,10 +95,10 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
-                    if(result.rows.length == 1){
+                    //if(result.rows.length == 1){
 	                  var row = result.rows.item(0);
 			 FirstAge = row.Age;
-                    }
+                    //}
                 }
             },errorHandler);
         },errorHandler,nullHandler);
@@ -131,7 +131,6 @@
 	db.transaction(function(transaction) {
 	    
 		var zzz = (parseInt(FirstAge) + parseInt(0));
-		
 		
 		transaction.executeSql("SELECT * FROM SI_Store_Premium WHERE Type = 'HMM' AND FromAge <= '" + zzz +"' AND ToAge >= '" + zzz  +"' ", [], function(transaction, result) {
 		    
@@ -361,11 +360,11 @@
 	    <td valign="top">
 		<table id="table-1" border="1" style="border-collapse: collapse" width="70%">
 		    <tr>
-			<td width="50%" >Jenis</td>
-			<td>Jumlah</td>
+			<td width="50%" ><b>Jenis</b></td>
+			<td><b>Jumlah</b></td>
 		    </tr>
 		    <tr>
-			<td>Kos Pengagihan Langsung yang dibayar kepada ejen insurans</td>
+			<td><b>Kos Pengagihan Langsung yang dibayar kepada ejen insurans</b></td>
 			<td></td>
 		    </tr>
 		    <tr>

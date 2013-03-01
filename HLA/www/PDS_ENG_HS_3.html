@@ -95,10 +95,10 @@
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
                 if (result != null && result.rows != null) {
                     var row;
-                    if(result.rows.length == 1){
+                    //if(result.rows.length == 1){
 	                  var row = result.rows.item(0);
 			 FirstAge = row.Age;
-                    }
+                    //}
                 }
             },errorHandler);
         },errorHandler,nullHandler);
