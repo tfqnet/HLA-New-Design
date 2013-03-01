@@ -58,6 +58,7 @@
 @property(nonatomic , retain) NSMutableArray *riderTerm;
 @property(nonatomic , retain) NSMutableArray *riderSA;
 @property(nonatomic , retain) NSMutableArray *riderHL1K;
+@property(nonatomic , retain) NSMutableArray *riderTempHL1K;
 @property(nonatomic , retain) NSMutableArray *riderHL100;
 @property(nonatomic , retain) NSMutableArray *riderHLP;
 @property(nonatomic , retain) NSMutableArray *riderPlanOpt;

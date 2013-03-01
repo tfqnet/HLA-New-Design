@@ -59,7 +59,8 @@ id temp;
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     NSLog(@"%@",databasePath);
     
-    [self updateDB];
+//    [self updateDB_maxAge];
+    [self updateTB_Rider_Details];
     
     LANameField.enabled = NO;
     sexSegment.enabled = NO;
@@ -158,7 +159,6 @@ id temp;
     return YES;
     Saved = NO;
 }
-
 
 #pragma mark - ToogleView
 
@@ -782,7 +782,7 @@ id temp;
 
 #pragma mark - Handle Data
 
--(void)updateDB
+-(void)updateDB_maxAge
 {
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -799,6 +799,41 @@ id temp;
             }
             sqlite3_finalize(statement);
         }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)updateTB_Rider_Details
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"ALTER TABLE Trad_Rider_Details ADD COLUMN TempHL1KSA DOUBLE"];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateDB success!");
+                
+            } else {
+                NSLog(@"updateDB failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL2 = [NSString stringWithFormat:@"ALTER TABLE Trad_Rider_Details ADD COLUMN TempHL1KSATerm INTEGER "];
+        if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateDB success!");
+                
+            } else {
+                NSLog(@"updateDB failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
         sqlite3_close(contactDB);
     }
 }

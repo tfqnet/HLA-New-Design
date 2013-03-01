@@ -574,12 +574,12 @@ id temp;
         [parPayoutField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && substringAcc.length > 1) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income Option must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && substringPayout.length > 1) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income Option must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parPayoutField becomeFirstResponder];
     }
