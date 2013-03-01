@@ -43,7 +43,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+ 
+	//self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -158,8 +160,11 @@
         displayLSD = @"Large Size Discount";
     }
     
+	//NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"home_144" ofType:@"png" inDirectory:@"Images"]];
+	//NSString *urlString = [NSString stringWithFormat:@"%@", url];
+	
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
-                           @"<html><body><table border='1' width='92%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
+                           @"<html><body style=\"background-color:transparent;\"><table border='1' width='92%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
                            "<tr><td width='32%%' align='center' style='height:45px; background-color:#4F81BD;'>&nbsp;</td>"
                            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Annual</font></td>"
                            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Semi-Annual</font></td>"
@@ -190,7 +195,7 @@
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                           "</tr>",BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
+                           "</tr>", BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
     
     NSString *htmlTail = nil;
     if ([riderCode count] != 0) {
@@ -230,7 +235,14 @@
         
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlTail];
         NSURL *baseURL = [NSURL URLWithString:@""];
+		
+		[self.WebView setOpaque:NO];
+		//self.WebView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+		//self.WebView.backgroundColor = [UIColor clearColor];
+		
+
         [WebView loadHTMLString:htmlString baseURL:baseURL];
+
     }
 }
 

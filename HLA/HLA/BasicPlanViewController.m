@@ -282,10 +282,10 @@ id temp;
         if (parAcc > 100) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            parPayoutField.text = @"0";
+            //parPayoutField.text = @"0";
         }
         else {
-            parPayoutField.text = [NSString stringWithFormat:@"%d",parPayout];
+            //parPayoutField.text = [NSString stringWithFormat:@"%d",parPayout];
         }
     }
     
@@ -301,10 +301,10 @@ id temp;
         if (parPayout > 100) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
-            parAccField.text = @"0";
+            //parAccField.text = @"0";
         }
         else {
-            parAccField.text = [NSString stringWithFormat:@"%d",parAcc];
+            //parAccField.text = [NSString stringWithFormat:@"%d",parAcc];
         }
     }
     
@@ -554,22 +554,22 @@ id temp;
     
     //----------
     else if ([planChoose isEqualToString:@"HLACP"] && parAccField.text.length==0 ) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Percentage of Total Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && parPayoutField.text.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Percentage of Total Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parPayoutField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && [parAccField.text intValue] > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Percentage of Total Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && [parPayoutField.text intValue] > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Yearly Income must equal to 100." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Percentage of Total Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parPayoutField becomeFirstResponder];
     }
@@ -656,6 +656,11 @@ id temp;
     }
     else if ([tempHLTermField.text intValue] > termCover) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLTermField becomeFirstResponder];
+    }
+	else if ([parAccField.text intValue] + [parPayoutField.text intValue] != 100) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Percentage of Total Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [tempHLTermField becomeFirstResponder];
     }

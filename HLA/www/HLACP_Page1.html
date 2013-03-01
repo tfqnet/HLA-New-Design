@@ -50,15 +50,14 @@
     function dbexe(){
         db.transaction(function(transaction) {
                        transaction.executeSql('SELECT * FROM SI_Temp_Trad_Details;', [], function(transaction, result) {
-                                              if (result != null && result.rows != null) {
-                                              var row;
-                                              for (var i = 0; i < result.rows.length; i++) {
-                                              var row = result.rows.item(i);
-                                              }
-        
-                                              }
-                                              },errorHandler);
-                       },errorHandler,nullHandler);
+                            if (result != null && result.rows != null) {
+				var row;
+				for (var i = 0; i < result.rows.length; i++) {
+				    var row = result.rows.item(i);
+				}
+                            }
+                        },errorHandler);
+        },errorHandler,nullHandler);
     }
     
     function ListDBValues() {
@@ -82,9 +81,12 @@
                     }
                 }
                 else{
-                                   alert('No data can be found');
-                    }
-                                   
+                     alert('No data can be found');
+                }
+		
+		if(result.rows.length == 0){
+		    alert('Error, No data can be found');               
+		}
             },errorHandler);
         },errorHandler,nullHandler);
         
@@ -311,15 +313,15 @@
 			if(showOccLoading == false){
 			    $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'  + '<td></td>' +
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
-				'<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' +
-				'<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' +
+				'<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' +
+				'<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' +
 				'</tr>');
 			}
 			else{
 			     $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'  + '<td></td>' +
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
-				'<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' +
-				'<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' +
+				'<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' +
+				'<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' +
 				'<td>&nbsp;</td>' + '</tr>');
 			}
 		    }
@@ -328,15 +330,15 @@
 			if(showOccLoading == false){
 			    $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'  + '<td></td>' +
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
-				'<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' +
-				'<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' +
+				'<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' +
+				'<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' +
 				'<td>&nbsp;</td>' + '</tr>');    
 			}
 			else{
 			    $('#table-data > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'  + '<td></td>' +
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
-				'<td>' + formatCurrency(col5Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2)) + '</td>' +
-				'<td>' + formatCurrency(col7Total.toFixed(2)) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2)) + '</td>' +
+				'<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' +
+				'<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' +
 				'<td>&nbsp;</td><td>&nbsp;</td>' + '</tr>');    
 			}
 			
@@ -419,7 +421,6 @@
 <!-- Begin Header -->
 <div id="header">
 
-  
   <div class="welcome">Prepared By : <span id="agentName">{agentName}</span><br/>Code : <span id="agentCode">{agentCode}</span></div>
   <div class="Content">Printed On : <span id="dateModified">{DateModified}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -481,124 +482,56 @@
     </thead>
     <tbody>
 
-<!--
-    <tr>
-        <td style="text-align:left;padding: 0px 0px 0px 5px;">HLA Income Builder</td>
-        <td>-</td>
-        <td>-</td>
-        <td>500.00 *</td>
-        <td>59</td>
-        <td>6</td>
-        <td>2,990.50</td>
-        <td>1,532.64</td>
-        <td>785.01</td>
-        <td>261.67</td>
-        <td>2</td>
-    </tr>
-    
-    
-    
-    
-    
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Convertible Comprehensive Term Rider</td><td>-<td>-<td>20,000.00<td>5<td>5<td>36.60<td>18.76 <td>9.61<td>3.20
-</tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Critical Illness Rider</td><td>-<td>-<td>25,000.00<td>10<td>10<td>74.75<td>38.31<td>19.62<td>6.54</tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Critical Illness WP Rider (100%)</td><td>-<td>-<td>-<td>5<td>5<td>-<td>-<td>-<td>-</tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">- Annually</td> <td>-</td><td>-</td><td>12,456.53</td><td></td><td></td><td>82.21</td><td>-</td><td>-</td><td>-</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">- Half-Yearly</td><td>-</td><td>-</td><td>6,384.37</td><td></td><td></td><td>-</td><td>43.19</td><td>-</td><td>-</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">- Quarterly</td><td>-</td><td>-</td><td>3,270.24</td><td>-</td><td>-</td><td>-</td><td>-</td><td>22.66</td><td>-</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">- Monthly</td><td>-</td><td>-</td><td>1,090.10</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>7.55</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Comprehensive Personal Accident
-(Class1)</td><td>-</td><td>-</td><td>20,000.00</td><td>34</td><td>34</td><td>78.40</td><td>40.18</td><td>20.68</td><td>6.86</td>
-</tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Extended TPD Rider</td><td>-</td><td>-</td><td>1,000.00</td><td>10</td><td>10</td><td>13.20</td><td>6.77</td><td>3.47</td><td>1.16</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Hospitalisation Benefit</td><td>-</td><td>1</td><td>-</td><td>29</td><td>29</td><td>10.00</td><td>5.50</td><td>3.00</td><td>1.00</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">HLA Major Medi (Class1)
-(Deductible 5000)</td><td style="text-align:left;padding: 0px 0px 0px 5px;">HMM_150</td><td>-</td><td>-</td><td>59</td><td>59</td><td>223.69</td><td>114.64</td><td>58.72</td><td>19.57</td>
-</tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Hospital & Surgical Plus II (Class1)</td><td style="text-align:left;padding: 0px 0px 0px 5px;">Standard</td><td>-</td><td>-</td><td>39</td><td>39</td><td>190.00</td><td>97.38</td><td>49.88</td><td>16.63</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Income 20 Rider</td><td>-</td><td>-</td><td>500.00 *</td><td>20</td><td>6</td><td>1,581.00</td><td>810.26</td><td>415.01</td><td>138.34</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Income 30 Rider</td><td>-</td><td>-</td><td>500.00 *</td><td>30</td><td>6</td><td>1,821.00</td><td>933.26</td><td>478.01</td><td>159.34</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">ncome 40 Rider </td><td>-</td><td>-</td><td>500.00 *</td><td>40</td><td>6</td><td>2,118.00</td><td>1085.48</td><td>555.98</td><td>185.33</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Income Care Rider</td><td>-</td><td>-</td><td>500.00 *</td><td>5</td><td>6</td><td>1,821.00</td><td>933.26</td><td>478.01</td><td>159.34</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Income D-20 Rider </td><td>-</td><td>-</td><td>500.00 *</td><td>59</td><td>6</td><td>1,197.50</td><td>613.72</td><td>314.34</td><td>104.78</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Income D-30 Rider</td><td>-</td><td>-</td><td>500.00 *</td><td>59</td><td>6</td><td>787.50</td><td>403.59</td><td>206.72</td><td>68.91</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Income D-40 Rider</td><td>-</td><td>-</td><td>500.00 *</td><td>59</td><td>6</td><td>482.00</td><td>247.03</td><td>126.53</td><td>42.18</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Living Care Plus Rider </td><td>-</td><td>-</td><td>25,000.00 *</td><td>10</td><td>10</td><td>110.25</td><td>56.50</td><td>28.94</td><td>9.65</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">MedGLOBAL II (Class1)</td><td style="text-align:left;padding: 0px 0px 0px 5px;">MG_II_100</td><td>-</td><td>-</td><td>39</td><td>39</td><td>317.25</td><td>162.59</td><td>83.28</td><td>27.76</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">MedGLOBAL IV Plus (Class1)</td><td style="text-align:left;padding: 0px 0px 0px 5px;">MGIVP_150</td><td>-</td><td>-</td><td>59</td><td>59</td><td>598.59</td><td>306.78</td><td>157.13</td><td>52.38</td></tr>
-<tr><td style="text-align:left;padding: 0px 0px 0px 5px;">Personal Accident (Class1)</td><td>-</td><td>-</td><td>10,000.00 *</td><td>44</td><td>44</td><td>11.30</td><td>5.79</td><td>2.97</td><td>0.99</td></tr>
-    
- -->   
-
-
-
     </tbody>
 
     <tfoot>
-    <!--
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td style="text-align:left;padding: 0px 0px 0px 5px;">Total Premium<br/>Jumlah Bayaran Premium</td>
-<td>12,827.39</td>
-<td>6,575.49</td>
-<td>3,368.67</td>
-<td>1,122.91</td>
-</tr>
-     -->
     </tfoot>
-    
-    
- </table>
-<br/>
-* This is the Guaranteed Yearly Income amount purchased. <br/>
-* <i>Ini merupakan amaun Pendapatan Tahunan Terjamin yang dibeli.</i><br/>
+    </table>
+    <br/>
+    * This is the Guaranteed Yearly Income amount purchased. <br/>
+    * <i>Ini merupakan amaun Pendapatan Tahunan Terjamin yang dibeli.</i><br/>
 
-<span id="withRiders"><br/>All riders listed above are optional and not compulsory to be sold with the basic plan. <br/>
-<i>Semua rider ditunjukkan atas adalah tidak wajib dan tidak semestinya dijual bersama pelan asas</i><br/></span>
+    <span id="withRiders"><br/>All riders listed above are optional and not compulsory to be sold with the basic plan. <br/>
+    <i>Semua rider ditunjukkan atas adalah tidak wajib dan tidak semestinya dijual bersama pelan asas</i><br/></span>
 
-The projected insurance coverage detailed above is merely for illustrative purposes and not meant to confirm actual insurance coverage. Actual insurance coverage is subject to Hong Leong Assurance's prior approval, policies, terms and conditions. <b>All
-applications are subject to underwriting approval.</b><br/>
-<i>Perlindungan insurans yang ditunjukkan di atas adalah untuk tujuan illustrasi sahaja and bukan bermaksud untuk menyatakan perlindungan insurans sebenar. Perlindungan insurans sebenar adalah tertakluk kepada kelulusan, polisi, terma-terma dan
-syarat-syarat yang ditentukan oleh Hong Leong Assurance. <b>Kesemua permohonan adalah tertakluk kepada kelulusan pengunderaitan.<b/></i>
-<br/><br/><br/></div>
+    The projected insurance coverage detailed above is merely for illustrative purposes and not meant to confirm actual insurance coverage. Actual insurance coverage is subject to Hong Leong Assurance's prior approval, policies, terms and conditions. <b>All
+    applications are subject to underwriting approval.</b><br/>
+    <i>Perlindungan insurans yang ditunjukkan di atas adalah untuk tujuan illustrasi sahaja and bukan bermaksud untuk menyatakan perlindungan insurans sebenar. Perlindungan insurans sebenar adalah tertakluk kepada kelulusan, polisi, terma-terma dan
+    syarat-syarat yang ditentukan oleh Hong Leong Assurance. <b>Kesemua permohonan adalah tertakluk kepada kelulusan pengunderaitan.</b></i>
+    <br/><br/><br/></div>
 
-<table style="border-collapse:collapse;border:2px solid black;width:100%;">
-    <tr>
-        <td colspan="2" align="center" style="font-family:Arial;font-size:8px;"><b>HONG LEONG ASSURANCE BERHAD</b></td>
-    </tr>
-    <tr>
-	<td width="90%" style="font-family:Arial;font-size:8px;font-weight:normal;padding: 5px 5px 5px 5px;">
-	
-	Hong Leong Assurance Berhad is a member of Perbadanan Insurans Deposit Malaysia (PIDM). As a member of PIDM, some of the benefits insured under the takaful certificates or insurance policies offered by Hong Leong Assurance Berhad are
-	protected against loss of part or all of takaful or insurance benefits by PIDM, in the unlikely event of an insurer member failure. For further details of the protection limits and the scope of coverage, please obtain a PIDM information brochure
-	from Hong Leong Assurance Berhad or visit PIDM website (www.pidm.gov.my) or call PIDM toll free line (1-800-88-1266).<br/>
-	<i>Hong Leong Assurance Berhad ialah ahli Perbadanan Insurans Deposit Malaysia (PIDM). Sebagai ahli PIDM, sebahagian daripada manfaat yang diinsuranskan di bawah sijil takaful atau polisi insurans yang ditawarkan oleh Hong Leong
-	Assurance Berhad dilindungi daripada kehilangan sebahagian atau kesemua manfaat takaful atau insurans oleh PIDM, sekiranya berlaku kegagalan ahli penginsurans. Untuk maklumat lanjut mengenai had dan skop perlindungan ini, sila
-	dapatkan risalah maklumat PIDM daripada Hong Leong Assurance Berhad atau layari laman web PIDM (www.pidm.gov.my) atau hubungi talian bebas tol PIDM (1-800-88-1266).</i>
-        </td>
-        <td width="10%" style="font-family:Arial;font-size:10px;font-weight:normal;text-align:center"><img src="img/PIDM.png"/></td>
-    </tr>
-</table>
+    <table style="border-collapse:collapse;border:2px solid black;width:100%;">
+	<tr>
+	    <td colspan="2" align="center" style="font-family:Arial;font-size:8px;"><b>HONG LEONG ASSURANCE BERHAD</b></td>
+	</tr>
+	<tr>
+	    <td width="90%" style="font-family:Arial;font-size:8px;font-weight:normal;padding: 5px 5px 5px 5px;">
+	    
+	    Hong Leong Assurance Berhad is a member of Perbadanan Insurans Deposit Malaysia (PIDM). As a member of PIDM, some of the benefits insured under the takaful certificates or insurance policies offered by Hong Leong Assurance Berhad are
+	    protected against loss of part or all of takaful or insurance benefits by PIDM, in the unlikely event of an insurer member failure. For further details of the protection limits and the scope of coverage, please obtain a PIDM information brochure
+	    from Hong Leong Assurance Berhad or visit PIDM website (www.pidm.gov.my) or call PIDM toll free line (1-800-88-1266).<br/>
+	    <i>Hong Leong Assurance Berhad ialah ahli Perbadanan Insurans Deposit Malaysia (PIDM). Sebagai ahli PIDM, sebahagian daripada manfaat yang diinsuranskan di bawah sijil takaful atau polisi insurans yang ditawarkan oleh Hong Leong
+	    Assurance Berhad dilindungi daripada kehilangan sebahagian atau kesemua manfaat takaful atau insurans oleh PIDM, sekiranya berlaku kegagalan ahli penginsurans. Untuk maklumat lanjut mengenai had dan skop perlindungan ini, sila
+	    dapatkan risalah maklumat PIDM daripada Hong Leong Assurance Berhad atau layari laman web PIDM (www.pidm.gov.my) atau hubungi talian bebas tol PIDM (1-800-88-1266).</i>
+	    </td>
+	    <td width="10%" style="font-family:Arial;font-size:10px;font-weight:normal;text-align:center"><img src="img/PIDM.png"/></td>
+	</tr>
+    </table>
 
-<table style="border-collapse:collapse;border:0px solid black;width:100%;">
-    <tr>
-	<td width="93%" style="font-family:Arial;font-size:8px;font-weight:normal;padding: 5px 5px 5px 0px;">
-	    This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the
-	    information printed on each and every page.<br/>
-	    <i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
-	    pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
-	    <b><span id="rptVersion">{rptVersion}</span></b> <br/>
-	    Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46710 Petaling Jaya, Malaysia.<br/>
-	    Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my
-	</td>
-	<td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:8px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
-    </tr>
-</table>
+    <table style="border-collapse:collapse;border:0px solid black;width:100%;">
+	<tr>
+	    <td width="93%" style="font-family:Arial;font-size:8px;font-weight:normal;padding: 5px 5px 5px 0px;">
+		This sales illustration consists of <span class="totalPages">{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the
+		information printed on each and every page.<br/>
+		<i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal
+		pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>
+		<b><span id="rptVersion">{rptVersion}</span></b> <br/>
+		Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46710 Petaling Jaya, Malaysia.<br/>
+		Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my
+	    </td>
+	    <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:8px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
+	</tr>
+    </table>
 <!-- End Footer -->
  
 <!-- End Wrapper -->

@@ -145,6 +145,8 @@
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSError *error;
     
+	
+	
     success = [fileManager fileExistsAtPath:databasePath];
     //if (success) return;
     if (!success) {
@@ -269,8 +271,9 @@
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT IndexNo,AgentLoginID,FirstLogin FROM User_Profile WHERE AgentLoginID=\"%@\" and AgentPassword=\"%@\"", txtUsername.text,txtPassword.text];
-        
+
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT \"IndexNo\",\"AgentLoginID\",\"FirstLogin\" FROM User_Profile WHERE \"AgentLoginID\"=\"%@\" and \"AgentPassword\"=\"%@\"", txtUsername.text,txtPassword.text];
+
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -283,6 +286,7 @@
                 txtPassword.text = @"";
                 
             } else {
+
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Username or Password" delegate:Nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
                 [alert show];
                 alert = Nil;
@@ -290,10 +294,16 @@
             }
             sqlite3_finalize(statement);
         }
+		else{
+			NSLog(@"wrong query");
+		}
         sqlite3_close(contactDB);
         querySQL = Nil;
         query_stmt = Nil;
     }
+	else{
+						NSLog(@"cannot open");
+	}
     
     dbpath = Nil;
     statement = Nil;

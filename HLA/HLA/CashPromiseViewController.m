@@ -33,6 +33,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize HealthLoadingTerm, TempHealthLoading, TempHealthLoadingTerm, aStrBasicSA;
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
+@synthesize OtherRiderHL100SA, OtherRiderHL100SATerm,OtherRiderHL1kSA,OtherRiderHL1kSATerm,OtherRiderHLPercentage,OtherRiderHLPercentageTerm;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -911,7 +912,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"LCPR"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"C+"] ||
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PA"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PLCP"]
                 || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PR"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_PRE"]
-                || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_STD"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"ICR"]) {
+                || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_STD"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"ICR"]
+				|| [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"EDB" ] || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"ETPDB" ]) {
                 
                 SelectSQL = [NSString stringWithFormat:@"Select HL1KSA from Trad_Rider_Details where Sino = \"%@\" AND Ridercode = \"%@\"  ", SINo, [OtherRiderCode objectAtIndex:a]];
                 
@@ -1693,7 +1695,27 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         }
                         sqlite3_close(contactDB);
                     }
-                    sumOtherRider = sumOtherRider + tempHMMRates;
+					
+					NSString *tempHLPercentage = [OtherRiderHLPercentage objectAtIndex:j];
+					NSString *tempHLPercentageTerm = [OtherRiderHLPercentageTerm objectAtIndex:j];
+					
+					if([tempHLPercentage isEqualToString:@"(null)"]) {
+						sumOtherRider = sumOtherRider + tempHMMRates;
+					}
+					else{
+						if(i <= [tempHLPercentageTerm intValue ] ){
+							sumOtherRider = sumOtherRider + tempHMMRates;
+						}
+						else{
+							sumOtherRider = sumOtherRider + tempHMMRates/( [tempHLPercentage doubleValue ]/100 + 1 );
+							
+						}
+					}
+					
+					tempHLPercentage = Nil;
+					tempHLPercentageTerm = Nil;
+					
+					
                 }
             }
             else{
@@ -2121,10 +2143,14 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     NSMutableArray *tempCol2 = [[NSMutableArray alloc] init ];
                     NSMutableArray *tempCol3 = [[NSMutableArray alloc] init ];
                     NSMutableArray *tempCol4 = [[NSMutableArray alloc] init ];
-                    
-                    
+					NSString *tempHL1KSA = [OtherRiderHL1kSA objectAtIndex:item];
+                    NSString *tempHL1KSATerm = [OtherRiderHL1kSATerm objectAtIndex:item];
+                    NSString *tempHL100SA = [OtherRiderHL100SA objectAtIndex:item];
+					NSString *tempHL100SATerm = [OtherRiderHL100SATerm objectAtIndex:item];
+                    NSString *tempHLPercentage = [OtherRiderHLPercentage objectAtIndex:item];
+                    NSString *tempHLPercentageTerm = [OtherRiderHLPercentageTerm objectAtIndex:item];
+					
 					for (int row = 0; row < 3; row++) {
-						
 						
 						if (row == 0) {
 							[tempCol1 addObject:tempRiderDesc ];
@@ -2344,7 +2370,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
+								
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"%.0f", tempRiderSA]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -2427,7 +2464,34 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if ([tempRiderCode isEqualToString:@"LCWP"] || [tempRiderCode isEqualToString:@"CIWP"] ) {
+									if([tempHL100SA isEqualToString:@"(null)"]) {
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										if(i + 1 <= [tempHL100SATerm intValue ] ){
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+										}
+										else{
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - ((waiverRiderSA *  tempRiderSA/100)/100) * [tempHL100SA doubleValue] ]];
+										}
+									}
+								}
+								else{
+									if([tempHL1KSA isEqualToString:@"(null)"]) {
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										if(i + 1 <= [tempHL1KSATerm intValue ] ){
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+										}
+										else{
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - ((waiverRiderSA *  tempRiderSA/100)/1000) * [tempHL1KSA doubleValue] ]];
+										}
+									}
+								}
+								
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", waiverRiderSA *  tempRiderSA/100]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"-"]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -2475,7 +2539,20 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
+								
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"%.0f", tempRiderSA]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -2512,7 +2589,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"%.0f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"%.0f", tempRiderSA]];
@@ -2524,7 +2612,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 							
 							else if ([tempRiderCode isEqualToString:@"CPA"] || [tempRiderCode isEqualToString:@"PA"]) {
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"%0ff", tempRiderSA]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"-"]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -2584,7 +2683,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (CI/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", CI]];
 								[tempCol3 addObject:@"-" ];
 								[tempCol4 addObject:@"-" ];
@@ -2615,7 +2725,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"%.2f", tempRiderSA] ];
 								[tempCol4 addObject:[NSString stringWithFormat:@"%.2f", tempRiderSA]];
@@ -2691,7 +2812,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (CPlusSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", CPlusSA] ];
 								[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -2728,7 +2860,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", tempRiderSA] ];
 								[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -2783,7 +2926,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								}
 								
 								if (i + 1 <= 6) {
-									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									if([tempHL1KSA isEqualToString:@"(null)"]) {
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										if(i + 1 <= [tempHL1KSATerm intValue ] ){
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+										}
+										else{
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+										}
+									}
 									[tempCol2 addObject:[NSString stringWithFormat:@"%.2f", DBenefit] ];
 									[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
 									[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -2872,7 +3026,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								}
 								
 								if (i + 1 <= 6) {
-									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									if([tempHL1KSA isEqualToString:@"(null)"]) {
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										if(i + 1 <= [tempHL1KSATerm intValue ] ){
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+										}
+										else{
+											[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+										}
+									}
 									[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", TPDBenefit]];
 									[tempCol3 addObject:[NSString stringWithFormat:@"%.3f", OADBenefit]];
 									[tempCol4 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00 ]];
@@ -2907,14 +3072,36 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								}
 								
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempHMMRates]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempHMMRates]];
+								if([tempHLPercentage isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempHMMRates]];
+								}
+								else{
+									if(i + 1 <= [tempHLPercentageTerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempHMMRates]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempHMMRates / ([tempHLPercentage doubleValue]/100 + 1) ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"-"]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"-"]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
 							}
 							else {
 								
-								[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL1KSATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+									}
+								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"-"]];
 								[tempCol3 addObject:[NSString stringWithFormat:@"-"]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
@@ -3446,9 +3633,16 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     OtherRiderSA = [[NSMutableArray alloc] init ];
     OtherRiderPlanOption = [[NSMutableArray alloc] init ];
     OtherRiderDeductible = [[NSMutableArray alloc] init ];
-    
+	OtherRiderHL1kSA = [[NSMutableArray alloc] init ];
+	OtherRiderHL1kSATerm = [[NSMutableArray alloc] init ];
+	OtherRiderHL100SA = [[NSMutableArray alloc] init ];
+	OtherRiderHL100SATerm = [[NSMutableArray alloc] init ];
+	OtherRiderHLPercentage = [[NSMutableArray alloc] init ];
+	OtherRiderHLPercentageTerm = [[NSMutableArray alloc] init ];
+	
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-        QuerySQL = [ NSString stringWithFormat:@"Select A.RiderCode, \"RiderTerm\",\"RiderDesc\", \"SumAssured\", \"PlanOption\", \"Deductible\" from trad_rider_details as A, "
+        QuerySQL = [ NSString stringWithFormat:@"Select A.RiderCode, \"RiderTerm\",\"RiderDesc\", \"SumAssured\", \"PlanOption\", "
+					"\"Deductible\", \"HL1kSA\", \"HL1KSATerm\", \"HL100SA\", \"HL100SATerm\", \"HLPercentage\", \"HLPercentageTerm\" from trad_rider_details as A, "
                     "trad_sys_rider_profile as B  where \"sino\" = \"%@\" AND A.ridercode = B.RiderCode ORDER BY B.RiderCode ASC ", SINo];
         
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
@@ -3487,15 +3681,19 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     [OtherRiderSA addObject: Display];
                     if ([[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)] isEqualToString:@"(null)" ]   ) {
                         [OtherRiderPlanOption addObject:@""];
-                        
                     }
                     else {
                         [OtherRiderPlanOption addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 4)]];
-                        
                     }
                     
                     [OtherRiderDeductible addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 5)]];
-                    
+                    [OtherRiderHL1kSA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 6)]];
+					[OtherRiderHL1kSATerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 7)]];
+					[OtherRiderHL100SA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 8)]];
+					[OtherRiderHL100SATerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 9)]];
+					[OtherRiderHLPercentage addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 10)]];
+					[OtherRiderHLPercentageTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 11)]];
+
                     tempOtherRiderSA = Nil;
                     Display = Nil;
                 }

@@ -43,6 +43,12 @@
 @property (retain, nonatomic) NSMutableArray *OtherRiderSA;
 @property (retain, nonatomic) NSMutableArray *OtherRiderPlanOption;
 @property (retain, nonatomic) NSMutableArray *OtherRiderDeductible;
+@property (retain, nonatomic) NSMutableArray *OtherRiderHL1kSA;
+@property (retain, nonatomic) NSMutableArray *OtherRiderHL1kSATerm;
+@property (retain, nonatomic) NSMutableArray *OtherRiderHL100SA;
+@property (retain, nonatomic) NSMutableArray *OtherRiderHL100SATerm;
+@property (retain, nonatomic) NSMutableArray *OtherRiderHLPercentage;
+@property (retain, nonatomic) NSMutableArray *OtherRiderHLPercentageTerm;
 
 //summary
 @property (retain, nonatomic) NSMutableArray *SummaryGuaranteedTotalGYI;

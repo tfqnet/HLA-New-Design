@@ -8,12 +8,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/Login.m"
-         timestampString = "382934264.860124"
+         timestampString = "383736131.40204"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "369"
-         endingLineNumber = "369"
-         landmarkName = "-checkingLastLogout"
+         startingLineNumber = "433"
+         endingLineNumber = "433"
+         landmarkName = "-btnLogin:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -47,13 +47,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/Login.m"
-         timestampString = "382934264.860124"
+         timestampString = "383736131.40204"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "379"
-         endingLineNumber = "379"
-         landmarkName = "@implementation Login"
-         landmarkType = "3">
+         startingLineNumber = "443"
+         endingLineNumber = "443"
+         landmarkName = "-btnLogin:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -515,12 +515,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "380085828.859297"
+         timestampString = "383726431.925429"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "454"
-         endingLineNumber = "454"
-         landmarkName = "-calculateTempPremium"
+         startingLineNumber = "466"
+         endingLineNumber = "466"
+         landmarkName = "-calculateRiderPrem"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -528,12 +528,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "380085828.859297"
+         timestampString = "383726431.925429"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "369"
-         endingLineNumber = "369"
-         landmarkName = "-calculatePremium"
+         startingLineNumber = "381"
+         endingLineNumber = "381"
+         landmarkName = "-calculateBasicPremium"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -567,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "380085828.859297"
+         timestampString = "383726431.925429"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "911"
-         endingLineNumber = "911"
+         startingLineNumber = "923"
+         endingLineNumber = "923"
          landmarkName = "-calculateRiderPrem"
          landmarkType = "5">
       </FileBreakpoint>
@@ -632,12 +632,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "380085828.859297"
+         timestampString = "383716065.30743"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "221"
-         endingLineNumber = "221"
-         landmarkName = "-calculatePremium"
+         startingLineNumber = "226"
+         endingLineNumber = "226"
+         landmarkName = "-preparedHTMLTable"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -645,12 +645,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "380085828.859297"
+         timestampString = "383716065.30743"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "229"
-         endingLineNumber = "229"
-         landmarkName = "-calculatePremium"
+         startingLineNumber = "234"
+         endingLineNumber = "234"
+         landmarkName = "-preparedHTMLTable"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1053,7 +1053,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "4184"
          endingLineNumber = "4184"
-         landmarkName = "-getRiderRateSex:riderTerm:"
+         landmarkName = "-getLSDRate"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1092,8 +1092,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "3068"
          endingLineNumber = "3068"
-         landmarkName = "-RoomBoard"
-         landmarkType = "5">
+         landmarkName = "@implementation RiderViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1118,8 +1118,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "303"
          endingLineNumber = "303"
-         landmarkName = "-viewWillDisappear:"
-         landmarkType = "5">
+         landmarkName = "@implementation RiderViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1230,11 +1230,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "380085828.859297"
+         timestampString = "383726431.925429"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "776"
-         endingLineNumber = "776"
+         startingLineNumber = "788"
+         endingLineNumber = "788"
          landmarkName = "-calculateRiderPrem"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1243,11 +1243,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/PremiumViewController.m"
-         timestampString = "380085828.859297"
+         timestampString = "383726431.925429"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "777"
-         endingLineNumber = "777"
+         startingLineNumber = "789"
+         endingLineNumber = "789"
          landmarkName = "-calculateRiderPrem"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1308,11 +1308,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "381726291.371484"
+         timestampString = "383664509.269526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "118"
-         endingLineNumber = "118"
+         startingLineNumber = "119"
+         endingLineNumber = "119"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1321,11 +1321,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "383626417.231026"
+         timestampString = "383664509.269526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1569"
-         endingLineNumber = "1569"
+         startingLineNumber = "1571"
+         endingLineNumber = "1571"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1334,11 +1334,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "383626417.231026"
+         timestampString = "383664509.269526"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1570"
-         endingLineNumber = "1570"
+         startingLineNumber = "1572"
+         endingLineNumber = "1572"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>

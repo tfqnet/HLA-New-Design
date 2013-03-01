@@ -317,39 +317,39 @@
                     for(var i =0; i <result.rows.length; i++){
 	                var row = result.rows.item(i);
 			if(row.RiderCode == 'CIWP'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + CIWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan</td>'  + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + CIWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan</td>'  + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'PR'){
 			    //$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');
 			    if(row.PTypeCode == 'LA'){
-				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
 			    }
 			    else{
-				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + PRSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
 			    }
 			}
 			else if(row.RiderCode == 'LCWP'){
 			    //$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');
 			    if(row.PTypeCode == 'LA'){
-				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
 			    }
 			    else{
-				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + LCWPSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
 			    }
 			}
 			else if(row.RiderCode == 'SP_PRE'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>'  + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>'  + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'SP_STD'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else{
 			    //$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');
 			    if(row.PTypeCode == 'LA'){
-				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			    }
 			    else{
-				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
+				$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(PayorAge) ) + '</td>' + '</tr>');     
 			    }
 			}
 
@@ -509,7 +509,7 @@
 			    <td><b>Pelan/Rider</b></td>
 			    <td><b>Jenis</b></td>
 			    <td><b>Hayat-hayat yang Diinsuranskan</b></td>
-			    <td><b>Premium akan dibayar sehingga Hayat yang Diinsuranskan berumur</b></td>
+			    <td align="center"><b>Premium akan dibayar sehingga Hayat yang Diinsuranskan berumur</b></td>
 			</tr>
 		    </thead>
 		    <tbody>
@@ -570,17 +570,23 @@
 	</tr>
 	<tr>
 	    <td></td>
-	    <td><b><u>Pelan Asas</u></b></td>
+	    <td><b>A)</b> <b><u>Pelan Asas</u></b></td>
 	</tr>
 	<tr>
 	    <td></td>
 	    <td>
-		Polisi ini tidak akan melindungi Hilang Upaya Menyeluruh & Kekal yang berpunca secara langsung atau tidak langsung;<br/>
-		- 	daripada sebarang kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
-		-	daripada sebarang gangguan saraf atau penyakit mental;<br/>
-		-	daripada penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang, dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
-		- 	daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+		&nbsp;&nbsp;&nbsp;<b>I) Faedah Kematian</b><br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Jika Hayat Diinsuranskan sama ada siuman atau tidak siuman, membunuh diri dalam tempoh dua belas (12) bulan dari Tarikh Penyertaan atau
+		Tarikh Pengembalian Semula, mengikut mana-mana yang terkemudian,
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Polisi ini akan menjadi tidak sah dan kami akan memulangkan premium yang telah dibayar tanpa faedah selepas menolak sebarang jumlah yang terhutang kepada kami di bawah Polisi ini.<br/><br/>
 		
+		&nbsp;&nbsp;&nbsp;<b>II) Total & Permanent Disability</b><br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Polisi ini tidak akan melindungi Hilang Upaya Menyeluruh & Kekal yang berpunca secara langsung atau tidak langsung;<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o &nbsp;&nbsp;&nbsp;&nbsp; daripada sebarang kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o &nbsp;&nbsp;&nbsp;&nbsp; daripada sebarang gangguan saraf atau penyakit mental;<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o &nbsp;&nbsp;&nbsp;&nbsp; daripada penerbangan di dalam pesawat udara (kecuali sebagai anak kapal, atau sebagai penumpang biasa yang membayar tambang, dalam mana-mana penerbangan komersil berjadual tetap); atau<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o &nbsp;&nbsp;&nbsp;&nbsp; daripada apa jua perkara ketika berkhidmat dalam angkatan bersenjata, polis dan angkatan separa tentera disebabkan oleh perang yang diisytiharkan atau tidak diisytiharkan, rusuhan atau kekecohan awam.<br/>
+
 		<i>Nota: Senarai ini tidak lengkap. Sila rujuk kontrak polisi untuk mendapatkan terma dan syarat di bawah polisi ini.</i>
 	    </td>
 	</tr>
