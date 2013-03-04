@@ -2704,7 +2704,7 @@
     }
     //--
     else if ([getPlanChoose isEqualToString:@"HLACP"] && [sumField.text rangeOfCharacterFromSet:setHLACP].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Sum Assured does not allows decimal." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert setTag:1006];
         [alert show];
         [sumField becomeFirstResponder];

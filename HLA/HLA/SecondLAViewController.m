@@ -58,6 +58,11 @@
     useExist = NO;
     inserted = NO;
     
+    [deleteBtn setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+    [deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    deleteBtn.titleLabel.shadowColor = [UIColor lightGrayColor];
+    deleteBtn.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    
     if (requestSINo) {
         [self checkingExisting];
         if (SINo.length != 0) {
