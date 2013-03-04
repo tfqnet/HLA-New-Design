@@ -32,7 +32,7 @@
 @property (retain, nonatomic) NSMutableArray *aStrBasicSA;
 @property (nonatomic, assign) int Age;
 @property (nonatomic, assign) int PolicyTerm;
-@property (nonatomic, assign) int BasicSA;
+@property (nonatomic, assign) double BasicSA;
 
 @property (nonatomic, assign) int PartialAcc;
 @property (nonatomic, assign) int PartialPayout;

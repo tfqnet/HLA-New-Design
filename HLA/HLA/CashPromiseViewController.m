@@ -840,7 +840,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 		QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
 					"\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\") "
 					" VALUES ( "
-					" \"%@\",\"1\",\"DATA\",\"HLA Cash Promise\",\"\",\"0\",\"%d\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\" "
+					" \"%@\",\"1\",\"DATA\",\"HLA Cash Promise\",\"\",\"0\",\"%.2f\",\"%d\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\" "
 					")", SINo, BasicSA,PolicyTerm,@"6",strAnnually, strSemiAnnually, strQuarterly, strMonthly, totalHLoading, firstLifeLoading ];
 		
 		if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1368,10 +1368,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-        //------------------- GYI
+        //------------------- GYI / BasicSA
         
 		for (int a = 0; a< PolicyTerm; a++) {
-			[rates addObject:[NSString stringWithFormat:@"%d.00", BasicSA]];
+			[rates addObject:[NSString stringWithFormat:@"%.2f", BasicSA]];
 		}
 			
         //---------------- surrender value
@@ -1556,7 +1556,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 		[arrayYearlyIncome addObject:[NSString stringWithFormat:@"%.2f",  PartialAcc/100.00 * BasicSA]];
 		
 		[YearlyIncomePayout addObject:[NSString stringWithFormat:@"%.2f", PartialPayout/100.00 * BasicSA ]];
-		[TotalPartialYearlyIncome addObject:[NSString stringWithFormat:@"%d", BasicSA ]];
+		[TotalPartialYearlyIncome addObject:[NSString stringWithFormat:@"%.2f", BasicSA ]];
 		
 		// ---------------------------------
 		
@@ -2019,11 +2019,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 					QuerySQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Basic (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
 								"\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\",\"col12\",\"col13\", "
 								"\"col14\",\"col15\",\"col16\",\"col17\",\"col18\",\"col19\",\"col20\",\"col21\",\"col22\",\"col23\" ) VALUES ( "
-								" \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\", "
+								" \"%@\",\"%d\",\"DATA\",\"%d\",\"%d\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\", "
 								"\"%.0f\",\"%@\",\"%.0f\",\"%.0f\",\"%@\",\"%@\",\"%@\",\"%@\",\"%.0f\",\"%.0f\",\"%.0f\",\"%.0f\", \"%.2f\", \"%.2f\")",
 								SINo, a, a, inputAge, [AnnualPremium objectAtIndex:a -1],DBYearlyIncome, round([[SurrenderValue objectAtIndex:a-1] doubleValue ]),
-								[DBValue objectAtIndex:a-1], round([[DBValueEnd objectAtIndex:a-1] doubleValue ]),
-								[aValue objectAtIndex:a-1 ],
+								round( [[DBValue objectAtIndex:a-1] doubleValue ] ), round([[DBValueEnd objectAtIndex:a-1] doubleValue ]),
+								round( [[aValue objectAtIndex:a-1 ]  doubleValue]),
 								round([[TotalSurrenderValueA objectAtIndex:a-1 ] doubleValue ]), round([[TotalSurrenderValueB objectAtIndex:a-1] doubleValue ]),
 								round( [[TotalDBValueA objectAtIndex:a-1 ] doubleValue ]), round( [[TotalDBValueB objectAtIndex:a-1 ] doubleValue ]),
 								[TotalAllPremium objectAtIndex:a-1],
@@ -3587,7 +3587,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             if (sqlite3_step(statement) == SQLITE_ROW) {
                 PolicyTerm = sqlite3_column_int(statement, 0);
-                BasicSA = sqlite3_column_int(statement, 1);
+                BasicSA = sqlite3_column_double(statement, 1);
                 CashDividend = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 YearlyIncome = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
                 HealthLoading = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
