@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
+		C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */; };
 		C4660E63161F118B00BA4AFE /* ColorHexCode.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660E62161F118B00BA4AFE /* ColorHexCode.m */; };
 		C4660EB61625047800BA4AFE /* delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4660EA11625047800BA4AFE /* delete_button.png */; };
 		C4660EB71625047800BA4AFE /* exit_btnB_144.png in Resources */ = {isa = PBXBuildFile; fileRef = C4660EA21625047800BA4AFE /* exit_btnB_144.png */; };
@@ -242,6 +243,7 @@
 		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
 		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
 		C418112716561D87006A05B9 /* SettingUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserProfile.m; sourceTree = "<group>"; };
+		C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_CashPromise.pdf; sourceTree = "<group>"; };
 		C4660E61161F118B00BA4AFE /* ColorHexCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorHexCode.h; sourceTree = "<group>"; };
 		C4660E62161F118B00BA4AFE /* ColorHexCode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorHexCode.m; sourceTree = "<group>"; };
 		C4660EA11625047800BA4AFE /* delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_button.png; sourceTree = "<group>"; };
@@ -606,6 +608,7 @@
 		C4C501E216A64C4900096156 /* eBrochure */ = {
 			isa = PBXGroup;
 			children = (
+				C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */,
 				C4C501E416A64C6300096156 /* Brochure_CSecure(Standalone).pdf */,
 				C4C501E516A64C6300096156 /* Brochure_HLAIncomeBuilder_BM.pdf */,
 				C4C501E616A64C6300096156 /* Brochure_HLAIncomeBuilder_Mand.pdf */,
@@ -1283,6 +1286,7 @@
 				EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */,
 				EF90FED816C1ECEB003345BE /* HLA_Rates.sqlite in Resources */,
 				EFFC252916DC425800313A96 /* hladb.sqlite in Resources */,
+				C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

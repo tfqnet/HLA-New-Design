@@ -66,6 +66,12 @@
 				<string>Brochure_HSPII</string>
 			</array>
 		</array>
+		<array>
+			<array>
+				<string>Cash Promise</string>
+				<string>Brochure_CashPromise</string>
+			</array>
+		</array>
 	</array>
 </dict>
 </plist>

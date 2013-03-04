@@ -138,6 +138,9 @@
         case 8:
             title = @"Hospital & Surgical Plan II";
             break;
+		case 9:
+            title = @"HLA Cash Promise";
+            break;
             
         default:
             break;
