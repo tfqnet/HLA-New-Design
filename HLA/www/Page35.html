@@ -164,26 +164,46 @@
 							$('#cNursingCareAllowance').html('RM ' + formatCurrency((parseFloat(formatCurrency(row.SumAssured).replace(",","")) * 25) / 100));
 							if (row.PlanOption == "Level"){
 							    $('#cPlanOption').html('Level Cover');
-							    $('#cGuaranteedIncreasingSumAssured').hide();
-							    $('#cNoClaimBenefit').hide();
+							    //$('#cGuaranteedIncreasingSumAssured').hide();
+							    //$('#cNoClaimBenefit').hide();
+							    
+							    $('#cGuaranteedIncreasingSumAssured').html('');
+							    $('#cNoClaimBenefit').html('');
 							}
 							else if (row.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
 							    $('#cPlanOption').html('Increasing Cover');
-							    $('#cNoClaimBenefit').hide();
+							    //$('#cNoClaimBenefit').hide();
+							    $('#cNoClaimBenefit').html('');
+							    $('#cGuaranteedIncreasingSumAssured').html("<u>Guaranteed Increasing Sum Assured</u><br/>" + 
+								"-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Rider's Sum Assured shall increase by 10% every 2 years with the first such increase staring on 2nd Anniversary of<br/> " +
+								"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the Commencement Date of this Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>");
+							    
 							}
 							else if (row.PlanOption == "Level_NCB"){
 							    $('#cPlanOption').html('Level Cover with NCB');
 							    $('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
-							    $('#cGuaranteedIncreasingSumAssured').hide();
+							    //$('#cGuaranteedIncreasingSumAssured').hide();
+							    $('#cGuaranteedIncreasingSumAssured').html('');
+							    $('#cNoClaimBenefit').html("<u>No Claim Benefit</u><br/> " +
+							    "-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date,<br/>" +
+							    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the company will pay the Policy Owner a No Claim benefit equivalent to RM'" + formatCurrency(row.SumAssured) + "'<br/><br/>");
 							}
 							else if (row.PlanOption == "Increasing_NCB"){
 							    $('#cPlanOption').html('Increasing Cover with NCB');
-							    $('#cNoClaimAmount').html(formatCurrency(row.SA));
+							    $('#cNoClaimAmount').html(formatCurrency(row.SumAssured));
 							    //$('#cGuaranteedIncreasingSumAssured').hide();
 							    $('#cVeryEarlyTD').html('50% of Rider Sum Assured');
 							    $('#cEarlyTD').html('150% of Rider Sum Assured');
 							    $('#cAdvanceTD').html('250% of Rider Sum Assured');
 							    $('#cNursingCareAllowance').html('25% of Rider Sum Assured');
+							    $('#cGuaranteedIncreasingSumAssured').html("<u>Guaranteed Increasing Sum Assured</u><br/>" + 
+								"-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Rider's Sum Assured shall increase by 10% every 2 years with the first such increase staring on 2nd Anniversary of<br/> " +
+								"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the Commencement Date of this Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>");
+							    $('#cNoClaimBenefit').html("<u>No Claim Benefit</u><br/> " +
+							    "-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date,<br/>" +
+							    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the company will pay the Policy Owner a No Claim benefit equivalent to RM'" + formatCurrency(row.SumAssured) + "'<br/><br/>");
+							    
+							    
                                                         }
 						    }
                                                 },errorHandler);        				
@@ -289,9 +309,7 @@
 </table>
 <span id="riderInPage" style="display:none"><b>Description of Rider(s) Benefits</b><br/><br/></span>
 
-
-
-<div id="pageLength" class="pageLength" style="position:relative;height: 750px">
+<div id="pageLength" class="pageLength" style="position:relative;height: 800px">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -337,16 +355,12 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Early Cancers and/or Early Cancers of the same type or the same organ admitted prior to the Expiry Date.<br/><br/>
     
     <div id="cGuaranteedIncreasingSumAssured">
-    <u>Guaranteed Increasing Sum Assured</u><br/>
-    -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Rider's Sum Assured shall increase by 10% every 2 years with the first such increase staring on 2nd Anniversary of the
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commencement Date of this Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>
+    
     </div>
 
-<div id="cNoClaimBenefit">
-<u>No Claim Benefit</u><br/>
--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date, the
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Company will pay the Policy Owner a No Claim benefit equivalent to RM <span id="cNoClaimAmount">{cNoClaimAmount}</span><br/><br/>
-</div>
+    <div id="cNoClaimBenefit">
+	
+    </div>
 
 <u>Premium</u><br/>
 -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premium is not guaranteed and is subject to review by the Company at any time and from time to time by giving you at least 90-day written
@@ -362,6 +376,7 @@ iv.&nbsp;&nbsp;&nbsp;&nbsp;All skin Cancers except malignant melanoma with thick
 v.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;All Cancers associated with HIV infection.<br/>
 vi.&nbsp;&nbsp;&nbsp;&nbsp;Unreasonable failure to follow medical treatment.<br/>
 vii.&nbsp;&nbsp;&nbsp;All Cancers if Death of the Life Assured occurs within thirty (30) days following the date of diagnosis of Cancer.<br/>
+
     </td>
 </tr>
 <!--c+ end-->
