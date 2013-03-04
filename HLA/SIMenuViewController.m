@@ -498,12 +498,11 @@ id RiderCount;
             [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
             [ListOfSubMenu addObject:@"   English"];
             [ListOfSubMenu addObject:@"   Malay"];
-            
             PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
             premView.requestAge = getAge;
             premView.requestOccpClass = getOccpClass;
             premView.requestOccpCode = getOccpCode;
-        
+             
             premView.requestSINo = getSINo;
             premView.requestMOP = getMOP;
             premView.requestTerm = getTerm;
@@ -514,10 +513,10 @@ id RiderCount;
             premView.requestBasicPlan = getBasicPlan;
             [self addChildViewController:premView];
             [self.RightView addSubview:premView.view];
-        
+            
             previousPath = selectedPath;
             blocked = NO;
-            [self hideSeparatorLine];
+            [self hideSeparatorLine]; 
         }
     }
     else if (getAge > 70) {

@@ -43,8 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
- 
-	//self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+//	self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -82,7 +81,7 @@
         lblMessage.hidden = TRUE;
     }
     // ------------- end -------------
-    
+
     [self getBasicPentaRate];
     [self getLSDRate];
     [self getOccLoad];
@@ -90,6 +89,47 @@
     
     [self deleteSIStorePremium]; //heng's part for SI Report
     [self checkExistRider];
+    
+    /*//--ActivityIndicator--
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.center = CGPointMake(400, 350);
+    spinner.hidesWhenStopped = YES;
+    [self.view addSubview:spinner];
+    UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+    spinnerLabel.text  = @" Please Wait...";
+    spinnerLabel.backgroundColor = [UIColor blackColor];
+    spinnerLabel.opaque = YES;
+    spinnerLabel.textColor = [UIColor whiteColor];
+    [self.view addSubview:spinnerLabel];
+    [self.view setUserInteractionEnabled:NO];
+    [spinner startAnimating];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+        
+        [self calculateBasicPremium];
+        if ([riderCode count] != 0) {
+            NSLog(@"rider exist!");
+            [self calculateRiderPrem];
+            [self calculateWaiver];
+        } else {
+            NSLog(@"rider not exist!");
+        }
+        [self preparedHTMLTable];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [spinner stopAnimating];
+            spinnerLabel.text = @"";
+            [self.view setUserInteractionEnabled:YES];
+            
+            UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+            [v removeFromSuperview];
+            v = Nil;
+        });
+        
+    });
+    spinner = nil;
+    //--end*/
+    
     [self calculateBasicPremium];
     if ([riderCode count] != 0) {
         NSLog(@"rider exist!");
@@ -164,7 +204,7 @@
 	//NSString *urlString = [NSString stringWithFormat:@"%@", url];
 	
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
-                           @"<html><body style=\"background-color:transparent;\"><table border='1' width='92%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
+                           @"<html><body style=\"background-color:transparent;\"><table border='1' width='100%%' align='left' style='border-collapse:collapse; border-color:gray;'> "
                            "<tr><td width='32%%' align='center' style='height:45px; background-color:#4F81BD;'>&nbsp;</td>"
                            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Annual</font></td>"
                            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Semi-Annual</font></td>"
@@ -237,12 +277,10 @@
         NSURL *baseURL = [NSURL URLWithString:@""];
 		
 		[self.WebView setOpaque:NO];
-		//self.WebView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-		//self.WebView.backgroundColor = [UIColor clearColor];
-		
-
+//		self.WebView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+		self.WebView.backgroundColor = [UIColor clearColor];
+        [self.WebView setOpaque:NO];
         [WebView loadHTMLString:htmlString baseURL:baseURL];
-
     }
 }
 

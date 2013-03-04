@@ -5345,7 +5345,6 @@
         [indexPaths addObject:indexPath];
     }
     else {
-        //[btnAddRider setTitle:[LRiderCode objectAtIndex:indexPath.row] forState:UIControlStateNormal ];
         
         RiderListTbViewController *zzz = [[RiderListTbViewController alloc] init ];
         [self RiderListController:zzz didSelectCode:[LTypeRiderCode objectAtIndex:indexPath.row] desc:[self getRiderDesc:[LTypeRiderCode objectAtIndex:indexPath.row]]];
