@@ -4972,7 +4972,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <nil key="highlightedColor"/>
                             </label>
                             <webView contentMode="scaleToFill" id="R2I-4q-6DI">
-                                <rect key="frame" x="0.0" y="44" width="748" height="634"/>
+                                <rect key="frame" x="0.0" y="44" width="768" height="643"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </webView>
