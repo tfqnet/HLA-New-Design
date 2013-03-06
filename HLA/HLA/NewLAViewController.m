@@ -59,8 +59,10 @@ id temp;
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     NSLog(@"%@",databasePath);
     
+    //--for update db due to upgrading version or changes
 //    [self updateDB_maxAge];
-    [self updateTB_Rider_Details];
+//    [self updateTB_Rider_Details];
+//    [self updateTB_Rider_La ble];
     
     LANameField.enabled = NO;
     sexSegment.enabled = NO;
@@ -792,10 +794,10 @@ id temp;
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"updateDB success!");
+                NSLog(@"updateDB_maxAge success!");
                 
             } else {
-                NSLog(@"updateDB failed!");
+                NSLog(@"updateDB_maxAge failed!");
             }
             sqlite3_finalize(statement);
         }
@@ -813,10 +815,10 @@ id temp;
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"updateDB success!");
+                NSLog(@"updateTB_Rider_Details success!");
                 
             } else {
-                NSLog(@"updateDB failed!");
+                NSLog(@"updateTB_Rider_Details failed!");
             }
             sqlite3_finalize(statement);
         }
@@ -826,10 +828,58 @@ id temp;
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"updateDB success!");
+                NSLog(@"updateTB_Rider_Details success!");
                 
             } else {
-                NSLog(@"updateDB failed!");
+                NSLog(@"updateTB_Rider_Details failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)updateTB_Rider_Lable
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Sum Assured (%%)\" WHERE LabelCode=\"SUMA\" AND RiderCode = \"PR\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL2 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Sum Assured (%%)\" WHERE LabelCode=\"SUMA\" AND RiderCode = \"SP_PRE\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL3 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Sum Assured (%%)\" WHERE LabelCode=\"SUMA\" AND RiderCode = \"SP_STD\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL3 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
             }
             sqlite3_finalize(statement);
         }

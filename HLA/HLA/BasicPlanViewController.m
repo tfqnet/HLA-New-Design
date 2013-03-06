@@ -52,7 +52,7 @@
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 @synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
 @synthesize requestOccpClass,OccpClass,MOPHLAIB,MOPHLACP,yearlyIncomeHLAIB,cashDividendHLAIB,cashDividendHLACP;
-@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge;
+@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge,labelAddHL;
 @synthesize planList = _planList;
 @synthesize planPopover = _planPopover;
 @synthesize labelParAcc,labelParPayout,labelPercent1,labelPercent2,parAccField,parPayoutField,getParAcc,getParPayout;
@@ -92,6 +92,10 @@ id temp;
     NSLog(@"BASIC-SINo:%@, age:%d, job:%@",SINo,ageClient,OccpCode);
     NSLog(@"BASIC-idPayor:%d, idProfile:%d",idPay,idProf);
     
+    //--
+    btnHealthLoading.hidden = YES;
+    labelAddHL.hidden = YES;
+    //--
     
     self.planList = [[PlanList alloc] init];
     _planList.delegate = self;
@@ -596,6 +600,7 @@ id temp;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select Cash Dividend option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
+    //-------HL
     else if ([HLField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Health input for (per 1k SA)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
@@ -642,7 +647,7 @@ id temp;
         [tempHLField becomeFirstResponder];
     }
     else if ([tempHLTermField.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Temporary Health input for (per 1k SA) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) into Temporary Health input for (per 1k SA) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [tempHLField becomeFirstResponder];
     }
@@ -666,6 +671,7 @@ id temp;
         [alert show];
         [tempHLTermField becomeFirstResponder];
     }
+    //--end HL
 	else if ([parAccField.text intValue] + [parPayoutField.text intValue] != 100) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Percentage of Total Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -1819,6 +1825,7 @@ id temp;
     [self setLabelPercent2:nil];
     [self setParAccField:nil];
     [self setParPayoutField:nil];
+    [self setLabelAddHL:nil];
     [super viewDidUnload];
 }
 

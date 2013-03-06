@@ -41,6 +41,7 @@
 @synthesize RiderController = _RiderController;
 @synthesize Name2ndLA,NameLA,getLAIndexNo,NamePayor,getSex,getbasicTempHL,getSmoker,getBasicPlan;
 @synthesize FS = _FS;
+@synthesize HLController = _HLController;
 id RiderCount;
 
 - (void)viewDidLoad
@@ -61,7 +62,7 @@ id RiderCount;
     
 //    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
 //    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", nil ];
-     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", nil ];
+     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Health Loading", nil ];
     
     PlanEmpty = YES;
     added = NO;
@@ -890,7 +891,7 @@ id RiderCount;
         cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     }
     else {
-        if (indexPath.row == 4) {
+        if (indexPath.row == 5) {
             cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", RiderCount ];
         }
         else {
@@ -1026,10 +1027,33 @@ id RiderCount;
         }
     }
     
-    else if (indexPath.row == 4)    //rider
+    else if (indexPath.row == 4)        //Health Loading
+    {
+        if (getSINo.length != 0 && ![getSINo isEqualToString:@"(null)"]) {
+            self.HLController = [self.storyboard instantiateViewControllerWithIdentifier:@"HealthLoadView"];
+            _HLController.delegate = self;
+            self.HLController.ageClient = getAge;
+            self.HLController.SINo = getSINo;
+            self.HLController.planChoose = getBasicPlan;
+            
+            [self addChildViewController:self.HLController];
+            [self.RightView addSubview:self.HLController.view];
+            
+            previousPath = selectedPath;
+            blocked = NO;
+            [self hideSeparatorLine];
+            [myTableView reloadData];
+        }
+        else {
+            NSLog(@"no where!");
+            blocked = YES;
+        }
+    }
+    
+    else if (indexPath.row == 5)    //rider
     {
         
-        [self checkingPayor];   
+        [self checkingPayor];
         if (getAge > 70) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -1086,14 +1110,14 @@ id RiderCount;
         }
     }
     
-    else if (indexPath.row == 5)    //premium
+    else if (indexPath.row == 6)    //premium
     {
         [self calculatedPrem];
         
         
         [myTableView reloadData];
     }
-    else if (indexPath.row == 6)    //quotation
+    else if (indexPath.row == 7)    //quotation
     {
         
         /*
@@ -1342,7 +1366,7 @@ id RiderCount;
         statement = Nil;
     }
     
-    else if (indexPath.row == 8) {   //English PDS
+    else if (indexPath.row == 9) {   //English PDS
         
         PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
         premView.requestAge = getAge;
@@ -1439,7 +1463,7 @@ id RiderCount;
         spinner = Nil;
         
     }
-    else if (indexPath.row == 9) {   //Malay PDS
+    else if (indexPath.row == 10) {   //Malay PDS
         
         PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
         premView.requestAge = getAge;
@@ -1727,6 +1751,13 @@ id RiderCount;
 {
     NSLog(@"::receive databasicSA revised:%@",aabasicSA);
     getbasicSA = aabasicSA;
+}
+
+-(void)HLInsert:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL
+{
+    NSLog(@"::receiveHL");
+    getbasicHL = aaBasicHL;
+    getbasicTempHL = aaBasicTempHL;
 }
 
 #pragma mark - memory

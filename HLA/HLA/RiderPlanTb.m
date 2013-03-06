@@ -31,7 +31,12 @@
         [self getRiderCondition];
         NSLog(@"condition:%@, sumA:%.2f",self.requestCondition,self.requestSA);
         
+        /*
         if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"]) {
+            [itemValue addObject:@"HMM1000"];
+            [itemDesc addObject:@"HMM_1000"];
+        }*/
+        if (self.requestSA >= 500000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"]) {
             [itemValue addObject:@"HMM1000"];
             [itemDesc addObject:@"HMM_1000"];
         }

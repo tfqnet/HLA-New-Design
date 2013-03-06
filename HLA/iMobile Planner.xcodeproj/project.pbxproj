@@ -219,6 +219,7 @@
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
 		EFFC252916DC425800313A96 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFFC252816DC425800313A96 /* hladb.sqlite */; };
+		EFFC253716E7219500313A96 /* HLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFC253616E7219400313A96 /* HLViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -526,6 +527,8 @@
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
 		EFFC252816DC425800313A96 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		EFFC253516E7219400313A96 /* HLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLViewController.h; sourceTree = "<group>"; };
+		EFFC253616E7219400313A96 /* HLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1087,6 +1090,8 @@
 			children = (
 				EF059847161A912A004A9095 /* BasicPlanViewController.h */,
 				EF059846161A912A004A9095 /* BasicPlanViewController.m */,
+				EFFC253516E7219400313A96 /* HLViewController.h */,
+				EFFC253616E7219400313A96 /* HLViewController.m */,
 				EF059855161A9373004A9095 /* PremiumViewController.h */,
 				EF059854161A9373004A9095 /* PremiumViewController.m */,
 				EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */,
@@ -1370,6 +1375,7 @@
 				C4C5020116A64E1F00096156 /* eBrochureViewController.m in Sources */,
 				C4C5020416A652B000096156 /* eBrochureListingViewController.m in Sources */,
 				C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */,
+				EFFC253716E7219500313A96 /* HLViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
