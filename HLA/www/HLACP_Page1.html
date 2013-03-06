@@ -249,12 +249,18 @@
 			//alert(row.col0_1);
 	     
 			//$('#table-data > tbody').append
-                                   
+                        /*           
                         col5Total = col5Total + parseFloat(formatCurrency(row.col5).replace(',','').replace('-', '0'));
                         col6Total = col6Total + parseFloat(formatCurrency(row.col6).replace(',','').replace('-', '0'));
                         col7Total = col7Total + parseFloat(formatCurrency(row.col7).replace(',','').replace('-', '0'));
                         col8Total = col8Total + parseFloat(formatCurrency(row.col8).replace(',','').replace('-', '0'));
+			*/
                
+			col5Total =  parseFloat(col5Total) + parseFloat((row.col5).replace(/,/g,'').replace('-', '0'));
+                        col6Total = parseFloat(col6Total) + parseFloat((row.col6).replace(/,/g,'').replace('-', '0'));
+                        col7Total = parseFloat(col7Total) + parseFloat((row.col7).replace(/,/g ,'').replace('-', '0'));
+                        col8Total = parseFloat(col8Total) + parseFloat((row.col8).replace(/,/g,'').replace('-', '0'));
+			
 			if(showHLoading == false){
 			    
 			    if(showOccLoading == false){

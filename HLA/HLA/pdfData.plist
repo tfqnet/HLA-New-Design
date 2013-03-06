@@ -6,12 +6,8 @@
 	<array>
 		<array>
 			<array>
-				<string>HLA Income Builder (English + BM)</string>
-				<string>Brochure_HLAIncomeBuilder_BM</string>
-			</array>
-			<array>
-				<string>HLA Income Builder (English + Chinese)</string>
-				<string>Brochure_HLAIncomeBuilder_Mand</string>
+				<string>HLA Cash Promise</string>
+				<string>Brochure_CashPromise</string>
 			</array>
 		</array>
 		<array>
@@ -64,12 +60,6 @@
 			<array>
 				<string>Hospital &amp; Surgical Plus II</string>
 				<string>Brochure_HSPII</string>
-			</array>
-		</array>
-		<array>
-			<array>
-				<string>Cash Promise</string>
-				<string>Brochure_CashPromise</string>
 			</array>
 		</array>
 	</array>

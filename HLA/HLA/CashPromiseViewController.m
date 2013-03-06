@@ -1097,6 +1097,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"HB" ]){
                     
                     SA = @"-";
+					if (![OtherHLoading isEqualToString:@""]) {
+							OtherHLoading = [OtherHLoading stringByAppendingFormat:@"%%" ];
+					}
+					
                 }
                 else{
                     SA = [OtherRiderSA objectAtIndex:a];
@@ -1649,10 +1653,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 		if (i <= 6) {
 			if (i+ Age <= 64) {
 				if (i == 1) {
-					TotalAD = [[aStrBasicSA objectAtIndex:0]doubleValue ];
+					
+					//TotalAD = [[aStrBasicSA objectAtIndex:0]doubleValue ];
+					TotalAD = [[AnnualPremium objectAtIndex:i -1]doubleValue ];
 				}
 				else{
-					TotalAD = TotalAD + [[aStrBasicSA objectAtIndex:0]doubleValue ];
+					TotalAD = TotalAD + [[AnnualPremium objectAtIndex:i -1]doubleValue ];
 				}
 			}
 			else{
@@ -1718,23 +1724,150 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 					
                 }
             }
-            else{
+            else{ //non medical rider
                 if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
                     
 					if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"EDB" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"ETPDB" ]) {
+					
+						NSString *tempHL1KSA = [OtherRiderHL1kSA objectAtIndex:j];
+						NSString *tempHL1KSATerm = [OtherRiderHL1kSATerm objectAtIndex:j];
 						
 						if (i <= 6) {
-							sumOtherRider = sumOtherRider +
-							[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+							if([tempHL1KSA isEqualToString:@"(null)"]) {
+								sumOtherRider = sumOtherRider +
+								[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+							}
+							else{
+								if (i <= [tempHL1KSATerm integerValue ]) {
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+								}
+								else{
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ] -
+									([[OtherRiderSA objectAtIndex:j] doubleValue ]/1000) * [tempHL1KSA doubleValue ] ;
+								}
+							}
+							
 						}
 						else{
 							sumOtherRider = sumOtherRider + 0.00;
 						}
 						
+						tempHL1KSA = nil, tempHL1KSATerm = Nil;
+						
 					}
 					else{
-						sumOtherRider = sumOtherRider +
-						[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+						
+						if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"CIWP" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"LCWP" ] ||
+							[[OtherRiderCode objectAtIndex:j ] isEqualToString:@"PR" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"SP_PRE" ] ||
+							[[OtherRiderCode objectAtIndex:j ] isEqualToString:@"SP_STD" ] ) {
+							
+							double waiverRiderSA;
+							waiverRiderSA = [[strOriBasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+							
+							if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"CIWP" ]) {
+								
+								for (int q=0; q < OtherRiderCode.count; q++) {
+									if (!([[OtherRiderCode objectAtIndex:q ] isEqualToString:@"LCPR"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"CIR"]  ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PR"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"LCWP"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_STD"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_PRE"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"CIWP"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ICR"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_TW"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_TWP"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_EXC"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"ACIR_MPP"])) {
+										waiverRiderSA = waiverRiderSA +
+										[[[aStrOtherRiderAnnually objectAtIndex:q] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+									}
+								}
+							}
+							else {
+								for (int q=0; q < OtherRiderCode.count; q++) {
+									if (!([[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PLCP"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PR"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"LCWP"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_STD"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"SP_PRE"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"CIWP"] ||
+										  [[OtherRiderCode objectAtIndex:q ] isEqualToString:@"PTR"])) {
+										waiverRiderSA = waiverRiderSA +
+										[[[aStrOtherRiderAnnually objectAtIndex:q] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+										
+									}
+								}
+							}
+							
+							NSString *tempHL1KSA = [OtherRiderHL1kSA objectAtIndex:j];
+							NSString *tempHL1KSATerm = [OtherRiderHL1kSATerm objectAtIndex:j];
+							NSString *tempHL100SA = [OtherRiderHL100SA objectAtIndex:j];
+							NSString *tempHL100SATerm = [OtherRiderHL100SATerm objectAtIndex:j];
+							if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"CIWP" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"LCWP" ]) {
+								if([tempHL100SA isEqualToString:@"(null)"]) {
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+								}
+								else{
+									if (i <= [tempHL100SATerm integerValue ]) {
+										sumOtherRider = sumOtherRider +
+										[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+									}
+									else{
+										sumOtherRider = sumOtherRider +
+										[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ] -
+										(waiverRiderSA/100) * ([[OtherRiderSA objectAtIndex:j] doubleValue ]/100) * [tempHL100SA doubleValue ] ;
+										
+									}
+								}
+							}
+							else{
+								if([tempHL1KSA isEqualToString:@"(null)"]) {
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+								}
+								else{
+									if (i <= [tempHL1KSATerm integerValue ]) {
+										sumOtherRider = sumOtherRider +
+										[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+									}
+									else{
+										sumOtherRider = sumOtherRider +
+										[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ] -
+										(waiverRiderSA/1000) * ([[OtherRiderSA objectAtIndex:j] doubleValue ]/100) * [tempHL1KSA doubleValue ] ;
+									}
+								}
+							}
+							
+							
+						}
+						else{ //rider is not CIWP, PR, LCWP, SP_PRE, SP_STD
+							NSString *tempHL1KSA = [OtherRiderHL1kSA objectAtIndex:j];
+							NSString *tempHL1KSATerm = [OtherRiderHL1kSATerm objectAtIndex:j];
+							
+							if([tempHL1KSA isEqualToString:@"(null)"]) {
+								sumOtherRider = sumOtherRider +
+								[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+							}
+							else{
+								if (i <= [tempHL1KSATerm integerValue ]) {
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+								}
+								else{
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ] -
+									([[OtherRiderSA objectAtIndex:j] doubleValue ]/1000) * [tempHL1KSA doubleValue ] ;
+								}
+							}
+							//sumOtherRider = sumOtherRider +
+							//[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+						}
+						
+						
 					}
 					
                     
@@ -3557,6 +3690,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             SAQuaterly = Nil;
             SAMonthly = Nil;
             formatter = Nil;
+			
+			
+			
             
         }
         

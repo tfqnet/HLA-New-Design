@@ -112,7 +112,7 @@
     NSString *title = nil;
     switch (section) {
         case 0:
-            title = @"HLA Income Builder";
+            title = @"HLA Cash Promise";
             break;
         case 1:
             title = @"HLA Major Medi";
@@ -138,9 +138,7 @@
         case 8:
             title = @"Hospital & Surgical Plan II";
             break;
-		case 9:
-            title = @"HLA Cash Promise";
-            break;
+		
             
         default:
             break;
