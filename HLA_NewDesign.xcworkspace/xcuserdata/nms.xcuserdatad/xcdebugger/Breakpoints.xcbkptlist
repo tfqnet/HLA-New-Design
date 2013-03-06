@@ -1347,11 +1347,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/SIMenuViewController.m"
-         timestampString = "383798720.385685"
+         timestampString = "384226884.635837"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1260"
-         endingLineNumber = "1260"
+         startingLineNumber = "1263"
+         endingLineNumber = "1263"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>

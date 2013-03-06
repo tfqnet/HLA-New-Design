@@ -1233,8 +1233,11 @@ id RiderCount;
             
         }
         
-		self.FS = [FSVerticalTabBarController alloc];
-		_FS.delegate = self;
+		if (_FS == Nil) {
+			self.FS = [FSVerticalTabBarController alloc];
+			_FS.delegate = self;
+		}
+		
 		
         if (cont == TRUE) {
 
@@ -1372,7 +1375,13 @@ id RiderCount;
 		[self.view setUserInteractionEnabled:NO];
         [spinner startAnimating];
         
+		if (_FS == Nil) {
+			self.FS = [FSVerticalTabBarController alloc];
+			_FS.delegate = self;
+		}
         
+		[_FS Test ];
+		
         //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
             //dispatch_async(downloadQueue, ^{
@@ -1393,6 +1402,7 @@ id RiderCount;
                 [spinner stopAnimating];
                 spinnerLabel.text = @"";
 				[self.view setUserInteractionEnabled:YES];
+				[_FS Reset];
                 
                 [PDSPage dismissViewControllerAnimated:NO completion:Nil];
                 
@@ -1462,7 +1472,14 @@ id RiderCount;
 		[self.view setUserInteractionEnabled:NO];
         [spinner startAnimating];
         
+		if (_FS == Nil) {
+			self.FS = [FSVerticalTabBarController alloc];
+			_FS.delegate = self;
+		}
         
+		[_FS Test ];
+		
+		
         //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
             //dispatch_async(downloadQueue, ^{
@@ -1483,6 +1500,7 @@ id RiderCount;
                 [spinner stopAnimating];
                 spinnerLabel.text = @"";
 				[self.view setUserInteractionEnabled:YES];
+				[_FS Reset];
                 
                 [PDSPage dismissViewControllerAnimated:NO completion:Nil];
                 

@@ -461,7 +461,7 @@ NSMutableArray *ItemPages;
 -(void)enablePre{
     next.enabled = TRUE;
     
-    if (gPages - 1 > 0 ){
+    if (gPages > 0 ){
         prev.enabled = TRUE;
     }
     

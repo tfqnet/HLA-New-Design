@@ -58,6 +58,11 @@
         
         db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM SI_Temp_Trad", [], function(transaction, result) {
+		
+		if(page != 'ENG_PDS21.html'){
+		    document.getElementById('FrontPage').style.visibility = "hidden";
+		}
+		
                 if (result != null && result.rows != null) {
                     var row;
                     for (var i = 0; i < result.rows.length; i++) {
@@ -174,12 +179,15 @@
 </div>
 <div class="main-content">
 
-<div id="pageLength" class="pageLength" style="position:relative;">
+<div id="pageLength" class="pageLength" style="position:relative;height: 800px">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
 //$('#table-design1 tr').css('display','table-row');
-</script> 
+</script>
+<div id="FrontPage">
+    <b>B)</b> <u><b>Attaching Rider(s)</b></u>
+</div>
 <tr class="tblHeader" id="tblHeader" style="display:table-row;">
     <th class="contentSmall"><b>Riders</b></th>
     <th class="content"><b>Exclusions</b></th>

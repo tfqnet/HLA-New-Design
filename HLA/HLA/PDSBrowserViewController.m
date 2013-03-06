@@ -234,7 +234,7 @@ NSMutableArray *ItemPages;
     controller.leftSidebarViewController = PDSsidebarViewController;
     controller.leftSelectedIndexPath = indexPath;
     PDSsidebarViewController.sidebarDelegate = controller;
-    controller.gPages = indexPath.row;
+    controller.gPages = indexPath.row ;
     controller.title = [NSString stringWithFormat:@"Page%d / %d", indexPath.row + 1, ItemPages.count];
     [self.navigationController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
     controller.delegate = _delegate;
@@ -334,7 +334,7 @@ NSMutableArray *ItemPages;
 -(void)enablePDSPre{
     next.enabled = TRUE;
     
-    if (gPages - 1 > 0 ){
+    if (gPages > 0 ){
         prev.enabled = TRUE;
     }
     
