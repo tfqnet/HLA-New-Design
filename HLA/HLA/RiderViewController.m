@@ -372,7 +372,8 @@
                 minDisplayLabel.text = [NSString stringWithFormat:@"Min GYI: %d",minSATerm];
                 maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %@",ValueToDisplay];
                 
-            } else {
+            }
+            else {
                 minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
                 maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
             }
@@ -4746,7 +4747,7 @@
             {
                 OccpCat = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 OccpCat = [OccpCat stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                NSLog(@"occpCat:\"%@\"",OccpCat);
+//                NSLog(@"occpCat:\"%@\"",OccpCat);
             } else {
                 NSLog(@"error access getOccpCatCode");
             }
@@ -5370,10 +5371,12 @@
         
         if (  ![[LTypePlanOpt objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
             [planBtn setTitle:[LTypePlanOpt objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+            planOption = [[NSString alloc] initWithFormat:@"%@",planBtn.titleLabel.text];
         }
         
         if (  ![[LTypeDeduct objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
             [deducBtn setTitle:[LTypeDeduct objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+            deductible = [[NSString alloc] initWithFormat:@"%@",deducBtn.titleLabel.text];
         }
         
         NSRange rangeofDotHL = [[LTypeRidHL1K objectAtIndex:indexPath.row ] rangeOfString:@"."];
@@ -5686,6 +5689,11 @@
     occpField.text = @"";
     tempHLField.text = @"";
     tempHLTField.text = @"";
+    minTerm = 0;
+    maxTerm = 0;
+    minSATerm = 0;
+    maxSATerm = 0;
+    maxRiderSA = 0;
     
     [self.planBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
     [self.deducBtn setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];

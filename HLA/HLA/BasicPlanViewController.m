@@ -505,6 +505,13 @@ id temp;
         else {
             yearlyIncome = @"ACC";
         }
+        
+        if ([parAccField.text intValue] == 100) {
+            parPayoutField.text = @"0";
+        }
+        if ([parPayoutField.text intValue] == 100) {
+            parAccField.text = @"0";
+        }
     }
     NSLog(@"MOP:%d, yearlyIncome:%@, cashDividend:%@, advanceYearlyIncome:%d",MOP,yearlyIncome,cashDividend,advanceYearlyIncome);
     
