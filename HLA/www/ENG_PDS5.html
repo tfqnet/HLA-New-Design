@@ -22,7 +22,7 @@
     var mcashPaymentD = '';
     //var cashPayment = 0;
     var colType = 0;
-    var pageNum = '8';
+    var pageNum;
     //var rider = "";
     var page = gup("page");
 
@@ -98,6 +98,8 @@
                                               if (result != null && result.rows != null) {
                                               var row = result.rows.item(0);
                                               
+					      pageNum = row.PageNum;
+					      
                                               if(row.riders.charAt(row.riders.length-1) == ";"){
                                               rider = row.riders.slice(0, -1).split(";");
                                               }
@@ -156,8 +158,25 @@
                                               }
                                               },errorHandler);
                        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+	    transaction.executeSql("SELECT * from SI_Temp_Pages_PDS where pageNum = '" + (parseInt(pageNum) + parseInt(1)) + "'", [], function(transaction, result) {
+		    
+		    if (result != null && result.rows != null) {
+			var row = result.rows.item(0);
+			if(row.htmlName != 'ENG_PDS6.html'){
+			    $('#rujuk').hide();
+			}
+		    }
+		    else
+		    {
+			
+			$('#rujuk').hide();
+			
+		    }
+		},errorHandler);
+        },errorHandler,nullHandler);
     	
-        
         return;
     }
 </script> 
@@ -179,7 +198,7 @@
 </div>
 <div class="main-content">
 
-<div id="pageLength" class="pageLength" style="position:relative;height: 800px">
+<div id="pageLength" class="pageLength" style="position:relative;height: 830px">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -740,6 +759,9 @@ ii.&nbsp;&nbsp;&nbsp;&nbsp;Total and Permanent disability resulted directly or i
 </table><br/>
 </div>
 
+<div id="rujuk">
+    <i>Note: This list is non-exhaustive. Please refer to the policy contract for the terms and conditions under this policy.</i>    
+</div>
 
 
 </div><br/><br/><br/>

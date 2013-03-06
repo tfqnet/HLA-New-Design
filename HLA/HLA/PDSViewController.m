@@ -664,7 +664,7 @@
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
             [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"] || [curRider isEqualToString:@"PTR"]
-            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"]){
+            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"]){
             riderInPageCount++;
             prevRider = curRider;
             

@@ -321,7 +321,7 @@ NSMutableArray *ItemPages;
     browserController = nil;
     [self performSelector:@selector(enablePDSPre) withObject:Nil afterDelay:1.5];
 }
-\
+
 -(void)enablePDSNext{
     if (gPages + 1 != ItemPages.count) {
         next.enabled = TRUE;
