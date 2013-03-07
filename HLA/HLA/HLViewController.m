@@ -77,10 +77,53 @@
 
 - (void)getExistingView
 {
-    HLField.text = [NSString stringWithFormat:@"%@",getHL];
-    HLTermField.text = [NSString stringWithFormat:@"%d",getHLTerm];
-    TempHLField.text = [NSString stringWithFormat:@"%@",getTempHL];
-    TempHLTermField.text = [NSString stringWithFormat:@"%d",getTempHLTerm];
+    if (getHL.length != 0) {
+        
+        NSRange rangeofDot = [getHL rangeOfString:@"."];
+        NSString *valueToDisplay = @"";
+        
+        if (rangeofDot.location != NSNotFound) {
+            NSString *substring = [getHL substringFromIndex:rangeofDot.location ];
+            if (substring.length == 2 && [substring isEqualToString:@".0"]) {
+                valueToDisplay = [getHL substringToIndex:rangeofDot.location ];
+            }
+            else {
+                valueToDisplay = getHL;
+            }
+        }
+        else {
+            valueToDisplay = getHL;
+        }
+        HLField.text = valueToDisplay;
+    }
+    
+    if (getHLTerm != 0) {
+        HLTermField.text = [NSString stringWithFormat:@"%d",getHLTerm];
+    }
+    
+    if (getTempHL.length != 0) {
+        NSRange rangeofDot = [getTempHL rangeOfString:@"."];
+        NSString *valueToDisplay = @"";
+        
+        if (rangeofDot.location != NSNotFound) {
+            NSString *substring = [getTempHL substringFromIndex:rangeofDot.location ];
+            if (substring.length == 2 && [substring isEqualToString:@".0"]) {
+                valueToDisplay = [getTempHL substringToIndex:rangeofDot.location ];
+            }
+            else {
+                valueToDisplay = getTempHL;
+            }
+        }
+        else {
+            valueToDisplay = getTempHL;
+        }
+        TempHLField.text = valueToDisplay;
+    }
+    
+    if (getTempHLTerm != 0) {
+        TempHLTermField.text = [NSString stringWithFormat:@"%d",getTempHLTerm];
+        
+    }
 }
 
 #pragma mark - action

@@ -528,16 +528,16 @@
         }
         
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
-            tempHLLabel.text = @"Temporary Health Loading (Per 1K SA) :";
-            tempHLTLabel.text = @"Temporary Health Loading (Per 1K SA) Term :";
+            tempHLLabel.text = @"Health Loading 2 (Per 1K SA) :";
+            tempHLTLabel.text = @"Health Loading 2 (Per 1K SA) Term :";
         }
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10"]]) {
-            tempHLLabel.text = @"Temporary Health Loading (Per 100 SA) :";
-            tempHLTLabel.text = @"Temporary Health Loading (Per 100 SA) Term :";
+            tempHLLabel.text = @"Health Loading 2 (Per 100 SA) :";
+            tempHLTLabel.text = @"Health Loading 2 (Per 100 SA) Term :";
         }
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
-            tempHLLabel.text = @"Temporary Health Loading (%) :";
-            tempHLTLabel.text = @"Temporary Health Loading (%) Term :";
+            tempHLLabel.text = @"Health Loading 2 (%) :";
+            tempHLTLabel.text = @"Health Loading 2 (%) Term :";
         }
     }
     [self replaceActive];

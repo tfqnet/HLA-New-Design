@@ -62,7 +62,7 @@ id temp;
     //--for update db due to upgrading version or changes
 //    [self updateDB_maxAge];
 //    [self updateTB_Rider_Details];
-//    [self updateTB_Rider_La ble];
+//    [self updateTB_Rider_Label];
     
     LANameField.enabled = NO;
     sexSegment.enabled = NO;
@@ -840,7 +840,7 @@ id temp;
     }
 }
 
--(void)updateTB_Rider_Lable
+-(void)updateTB_Rider_Label
 {
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -873,6 +873,84 @@ id temp;
         
         NSString *querySQL3 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Sum Assured (%%)\" WHERE LabelCode=\"SUMA\" AND RiderCode = \"SP_STD\""];
         if (sqlite3_prepare_v2(contactDB, [querySQL3 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL4 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 1K SA)\" WHERE LabelCode=\"HL1K\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL4 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL5 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 1K SA) Term\" WHERE LabelCode=\"HL1KT\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL5 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL6 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 100 SA)\" WHERE LabelCode=\"HL10\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL6 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL7 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 100 SA) Term\" WHERE LabelCode=\"HL10T\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL7 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL8 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (%%)\" WHERE LabelCode=\"HLP\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL8 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"updateTB_Rider_Lable success!");
+                
+            } else {
+                NSLog(@"updateTB_Rider_Lable failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+        NSString *querySQL9 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (%%) Term\" WHERE LabelCode=\"HLPT\""];
+        if (sqlite3_prepare_v2(contactDB, [querySQL9 UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
