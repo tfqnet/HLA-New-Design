@@ -814,6 +814,16 @@ bool IsContinue = TRUE;
                         return false;
                     }
                     
+					if (txtContact1.text.length < 6) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be more than 6 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [txtContact1 becomeFirstResponder];
+                        
+                        [alert show];
+                        return false;
+                    }
+					
                     BOOL valid; 
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
@@ -898,6 +908,16 @@ bool IsContinue = TRUE;
                         return false;
                     }
                     
+					if (txtContact2.text.length < 6) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be more than 6 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [txtContact2 becomeFirstResponder];
+                        
+                        [alert show];
+                        return false;
+                    }
+					
                     BOOL valid; 
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
@@ -980,6 +1000,17 @@ bool IsContinue = TRUE;
             }
             else {
                 if(![txtContact3.text isEqualToString:@"" ]){
+					
+					if (txtContact3.text.length < 6) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be more than 6 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [txtContact3 becomeFirstResponder];
+                        
+                        [alert show];
+                        return false;
+                    }
+					
                     BOOL valid; 
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
@@ -1066,6 +1097,16 @@ bool IsContinue = TRUE;
                     if (txtContact4.text.length > 8) {
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                         message:@"Contact number length must be less than 8 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [txtContact4 becomeFirstResponder];
+                        
+                        [alert show];
+                        return false;
+                    }
+					
+					if (txtContact4.text.length < 6) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be more than 6 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                         
                         [txtContact4 becomeFirstResponder];
                         
@@ -1167,6 +1208,16 @@ bool IsContinue = TRUE;
                         return false;
                     }
                     
+					if (txtContact5.text.length < 6) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Contact number length must be more than 6 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        
+                        [txtContact5 becomeFirstResponder];
+                        
+                        [alert show];
+                        return false;
+                    }
+					
                     BOOL valid; 
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];

@@ -2636,6 +2636,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								 CIWPMonthly = waiverRiderSAMonthly *  tempRiderSA/100.00;
 								 */
 								if (i == 1) {
+									
 									[gWaiverAnnual addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSA *  tempRiderSA/100.00] ];
 									[gWaiverSemiAnnual addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSASemiAnnual *  tempRiderSA/100.00] ];
 									[gWaiverQuarterly addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSAQuarterly *  tempRiderSA/100.00] ];
@@ -3636,46 +3637,64 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
             //[formatter setMaximumFractionDigits:3];
+
             [formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
-            
-            NSString *SAAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverAnnual objectAtIndex:i] doubleValue ]]];
+			
+            NSString *SAAnnual = [formatter stringFromNumber:[NSDecimalNumber numberWithFloat:[[gWaiverAnnual objectAtIndex:i] floatValue ]]];
             NSString *SASemiAnnual = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverSemiAnnual objectAtIndex:i] doubleValue ]]];
             NSString *SAQuaterly = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverQuarterly objectAtIndex:i] doubleValue ]]];
             NSString *SAMonthly = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverMonthly objectAtIndex:i] doubleValue ]]];
             
-            
+            //NSLog(@"dasdasdasdas%.9f", [[gWaiverAnnual objectAtIndex:i] doubleValue ]);
+		
+			
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-                QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Annual\" AND col11 = \"%@\" ",
-                            SAAnnual, [UpdateTradDetail objectAtIndex:i ]];
+                //QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Annual\" AND col11 = \"%@\" ",
+                //            SAAnnual, [UpdateTradDetail objectAtIndex:i ]];
                 
+				QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%.2f\" where col0_1 = \"-Annual\" AND col11 = \"%@\" ",
+                             [[gWaiverAnnual objectAtIndex:i] doubleValue ] , [UpdateTradDetail objectAtIndex:i ]];
+                
+				
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                     }
                     sqlite3_finalize(statement);
                 }
                 
+				/*
                 QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Semi-annual\" AND col11 = \"%@\" ",
                             SASemiAnnual, [UpdateTradDetail objectAtIndex:i ]];
-                
+                */
+				QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%.2f\" where col0_1 = \"-Semi-annual\" AND col11 = \"%@\" ",
+                            [[gWaiverSemiAnnual objectAtIndex:i] doubleValue ] , [UpdateTradDetail objectAtIndex:i ]];
+				
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                     }
                     sqlite3_finalize(statement);
                 }
                 
+				/*
                 QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Quarterly\" AND col11 = \"%@\" ",
                             SAQuaterly, [UpdateTradDetail objectAtIndex:i ]];
-                
+                */
+				QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%.2f\" where col0_1 = \"-Quarterly\" AND col11 = \"%@\" ",
+                            [[gWaiverQuarterly objectAtIndex:i] doubleValue ], [UpdateTradDetail objectAtIndex:i ]];
+				
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                     }
                     sqlite3_finalize(statement);
                 }
                 
-                
+                /*
                 QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Monthly\" AND col11 = \"%@\" ",
                             SAMonthly, [UpdateTradDetail objectAtIndex:i ]];
-                
+                */
+				QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%.2f\" where col0_1 = \"-Monthly\" AND col11 = \"%@\" ",
+                            [[gWaiverMonthly objectAtIndex:i] doubleValue ], [UpdateTradDetail objectAtIndex:i ]];
+				
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                     if (sqlite3_step(statement) == SQLITE_DONE) {
                     }

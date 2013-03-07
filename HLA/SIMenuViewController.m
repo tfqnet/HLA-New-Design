@@ -948,7 +948,16 @@ id RiderCount;
     cell.detailTextLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:12];
     cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
     
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+	if(indexPath.row == 8){
+		cell.textLabel.backgroundColor = [UIColor grayColor];
+		cell.detailTextLabel.backgroundColor = [UIColor grayColor];
+		cell.contentView.backgroundColor = [UIColor grayColor];
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	}
+	else{
+		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+	}
+    
     return cell;
 }
 

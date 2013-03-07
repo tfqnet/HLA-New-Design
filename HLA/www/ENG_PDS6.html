@@ -172,7 +172,7 @@
 	
         db.transaction(function(transaction) {
             transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc from trad_rider_details as A, '+
-				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HB","HSP_II","CPA","PA","HMM","CIR") ;'
+				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HSP_II","HMM", "C+") ;'
 				   , [], function(transaction, result) {
                 
 		if (result != null && result.rows != null) {
