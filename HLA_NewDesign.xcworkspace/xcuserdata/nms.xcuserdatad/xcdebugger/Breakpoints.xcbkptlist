@@ -1048,12 +1048,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "377163770.904004"
+         timestampString = "384660778.118174"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "4184"
-         endingLineNumber = "4184"
-         landmarkName = "-getBasicPentaRate"
+         startingLineNumber = "4190"
+         endingLineNumber = "4190"
+         landmarkName = "-getListingRiderByType"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1066,7 +1066,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1629"
          endingLineNumber = "1629"
-         landmarkName = "-calculateWaiver"
+         landmarkName = "-calculateRiderPrem"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1087,11 +1087,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "376813508.768771"
+         timestampString = "384660778.118174"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "3068"
-         endingLineNumber = "3068"
+         startingLineNumber = "3074"
+         endingLineNumber = "3074"
          landmarkName = "-MHIGuideLines"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1126,12 +1126,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "376813508.768771"
+         timestampString = "384660778.118174"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2938"
-         endingLineNumber = "2938"
-         landmarkName = "-MHIGuideLines"
+         startingLineNumber = "2944"
+         endingLineNumber = "2944"
+         landmarkName = "-validateSaver"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
