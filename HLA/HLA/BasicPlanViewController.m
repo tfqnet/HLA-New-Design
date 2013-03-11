@@ -36,7 +36,7 @@
 @synthesize HLField;
 @synthesize HLTermField;
 @synthesize tempHLField;
-@synthesize tempHLTermField;
+@synthesize tempHLTermField,basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth;
 @synthesize myScrollView,labelSix,labelSeven,labelFour,labelFive;
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
@@ -52,7 +52,7 @@
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 @synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
 @synthesize requestOccpClass,OccpClass,MOPHLAIB,MOPHLACP,yearlyIncomeHLAIB,cashDividendHLAIB,cashDividendHLACP;
-@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge,labelAddHL;
+@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge,labelAddHL,occLoad,LSDRate,LUnits;
 @synthesize planList = _planList;
 @synthesize planPopover = _planPopover;
 @synthesize labelParAcc,labelParPayout,labelPercent1,labelPercent2,parAccField,parPayoutField,getParAcc,getParPayout;
@@ -979,6 +979,9 @@ id temp;
     }
 }
 
+
+#pragma mark - calculation
+
 -(void)calculateSA
 {
     double basicSA = [yearlyIncomeField.text doubleValue];
@@ -1058,12 +1061,178 @@ id temp;
         }
         maxRiderSA = MaxUnit;
     }
+    else if ([riderCode isEqualToString:@"ETPDB"]) {
+        double max = basicPremAnn * 10;
+        _maxRiderSA = fmin(max, maxSATerm);
+        maxRiderSA = _maxRiderSA;
+    }
     else {
         _maxRiderSA = maxSATerm;
         NSString *a_maxRiderSA = [NSString stringWithFormat:@"%.2f",_maxRiderSA];
         maxRiderSA = [a_maxRiderSA doubleValue];
     }
-    //    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
+    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
+}
+
+-(void)calculateBasicPremium
+{
+    NSString *BasicAnnually = nil;
+    NSString *BasicHalfYear = nil;
+    NSString *BasicQuarterly = nil;
+    NSString *BasicMonthly = nil;
+    NSString *OccpLoadA = nil;
+    NSString *OccpLoadH = nil;
+    NSString *OccpLoadQ = nil;
+    NSString *OccpLoadM = nil;
+    NSString *BasicHLAnnually = nil;
+    NSString *BasicHLHalfYear = nil;
+    NSString *BasicHLQuarterly = nil;
+    NSString *BasicHLMonthly = nil;
+    NSString *LSDAnnually = nil;
+    NSString *LSDHalfYear = nil;
+    NSString *LSDQuarterly = nil;
+    NSString *LSDMonthly = nil;
+    NSString *basicTotalA = nil;
+    NSString *basicTotalS = nil;
+    NSString *basicTotalQ = nil;
+    NSString *basicTotalM = nil;
+    
+    double BasicSA = [yearlyIncomeField.text doubleValue];
+    double PolicyTerm = [termField.text doubleValue];
+    double BasicHLoad = [getHL doubleValue];
+    double BasicTempHLoad = [getTempHL doubleValue];
+    
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
+    
+    //calculate basic premium
+    double _BasicAnnually = basicRate * (BasicSA/1000) * 1;
+    double _BasicHalfYear = basicRate * (BasicSA/1000) * 0.5125;
+    double _BasicQuarterly = basicRate * (BasicSA/1000) * 0.2625;
+    double _BasicMonthly = basicRate * (BasicSA/1000) * 0.0875;
+    BasicAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicAnnually]];
+    BasicHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicHalfYear]];
+    BasicQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicQuarterly]];
+    BasicMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_BasicMonthly]];
+    double BasicAnnually_ = [[BasicAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double BasicHalfYear_ = [[BasicHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double BasicQuarterly_ = [[BasicQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double BasicMonthly_ = [[BasicMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+//    NSLog(@"Basic A:%.2f, S:%.2f, Q:%.2f, M:%.2f",BasicAnnually_,BasicHalfYear_,BasicQuarterly_,BasicMonthly_);
+    
+    //calculate occupationLoading
+    double _OccpLoadA = 0;
+    double _OccpLoadH = 0;
+    double _OccpLoadQ = 0;
+    double _OccpLoadM = 0;
+    if ([planChoose isEqualToString:@"HLAIB"]) {
+        _OccpLoadA = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 1;
+        _OccpLoadH = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.5125;
+        _OccpLoadQ = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.2625;
+        _OccpLoadM = occLoad * ((PolicyTerm + 1)/2) * (BasicSA/1000) * 0.0875;
+    }
+    else {
+        _OccpLoadA = occLoad *55 * (BasicSA/1000) * 1;
+        _OccpLoadH = occLoad *55 * (BasicSA/1000) * 0.5125;
+        _OccpLoadQ = occLoad *55 * (BasicSA/1000) * 0.2625;
+        _OccpLoadM = occLoad *55 * (BasicSA/1000) * 0.0875;
+    }
+    OccpLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:_OccpLoadA]];
+    OccpLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:_OccpLoadH]];
+    OccpLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:_OccpLoadQ]];
+    OccpLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:_OccpLoadM]];
+    double OccpLoadA_ = [[OccpLoadA stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double OccpLoadH_ = [[OccpLoadH stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double OccpLoadQ_ = [[OccpLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double OccpLoadM_ = [[OccpLoadM stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+//    NSLog(@"OccpLoad A:%.2f, S:%.2f, Q:%.2f, M:%.2f",OccpLoadA_, OccpLoadH_, OccpLoadQ_, OccpLoadM_);
+    
+    //calculate basic health loading
+    double _BasicHLAnnually = BasicHLoad * (BasicSA/1000) * 1;
+    double _BasicHLHalfYear = BasicHLoad * (BasicSA/1000) * 0.5125;
+    double _BasicHLQuarterly = BasicHLoad * (BasicSA/1000) * 0.2625;
+    double _BasicHLMonthly = BasicHLoad * (BasicSA/1000) * 0.0875;
+    //calculate basic temporary health loading
+    double _BasicTempHLAnnually = BasicTempHLoad * (BasicSA/1000) * 1;
+    double _BasicTempHLHalfYear = BasicTempHLoad * (BasicSA/1000) * 0.5125;
+    double _BasicTempHLQuarterly = BasicTempHLoad * (BasicSA/1000) * 0.2625;
+    double _BasicTempHLMonthly = BasicTempHLoad * (BasicSA/1000) * 0.0875;
+    
+    double _allBasicHLAnn = _BasicHLAnnually + _BasicTempHLAnnually;
+    double _allBasicHLHalf = _BasicHLHalfYear + _BasicTempHLHalfYear;
+    double _allBasicHLQuar = _BasicHLQuarterly + _BasicTempHLQuarterly;
+    double _allBasicHLMonth = _BasicHLMonthly + _BasicTempHLMonthly;
+    
+    BasicHLAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLAnn]];
+    BasicHLHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLHalf]];
+    BasicHLQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLQuar]];
+    BasicHLMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:_allBasicHLMonth]];
+    double BasicHLAnnually_ = [[BasicHLAnnually stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double BasicHLHalfYear_ = [[BasicHLHalfYear stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double BasicHLQuarterly_ = [[BasicHLQuarterly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double BasicHLMonthly_ = [[BasicHLMonthly stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+//    NSLog(@"BasicHL A:%.3f, S:%.3f, Q:%.3f, M:%.3f",BasicHLAnnually_, BasicHLHalfYear_, BasicHLQuarterly_, BasicHLMonthly_);
+    
+    //calculate LSD
+    double _LSDAnnually = LSDRate * (BasicSA/1000) * 1;
+    double _LSDHalfYear = LSDRate * (BasicSA/1000) * 0.5125;
+    double _LSDQuarterly = LSDRate * (BasicSA/1000) * 0.2625;
+    double _LSDMonthly = LSDRate * (BasicSA/1000) * 0.0875;
+    NSString *LSDAnnually2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDAnnually]];
+    NSString *LSDHalfYear2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDHalfYear]];
+    NSString *LSDQuarterly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDQuarterly]];
+    NSString *LSDMonthly2 = [formatter stringFromNumber:[NSNumber numberWithDouble:_LSDMonthly]];
+    //for negative value
+    LSDAnnually2 = [LSDAnnually2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDHalfYear2 = [LSDHalfYear2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDQuarterly2 = [LSDQuarterly2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDMonthly2 = [LSDMonthly2 stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    LSDAnnually2 = [LSDAnnually2 stringByReplacingOccurrencesOfString:@")" withString:@""];
+    LSDHalfYear2 = [LSDHalfYear2 stringByReplacingOccurrencesOfString:@")" withString:@""];
+    LSDQuarterly2 = [LSDQuarterly2 stringByReplacingOccurrencesOfString:@")" withString:@""];
+    LSDMonthly2 = [LSDMonthly2 stringByReplacingOccurrencesOfString:@")" withString:@""];
+    double LSDAnnually_ = [[LSDAnnually2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDHalfYear_ = [[LSDHalfYear2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDQuarterly_ = [[LSDQuarterly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    double LSDMonthly_ = [[LSDMonthly2 stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+//    NSLog(@"BasicLSD A:%.2f, S:%.2f, Q:%.2f, M:%.2f",LSDAnnually_, LSDHalfYear_, LSDQuarterly_, LSDMonthly_);
+    
+    //calculate Total basic premium
+    double _basicTotalA = 0;
+    double _basicTotalS = 0;
+    double _basicTotalQ = 0;
+    double _basicTotalM = 0;
+    if (BasicSA < 1000) {
+        _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ + LSDAnnually_;
+        _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ + LSDHalfYear_;
+        _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ + LSDQuarterly_;
+        _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ + LSDMonthly_;
+    }
+    else {
+        _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ - LSDAnnually_;
+        _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ - LSDHalfYear_;
+        _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ - LSDQuarterly_;
+        _basicTotalM = BasicMonthly_ + OccpLoadM_ + BasicHLMonthly_ - LSDMonthly_;
+    }
+    
+    LSDAnnually = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDAnnually_]];
+    LSDHalfYear = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDHalfYear_]];
+    LSDQuarterly = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDQuarterly_]];
+    LSDMonthly = [formatter stringFromNumber:[NSNumber numberWithDouble:LSDMonthly_]];
+    
+    basicTotalA = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalA]];
+    basicTotalS = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalS]];
+    basicTotalQ = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalQ]];
+    basicTotalM = [formatter stringFromNumber:[NSNumber numberWithDouble:_basicTotalM]];
+    
+    
+    basicPremAnn = [[basicTotalA stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    basicPremHalf = [[basicTotalS stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    basicPremQuar = [[basicTotalQ stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    basicPremMonth = [[basicTotalM stringByReplacingOccurrencesOfString:@"," withString:@""] doubleValue];
+    NSLog(@"BasicPrem:%.2f, S:%.2f, Q:%.2f, M:%.2f",basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth);
 }
 
 
@@ -1540,7 +1709,17 @@ id temp;
         sqlite3_close(contactDB);
     }
     
+    [self getBasicPentaRate];
+    [self getLSDRate];
+    [self getOccLoad];
+    NSLog(@"basicRate:%d,lsdRate:%d,pa_cpa:%d",basicRate,LSDRate,occLoad);
+    [self calculateBasicPremium];
+    
     [self getListingRider];
+    
+    for (int i=0; i<LRiderCode.count; i++) {
+        NSLog(@"rider:%@, unit:%@",[LRiderCode objectAtIndex:i],[LUnits objectAtIndex:i]);
+    }
     BOOL dodelete = NO;
     for (int p=0; p<LRiderCode.count; p++) {
         
@@ -1548,6 +1727,7 @@ id temp;
         [self getRiderTermRule];
         [self calculateSA];
         double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
+        int riderUnit = [[LUnits objectAtIndex:p] intValue];
         if (riderSA > maxRiderSA)
         {
             dodelete = YES;
@@ -1560,7 +1740,29 @@ id temp;
                 {
                     if (sqlite3_step(statement) == SQLITE_DONE)
                     {
-                        NSLog(@"rider delete!");
+                        NSLog(@"rider %@ delete!",riderCode);
+                    } else {
+                        NSLog(@"rider delete Failed!");
+                    }
+                    sqlite3_finalize(statement);
+                }
+                sqlite3_close(contactDB);
+            }
+        }
+        
+        if (riderUnit > maxRiderSA)
+        {
+            dodelete = YES;
+            sqlite3_stmt *statement;
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+            {
+                NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
+                
+                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                {
+                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        NSLog(@"rider %@ delete!",riderCode);
                     } else {
                         NSLog(@"rider delete Failed!");
                     }
@@ -1633,11 +1835,12 @@ id temp;
 {
     LRiderCode = [[NSMutableArray alloc] init];
     LSumAssured = [[NSMutableArray alloc] init];
+    LUnits = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT RiderCode, SumAssured FROM Trad_Rider_Details WHERE SINo=\"%@\" ORDER by RiderCode asc",SINo];
+                              @"SELECT RiderCode, SumAssured, Units FROM Trad_Rider_Details WHERE SINo=\"%@\" ORDER by RiderCode asc",SINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1648,6 +1851,9 @@ id temp;
                 
                 const char *aaRidSA = (const char *)sqlite3_column_text(statement, 1);
                 [LSumAssured addObject:aaRidSA == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaRidSA]];
+                
+                const char *aaUnit = (const char *)sqlite3_column_text(statement, 2);
+                [LUnits addObject:aaUnit == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaUnit]];
             }
             
             sqlite3_finalize(statement);
@@ -1710,6 +1916,77 @@ id temp;
             }
             else {
                 NSLog(@"error access getGYI");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getBasicPentaRate
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Basic_Prem WHERE PlanCode=\"%@\" AND FromTerm=\"%@\" AND FromMortality=0",planCode,termField.text];
+        
+        //        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                basicRate =  sqlite3_column_int(statement, 0);
+            } else {
+                NSLog(@"error access getBasicPentaRate");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getOccLoad
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",OccpCode];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                occLoad =  sqlite3_column_int(statement, 0);
+                
+            } else {
+                NSLog(@"error access getOccLoad");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+}
+
+-(void)getLSDRate
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Basic_LSD WHERE PlanCode=\"%@\" AND FromSA <=\"%@\" AND ToSA >= \"%@\"",planCode,yearlyIncomeField.text,yearlyIncomeField.text];
+        //        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                LSDRate =  sqlite3_column_int(statement, 0);
+                
+            } else {
+                NSLog(@"error access getLSDRate");
             }
             sqlite3_finalize(statement);
         }

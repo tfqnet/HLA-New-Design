@@ -40,9 +40,9 @@
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 @synthesize LADOBField,LAOccpField,getSINo,dataInsert2;
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
-@synthesize termCover,planCode,arrExistRiderCode;
+@synthesize termCover,planCode,arrExistRiderCode,arrExistPlanChoice;
 @synthesize prospectPopover = _prospectPopover;
-@synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile,planChoose;
+@synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile,planChoose,ridCode,atcRidCode,atcPlanChoice;
 @synthesize delegate = _delegate;
 @synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker;
 @synthesize LADate = _LADate;
@@ -82,17 +82,18 @@ id temp;
     if (getSINo.length != 0) {
         
         [self checkingExisting];
-        if (SINo.length != 0) {
-            [self getProspectData];
-            [self getSavedField];
-            NSLog(@"will use existing data");
-        }
-        
         [self checkingExistingSI];
+        
         if (basicSINo.length != 0) {
             [self getExistingBasic];
             [self getTerm];
             [self toogleExistingBasic];
+        }
+        
+        if (SINo.length != 0) {
+            [self getProspectData];
+            [self getSavedField];
+            NSLog(@"will use existing data");
         }
     }
     else {
@@ -102,7 +103,6 @@ id temp;
     if (requestIndexNo != 0) {
         [self tempView];
     }
-    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -558,7 +558,6 @@ id temp;
             }
             //-------------------
             
-        
             [self calculateAge];
             if (AgeLess) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -566,16 +565,67 @@ id temp;
                 [alert show];
             }
             else {
-                if (AgeChanged||JobChanged) {
-                    [self checkExistRider];
+                [self checkExistRider];
+                if (AgeChanged) {
+                    
                     if (arrExistRiderCode.count > 0) {
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                         [alert setTag:1007];
                         [alert show];
                     }
+                    
+                    [self updateData];
                 }
                 
-                [self updateData];
+                else if (JobChanged) {
+                    
+                    //--1)check rider base on occpClass
+                    [self getActualRider];
+                    NSLog(@"total exist:%d, total valid:%d",arrExistRiderCode.count,ridCode.count);
+                    
+                    BOOL dodelete = NO;
+                    for(int i = 0; i<arrExistRiderCode.count; i++)
+                    {
+                        if(![ridCode containsObject:[arrExistRiderCode objectAtIndex:i]])
+                        {
+                            NSLog(@"do delete %@",[arrExistRiderCode objectAtIndex:i]);
+                            [self deleteRider:[arrExistRiderCode objectAtIndex:i]];
+                            dodelete = YES;
+                        }
+                    }
+                    [self checkExistRider];
+                    
+                    //--2)check Occp not attach
+                    [self getOccpNotAttach];
+                    if (atcRidCode.count !=0) {
+                        
+                        for (int j=0; j<arrExistRiderCode.count; j++)
+                        {
+                            if ([[arrExistRiderCode objectAtIndex:j] isEqualToString:@"CPA"]) {
+                                NSLog(@"do delete %@",[arrExistRiderCode objectAtIndex:j]);
+                                [self deleteRider:[arrExistRiderCode objectAtIndex:j]];
+                                dodelete = YES;
+                            }
+                            
+                            if ([[arrExistRiderCode objectAtIndex:j] isEqualToString:@"HMM"] && [[arrExistPlanChoice objectAtIndex:j] isEqualToString:@"HMM_1000"]) {
+                                NSLog(@"do delete %@",[arrExistRiderCode objectAtIndex:j]);
+                                [self deleteRider:[arrExistRiderCode objectAtIndex:j]];
+                                dodelete = YES;
+                            }
+                        }
+                    }
+                    [self checkExistRider];
+                    
+                    if (dodelete) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        [alert show];
+                    }
+                    
+                    [self updateData];
+                }
+                else {
+                    [self updateData];
+                }
             }
         }
     }
@@ -1022,7 +1072,7 @@ id temp;
                 occLoading =  sqlite3_column_int(statement, 4);
             }
             else {
-                NSLog(@"Error retrieve loading!");
+                NSLog(@"Error getOccLoadExist!");
             }
             sqlite3_finalize(statement);
         }
@@ -1550,17 +1600,91 @@ id temp;
 -(void)checkExistRider
 {
     arrExistRiderCode = [[NSMutableArray alloc] init];
+    arrExistPlanChoice = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT RiderCode FROM Trad_Rider_Details WHERE SINo=\"%@\"",getSINo];
-//        NSLog(@"%@",querySQL);
+                              @"SELECT RiderCode, PlanOption FROM Trad_Rider_Details WHERE SINo=\"%@\"",getSINo];
+
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
                 [arrExistRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)]];
+                [arrExistPlanChoice addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)]];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getActualRider
+{
+    ridCode = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    NSString *querySQL;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        if (self.occuClass == 4) {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT j.*, k.MinAge, k.MaxAge FROM"
+                        "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\" AND a.RiderCode != \"MG_IV\")j "
+                        "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"", planChoose, age, age];
+        }
+        else if (self.occuClass > 4) {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT j.*, k.MinAge, k.MaxAge FROM"
+                        "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\" AND a.RiderCode != \"CPA\" AND a.RiderCode != \"PA\" AND a.RiderCode != \"HMM\" AND a.RiderCode != \"HB\" AND a.RiderCode != \"MG_II\" AND a.RiderCode != \"MG_IV\" AND a.RiderCode != \"HSP_II\")j "
+                        "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"",planChoose, age, age];
+        }
+        else {
+            querySQL = [NSString stringWithFormat:
+                        @"SELECT j.*, k.MinAge, k.MaxAge FROM"
+                        "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\")j "
+                        "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"",planChoose, age, age];
+        }
+        
+        if (age > 60) {
+            querySQL = [querySQL stringByAppendingFormat:@" AND j.RiderCode != \"I20R\""];
+        }
+        if (age > 65) {
+            querySQL = [querySQL stringByAppendingFormat:@" AND j.RiderCode != \"IE20R\""];
+        }
+        
+        querySQL = [querySQL stringByAppendingFormat:@" order by j.RiderCode asc"];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                [ridCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getOccpNotAttach
+{
+    atcRidCode = [[NSMutableArray alloc] init];
+    atcPlanChoice = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode,PlanChoice FROM Trad_Sys_Occp_NotAttach WHERE OccpCode=\"%@\"",occuCode];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                const char *zzRidCode = (const char *)sqlite3_column_text(statement, 0);
+                [atcRidCode addObject:zzRidCode == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzRidCode]];
+                
+                const char *zzPlan = (const char *)sqlite3_column_text(statement, 1);
+                [atcPlanChoice addObject:zzPlan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzPlan]];
             }
             sqlite3_finalize(statement);
         }
@@ -1579,6 +1703,31 @@ id temp;
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"All rider delete!");
+                [_delegate RiderAdded];
+                
+            } else {
+                NSLog(@"rider delete Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)deleteRider:(NSString *)aaCode
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",getSINo,aaCode];
+        
+//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"rider %@ delete!",aaCode);
                 [_delegate RiderAdded];
                 
             } else {

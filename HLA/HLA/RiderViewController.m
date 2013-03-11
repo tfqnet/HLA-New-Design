@@ -214,53 +214,80 @@
     [self getLSDRate];
     NSLog(@"basicRate:%d,lsdRate:%d,pa_cpa:%d",basicRate,LSDRate,occLoad);
     
-    [self calculateBasicPremium];   //calculate basicPrem
-    
     [self getListingRiderByType];
-    [self getListingRider];     //get stored rider
+    [self getListingRider];
+    [self calculateBasicPremium];
     
-    [self calculateRiderPrem];  //calculate riderPrem
-    [self calculateWaiver];     //calculate waiverPrem
-    [self calculateMedRiderPrem];       //calculate medicalPrem
+    if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+        [self calculateRiderPrem];          
+        [self calculateWaiver];             
+        [self calculateMedRiderPrem];
+    }
     
-     if (medRiderPrem != 0) {
+    if (medRiderPrem != 0) {
         [self MHIGuideLines];
-     } else {
-         BOOL dodelete = NO;
-         for (int p=0; p<LRiderCode.count; p++) {
+    }
+    /*
+    else {
+        BOOL dodelete = NO;
+        for (int p=0; p<LRiderCode.count; p++) {
              
-             riderCode = [LRiderCode objectAtIndex:p];
-             [self getRiderTermRule];
-             [self calculateSA];
-             double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
-             if (riderSA > maxRiderSA)
-             {
-                 dodelete = YES;
-                 sqlite3_stmt *statement;
-                 if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-                 {
-                     NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
-                     
-                     if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-                     {
-                         if (sqlite3_step(statement) == SQLITE_DONE)
-                         {
-                             NSLog(@"rider delete!");
-                         } else {
-                             NSLog(@"rider delete Failed!");
-                         }
-                         sqlite3_finalize(statement);
-                     }
-                     sqlite3_close(contactDB);
-                 }
-             }
-         }
-         if (dodelete) {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-             [alert setTag:1005];
-             [alert show];
-         }
-     }
+            riderCode = [LRiderCode objectAtIndex:p];
+            [self getRiderTermRule];
+            [self calculateSA];
+            double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
+            int riderUnit = [[LUnits objectAtIndex:p] intValue];
+            if (riderSA > maxRiderSA)
+            {
+                dodelete = YES;
+                sqlite3_stmt *statement;
+                if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                {
+                    NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
+                    
+                    if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                    {
+                        if (sqlite3_step(statement) == SQLITE_DONE)
+                        {
+                            NSLog(@"rider %@ delete!",riderCode);
+                        } else {
+                            NSLog(@"rider delete Failed!");
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    sqlite3_close(contactDB);
+                }
+            }
+            
+            if (riderUnit > maxRiderSA)
+            {
+                dodelete = YES;
+                sqlite3_stmt *statement;
+                if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                {
+                    NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
+                    
+                    if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                    {
+                        if (sqlite3_step(statement) == SQLITE_DONE)
+                        {
+                            NSLog(@"rider %@ delete!",riderCode);
+                        } else {
+                            NSLog(@"rider delete Failed!");
+                        }
+                        sqlite3_finalize(statement);
+                    }
+                    sqlite3_close(contactDB);
+                }
+            }
+            
+        }
+        if (dodelete) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert setTag:1005];
+            [alert show];
+        }
+    }*/
     
     myTableView.rowHeight = 50;
     myTableView.backgroundColor = [UIColor clearColor];
@@ -2471,9 +2498,12 @@
         
         [self getListingRiderByType];
         [self getListingRider];     //get stored rider
-        [self calculateRiderPrem];  //calculate riderPrem
-        [self calculateWaiver];     //calculate waiverPrem
-        [self calculateMedRiderPrem];       //calculate medicalPrem
+        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+            [self calculateRiderPrem];  //calculate riderPrem
+            [self calculateWaiver];     //calculate waiverPrem
+            [self calculateMedRiderPrem];       //calculate medicalPrem
+        }
+        
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
@@ -2530,9 +2560,13 @@
         }
         [self getListingRiderByType];
         [self getListingRider];     //get stored rider
-        [self calculateRiderPrem];  //calculate riderPrem
-        [self calculateWaiver];     //calculate waiverPrem
-        [self calculateMedRiderPrem];       //calculate medicalPrem
+        
+        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+            [self calculateRiderPrem];  //calculate riderPrem
+            [self calculateWaiver];     //calculate waiverPrem
+            [self calculateMedRiderPrem];   //calculate medicalPrem
+        }
+               
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
@@ -2542,9 +2576,13 @@
     {
         [self getListingRiderByType];
         [self getListingRider];     //get stored rider
-        [self calculateRiderPrem];  //calculate riderPrem
-        [self calculateWaiver];     //calculate waiverPrem
-        [self calculateMedRiderPrem];       //calculate medicalPrem
+        
+        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+            [self calculateRiderPrem];  //calculate riderPrem
+            [self calculateWaiver];     //calculate waiverPrem
+            [self calculateMedRiderPrem];       //calculate medicalPrem
+        }
+        
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
@@ -2575,9 +2613,13 @@
         }
         [self getListingRiderByType];
         [self getListingRider];     //get stored rider
-        [self calculateRiderPrem];  //calculate riderPrem
-        [self calculateWaiver];     //calculate waiverPrem
-        [self calculateMedRiderPrem];       //calculate medicalPrem
+        
+        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+            [self calculateRiderPrem];  //calculate riderPrem
+            [self calculateWaiver];     //calculate waiverPrem
+            [self calculateMedRiderPrem];       //calculate medicalPrem
+        }
+        
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
@@ -2759,7 +2801,7 @@
 {
     NSRange rangeofDot = [unitField.text rangeOfString:@"."];
 
-    if (unitField.text.length == 0) {
+    if (unitField.text.length == 0||[unitField.text intValue] == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Unit is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1006];
         [alert show];
@@ -4045,9 +4087,12 @@
     }
     else {
         
-        [self calculateRiderPrem];  //calculate riderPrem
-        [self calculateWaiver];     //calculate waiverPrem
-        [self calculateMedRiderPrem];       //calculate medicalPrem
+        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+            [self calculateRiderPrem];  //calculate riderPrem
+            [self calculateWaiver];     //calculate waiverPrem
+            [self calculateMedRiderPrem];       //calculate medicalPrem
+        }
+        
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
         }
@@ -4291,6 +4336,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode,PlanChoice FROM Trad_Sys_Occp_NotAttach WHERE OccpCode=\"%@\"",pTypeOccp];
+        
+//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -4346,9 +4393,13 @@
                 
                 [self getListingRider];     //get stored rider
                 [self getListingRiderByType];
-                [self calculateRiderPrem];  //calculate riderPrem
-                [self calculateWaiver];     //calculate waiverPrem
-                [self calculateMedRiderPrem];       //calculate medicalPrem
+                
+                if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+                    [self calculateRiderPrem];  //calculate riderPrem
+                    [self calculateWaiver];     //calculate waiverPrem
+                    [self calculateMedRiderPrem];       //calculate medicalPrem
+                }
+                
                 if (medRiderPrem != 0) {
                     [self MHIGuideLines];
                 }
@@ -4886,9 +4937,13 @@
                 [self clearField];
                 [self getListingRiderByType];
                 [self getListingRider];     //get stored rider
-                [self calculateRiderPrem];  //calculate riderPrem
-                [self calculateWaiver];     //calculate waiverPrem
-                [self calculateMedRiderPrem];       //calculate medicalPrem
+                
+                if ([getPlanChoose isEqualToString:@"HLAIB"]) {
+                    [self calculateRiderPrem];  //calculate riderPrem
+                    [self calculateWaiver];     //calculate waiverPrem
+                    [self calculateMedRiderPrem];       //calculate medicalPrem
+                }
+                
                 if (medRiderPrem != 0) {
                     [self MHIGuideLines];
                 }
@@ -4966,7 +5021,7 @@
     if (riderCode != NULL) {
         [self clearField];
     }
-    NSLog(@"RiderCode:%@",code);
+    
     riderCode = [[NSString alloc] initWithFormat:@"%@",code];
     riderDesc = [[NSString alloc] initWithFormat:@"%@",desc];
     [self.btnAddRider setTitle:riderDesc forState:UIControlStateNormal];
@@ -4981,6 +5036,7 @@
     
     //validation part
     [self getOccpNotAttach];
+    
     if ([atcRidCode count] != 0 && [riderCode isEqualToString:@"CPA"])
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -5072,14 +5128,35 @@
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider not available - does not meet underwriting rules." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [alert show];
                 [self.planBtn setTitle:@"" forState:UIControlStateNormal];
+                planOption = nil;
+                
             } else {
                 [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
                 planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
             }
         }
     } else {
+        
+        if ([itemdesc isEqualToString:@"HMM_1000"]) {
+            NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
+            self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition andSumAss:strSA andOption:itemdesc];
+            _deductList.delegate = self;
+            
+            [self.deducBtn setTitle:_deductList.selectedItemDesc forState:UIControlStateNormal];
+            deductible = [[NSString alloc] initWithFormat:@"%@",_deductList.selectedItemDesc];
+        }
+        if (![itemdesc isEqualToString:planOption] && [planOption isEqualToString:@"HMM_1000"]) {
+            NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
+            self.deductList = [[RiderDeducTb alloc] initWithString:deducCondition andSumAss:strSA andOption:itemdesc];
+            _deductList.delegate = self;
+            
+            [self.deducBtn setTitle:_deductList.selectedItemDesc forState:UIControlStateNormal];
+            deductible = [[NSString alloc] initWithFormat:@"%@",_deductList.selectedItemDesc];
+        }
+        
         [self.planBtn setTitle:itemdesc forState:UIControlStateNormal];
         planOption = [[NSString alloc] initWithFormat:@"%@",itemdesc];
+        
         
     }
     [self.planPopover dismissPopoverAnimated:YES];

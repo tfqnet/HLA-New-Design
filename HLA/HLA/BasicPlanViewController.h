@@ -167,6 +167,7 @@
 
 @property (retain, nonatomic) NSMutableArray *LRiderCode;
 @property (retain, nonatomic) NSMutableArray *LSumAssured;
+@property (retain, nonatomic) NSMutableArray *LUnits;
 @property (nonatomic,copy) NSString *riderCode;
 @property (nonatomic, assign,readwrite) int expAge;
 @property (nonatomic, assign,readwrite) int minSATerm;
@@ -176,6 +177,12 @@
 @property (nonatomic, assign,readwrite) double _maxRiderSA;
 @property (nonatomic, assign,readwrite) double maxRiderSA;
 @property (nonatomic, assign,readwrite) int GYI;
+@property (nonatomic, assign,readwrite) int occLoad;
+@property (nonatomic, assign,readwrite) int LSDRate;
+@property (nonatomic, assign,readwrite) double basicPremAnn;
+@property (nonatomic, assign,readwrite) double basicPremHalf;
+@property (nonatomic, assign,readwrite) double basicPremQuar;
+@property (nonatomic, assign,readwrite) double basicPremMonth;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

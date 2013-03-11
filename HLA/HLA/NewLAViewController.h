@@ -134,6 +134,10 @@
 @property(nonatomic , retain) NSString *OccpCodePP;
 
 @property (retain, nonatomic) NSMutableArray *arrExistRiderCode;
+@property (retain, nonatomic) NSMutableArray *arrExistPlanChoice;
+@property (nonatomic, retain) NSMutableArray *ridCode;
+@property(nonatomic , retain) NSMutableArray *atcRidCode;
+@property(nonatomic , retain) NSMutableArray *atcPlanChoice;
 
 - (IBAction)sexSegmentPressed:(id)sender;
 - (IBAction)smokerSegmentPressed:(id)sender;
