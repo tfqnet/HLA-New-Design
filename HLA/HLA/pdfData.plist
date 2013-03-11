@@ -9,26 +9,6 @@
 				<string>HLA Cash Promise</string>
 				<string>Brochure_CashPromise</string>
 			</array>
-		</array>
-		<array>
-			<array>
-				<string>HLA Major Medi</string>
-				<string>Brochure_MajorMedi</string>
-			</array>
-		</array>
-		<array>
-			<array>
-				<string>HLA MedGLOBAL IV Plus</string>
-				<string>Brochure_MedGlobalIVP</string>
-			</array>
-		</array>
-		<array>
-			<array>
-				<string>C+ Secure</string>
-				<string>Brochure_CSecure(Standalone)</string>
-			</array>
-		</array>
-		<array>
 			<array>
 				<string>Premier Life</string>
 				<string>Brochure_PremierLife</string>
@@ -36,17 +16,25 @@
 		</array>
 		<array>
 			<array>
+				<string>HLA Major Medi</string>
+				<string>Brochure_MajorMedi</string>
+			</array>
+			<array>
+				<string>HLA MedGLOBAL IV Plus</string>
+				<string>Brochure_MedGlobalIVP</string>
+			</array>
+			<array>
+				<string>C+ Secure</string>
+				<string>Brochure_CSecure(Standalone)</string>
+			</array>
+			<array>
 				<string>PA Care</string>
 				<string>Brochure_PACare</string>
 			</array>
-		</array>
-		<array>
 			<array>
 				<string>HLA Major Medi Plus</string>
 				<string>Brochure_MajorMediPlus</string>
 			</array>
-		</array>
-		<array>
 			<array>
 				<string>HLA MedGLOBAL II (English + BM)</string>
 				<string>Brochure_MedGlobalII</string>
@@ -55,8 +43,6 @@
 				<string>HLA MedGLOBAL II (Chinese)</string>
 				<string>Brochure_MedGlobalII_Chi</string>
 			</array>
-		</array>
-		<array>
 			<array>
 				<string>Hospital &amp; Surgical Plus II</string>
 				<string>Brochure_HSPII</string>

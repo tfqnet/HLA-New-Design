@@ -105,6 +105,27 @@
             },errorHandler);
         },errorHandler,nullHandler);
         
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_Rider_Details WHERE SINo = '" + siNo + "'", [], function(transaction, result) {
+                
+		if (result != null && result.rows != null) {
+		    
+		    if(result.rows.length == 0){
+		        document.getElementById("Rider1").style.display = "none";
+		    }
+		    var row = result.rows.item(0);
+		        
+                }
+		else
+		{
+		    
+		    document.getElementById("Rider1").style.display = "none";
+		}
+		
+		
+		
+            },errorHandler);
+        },errorHandler,nullHandler);
         
         db.transaction(function(transaction) {
             transaction.executeSql("SELECT * FROM SI_Temp_Trad_LA where SINo = '" + siNo + "'", [], function(transaction, result) {
@@ -408,6 +429,7 @@
         	return amt + "&nbsp;&nbsp;";
 	}
 	
+	
 
 </script>
     <style type="text/css">
@@ -539,7 +561,16 @@
 	</tr>
     </table>
 <!-- End Footer -->
- 
+    <iframe src="HLACP_Page2.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe src="HLACP_Page3.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe src="HLACP_Page3.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe id="Rider1" src="Page20.html" width="100%" height="270" style="border: 0px;"></iframe>
+    <iframe src="HLACP_Page30.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe src="HLACP_Page40.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe src="Page41.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe src="Page50.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe src="Page60.html" width="100%" height="270" style="border: 0px"></iframe>
+    <iframe src="Page61.html" width="100%" height="270" style="border: 0px"></iframe>
 <!-- End Wrapper -->
 </div>
  

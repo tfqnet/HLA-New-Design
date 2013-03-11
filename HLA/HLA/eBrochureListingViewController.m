@@ -59,7 +59,8 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [dataItems count];
+    //return [dataItems count];
+	return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -111,7 +112,8 @@
 {
     NSString *title = nil;
     switch (section) {
-        case 0:
+        /*
+		case 0:
             title = @"HLA Cash Promise";
             break;
         case 1:
@@ -138,8 +140,15 @@
         case 8:
             title = @"Hospital & Surgical Plan II";
             break;
-		
-            
+		*/
+        
+		case 0:
+            title = @"Basic Plan";
+            break;
+        case 1:
+            title = @"Rider";
+            break;
+			
         default:
             break;
     }

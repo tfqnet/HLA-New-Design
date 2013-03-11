@@ -120,8 +120,18 @@ NSMutableArray *ItemPages;
         
         QuerySQL = Nil;
     }
+    /*
+	browserController = [CDVViewController new];
+    browserController.wwwFolderName = @"www";
+    browserController.startPage = @"HLACP_Page2.html";
+    browserController.view.frame = CGRectMake(0, 300, 500, 500);
+    [self.view addSubview:browserController.view];
     
-	
+    [browserController dispose];
+    browserController = nil;
+    browserController.webView = Nil;
+    browserController.webView.delegate = Nil;
+    */
 	
     statement = Nil;
     dirPaths = Nil;
@@ -144,7 +154,8 @@ NSMutableArray *ItemPages;
 	CGRect screenRect = self.view.frame;
 	
 	double currentWebViewHeight = webViewHeight;
-
+	NSLog(@"%.2f", currentWebViewHeight);
+	
 	while (currentWebViewHeight > 0)
 	{
 		imageName ++;
@@ -176,6 +187,7 @@ NSMutableArray *ItemPages;
 		}
 		
 		[UIImagePNGRepresentation(newImage) writeToFile:pngPath atomically:YES];
+		
 		
 		//[self.webView stringByEvaluatingJavaScriptFromString:@"window.scrollBy(0,960);"];
 		currentWebViewHeight -= 960;
