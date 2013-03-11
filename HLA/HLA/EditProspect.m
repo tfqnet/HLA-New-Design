@@ -464,8 +464,8 @@ bool IsContinue = TRUE;
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc FROM Adm_Occp where status = 1 and OccpCode = \"%@\"", pp.ProspectOccupationCode];
-        
+        //NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc FROM Adm_Occp where status = 1 and OccpCode = \"%@\"", pp.ProspectOccupationCode];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc FROM Adm_Occp_Loading_Penta where OccpCode = \"%@\"", pp.ProspectOccupationCode];
         //const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {

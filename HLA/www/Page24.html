@@ -159,23 +159,31 @@
                     $('#rider2').html(result.rows.item(0).col5);
                     $('#rider3').html(result.rows.item(0).col9);
                                    
-                    $('#col0_1_E').html(result.rows.item(1).col0_1);
-                    $('#col0_2_E').html(result.rows.item(1).col0_2);
-                    $('#col0_1_M').html(result.rows.item(2).col0_1.italics());
-                    $('#col0_2_M').html(result.rows.item(2).col0_2.italics());
+                    $('#col0_1_E').html(result.rows.item(1).col0_1 + "<br/><br/><br/>" + "<i>" + result.rows.item(2).col0_1 + "</i>" );
+                    $('#col0_2_E').html(result.rows.item(1).col0_2 + "<br/><br/>" + "<i>" + result.rows.item(2).col0_2 + "</i>" );
+                                  
+                    //$('#col0_1_M').html("<i>" + result.rows.item(2).col0_1 + "</i>");
+                    //$('#col0_2_M').html("<i>" + result.rows.item(2).col0_2 + "</i>");
                                    
                     var row;
+                                   
                     
                     for (var i = 1; i < 2; i++) {
                         for (var j = 1; j < 13; j++) {//row header
                             row = result.rows.item(i);
+                            row2 = result.rows.item(i+1);
                             //alert(eval('row.col' + j))
-                            $('#col' + j + '_E').html(eval('row.col' + j));
-                            row = result.rows.item(i+1);
-                            $('#col' + j + '_M').html(eval('row.col' + j).italics());
+                            if(eval('row.col' + j) == 'Guaranteed Surrender Value(if no claim admitted)'){
+                                $('#col' + j + '_E').html(eval('row.col' + j) + "<br/>" + "<i>" + eval('row2.col' + j) + "</i>" );    
+                            }
+                            else{
+                                $('#col' + j + '_E').html(eval('row.col' + j) + "<br/><br/>" + "<i>" + eval('row2.col' + j) + "</i>" );
+                            }
+                            
+                            
+                            //$('#col' + j + '_M').html("<i>" + eval('row.col' + j) + "</i>");
                         }
-                        //$('#col0_2_M').html(result.rows.item(2).col0_2);
-                        //$('#table-data > tbody').append('<tr><td>1</td><td>32</td><td>2,990.50</td><td>500.00</td><td>0</td><td>-</td><td>29,000</td><td>88,500</td><td>87,000</td><td>1,328</td><td>1,332</td><td>29,000</td><td>-</td><td>-</td></tr>');
+                        
                     }
         
                                    
@@ -183,7 +191,7 @@
                     //var row;
                     for (var i = 3; i < result.rows.length; i++) {//row data
                         row = result.rows.item(i);
-                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + CurrencyNoCents(row.col2) + '</td><td>' + CurrencyNoCents(row.col3) + '</td><td>' + CurrencyNoCents(row.col4) + '</td><td>' + row.col5 + '</td><td>' + CurrencyNoCents(row.col6) + '</td><td>' + CurrencyNoCents(row.col7) + '</td><td>' + CurrencyNoCents(row.col8) + '</td><td>' + row.col9 + '</td><td>' + CurrencyNoCents(row.col10) + '</td><td>' + CurrencyNoCents(row.col11) + '</td><td>' + CurrencyNoCents(row.col12) +'</td></tr>');
+                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col1 + '</td><td>' + CurrencyNoCents(row.col2) + '</td><td>' + CurrencyNoCents(row.col3) + '</td><td>' + CurrencyNoCents(row.col4) + '</td><td>' + row.col5 + '</td><td>' + CurrencyNoCents(row.col6) + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + row.col9 + '</td><td>' + CurrencyNoCents(row.col10) + '</td><td>' + CurrencyNoCents(row.col11) + '</td><td>' + CurrencyNoCents(row.col12) +'</td></tr>');
                     }
                 }
             },errorHandler);
@@ -214,7 +222,7 @@
 <table id="table-data">
 
 <thead>
-<tr><th colspan="14" style="text-align: left;">&nbsp;&nbsp;Illustration of Riders&nbsp;&nbsp;&nbsp;<i>Illustrasi Pelan Tambahanan</i></th></tr>
+<tr><th colspan="14" style="text-align: left;">&nbsp;&nbsp;Illustration of Riders&nbsp;&nbsp;&nbsp;<i>Illustrasi Rider</i></th></tr>
 <tr>
 <th colspan="2">&nbsp;</th>
     <th colspan="4" id="rider1" class="title">{rider1}</th>
@@ -247,7 +255,7 @@
 
 <th id="col12_E" class="content">-</th>
 </tr>
-
+<!--
 <tr>
 
 <th id="col0_1_M" class="contentSmall">Tahun Polisi</th>
@@ -278,6 +286,7 @@
 
 <th id="col12_M" class="contentSmall">-</th>
 </tr>
+-->
 </thead>
 <tbody>
 <!--

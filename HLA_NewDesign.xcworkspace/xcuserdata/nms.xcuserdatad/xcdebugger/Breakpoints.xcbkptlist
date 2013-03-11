@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/Login.m"
-         timestampString = "383736131.40204"
+         timestampString = "384669080.078387"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "433"
-         endingLineNumber = "433"
+         startingLineNumber = "471"
+         endingLineNumber = "471"
          landmarkName = "-btnLogin:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/Login.m"
-         timestampString = "383736131.40204"
+         timestampString = "384669080.078387"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "443"
-         endingLineNumber = "443"
+         startingLineNumber = "481"
+         endingLineNumber = "481"
          landmarkName = "-btnLogin:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1048,11 +1048,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "384660778.118174"
+         timestampString = "384676307.334332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "4190"
-         endingLineNumber = "4190"
+         startingLineNumber = "4358"
+         endingLineNumber = "4358"
          landmarkName = "-getListingRiderByType"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1087,11 +1087,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "384660778.118174"
+         timestampString = "384676307.334332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "3074"
-         endingLineNumber = "3074"
+         startingLineNumber = "3242"
+         endingLineNumber = "3242"
          landmarkName = "-MHIGuideLines"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1118,7 +1118,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "303"
          endingLineNumber = "303"
-         landmarkName = "-viewDidAppear:"
+         landmarkName = "-textFieldShouldBeginEditing:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -1126,11 +1126,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/RiderViewController.m"
-         timestampString = "384660778.118174"
+         timestampString = "384676307.334332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2944"
-         endingLineNumber = "2944"
+         startingLineNumber = "3112"
+         endingLineNumber = "3112"
          landmarkName = "-validateSaver"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1347,11 +1347,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/SIMenuViewController.m"
-         timestampString = "384258684.275626"
+         timestampString = "384679023.186723"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1281"
-         endingLineNumber = "1281"
+         startingLineNumber = "1285"
+         endingLineNumber = "1285"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>

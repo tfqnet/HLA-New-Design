@@ -46,7 +46,8 @@ NSString *SelectedString;
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpCode, OccpDesc FROM Adm_Occp where status = 1"];
+        //NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpCode, OccpDesc FROM Adm_Occp where status = 1"];
+		NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpCode, OccpDesc FROM Adm_Occp_Loading_Penta where status = 'A'"];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {

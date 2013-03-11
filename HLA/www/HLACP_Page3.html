@@ -106,10 +106,15 @@
                         if (row.YearlyIncome == 'POF')
                         {
                             $('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
-                            $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
+                            $('#col3').html('Special Terminal Dividend Payable on Death<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian<br/>(12)</i>');
                             $('#col4').html('-<br/><br/>-');
                             $('#col4A').html('-');
                             $('#col4B').html('-');
+                            
+                            $('#col4').hide();
+                            $('#col4A').hide();
+                            $('#col4B').hide();
+                            
                             colType = 2;
                             document.getElementById('ShowGYI').style.visibility = 'hidden';
                             document.getElementById('ShowGYI').style.height = '0px';
@@ -118,7 +123,7 @@
                         {
                             $('#col2').html('Accumulated Yearly Income *<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(11)</i>');
                             $('#col3').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(12)</i>');
-                            $('#col4').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(13)</i>');
+                            $('#col4').html('Special Terminal Dividend Payable on Death<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian<br/>(13)</i>');
                             colType = 1;
                             document.getElementById('ShowGYI').style.height = '50px';
                         }
@@ -129,13 +134,21 @@
                 	if (row.YearlyIncome == 'POF')
                 	{
                             $('#col1').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(10)</i>');
-                            $('#col2').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(11)</i>');
+                            $('#col2').html('Special Terminal Dividend Payable on Death<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian<br/>(11)</i>');
                             $('#col3').html('-<br/><br/>-');
                             $('#col4').html('-<br/><br/>-');
                             $('#col3A').html('-');
                             $('#col3B').html('-');
                             $('#col4A').html('-');
                             $('#col4B').html('-');
+                            
+                            $('#col3').hide();
+                            $('#col4').hide();
+                            $('#col3A').hide();
+                            $('#col3B').hide();
+                            $('#col4A').hide();
+                            $('#col4B').hide();
+                            
                             colType = 3;
                             
                             document.getElementById('ShowGYI').style.visibility = 'hidden';
@@ -145,10 +158,15 @@
             		{
                             $('#col1').html('Accumulated Yearly Income *<br/><br/><i>Pendapatan Tahunan Terkumpul<br/>(10)</i>');
                             $('#col2').html('Terminal Dividend Payable on Surrender/Maturity<br/><br/><i>Dividen Terminal Dibayar atas Penyerahan/Matang<br/>(11)</i>');
-                            $('#col3').html('Special Terminal Dividend Payable on Death/TPD<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian/TPD<br/>(12)</i>');
+                            $('#col3').html('Special Terminal Dividend Payable on Death<br/><br/><i>Dividen Terminal Istimewa Dibayar atas Kematian<br/>(12)</i>');
                             $('#col4').html('-<br/><br/>-');
                             $('#col4A').html('-');
                             $('#col4B').html('-');
+                            
+                            $('#col4').hide();
+                            $('#col4A').hide();
+                            $('#col4B').hide();
+                            
                             colType = 4;
                             document.getElementById('ShowGYI').style.height = '50px';
                 	}
@@ -169,13 +187,16 @@
                     	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>');
                     }
                     else if (colType == 2){ // GYI:POF CD:ACC
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>' );
+                    	//$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>' );
+                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col14) + '</td><td>' + CurrencyNoCents(row.col15) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>' );
                     }
                     else if (colType == 3){ // GYI:POF CD:POF
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>'  +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    	//$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>'  +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>'  +  CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>');
                     }
                     else if (colType == 4){ // GYI:ACC CD:POF
-                    	$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                    	//$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td><td>' + '-' + '</td><td>' + '-' + '</td></tr>');
+                        $('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + CurrencyNoCents(row.col12) + '</td><td>' + CurrencyNoCents(row.col13) + '</td><td>' + CurrencyNoCents(row.col16) + '</td><td>' + CurrencyNoCents(row.col17) + '</td><td>' + CurrencyNoCents(row.col18) + '</td><td>' + CurrencyNoCents(row.col19) + '</td><td>' + CurrencyNoCents(row.col20) + '</td><td>' + CurrencyNoCents(row.col21) + '</td></tr>');
                     }
                     
                     //$('#table-data > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + row.col13 + '</td><td>' + row.col14 + '</td><td>' + row.col15 + '</td><td>' + row.col16 + '</td><td>' + row.col17 + '</td><td>' + row.Col18 + '</td><td>' + row.Col19 + '</td><td>' + row.Col20 + '</td><td>' + row.Col21 + '</td><td>' + row.Col22 + '</td></tr>');
@@ -280,8 +301,8 @@
         <td>
             * The amount shown in this column is inclusive of the Guaranteed Yearly Income amount Accumulated with the company as shown in column (2A).
             Only the interest payable on accumulated Guaranteed Yearly Income is not guaranteed. <br/>
-            * Amaun yang ditunjukkan dalam lajur ini adalah termasuk amaun Pendapatan Tahunan Terjamin yang Terkumpul dengan Syarikat seperti yang ditunjukkan
-            dalam lajur (2A). Hanya faedah yang dibayar ke atas Pendapatan Tahunan Terjamin terkumpul adalah tidak terjamin
+            <i>* Amaun yang ditunjukkan dalam lajur ini adalah termasuk amaun Pendapatan Tahunan Terjamin yang Terkumpul dengan Syarikat seperti yang ditunjukkan
+            dalam lajur (2A). Hanya faedah yang dibayar ke atas Pendapatan Tahunan Terjamin terkumpul adalah tidak terjamin</i>
         </td>
     </tr>
 </table>

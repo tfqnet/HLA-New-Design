@@ -57,7 +57,7 @@
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-02-25"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-03-11"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -81,7 +81,7 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 25 February 2013";
+        labelUpdated.text = @"Last Updated: 11 MArch 2013";
                 outletLogin.hidden = FALSE;
     }
     
@@ -145,7 +145,45 @@
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSError *error;
     
-	
+	/*
+	sqlite3_stmt *statement;
+	if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
+	{
+		NSString *querySQL = [NSString stringWithFormat: @"Alter Table Trad_Rider_Details ADD 'TempHL1KSA' VARCHAR"];
+		
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+			if (sqlite3_step(statement) == SQLITE_OK){
+				
+			}
+			else {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+																message:@"ERROR" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+				[alert show];
+				alert = Nil;
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		querySQL = [NSString stringWithFormat: @"Alter Table Trad_Rider_Details ADD 'TempHL1KSATerm' INTEGER"];
+		
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+			if (sqlite3_step(statement) == SQLITE_OK){
+				
+			}
+			else {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+																message:@"ERROR 2" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+				[alert show];
+				alert = Nil;
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		sqlite3_close(contactDB);
+		querySQL = Nil;
+		
+	}
+	*/
 	
     success = [fileManager fileExistsAtPath:databasePath];
     //if (success) return;

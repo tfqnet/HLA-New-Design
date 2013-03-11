@@ -1295,7 +1295,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         
                         QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
                                      "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
-                                     " VALUES (\"%@\",\"Assured\",\"PY\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+                                     " VALUES (\"%@\",\"Payor\",\"PY\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
                                      " \"Pemunya\")", SINo, 1, PYName, PYAge, PYsex, PYsmoker ];
                         
                         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
@@ -2165,7 +2165,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								strAccuYIA, strAccuYIB,
 								round([[tDividendValueA objectAtIndex:a-1] doubleValue ]), round([[tDividendValueB objectAtIndex:a-1 ] doubleValue ]),
 								round([[speValueA objectAtIndex:a-1] doubleValue ]), round( [[speValueB objectAtIndex:a-1] doubleValue]),
-								round([[YearlyIncomePayout objectAtIndex:a-1] doubleValue]), round( [[TotalPartialYearlyIncome objectAtIndex:a-1] doubleValue])];
+								[[YearlyIncomePayout objectAtIndex:a-1] doubleValue],  [[TotalPartialYearlyIncome objectAtIndex:a-1] doubleValue]];
 					
 					
 					if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -2296,31 +2296,31 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 						if (row == 1) {
 							if ([tempRiderCode isEqualToString:@"CCTR"]) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Surrender Value" ];
-								[tempCol3 addObject:@"Death/TPD Benefit" ];
+								[tempCol2 addObject:@"Surrender<br/> Value" ];
+								[tempCol3 addObject:@"Death/TPD<br/> Benefit" ];
 								[tempCol4 addObject:@"-" ];
 							}
 							
 							else if ([tempRiderCode isEqualToString:@"CIWP"] || [tempRiderCode isEqualToString:@"SP_PRE"] || [tempRiderCode isEqualToString:@"SP_STD"] ||
 									 [tempRiderCode isEqualToString:@"PR"] || [tempRiderCode isEqualToString:@"LCWP"]) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Sum Assured" ];
+								[tempCol2 addObject:@"Sum<br/>Assured" ];
 								[tempCol3 addObject:@"-" ];
 								[tempCol4 addObject:@"-" ];
 							}
 							
 							else if ([tempRiderCode isEqualToString:@"PTR"]) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Surrender Value" ];
-								[tempCol3 addObject:@"Death/TPD Benefit" ];
+								[tempCol2 addObject:@"Surrender<br/>Value" ];
+								[tempCol3 addObject:@"Death/TPD<br/>Benefit" ];
 								[tempCol4 addObject:@"-" ];
 							}
 							
 							else if ([tempRiderCode isEqualToString:@"LPPR"]) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Surrender Value" ];
-								[tempCol3 addObject:@"Death/TPD Benefit" ];
-								[tempCol4 addObject:@"Guaranteed Cash Payment" ];
+								[tempCol2 addObject:@"Surrender<br/>Value" ];
+								[tempCol3 addObject:@"Death/TPD<br/>Benefit" ];
+								[tempCol4 addObject:@"Guaranteed<br/>Cash Payment" ];
 							}
 							
 							else if ([tempRiderCode isEqualToString:@"CPA"] || [tempRiderCode isEqualToString:@"PA"] ) {
@@ -2342,34 +2342,34 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 							
 							else if ([tempRiderCode isEqualToString:@"LCPR"] || [tempRiderCode isEqualToString:@"PLCP"] ) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Surrender Value" ];
-								[tempCol3 addObject:@"Death/TPD Benefit" ];
+								[tempCol2 addObject:@"Surrender<br/>Value" ];
+								[tempCol3 addObject:@"Death/TPD<br/>Benefit" ];
 								[tempCol4 addObject:@"Critical Illness Benefit" ];
 							}
 							
 							else if ([tempRiderCode isEqualToString:@"C+"] ) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Sum Assured" ];
+								[tempCol2 addObject:@"Sum<br/>Assured" ];
 								[tempCol3 addObject:@"Guaranteed Surrender Value(if no claim admitted)" ];
 								[tempCol4 addObject:@"-" ];
 							}
 							
 							else if ([tempRiderCode isEqualToString:@"HPP"] || [tempRiderCode isEqualToString:@"HPPP"] ) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Sum Assured" ];
+								[tempCol2 addObject:@"Sum<br/>Assured" ];
 								[tempCol3 addObject:@"Guaranteed Surrender Value" ];
 								[tempCol4 addObject:@"-" ];
 							}
 							else if ([tempRiderCode isEqualToString:@"EDB"] ) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"Death Benefit" ];
+								[tempCol2 addObject:@"Death<br/>Benefit" ];
 								[tempCol3 addObject:@"Cash Surrender Value" ];
 								[tempCol4 addObject:@"-" ];
 							}
 							else if ([tempRiderCode isEqualToString:@"ETPDB"] ) {
 								[tempCol1 addObject:@"Annual Premium (Beg. of Year)" ];
-								[tempCol2 addObject:@"TPD Benefit" ];
-								[tempCol3 addObject:@"OAD Benefit" ];
+								[tempCol2 addObject:@"TPD<br/>Benefit" ];
+								[tempCol3 addObject:@"OAD<br/>Benefit" ];
 								[tempCol4 addObject:@"Cash Surrender Value" ];
 							}
 							else {
