@@ -190,8 +190,8 @@
     [formatter setCurrencySymbol:@""];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
     
-//    NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"bg10.jpg"];
-//    NSURL *url = [[NSURL alloc] initFileURLWithPath:path isDirectory:NO];
+    NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"bg10.jpg"];
+    NSURL *url = [[NSURL alloc] initFileURLWithPath:path isDirectory:NO];
     
     double BasicSA = [getBasicSA doubleValue];
     
@@ -210,7 +210,7 @@
 	
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
                            @"<html>"
-                           "<body>"
+                           "<body style=\"background-image:url(%@)\">"
                            "<br><br><br>"
                            "<table border='1' width='80%%' align='center' style='border-collapse:collapse; border-color:gray;'> "
                            "<tr>"
@@ -254,7 +254,7 @@
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                           "</tr>", BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
+                           "</tr>",url, BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
     
     NSString *htmlTail = nil;
     if ([riderCode count] != 0) {
