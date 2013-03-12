@@ -255,30 +255,30 @@
 			$('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
 			else if(row.Plan == 'HLA Major Medi' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' ' + PlanOption + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' ' + PlanOption + ' (Class' + PA + ') (Deductible ' + Deductible  + ')' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
 			else if(row.RiderCode == 'PR' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + PRSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + PRSA + '%)' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'CIWP' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + CIWPSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + CIWPSA + '%)' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'LCWP' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + LCWPSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + LCWPSA + '%)' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'SP_PRE' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_PRESA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_PRESA + '%)' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'SP_STD' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_STDSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_STDSA + '%)' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else {
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			
                     }
-		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2"><b>Total Premium</b></td>' + '<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' + '</tr>');
-		    $('#table-Tax > tbody').append('<tr>' + '<td><b>Service tax chargeable</b></td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
+		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2" style="text-align:left;padding: 0px 0px 0px 5px;"><b>Total Premium</b></td>' + '<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' + '</tr>');
+		    $('#table-Tax > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">Service tax chargeable</td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
                 }
             },errorHandler);
         },errorHandler,nullHandler);
@@ -484,15 +484,15 @@
 		<table border="1" id="table-data">
 		    <thead>
 			<tr>
-			    <td rowspan="2" align="left"><b>Plan/Rider</b></td>
-			    <td rowspan="2"><b>Type</b></td>
-			    <td colspan="4" align="left"><b>Initial Premium</b></td>
+			    <th rowspan="2" class="title" ><b>Plan/Rider</b></th>
+			    <th rowspan="2"><b>Type</b></th>
+			    <th colspan="4" ><b>Initial Premium</b></th>
 			</tr>
 			<tr>
-			    <td><b>Annual (RM)</b></td>
-			    <td><b>Semi-annual (RM)</b></td>
-			    <td><b>Quarterly (RM)</b></td>
-			    <td><b>Monthly (RM)</b></td>
+			    <th><b>Annual (RM)</b></th>
+			    <th><b>Semi-annual (RM)</b></th>
+			    <th><b>Quarterly (RM)</b></th>
+			    <th><b>Monthly (RM)</b></th>
 			</tr>
 		    </thead>
 		    <tbody>
@@ -544,7 +544,7 @@
 		<table border="1"  style="border-collapse:collapse;" id="table-Tax" width="100%" >
 		    <thead align="center">
 			<tr>
-			    <td><b>Premium Payment Frequency</b></td>
+			    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Premium Payment Frequency</b></td>
 			    <td><b>Annual (RM)</b></td>
 			    <td><b>Semi-annual (RM)</b></td>
 			    <td><b>Quarterly (RM)</b></td>

@@ -200,6 +200,13 @@
 			    else if(row.RiderCode == 'SP_STD'){
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + SP_STDSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
 			    }
+			    else if(row.RiderCode == 'CPA' || row.RiderCode == 'PA' || row.RiderCode == 'ETPD' || row.RiderCode == 'ICR' ){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>Jika rider ini ditamatkan sebelum tempoh matang, tidak akan ada pembayaran balik dan penamatan tersebut akan berkuat kuasa dari tarikh genap tempoh premium yang berikutnya jika Polisi Asas masih berkuat kuasa.</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'HB'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>Kika tiada tuntutan dibuat, anda akan menerima kembali premium yang ditetapkan.</td>' + '</tr>');
+			    }
+			    
 			    else{
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
 			    }
@@ -299,19 +306,22 @@
 	    </td>
 	</tr>
 	<tr><td></td></tr>
-	
 	<tr>
 	    <td></td>
-	    <td>Anda boleh membatalkan polisi dengan memberi notis bertulis kepada Hong Leong Assurance Berhad. Setelah tempoh bertenang, nilai penyerahan tunai (jika ada) polisi anda akan dibayar kepada anda ketika anda
-		membatalkan polisi anda; namun begitu, amaun yang dibayar mungkin kurang daripada jumlah premium yang anda bayar.
+	    <td><b>A)</b>&nbsp;&nbsp;&nbsp;&nbsp;<u><b>Pelan Asas</b></u></td>
+	</tr>
+	<tr>
+	    <td></td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anda boleh membatalkan polisi dengan memberi notis bertulis kepada Hong Leong Assurance Berhad. Setelah tempoh bertenang, nilai penyerahan tunai (jika ada) polisi anda akan dibayar kepada anda ketika anda<br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;membatalkan polisi anda; namun begitu, amaun yang dibayar mungkin kurang daripada jumlah premium yang anda bayar.
 	    </td>
 	</tr>
 	
 	<tr id="hide">
 	    <td></td>
 	    <td>
-		<u><b>Attaching Rider(s)</b></u><br/>
-		<table border="1" style="border-collapse: collapse" id="table-Cancel" width="100%">
+		<b>B)</b>&nbsp;&nbsp;&nbsp;&nbsp;<u><b>Rider yang Dilampirkan</b></u><br/>
+		<table border="1" style="border-collapse: collapse;margin-left: 20px" id="table-Cancel" width="94%">
 		    <thead>
 			<tr>
 			    <td align="left"><b>Rider</b></td>
@@ -353,7 +363,7 @@
 	<tr>
 	    <td valign="top"></td>
 	    <td valign="top">
-		Jika anda memerlukan maklumat lanjut tentang insurans hayat, sila rujuk buku panduan insuranceinfo tentang ÔInsurans HayatÕ yang disediakan di semua cawangan kami atau anda boleh mendapatkannya daripada
+		Jika anda memerlukan maklumat lanjut tentang insurans hayat, sila rujuk buku panduan insuranceinfo tentang "Insurans Hayat" yang disediakan di semua cawangan kami atau anda boleh mendapatkannya daripada
 		ejen insurans atau layari laman web www.insuranceinfo.com.my.
 	    </td>
 	</tr>

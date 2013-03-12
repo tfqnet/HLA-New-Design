@@ -171,7 +171,7 @@
 	
 	
         db.transaction(function(transaction) {
-            transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc from trad_rider_details as A, '+
+            transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc, A.RiderCode from trad_rider_details as A, '+
 				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV","HSP_II","HMM", "C+") ;'
 				   , [], function(transaction, result) {
                 
@@ -200,6 +200,21 @@
 			    }
 			    else if(row.RiderCode == 'SP_STD'){
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + SP_STDSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'CPA'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'ETPD'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'HB'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>Upon cancellation, you are entitle to a certain amount of refund of the premium provided that you have not made any claim of the policy</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'ICR'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'PA'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
 			    }
 			    else{
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
@@ -302,21 +317,22 @@
 	<tr><td></td></tr>
 	<tr>
 	    <td></td>
-	    <td><u><b>Basic Plan</b></u></td>
+	    <td><b>A)</b>&nbsp;&nbsp;&nbsp;&nbsp;<u><b>Basic Plan</b></u></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr>
 	    <td></td>
-	    <td>You may cancel the policy by giving a written notice to Hong Leong Assurance Berhad. After the free look period the cash surrender value
-		(if any) of your policy will be paid to you when you cancel the policy, however the amount payable may be less than the total premiums you had paid.
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You may cancel the policy by giving a written notice to Hong Leong Assurance Berhad. After the free look period the cash surrender value
+		(if any) of your policy will be paid to you when you cancel the policy, however <br/>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the amount payable may be less than the total premiums you had paid.
 	    </td>
 	</tr>
 	
 	<tr id="hide">
 	    <td></td>
 	    <td>
-		<u><b>Attaching Rider(s)</b></u><br/>
-		<table border="1" style="border-collapse: collapse" id="table-Cancel" width="100%">
+		<b>B)</b>&nbsp;&nbsp;&nbsp;&nbsp;<u><b>Attaching Rider(s)</b></u><br/>
+		<table border="1" style="border-collapse: collapse;margin-left: 20px" id="table-Cancel" width="94%">
 		    <thead>
 			<tr>
 			    <td align="left"><b>Rider(s)</b></td>
@@ -350,7 +366,7 @@
 	<tr>
 	    <td valign="top"><b>9.</b> </td>
 	    <td valign="top">
-		Where can I get further information?
+		<b>Where can I get further information?</b>
 	    </td>
 	</tr>
 	<tr><td></td></tr>

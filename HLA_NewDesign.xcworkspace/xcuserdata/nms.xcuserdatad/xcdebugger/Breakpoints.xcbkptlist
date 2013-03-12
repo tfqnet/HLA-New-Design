@@ -1366,5 +1366,18 @@
          startingLineNumber = "6"
          endingLineNumber = "6">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/HLA/CashPromiseViewController.m"
+         timestampString = "384749778.036287"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "2274"
+         endingLineNumber = "2274"
+         landmarkName = "-InsertToSI_Temp_Trad_Rider"
+         landmarkType = "5">
+      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

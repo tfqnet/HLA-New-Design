@@ -252,33 +252,33 @@
                         col8Total = col8Total + parseFloat(formatCurrency(row.Monthly).replace(',','').replace('-', '0'));
            
 			if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
 			else if(row.Plan == 'HLA Major Medi' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + 'Rider HLA Major Medi' + ' ' + PlanOption + ' (Class' + PA + ') (Penolakan ' + Deductible  + ')' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + 'Rider HLA Major Medi' + ' ' + PlanOption + ' (Class' + PA + ') (Penolakan ' + Deductible  + ')' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
 			else if(row.RiderCode == 'PR' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + PRSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + PRSA + '%)' + '</td style="text-align:center;">' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'CIWP' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + CIWPSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + CIWPSA + '%)' + '</td style="text-align:center;">' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'LCWP' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + LCWPSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + LCWPSA + '%)' + '</td style="text-align:center;">' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'SP_PRE' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_PRESA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_PRESA + '%)' + '</td style="text-align:center;">' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else if(row.RiderCode == 'SP_STD' ){
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_STDSA + '%)' + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '(' + SP_STDSA + '%)' + '</td style="text-align:center;">' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			else{
-			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td>' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
+			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');    
 			}
 			
                     }
-		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2"><b>Jumlah Bayaran Premium</b></td>' + '<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' + '</tr>');
-		    $('#table-Tax > tbody').append('<tr>' + '<td>Cukai Perkhidmatan yang Dikenakan</td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
+		    $('#table-data > tfoot').append('<tr>' + '<td colspan="2" style="text-align:left;padding: 0px 0px 0px 5px;"><b>Jumlah Bayaran Premium</b></td>' + '<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' + '</tr>');
+		    $('#table-Tax > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">Cukai Perkhidmatan yang Dikenakan</td>' + '<td>' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td>' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
                 }
             },errorHandler);
         },errorHandler,nullHandler);
@@ -500,15 +500,15 @@
 		<table border="1" id="table-data">
 		    <thead>
 			<tr>
-			    <td rowspan="2" align="left"><b>Pelan/Rider</b></td>
-			    <td rowspan="2"><b>Jenis</b></td>
-			    <td colspan="4" align="left"><b>Premium Awal</b></td>
+			    <th rowspan="2" align="left"><b>Pelan/Rider</b></th>
+			    <th rowspan="2"><b>Jenis</b></th>
+			    <th colspan="4" align="left"><b>Premium Awal</b></th>
 			</tr>
 			<tr>
-			    <td><b>Tahunan (RM)</b></td>
-			    <td><b>Setengah Tahunan (RM)</b></td>
-			    <td><b>Suku Tahunan (RM)</b></td>
-			    <td><b>Bulanan (RM)</b></td>
+			    <th><b>Tahunan (RM)</b></th>
+			    <th><b>Setengah Tahunan (RM)</b></th>
+			    <th><b>Suku Tahunan (RM)</b></th>
+			    <th><b>Bulanan (RM)</b></th>
 			</tr>
 		    </thead>
 		    <tbody>
@@ -523,7 +523,7 @@
 	<tr>
 	    <td></td>
 	    <td>
-		- Premium Duration:
+		- Tempoh Premium:
 	    </td>
 	</tr>
 	<tr>
@@ -561,7 +561,7 @@
 		<table border="1"  style="border-collapse:collapse;" id="table-Tax" width="100%" >
 		    <thead align="center">
 			<tr>
-			    <td><b>Frekuensi Pembayaran Premium</b></td>
+			    <td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Frekuensi Pembayaran Premium</b></td>
 			    <td><b>Tahunan (RM)</b></td>
 			    <td><b>Setengah Tahunan (RM)</b></td>
 			    <td><b>Suku Tahunan (RM)</b></td>
