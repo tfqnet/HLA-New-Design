@@ -190,8 +190,8 @@
     [formatter setCurrencySymbol:@""];
     [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
     
-    NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"bg10.jpg"];
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:path isDirectory:NO];
+//    NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"bg10.jpg"];
+//    NSURL *url = [[NSURL alloc] initFileURLWithPath:path isDirectory:NO];
     
     double BasicSA = [getBasicSA doubleValue];
     
@@ -204,10 +204,13 @@
     }
     
     //"<body style=\"background-color:transparent;\"><img src=\"%@\">"
+    //"<body background=\"%@\">"
+    //"<body style=\"background: url(%@) no-repeat; background-size: 100%%;\">"
+    //"<body style=\"background-image:url(%@)\">"
 	
     NSString *htmlBasic = [[NSString alloc] initWithFormat:
                            @"<html>"
-                           "<body background=\"%@\">"
+                           "<body>"
                            "<br><br><br>"
                            "<table border='1' width='80%%' align='center' style='border-collapse:collapse; border-color:gray;'> "
                            "<tr>"
@@ -251,7 +254,7 @@
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                           "</tr>",url, BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
+                           "</tr>", BasicAnnually, BasicHalfYear, BasicQuarterly, BasicMonthly, OccpLoadA, OccpLoadH, OccpLoadQ, OccpLoadM, BasicHLAnnually, BasicHLHalfYear, BasicHLQuarterly, BasicHLMonthly, displayLSD, LSDAnnually, LSDHalfYear, LSDQuarterly, LSDMonthly, basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
     
     NSString *htmlTail = nil;
     if ([riderCode count] != 0) {
@@ -300,9 +303,8 @@
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlTail];
         NSURL *baseURL = [NSURL URLWithString:@""];
 		
-		[self.WebView setOpaque:NO];
-//		self.WebView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 		self.WebView.backgroundColor = [UIColor clearColor];
+		self.WebView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
         [self.WebView setOpaque:NO];
         [WebView loadHTMLString:htmlString baseURL:baseURL];
     }
