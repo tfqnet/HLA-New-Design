@@ -73,7 +73,7 @@ NSMutableArray *ItemPages;
     
     browserController_page.view.frame = CGRectMake(0, 0, 758, 1000);
     [self.view addSubview:browserController_page.view];
-    
+	
 	[browserController_page.webView loadHTMLString:@"" baseURL:nil];
     [browserController_page.webView stopLoading];
     [browserController_page.webView removeFromSuperview];
@@ -83,7 +83,7 @@ NSMutableArray *ItemPages;
     [browserController_page dispose];
     browserController_page = nil;
     
-    self.navigationItem.revealSidebarDelegate = self;
+    self.navigationItem.revealSidebarDelegate = self;	
     
     UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" 
                                                                   style:UIBarButtonItemStyleBordered target:self action:@selector(CloseButtonAction)];
@@ -188,7 +188,7 @@ NSMutableArray *ItemPages;
 		
 		[UIImagePNGRepresentation(newImage) writeToFile:pngPath atomically:YES];
 		
-		
+
 		//[self.webView stringByEvaluatingJavaScriptFromString:@"window.scrollBy(0,960);"];
 		currentWebViewHeight -= 960;
 	}

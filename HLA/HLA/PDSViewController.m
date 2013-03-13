@@ -157,6 +157,7 @@
                 //NSLog(@"%@",sqlStmt);
                 riderInPageCount = 0;
                 riderInPage = @"";
+				prevRider = @"";
             }
             
             if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
@@ -688,6 +689,7 @@
                 //NSLog(@"%@",sqlStmt);
                 riderInPageCount = 0;
                 riderInPage = @"";
+				prevRider = @"";
             }
             
             if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){

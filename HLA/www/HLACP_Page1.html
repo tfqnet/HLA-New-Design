@@ -9,6 +9,10 @@
 <script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/hla.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/html2canvas.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/html2canvas.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.plugin.html2canvas.js"></script>
+
 <script type="text/javascript" charset="utf-8">
     var db;
     var shortName = 'WebSqlDB';
@@ -291,7 +295,7 @@
 				document.getElementById('dynamic').setAttribute('colspan', '4');
 				//document.getElementById('occLoading').setAttribute('colspan', '2');
 				$('#table-data-first > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.col0_1 + '</td>' +
-				'<td>' + replaceChar(row.col0_2) + '</td>' + '<td>' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
+				'<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col0_2) + '</td>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
 				'<td>' + row.col3 + '</td>' + '<td>' + row.col4 + '</td>' + '<td><span id=row' + i + 'col5>' + formatCurrency(row.col5) + '</span></td>' +
 				'<td id=row1col6>' + formatCurrency(row.col6) + '</td>' + '<td id=row1col7>' + formatCurrency(row.col7) + '</td>' +
 				'<td id=row1col8>' + formatCurrency(row.col8) + '</td>' + '</tr>');
@@ -302,7 +306,7 @@
 				document.getElementById('dynamic').setAttribute('colspan', '5');
 				//document.getElementById('occLoading').setAttribute('colspan', '2');
 				$('#table-data-first > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.col0_1 + '</td>' +
-				'<td>' + replaceChar(row.col0_2) + '</td>' + '<td>' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
+				'<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col0_2) + '</td>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
 				'<td>' + row.col3 + '</td>' + '<td>' + row.col4 + '</td>' + '<td><span id=row' + i + 'col5>' + formatCurrency(row.col5) + '</span></td>' +
 				'<td id=row1col6>' + formatCurrency(row.col6) + '</td>' + '<td id=row1col7>' + formatCurrency(row.col7) + '</td>' +
 				'<td id=row1col8>' + formatCurrency(row.col8) + '</td>' + '<td>' + row.col10 + '</td>' + '</tr>');
@@ -316,7 +320,7 @@
 				document.getElementById('occLoading').style.display = "none";
 				document.getElementById('dynamic').setAttribute('colspan', '5');
 				$('#table-data-first > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.col0_1 + '</td>' +
-				'<td>' + replaceChar(row.col0_2) + '</td>' + '<td>' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
+				'<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col0_2) + '</td>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
 				'<td>' + row.col3 + '</td>' + '<td>' + row.col4 + '</td>' + '<td><span id=row' + i + 'col5>' + formatCurrency(row.col5) + '</span></td>' +
 				'<td id=row1col6>' + formatCurrency(row.col6) + '</td>' + '<td id=row1col7>' + formatCurrency(row.col7) + '</td>' +
 				'<td id=row1col8>' + formatCurrency(row.col8) + '</td>' + '<td>' + row.col9 + '</td>' + '</tr>');
@@ -325,7 +329,7 @@
 				
 				document.getElementById('dynamic').setAttribute('colspan', '6');
 				$('#table-data-first > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.col0_1 + '</td>' +
-				'<td>' + replaceChar(row.col0_2) + '</td>' + '<td>' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
+				'<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col0_2) + '</td>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + replaceChar(row.col1) + '</td>' + '<td>' + isIncomeRider(formatCurrency(row.col2),row.col0_1) + '</td>'  +
 				'<td>' + row.col3 + '</td>' + '<td>' + row.col4 + '</td>' + '<td><span id=row' + i + 'col5>' + formatCurrency(row.col5) + '</span></td>' +
 				'<td id=row1col6>' + formatCurrency(row.col6) + '</td>' + '<td id=row1col7>' + formatCurrency(row.col7) + '</td>' +
 				'<td id=row1col8>' + formatCurrency(row.col8) + '</td>' + '<td>' + row.col9 + '</td><td>' + row.col10 + '</td>' + '</tr>');
@@ -349,7 +353,7 @@
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
 				'<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' +
 				'<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' +
-				'<td>&nbsp;</td>' + '</tr>');
+				'<td>&nbsp;</td>' + '</tr><tr><td colspan ="12"><hr/></td></tr>');
 			}
 		    }
 		    else{
@@ -359,14 +363,14 @@
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
 				'<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' +
 				'<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' +
-				'<td>&nbsp;</td>' + '</tr>');    
+				'<td>&nbsp;</td>' + '</tr><tr><td colspan ="12"><hr/></td></tr>');    
 			}
 			else{
 			    $('#table-data-first > tfoot').append('<tr>' + '<td></td>' + '<td></td>' + '<td></td>'  + '<td></td>' +
 				'<td colspan=2 style="text-align:right;padding: 5px 5px 5px 5px;"><b>Total Premium<br/><i>Jumlah Bayaran Premium</i></b></td>' +
 				'<td><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' +
 				'<td><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' +
-				'<td>&nbsp;</td><td>&nbsp;</td>' + '</tr>');    
+				'<td>&nbsp;</td><td>&nbsp;</td>' + '</tr><tr><td colspan ="12"><hr/></td></tr>');    
 			}
 			
 		    }
@@ -496,8 +500,7 @@
 		<th class="contentLeft">Plan/ Rider<br/><i>Pelan Asas/ Rider</i></th>
 		<th class="contentLeft">Plan Choice<br/><i>Pelan Pilihan</i></th>
 		<th class="contentSmallLeft">Units<br/><i>Unit</i></th>
-		<th class="contentRight">Initial Sum Assured/<br/>Benefit Amount<br/>
-		    <i>Jumlah Diiinsuranskan<br/>Asal/ Amaun Faedah</i></th>
+		<th class="contentRight">Benefit Amount<br/><i> Amaun Faedah</i></th>
 		<th class="contentSmallRight">Coverage Period<br/><i>Tempoh<br/>Diinsuranskan</i><br/>(Yrs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tahun</i>)</th>
 		<th class="contentSmallRight">Payment Period<br/><i>Tempoh<br/>Bayaran</i><br/>(Yrs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tahun</i>)</th>
 		<th class="contentSmallRight">Annual<br/><i>Tahunan</i></th>
@@ -524,8 +527,7 @@
 	
     </table>
     <br/>
-    * This is the Guaranteed Yearly Income amount purchased. <br/>
-    * <i>Ini merupakan amaun Pendapatan Tahunan Terjamin yang dibeli.</i><br/>
+    * This is the Guaranteed Yearly Income amount purchased.<i>Ini merupakan amaun Pendapatan Tahunan Terjamin yang dibeli.</i><br/>
 
     <span id="withRiders"><br/>All riders listed above are optional and not compulsory to be sold with the basic plan. <br/>
     <i>Semua rider ditunjukkan atas adalah tidak wajib dan tidak semestinya dijual bersama pelan asas</i><br/></span>
@@ -568,9 +570,10 @@
 	    <td width="7%" align="left" valign="bottom" style="font-family:Arial;font-size:8px;font-weight:normal;">Page <span class="currentPage">{currentPage}</span> of <span class="totalPages">{totalPages}</span></td>
 	</tr>
     </table>
+    
 <!-- End Footer -->
-
-
+    
+    
 <!-- End Wrapper -->
 </div>
  

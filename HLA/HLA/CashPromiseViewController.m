@@ -243,6 +243,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 //NSLog(@"%@",sqlStmt);
                 riderInPageCount = 0;
                 riderInPage = @"";
+				prevRider = @"";
             }
             
             if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
@@ -288,7 +289,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 riderInPageCount = 0;
                 riderInPage = @"";
             }
-            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] || [prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] || [prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
+            if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
+				[prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] ||
+				[prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PA"] || [prevRider isEqualToString:@"PR"] ||
+				[prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
                 prevRider = [prevRider stringByAppendingString:@";"];
                 curRider = [prevRider stringByAppendingString:curRider];
                 riderInPageCount = 0;
@@ -387,6 +391,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 //NSLog(@"%@",sqlStmt);
                 riderInPageCount = 0;
                 riderInPage = @"";
+				prevRider = @"";
             }
             /*
 			 if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
@@ -3222,6 +3227,23 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								[tempCol3 addObject:[NSString stringWithFormat:@"-"]];
 								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
 							}
+							else if([tempRiderCode isEqualToString:@"HB"]){
+								if([tempHLPercentage isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHLPercentageTerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium/([tempHLPercentage doubleValue]/100 + 1.00)]  ];
+									}
+								}
+								[tempCol2 addObject:[NSString stringWithFormat:@"-"]];
+								[tempCol3 addObject:[NSString stringWithFormat:@"-"]];
+								[tempCol4 addObject:[NSString stringWithFormat:@"-"]];
+								
+							}
 							else {
 								
 								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
@@ -3233,7 +3255,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
 									}
 									else{
+										
 										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - (tempRiderSA/1000) * [tempHL1KSA doubleValue] ]];
+										
 									}
 								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"-"]];
