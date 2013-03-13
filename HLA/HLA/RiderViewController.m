@@ -180,13 +180,14 @@
     titleLoad.numberOfLines = 2;
     
     CGRect frame7=CGRectMake(486,454, 63, 50);
+    titleHL1K.text = @"HL 1";
     titleHL1K.frame = frame7;
     titleHL1K.textAlignment = UITextAlignmentCenter;
     titleHL1K.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHL1K.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     CGRect frame8=CGRectMake(549,454, 63, 50);
-    titleHL100.text = @"HL(SA)\nterm";
+    titleHL100.text = @"HL 1\nTerm";
     titleHL100.frame = frame8;
     titleHL100.textAlignment = UITextAlignmentCenter;
     titleHL100.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
@@ -194,13 +195,14 @@
     titleHL100.numberOfLines = 2;
     
     CGRect frame9=CGRectMake(612,454, 63, 50);
+    titleHLP.text = @"HL 2";
     titleHLP.frame = frame9;
     titleHLP.textAlignment = UITextAlignmentCenter;
     titleHLP.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHLP.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     CGRect frame10=CGRectMake(675,454, 64, 50);
-    titleHLPTerm.text = @"HL %\nTerm";
+    titleHLPTerm.text = @"HL 2\nTerm";
     titleHLPTerm.frame = frame10;
     titleHLPTerm.textAlignment = UITextAlignmentCenter;
     titleHLPTerm.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
@@ -5242,81 +5244,109 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label6];
     
+    //---
+    
+    NSString *hl1k = [LTypeRidHL1K objectAtIndex:indexPath.row];
+    NSString *hl100 = [LTypeRidHL100 objectAtIndex:indexPath.row];
+    NSString *hlp = [LTypeRidHLP objectAtIndex:indexPath.row];
+    NSLog(@"HL(%@)-1k:%@, 100k:%@, p:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hl1k,hl100,hlp);
+    
     CGRect frame7=CGRectMake(433,0, 63, 50);
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
-    NSString *hl1k;
-    if ([[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] &&
-        [[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-        hl1k = @"";
+    NSString *hl1 = nil;
+    if ([hl1k isEqualToString:@"(null)"] && [hl100 isEqualToString:@"(null)"] && [hlp isEqualToString:@"(null)"]) {
+        hl1 = @"";
     }
-    else if(![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@"(null)"] && ![[LTypeRidHL100 objectAtIndex:indexPath.row] isEqualToString:@""] ){
-        hl1k = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LTypeRidHL100 objectAtIndex:indexPath.row] doubleValue]]];
+    else if(![hl100 isEqualToString:@"(null)"] && ![hl100 isEqualToString:@""] ){
+        hl1 = [formatter stringFromNumber:[NSNumber numberWithDouble:[hl100 doubleValue]]];
     }
-    else if (![[LTypeRidHL1K objectAtIndex:indexPath.row] isEqualToString:@"(null)"] && [[LTypeRidHL1K objectAtIndex:indexPath.row] integerValue] > 0) {
-        hl1k = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LTypeRidHL1K objectAtIndex:indexPath.row] doubleValue]]];
+    else if (![hl1k isEqualToString:@"(null)"] && [hl1k intValue] > 0) {
+        hl1 = [formatter stringFromNumber:[NSNumber numberWithDouble:[hl1k doubleValue]]];
+    }
+    else if (![hlp isEqualToString:@"(null)"] && [hlp intValue] > 0) {
+        hl1 = [formatter stringFromNumber:[NSNumber numberWithDouble:[hlp doubleValue]]];
     }
     else {
-        hl1k = @"";
+        hl1 = @"";
     }
-    label7.text= hl1k;
+    label7.text= hl1;
     label7.textAlignment = UITextAlignmentCenter;
     label7.tag = 2007;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label7];
     
+    //---
+    
+    NSString *hl1kT = [LTypeRidHLTerm objectAtIndex:indexPath.row];
+    NSString *hl100T = [LTypeRidHL100Term objectAtIndex:indexPath.row];
+    NSString *hlpT = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
+    NSLog(@"HLT(%@)-1kTerm:%@, 100kTerm:%@, pTerm:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hl1kT,hl100T,hlpT);
+    
     CGRect frame8=CGRectMake(496,0, 63, 50);
     UILabel *label8=[[UILabel alloc]init];
     label8.frame=frame8;
-    NSString *hl100;
-    if ([[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
-        [[LTypeRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
-        hl100 = @"";
+    NSString *hl1T = nil;
+    if ([hl1kT intValue] == 0 && [hl100T intValue] == 0 && [hlpT intValue] == 0) {
+        hl1T = @"";
     }
-    else if([[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"] &&
-            ![[LTypeRidHL100Term objectAtIndex:indexPath.row] isEqualToString:@"0"]){
-        hl100 = [LTypeRidHL100Term objectAtIndex:indexPath.row];
+    else if([hl1kT intValue] !=0) {
+        hl1T = hl1kT;
+    }
+    else if([hl100T intValue] !=0) {
+        hl1T = hl100T;
+    }
+    else if ([hlpT intValue] != 0) {
+        hl1T = hlpT;
     }
     else {
-        hl100 = [LTypeRidHLTerm objectAtIndex:indexPath.row];
+        hl1T = @"";
     }
-    label8.text= hl100;
+    label8.text= hl1T;
     label8.textAlignment = UITextAlignmentCenter;
     label8.tag = 2008;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label8];
-     
+    
+    //--
+    
+    NSString *hlTemp = [LTypeTempRidHL1K objectAtIndex:indexPath.row];
+    NSString *hlTempT = [LTypeTempRidHLTerm objectAtIndex:indexPath.row];
+    NSLog(@"HLTemp(%@)-1k:%@, 1kTerm:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hlTemp,hlTempT);
+    
     CGRect frame9=CGRectMake(559,0, 63, 50);
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
-    NSString *hlp;
-    if ([[LTypeRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-        hlp = @"";
+    NSString *hl2 = nil;
+    if ([hlTemp isEqualToString:@"(null)"] ||hlTemp.length == 0) {
+        hl2 = @"";
     } else {
-        hlp = [LTypeRidHLP objectAtIndex:indexPath.row];
+        hl2 = [formatter stringFromNumber:[NSNumber numberWithDouble:[hlTemp doubleValue]]];
     }
-    label9.text=hlp;
+    label9.text=hl2;
     label9.textAlignment = UITextAlignmentCenter;
     label9.tag = 2009;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label9];
     
+    //--
+    
     CGRect frame10=CGRectMake(622,0, 64, 50);
     UILabel *label10=[[UILabel alloc]init];
     label10.frame=frame10;
-    NSString *hlpTerm;
-    if ([[LTypeRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
-        hlpTerm = @"";
+    NSString *hl2T = nil;
+    if ([hlTempT intValue] == 0 || hlTempT.length == 0) {
+        hl2T = @"";
     } else {
-//        hlpTerm = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
-        hlpTerm = [NSString stringWithFormat:@"    %@",[LTypeRidHLPTerm objectAtIndex:indexPath.row]];
+        hl2T = [NSString stringWithFormat:@"    %@",hlTempT];
     }
-    label10.text=hlpTerm;
-//    label10.textAlignment = UITextAlignmentCenter;
+    label10.text=hl2T;
     label10.textAlignment = UITextAlignmentLeft;
     label10.tag = 2010;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label10];
+    
+    //--
     
     if (indexPath.row % 2 == 0) {
         label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
