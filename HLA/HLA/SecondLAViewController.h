@@ -68,8 +68,10 @@
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic, assign,readwrite) int ANB;
 @property(nonatomic , retain) NSString *OccpCode;
-@property(nonatomic , assign,readwrite) int occLoading;
+@property(nonatomic , retain) NSString *occLoading;
 @property(nonatomic , assign,readwrite) int occCPA_PA;
+@property(nonatomic , assign,readwrite) int occPA;
+@property (nonatomic, assign,readwrite) int occuClass;
 @property (nonatomic, assign,readwrite) int CustLastNo;
 @property(nonatomic , retain) NSString *SINo;
 @property (nonatomic, copy) NSString *CustDate;

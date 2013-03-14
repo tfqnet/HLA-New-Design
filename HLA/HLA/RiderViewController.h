@@ -165,9 +165,11 @@
 @property (nonatomic,strong) NSString *payorRidCode;
 @property (nonatomic, assign,readwrite) int GYI;
 @property (nonatomic, assign,readwrite) int occLoad;
+@property(nonatomic , assign,readwrite) int occCPA_PA;
 @property (nonatomic, assign,readwrite) int occLoadRider;
-@property (nonatomic, assign,readwrite) int occLoadType;
+@property (nonatomic,strong) NSString *occLoadType;
 @property (nonatomic, assign,readwrite) int occClass;
+@property(nonatomic , assign,readwrite) int occPA;
 @property (nonatomic, assign,readwrite) int occCPA;
 @property (nonatomic, assign,readwrite) int storedMaxTerm;
 @property (nonatomic, assign,readwrite) int basicRate;

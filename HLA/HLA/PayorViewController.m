@@ -29,7 +29,7 @@
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo,requestCommDate;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert,getSINo;
 @synthesize delegate = _delegate;
-@synthesize getLAIndexNo,requestLAIndexNo,requestLAAge,getLAAge;
+@synthesize getLAIndexNo,requestLAIndexNo,requestLAAge,getLAAge,occPA,occuClass;
 
 - (void)viewDidLoad
 {
@@ -145,18 +145,18 @@
         
         [self getOccLoadExist];
         OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
-        if (occLoading == 0) {
-            occpLoadField.text = @"STD";
-        } else {
-            occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
-        }
+        occpLoadField.text = [NSString stringWithFormat:@"%@",occLoading];
     
-        if (occCPA_PA > 4) {
+        if (occCPA_PA == 0) {
             CPAField.text = @"D";
-            PAField.text = @"D";
         } else {
             CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occPA == 0) {
+            PAField.text = @"D";
+        } else {
+            PAField.text = [NSString stringWithFormat:@"%d",occPA];
         }
         
         [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
@@ -191,18 +191,18 @@
         OccpCode = OccpCodePP;
         [self getOccLoadExist];
         OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
-        if (occLoading == 0) {
-            occpLoadField.text = @"STD";
-        } else {
-            occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
-        }
-        
-        if (occCPA_PA > 4) {
+        occpLoadField.text = [NSString stringWithFormat:@"%@",occLoading];
+
+        if (occCPA_PA == 0) {
             CPAField.text = @"D";
-            PAField.text = @"D";
         } else {
             CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occCPA_PA == 0) {
+            PAField.text = @"D";
+        } else {
+            PAField.text = [NSString stringWithFormat:@"%d",occPA];
         }
         
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -503,18 +503,18 @@
         OccpCode = aaCode;
         [self getOccLoadExist];
         OccpField.text = [[NSString alloc] initWithFormat:@"%@",OccpDesc];
-        if (occLoading == 0) {
-            occpLoadField.text = @"STD";
-        } else {
-            occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
-        }
+        occpLoadField.text = [NSString stringWithFormat:@"%@",occLoading];
         
-        if (occCPA_PA > 4) {
+        if (occCPA_PA == 0) {
             CPAField.text = @"D";
-            PAField.text = @"D";
         } else {
             CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occPA == 0) {
+            PAField.text = @"D";
+        } else {
+            PAField.text = [NSString stringWithFormat:@"%d",occPA];
         }
     }
     
@@ -523,43 +523,6 @@
 
 
 #pragma mark - db handle
-
--(void)getOccLoading
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT Class,PA_CPA,OccLoading_TL from Adm_Occp_Loading_Penta where OccpCode = \"%@\"",OccpCode];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_ROW)
-            {
-                occCPA_PA  = sqlite3_column_int(statement, 1);
-                occLoading = sqlite3_column_int(statement, 2);
-                
-                if (occLoading == 0) {
-                    occpLoadField.text = @"STD";
-                } else {
-                    occpLoadField.text = [NSString stringWithFormat:@"%d",occLoading];
-                }
-                
-                if (occCPA_PA > 4) {
-                    CPAField.text = @"D";
-                    PAField.text = @"D";
-                } else {
-                    CPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                    PAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                }
-            }
-            else {
-                NSLog(@"Error retrieve loading!");
-            }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
 
 -(void)getRunningCustCode
 {
@@ -788,17 +751,21 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT OccpCode,OccpDesc,Class,PA_CPA,OccLoading_TL from Adm_Occp_Loading_Penta where OccpCode = \"%@\"",OccpCode];
+                              @"SELECT a.OccpDesc, b.OccLoading, b.CPA, b.PA, b.Class from Adm_Occp_Loading_Penta a LEFT JOIN Adm_Occp_Loading b ON a.OccpCode = b.OccpCode WHERE b.OccpCode = \"%@\"",OccpCode];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                OccpDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                occCPA_PA  = sqlite3_column_int(statement, 3);
-                occLoading =  sqlite3_column_int(statement, 4);
+                OccpDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                occLoading =  [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                occCPA_PA  = sqlite3_column_int(statement, 2);
+                occPA  = sqlite3_column_int(statement, 3);
+                occuClass = sqlite3_column_int(statement, 4);
+                
+                NSLog(@"OccpLoad:%@, cpa:%d, pa:%d, class:%d",occLoading, occCPA_PA,occPA,occuClass);
             }
             else {
-                NSLog(@"Error retrieve loading!");
+                NSLog(@"Error getOccLoadExist!");
             }
             sqlite3_finalize(statement);
         }
@@ -824,6 +791,7 @@
             {
                 NSLog(@"SI update!");
                 [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
+                [_delegate payorSaved:YES];
             }
             else {
                 NSLog(@"SI update Failed!");

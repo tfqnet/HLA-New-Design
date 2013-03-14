@@ -37,7 +37,7 @@
 @synthesize popOverController,requestSINo,clientName,occuCode,occuDesc,CustCode2,payorCustCode;
 @synthesize dataInsert,laH,commDate,occuClass,IndexNo,laBH;
 @synthesize ProspectList=_ProspectList;
-@synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,occPA;
 @synthesize LADOBField,LAOccpField,getSINo,dataInsert2;
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
 @synthesize termCover,planCode,arrExistRiderCode,arrExistPlanChoice;
@@ -60,7 +60,7 @@ id temp;
     NSLog(@"%@",databasePath);
     
     //--for update db due to upgrading version or changes
-//    [self updateDB_maxAge];
+    [self updateDB_maxAge];
 //    [self updateTB_Rider_Details];
 //    [self updateTB_Rider_Label];
     
@@ -208,19 +208,18 @@ id temp;
         
         [self getOccLoadExist];
         LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
-        if (occLoading == 0) {
-            LAOccLoadingField.text = @"STD";
-        } else {
-            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-        }
-        
-        if (occCPA_PA > 4) {
+        if (occCPA_PA == 0) {
             LACPAField.text = @"D";
-            LAPAField.text = @"D";
         } else {
             LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occPA == 0) {
+            LAPAField.text = @"D";
+        } else {
+            LAPAField.text = [NSString stringWithFormat:@"%d",occPA];
         }
         
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
@@ -254,18 +253,18 @@ id temp;
         occuCode = OccpCodePP;
         [self getOccLoadExist];
         LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
-        if (occLoading == 0) {
-            LAOccLoadingField.text = @"STD";
-        } else {
-            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-        }
+        LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
-        if (occCPA_PA > 4) {
+        if (occCPA_PA == 0) {
             LACPAField.text = @"D";
-            LAPAField.text = @"D";
         } else {
             LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occPA == 0) {
+            LAPAField.text = @"D";
+        } else {
+            LAPAField.text = [NSString stringWithFormat:@"%d",occPA];
         }
     
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
@@ -360,19 +359,18 @@ id temp;
     occuCode = OccpCodePP;
     [self getOccLoadExist];
     LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+    LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
     
-    if (occLoading == 0) {
-        LAOccLoadingField.text = @"STD";
-    } else {
-        LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-    }
-    
-    if (occCPA_PA > 4) {
+    if (occCPA_PA == 0) {
         LACPAField.text = @"D";
-        LAPAField.text = @"D";
     } else {
         LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-        LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    }
+    
+    if (occPA == 0) {
+        LAPAField.text = @"D";
+    } else {
+        LAPAField.text = [NSString stringWithFormat:@"%d",occPA];
     }
     [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
     Inserted = YES;
@@ -543,18 +541,19 @@ id temp;
             [self calculateAge];
             [self getOccLoadExist];
             
-            if (occLoading == 0) {
-                LAOccLoadingField.text = @"STD";
-            } else {
-                LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-            }
+            LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
             
-            if (occCPA_PA > 4) {
+            
+            if (occCPA_PA == 0) {
                 LACPAField.text = @"D";
-                LAPAField.text = @"D";
             } else {
                 LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            }
+            
+            if (occPA == 0) {
+                LAPAField.text = @"D";
+            } else {
+                LAPAField.text = [NSString stringWithFormat:@"%d",occPA];
             }
             //-------------------
             
@@ -651,29 +650,20 @@ id temp;
         
         [self getOccLoadExist];
         LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
-        if (occLoading == 0) {
-            LAOccLoadingField.text = @"STD";
-        } else {
-            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-        }
         
-        if (occCPA_PA > 4) {
+        if (occCPA_PA == 0) {
             LACPAField.text = @"D";
-            LAPAField.text = @"D";
         } else {
             LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
-        /*
-        dataInsert = [[NSMutableArray alloc] init];
-        SIHandler *ss = [[SIHandler alloc] init];
-        [dataInsert addObject:[[SIHandler alloc] initWithIDPayor:idPayor andIDProfile:idProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker]];
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            ss = [dataInsert objectAtIndex:i];
-            NSLog(@"storedLA sex:%@",ss.storedSex);
+        
+        if (occPA == 0) {
+            LAPAField.text = @"D";
+        } else {
+            LAPAField.text = [NSString stringWithFormat:@"%d",occPA];
         }
-        */
     }    
     else if (alertView.tag==1005 && buttonIndex == 0) {
         
@@ -786,50 +776,6 @@ id temp;
     }
 //    NSLog(@"msgAge:%@",msgAge);
 }
-
-/*
--(void)closeScreen
-{
-    if (dataInsert.count != 0 && dataInsert2.count == 0) {
-        
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            SIHandler *ss = [dataInsert objectAtIndex:i];
-            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            main.modalPresentationStyle = UIModalPresentationFullScreen;
-            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.mainLaH = ss;
-            main.mainBH = laBH;
-            main.IndexTab = 3;
-            [self presentViewController:main animated:NO completion:nil];
-        }
-    }
-    else if (dataInsert.count != 0 && dataInsert2.count != 0) {
-        
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            SIHandler *ss = [dataInsert objectAtIndex:i];
-            main.mainLaH = ss;
-        }
-        for (NSUInteger i=0; i< dataInsert2.count; i++) {
-            BasicPlanHandler *pp = [dataInsert2 objectAtIndex:i];
-            main.mainBH = pp;
-        }
-        
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.IndexTab = 3;
-        [self presentViewController:main animated:NO completion:nil];
-    }
-    else {
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.IndexTab = 3;
-        main.mainLaH = laH;
-        [self presentViewController:main animated:NO completion:nil];
-        
-    }
-} */
 
 
 #pragma mark - Handle Data
@@ -1016,60 +962,24 @@ id temp;
     }
 }
 
--(void)getOccLoading
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:
-                            @"SELECT Class,PA_CPA,OccLoading_TL from Adm_Occp_Loading_Penta where OccpCode = \"%@\"",occuCode];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_ROW)
-            {
-                occuClass = sqlite3_column_int(statement, 0);
-                occCPA_PA  = sqlite3_column_int(statement, 1);
-                occLoading = sqlite3_column_int(statement, 2);
-            
-                if (occLoading == 0) {
-                    LAOccLoadingField.text = @"STD";
-                } else {
-                    LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-                }
-                
-                if (occCPA_PA > 4) {
-                    LACPAField.text = @"D";
-                    LAPAField.text = @"D";
-                } else {
-                    LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                    LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-                }
-                
-            }
-            else {
-                NSLog(@"Error retrieve loading!");
-            }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
-
 -(void)getOccLoadExist
 {
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT OccpCode,OccpDesc,Class,PA_CPA,OccLoading_TL from Adm_Occp_Loading_Penta where OccpCode = \"%@\"",occuCode];
+                @"SELECT a.OccpDesc, b.OccLoading, b.CPA, b.PA, b.Class from Adm_Occp_Loading_Penta a LEFT JOIN Adm_Occp_Loading b ON a.OccpCode = b.OccpCode WHERE b.OccpCode = \"%@\"",occuCode];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                occuDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                occuClass = sqlite3_column_int(statement, 2);
-                occCPA_PA  = sqlite3_column_int(statement, 3);
-                occLoading =  sqlite3_column_int(statement, 4);
+                occuDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                occLoading =  [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                occCPA_PA  = sqlite3_column_int(statement, 2);
+                occPA  = sqlite3_column_int(statement, 3);
+                occuClass = sqlite3_column_int(statement, 4);
+                
+                NSLog(@"OccpLoad:%@, cpa:%d, pa:%d, class:%d",occLoading, occCPA_PA,occPA,occuClass);
             }
             else {
                 NSLog(@"Error getOccLoadExist!");
@@ -1831,20 +1741,22 @@ id temp;
         occuCode = aaCode;
         [self getOccLoadExist];
         LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
-        if (occLoading == 0) {
-            LAOccLoadingField.text = @"STD";
-        } else {
-            LAOccLoadingField.text = [NSString stringWithFormat:@"%d",occLoading];
-        }
-        
-        if (occCPA_PA > 4) {
+        if (occCPA_PA == 0) {
             LACPAField.text = @"D";
-            LAPAField.text = @"D";
-        } else {
-            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
-            LAPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
         }
+        else {
+            LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occPA == 0) {
+            LAPAField.text = @"D";
+        }
+        else {
+            LAPAField.text = [NSString stringWithFormat:@"%d",occPA];
+        }
+        
     }
     
     [self.prospectPopover dismissPopoverAnimated:YES];

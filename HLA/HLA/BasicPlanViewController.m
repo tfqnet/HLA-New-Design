@@ -47,12 +47,12 @@
 @synthesize delegate = _delegate;
 @synthesize requestAge,OccpCode,requestIDPay,requestIDProf,idPay,idProf;
 @synthesize requestAgePay,requestDOBPay,requestIndexPay,requestOccpPay,requestSexPay,requestSmokerPay;
-@synthesize PayorAge,PayorDOB,PayorOccpCode,PayorSex,PayorSmoker;
+@synthesize PayorAge,PayorDOB,PayorOccpCode,PayorSex,PayorSmoker,LPlanOpt;
 @synthesize requestAge2ndLA,requestDOB2ndLA,requestIndex2ndLA,requestOccp2ndLA,requestSex2ndLA,requestSmoker2ndLA;
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 @synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
 @synthesize requestOccpClass,OccpClass,MOPHLAIB,MOPHLACP,yearlyIncomeHLAIB,cashDividendHLAIB,cashDividendHLACP;
-@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge,labelAddHL,occLoad,LSDRate,LUnits;
+@synthesize advanceYearlyIncomeHLAIB,advanceYearlyIncomeHLACP,maxAge,labelAddHL,occLoad,LSDRate,LUnits,occCPA_PA;
 @synthesize planList = _planList;
 @synthesize planPopover = _planPopover;
 @synthesize labelParAcc,labelParPayout,labelPercent1,labelPercent2,parAccField,parPayoutField,getParAcc,getParPayout;
@@ -510,10 +510,10 @@ id temp;
             yearlyIncome = @"ACC";
         }
         
-        if ([parAccField.text intValue] == 100) {
+        if ([parAccField.text intValue] == 100 && parPayoutField.text.length == 0) {
             parPayoutField.text = @"0";
         }
-        if ([parPayoutField.text intValue] == 100) {
+        if ([parPayoutField.text intValue] == 100 && parAccField.text.length == 0) {
             parAccField.text = @"0";
         }
     }
@@ -565,22 +565,22 @@ id temp;
     
     //----------
     else if ([planChoose isEqualToString:@"HLACP"] && parAccField.text.length==0 ) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Percentage of Total Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Total Percentage of Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && parPayoutField.text.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Percentage of Total Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Total Percentage of Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parPayoutField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && [parAccField.text intValue] > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Percentage of Total Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Percentage of Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && [parPayoutField.text intValue] > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Percentage of Total Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Percentage of Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parPayoutField becomeFirstResponder];
     }
@@ -593,6 +593,11 @@ id temp;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Yearly Income Option must not contains decimal places." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parPayoutField becomeFirstResponder];
+    }
+    else if (maxParIncome != 100) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Percentage of Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLTermField becomeFirstResponder];
     }
     //--------------
     
@@ -672,11 +677,7 @@ id temp;
         [tempHLTermField becomeFirstResponder];
     }
     //--end HL
-	else if ([parAccField.text intValue] + [parPayoutField.text intValue] != 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Percentage of Total Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [tempHLTermField becomeFirstResponder];
-    }
+	
     else {
         
         float num = [yearlyIncomeField.text floatValue];
@@ -1709,10 +1710,15 @@ id temp;
         sqlite3_close(contactDB);
     }
     
+    [self validateExistingRider];
+}
+
+-(void)validateExistingRider
+{
     [self getBasicPentaRate];
     [self getLSDRate];
     [self getOccLoad];
-    NSLog(@"basicRate:%d,lsdRate:%d,pa_cpa:%d",basicRate,LSDRate,occLoad);
+    NSLog(@"basicRate:%d,lsdRate:%d,occload:%d, pa_cpa:%d",basicRate,LSDRate,occLoad,occCPA_PA);
     [self calculateBasicPremium];
     
     [self getListingRider];
@@ -1728,6 +1734,7 @@ id temp;
         [self calculateSA];
         double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
         int riderUnit = [[LUnits objectAtIndex:p] intValue];
+        
         if (riderSA > maxRiderSA)
         {
             dodelete = YES;
@@ -1771,6 +1778,29 @@ id temp;
                 sqlite3_close(contactDB);
             }
         }
+        
+        if ([yearlyIncomeField.text doubleValue] < 25000 && [[LPlanOpt objectAtIndex:p] isEqualToString:@"HMM_1000"])
+        {
+            dodelete = YES;
+            sqlite3_stmt *statement;
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+            {
+                NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
+                
+                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+                {
+                    if (sqlite3_step(statement) == SQLITE_DONE)
+                    {
+                        NSLog(@"rider %@ delete!",riderCode);
+                    } else {
+                        NSLog(@"rider delete Failed!");
+                    }
+                    sqlite3_finalize(statement);
+                }
+                sqlite3_close(contactDB);
+            }
+        }
+        
     }
     if (dodelete) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1835,12 +1865,14 @@ id temp;
 {
     LRiderCode = [[NSMutableArray alloc] init];
     LSumAssured = [[NSMutableArray alloc] init];
+    LPlanOpt = [[NSMutableArray alloc] init];
     LUnits = [[NSMutableArray alloc] init];
+    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT RiderCode, SumAssured, Units FROM Trad_Rider_Details WHERE SINo=\"%@\" ORDER by RiderCode asc",SINo];
+                              @"SELECT RiderCode, SumAssured, PlanOption, Units FROM Trad_Rider_Details WHERE SINo=\"%@\" ORDER by RiderCode asc",SINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1852,7 +1884,10 @@ id temp;
                 const char *aaRidSA = (const char *)sqlite3_column_text(statement, 1);
                 [LSumAssured addObject:aaRidSA == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaRidSA]];
                 
-                const char *aaUnit = (const char *)sqlite3_column_text(statement, 2);
+                const char *zzplan = (const char *) sqlite3_column_text(statement, 2);
+                [LPlanOpt addObject:zzplan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzplan]];
+                
+                const char *aaUnit = (const char *)sqlite3_column_text(statement, 3);
                 [LUnits addObject:aaUnit == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaUnit]];
             }
             
@@ -1952,14 +1987,15 @@ id temp;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",OccpCode];
+                              @"SELECT PA_CPA, OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",OccpCode];
         
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                occLoad =  sqlite3_column_int(statement, 0);
+                occCPA_PA  = sqlite3_column_int(statement, 0);
+                occLoad =  sqlite3_column_int(statement, 1);
                 
             } else {
                 NSLog(@"error access getOccLoad");

@@ -69,7 +69,7 @@
 @synthesize waiverRiderAnn,waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,incomeRiderGYI,incomeRiderSA,basicGYIRate,incomeRiderCSV;
 @synthesize incomeRiderAnn,incomeRiderHalf,incomeRiderMonth,incomeRiderQuar,incomeRiderPrem,basicCSVRate,riderCSVRate,pTypeAge;
-@synthesize inputSA,inputCSV,inputGYI,inputIncomeAnn,secondLARidCode;
+@synthesize inputSA,inputCSV,inputGYI,inputIncomeAnn,secondLARidCode,occCPA_PA;
 @synthesize RiderList = _RiderList;
 @synthesize RiderListPopover = _RiderListPopover;
 @synthesize planPopover = _planPopover;
@@ -81,7 +81,7 @@
 @synthesize occLoadType,classField,payorRidCode,getSINo,getPlanCode,getAge,getTerm,getBasicSA,getMOP,requestAdvance,getAdvance;
 @synthesize requestOccpClass,getOccpClass,requestPlanChoose,getPlanChoose;
 @synthesize delegate = _delegate;
-@synthesize requestSex,getSex,requestOccpCode,getOccpCode,requestBasicHL,getBasicHL,requestBasicTempHL,getBasicTempHL;
+@synthesize requestSex,getSex,requestOccpCode,getOccpCode,requestBasicHL,getBasicHL,requestBasicTempHL,getBasicTempHL,occPA;
 @synthesize PTypeList = _PTypeList;
 @synthesize pTypePopOver = _pTypePopOver;
 
@@ -214,17 +214,15 @@
     [self getCPAClassType];
     [self getOccpCatCode];
     [self getLSDRate];
-    NSLog(@"basicRate:%d,lsdRate:%d,pa_cpa:%d",basicRate,LSDRate,occLoad);
+    NSLog(@"basicRate:%d,lsdRate:%d,occpLoad:%d, pa_cpa:%d",basicRate,LSDRate,occLoad,occCPA_PA);
     
     [self getListingRiderByType];
     [self getListingRider];
     [self calculateBasicPremium];
     
-    if ([getPlanChoose isEqualToString:@"HLAIB"]) {
-        [self calculateRiderPrem];          
-        [self calculateWaiver];             
-        [self calculateMedRiderPrem];
-    }
+    [self calculateRiderPrem];
+    [self calculateWaiver];
+    [self calculateMedRiderPrem];
     
     if (medRiderPrem != 0) {
         [self MHIGuideLines];
@@ -611,14 +609,22 @@
         HLTField.enabled = NO;
     }
     
-    NSString *msg = @"";
-    if (occCPA > 4) { msg = @"D"; }
-    else { msg = [NSString stringWithFormat:@"%d",occCPA]; }
-    cpaField.text = msg;
-    cpaField.textColor = [UIColor darkGrayColor];
+    if (occCPA == 0) {
+        cpaField.text = @"D";
+    }
+    else {
+        cpaField.text = [NSString stringWithFormat:@"%d",occCPA];
+        cpaField.textColor = [UIColor darkGrayColor];
+    }
     
-    if (occLoadType == 0) { occpField.text = @"STD"; }
-    else { occpField.text = [NSString stringWithFormat:@"%d",occLoadType]; }
+    if (occPA == 0) {
+        classField.text = @"D";
+    }
+    else {
+        classField.text = [NSString stringWithFormat:@"%d",occPA];
+    }
+    
+    occpField.text = [NSString stringWithFormat:@"%@",occLoadType];
     occpField.textColor = [UIColor darkGrayColor];
 }
 
@@ -714,11 +720,9 @@
         [self getListingRider];
         [self getListingRiderByType];
         
-        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
-            [self calculateRiderPrem];
-            [self calculateWaiver];
-            [self calculateMedRiderPrem];
-        }
+        [self calculateRiderPrem];
+        [self calculateWaiver];
+        [self calculateMedRiderPrem];
         
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
@@ -2295,21 +2299,36 @@
 
 - (IBAction)btnAddRiderPressed:(id)sender
 {
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
-    _RiderList.delegate = self;
-    _RiderList.requestPtype = self.pTypeCode;
-    _RiderList.requestPlan = getPlanChoose;
-    _RiderList.requestSeq = self.PTypeSeq;
-    _RiderList.requestOccpClass = getOccpClass;
-    _RiderList.requestAge = self.pTypeAge;
-    self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
-    
-    [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
-    [self.RiderListPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    if ([occLoadType isEqualToString:@"D"]) {
+        NSString *msg = nil;
+        if ([pTypeCode isEqualToString:@"PY"]) {
+            msg = @"Payor is not qualified to add any rider";
+        }
+        
+        if (PTypeSeq == 2) {
+            msg = @"2nd Life Assured is not qualified to add any rider";
+        }
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else {
+        Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+        id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+        [activeInstance performSelector:@selector(dismissKeyboard)];
+        
+        self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
+        _RiderList.delegate = self;
+        _RiderList.requestPtype = self.pTypeCode;
+        _RiderList.requestPlan = getPlanChoose;
+        _RiderList.requestSeq = self.PTypeSeq;
+        _RiderList.requestOccpClass = getOccpClass;
+        _RiderList.requestAge = self.pTypeAge;
+        self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
+        
+        [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
+        [self.RiderListPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
 }
 
 - (IBAction)planBtnPressed:(id)sender
@@ -2557,7 +2576,7 @@
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-                    NSLog(@"rider delete!");
+                    NSLog(@"rider %@ delete!",secondLARidCode);
                 } else {
                     NSLog(@"rider delete Failed!");
                 }
@@ -2570,7 +2589,7 @@
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-                    NSLog(@"rider delete!");
+                    NSLog(@"rider %@ delete!",riderCode);
                 } else {
                     NSLog(@"rider delete Failed!");
                 }
@@ -2578,18 +2597,20 @@
             }
             sqlite3_close(contactDB);
         }
-        [self validateRules];
+        
+        [self getListingRider];
+        [self getListingRiderByType];
+        [_delegate RiderAdded];
+        secondLARidCode = nil;
     }
     else if (alertView.tag == 1005 && buttonIndex ==0)      //deleting due to business rule
     {
         [self getListingRiderByType];
         [self getListingRider];     
         
-        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
-            [self calculateRiderPrem];  
-            [self calculateWaiver];     
-            [self calculateMedRiderPrem];       
-        }
+        [self calculateRiderPrem];
+        [self calculateWaiver];
+        [self calculateMedRiderPrem];
         
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
@@ -2880,14 +2901,16 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Deductible is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
+    
+    //--
     else if (inputHLPercentage.length != 0 && [HLField.text intValue] > 500) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLField becomeFirstResponder];
     }
-    else if (HLField.text.length == 0 && HLTField.text.length != 0) {
-        
+    else if (HLField.text.length == 0 && [HLTField.text intValue] != 0) {
+       
         NSString *msg;
         if (HL1kTerm) {
             msg = @"Health Loading (per 1k SA) is required.";
@@ -2900,7 +2923,7 @@
         [alert show];
         [HLField becomeFirstResponder];
     }
-    else if (HLField.text.length != 0 && HLTField.text.length == 0) {
+    else if ([HLField.text intValue] != 0 && HLTField.text.length == 0) {
         
         NSString *msg;
         if (HL1kTerm) {
@@ -2920,12 +2943,13 @@
         [alert show];
         [HLField becomeFirstResponder];
     }
-    else if (HLField.text.length !=0 && substring.length > 3) {
+    else if ([HLField.text intValue] !=0 && substring.length > 3) {
         
         NSString *msg;
         if (HL1kTerm) {
             msg = @"Health Loading (Per 1k SA) only allow 2 decimal places.";
-        } else if (HL100kTerm) {
+        }
+        else if (HL100kTerm) {
             msg = @"Health Loading (Per 100k SA) only allow 2 decimal places.";
         } 
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -2939,6 +2963,7 @@
         [HLField becomeFirstResponder];
     }
     else if (inputHLPercentage.length != 0 && msg2.length > 1) {
+        
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [HLField becomeFirstResponder];
@@ -2971,14 +2996,42 @@
         [alert show];
         [HLTField becomeFirstResponder];
     }
-    //--
     else if (HLPTerm && [HLField.text intValue] > 500) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [tempHLField becomeFirstResponder];
     }
-    else if (tempHLField.text.length == 0 && tempHLTField.text.length != 0) {
+    else if ([HLField.text intValue] == 0 && HLField.text.length != 0) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Health Loading (per 1k SA) is required.";
+        } else if (HL100kTerm) {
+            msg = @"Health Loading (per 100 SA) is required.";
+        } else if (HLPTerm) {
+            msg = @"Health Loading (%) is required.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [HLField becomeFirstResponder];
+    }
+    else if ([HLTField.text intValue] == 0 && HLTField.text.length != 0) {
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Health Loading (per 1k SA) Term is required.";
+        } else if (HL100kTerm) {
+            msg = @"Health Loading (per 100 SA) Term is required.";
+        } else if (HLPTerm) {
+            msg = @"Health Loading (%) Term is required.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [HLTField becomeFirstResponder];
+    }
+    //--
+    
+    else if (tempHLField.text.length == 0 && [tempHLTField.text intValue] != 0) {
         
         NSString *msg;
         if (HL1kTerm) {
@@ -2992,7 +3045,7 @@
         [alert show];
         [tempHLField becomeFirstResponder];
     }
-    else if (tempHLField.text.length != 0 && tempHLTField.text.length == 0) {
+    else if ([tempHLField.text intValue] != 0 && tempHLTField.text.length == 0) {
         
         NSString *msg;
         if (HL1kTerm) {
@@ -3012,7 +3065,7 @@
         [alert show];
         [tempHLField becomeFirstResponder];
     }
-    else if (tempHLField.text.length !=0 && substringTemp.length > 3) {
+    else if ([tempHLField.text intValue] !=0 && substringTemp.length > 3) {
         
         NSString *msg;
         if (HL1kTerm) {
@@ -3058,6 +3111,34 @@
             msg = [NSString stringWithFormat:@"Temporary Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HLPTerm) {
             msg = [NSString stringWithFormat:@"Temporary Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLTField becomeFirstResponder];
+    }
+    else if ([tempHLField.text intValue] == 0 && tempHLField.text.length != 0) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Temporary Health Loading (per 1k SA) is required.";
+        } else if (HL100kTerm) {
+            msg = @"Temporary Health Loading (per 100 SA) is required.";
+        } else if (HLPTerm) {
+            msg = @"Temporary Health Loading (%) is required.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLField becomeFirstResponder];
+    }
+    else if ([tempHLTField.text intValue] == 0 && tempHLTField.text.length != 0) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Temporary Health Loading (per 1k SA) Term is required.";
+        } else if (HL100kTerm) {
+            msg = @"Temporary Health Loading (per 100 SA) Term is required.";
+        } else if (HLPTerm) {
+            msg = @"Temporary Health Loading (%) Term is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -4072,7 +4153,7 @@
     }
     
     [self getListingRiderByType];
-    [self getListingRider];     //get stored rider
+    [self getListingRider];
     
     if (inputSA > _maxRiderSA) {
         NSLog(@"will delete %@",riderCode);
@@ -4084,11 +4165,9 @@
     }
     else {
         
-        if ([getPlanChoose isEqualToString:@"HLAIB"]) {
-            [self calculateRiderPrem];  //calculate riderPrem
-            [self calculateWaiver];     //calculate waiverPrem
-            [self calculateMedRiderPrem];       //calculate medicalPrem
-        }
+        [self calculateRiderPrem];
+        [self calculateWaiver];
+        [self calculateMedRiderPrem];
         
         if (medRiderPrem != 0) {
             [self MHIGuideLines];
@@ -4407,17 +4486,20 @@
 
 -(void)getOccLoad
 {
+    occCPA_PA = 0;
+    occLoad = 0;
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                    @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",getOccpCode];
+                    @"SELECT PA_CPA, OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",getOccpCode];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                occLoad =  sqlite3_column_int(statement, 0);
+                occCPA_PA  = sqlite3_column_int(statement, 0);
+                occLoad =  sqlite3_column_int(statement, 1);
                 
             } else {
                 NSLog(@"error access getOccLoad");
@@ -4457,19 +4539,22 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT Class,PA_CPA,OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",pTypeOccp];
-        
+                              @"SELECT OccLoading, CPA, PA, Class FROM Adm_Occp_Loading WHERE OccpCode=\"%@\"",pTypeOccp];
+    
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
             {
-                occClass = sqlite3_column_int(statement, 0);
-                occCPA = sqlite3_column_int(statement, 1);
-                occLoadType =  sqlite3_column_int(statement, 2);
-                NSLog(@"class:%d , cpa:%d, load:%d",occClass,occCPA,occLoadType);
                 
-            } else {
-                NSLog(@"error access getCPAClassType");
+                occLoadType =  [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                occCPA_PA  = sqlite3_column_int(statement, 1);
+                occPA  = sqlite3_column_int(statement, 2);
+                occClass = sqlite3_column_int(statement, 3);
+                
+                NSLog(@"::OccpLoad:%@, cpa:%d, pa:%d, class:%d",occLoadType, occCPA_PA,occPA,occClass);
+            }
+            else {
+                NSLog(@"Error getOccLoadExist!");
             }
             sqlite3_finalize(statement);
         }
@@ -5234,11 +5319,7 @@
     CGRect frame6=CGRectMake(371,0, 62, 50);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
-    if (occLoadType == 0) {
-        label6.text= @"STD";
-    } else {
-        label6.text= [NSString stringWithFormat:@"%d",occLoadType];
-    }
+    label6.text= [NSString stringWithFormat:@"%@",occLoadType];
     label6.textAlignment = UITextAlignmentCenter;
     label6.tag = 2006;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -5249,7 +5330,7 @@
     NSString *hl1k = [LTypeRidHL1K objectAtIndex:indexPath.row];
     NSString *hl100 = [LTypeRidHL100 objectAtIndex:indexPath.row];
     NSString *hlp = [LTypeRidHLP objectAtIndex:indexPath.row];
-    NSLog(@"HL(%@)-1k:%@, 100k:%@, p:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hl1k,hl100,hlp);
+//    NSLog(@"HL(%@)-1k:%@, 100k:%@, p:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hl1k,hl100,hlp);
     
     CGRect frame7=CGRectMake(433,0, 63, 50);
     UILabel *label7=[[UILabel alloc]init];
@@ -5281,7 +5362,7 @@
     NSString *hl1kT = [LTypeRidHLTerm objectAtIndex:indexPath.row];
     NSString *hl100T = [LTypeRidHL100Term objectAtIndex:indexPath.row];
     NSString *hlpT = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
-    NSLog(@"HLT(%@)-1kTerm:%@, 100kTerm:%@, pTerm:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hl1kT,hl100T,hlpT);
+//    NSLog(@"HLT(%@)-1kTerm:%@, 100kTerm:%@, pTerm:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hl1kT,hl100T,hlpT);
     
     CGRect frame8=CGRectMake(496,0, 63, 50);
     UILabel *label8=[[UILabel alloc]init];
@@ -5312,7 +5393,7 @@
     
     NSString *hlTemp = [LTypeTempRidHL1K objectAtIndex:indexPath.row];
     NSString *hlTempT = [LTypeTempRidHLTerm objectAtIndex:indexPath.row];
-    NSLog(@"HLTemp(%@)-1k:%@, 1kTerm:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hlTemp,hlTempT);
+//    NSLog(@"HLTemp(%@)-1k:%@, 1kTerm:%@",[LTypeRiderCode objectAtIndex:indexPath.row],hlTemp,hlTempT);
     
     CGRect frame9=CGRectMake(559,0, 63, 50);
     UILabel *label9=[[UILabel alloc]init];

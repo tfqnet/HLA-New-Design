@@ -31,21 +31,15 @@
         [self getRiderCondition];
         NSLog(@"condition:%@, sumA:%.2f, option:%@",self.requestCondition,self.requestSA,self.requestOption);
         
-        /*
+        
         if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"DeductibleHMM"] && [self.requestOption isEqualToString:@"HMM_1000"]) {
             [itemValue removeAllObjects];
             [itemDesc removeAllObjects];
             
             [itemValue addObject:@"4"];
             [itemDesc addObject:@"30000"];
-        }*/
-        if (self.requestSA >= 500000 && [self.requestCondition isEqualToString:@"DeductibleHMM"] && [self.requestOption isEqualToString:@"HMM_1000"]) {
-            [itemValue removeAllObjects];
-            [itemDesc removeAllObjects];
-            
-            [itemValue addObject:@"4"];
-            [itemDesc addObject:@"30000"];
         }
+        
     }
     return self;
 }

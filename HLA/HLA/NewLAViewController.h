@@ -88,7 +88,10 @@
 @property (nonatomic, copy) NSString *clientName;
 @property (nonatomic, copy) NSString *occuCode;
 @property (nonatomic, copy) NSString *occuDesc;
+@property (nonatomic, copy) NSString *occLoading;
 @property (nonatomic, assign,readwrite) int occuClass;
+@property(nonatomic , assign,readwrite) int occCPA_PA;
+@property(nonatomic , assign,readwrite) int occPA;
 @property (nonatomic, assign,readwrite) int IndexNo;
 @property (nonatomic, assign,readwrite) int idPayor;
 @property (nonatomic, assign,readwrite) int idProfile;
@@ -125,8 +128,7 @@
 //for occupation
 @property(nonatomic , retain) NSMutableArray *occDesc;
 @property(nonatomic , retain) NSMutableArray *occCode;
-@property(nonatomic , assign,readwrite) int occLoading;
-@property(nonatomic , assign,readwrite) int occCPA_PA;
+
 
 @property(nonatomic , retain) NSString *NamePP;
 @property(nonatomic , retain) NSString *DOBPP;

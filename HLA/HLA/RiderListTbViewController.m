@@ -46,7 +46,7 @@
         if (self.requestOccpClass == 4) {
             querySQL = [NSString stringWithFormat:
                         @"SELECT j.*, k.MinAge, k.MaxAge FROM"
-                        "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\" AND a.RiderCode != \"MG_IV\")j "
+                        "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\" AND a.PTypeCode=\"%@\" AND a.Seq=\"%d\" AND a.RiderCode != \"CPA\")j "
                         "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"", [self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
         }
         else if (self.requestOccpClass > 4) {
