@@ -952,9 +952,9 @@ id RiderCount;
 	
 	if([[ListOfSubMenu objectAtIndex:indexPath.row] isEqualToString:@"Product Disclosure Sheet"] ){
 
-			//cell.textLabel.backgroundColor = [UIColor grayColor];
-			//cell.detailTextLabel.backgroundColor = [UIColor grayColor];
-			//cell.contentView.backgroundColor = [UIColor grayColor];
+			cell.textLabel.backgroundColor = [UIColor grayColor];
+			cell.detailTextLabel.backgroundColor = [UIColor grayColor];
+			cell.contentView.backgroundColor = [UIColor grayColor];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		 
 	}

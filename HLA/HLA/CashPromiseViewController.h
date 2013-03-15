@@ -31,6 +31,7 @@
 @property (retain, nonatomic) NSMutableArray *aStrOtherRiderMonthly;
 @property (retain, nonatomic) NSMutableArray *aStrBasicSA;
 @property (nonatomic, assign) int Age;
+@property (nonatomic, assign) int PayorAge;
 @property (nonatomic, assign) int PolicyTerm;
 @property (nonatomic, assign) double BasicSA;
 

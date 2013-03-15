@@ -57,7 +57,7 @@
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-03-11"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-03-13"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -81,7 +81,7 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 11 MArch 2013";
+        labelUpdated.text = @"Last Updated: 13 MArch 2013";
                 outletLogin.hidden = FALSE;
     }
     
@@ -146,13 +146,50 @@
 	NSError *error;
     
 	/*
+	  u1, insert 2 new column into Trad_rider_Detail, tempHL1KSA and tempHL1KSATerm
+	  u2, update Trad_Rider_Label, 
+	 //update trad_sys_rider_label set labelcode = 'HL10T' where ridercode in ('PR', 'SP_PRE', 'SP_STD') and labeldesc = 'Health Loading (Per 1K SA) Term';
+	 //update trad_sys_rider_label set labelcode = 'HL10' where ridercode in ('PR', 'SP_PRE', 'SP_STD') and labeldesc = 'Health Loading (Per 1K SA)';
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading (Per 100 SA)' where ridercode in ('PR', 'SP_PRE', 'SP_STD') and labelcode = 'HL10';
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading (Per 100 SA) Term' where ridercode in ('PR', 'SP_PRE', 'SP_STD') and labelcode = 'HL10T';
+	 //update trad_sys_rider_label set labeldesc = 'Sum Assured (%)' where ridercode in ('PR', 'SP_PRE', 'SP_STD') and labelcode = 'SUMA';
+	 //update trad_sys_rider_label set labelcode = 'SUAS' where ridercode in ('PR', 'SP_PRE', 'SP_STD') and labelcode = 'Sum Assured (%)';
+	 u3, update Trad_Rider_Label,
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading 1 (Per 100 SA)' where labeldesc = 'Health Loading (Per 100 SA)';
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading 1 (Per 100 SA) Term' where labeldesc = 'Health Loading (Per 100 SA) Term';
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading 1 (Per 1K SA)' where labeldesc = 'Health Loading (Per 1K SA)';
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading 1 (Per 1K SA) Term' where labeldesc = 'Health Loading (Per 1K SA) Term';
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading 1 (%)' where labeldesc = 'Health Loading (%)';
+	 //update trad_sys_rider_label set labeldesc = 'Health Loading 1 (%) Term' where labeldesc = 'Health Loading (%) Term';
+	 u4, insert 5 new jobs
+	 //	insert into Adm_Occp_Loading_Penta Values('OCC02452', 'VICE PRESIDENT', '1', 'A', 'EM', '1', '0', '0' );
+		insert into Adm_Occp_Loading_Penta Values('OCC02453', 'PRESIDENT', '1', 'A', 'EM', '1', '0', '0' );
+	 	 insert into Adm_Occp_Loading_Penta Values('OCC02454', 'CUSTOMER SERVICE EXEC', '1', 'A', 'EM', '1', '0', '0' );
+	 	 insert into Adm_Occp_Loading_Penta Values('OCC02455', 'SALES ENGINEER', '1', 'A', 'EM', '1', '0', '0' );
+	 	 insert into Adm_Occp_Loading_Penta Values('OCC02456', 'SERVICE ENGINEER', '1', 'A', 'EM', '2', '0', '0' );
+		insert into Adm_Occp_Loading Values('OCC02452', 'STD', '1', '1', '1' );
+		insert into Adm_Occp_Loading Values('OCC02453', 'STD', '1', '1', '1');
+		insert into Adm_Occp_Loading Values('OCC02454', 'STD', '1', '1', '1');
+		insert into Adm_Occp_Loading Values('OCC02455', 'STD', '1', '1', '1');
+		insert into Adm_Occp_Loading Values('OCC02456', 'STD', '1', '1', '1');
+		insert into Adm_Occp Values('OCC02452', 'VICE PRESIDENT', '1', '', '', '', '', '' );
+		insert into Adm_Occp Values('OCC02453', 'PRESIDENT', '1', '', '', '', '', '' );
+		insert into Adm_Occp Values('OCC02454', 'CUSTOMER SERVICE EXEC', '1', '', '', '', '', '' );
+		insert into Adm_Occp Values('OCC02455', 'SALES ENGINEER', '1', '', '', '', '', '' );
+		insert into Adm_Occp Values('OCC02456', 'SERVICE ENGINEER', '1', '', '', '', '', '' );
+	 u5, update trad_sys_mtn
+		update trad_sys_mtn set MaxAge = '63' where PlanCode = 'HLACP';
+	 */
+	
+	/*
 	sqlite3_stmt *statement;
 	if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
 	{
-		NSString *querySQL = [NSString stringWithFormat: @"Alter Table Trad_Rider_Details ADD 'TempHL1KSA' VARCHAR"];
+	 
+		NSString *querySQL = [NSString stringWithFormat: @"update trad_sys_mtn set MaxAge = '63' where PlanCode = 'HLACP'"];
 		
 		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
-			if (sqlite3_step(statement) == SQLITE_OK){
+			if (sqlite3_step(statement) == SQLITE_DONE){
 				
 			}
 			else {
@@ -164,20 +201,6 @@
 			sqlite3_finalize(statement);
 		}
 		
-		querySQL = [NSString stringWithFormat: @"Alter Table Trad_Rider_Details ADD 'TempHL1KSATerm' INTEGER"];
-		
-		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
-			if (sqlite3_step(statement) == SQLITE_OK){
-				
-			}
-			else {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-																message:@"ERROR 2" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
-				[alert show];
-				alert = Nil;
-			}
-			sqlite3_finalize(statement);
-		}
 		
 		sqlite3_close(contactDB);
 		querySQL = Nil;

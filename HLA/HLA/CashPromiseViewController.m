@@ -30,7 +30,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize aStrOtherRiderMonthly, PartialAcc, PartialPayout;
 @synthesize aStrOtherRiderQuarterly,aStrOtherRiderSemiAnnually,strBasicMonthly,strBasicQuarterly,strBasicSemiAnnually, OccLoading;
 @synthesize strOriBasicAnnually, strOriBasicMonthly,strOriBasicQuarterly,strOriBasicSemiAnnually;
-@synthesize HealthLoadingTerm, TempHealthLoading, TempHealthLoadingTerm, aStrBasicSA;
+@synthesize HealthLoadingTerm, TempHealthLoading, TempHealthLoadingTerm, aStrBasicSA, PayorAge;
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
 @synthesize OtherRiderHL100SA, OtherRiderHL100SATerm,OtherRiderHL1kSA,OtherRiderHL1kSATerm,OtherRiderHLPercentage,OtherRiderHLPercentageTerm;
@@ -720,16 +720,20 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSString *firstLifeLoading = [OccLoading objectAtIndex:0];
     NSString *secondtLifeLoading = @"";
     
-    if ([firstLifeLoading isEqualToString:@"STD"]) {
+    //if ([firstLifeLoading isEqualToString:@"STD"]) { //<-- for non penta
+	if ([firstLifeLoading isEqualToString:@"0.0"]) { //<-- for penta
         firstLifeLoading = @"";
     }
     
     if (OccLoading.count > 1) {
-        secondtLifeLoading = [[OccLoading objectAtIndex:1] isEqualToString:@"STD"] ? @"" : [OccLoading objectAtIndex:1] ;
+        //secondtLifeLoading = [[OccLoading objectAtIndex:1] isEqualToString:@"STD"] ? @"" : [OccLoading objectAtIndex:1] ;
+		secondtLifeLoading = [[OccLoading objectAtIndex:1] isEqualToString:@"0.0"] ? @"" : [OccLoading objectAtIndex:1] ;
     }
     else{
         secondtLifeLoading = @"";
     }
+	
+	
 	
 	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 		/*
@@ -894,7 +898,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 			
             SelectSQL = [ NSString stringWithFormat:@"Select \"Type\", \"Annually\",\"SemiAnnually\",\"Quarterly\",\"Monthly\", \"Units\"  "
 						 " from SI_Store_Premium as A, trad_rider_details as B where A.Type = B.riderCode AND \"type\" = \"%@\" "
-						 " AND \"FromAge\" is NULL ", [OtherRiderCode objectAtIndex:a]];
+						 " AND \"FromAge\" is NULL AND B.SINO = \"%@\" ", [OtherRiderCode objectAtIndex:a], SINo];
 			
             if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
                 if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -903,6 +907,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     strQuarterly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                     strMonthly = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
                     strUnits = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+					//NSLog(@"%@ -- %@", strUnits, [OtherRiderCode objectAtIndex:a]);
                     [aStrOtherRiderAnnually addObject:[strAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
                     [aStrOtherRiderSemiAnnually addObject:[strSemiAnnually stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
                     [aStrOtherRiderQuarterly addObject:[strQuarterly stringByReplacingOccurrencesOfString:@"," withString:@"" ]];
@@ -916,14 +921,15 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"CPA"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"ETPD"] ||
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"LCPR"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"C+"] ||
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PA"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PLCP"]
-                || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PR"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_PRE"]
-                || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_STD"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"ICR"]
+				|| [[OtherRiderCode objectAtIndex:a] isEqualToString:@"ICR"]
 				|| [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"EDB" ] || [[OtherRiderCode objectAtIndex:a ] isEqualToString:@"ETPDB" ]) {
                 
                 SelectSQL = [NSString stringWithFormat:@"Select HL1KSA from Trad_Rider_Details where Sino = \"%@\" AND Ridercode = \"%@\"  ", SINo, [OtherRiderCode objectAtIndex:a]];
                 
             }
-            else if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"CIWP"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"LCWP"]){
+            else if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"CIWP"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"LCWP"] ||
+					 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PR"] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_PRE"] ||
+					 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_STD"]){
                 SelectSQL = [NSString stringWithFormat:@"Select HL100SA from Trad_Rider_Details where Sino = \"%@\" AND Ridercode = \"%@\"  ", SINo, [OtherRiderCode objectAtIndex:a]];
                 
             }
@@ -1807,10 +1813,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								}
 							}
 							
-							NSString *tempHL1KSA = [OtherRiderHL1kSA objectAtIndex:j];
-							NSString *tempHL1KSATerm = [OtherRiderHL1kSATerm objectAtIndex:j];
+							//NSString *tempHL1KSA = [OtherRiderHL1kSA objectAtIndex:j];
+							//NSString *tempHL1KSATerm = [OtherRiderHL1kSATerm objectAtIndex:j];
 							NSString *tempHL100SA = [OtherRiderHL100SA objectAtIndex:j];
 							NSString *tempHL100SATerm = [OtherRiderHL100SATerm objectAtIndex:j];
+							/*
 							if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"CIWP" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"LCWP" ]) {
 								if([tempHL100SA isEqualToString:@"(null)"]) {
 									sumOtherRider = sumOtherRider +
@@ -1846,10 +1853,51 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 							}
+							*/
+							if([tempHL100SA isEqualToString:@"(null)"]) {
+								sumOtherRider = sumOtherRider +
+								[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+							}
+							else{
+								if (i <= [tempHL100SATerm integerValue ]) {
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+								}
+								else{
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ] -
+									(waiverRiderSA/100) * ([[OtherRiderSA objectAtIndex:j] doubleValue ]/100) * [tempHL100SA doubleValue ] ;
+									
+								}
+							}
 							
+							tempHL100SA = Nil;
+							tempHL100SATerm = Nil;
 							
 						}
-						else{ //rider is not CIWP, PR, LCWP, SP_PRE, SP_STD
+						else if([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HB" ] ){
+							NSString *tempHLPer = [OtherRiderHLPercentage objectAtIndex:j];
+							NSString *tempHLPerTerm = [OtherRiderHLPercentageTerm objectAtIndex:j];
+							
+							if([tempHLPer isEqualToString:@"(null)"]) {
+								sumOtherRider = sumOtherRider +
+								[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+							}
+							else{
+								if (i <= [tempHLPerTerm integerValue ]) {
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
+								}
+								else{
+									sumOtherRider = sumOtherRider +
+									[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ]/ ([tempHLPer doubleValue]/100 + 1);
+								}
+							}
+							
+							tempHLPer = Nil;
+							tempHLPerTerm = Nil;
+						}
+						else{ //rider is not CIWP, PR, LCWP, SP_PRE, SP_STD, HB
 							NSString *tempHL1KSA = [OtherRiderHL1kSA objectAtIndex:j];
 							NSString *tempHL1KSATerm = [OtherRiderHL1kSATerm objectAtIndex:j];
 							
@@ -1868,6 +1916,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									([[OtherRiderSA objectAtIndex:j] doubleValue ]/1000) * [tempHL1KSA doubleValue ] ;
 								}
 							}
+							tempHL1KSA = nil;
+							tempHL1KSATerm = Nil;
 							//sumOtherRider = sumOtherRider +
 							//[[[aStrOtherRiderAnnually objectAtIndex:j ] stringByReplacingOccurrencesOfString:@"," withString:@"" ] doubleValue ];
 						}
@@ -2288,6 +2338,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     NSString *tempHLPercentage = [OtherRiderHLPercentage objectAtIndex:item];
                     NSString *tempHLPercentageTerm = [OtherRiderHLPercentageTerm objectAtIndex:item];
 					
+					NSLog(@"dsadasdas %@, %d", [OtherRiderCode objectAtIndex:item], item);
+					
 					for (int row = 0; row < 3; row++) {
 						
 						if (row == 0) {
@@ -2601,7 +2653,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 										}
 									}
 								}
-								
+								/*
 								if ([tempRiderCode isEqualToString:@"LCWP"] || [tempRiderCode isEqualToString:@"CIWP"] ) {
 									if([tempHL100SA isEqualToString:@"(null)"]) {
 										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
@@ -2628,6 +2680,19 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 										}
 									}
 								}
+								*/
+								
+								if([tempHL100SA isEqualToString:@"(null)"]) {
+									[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+								}
+								else{
+									if(i + 1 <= [tempHL100SATerm intValue ] ){
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
+									}
+									else{
+										[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium - ((waiverRiderSA *  tempRiderSA/100)/100) * [tempHL100SA doubleValue] ]];
+									}
+								}
 								
 								//[tempCol1 addObject:[NSString stringWithFormat:@"%.2f", tempPremium]];
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", waiverRiderSA *  tempRiderSA/100]];
@@ -2641,6 +2706,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								 CIWPMonthly = waiverRiderSAMonthly *  tempRiderSA/100.00;
 								 */
 								if (i == 1) {
+
 									
 									[gWaiverAnnual addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSA *  tempRiderSA/100.00] ];
 									[gWaiverSemiAnnual addObject:[NSString stringWithFormat:@"%.9f", waiverRiderSASemiAnnual *  tempRiderSA/100.00] ];
@@ -2651,12 +2717,12 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 								
 							}
 							
-							else if ([tempRiderCode isEqualToString:@"PTR"]) {
+							else if ([tempRiderCode isEqualToString:@"PTR"]) { //for payor only
 								
 								if (i == 0) {
 									if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
 										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
-													, tempRiderCode, Age, tempRiderTerm ];
+													, tempRiderCode, PayorAge, tempRiderTerm ];
 										
 										
 										if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -2842,8 +2908,15 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 							else if ([tempRiderCode isEqualToString:@"LCPR"] || [tempRiderCode isEqualToString:@"PLCP"] ) {
 								if (i == 0) {
 									if (sqlite3_open([RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
-										QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
-													, tempRiderCode, Age, tempRiderTerm ];
+										if ([tempRiderCode isEqualToString:@"LCPR"]) {
+											QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
+														, tempRiderCode, Age, tempRiderTerm ];
+										}
+										else{ //for payor only
+											QuerySQL = [NSString stringWithFormat:@"Select rate from Trad_Sys_Rider_CSV Where plancode = \"%@\" AND Age = \"%d\" AND Term = \"%d\""
+														, tempRiderCode, PayorAge, tempRiderTerm ];
+											
+										}
 										
 										if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 											while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -2877,6 +2950,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									}
 								}
 								[tempCol2 addObject:[NSString stringWithFormat:@"%.3f", [[Rate objectAtIndex:i ]doubleValue ] * tempRiderSA/1000.00   ]];
+								
 								[tempCol3 addObject:[NSString stringWithFormat:@"%.2f", tempRiderSA] ];
 								[tempCol4 addObject:[NSString stringWithFormat:@"%.2f", tempRiderSA]];
 								
@@ -3755,13 +3829,21 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSString *QuerySQL;
     
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+		/*
 		QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
 					"\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",\"sex\",\"Class\",\"OccLoading\", \"HL1KSATerm\",\"TempHL1KSA\",\"TempHL1KSATerm\" "
 					", \"PartialAcc\", \"PartialPayout\"  from Trad_Details as A, "
 					"Clt_Profile as B, trad_LaPayor as C, Adm_Occp_Loading as D where A.Sino = C.Sino AND C.custCode = B.custcode AND "
 					"D.OccpCode = B.OccpCode AND A.sino = \"%@\" AND \"seq\" = 1 ", SINo];
-        
-        NSLog(@"%@", QuerySQL);
+        */
+		
+		QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
+					"\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",\"sex\",\"Class\",\"OccLoading\", \"HL1KSATerm\",\"TempHL1KSA\",\"TempHL1KSATerm\" "
+					", \"PartialAcc\", \"PartialPayout\"  from Trad_Details as A, "
+					"Clt_Profile as B, trad_LaPayor as C, Adm_Occp_Loading_Penta as D where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+					"D.OccpCode = B.OccpCode AND A.sino = \"%@\" AND \"seq\" = 1 ", SINo];
+			
+		NSLog(@"%@", QuerySQL);
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             
             if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -3789,11 +3871,51 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 			YearlyIncome = @"ACC";
 		}
 		
-        QuerySQL = [ NSString stringWithFormat:@"select \"OccLoading\" from Trad_Details as A, "
+		QuerySQL = [ NSString stringWithFormat:@"select CustCode from Trad_LaPayor where sino = \"%@\" AND PtypeCode = 'PY' ", SINo];
+        
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW) {
+				NSLog(@"Got payor");
+                NSString* CC  = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                
+                NSString* getFromCltProfileSQL  = [NSString stringWithFormat:@"Select Name, Smoker, sex, ALB from clt_profile where custcode  = \"%@\"",  CC];
+                
+                if(sqlite3_prepare_v2(contactDB, [getFromCltProfileSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
+                    
+                    if (sqlite3_step(statement2) == SQLITE_ROW) {
+                        /*
+						NSString *PYName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+                        NSString *PYsmoker = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 1)];
+                        NSString *PYsex = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 2)];
+                        */
+						PayorAge = sqlite3_column_int(statement2, 3);
+                        /*
+                        PYName = Nil;
+                        PYsmoker = Nil;
+                        PYsex = Nil;
+						 */
+                    }
+                    sqlite3_finalize(statement2);
+                }
+				
+				getFromCltProfileSQL = Nil;
+            }
+            sqlite3_finalize(statement);
+        }
+		
+		/*
+		QuerySQL = [ NSString stringWithFormat:@"select \"OccLoading\" from Trad_Details as A, "
                     "Clt_Profile as B, trad_LaPayor as C, Adm_Occp_Loading as D where A.Sino = C.Sino AND C.custCode = B.custcode AND "
                     "D.OccpCode = B.OccpCode AND A.sino = \"%@\" AND \"seq\" = 1 ORDER By sequence ASC ", SINo];
+		 */
+		
+        QuerySQL = [ NSString stringWithFormat:@"select \"OccLoading_TL\" from Trad_Details as A, "
+                    "Clt_Profile as B, trad_LaPayor as C, Adm_Occp_Loading_Penta as D where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+                    "D.OccpCode = B.OccpCode AND A.sino = \"%@\" AND \"seq\" = 1 ORDER By sequence ASC ", SINo];
+	
         
-        
+		NSLog(@"%@", QuerySQL);
+		
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             
             while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -3824,6 +3946,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 					"\"Deductible\", \"HL1kSA\", \"HL1KSATerm\", \"HL100SA\", \"HL100SATerm\", \"HLPercentage\", \"HLPercentageTerm\" from trad_rider_details as A, "
                     "trad_sys_rider_profile as B  where \"sino\" = \"%@\" AND A.ridercode = B.RiderCode ORDER BY B.RiderCode ASC ", SINo];
         
+		NSLog(@"%@", QuerySQL);
+		
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
             
             while(sqlite3_step(statement2) == SQLITE_ROW) {
