@@ -37,7 +37,7 @@
 @synthesize popOverController,requestSINo,clientName,occuCode,occuDesc,CustCode2,payorCustCode;
 @synthesize dataInsert,laH,commDate,occuClass,IndexNo,laBH;
 @synthesize ProspectList=_ProspectList;
-@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,occPA;
+@synthesize NamePP,DOBPP,GenderPP,OccpCodePP,occPA,headerTitle;
 @synthesize LADOBField,LAOccpField,getSINo,dataInsert2;
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
 @synthesize termCover,planCode,arrExistRiderCode,arrExistPlanChoice;
@@ -112,9 +112,13 @@ id temp;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
     [super viewWillAppear:animated];
-//    self.view.superview.bounds = CGRectMake(-98, 0, 1000, 748);
+    
+    self.headerTitle.frame = CGRectMake(306, -20, 156, 44);
+    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
+    
+    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1843,6 +1847,7 @@ id temp;
     [self setOccpCodePP:nil];
     [self setArrExistRiderCode:nil];
     [self setPlanChoose:nil];
+    [self setHeaderTitle:nil];
     [super viewDidUnload];
 }
 

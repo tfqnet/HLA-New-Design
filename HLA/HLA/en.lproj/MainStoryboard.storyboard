@@ -3567,6 +3567,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="LAOccpField" destination="ghm-sN-FM5" id="ote-Uu-gFH"/>
                         <outlet property="LAPAField" destination="qX1-ON-JF6" id="gYf-jw-nFw"/>
                         <outlet property="btnCommDate" destination="2JU-81-zNB" id="Twc-Lc-QDa"/>
+                        <outlet property="headerTitle" destination="Zdz-0l-1wR" id="vb3-1L-Fo5"/>
                         <outlet property="myScrollView" destination="A1g-vR-es4" id="h0d-Jo-ghr"/>
                         <outlet property="myToolBar" destination="kNN-4f-rhB" id="jmR-UD-dDj"/>
                         <outlet property="sexSegment" destination="whx-c1-bor" id="g1c-yq-6s6"/>

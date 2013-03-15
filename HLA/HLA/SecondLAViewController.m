@@ -82,8 +82,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
     [super viewWillAppear:animated];
+    
+    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
+//    self.view.frame = CGRectMake(0, 0, 768, 1004);
 }
 
 - (void)viewDidAppear:(BOOL)animated

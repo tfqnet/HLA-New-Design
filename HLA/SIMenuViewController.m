@@ -91,7 +91,8 @@ id RiderCount;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    /*
+    [super viewWillAppear:animated];
+    
     CGRect rectApp = [[UIScreen mainScreen] applicationFrame];
     rectApp.origin = CGPointZero;
     
@@ -99,14 +100,34 @@ id RiderCount;
     self.view.superview.autoresizesSubviews = YES;
     self.RightView.superview.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.RightView.superview.autoresizesSubviews = YES;
-    */
+        
+    self.view.autoresizesSubviews = YES;
     
-    self.view.autoresizesSubviews = NO;
     
-    self.myTableView.frame = CGRectMake(0, 0, 220, 748);
-    [self hideSeparatorLine];
-    self.RightView.frame = CGRectMake(223, 0, 801, 748);
-    [super viewWillAppear:animated];
+    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeLeft ||
+        [[UIDevice currentDevice] orientation] == UIDeviceOrientationFaceUp) {
+        
+        NSLog(@"%d",[[UIDevice currentDevice] orientation]);
+        NSLog(@"left!");
+        self.myTableView.frame = CGRectMake(0, 0, 220, 748);
+        self.RightView.frame = CGRectMake(223-10, 0, 801, 748);
+        
+        [self hideSeparatorLine];
+        [self.view bringSubviewToFront:myTableView];
+        
+        int y = myTableView.frame.size.height;
+        UIView *topping = [[UIView alloc] initWithFrame:CGRectMake(0, y, 220, 748-y)];
+        [self.view addSubview:topping];
+        [self.view bringSubviewToFront:topping];
+        [topping setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]]];
+    }
+    else if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight) {
+        
+        NSLog(@"right!");
+        self.myTableView.frame = CGRectMake(0, 0, 220, 748);
+        self.RightView.frame = CGRectMake(223, 0, 801, 748);
+        [self hideSeparatorLine];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

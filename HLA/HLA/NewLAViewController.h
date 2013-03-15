@@ -80,6 +80,7 @@
 @property (strong, nonatomic) IBOutlet UITextField *LADOBField;
 @property (strong, nonatomic) IBOutlet UITextField *LAOccpField;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
+@property (strong, nonatomic) IBOutlet UILabel *headerTitle;
 
 @property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, copy) NSString *CustCode;
