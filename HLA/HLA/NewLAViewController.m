@@ -61,8 +61,8 @@ id temp;
     
     //--for update db due to upgrading version or changes
     [self updateDB_maxAge];
-//    [self updateTB_Rider_Details];
-//    [self updateTB_Rider_Label];
+    [self updateTB_Rider_Details];
+    [self updateTB_Rider_Label];
     
     LANameField.enabled = NO;
     sexSegment.enabled = NO;

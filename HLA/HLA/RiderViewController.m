@@ -1875,7 +1875,7 @@
         monthRiderSum = monthRiderSum + [[monthRiderPrem objectAtIndex:a] doubleValue];
     }
     riderPrem = annualRiderSum;
-    NSLog(@"RiderPrem:%.2f",riderPrem);
+//    NSLog(@"RiderPrem:%.2f",riderPrem);
 }
 
 -(void)calculateWaiver
@@ -2434,6 +2434,9 @@
         [self.myTableView setEditing:NO animated:TRUE];
         deleteBtn.hidden = true;
         [editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
+        
+        ItemToBeDeleted = [[NSMutableArray alloc] init];
+        indexPaths = [[NSMutableArray alloc] init];
     }
     else{
         [self.myTableView setEditing:YES animated:TRUE];
@@ -3146,7 +3149,8 @@
     }
     //--
     
-    else if (([riderCode isEqualToString:@"HMM"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"HSP_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_II"] && LRiderCode.count != 0)||([riderCode isEqualToString:@"MG_IV"] && LRiderCode.count != 0)) {
+    else if (([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"MG_II"] ||
+              [riderCode isEqualToString:@"MG_IV"] || [riderCode isEqualToString:@"HSP_II"]) && LRiderCode.count != 0) {
         NSLog(@"go RoomBoard!");
         [self RoomBoard];
     }
@@ -3500,6 +3504,7 @@
     }
 }
 
+/*
 -(void)RoomBoard
 {
     arrCombNo = [[NSMutableArray alloc] init];
@@ -3662,6 +3667,338 @@
         } else {
             NSLog(@"will update data");
             [self updateRider];
+        }
+    }
+}*/
+
+-(void)RoomBoard
+{
+    arrCombNo = [[NSMutableArray alloc] init];
+    arrRBBenefit = [[NSMutableArray alloc] init];
+
+    [self checkingRider];
+    if (existRidCode.length == 0)       //validate as a new
+    {
+        //--1st stage only validate Major Medi/medGlobal
+        
+        for (NSUInteger i=0; i<LRiderCode.count; i++)
+        {
+            if (([[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"] && [riderCode isEqualToString:@"MG_II"]) ||
+                ([[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"] && [riderCode isEqualToString:@"MG_IV"]))
+            {
+                medRiderCode = [LRiderCode objectAtIndex:i];
+                medPlanOpt = [LPlanOpt objectAtIndex:i];
+                
+                [self getListCombNo];
+                NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                [arrCombNo addObject:tempCombNo];
+                
+                [self getListRBBenefit];
+                NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                [arrRBBenefit addObject:tempBenefit];
+                
+                NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                
+            } else {
+                continue;
+            }
+        }
+        
+        //--calculate existing benefit
+        double allBenefit = 0;
+        for (NSUInteger x=0; x<arrRBBenefit.count; x++) {
+            allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:x] doubleValue];
+        }
+        NSLog(@"total listBenefit:%.f",allBenefit);
+        
+        [self getCombNo];       //--get current CombNo
+        NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+        [arrCombNo addObject:tempCombNo];
+        
+        NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];     //--sort combNo
+        [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+        
+        NSString *newComb =[[NSString alloc] init];     //--combine all CombNo
+        for ( NSUInteger y=0; y<arrCombNo.count; y++) {
+            newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:y]];
+        }
+        AllCombNo = [newComb intValue];
+        NSLog(@"newComb:%@",newComb);
+        
+        [self getRBBenefit];        //--get selected RBBenefit and calculate all bnefit
+        allBenefit = allBenefit + RBBenefit;
+        NSLog(@"total allBenefit:%.f",allBenefit);
+        
+        //--get Limit,RBGroup
+        [self getRBLimit];
+        
+        //--end 1st stage validate
+        
+        if (allBenefit > RBLimit) {
+            if (RBGroup == 1) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                [self roomBoardDefaultPlanNew];
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                [self roomBoardDefaultPlanNew];
+            }
+        }
+        
+        //--2nd stage  validate combination of all MedGlobal, Major Medi and H&P
+        else {            
+            
+            
+            arrCombNo = [[NSMutableArray alloc] init];
+            arrRBBenefit = [[NSMutableArray alloc] init];
+            
+            for (NSUInteger i=0; i<LRiderCode.count; i++)
+            {
+                if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
+                {
+                    medRiderCode = [LRiderCode objectAtIndex:i];
+                    medPlanOpt = [LPlanOpt objectAtIndex:i];
+                    
+                    [self getListCombNo];
+                    NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                    [arrCombNo addObject:tempCombNo];
+                    
+                    [self getListRBBenefit];
+                    NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                    [arrRBBenefit addObject:tempBenefit];
+                    
+                    NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                    
+                } else {
+                    continue;
+                }
+            }
+            
+            //--calculate existing benefit
+            double allBenefit = 0;
+            for (NSUInteger x=0; x<arrRBBenefit.count; x++) {
+                allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:x] doubleValue];
+            }
+            NSLog(@"total listBenefit:%.f",allBenefit);
+            
+            [self getCombNo];       //--get current CombNo
+            NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+            [arrCombNo addObject:tempCombNo];
+            
+            NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];     //--sort combNo
+            [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+            
+            NSString *newComb =[[NSString alloc] init];     //--combine all CombNo
+            for ( NSUInteger y=0; y<arrCombNo.count; y++) {
+                newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:y]];
+            }
+            AllCombNo = [newComb intValue];
+            NSLog(@"newComb:%@",newComb);
+            
+            [self getRBBenefit];        //--get selected RBBenefit and calculate all bnefit
+            allBenefit = allBenefit + RBBenefit;
+            NSLog(@"total allBenefit:%.f",allBenefit);
+            
+            //get Limit,RBGroup
+            [self getRBLimit];
+            
+            //--end 2nd stage validation
+            
+            if (allBenefit > RBLimit) {
+                if (RBGroup == 1) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    
+                    [self roomBoardDefaultPlanNew];
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    
+                    [self roomBoardDefaultPlanNew];
+                }
+            }
+            else {
+                NSLog(@"will continue save RB!");
+                [self saveRider];
+            }
+        }
+    }
+    
+    else      //validate as existing
+    {
+        //--1st stage only validate Major Medi/medGlobal
+        
+        double allBenefit = 0;
+        for (NSUInteger i=0; i<LRiderCode.count; i++)
+        {
+            if ([[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"] || [[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"])
+            {
+                medRiderCode = [LRiderCode objectAtIndex:i];
+                medPlanOpt = [LPlanOpt objectAtIndex:i];
+                
+                [self getListCombNo];
+                NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                [arrCombNo addObject:tempCombNo];
+                
+                [self getListRBBenefit];
+                NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                [arrRBBenefit addObject:tempBenefit];
+                NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                
+            } else {
+                continue;
+            }
+        }
+        
+        for (NSUInteger m=0; m<LRiderCode.count; m++)
+        {
+            if ([[LRiderCode objectAtIndex:m] isEqualToString:riderCode]) {
+                
+                medRiderCode = [LRiderCode objectAtIndex:m];
+                medPlanOpt = [LPlanOpt objectAtIndex:m];
+                [self getListRBBenefit];
+                
+            } else {
+                continue;
+            }
+        }
+        
+        //total up all benefit
+        for (NSUInteger z=0; z<arrRBBenefit.count; z++) {
+            allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:z] doubleValue];
+        }
+        NSLog(@"currentBenefit:%.f",allBenefit);
+        
+        //minus benefit
+        allBenefit = allBenefit - RBBenefit;
+        NSLog(@"benefit:%d, newBenefit:%.f",RBBenefit,allBenefit);
+        
+        //sort combNo
+        NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];
+        [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+        
+        //combine all CombNo
+        NSString *newComb =[[NSString alloc] init];
+        for ( NSUInteger h=0; h<arrCombNo.count; h++) {
+            newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:h]];
+        }
+        AllCombNo = [newComb intValue];
+        NSLog(@"newComb:%@",newComb);
+        
+        //get selected RBBenefit and calculate
+        [self getRBBenefit];
+        allBenefit = allBenefit + RBBenefit;
+        NSLog(@"allBenefit:%.f",allBenefit);
+        
+        //get Limit,RBGroup
+        [self getRBLimit];
+        
+        //-- end 1st stage validate
+        
+        if (allBenefit > RBLimit) {
+            if (RBGroup == 1) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                [self roomBoardDefaultPlan];
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                [self roomBoardDefaultPlan];
+            }
+        }
+        
+        //--2nd stage validate combination of all MedGlobal, Major Medi and H&P
+        else {
+
+            arrCombNo = [[NSMutableArray alloc] init];
+            arrRBBenefit = [[NSMutableArray alloc] init];
+            
+            double allBenefit = 0;
+            for (NSUInteger i=0; i<LRiderCode.count; i++)
+            {
+                if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
+                {
+                    medRiderCode = [LRiderCode objectAtIndex:i];
+                    medPlanOpt = [LPlanOpt objectAtIndex:i];
+                    
+                    [self getListCombNo];
+                    NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                    [arrCombNo addObject:tempCombNo];
+                    
+                    [self getListRBBenefit];
+                    NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                    [arrRBBenefit addObject:tempBenefit];
+                    NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                    
+                } else {
+                    continue;
+                }
+            }
+            
+            for (NSUInteger m=0; m<LRiderCode.count; m++)
+            {
+                if ([[LRiderCode objectAtIndex:m] isEqualToString:riderCode]) {
+                    
+                    medRiderCode = [LRiderCode objectAtIndex:m];
+                    medPlanOpt = [LPlanOpt objectAtIndex:m];
+                    [self getListRBBenefit];
+                    
+                } else {
+                    continue;
+                }
+            }
+            
+            //total up all benefit
+            for (NSUInteger z=0; z<arrRBBenefit.count; z++) {
+                allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:z] doubleValue];
+            }
+            NSLog(@"currentBenefit:%.f",allBenefit);
+            
+            //minus benefit
+            allBenefit = allBenefit - RBBenefit;
+            NSLog(@"benefit:%d, newBenefit:%.f",RBBenefit,allBenefit);
+            
+            //sort combNo
+            NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];
+            [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+            
+            //combine all CombNo
+            NSString *newComb =[[NSString alloc] init];
+            for ( NSUInteger h=0; h<arrCombNo.count; h++) {
+                newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:h]];
+            }
+            AllCombNo = [newComb intValue];
+            NSLog(@"newComb:%@",newComb);
+            
+            //get selected RBBenefit and calculate
+            [self getRBBenefit];
+            allBenefit = allBenefit + RBBenefit;
+            NSLog(@"allBenefit:%.f",allBenefit);
+            
+            //get Limit,RBGroup
+            [self getRBLimit];
+            
+            if (allBenefit > RBLimit) {
+                if (RBGroup == 1) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [self roomBoardDefaultPlan];
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [self roomBoardDefaultPlan];
+                }
+            } else {
+                NSLog(@"will update data");
+                [self updateRider];
+            }
         }
     }
 }
@@ -3922,6 +4259,26 @@
     }
 }
 
+-(void)roomBoardDefaultPlanNew
+{
+    if ([riderCode isEqualToString:@"HMM"]) {
+        planOption = @"HMM_150";
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
+    }
+    else if ([riderCode isEqualToString:@"HSP_II"]) {
+        planOption = @"Standard";
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
+    }
+    else if ([riderCode isEqualToString:@"MG_II"]) {
+        planOption = @"MG_II_100";
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
+    }
+    else if ([riderCode isEqualToString:@"MG_IV"]) {
+        planOption = @"MGIVP_150";
+        [self.planBtn setTitle:planOption forState:UIControlStateNormal];
+    }
+}
+
 
 #pragma mark - DB handling
 
@@ -4128,7 +4485,7 @@
         @"INSERT INTO Trad_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, PlanOption, Units, Deductible, HL1KSA, HL1KSATerm, HL100SA, HL100SATerm, HLPercentage, HLPercentageTerm, CreatedAt,TempHL1KSA,TempHL1KSATerm) VALUES"
         "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\", \"%d\", \"%@\",\"%@\",\"%@\")", getSINo,riderCode, pTypeCode, PTypeSeq, termField.text, sumField.text, planOption, unitField.text, deductible, inputHL1KSA, inputHL1KSATerm, inputHL100SA, inputHL100SATerm, inputHLPercentage, inputHLPercentageTerm, dateString,tempHLField.text,tempHLTField.text];
 
-        NSLog(@"%@",insertSQL);
+//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
