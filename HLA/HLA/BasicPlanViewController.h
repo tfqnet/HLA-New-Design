@@ -18,6 +18,7 @@
 @protocol BasicPlanViewControllerDelegate
 -(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance andBasicPlan:(NSString *)aabasicPlan;
 -(void)RiderAdded;
+-(void) BasicSARevised:(NSString *)aabasicSA;
 @end
 
 @interface BasicPlanViewController : UIViewController <UITextFieldDelegate,PlanListDelegate>{
@@ -167,8 +168,47 @@
 
 @property (retain, nonatomic) NSMutableArray *LRiderCode;
 @property (retain, nonatomic) NSMutableArray *LSumAssured;
+@property (retain, nonatomic) NSMutableArray *LTerm;
 @property (retain, nonatomic) NSMutableArray *LPlanOpt;
 @property (retain, nonatomic) NSMutableArray *LUnits;
+@property(nonatomic , retain) NSMutableArray *LDeduct;
+@property(nonatomic , retain) NSMutableArray *LOccpCode;
+@property(nonatomic , retain) NSMutableArray *LRidHL1K;
+@property(nonatomic , retain) NSMutableArray *LRidHL100;
+@property(nonatomic , retain) NSMutableArray *LRidHLP;
+@property(nonatomic , retain) NSMutableArray *LSmoker;
+@property(nonatomic , retain) NSMutableArray *LSex;
+@property(nonatomic , retain) NSMutableArray *LAge;
+@property(nonatomic , retain) NSMutableArray *LTempRidHL1K;
+
+@property (nonatomic, assign,readwrite) int age;
+@property (nonatomic,strong) NSString *sex;
+@property (nonatomic, assign,readwrite) double riderRate;
+@property (nonatomic,copy) NSString *pTypeOccp;
+@property (nonatomic, assign,readwrite) int occLoadRider;
+@property (nonatomic, assign,readwrite) double riderPrem;
+@property (nonatomic, assign,readwrite) double medRiderPrem;
+@property (nonatomic,strong) NSMutableArray *waiverRiderAnn;
+@property (nonatomic,strong) NSMutableArray *waiverRiderQuar;
+@property (nonatomic,strong) NSMutableArray *waiverRiderHalf;
+@property (nonatomic,strong) NSMutableArray *waiverRiderMonth;
+@property (nonatomic,strong) NSMutableArray *waiverRiderAnn2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderQuar2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderHalf2;
+@property (nonatomic,strong) NSMutableArray *waiverRiderMonth2;
+@property (nonatomic,strong) NSMutableArray *annualMedRiderPrem;
+@property (nonatomic,strong) NSMutableArray *quarterMedRiderPrem;
+@property (nonatomic,strong) NSMutableArray *halfMedRiderPrem;
+@property (nonatomic,strong) NSMutableArray *monthMedRiderPrem;
+@property (nonatomic, assign,readwrite) double annualRiderSum;
+@property (nonatomic, assign,readwrite) double halfRiderSum;
+@property (nonatomic, assign,readwrite) double quarterRiderSum;
+@property (nonatomic, assign,readwrite) double monthRiderSum;
+@property (nonatomic, assign,readwrite) double annualMedRiderSum;
+@property (nonatomic, assign,readwrite) double halfMedRiderSum;
+@property (nonatomic, assign,readwrite) double quarterMedRiderSum;
+@property (nonatomic, assign,readwrite) double monthMedRiderSum;
+
 @property (nonatomic,copy) NSString *riderCode;
 @property (nonatomic, assign,readwrite) int expAge;
 @property (nonatomic, assign,readwrite) int minSATerm;

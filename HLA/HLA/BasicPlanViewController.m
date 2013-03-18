@@ -35,19 +35,20 @@
 @synthesize cashDividendSegment;
 @synthesize HLField;
 @synthesize HLTermField;
-@synthesize tempHLField;
+@synthesize tempHLField,annualRiderSum,halfRiderSum,monthRiderSum,quarterRiderSum;
 @synthesize tempHLTermField,basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth;
-@synthesize myScrollView,labelSix,labelSeven,labelFour,labelFive;
-@synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA;
+@synthesize myScrollView,labelSix,labelSeven,labelFour,labelFive,annualMedRiderPrem,monthMedRiderPrem,quarterMedRiderPrem;
+@synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA,halfMedRiderPrem;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
 @synthesize planCode,requestOccpCode,basicH,dataInsert,basicBH,basicPH,basicLa2ndH;
 @synthesize SINo,LACustCode,PYCustCode,SIDate,SILastNo,CustDate,CustLastNo;
 @synthesize NamePP,DOBPP,OccpCodePP,GenderPP,secondLACustCode,IndexNo,PayorIndexNo,secondLAIndexNo;
 @synthesize delegate = _delegate;
-@synthesize requestAge,OccpCode,requestIDPay,requestIDProf,idPay,idProf;
-@synthesize requestAgePay,requestDOBPay,requestIndexPay,requestOccpPay,requestSexPay,requestSmokerPay;
-@synthesize PayorAge,PayorDOB,PayorOccpCode,PayorSex,PayorSmoker,LPlanOpt;
+@synthesize requestAge,OccpCode,requestIDPay,requestIDProf,idPay,idProf,annualMedRiderSum,halfMedRiderSum,quarterMedRiderSum;
+@synthesize requestAgePay,requestDOBPay,requestIndexPay,requestOccpPay,requestSexPay,requestSmokerPay,monthMedRiderSum;
+@synthesize PayorAge,PayorDOB,PayorOccpCode,PayorSex,PayorSmoker,LPlanOpt,LDeduct,LAge,LSmoker;
+@synthesize LTerm,age,sex,LSex,riderRate,LRidHL1K,LRidHL100,LRidHLP,LTempRidHL1K,LOccpCode;
 @synthesize requestAge2ndLA,requestDOB2ndLA,requestIndex2ndLA,requestOccp2ndLA,requestSex2ndLA,requestSmoker2ndLA;
 @synthesize secondLAAge,secondLADOB,secondLAOccpCode,secondLASex,secondLASmoker;
 @synthesize LRiderCode,LSumAssured,expAge,minSATerm,maxSATerm,minTerm,maxTerm,riderCode,_maxRiderSA,maxRiderSA,GYI;
@@ -56,6 +57,8 @@
 @synthesize planList = _planList;
 @synthesize planPopover = _planPopover;
 @synthesize labelParAcc,labelParPayout,labelPercent1,labelPercent2,parAccField,parPayoutField,getParAcc,getParPayout;
+@synthesize pTypeOccp,occLoadRider,riderPrem,waiverRiderAnn,medRiderPrem;
+@synthesize waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 
 #pragma mark - Cycle View
 
@@ -1236,6 +1239,1381 @@ id temp;
     NSLog(@"BasicPrem:%.2f, S:%.2f, Q:%.2f, M:%.2f",basicPremAnn,basicPremHalf,basicPremQuar,basicPremMonth);
 }
 
+-(void)calculateRiderPrem
+{
+    NSMutableArray *annualRiderPrem = [[NSMutableArray alloc] init];
+    NSMutableArray *halfRiderPrem = [[NSMutableArray alloc] init];
+    NSMutableArray *quarterRiderPrem = [[NSMutableArray alloc] init];
+    NSMutableArray *monthRiderPrem = [[NSMutableArray alloc] init];
+    
+    waiverRiderAnn = [[NSMutableArray alloc] init];
+    waiverRiderHalf = [[NSMutableArray alloc] init];
+    waiverRiderQuar = [[NSMutableArray alloc] init];
+    waiverRiderMonth = [[NSMutableArray alloc] init];
+    waiverRiderAnn2 = [[NSMutableArray alloc] init];
+    waiverRiderHalf2 = [[NSMutableArray alloc] init];
+    waiverRiderQuar2 = [[NSMutableArray alloc] init];
+    waiverRiderMonth2 = [[NSMutableArray alloc] init];
+    
+    annualMedRiderPrem = [[NSMutableArray alloc] init];
+    halfMedRiderPrem = [[NSMutableArray alloc] init];
+    quarterMedRiderPrem = [[NSMutableArray alloc] init];
+    monthMedRiderPrem = [[NSMutableArray alloc] init];
+    
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
+    
+    NSUInteger i;
+    for (i=0; i<[LRiderCode count]; i++) {
+        
+        NSString *RidCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:i]];
+        
+        //getpentacode
+        NSString *plan = nil;
+        NSString *pentaSQL = nil;
+        NSString *deduct = nil;
+        NSString *planCodeRider = nil;
+        
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement;
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+        {
+            if ([RidCode isEqualToString:@"C+"])
+            {
+                if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Level"]) {
+                    plan = @"L";
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Increasing"]) {
+                    plan = @"I";
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Level_NCB"]) {
+                    plan = @"B";
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Increasing_NCB"]) {
+                    plan = @"N";
+                }
+                
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"C+\" AND PlanOption=\"%@\"",plan];
+            }
+            else if ([RidCode isEqualToString:@"HMM"])
+            {
+                plan = [LPlanOpt objectAtIndex:i];
+                deduct = [LDeduct objectAtIndex:i];
+                pentaSQL = [[NSString alloc] initWithFormat:
+                            @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HMM\" AND PlanOption=\"%@\" AND Deductible=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",plan,deduct,[LAge objectAtIndex:i],[LAge objectAtIndex:i]];
+            }
+            else if ([RidCode isEqualToString:@"HSP_II"])
+            {
+                if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Standard"]) {
+                    plan = @"S";
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Deluxe"]) {
+                    plan = @"D";
+                } else if ([[LPlanOpt objectAtIndex:i] isEqualToString:@"Premier"]) {
+                    plan = @"P";
+                }
+                pentaSQL = [[NSString alloc] initWithFormat:
+                            @"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"HSP_II\" AND PlanOption=\"%@\"",plan];
+            }
+            else if ([RidCode isEqualToString:@"MG_II"])
+            {
+                plan = [LPlanOpt objectAtIndex:i];
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_II\" AND PlanOption=\"%@\"",plan];
+            }
+            else if ([RidCode isEqualToString:@"I20R"] || [RidCode isEqualToString:@"I30R"] || [RidCode isEqualToString:@"I40R"] || [RidCode isEqualToString:@"ID20R"] || [RidCode isEqualToString:@"ID30R"] || [RidCode isEqualToString:@"ID40R"] || [RidCode isEqualToString:@"IE20R"] || [RidCode isEqualToString:@"IE30R"])
+            {
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND PremPayOpt=\"%d\"",[LRiderCode objectAtIndex:i],MOP];
+                
+            }
+            else if ([RidCode isEqualToString:@"ICR"])
+            {
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"ICR\" AND Smoker=\"%@\"",[LSmoker objectAtIndex:i]];
+                
+            } else if ([RidCode isEqualToString:@"MG_IV"])
+            {
+                plan = [LPlanOpt objectAtIndex:i];
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"MG_IV\" AND PlanOption=\"%@\" AND FromAge <= \"%@\" AND ToAge >= \"%@\"",plan,[LAge objectAtIndex:i],[LAge objectAtIndex:i]];
+            }
+            else if ([RidCode isEqualToString:@"EDB"]||[RidCode isEqualToString:@"ETPDB"])
+            {
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\"",RidCode];
+            }
+            else if ([RidCode isEqualToString:@"CIWP"]||[RidCode isEqualToString:@"LCWP"]||[RidCode isEqualToString:@"PR"]||[RidCode isEqualToString:@"SP_STD"]||[RidCode isEqualToString:@"SP_PRE"]) {
+                sqlite3_close(contactDB);
+                continue;
+            }
+            else {
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",RidCode];
+            }
+            
+            const char *query_stmt = [pentaSQL UTF8String];
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    planCodeRider =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                    
+                } else {
+                    NSLog(@"error access PentaPlanCode");
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+        
+        int ridTerm = [[LTerm objectAtIndex:i] intValue];
+        age = [[LAge objectAtIndex:i] intValue];
+        sex = [[NSString alloc] initWithFormat:@"%@",[LSex objectAtIndex:i]];
+        //get rate
+        if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"ID20R"]||[RidCode isEqualToString:@"ID30R"]||[RidCode isEqualToString:@"ID40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
+        {
+            [self getRiderRateAge:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([RidCode isEqualToString:@"CPA"]) {
+            [self getRiderRateClass:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([RidCode isEqualToString:@"PA"]||[RidCode isEqualToString:@"HSP_II"]) {
+            [self getRiderRateAgeClass:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([RidCode isEqualToString:@"HB"]) {
+            [self getRiderRateSex:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"HMM"]) {
+            [self getRiderRateAgeSexClass:planCodeRider riderTerm:ridTerm];
+        }
+        else if ([RidCode isEqualToString:@"EDB"] ||[RidCode isEqualToString:@"ETPDB"]) {
+            [self getRiderRateSex:planCodeRider];
+        }
+        else {
+            [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
+        }
+        
+        double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
+        double riderHLoad = 0;
+        double riderTempHLoad = 0;
+        
+        if ([[LRidHL1K objectAtIndex:i] doubleValue] > 0) {
+            riderHLoad = [[LRidHL1K objectAtIndex:i] doubleValue];
+        }
+        else if ([[LRidHL100 objectAtIndex:i] doubleValue] > 0) {
+            riderHLoad = [[LRidHL100 objectAtIndex:i] doubleValue];
+        }
+        else if ([[LRidHLP objectAtIndex:i] doubleValue] > 0) {
+            riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
+        }
+        
+        if ([[LTempRidHL1K objectAtIndex:i] doubleValue] > 0) {
+            riderTempHLoad = [[LTempRidHL1K objectAtIndex:i] doubleValue];
+        }
+        NSLog(@"~riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f, TempHL:%.3f",[LRiderCode objectAtIndex:i],riderRate,ridSA,riderHLoad, riderTempHLoad);
+        
+        double annFac;
+        double halfFac;
+        double quarterFac;
+        double monthFac;
+        if ([RidCode isEqualToString:@"HB"]) {
+            annFac = 1;
+            halfFac = 0.55;
+            quarterFac = 0.3;
+            monthFac = 0.1;
+        }
+        else {
+            annFac = 1;
+            halfFac = 0.5125;
+            quarterFac = 0.2625;
+            monthFac = 0.0875;
+        }
+        
+        //calculate occupationLoading
+        pTypeOccp = [LOccpCode objectAtIndex:i];
+        [self getOccLoadRider];
+        NSLog(@"occpLoadRate(%@):%d",RidCode,occLoadRider);
+        
+        double annualRider = 0;
+        double halfYearRider = 0;
+        double quarterRider = 0;
+        double monthlyRider = 0;
+        
+        if ([RidCode isEqualToString:@"ETPD"])
+        {
+            double _ann = (riderRate *ridSA /100 *annFac);
+            double _half = (riderRate *ridSA /100 *halfFac);
+            double _quar = (riderRate *ridSA /100 *quarterFac);
+            double _month = (riderRate *ridSA /100 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            //--HL
+            double _HLAnn = (riderHLoad /10 *ridSA /100 *annFac);
+            double _HLHalf = (riderHLoad /10 *ridSA /100 *halfFac);
+            double _HLQuar = (riderHLoad /10 *ridSA /100 *quarterFac);
+            double _HLMonth = (riderHLoad /10 *ridSA /100 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad /10 *ridSA /100 *annFac);
+            double _TempHLHalf = (riderTempHLoad /10 *ridSA /100 *halfFac);
+            double _TempHLQuar = (riderTempHLoad /10 *ridSA /100 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad /10 *ridSA /100 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end--
+            annualRider = [str_ann doubleValue] + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + _allRiderHLMonth;
+        }
+        else if ([RidCode isEqualToString:@"I20R"]||[RidCode isEqualToString:@"I30R"]||[RidCode isEqualToString:@"I40R"]||[RidCode isEqualToString:@"IE20R"]||[RidCode isEqualToString:@"IE30R"])
+        {
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm + 1))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm + 1))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm + 1))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm + 1))/2);
+            
+            double calLoadA = occLoadFactorA *ridSA /1000 *annFac;
+            double calLoadH = occLoadFactorH *ridSA /1000 *halfFac;
+            double calLoadQ = occLoadFactorQ *ridSA /1000 *quarterFac;
+            double calLoadM = occLoadFactorM *ridSA /1000 *monthFac;
+            NSString *strLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadA]];
+            NSString *strLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadH]];
+            NSString *strLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadQ]];
+            NSString *strLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadM]];
+            strLoadA = [strLoadA stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + _allRiderHLMonth;
+        }
+        else if ([RidCode isEqualToString:@"ICR"])
+        {
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            
+            annualRider = [str_ann doubleValue] + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + _allRiderHLMonth;
+        }
+        else if ([RidCode isEqualToString:@"ID20R"])
+        {
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm - 20))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm - 20))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 20))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm - 20))/2);
+            
+            double calLoadA = occLoadFactorA *ridSA /1000 *annFac;
+            double calLoadH = occLoadFactorH *ridSA /1000 *halfFac;
+            double calLoadQ = occLoadFactorQ *ridSA /1000 *quarterFac;
+            double calLoadM = occLoadFactorM *ridSA /1000 *monthFac;
+            NSString *strLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadA]];
+            NSString *strLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadH]];
+            NSString *strLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadQ]];
+            NSString *strLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadM]];
+            strLoadA = [strLoadA stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + _allRiderHLMonth;
+        }
+        else if ([RidCode isEqualToString:@"ID30R"])
+        {
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm - 30))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm - 30))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 30))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm - 30))/2);
+            
+            double calLoadA = occLoadFactorA *ridSA /1000 *annFac;
+            double calLoadH = occLoadFactorH *ridSA /1000 *halfFac;
+            double calLoadQ = occLoadFactorQ *ridSA /1000 *quarterFac;
+            double calLoadM = occLoadFactorM *ridSA /1000 *monthFac;
+            NSString *strLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadA]];
+            NSString *strLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadH]];
+            NSString *strLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadQ]];
+            NSString *strLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadM]];
+            strLoadA = [strLoadA stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + _allRiderHLMonth;
+        }
+        else if ([RidCode isEqualToString:@"ID40R"])
+        {
+            double occLoadFactorA = occLoadRider * (((double)(ridTerm - 40))/2);
+            double occLoadFactorH = occLoadRider * (((double)(ridTerm - 40))/2);
+            double occLoadFactorQ = occLoadRider * (((double)(ridTerm - 40))/2);
+            double occLoadFactorM = occLoadRider * (((double)(ridTerm - 40))/2);
+            
+            double calLoadA = occLoadFactorA *ridSA /1000 *annFac;
+            double calLoadH = occLoadFactorH *ridSA /1000 *halfFac;
+            double calLoadQ = occLoadFactorQ *ridSA /1000 *quarterFac;
+            double calLoadM = occLoadFactorM *ridSA /1000 *monthFac;
+            NSString *strLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadA]];
+            NSString *strLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadH]];
+            NSString *strLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadQ]];
+            NSString *strLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadM]];
+            strLoadA = [strLoadA stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            annualRider = [str_ann doubleValue] + [strLoadA doubleValue] + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + [strLoadH doubleValue] + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + [strLoadQ doubleValue] + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + [strLoadM doubleValue] + _allRiderHLMonth;
+        }
+        else if ([RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"HSP_II"]||[RidCode isEqualToString:@"HMM"])
+        {
+            annualRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * annFac;
+            halfYearRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * halfFac;
+            quarterRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * quarterFac;
+            monthlyRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * monthFac;
+        }
+        else if ([RidCode isEqualToString:@"HB"])
+        {
+            int selectUnit = [[LUnits objectAtIndex:i] intValue];
+            annualRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * selectUnit * annFac;
+            halfYearRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * selectUnit * halfFac;
+            quarterRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * selectUnit * quarterFac;
+            monthlyRider = riderRate * (1 + (riderHLoad+riderTempHLoad)/100) * selectUnit * monthFac;
+        }
+        else if ([RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"])
+        {
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            
+            annualRider = [str_ann doubleValue] + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + _allRiderHLMonth;
+        }
+        else if ([RidCode isEqualToString:@"EDB"] || [RidCode isEqualToString:@"ETPDB"]) {
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double calLoadA = occLoadRider *3 *ridSA /1000 *annFac;
+            double calLoadH = occLoadRider *3 *ridSA /1000 *halfFac;
+            double calLoadQ = occLoadRider *3 *ridSA /1000 *quarterFac;
+            double calLoadM = occLoadRider *3 *ridSA /1000 *monthFac;
+            NSString *strLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadA]];
+            NSString *strLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadH]];
+            NSString *strLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadQ]];
+            NSString *strLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadM]];
+            strLoadA = [strLoadA stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            
+            annualRider = [str_ann doubleValue] + ([strLoadA doubleValue]) + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + ([strLoadH doubleValue]) + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + ([strLoadQ doubleValue]) + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + ([strLoadM doubleValue]) + _allRiderHLMonth;
+        }
+        else {
+            double _ann = (riderRate *ridSA /1000 *annFac);
+            double _half = (riderRate *ridSA /1000 *halfFac);
+            double _quar = (riderRate *ridSA /1000 *quarterFac);
+            double _month = (riderRate *ridSA /1000 *monthFac);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            //--HL
+            double _HLAnn = (riderHLoad *ridSA /1000 *annFac);
+            double _HLHalf = (riderHLoad *ridSA /1000 *halfFac);
+            double _HLQuar = (riderHLoad *ridSA /1000 *quarterFac);
+            double _HLMonth = (riderHLoad *ridSA /1000 *monthFac);
+            NSString *str_HLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLAnn]];
+            NSString *str_HLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLHalf]];
+            NSString *str_HLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLQuar]];
+            NSString *str_HLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_HLMonth]];
+            str_HLAnn = [str_HLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLHalf = [str_HLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLQuar = [str_HLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_HLMonth = [str_HLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _TempHLAnn = (riderTempHLoad *ridSA /1000 *annFac);
+            double _TempHLHalf = (riderTempHLoad *ridSA /1000 *halfFac);
+            double _TempHLQuar = (riderTempHLoad *ridSA /1000 *quarterFac);
+            double _TempHLMonth = (riderTempHLoad *ridSA /1000 *monthFac);
+            NSString *str_TempHLAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLAnn]];
+            NSString *str_TempHLHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLHalf]];
+            NSString *str_TempHLQuar = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLQuar]];
+            NSString *str_TempHLMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:_TempHLMonth]];
+            str_TempHLAnn = [str_TempHLAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLHalf = [str_TempHLHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLQuar = [str_TempHLQuar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_TempHLMonth = [str_TempHLMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            double _allRiderHLAnn = [str_HLAnn doubleValue] + [str_TempHLAnn doubleValue];
+            double _allRiderHLHalf = [str_HLHalf doubleValue] + [str_TempHLHalf doubleValue];
+            double _allRiderHLQuar = [str_HLQuar doubleValue] + [str_TempHLQuar doubleValue];
+            double _allRiderHLMonth = [str_HLMonth doubleValue] + [str_TempHLMonth doubleValue];
+            //--end
+            
+            double calLoadA = occLoadRider *ridSA /1000 *annFac;
+            double calLoadH = occLoadRider *ridSA /1000 *halfFac;
+            double calLoadQ = occLoadRider *ridSA /1000 *quarterFac;
+            double calLoadM = occLoadRider *ridSA /1000 *monthFac;
+            NSString *strLoadA = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadA]];
+            NSString *strLoadH = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadH]];
+            NSString *strLoadQ = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadQ]];
+            NSString *strLoadM = [formatter stringFromNumber:[NSNumber numberWithDouble:calLoadM]];
+            strLoadA = [strLoadA stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadH = [strLoadH stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadQ = [strLoadQ stringByReplacingOccurrencesOfString:@"," withString:@""];
+            strLoadM = [strLoadM stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+            annualRider = [str_ann doubleValue] + ([strLoadA doubleValue]) + _allRiderHLAnn;
+            halfYearRider = [str_half doubleValue] + ([strLoadH doubleValue]) + _allRiderHLHalf;
+            quarterRider = [str_quar doubleValue] + ([strLoadQ doubleValue]) + _allRiderHLQuar;
+            monthlyRider = [str_month doubleValue] + ([strLoadM doubleValue]) + _allRiderHLMonth;
+        }
+        
+        NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
+        NSString *calRiderHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
+        NSString *calRiderQuarter = [formatter stringFromNumber:[NSNumber numberWithDouble:quarterRider]];
+        NSString *calRiderMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:monthlyRider]];
+        calRiderAnn = [calRiderAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+        calRiderHalf = [calRiderHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+        calRiderQuarter = [calRiderQuarter stringByReplacingOccurrencesOfString:@"," withString:@""];
+        calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+        [annualRiderPrem addObject:calRiderAnn];
+        [halfRiderPrem addObject:calRiderHalf];
+        [quarterRiderPrem addObject:calRiderQuarter];
+        [monthRiderPrem addObject:calRiderMonth];
+        NSLog(@"RiderTotal(%@) A:%@, S:%@, Q:%@, M:%@",[LRiderCode objectAtIndex:i],calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        
+        //for waiver CIWP
+        if (!([RidCode isEqualToString:@"LCPR"]) && !([RidCode isEqualToString:@"CIR"]) && !([RidCode isEqualToString:@"PR"]) && !([RidCode isEqualToString:@"LCWP"]) && !([RidCode isEqualToString:@"SP_STD"]) && !([RidCode isEqualToString:@"SP_PRE"]) && !([RidCode isEqualToString:@"CIWP"]) && !([RidCode isEqualToString:@"ICR"])) {
+            
+            [waiverRiderAnn addObject:calRiderAnn];
+            [waiverRiderHalf addObject:calRiderHalf];
+            [waiverRiderQuar addObject:calRiderQuarter];
+            [waiverRiderMonth addObject:calRiderMonth];
+//            NSLog(@"waiver1 insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        }
+        
+        //for other waiver
+        if (!([RidCode isEqualToString:@"PLCP"]) && !([RidCode isEqualToString:@"CIWP"]) && !([RidCode isEqualToString:@"LCWP"]) && !([RidCode isEqualToString:@"SP_STD"]) && !([RidCode isEqualToString:@"SP_PRE"]) && !([RidCode isEqualToString:@"PR"]) && !([RidCode isEqualToString:@"PTR"])) {
+            
+            [waiverRiderAnn2 addObject:calRiderAnn];
+            [waiverRiderHalf2 addObject:calRiderHalf];
+            [waiverRiderQuar2 addObject:calRiderQuarter];
+            [waiverRiderMonth2 addObject:calRiderMonth];
+//            NSLog(@"waiver2 insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        }
+        
+        //for medical rider
+        if ([RidCode isEqualToString:@"MG_II"]||[RidCode isEqualToString:@"MG_IV"]||[RidCode isEqualToString:@"HSP_II"]||[RidCode isEqualToString:@"HMM"]||[RidCode isEqualToString:@"HB"]||[RidCode isEqualToString:@"CIR"]||[RidCode isEqualToString:@"C+"]) {
+            [annualMedRiderPrem addObject:calRiderAnn];
+            [halfMedRiderPrem addObject:calRiderHalf];
+            [quarterMedRiderPrem addObject:calRiderQuarter];
+            [monthMedRiderPrem addObject:calRiderMonth];
+//            NSLog(@"medical insert(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+        }
+    }
+    
+    annualRiderSum = 0;
+    halfRiderSum = 0;
+    quarterRiderSum = 0;
+    monthRiderSum = 0;
+    NSUInteger a;
+    for (a=0; a<[annualRiderPrem count]; a++) {
+        annualRiderSum = annualRiderSum + [[annualRiderPrem objectAtIndex:a] doubleValue];
+        halfRiderSum = halfRiderSum + [[halfRiderPrem objectAtIndex:a] doubleValue];
+        quarterRiderSum = quarterRiderSum + [[quarterRiderPrem objectAtIndex:a] doubleValue];
+        monthRiderSum = monthRiderSum + [[monthRiderPrem objectAtIndex:a] doubleValue];
+    }
+    riderPrem = annualRiderSum;
+    NSLog(@"RiderPrem:%.2f",riderPrem);
+}
+
+-(void)calculateWaiver
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
+    
+    double waiverAnnSum = 0;
+    double waiverHalfSum = 0;
+    double waiverQuarSum = 0;
+    double waiverMonthSum = 0;
+    for (NSUInteger m=0; m<[waiverRiderAnn count]; m++) {
+        waiverAnnSum = waiverAnnSum + [[waiverRiderAnn objectAtIndex:m] doubleValue];
+        waiverHalfSum = waiverHalfSum + [[waiverRiderHalf objectAtIndex:m] doubleValue];
+        waiverQuarSum = waiverQuarSum + [[waiverRiderQuar objectAtIndex:m] doubleValue];
+        waiverMonthSum = waiverMonthSum + [[waiverRiderMonth objectAtIndex:m] doubleValue];
+    }
+//    NSLog(@"AccRiderPrem1 A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnSum,waiverHalfSum,waiverQuarSum,waiverMonthSum);
+    
+    double waiverAnnSum2 = 0;
+    double waiverHalfSum2 = 0;
+    double waiverQuarSum2 = 0;
+    double waiverMonthSum2 = 0;
+    for (NSUInteger m=0; m<[waiverRiderAnn2 count]; m++) {
+        waiverAnnSum2 = waiverAnnSum2 + [[waiverRiderAnn2 objectAtIndex:m] doubleValue];
+        waiverHalfSum2 = waiverHalfSum2 + [[waiverRiderHalf2 objectAtIndex:m] doubleValue];
+        waiverQuarSum2 = waiverQuarSum2 + [[waiverRiderQuar2 objectAtIndex:m] doubleValue];
+        waiverMonthSum2 = waiverMonthSum2 + [[waiverRiderMonth2 objectAtIndex:m] doubleValue];
+    }
+//    NSLog(@"AccRiderPrem2 A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnSum2,waiverHalfSum2,waiverQuarSum2,waiverMonthSum2);
+    
+    NSMutableArray *waiverRidAnnTol = [[NSMutableArray alloc] init];
+    NSMutableArray *waiverRidHalfTol = [[NSMutableArray alloc] init];
+    NSMutableArray *waiverRidQuarTol = [[NSMutableArray alloc] init];
+    NSMutableArray *waiverRidMonthTol = [[NSMutableArray alloc] init];
+    
+    NSUInteger i;
+    for (i=0; i<[LRiderCode count]; i++) {
+        
+        NSString *RidCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:i]];
+        
+        //getpentacode
+        NSString *pentaSQL = nil;
+        NSString *planCodeRider = nil;
+        
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement;
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+        {
+            if ([RidCode isEqualToString:@"CIWP"]||[RidCode isEqualToString:@"LCWP"]||[RidCode isEqualToString:@"PR"]||[RidCode isEqualToString:@"SP_STD"]||[RidCode isEqualToString:@"SP_PRE"]) {
+                
+                pentaSQL = [[NSString alloc] initWithFormat:@"SELECT PentaPlanCode FROM Trad_Sys_Product_Mapping WHERE PlanType=\"R\" AND SIPlanCode=\"%@\" AND Channel=\"AGT\"",RidCode];
+            }
+            else {
+                sqlite3_close(contactDB);
+                continue;
+            }
+            
+            const char *query_stmt = [pentaSQL UTF8String];
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_ROW) {
+                    planCodeRider =  [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                }
+                else {
+                    NSLog(@"error access PentaPlanCode");
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+        else {
+            sqlite3_close(contactDB);
+        }
+        
+        int ridTerm = [[LTerm objectAtIndex:i] intValue];
+        age = [[LAge objectAtIndex:i] intValue];
+        sex = [[NSString alloc] initWithFormat:@"%@",[LSex objectAtIndex:i]];
+        
+        //get rate
+        [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
+        
+        double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
+        double riderHLoad = 0;
+        double riderTempHLoad = 0;
+        
+        if ([[LRidHL1K objectAtIndex:i] doubleValue] > 0) {
+            riderHLoad = [[LRidHL1K objectAtIndex:i] doubleValue];
+        }
+        else if ([[LRidHL100 objectAtIndex:i] doubleValue] > 0) {
+            riderHLoad = [[LRidHL100 objectAtIndex:i] doubleValue];
+        }
+        else if ([[LRidHLP objectAtIndex:i] doubleValue] > 0) {
+            riderHLoad = [[LRidHLP objectAtIndex:i] doubleValue];
+        }
+        
+        if ([[LTempRidHL1K objectAtIndex:i] doubleValue] > 0) {
+            riderTempHLoad = [[LTempRidHL1K objectAtIndex:i] doubleValue];
+        }
+        NSLog(@"~waiverRate(%@):%.2f, waiverSum:%.3f, HL:%.3f, TempHL:%.3f",RidCode,riderRate,ridSA,riderHLoad,riderTempHLoad);
+        
+        double annFac = 1;
+        double halfFac = 0.5125;
+        double quarterFac = 0.2625;
+        double monthFac = 0.0875;
+        
+        //calculate occupationLoading
+        pTypeOccp = [LOccpCode objectAtIndex:i];
+        [self getOccLoadRider];
+        NSLog(@"occpLoadRate:%d",occLoadRider);
+        
+        double annualRider;
+        double halfYearRider;
+        double quarterRider;
+        double monthlyRider;
+        if ([RidCode isEqualToString:@"CIWP"])
+        {
+            double waiverAnnPrem = ridSA/100 * (waiverAnnSum+basicPremAnn);
+            double waiverHalfPrem = ridSA/100 * (waiverHalfSum+basicPremHalf) *2;
+            double waiverQuarPrem = ridSA/100 * (waiverQuarSum+basicPremQuar) *4;
+            double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPremMonth) *12;
+            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+            
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
+            
+            annualRider = annualRider_ * annFac;
+            halfYearRider = halfYearRider_ * halfFac;
+            quarterRider = quarterRider_ * quarterFac;
+            monthlyRider = monthlyRider_ * monthFac;
+        }
+        else if ([RidCode isEqualToString:@"LCWP"]||[RidCode isEqualToString:@"PR"]||[RidCode isEqualToString:@"SP_STD"]||[RidCode isEqualToString:@"SP_PRE"])
+        {
+            double waiverAnnPrem = ridSA/100 * (waiverAnnSum2+basicPremAnn);
+            double waiverHalfPrem = ridSA/100 * (waiverHalfSum2+basicPremHalf) *2;
+            double waiverQuarPrem = ridSA/100 * (waiverQuarSum2+basicPremQuar) *4;
+            double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
+            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+            
+            double annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            double quarterRider_ = waiverQuarPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
+            
+            annualRider = annualRider_ * annFac;
+            halfYearRider = halfYearRider_ * halfFac;
+            quarterRider = quarterRider_ * quarterFac;
+            monthlyRider = monthlyRider_ * monthFac;
+        }
+        else {
+            annualRider = 0;
+            halfYearRider = 0;
+            quarterRider = 0;
+            monthlyRider = 0;
+        }
+        
+        NSString *calRiderAnn = [formatter stringFromNumber:[NSNumber numberWithDouble:annualRider]];
+        NSString *calRiderHalf = [formatter stringFromNumber:[NSNumber numberWithDouble:halfYearRider]];
+        NSString *calRiderQuarter = [formatter stringFromNumber:[NSNumber numberWithDouble:quarterRider]];
+        NSString *calRiderMonth = [formatter stringFromNumber:[NSNumber numberWithDouble:monthlyRider]];
+        calRiderAnn = [calRiderAnn stringByReplacingOccurrencesOfString:@"," withString:@""];
+        calRiderHalf = [calRiderHalf stringByReplacingOccurrencesOfString:@"," withString:@""];
+        calRiderQuarter = [calRiderQuarter stringByReplacingOccurrencesOfString:@"," withString:@""];
+        calRiderMonth = [calRiderMonth stringByReplacingOccurrencesOfString:@"," withString:@""];
+        
+        [waiverRidAnnTol addObject:calRiderAnn];
+        [waiverRidHalfTol addObject:calRiderHalf];
+        [waiverRidQuarTol addObject:calRiderQuarter];
+        [waiverRidMonthTol addObject:calRiderMonth];
+        NSLog(@":waiverTotal(%@) A:%@, S:%@, Q:%@, M:%@",RidCode,calRiderAnn,calRiderHalf,calRiderQuarter,calRiderMonth);
+    }
+    
+    NSUInteger a;
+    for (a=0; a<[waiverRidAnnTol count]; a++) {
+        
+        annualRiderSum = annualRiderSum + [[waiverRidAnnTol objectAtIndex:a] doubleValue];
+        halfRiderSum = halfRiderSum + [[waiverRidHalfTol objectAtIndex:a] doubleValue];
+        quarterRiderSum = quarterRiderSum + [[waiverRidQuarTol objectAtIndex:a] doubleValue];
+        monthRiderSum = monthRiderSum + [[waiverRidMonthTol objectAtIndex:a] doubleValue];
+        NSLog(@"allRiderSum A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRiderSum,halfRiderSum,quarterRiderSum,monthRiderSum);
+    }
+    riderPrem = annualRiderSum;
+    double totalPrem = riderPrem + basicPremAnn;
+    NSLog(@"RiderPrem:%.2f totalPrem:%.2f",riderPrem,totalPrem);
+}
+
+-(void)calculateMedRiderPrem
+{
+    if (annualMedRiderPrem.count != 0) {
+        
+        annualMedRiderSum = 0;
+        halfMedRiderSum = 0;
+        quarterMedRiderSum = 0;
+        monthMedRiderSum = 0;
+        for (NSUInteger a=0; a<[annualMedRiderPrem count]; a++) {
+            annualMedRiderSum = annualMedRiderSum + [[annualMedRiderPrem objectAtIndex:a] doubleValue];
+            halfMedRiderSum = halfMedRiderSum + [[halfMedRiderPrem objectAtIndex:a] doubleValue];
+            quarterMedRiderSum = quarterMedRiderSum + [[quarterMedRiderPrem objectAtIndex:a] doubleValue];
+            monthMedRiderSum = monthMedRiderSum + [[monthMedRiderPrem objectAtIndex:a] doubleValue];
+        }
+        medRiderPrem = annualMedRiderSum;
+        NSLog(@"medPrem:%.2f",medRiderPrem);
+    }
+    else {
+        NSLog(@"non exist medical rider!");
+        medRiderPrem = 0;
+    }
+}
+
+-(void)MHIGuideLines
+{
+    double totalPrem = 0;
+    double medicDouble = 0;
+    double minus = 0;
+    double varSA = 0;
+    double riderSA = 0;
+    double RiderSA = 0;
+    double basicSA = 0;
+    bool pop = false;
+    
+    totalPrem = basicPremAnn + riderPrem;
+    medicDouble = medRiderPrem * 2;
+    NSLog(@"~totalPrem:%.2f, medicalPrem:%.2f, medicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+    
+    if (medicDouble > totalPrem) {
+        minus = totalPrem - medRiderPrem;
+        NSLog(@"minus:%.2f",minus);
+        
+        basicSA = [yearlyIncomeField.text doubleValue];
+        if (minus > 0) {
+            
+            varSA = medRiderPrem/minus *basicSA + 0.5;
+            NSString *newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
+            NSLog(@":1-UPDATE newBasicSA:%.f",varSA);
+            basicSA = [newBasicSA doubleValue];
+            yearlyIncomeField.text = newBasicSA;
+            [self getLSDRate];
+            pop = true;
+            
+            //update basicSA to varSA
+            sqlite3_stmt *statement;
+            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK) {
+                NSString *querySQL = [NSString stringWithFormat:
+                                      @"UPDATE Trad_Details SET BasicSA=\"%@\" WHERE SINo=\"%@\"",newBasicSA, SINo];
+                
+                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                        
+                        NSLog(@"BasicSA update Success!");
+                        
+                    } else {
+                        NSLog(@"BasicSA update Failed!");
+                    }
+                    sqlite3_finalize(statement);
+                }
+                sqlite3_close(contactDB);
+            }
+            
+            //update riderSA
+            for (NSUInteger u=0; u<[LRiderCode count]; u++)
+            {
+                NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
+                
+                if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
+                {
+                    riderCode = [LRiderCode objectAtIndex:u];
+                    [self getRiderTermRule];
+                    riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
+                    
+                    if (riderSA > 0)
+                    {
+                        RiderSA = (medRiderPrem/minus) * riderSA;
+                        NSLog(@"1-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%d",riderCode,RiderSA,riderSA,maxSATerm);
+                        
+                        double newSA = 0;
+                        if (RiderSA > maxSATerm) {
+                            newSA = maxSATerm;
+                        }
+                        else {
+                            newSA = RiderSA;
+                        }
+                        
+                        NSLog(@":1-UPDATE newRiderSA(%@):%.2f",riderCode,newSA);
+                        sqlite3_stmt *statement;
+                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                        {
+                            NSString *updatetSQL = [NSString stringWithFormat:
+                                    @"UPDATE Trad_Rider_Details SET SumAssured=\"%.f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\"",newSA,SINo,riderCode];
+                            
+                            if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                if (sqlite3_step(statement) == SQLITE_DONE) {
+                                    NSLog(@"Update RiderSA success!");
+                                }
+                                else {
+                                    NSLog(@"Update RiderSA failed!");
+                                }
+                                sqlite3_finalize(statement);
+                            }
+                            sqlite3_close(contactDB);
+                        }
+                    }
+                }
+                else {
+                    continue;
+                }
+            }
+            
+            [self calculateBasicPremium];
+            [self getListingRider];
+            [self calculateRiderPrem];
+            [self calculateWaiver];
+            [self calculateMedRiderPrem];
+            
+            //--second cycle--//
+            
+            totalPrem = basicPremAnn + riderPrem;
+            medicDouble = medRiderPrem * 2;
+            NSLog(@"~newTotalPrem:%.2f, newMedicalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+            
+            if (medicDouble > totalPrem) {
+                minus = totalPrem - medRiderPrem;
+                
+                if (minus > 0) {
+                    
+                    varSA = medRiderPrem/minus * basicSA + 0.5;
+                    newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
+                    NSLog(@":2-UPDATE newBasicSA:%.f",varSA);
+                    basicSA = [newBasicSA doubleValue];
+                    yearlyIncomeField.text = newBasicSA;
+                    [self getLSDRate];
+                    pop = true;
+                    
+                    //update basicSA to varSA
+                    sqlite3_stmt *statement;
+                    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK) {
+                        NSString *querySQL = [NSString stringWithFormat:
+                                              @"UPDATE Trad_Details SET BasicSA=\"%@\" WHERE SINo=\"%@\"",newBasicSA, SINo];
+                        
+                        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                            if (sqlite3_step(statement) == SQLITE_DONE) {
+                                
+                                NSLog(@"BasicSA update Success!");
+                                
+                            } else {
+                                NSLog(@"BasicSA update Failed!");
+                            }
+                            sqlite3_finalize(statement);
+                        }
+                        sqlite3_close(contactDB);
+                    }
+                    
+                    //update riderSA
+                    for (NSUInteger u=0; u<[LRiderCode count]; u++)
+                    {
+                        NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
+                        
+                        if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
+                        {
+                            riderCode = [LRiderCode objectAtIndex:u];
+                            [self getRiderTermRule];
+                            riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
+                            
+                            if (riderSA > 0)
+                            {
+                                RiderSA = (medRiderPrem/minus) * riderSA;
+                                NSLog(@"2-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%d",riderCode,RiderSA,riderSA,maxSATerm);
+                                
+                                double newSA = 0;
+                                if (RiderSA > maxSATerm)
+                                {
+                                    newSA = maxSATerm;
+                                } else {
+                                    newSA = RiderSA;
+                                }
+                                
+                                NSLog(@":2-UPDATE newRiderSA(%@):%.2f",riderCode,newSA);
+                                //update riderSA
+                                sqlite3_stmt *statement;
+                                if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                                {
+                                    NSString *updatetSQL = [NSString stringWithFormat:
+                                            @"UPDATE Trad_Rider_Details SET SumAssured=\"%.f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\"",newSA,SINo,riderCode];
+                                    
+                                    if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                        if (sqlite3_step(statement) == SQLITE_DONE) {
+                                            NSLog(@"Update RiderSA success!");
+                                        }
+                                        else {
+                                            NSLog(@"Update RiderSA failed!");
+                                        }
+                                        sqlite3_finalize(statement);
+                                    }
+                                    sqlite3_close(contactDB);
+                                }
+                                
+                            }
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    
+                    [self calculateBasicPremium];
+                    [self getListingRider];     
+                    [self calculateRiderPrem];  
+                    [self calculateWaiver];    
+                    [self calculateMedRiderPrem];      
+                    
+                    //--third cycle--//
+                    
+                    totalPrem = basicPremAnn + riderPrem;
+                    medicDouble = medRiderPrem * 2;
+                    NSLog(@"~newTotalPrem:%.2f, newMedicalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+                    
+                    if (medicDouble > totalPrem) {
+                        minus = totalPrem - medRiderPrem;
+                        if (minus > 0) {
+                            
+                            varSA = medRiderPrem/minus * basicSA + 0.5;
+                            newBasicSA = [NSString stringWithFormat:@"%.f",varSA];
+                            NSLog(@":3-UPDATE newBasicSA:%.f",varSA);
+                            basicSA = [newBasicSA doubleValue];
+                            yearlyIncomeField.text = newBasicSA;
+                            [self getLSDRate];
+                            pop = true;
+                            
+                            //update basicSA to varSA
+                            sqlite3_stmt *statement;
+                            if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK) {
+                                NSString *querySQL = [NSString stringWithFormat:
+                                                      @"UPDATE Trad_Details SET BasicSA=\"%@\" WHERE SINo=\"%@\"",newBasicSA, SINo];
+                                
+                                if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                    if (sqlite3_step(statement) == SQLITE_DONE) {
+                                        
+                                        NSLog(@"BasicSA update Success!");
+                                        
+                                    } else {
+                                        NSLog(@"BasicSA update Failed!");
+                                    }
+                                    sqlite3_finalize(statement);
+                                }
+                                sqlite3_close(contactDB);
+                            }
+                            
+                            //update riderSA
+                            for (NSUInteger u=0; u<[LRiderCode count]; u++)
+                            {
+                                NSString *ridCode = [[NSString alloc] initWithFormat:@"%@",[LRiderCode objectAtIndex:u]];
+                                
+                                if (!([ridCode isEqualToString:@"C+"]) && !([ridCode isEqualToString:@"CIR"]) && !([ridCode isEqualToString:@"MG_II"]) && !([ridCode isEqualToString:@"MG_IV"]) && !([ridCode isEqualToString:@"HB"]) && !([ridCode isEqualToString:@"HSP_II"]) && !([ridCode isEqualToString:@"HMM"]) && !([ridCode isEqualToString:@"CIWP"]) && !([ridCode isEqualToString:@"LCWP"]) && !([ridCode isEqualToString:@"PR"]) && !([ridCode isEqualToString:@"SP_STD"]) && !([ridCode isEqualToString:@"SP_PRE"]))
+                                {
+                                    riderCode = [LRiderCode objectAtIndex:u];
+                                    [self getRiderTermRule];
+                                    riderSA = [[LSumAssured objectAtIndex:u] doubleValue];
+                                    
+                                    if (riderSA > 0)
+                                    {
+                                        RiderSA = (medRiderPrem/minus) * riderSA;
+                                        NSLog(@"2-newRiderSA(%@):%.2f, oldRiderSA:%.2f, maxSA:%d",riderCode,RiderSA,riderSA,maxSATerm);
+                                        
+                                        double newSA = 0;
+                                        if (RiderSA > maxSATerm)
+                                        {
+                                            newSA = maxSATerm;
+                                        } else {
+                                            newSA = RiderSA;
+                                        }
+                                        
+                                        NSLog(@":3-UPDATE newRiderSA(%@):%.2f",riderCode,newSA);
+                                        //update riderSA
+                                        sqlite3_stmt *statement;
+                                        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+                                        {
+                                            NSString *updatetSQL = [NSString stringWithFormat:
+                                                @"UPDATE Trad_Rider_Details SET SumAssured=\"%.f\" WHERE SINo=\"%@\" AND RiderCode=\"%@\"",newSA,SINo,riderCode];
+                                            
+                                            if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+                                                if (sqlite3_step(statement) == SQLITE_DONE) {
+                                                    NSLog(@"Update RiderSA success!");
+                                                }
+                                                else {
+                                                    NSLog(@"Update RiderSA failed!");
+                                                }
+                                                sqlite3_finalize(statement);
+                                            }
+                                            sqlite3_close(contactDB);
+                                        }
+                                        
+                                    }
+                                }
+                                else {
+                                    continue;
+                                }
+                            }
+                            
+                            [self calculateBasicPremium];
+                            [self getListingRider];     
+                            [self calculateRiderPrem];  
+                            [self calculateWaiver];    
+                            [self calculateMedRiderPrem];  
+                            
+                            //--forth cycle--//
+                            
+                            totalPrem = basicPremAnn + riderPrem;
+                            medicDouble = medRiderPrem * 2;
+                            NSLog(@"~newTotalPrem:%.2f, newMedicalPrem:%.2f, newMedicDouble:%.2f",totalPrem,medRiderPrem,medicDouble);
+                            
+                            if (medicDouble > totalPrem) {
+                                NSLog(@"need 4th cycly!");
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (pop) {
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                zzz.MhiMessage = newBasicSA;
+                
+                [_delegate BasicSARevised:newBasicSA];
+            }
+            else {
+                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+                zzz.MhiMessage = @"";
+            }
+        }
+        else {
+            NSLog(@"value minus not greater than 0");
+        }
+    }
+    else {
+        NSLog(@"value medicDouble less than totalPrem");
+    }
+}
 
 #pragma mark - Handle DB
 
@@ -1807,6 +3185,13 @@ id temp;
         [alert show];
         [_delegate RiderAdded];
     }
+    
+    [self calculateRiderPrem];
+    [self calculateWaiver];
+    [self calculateMedRiderPrem];
+    if (medRiderPrem != 0) {
+        [self MHIGuideLines];
+    }
 }
 
 -(void)getPlanCodePenta
@@ -1865,15 +3250,26 @@ id temp;
 {
     LRiderCode = [[NSMutableArray alloc] init];
     LSumAssured = [[NSMutableArray alloc] init];
+    LTerm = [[NSMutableArray alloc] init];
     LPlanOpt = [[NSMutableArray alloc] init];
     LUnits = [[NSMutableArray alloc] init];
+    LDeduct = [[NSMutableArray alloc] init];
+    LRidHL1K = [[NSMutableArray alloc] init];
+    LRidHL100 = [[NSMutableArray alloc] init];
+    LRidHLP = [[NSMutableArray alloc] init];
+    LSmoker = [[NSMutableArray alloc] init];
+    LSex = [[NSMutableArray alloc] init];
+    LAge = [[NSMutableArray alloc] init];
+    LOccpCode = [[NSMutableArray alloc] init];
+    LTempRidHL1K = [[NSMutableArray alloc] init];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT RiderCode, SumAssured, PlanOption, Units FROM Trad_Rider_Details WHERE SINo=\"%@\" ORDER by RiderCode asc",SINo];
+                @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HL1KSA, a.HL100SA, a.HLPercentage, c.Smoker, c.Sex, c.ALB, c.OccpCode, a.TempHL1KSA FROM Trad_Rider_Details a, Trad_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode AND a.SINo=b.SINo AND a.SINo=\"%@\" ORDER by a.RiderCode asc",SINo];
         
+        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
@@ -1884,11 +3280,34 @@ id temp;
                 const char *aaRidSA = (const char *)sqlite3_column_text(statement, 1);
                 [LSumAssured addObject:aaRidSA == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaRidSA]];
                 
-                const char *zzplan = (const char *) sqlite3_column_text(statement, 2);
+                const char *aaTerm = (const char *)sqlite3_column_text(statement, 2);
+                [LTerm addObject:aaTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaTerm]];
+                
+                const char *zzplan = (const char *) sqlite3_column_text(statement, 3);
                 [LPlanOpt addObject:zzplan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzplan]];
                 
-                const char *aaUnit = (const char *)sqlite3_column_text(statement, 3);
+                const char *aaUnit = (const char *)sqlite3_column_text(statement, 4);
                 [LUnits addObject:aaUnit == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaUnit]];
+                
+                const char *deduct2 = (const char *) sqlite3_column_text(statement, 5);
+                [LDeduct addObject:deduct2 == NULL ? @"" :[[NSString alloc] initWithUTF8String:deduct2]];
+                
+                double ridHL = sqlite3_column_double(statement, 6);
+                [LRidHL1K addObject:[[NSString alloc] initWithFormat:@"%.2f",ridHL]];
+                
+                double ridHL100 = sqlite3_column_double(statement, 7);
+                [LRidHL100 addObject:[[NSString alloc] initWithFormat:@"%.2f",ridHL100]];
+                
+                double ridHLP = sqlite3_column_double(statement, 8);
+                [LRidHLP addObject:[[NSString alloc] initWithFormat:@"%.2f",ridHLP]];
+                
+                [LSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
+                [LSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
+                [LAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
+                [LOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 12)]];
+                
+                double TempridHL = sqlite3_column_double(statement, 13);
+                [LTempRidHL1K addObject:[[NSString alloc] initWithFormat:@"%.2f",TempridHL]];
             }
             
             sqlite3_finalize(statement);
@@ -2007,6 +3426,29 @@ id temp;
     
 }
 
+-(void)getOccLoadRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",pTypeOccp];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                occLoadRider =  sqlite3_column_int(statement, 0);
+                
+            } else {
+                NSLog(@"error access getOccLoadRider");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 -(void)getLSDRate
 {
     sqlite3_stmt *statement;
@@ -2029,6 +3471,181 @@ id temp;
         sqlite3_close(contactDB);
     }
 }
+
+//---
+
+-(void)getRiderRateSex:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND Sex=\"%@\"",aaplan,aaterm,aaterm,sex];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateSex:(NSString *)aaplan
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromMortality=0 AND Sex=\"%@\" AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,sex,age,age];
+        
+        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateAge:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\"",aaplan,aaterm,aaterm,age,age];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateAgeSex:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\"",aaplan,aaterm,aaterm,age,age,sex];
+        //        NSLog(@"%@",querySQL);
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateAgeSexClass:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND Sex=\"%@\" AND occpClass = \"%d\"", aaplan,aaterm,aaterm,age,age,sex, OccpClass];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateAgeClass:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                              " FromMortality=0 AND FromAge<=\"%d\" AND ToAge >=\"%d\" AND occpClass = \"%d\"",
+                              aaplan,aaterm,aaterm,age,age, OccpClass];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRiderRateClass:(NSString *)aaplan riderTerm:(int)aaterm
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT Rate FROM Trad_Sys_Rider_Prem WHERE RiderCode=\"%@\" AND FromTerm <=\"%d\" AND ToTerm >= \"%d\" AND "
+                              " FromMortality=0 AND occpClass = \"%d\"",
+                              aaplan,aaterm,aaterm, OccpClass];
+        
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+            } else {
+                NSLog(@"error access Trad_Sys_Rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+//----
 
 #pragma mark - delegate
 

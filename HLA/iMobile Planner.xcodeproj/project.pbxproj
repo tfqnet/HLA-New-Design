@@ -218,7 +218,7 @@
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
-		EFFC252916DC425800313A96 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFFC252816DC425800313A96 /* hladb.sqlite */; };
+		EFF7441A16F6B3A60075E66E /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFF7441916F6B3A60075E66E /* hladb.sqlite */; };
 		EFFC253716E7219500313A96 /* HLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFC253616E7219400313A96 /* HLViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -526,7 +526,7 @@
 		EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLAHandler.m; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
-		EFFC252816DC425800313A96 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		EFF7441916F6B3A60075E66E /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFFC253516E7219400313A96 /* HLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLViewController.h; sourceTree = "<group>"; };
 		EFFC253616E7219400313A96 /* HLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -912,7 +912,7 @@
 			isa = PBXGroup;
 			children = (
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
-				EFFC252816DC425800313A96 /* hladb.sqlite */,
+				EFF7441916F6B3A60075E66E /* hladb.sqlite */,
 				EF90FED716C1ECEB003345BE /* HLA_Rates.sqlite */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
 			);
@@ -1290,8 +1290,8 @@
 				C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */,
 				EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */,
 				EF90FED816C1ECEB003345BE /* HLA_Rates.sqlite in Resources */,
-				EFFC252916DC425800313A96 /* hladb.sqlite in Resources */,
 				C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */,
+				EFF7441A16F6B3A60075E66E /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
