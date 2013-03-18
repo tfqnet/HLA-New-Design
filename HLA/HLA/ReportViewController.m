@@ -2440,7 +2440,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //------------------------
         int TPDThresholdBEGYr;
-        int TotalAD;
+        int TotalAD = 0;
         if (i+ Age - 1 <= 6) {
             TPDThresholdBEGYr = 100000;
         }
@@ -2464,6 +2464,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         else if (i + Age > 65) {
             TotalAD = 0;
         }
+		
         
         if (TotalAD < 0) {
             TotalAD = 0;
@@ -2474,7 +2475,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         //------------------------
         int TPDThresholdEndYr;
-        int TotalADEnd;
+        int TotalADEnd = 0;
         if (i+ Age  <= 6) {
             TPDThresholdEndYr = 100000;
         }
@@ -2529,7 +2530,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             if ([[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HMM" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_IV" ]
                 || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"MG_II" ] || [[OtherRiderCode objectAtIndex:j ] isEqualToString:@"HSP_II" ] ) {
                 if ( i <= [[OtherRiderTerm objectAtIndex:j] intValue ]   ) {
-                    double tempHMMRates;
+                    double tempHMMRates = 0.0;
                     
                     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                         QuerySQL = [NSString stringWithFormat:@"Select Annually from SI_Store_premium Where Type = \"%@\" AND "
@@ -3051,7 +3052,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         // --------------- AD
         double TPDThresholdBEGYr;
-        double TotalAD;
+        double TotalAD = 0.0;
         if (i+ Age - 1 <= 6) {
             TPDThresholdBEGYr = 100000;
         }
@@ -3084,7 +3085,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
        // ----------- AD end
         double TPDThresholdEndYr;
-        double TotalADEnd;
+        double TotalADEnd = 0;
         if (i+ Age  <= 6) {
             TPDThresholdEndYr = 100000;
         }
@@ -3680,7 +3681,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                          [tempRiderCode isEqualToString:@"ACIR_MPP"] || [tempRiderCode isEqualToString:@"ACIR_TWD"] || [tempRiderCode isEqualToString:@"ACIR_TWP"] ||
                                          [tempRiderCode isEqualToString:@"ACIR_EXC"]) {
                                     
-                                    double CI;
+                                    double CI = 0.0;
                                     double juv; 
                                     
                                     if (Age + i < 2) {
@@ -3725,7 +3726,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                             CI = 2/3 * tempRiderSA * juv;
                                         }
                                     }
-                                    else if ([tempRiderCode isEqualToString:@"ACIR_MPP"]) {
+                                    else {if ([tempRiderCode isEqualToString:@"ACIR_MPP"]) 
                                             CI = tempRiderSA * juv;
                                         
                                     }
@@ -3884,7 +3885,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                                     [TotalRiderSurrenderValue replaceObjectAtIndex:i withObject:[NSString stringWithFormat:@"%.3f", tempTotalRiderSurrenderValue]];
                                 }
                                 else if ([tempRiderCode isEqualToString:@"HMM"] || [tempRiderCode isEqualToString:@"MG_II"] || [tempRiderCode isEqualToString:@"MG_IV"]  || [tempRiderCode isEqualToString:@"HSP_II"] ) {
-                                    double tempHMMRates;
+                                    double tempHMMRates = 0.0;
                                     
                                     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                                         QuerySQL = [NSString stringWithFormat:@"Select Annually from SI_Store_premium Where Type = \"%@\" AND FromAge <= \"%d\" AND ToAge >= \"%d\"  "
@@ -4537,7 +4538,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                  
                     // ---- AD --------
                     int TPDThresholdBEGYr;
-                    int TotalAD;
+                    int TotalAD = 0;
                     if (j+ Age - 1 <= 6) {
                         TPDThresholdBEGYr = 100000;
                     }
@@ -4569,7 +4570,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     
                     // ----------- AD end of year ------
                     int TPDThresholdEndYr;
-                    int TotalADEnd;
+                    int TotalADEnd = 0;
                     if (j+ Age  <= 6) {
                         TPDThresholdEndYr = 100000;
                     }
@@ -4975,8 +4976,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     
                     
                     // -------- continue to add remaining total surrender value after policy year > income rider's term
-                    double dTotalSurrenderValueA;
-                    double dTotalSurrenderValueB;
+                    double dTotalSurrenderValueA = 0.0;
+                    double dTotalSurrenderValueB = 0.0;
                     
                     [tDividendValueA addObject:[NSString stringWithFormat:@"0.00"]];
                     [tDividendValueB addObject:[NSString stringWithFormat:@"0.00"]];
@@ -5014,6 +5015,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                             [[tDividendValueB objectAtIndex:k] doubleValue ];
                             
                         }
+						
                     }
                     [TotalSurrenderValueA addObject: [NSString stringWithFormat: @"%.8f", dTotalSurrenderValueA ] ];   
                     [TotalSurrenderValueB addObject: [NSString stringWithFormat: @"%.9f", dTotalSurrenderValueB ] ];        

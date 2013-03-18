@@ -410,7 +410,7 @@ NSMutableArray *ItemPages;
     browserController = Nil;
     
     
-    [self performSelector:@selector(enableNext) withObject:Nil afterDelay:1.5];
+    [self performSelector:@selector(enableNext) withObject:Nil afterDelay:0.5];
 }
 
 
@@ -457,7 +457,7 @@ NSMutableArray *ItemPages;
     browserController = nil;
     
     
-    [self performSelector:@selector(enablePre) withObject:Nil afterDelay:1.5];
+    [self performSelector:@selector(enablePre) withObject:Nil afterDelay:0.5];
 }
 
 -(void)enableNext{

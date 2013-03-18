@@ -1244,16 +1244,16 @@ PostcodeContinue = TRUE;
                 break;
             
             case 3:
-                if (outletType4.titleLabel.text == @"Mobile") {
+                if ([outletType4.titleLabel.text isEqualToString: @"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType4.titleLabel.text == @"Home") {
+                else if ([outletType4.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType4.titleLabel.text == @"Fax") {
+                else if ([outletType4.titleLabel.text isEqualToString: @"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType4.titleLabel.text == @"Office") {
+                else if ([outletType4.titleLabel.text isEqualToString: @"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {
@@ -1262,16 +1262,16 @@ PostcodeContinue = TRUE;
                 break;
             
             case 4:
-                if (outletType5.titleLabel.text == @"Mobile") {
+                if ([outletType5.titleLabel.text isEqualToString: @"Mobile"]) {
                     contactCode = @"CONT008";    
                 }
-                else if (outletType5.titleLabel.text == @"Home") {
+                else if ([outletType5.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
                 }
-                else if (outletType5.titleLabel.text == @"Fax") {
+                else if ([outletType5.titleLabel.text isEqualToString: @"Fax"]) {
                     contactCode = @"CONT009";
                 }
-                else if (outletType5.titleLabel.text == @"Office") {
+                else if ([outletType5.titleLabel.text isEqualToString: @"Office"]) {
                     contactCode = @"CONT007";
                 }
                 else {

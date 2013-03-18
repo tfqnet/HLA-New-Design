@@ -325,14 +325,24 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
-    /*
-    pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page42.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
-    DBID = [_db ExecuteINSERT:sqlStmt];
-    if (DBID <= 0){
-        NSLog(@"Error inserting data into database.");
-    }
-	*/
+	
+	for (row in _dataTable.rows) {
+		NSString *sss = [row objectAtIndex:0];
+		
+		if([sss isEqualToString:@"HMM" ] || [sss isEqualToString:@"HB" ] || [sss isEqualToString:@"MG_IV" ] || [sss isEqualToString:@"MG_II" ]
+		   || [sss isEqualToString:@"CIR" ] || [sss isEqualToString:@"CIWP" ] || [sss isEqualToString:@"HSP_II" ]){
+			
+			pageNum++;
+			sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page42.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+			DBID = [_db ExecuteINSERT:sqlStmt];
+			if (DBID <= 0){
+				NSLog(@"Error inserting data into database.");
+			}
+			break;
+		}
+		sss = Nil;
+	}
+	
     // malay version here page201.html ---> page 220
     
     pageNum++;
@@ -474,14 +484,24 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
-    /*
-    pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page62.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
-    DBID = [_db ExecuteINSERT:sqlStmt];
-    if (DBID <= 0){
-        NSLog(@"Error inserting data into database.");
-    }
-    */
+	
+	for (row in _dataTable.rows) {
+		NSString *sss = [row objectAtIndex:0];
+		
+		if([sss isEqualToString:@"HMM" ] || [sss isEqualToString:@"HB" ] || [sss isEqualToString:@"MG_IV" ] || [sss isEqualToString:@"MG_II" ]
+		   || [sss isEqualToString:@"CIR" ] || [sss isEqualToString:@"CIWP" ] || [sss isEqualToString:@"HSP_II" ]){
+			
+			pageNum++;
+			sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page62.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+			DBID = [_db ExecuteINSERT:sqlStmt];
+			if (DBID <= 0){
+				NSLog(@"Error inserting data into database.");
+			}
+			
+			break;
+		}
+		sss = Nil;
+	}
     
     //------- end ---------
     
@@ -495,6 +515,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSString *WebSQLDb;
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSError *error;
     
     if (IsAtLeastiOSVersion(@"6.0")){
         
@@ -508,7 +529,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         if (!plistExist){
             NSLog(@"not exist!");
             NSString *viewerPlistFromDoc = [documents stringByAppendingPathComponent:@"viewer.plist"];
-            [fileManager copyItemAtPath:viewerPlistFromDoc toPath:viewerPlist error:nil];
+            [fileManager copyItemAtPath:viewerPlistFromDoc toPath:viewerPlist error:&error];
+			
+			NSLog(@"Error at copying plist file --> %@", error);
             
             databaseName = @"hladb.sqlite";//actual
             databaseName1 = @"hladb.sqlite";//dummy
@@ -548,9 +571,15 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSString *masterFile = [WebSQLPath stringByAppendingPathComponent:masterName];
     NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName1];
     
-    [fileManager removeItemAtPath:databaseFile error:nil];
-    [fileManager removeItemAtPath:masterFile error:nil];
-    
+    [fileManager removeItemAtPath:databaseFile error:&error];
+	if(!error){
+		NSLog(@"Error at remove databaseFile --> %@", error);
+	}
+		
+    [fileManager removeItemAtPath:masterFile error:&error];
+		if(!error){
+			NSLog(@"Error at remove masterFile --> %@", error);
+		}
     //NSString *databasePathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
     NSString *masterPathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:masterName];
     
@@ -558,9 +587,20 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     NSString *databasePathFromDoc = [docsDir stringByAppendingPathComponent:databaseName];
     //NSString *masterPathFromDoc = [docsDir stringByAppendingPathComponent:masterName];
     
-    [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:NULL];
-    [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
-    [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
+    [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:&error];
+	if(!error){
+		NSLog(@"Error at createDirectory --> %@", error);
+	}
+    [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:&error];
+	if(!error){
+		NSLog(@"Error at copying to databasepath --> %@", error);
+	}
+
+    [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:&error];
+	if(!error){
+		NSLog(@"Error at copying to masterpath --> %@", error);
+	}
+	
 	
     fileManager = Nil;
     masterFile = Nil;
@@ -2838,7 +2878,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 									 [tempRiderCode isEqualToString:@"ACIR_MPP"] || [tempRiderCode isEqualToString:@"ACIR_TWD"] || [tempRiderCode isEqualToString:@"ACIR_TWP"] ||
 									 [tempRiderCode isEqualToString:@"ACIR_EXC"]) {
 								
-								double CI;
+								double CI = 0.0;
 								double juv;
 								
 								if (Age + i < 2) {

@@ -13,23 +13,19 @@
 				<string>Premier Life</string>
 				<string>Brochure_PremierLife</string>
 			</array>
+			<array>
+				<string>PA Care</string>
+				<string>Brochure_PACare</string>
+			</array>
 		</array>
 		<array>
-			<array>
-				<string>HLA Major Medi</string>
-				<string>Brochure_MajorMedi</string>
-			</array>
-			<array>
-				<string>HLA MedGLOBAL IV Plus</string>
-				<string>Brochure_MedGlobalIVP</string>
-			</array>
 			<array>
 				<string>C+ Secure</string>
 				<string>Brochure_CSecure(Standalone)</string>
 			</array>
 			<array>
-				<string>PA Care</string>
-				<string>Brochure_PACare</string>
+				<string>HLA Major Medi</string>
+				<string>Brochure_MajorMedi</string>
 			</array>
 			<array>
 				<string>HLA Major Medi Plus</string>
@@ -42,6 +38,10 @@
 			<array>
 				<string>HLA MedGLOBAL II (Mandarin)</string>
 				<string>Brochure_MedGlobalII_Chi</string>
+			</array>
+			<array>
+				<string>HLA MedGLOBAL IV Plus</string>
+				<string>Brochure_MedGlobalIVP</string>
 			</array>
 		</array>
 	</array>
