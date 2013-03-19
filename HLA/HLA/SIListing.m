@@ -59,6 +59,10 @@ int DateOption;
 
     [super viewDidLoad];
     
+	AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	appDel.MhiMessage = Nil;
+	appDel = Nil;
+	
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     outletDelete.hidden = TRUE;
 

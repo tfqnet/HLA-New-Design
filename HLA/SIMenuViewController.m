@@ -19,6 +19,7 @@
 #import "PDSBrowserViewController.h"
 #import "PDSViewController.h"
 #import "CashPromiseViewController.h"
+#import "AppDelegate.h"
 
 @interface SIMenuViewController ()
 
@@ -92,7 +93,7 @@ id RiderCount;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    /*
     CGRect rectApp = [[UIScreen mainScreen] applicationFrame];
     rectApp.origin = CGPointZero;
     
@@ -128,6 +129,12 @@ id RiderCount;
         self.RightView.frame = CGRectMake(223, 0, 801, 748);
         [self hideSeparatorLine];
     }
+	 */
+	self.view.autoresizesSubviews = NO;
+	
+	  self.myTableView.frame = CGRectMake(0, 0, 220, 748);
+	   [self hideSeparatorLine];
+	   self.RightView.frame = CGRectMake(223, 0, 801, 748);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -174,7 +181,11 @@ id RiderCount;
         selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
         previousPath = selectedPath;
         [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
-        
+		
+
+		AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+		appDel.MhiMessage = Nil;
+        appDel = Nil;
     }
     else {
         requestSINo2 = self.requestSINo;
@@ -1024,573 +1035,758 @@ id RiderCount;
     
     else if (indexPath.row == 1)    //2nd LA
     {
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			//[self RemovePDS];
+			[self select2ndLA];
+			[self hideSeparatorLine];
+			[myTableView reloadData];
+		}
         
-        //[self RemovePDS];
-        [self select2ndLA];
-        [self hideSeparatorLine];
-        [myTableView reloadData];
+        
     }
     
     else if (indexPath.row == 2)    //Payor
     {
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			//[self RemovePDS];
+			[self selectPayor];
+			[self hideSeparatorLine];
+			[myTableView reloadData];
+		}
         
-        //[self RemovePDS];
-        [self selectPayor];
-        [self hideSeparatorLine];
-        [myTableView reloadData];
+        
     }
     
     else if (indexPath.row == 3)    //basic plan
-    { 
-        if (!saved) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
-            [alert setTag:1001];
+    {
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
-        }
-        else if (!payorSaved) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
-            [alert setTag:2001];
-            [alert show];
-        }
-        else {
-            
-            //[self RemovePDS];
-            [self selectBasicPlan];
-            [self hideSeparatorLine];
-            [myTableView reloadData];
-        }
+            alert = Nil;
+			
+		}
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			if (!saved) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:1001];
+				[alert show];
+			}
+			else if (!payorSaved) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:2001];
+				[alert show];
+			}
+			else {
+				
+				//[self RemovePDS];
+				[self selectBasicPlan];
+				[self hideSeparatorLine];
+				[myTableView reloadData];
+			}
+		}
+        
     }
     
     else if (indexPath.row == 4)        //Health Loading
     {
-        if (getSINo.length != 0 && ![getSINo isEqualToString:@"(null)"]) {
-            self.HLController = [self.storyboard instantiateViewControllerWithIdentifier:@"HealthLoadView"];
-            _HLController.delegate = self;
-            self.HLController.ageClient = getAge;
-            self.HLController.SINo = getSINo;
-            self.HLController.planChoose = getBasicPlan;
-            
-            [self addChildViewController:self.HLController];
-            [self.RightView addSubview:self.HLController.view];
-            
-            previousPath = selectedPath;
-            blocked = NO;
-            [self hideSeparatorLine];
-            [myTableView reloadData];
-        }
-        else {
-            NSLog(@"no where!");
-            blocked = YES;
-        }
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			if (getSINo.length != 0 && ![getSINo isEqualToString:@"(null)"]) {
+				self.HLController = [self.storyboard instantiateViewControllerWithIdentifier:@"HealthLoadView"];
+				_HLController.delegate = self;
+				self.HLController.ageClient = getAge;
+				self.HLController.SINo = getSINo;
+				self.HLController.planChoose = getBasicPlan;
+				
+				[self addChildViewController:self.HLController];
+				[self.RightView addSubview:self.HLController.view];
+				
+				previousPath = selectedPath;
+				blocked = NO;
+				[self hideSeparatorLine];
+				[myTableView reloadData];
+			}
+			else {
+				NSLog(@"no where!");
+				blocked = YES;
+			}
+		}
+        
     }
     
     else if (indexPath.row == 5)    //rider
     {
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			[self checkingPayor];
+			if (getAge > 70) {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+				[alert show];
+				blocked = YES;
+			}
+			else if (getAge < 10 && payorSINo.length == 0) {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+				[alert show];
+				blocked = YES;
+			}
+			else if (!saved) {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:1002];
+				[alert show];
+			}
+			else if (!payorSaved) {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:2002];
+				[alert show];
+			}
+			else {
+				
+				
+				//[self RemovePDS];
+				
+				self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
+				_RiderController.delegate = self;
+				self.RiderController.requestAge = getAge;
+				self.RiderController.requestSex = getSex;
+				self.RiderController.requestOccpCode = getOccpCode;
+				self.RiderController.requestOccpClass = getOccpClass;
+				
+				self.RiderController.requestSINo = getSINo;
+				self.RiderController.requestPlanCode = getPlanCode;
+				self.RiderController.requestPlanChoose = getBasicPlan;
+				self.RiderController.requestCoverTerm = getTerm;
+				self.RiderController.requestBasicSA = getbasicSA;
+				self.RiderController.requestBasicHL = getbasicHL;
+				self.RiderController.requestBasicTempHL = getbasicTempHL;
+				self.RiderController.requestMOP = getMOP;
+				self.RiderController.requestAdvance = getAdvance;
+				
+				[self addChildViewController:self.RiderController];
+				[self.RightView addSubview:self.RiderController.view];
+				
+				previousPath = selectedPath;
+				blocked = NO;
+				[self hideSeparatorLine];
+				[myTableView reloadData];
+			}
+		}
+		
         
-        [self checkingPayor];
-        if (getAge > 70) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert show];
-            blocked = YES;
-        }
-        else if (getAge < 10 && payorSINo.length == 0) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-            [alert show];
-            blocked = YES;
-        }
-        else if (!saved) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
-            [alert setTag:1002];
-            [alert show];
-        }
-        else if (!payorSaved) {
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
-            [alert setTag:2002];
-            [alert show];
-        }
-        else {
-            
-            
-            //[self RemovePDS];
-            
-            self.RiderController = [self.storyboard instantiateViewControllerWithIdentifier:@"RiderView"];
-            _RiderController.delegate = self;
-            self.RiderController.requestAge = getAge;
-            self.RiderController.requestSex = getSex;
-            self.RiderController.requestOccpCode = getOccpCode;
-            self.RiderController.requestOccpClass = getOccpClass;
         
-            self.RiderController.requestSINo = getSINo;
-            self.RiderController.requestPlanCode = getPlanCode;
-            self.RiderController.requestPlanChoose = getBasicPlan;
-            self.RiderController.requestCoverTerm = getTerm;
-            self.RiderController.requestBasicSA = getbasicSA;
-            self.RiderController.requestBasicHL = getbasicHL;
-            self.RiderController.requestBasicTempHL = getbasicTempHL;
-            self.RiderController.requestMOP = getMOP;
-            self.RiderController.requestAdvance = getAdvance;
-        
-            [self addChildViewController:self.RiderController];
-            [self.RightView addSubview:self.RiderController.view];
-            
-            previousPath = selectedPath;
-            blocked = NO;
-            [self hideSeparatorLine];
-            [myTableView reloadData];
-        }
     }
     
     else if (indexPath.row == 6)    //premium
     {
-        [self calculatedPrem];
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			[self calculatedPrem];
+			[myTableView reloadData];
+		}
+
         
         
-        [myTableView reloadData];
+
     }
     else if (indexPath.row == 7)    //quotation
     {
-        
-        /*
-        sqlite3_stmt *statement;
-        BOOL cont = FALSE;
-        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-        {  
-           // NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
-            
-            NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
-                        "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
-                        "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
-                        "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
-            
-            if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-            {
-                if (sqlite3_step(statement) == SQLITE_ROW)
-                {
-                    cont = TRUE;
-                    
-                } else {
-                    cont = FALSE;
-                    NSLog(@"error access SI_Store_Premium");
-                }
-                sqlite3_finalize(statement);
-            }
-            sqlite3_close(contactDB);
-        }
-        
-        if (cont == TRUE) {
-            
-            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-            spinner.center = CGPointMake(500, 350);
-            
-            spinner.hidesWhenStopped = YES;
-            [self.view addSubview:spinner];
-            UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(460, 370, 110, 50) ];
-            spinnerLabel.text  = @"Please Wait...";
-            spinnerLabel.backgroundColor = [UIColor clearColor];
-            spinnerLabel.opaque = YES;
-            spinnerLabel.textColor = [UIColor whiteColor];
-            [self.view addSubview:spinnerLabel];
-            [spinner startAnimating];
 
-            //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-            //dispatch_async(downloadQueue, ^{
-                
-                ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
-                ReportPage.SINo = getSINo;
-                [self presentViewController:ReportPage animated:NO completion:^{
-                    
-                    [ReportPage dismissViewControllerAnimated:NO completion:^{
-                        
-                        //ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
-                        //[self presentViewController:reportVC animated:YES completion:Nil];
-                        
-                        
-                    }];
-                     
-                }];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [spinner stopAnimating];
-                    spinnerLabel.text = @"";
-                    NSLog(@"stop");
-                    
-                    BrowserViewController *controller = [[BrowserViewController alloc] init];
-                    controller.title = @"Quotation";
-                    
-                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                    UINavigationController *container = [[UINavigationController alloc] init];
-                    [container setNavigationBarHidden:YES animated:NO];
-                    [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
-                    
-                    [self presentModalViewController:container animated:YES];
-                    
-                   UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
-                    [v removeFromSuperview];
-                });
-                
-                
-            });
-            //dispatch_release(downloadQueue);
-        }
-        else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                          message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
-            [alert show];
-        }
-         */
-        
-        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-        premView.requestAge = getAge;
-        premView.requestOccpClass = getOccpClass;
-        premView.requestOccpCode = getOccpCode;
-        premView.requestSINo = getSINo;
-        premView.requestMOP = getMOP;
-        premView.requestTerm = getTerm;
-        premView.requestBasicSA = getbasicSA;
-        premView.requestBasicHL = getbasicHL;
-        premView.requestBasicTempHL = getbasicTempHL;
-        premView.requestPlanCode = getPlanCode;
-        
-        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
-        [zzz addSubview:premView.view];
-        
-        premView = Nil, zzz = Nil;
-        
-        sqlite3_stmt *statement;
-        BOOL cont = FALSE;
-        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-        {
-            // NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
-            
-            NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
-                                  "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
-                                  "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
-                                  "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
-            
-            
-            
-            if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-            {
-                if (sqlite3_step(statement) == SQLITE_ROW)
-                {
-                    cont = TRUE;
-                    
-                } else {
-                    cont = FALSE;
-                    NSLog(@"error access SI_Store_Premium");
-                }
-                sqlite3_finalize(statement);
-            }
-            sqlite3_close(contactDB);
-            
-            
-        }
-        
-		if (_FS == Nil) {
-			self.FS = [FSVerticalTabBarController alloc];
-			_FS.delegate = self;
-		}
-		
-		
-        if (cont == TRUE) {
-
-            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            spinner.center = CGPointMake(400, 350);
-            
-            spinner.hidesWhenStopped = YES;
-            [self.view addSubview:spinner];
-            UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
-            spinnerLabel.text  = @" Please Wait...";
-            spinnerLabel.backgroundColor = [UIColor blackColor];
-            spinnerLabel.opaque = YES;
-            spinnerLabel.textColor = [UIColor whiteColor];
-            [self.view addSubview:spinnerLabel];
-			[self.view setUserInteractionEnabled:NO];
-            [spinner startAnimating];
-        
-			
-			[_FS Test ];
-			
-			
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-
-				ReportViewController *ReportPage;
-				CashPromiseViewController *CPReportPage;
-				
-                if([getBasicPlan isEqualToString:@"HLACP" ]){
-					CPReportPage = [[CashPromiseViewController alloc] init ];
-					CPReportPage.SINo = getSINo;
-					[self presentViewController:CPReportPage animated:NO completion:Nil];
-					
-				}
-				else if([getBasicPlan isEqualToString:@"HLAIB" ]){
-					ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
-					ReportPage.SINo = getSINo;
-					[self presentViewController:ReportPage animated:NO completion:Nil];
-				}
-					
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [spinner stopAnimating];
-                    spinnerLabel.text = @"";
-					[self.view setUserInteractionEnabled:YES];
-					[_FS Reset];
-
-					if([getBasicPlan isEqualToString:@"HLACP" ]){
-						
-						[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
-					}
-					else if([getBasicPlan isEqualToString:@"HLAIB" ]){
-						[ReportPage dismissViewControllerAnimated:NO completion:Nil];
-					}
-					
-                    
-
-                    BrowserViewController *controller = [[BrowserViewController alloc] init];
-                    controller.title = @"Quotation";
-
-					
-					if([getBasicPlan isEqualToString:@"HLACP" ]){
-						
-						controller.Module = 1;
-					}
-					else if([getBasicPlan isEqualToString:@"HLAIB" ]){
-						controller.Module = 0;
-					}
-					
-                    
-                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                    UINavigationController *container = [[UINavigationController alloc] init];
-                    [container setNavigationBarHidden:YES animated:NO];
-                    [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
-                    
-                    [self presentModalViewController:container animated:YES];
-                    
-                    navController = Nil;
-                    container = Nil;
-                    controller = Nil;
-                    
-                    UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
-                    [v removeFromSuperview];
-                    v = Nil;
-                });
-                
-                ReportPage = Nil;
-				CPReportPage = Nil;
-                
-            });
-            
-            spinner = Nil;
-            
-            
-        }
-        else {
-			
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
             alert = Nil;
+			
+		}
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+        else{
+			AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+			
+			NSString *RevisedSumAssured = appDel.MhiMessage;
+			
+			if (![appDel.MhiMessage isEqualToString:@""] && appDel.MhiMessage != NULL  ) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",RevisedSumAssured]
+															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+				[alert show];
+				alert = Nil;
+			}
+			
+			RevisedSumAssured = Nil;
+			appDel = Nil;
+			//appDel.MhiMessage = Nil;
+			/*
+			 sqlite3_stmt *statement;
+			 BOOL cont = FALSE;
+			 if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+			 {
+			 // NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
 			 
-        }
+			 NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
+			 "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
+			 "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+			 "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
+			 
+			 if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			 {
+			 if (sqlite3_step(statement) == SQLITE_ROW)
+			 {
+			 cont = TRUE;
+			 
+			 } else {
+			 cont = FALSE;
+			 NSLog(@"error access SI_Store_Premium");
+			 }
+			 sqlite3_finalize(statement);
+			 }
+			 sqlite3_close(contactDB);
+			 }
+			 
+			 if (cont == TRUE) {
+			 
+			 UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+			 spinner.center = CGPointMake(500, 350);
+			 
+			 spinner.hidesWhenStopped = YES;
+			 [self.view addSubview:spinner];
+			 UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(460, 370, 110, 50) ];
+			 spinnerLabel.text  = @"Please Wait...";
+			 spinnerLabel.backgroundColor = [UIColor clearColor];
+			 spinnerLabel.opaque = YES;
+			 spinnerLabel.textColor = [UIColor whiteColor];
+			 [self.view addSubview:spinnerLabel];
+			 [spinner startAnimating];
+			 
+			 //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+			 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+			 //dispatch_async(downloadQueue, ^{
+			 
+			 ReportViewController *ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+			 ReportPage.SINo = getSINo;
+			 [self presentViewController:ReportPage animated:NO completion:^{
+			 
+			 [ReportPage dismissViewControllerAnimated:NO completion:^{
+			 
+			 //ReportViewController *reportVC = [self.storyboard instantiateViewControllerWithIdentifier:@"Browser"];
+			 //[self presentViewController:reportVC animated:YES completion:Nil];
+			 
+			 
+			 }];
+			 
+			 }];
+			 
+			 dispatch_async(dispatch_get_main_queue(), ^{
+			 [spinner stopAnimating];
+			 spinnerLabel.text = @"";
+			 NSLog(@"stop");
+			 
+			 BrowserViewController *controller = [[BrowserViewController alloc] init];
+			 controller.title = @"Quotation";
+			 
+			 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+			 UINavigationController *container = [[UINavigationController alloc] init];
+			 [container setNavigationBarHidden:YES animated:NO];
+			 [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+			 
+			 [self presentModalViewController:container animated:YES];
+			 
+			 UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+			 [v removeFromSuperview];
+			 });
+			 
+			 
+			 });
+			 //dispatch_release(downloadQueue);
+			 }
+			 else {
+			 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+			 message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+			 [alert show];
+			 }
+			 */
+			
+			PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+			premView.requestAge = getAge;
+			premView.requestOccpClass = getOccpClass;
+			premView.requestOccpCode = getOccpCode;
+			premView.requestSINo = getSINo;
+			premView.requestMOP = getMOP;
+			premView.requestTerm = getTerm;
+			premView.requestBasicSA = getbasicSA;
+			premView.requestBasicHL = getbasicHL;
+			premView.requestBasicTempHL = getbasicTempHL;
+			premView.requestPlanCode = getPlanCode;
+			
+			UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+			[zzz addSubview:premView.view];
+			
+			premView = Nil, zzz = Nil;
+			
+			sqlite3_stmt *statement;
+			BOOL cont = FALSE;
+			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+			{
+				// NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
+				
+				NSString *QuerySQL = [ NSString stringWithFormat:@"select \"PolicyTerm\", \"BasicSA\", \"premiumPaymentOption\", \"CashDividend\",  "
+									  "\"YearlyIncome\", \"AdvanceYearlyIncome\", \"HL1KSA\",  \"sex\" from Trad_Details as A, "
+									  "Clt_Profile as B, trad_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+									  "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
+				
+				
+				
+				if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_ROW)
+					{
+						cont = TRUE;
+						
+					} else {
+						cont = FALSE;
+						NSLog(@"error access SI_Store_Premium");
+					}
+					sqlite3_finalize(statement);
+				}
+				sqlite3_close(contactDB);
+				
+				
+			}
+			
+			if (_FS == Nil) {
+				self.FS = [FSVerticalTabBarController alloc];
+				_FS.delegate = self;
+			}
+			
+			
+			if (cont == TRUE) {
+				
+				UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+				spinner.center = CGPointMake(400, 350);
+				
+				spinner.hidesWhenStopped = YES;
+				[self.view addSubview:spinner];
+				UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+				spinnerLabel.text  = @" Please Wait...";
+				spinnerLabel.backgroundColor = [UIColor blackColor];
+				spinnerLabel.opaque = YES;
+				spinnerLabel.textColor = [UIColor whiteColor];
+				[self.view addSubview:spinnerLabel];
+				[self.view setUserInteractionEnabled:NO];
+				[spinner startAnimating];
+				
+				
+				[_FS Test ];
+				
+				
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+					
+					ReportViewController *ReportPage;
+					CashPromiseViewController *CPReportPage;
+					
+					if([getBasicPlan isEqualToString:@"HLACP" ]){
+						CPReportPage = [[CashPromiseViewController alloc] init ];
+						CPReportPage.SINo = getSINo;
+						[self presentViewController:CPReportPage animated:NO completion:Nil];
+						
+					}
+					else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+						ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+						ReportPage.SINo = getSINo;
+						[self presentViewController:ReportPage animated:NO completion:Nil];
+					}
+					
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[spinner stopAnimating];
+						spinnerLabel.text = @"";
+						[self.view setUserInteractionEnabled:YES];
+						[_FS Reset];
+						
+						if([getBasicPlan isEqualToString:@"HLACP" ]){
+							
+							[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+						}
+						else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+							[ReportPage dismissViewControllerAnimated:NO completion:Nil];
+						}
+						
+						
+						
+						BrowserViewController *controller = [[BrowserViewController alloc] init];
+						controller.title = @"Quotation";
+						
+						
+						if([getBasicPlan isEqualToString:@"HLACP" ]){
+							
+							controller.Module = 1;
+						}
+						else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+							controller.Module = 0;
+						}
+						
+						
+						UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+						UINavigationController *container = [[UINavigationController alloc] init];
+						[container setNavigationBarHidden:YES animated:NO];
+						[container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+						
+						[self presentModalViewController:container animated:YES];
+						
+						navController = Nil;
+						container = Nil;
+						controller = Nil;
+						
+						UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+						[v removeFromSuperview];
+						v = Nil;
+					});
+					
+					ReportPage = Nil;
+					CPReportPage = Nil;
+					
+				});
+				
+				spinner = Nil;
+				
+				
+			}
+			else {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+																message:@"SI has been deleted" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+				[alert show];
+				alert = Nil;
+				
+			}
+			
+			statement = Nil;
+		}
         
-        statement = Nil;
     }
     
     else if (indexPath.row == 9) {   //English PDS
         
-        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-        premView.requestAge = getAge;
-        premView.requestOccpClass = getOccpClass;
-        premView.requestOccpCode = getOccpCode;
-        premView.requestSINo = getSINo;
-        premView.requestMOP = getMOP;
-        premView.requestTerm = getTerm;
-        premView.requestBasicSA = getbasicSA;
-        premView.requestBasicHL = getbasicHL;
-        premView.requestBasicTempHL = getbasicTempHL;
-        premView.requestPlanCode = getPlanCode;
-        
-        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
-        [zzz addSubview:premView.view];
-        
-        premView = Nil, zzz= Nil;
-        
-        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        spinner.center = CGPointMake(400, 350);
-        
-        spinner.hidesWhenStopped = YES;
-        [self.view addSubview:spinner];
-        UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
-        spinnerLabel.text  = @" Please Wait...";
-        spinnerLabel.backgroundColor = [UIColor blackColor];
-        spinnerLabel.opaque = YES;
-        spinnerLabel.textColor = [UIColor whiteColor];
-        [self.view addSubview:spinnerLabel];
-		[self.view setUserInteractionEnabled:NO];
-        [spinner startAnimating];
-        
-		if (_FS == Nil) {
-			self.FS = [FSVerticalTabBarController alloc];
-			_FS.delegate = self;
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
 		}
-        
-		[_FS Test ];
-		
-        //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-            //dispatch_async(downloadQueue, ^{
-            
-            
-            PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
-            PDSPage.SINo = getSINo;
-            PDSPage.PDSLanguage = @"E";
-			if([getBasicPlan isEqualToString:@"HLACP" ]){
-				PDSPage.PDSPlanCode = @"HLACP";
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			
+			AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+			
+			NSString *RevisedSumAssured = appDel.MhiMessage;
+			if (![appDel.MhiMessage isEqualToString:@""] && appDel.MhiMessage != NULL) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",RevisedSumAssured]
+															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+				[alert show];
+				alert = Nil;
 			}
-			else{
-				PDSPage.PDSPlanCode = @"HLAIB";
+			
+			RevisedSumAssured = Nil;
+			appDel = Nil;
+			//appDel.MhiMessage = Nil;
+			
+			PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+			premView.requestAge = getAge;
+			premView.requestOccpClass = getOccpClass;
+			premView.requestOccpCode = getOccpCode;
+			premView.requestSINo = getSINo;
+			premView.requestMOP = getMOP;
+			premView.requestTerm = getTerm;
+			premView.requestBasicSA = getbasicSA;
+			premView.requestBasicHL = getbasicHL;
+			premView.requestBasicTempHL = getbasicTempHL;
+			premView.requestPlanCode = getPlanCode;
+			
+			UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+			[zzz addSubview:premView.view];
+			
+			premView = Nil, zzz= Nil;
+			
+			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+			spinner.center = CGPointMake(400, 350);
+			
+			spinner.hidesWhenStopped = YES;
+			[self.view addSubview:spinner];
+			UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+			spinnerLabel.text  = @" Please Wait...";
+			spinnerLabel.backgroundColor = [UIColor blackColor];
+			spinnerLabel.opaque = YES;
+			spinnerLabel.textColor = [UIColor whiteColor];
+			[self.view addSubview:spinnerLabel];
+			[self.view setUserInteractionEnabled:NO];
+			[spinner startAnimating];
+			
+			if (_FS == Nil) {
+				self.FS = [FSVerticalTabBarController alloc];
+				_FS.delegate = self;
 			}
-            [self presentViewController:PDSPage animated:NO completion:Nil];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [spinner stopAnimating];
-                spinnerLabel.text = @"";
-				[self.view setUserInteractionEnabled:YES];
-				[_FS Reset];
-                
-                [PDSPage dismissViewControllerAnimated:NO completion:Nil];
-                
-                
-                PDSBrowserViewController *controller = [[PDSBrowserViewController alloc] init];
-                controller.PDSLanguage = @"E";
-                
-                //controller.title = @"Quotation";
-                //controller.delegate = self;
-                //controller.premH = premH;
-                //controller.premBH = premBH;
-                
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                UINavigationController *container = [[UINavigationController alloc] init];
-                [container setNavigationBarHidden:YES animated:NO];
-                [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
-                
-                [self presentModalViewController:container animated:YES];
-                
-                controller = Nil;
+			
+			[_FS Test ];
+			
+			//dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+				//dispatch_async(downloadQueue, ^{
+				
+				
+				PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
+				PDSPage.SINo = getSINo;
+				PDSPage.PDSLanguage = @"E";
+				if([getBasicPlan isEqualToString:@"HLACP" ]){
+					PDSPage.PDSPlanCode = @"HLACP";
+				}
+				else{
+					PDSPage.PDSPlanCode = @"HLAIB";
+				}
+				[self presentViewController:PDSPage animated:NO completion:Nil];
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[spinner stopAnimating];
+					spinnerLabel.text = @"";
+					[self.view setUserInteractionEnabled:YES];
+					[_FS Reset];
+					
+					[PDSPage dismissViewControllerAnimated:NO completion:Nil];
+					
+					
+					PDSBrowserViewController *controller = [[PDSBrowserViewController alloc] init];
+					controller.PDSLanguage = @"E";
+					
+					//controller.title = @"Quotation";
+					//controller.delegate = self;
+					//controller.premH = premH;
+					//controller.premBH = premBH;
+					
+					UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+					UINavigationController *container = [[UINavigationController alloc] init];
+					[container setNavigationBarHidden:YES animated:NO];
+					[container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+					
+					[self presentModalViewController:container animated:YES];
+					
+					controller = Nil;
+					
+					UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+					[v removeFromSuperview];
+					v = Nil;
+					
+					navController = Nil;
+					container = Nil;
+				});
+				
+				PDSPage = Nil;
+				
+				
+			});
+			spinner = Nil;
 
-                UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
-                [v removeFromSuperview];
-                v = Nil;
-                
-                navController = Nil;
-                container = Nil;
-            });
-            
-            PDSPage = Nil;
-            
-            
-        });
-        spinner = Nil;
+		}
         
     }
     else if (indexPath.row == 10) {   //Malay PDS
         
-        PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-        premView.requestAge = getAge;
-        premView.requestOccpClass = getOccpClass;
-        premView.requestOccpCode = getOccpCode;
-        premView.requestSINo = getSINo;
-        premView.requestMOP = getMOP;
-        premView.requestTerm = getTerm;
-        premView.requestBasicSA = getbasicSA;
-        premView.requestBasicHL = getbasicHL;
-        premView.requestBasicTempHL = getbasicTempHL;
-        premView.requestPlanCode = getPlanCode;
-        
-        UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
-        [zzz addSubview:premView.view];
-        
-        premView = Nil, zzz= Nil;
-        
-        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        spinner.center = CGPointMake(400, 350);
-        
-        spinner.hidesWhenStopped = YES;
-        [self.view addSubview:spinner];
-        UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
-        spinnerLabel.text  = @" Please Wait...";
-        spinnerLabel.backgroundColor = [UIColor blackColor];
-        spinnerLabel.opaque = YES;
-        spinnerLabel.textColor = [UIColor whiteColor];
-        [self.view addSubview:spinnerLabel];
-		[self.view setUserInteractionEnabled:NO];
-        [spinner startAnimating];
-        
-		if (_FS == Nil) {
-			self.FS = [FSVerticalTabBarController alloc];
-			_FS.delegate = self;
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
 		}
-        
-		[_FS Test ];
+		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		
+		else{
+			
+			AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+			
+			NSString *RevisedSumAssured = appDel.MhiMessage;
+			if (![appDel.MhiMessage isEqualToString:@""] && appDel.MhiMessage != NULL) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",RevisedSumAssured]
+															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+				[alert show];
+				alert = Nil;
+			}
+			
+			RevisedSumAssured = Nil;
+			appDel = Nil;
+			//appDel.MhiMessage = Nil;
+			
+			PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+			premView.requestAge = getAge;
+			premView.requestOccpClass = getOccpClass;
+			premView.requestOccpCode = getOccpCode;
+			premView.requestSINo = getSINo;
+			premView.requestMOP = getMOP;
+			premView.requestTerm = getTerm;
+			premView.requestBasicSA = getbasicSA;
+			premView.requestBasicHL = getbasicHL;
+			premView.requestBasicTempHL = getbasicTempHL;
+			premView.requestPlanCode = getPlanCode;
+			
+			UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+			[zzz addSubview:premView.view];
+			
+			premView = Nil, zzz= Nil;
+			
+			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+			spinner.center = CGPointMake(400, 350);
+			
+			spinner.hidesWhenStopped = YES;
+			[self.view addSubview:spinner];
+			UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+			spinnerLabel.text  = @" Please Wait...";
+			spinnerLabel.backgroundColor = [UIColor blackColor];
+			spinnerLabel.opaque = YES;
+			spinnerLabel.textColor = [UIColor whiteColor];
+			[self.view addSubview:spinnerLabel];
+			[self.view setUserInteractionEnabled:NO];
+			[spinner startAnimating];
+			
+			if (_FS == Nil) {
+				self.FS = [FSVerticalTabBarController alloc];
+				_FS.delegate = self;
+			}
+			
+			[_FS Test ];
+			
+			
+			//dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+				//dispatch_async(downloadQueue, ^{
+				
+				
+				PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
+				PDSPage.SINo = getSINo;
+				PDSPage.PDSLanguage = @"M";
+				if([getBasicPlan isEqualToString:@"HLACP" ]){
+					PDSPage.PDSPlanCode = @"HLACP";
+				}
+				else{
+					PDSPage.PDSPlanCode = @"HLAIB";
+				}
+				[self presentViewController:PDSPage animated:NO completion:Nil];
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[spinner stopAnimating];
+					spinnerLabel.text = @"";
+					[self.view setUserInteractionEnabled:YES];
+					[_FS Reset];
+					
+					[PDSPage dismissViewControllerAnimated:NO completion:Nil];
+					
+					
+					PDSBrowserViewController *controller = [[PDSBrowserViewController alloc] init];
+					controller.PDSLanguage = @"M";
+					
+					//controller.title = @"Quotation";
+					//controller.delegate = self;
+					//controller.premH = premH;
+					//controller.premBH = premBH;
+					
+					UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+					UINavigationController *container = [[UINavigationController alloc] init];
+					[container setNavigationBarHidden:YES animated:NO];
+					[container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+					
+					[self presentModalViewController:container animated:YES];
+					
+					controller = Nil, navController = Nil, container = Nil;
+					UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+					[v removeFromSuperview];
+					v = Nil;
+				});
+				
+				PDSPage = Nil;
+				
+				
+			});
+			
+			spinner = Nil;
+
+		}
+	
 		
 		
-        //dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-            //dispatch_async(downloadQueue, ^{
-            
-            
-            PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
-            PDSPage.SINo = getSINo;
-            PDSPage.PDSLanguage = @"M";
-			if([getBasicPlan isEqualToString:@"HLACP" ]){
-				PDSPage.PDSPlanCode = @"HLACP";
-			}
-			else{
-				PDSPage.PDSPlanCode = @"HLAIB";
-			}
-            [self presentViewController:PDSPage animated:NO completion:Nil];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [spinner stopAnimating];
-                spinnerLabel.text = @"";
-				[self.view setUserInteractionEnabled:YES];
-				[_FS Reset];
-                
-                [PDSPage dismissViewControllerAnimated:NO completion:Nil];
-                
-                
-                PDSBrowserViewController *controller = [[PDSBrowserViewController alloc] init];
-                controller.PDSLanguage = @"M";
-                
-                //controller.title = @"Quotation";
-                //controller.delegate = self;
-                //controller.premH = premH;
-                //controller.premBH = premBH;
-                
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                UINavigationController *container = [[UINavigationController alloc] init];
-                [container setNavigationBarHidden:YES animated:NO];
-                [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
-                
-                [self presentModalViewController:container animated:YES];
-                
-                controller = Nil, navController = Nil, container = Nil;
-                UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
-                [v removeFromSuperview];
-                v = Nil;
-            });
-            
-            PDSPage = Nil;
-            
-            
-        });
-        
-        spinner = Nil;
-    }
+	}
     
 //    [tableView reloadData];
     
@@ -1606,9 +1802,9 @@ id RiderCount;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BOOL found = false;
-    
+ 
     if ([SelectedRow count ] == 0) {
-        
+ 
         return  44;
     }
     else {

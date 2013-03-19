@@ -37,6 +37,10 @@
 {
     [super viewDidLoad];
 
+	AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	appDel.MhiMessage = Nil;
+	appDel = Nil;
+	
     [self.view endEditing:YES];
     [self resignFirstResponder];
     

@@ -16,6 +16,7 @@
 @interface RiderViewController ()
 
 @end
+BOOL Edit = FALSE;
 
 @implementation RiderViewController
 @synthesize titleRidCode;
@@ -285,6 +286,7 @@
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
+	Edit = TRUE;
     self.myScrollView.frame = CGRectMake(0, 44, 768, 453-100);
     self.myScrollView.contentSize = CGSizeMake(768, 403);
     CGRect textFieldRect = [activeField frame];
@@ -2373,58 +2375,63 @@
 
 - (IBAction)doSaveRider:(id)sender
 {
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    [myTableView setEditing:FALSE]; 
-    [self.myTableView setEditing:NO animated:TRUE];
-    deleteBtn.hidden = true;
-    [editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
-    
-    NSUInteger i;
-    for (i=0; i<[FLabelCode count]; i++)
-    {
-        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
-            inputHL1KSA = [[NSString alloc]initWithFormat:@"%@",HLField.text];
-        } else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10"]]) {
-            inputHL100SA = [[NSString alloc]initWithFormat:@"%@",HLField.text];
-        } else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
-            inputHLPercentage = [[NSString alloc]initWithFormat:@"%@",HLField.text];
-        }
-        
-        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1KT"]]) {
-            inputHL1KSATerm = [HLTField.text intValue];
-        } else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10T"]]) {
-            inputHL100SATerm = [HLTField.text intValue];
-        } else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLPT"]]) {
-            inputHLPercentageTerm = [HLTField.text intValue];
-        }
-    }
-    
-    if (riderCode.length == 0 || btnAddRider.titleLabel.text.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select a Rider." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    else if (term) {
-        NSLog(@"validate - 1st term");
-        [self validateTerm];
-    }
-    else if (sumA) {
-        NSLog(@"validate - 2nd sum");
-        [self validateSum];
-    }
-    else if (unit) {
-        NSLog(@"validate - 3rd unit");
-        [self validateUnit];
-    }
-    else {
-        NSLog(@"validate - 4th save");
-        [self validateSaver];
-    }
+	if (Edit == TRUE) {
+		[self resignFirstResponder];
+		[self.view endEditing:YES];
+		
+		Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+		id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+		[activeInstance performSelector:@selector(dismissKeyboard)];
+		
+		[myTableView setEditing:FALSE];
+		[self.myTableView setEditing:NO animated:TRUE];
+		deleteBtn.hidden = true;
+		[editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
+		
+		NSUInteger i;
+		for (i=0; i<[FLabelCode count]; i++)
+		{
+			if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
+				inputHL1KSA = [[NSString alloc]initWithFormat:@"%@",HLField.text];
+			} else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10"]]) {
+				inputHL100SA = [[NSString alloc]initWithFormat:@"%@",HLField.text];
+			} else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
+				inputHLPercentage = [[NSString alloc]initWithFormat:@"%@",HLField.text];
+			}
+			
+			if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1KT"]]) {
+				inputHL1KSATerm = [HLTField.text intValue];
+			} else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL10T"]]) {
+				inputHL100SATerm = [HLTField.text intValue];
+			} else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLPT"]]) {
+				inputHLPercentageTerm = [HLTField.text intValue];
+			}
+		}
+		
+		if (riderCode.length == 0 || btnAddRider.titleLabel.text.length == 0) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select a Rider." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+		}
+		else if (term) {
+			NSLog(@"validate - 1st term");
+			[self validateTerm];
+		}
+		else if (sumA) {
+			NSLog(@"validate - 2nd sum");
+			[self validateSum];
+		}
+		else if (unit) {
+			NSLog(@"validate - 3rd unit");
+			[self validateUnit];
+		}
+		else {
+			NSLog(@"validate - 4th save");
+			[self validateSaver];
+		}
+
+		Edit = FALSE;
+	}
+	
 }
 
 - (IBAction)editPressed:(id)sender
@@ -2908,7 +2915,7 @@
     //--
     else if (inputHLPercentage.length != 0 && [HLField.text intValue] > 500) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLField becomeFirstResponder];
     }
@@ -2916,11 +2923,11 @@
        
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Health Loading (per 1k SA) is required.";
+            msg = @"Health Loading 1 (per 1k SA) is required.";
         } else if (HL100kTerm) {
-            msg = @"Health Loading (per 100 SA) is required.";
+            msg = @"Health Loading 1 (per 100 SA) is required.";
         } else if (HLPTerm) {
-            msg = @"Health Loading (%) is required.";
+            msg = @"Health Loading 1 (%) is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -2930,11 +2937,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Health Loading (per 1k SA) Term is required.";
+            msg = @"Health Loading 1 (per 1k SA) Term is required.";
         } else if (HL100kTerm) {
-            msg = @"Health Loading (per 100 SA) Term is required.";
+            msg = @"Health Loading 1 (per 100 SA) Term is required.";
         } else if (HLPTerm) {
-            msg = @"Health Loading (%) Term is required.";
+            msg = @"Health Loading 1 (%) Term is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -2950,10 +2957,10 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Health Loading (Per 1k SA) only allow 2 decimal places.";
+            msg = @"Health Loading 1 (Per 1k SA) only allow 2 decimal places.";
         }
         else if (HL100kTerm) {
-            msg = @"Health Loading (Per 100k SA) only allow 2 decimal places.";
+            msg = @"Health Loading 1 (Per 100k SA) only allow 2 decimal places.";
         } 
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
@@ -2961,13 +2968,13 @@
     }
     else if (inputHLPercentage.length != 0 && substring.length > 1) {
         
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [HLField becomeFirstResponder];
     }
     else if (inputHLPercentage.length != 0 && msg2.length > 1) {
         
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [HLField becomeFirstResponder];
     }
@@ -2975,11 +2982,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading (per 1k SA) Term.";
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 1 (per 1k SA) Term.";
         } else if (HL100kTerm) {
-            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading (per 100k SA) Term.";
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 1 (per 100k SA) Term.";
         } else if (HLPTerm) {
-            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading (%) Term.";
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 1 (%) Term.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
@@ -2989,11 +2996,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HL100kTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HLPTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 1 (%%) Term cannot be greater than %d",[termField.text intValue]];
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3001,7 +3008,7 @@
     }
     else if (HLPTerm && [HLField.text intValue] > 500) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [tempHLField becomeFirstResponder];
     }
@@ -3009,11 +3016,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Health Loading (per 1k SA) is required.";
+            msg = @"Health Loading 1 (per 1k SA) is required.";
         } else if (HL100kTerm) {
-            msg = @"Health Loading (per 100 SA) is required.";
+            msg = @"Health Loading 1 (per 100 SA) is required.";
         } else if (HLPTerm) {
-            msg = @"Health Loading (%) is required.";
+            msg = @"Health Loading 1 (%) is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3022,11 +3029,11 @@
     else if ([HLTField.text intValue] == 0 && HLTField.text.length != 0) {
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Health Loading (per 1k SA) Term is required.";
+            msg = @"Health Loading 1 (per 1k SA) Term is required.";
         } else if (HL100kTerm) {
-            msg = @"Health Loading (per 100 SA) Term is required.";
+            msg = @"Health Loading 1 (per 100 SA) Term is required.";
         } else if (HLPTerm) {
-            msg = @"Health Loading (%) Term is required.";
+            msg = @"Health Loading 1 (%) Term is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3038,11 +3045,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Temporary Health Loading (per 1k SA) is required.";
+            msg = @"Health Loading 2 (per 1k SA) is required.";
         } else if (HL100kTerm) {
-            msg = @"Temporary Health Loading (per 100 SA) is required.";
+            msg = @"Health Loading 2 (per 100 SA) is required.";
         } else if (HLPTerm) {
-            msg = @"Temporary Health Loading (%) is required.";
+            msg = @"Health Loading 2 (%) is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3052,11 +3059,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Temporary Health Loading (per 1k SA) Term is required.";
+            msg = @"Health Loading 2 (per 1k SA) Term is required.";
         } else if (HL100kTerm) {
-            msg = @"Temporary Health Loading (per 100 SA) Term is required.";
+            msg = @"Health Loading 2 (per 100 SA) Term is required.";
         } else if (HLPTerm) {
-            msg = @"Temporary Health Loading (%) Term is required.";
+            msg = @"Health Loading 2 (%) Term is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3072,9 +3079,9 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Temporary Health Loading (Per 1k SA) only allow 2 decimal places.";
+            msg = @"Health Loading 2 (Per 1k SA) only allow 2 decimal places.";
         } else if (HL100kTerm) {
-            msg = @"Temporary Health Loading (Per 100k SA) only allow 2 decimal places.";
+            msg = @"Health Loading 2 (Per 100k SA) only allow 2 decimal places.";
         }
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
@@ -3109,11 +3116,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = [NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HL100kTerm) {
-            msg = [NSString stringWithFormat:@"Temporary Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HLPTerm) {
-            msg = [NSString stringWithFormat:@"Temporary Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 2 (%%) Term cannot be greater than %d",[termField.text intValue]];
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3123,11 +3130,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Temporary Health Loading (per 1k SA) is required.";
+            msg = @"Health Loading 2 (per 1k SA) is required.";
         } else if (HL100kTerm) {
-            msg = @"Temporary Health Loading (per 100 SA) is required.";
+            msg = @"Health Loading 2 (per 100 SA) is required.";
         } else if (HLPTerm) {
-            msg = @"Temporary Health Loading (%) is required.";
+            msg = @"Health Loading 2 (%) is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3137,11 +3144,11 @@
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Temporary Health Loading (per 1k SA) Term is required.";
+            msg = @"Health Loading 2 (per 1k SA) Term is required.";
         } else if (HL100kTerm) {
-            msg = @"Temporary Health Loading (per 100 SA) Term is required.";
+            msg = @"Health Loading 2 (per 100 SA) Term is required.";
         } else if (HLPTerm) {
-            msg = @"Temporary Health Loading (%) Term is required.";
+            msg = @"Health Loading 2 (%) Term is required.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];

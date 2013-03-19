@@ -112,13 +112,14 @@ id temp;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
     [super viewWillAppear:animated];
-    
+    /*
     self.headerTitle.frame = CGRectMake(306, -20, 156, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
     
     self.view.frame = CGRectMake(0, 20, 768, 1004);
-    
+    */
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -536,7 +537,13 @@ id temp;
         else if ([OccpCodePP isEqualToString:@"OCC01975"]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
+			
         }
+		else if (age > 63){
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 63 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+			alert = Nil;
+		}
         else {
             //---------
             sex = GenderPP;
