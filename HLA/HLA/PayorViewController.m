@@ -80,7 +80,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.headerTitle.frame = CGRectMake(344, -20, 111, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
+    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    
     [super viewWillAppear:animated];
 }
 
@@ -931,6 +934,7 @@
     [self setDOBPP:nil];
     [self setGenderPP:nil];
     [self setOccpCodePP:nil];
+    [self setHeaderTitle:nil];
     [super viewDidUnload];
 }
 

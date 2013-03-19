@@ -19,6 +19,9 @@
 }
 
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
+@property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
+@property (strong, nonatomic) IBOutlet UILabel *headerTitle;
+
 @property (nonatomic,strong) SIHandler *premH;
 @property (nonatomic,strong) BasicPlanHandler *premBH;
 //--request

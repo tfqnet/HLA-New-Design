@@ -13,7 +13,7 @@
 @end
 
 @implementation HLViewController
-@synthesize HLField,HLTermField,TempHLField,TempHLTermField;
+@synthesize HLField,HLTermField,TempHLField,TempHLTermField,headerTitle;
 @synthesize getHL,getHLTerm,getTempHL,getTempHLTerm,termCover,ageClient,planChoose,SINo;
 @synthesize delegate = _delegate;
 
@@ -40,7 +40,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.headerTitle.frame = CGRectMake(309, -20, 151, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
+    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    
     [super viewWillAppear:animated];
 }
 
@@ -364,6 +367,7 @@
     [self setTempHLField:nil];
     [self setTempHLTermField:nil];
     [self setMyToolBar:nil];
+    [self setHeaderTitle:nil];
     [super viewDidUnload];
 }
 

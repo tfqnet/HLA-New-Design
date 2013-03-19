@@ -27,6 +27,8 @@
 @property (strong, nonatomic) IBOutlet UITextField *TempHLField;
 @property (strong, nonatomic) IBOutlet UITextField *TempHLTermField;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
+@property (strong, nonatomic) IBOutlet UILabel *headerTitle;
+
 - (IBAction)doSave:(id)sender;
 
 //--request

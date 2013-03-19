@@ -38,7 +38,7 @@
 @synthesize OccpLoadA,OccpLoadH,OccpLoadM,OccpLoadQ;
 @synthesize BasicHLAnnually,BasicHLHalfYear,BasicHLMonthly,BasicHLQuarterly;
 @synthesize LSDAnnually,LSDHalfYear,LSDMonthly,LSDQuarterly;
-@synthesize basicTotalA,basicTotalM,basicTotalQ,basicTotalS,riderTempHL1K;
+@synthesize basicTotalA,basicTotalM,basicTotalQ,basicTotalS,riderTempHL1K,headerTitle,myToolBar;
 
 - (void)viewDidLoad
 {
@@ -177,8 +177,11 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {    
-//    self.view.superview.bounds = CGRectMake(-102, 0, 1000, 748);
-    //[self.presentedViewController dismissModalViewControllerAnimated:YES ];
+    self.headerTitle.frame = CGRectMake(290, -20, 124, 44);
+    self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
+    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    
+    [super viewWillAppear:animated];
 }
 
 #pragma mark - Calculation
@@ -2163,6 +2166,8 @@
     [self setReportFromAge:nil];
     [self setReportToAge:nil];
     [self setRiderTempHL1K:nil];
+    [self setHeaderTitle:nil];
+    [self setMyToolBar:nil];
     [super viewDidUnload];
 }
 

@@ -132,9 +132,9 @@ id RiderCount;
 	 */
 	self.view.autoresizesSubviews = NO;
 	
-	  self.myTableView.frame = CGRectMake(0, 0, 220, 748);
-	   [self hideSeparatorLine];
-	   self.RightView.frame = CGRectMake(223, 0, 801, 748);
+    self.myTableView.frame = CGRectMake(0, 0, 220, 748);
+    [self hideSeparatorLine];
+    self.RightView.frame = CGRectMake(223, 0, 801, 748);
 }
 
 - (void)viewDidAppear:(BOOL)animated

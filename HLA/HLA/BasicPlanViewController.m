@@ -57,7 +57,7 @@
 @synthesize planList = _planList;
 @synthesize planPopover = _planPopover;
 @synthesize labelParAcc,labelParPayout,labelPercent1,labelPercent2,parAccField,parPayoutField,getParAcc,getParPayout;
-@synthesize pTypeOccp,occLoadRider,riderPrem,waiverRiderAnn,medRiderPrem;
+@synthesize pTypeOccp,occLoadRider,riderPrem,waiverRiderAnn,medRiderPrem,headerTitle;
 @synthesize waiverRiderAnn2,waiverRiderHalf,waiverRiderHalf2,waiverRiderMonth,waiverRiderMonth2,waiverRiderQuar,waiverRiderQuar2;
 
 #pragma mark - Cycle View
@@ -153,7 +153,10 @@ id temp;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.headerTitle.frame = CGRectMake(310, -20, 149, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
+    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    
     [super viewWillAppear:animated];
 }
 
@@ -3756,6 +3759,7 @@ id temp;
     [self setParAccField:nil];
     [self setParPayoutField:nil];
     [self setLabelAddHL:nil];
+    [self setHeaderTitle:nil];
     [super viewDidUnload];
 }
 

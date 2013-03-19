@@ -29,7 +29,7 @@
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 @synthesize DOBField,OccpField,deleteBtn,getCommDate,dataInsert;
 @synthesize delegate = _delegate;
-@synthesize getSINo,getLAIndexNo,requestLAIndexNo,occPA,occuClass;
+@synthesize getSINo,getLAIndexNo,requestLAIndexNo,occPA,occuClass,headerTitle;
 
 - (void)viewDidLoad
 {
@@ -82,10 +82,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    
+    self.headerTitle.frame = CGRectMake(294, -20, 210, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
-//    self.view.frame = CGRectMake(0, 0, 768, 1004);
+    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -933,6 +934,7 @@
     [self setDOBPP:nil];
     [self setGenderPP:nil];
     [self setOccpCodePP:nil];
+    [self setHeaderTitle:nil];
     [super viewDidUnload];
 }
 

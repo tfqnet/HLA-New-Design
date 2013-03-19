@@ -122,6 +122,8 @@
 @property (retain, nonatomic) IBOutlet UILabel *maxDisplayLabel;
 @property (strong, nonatomic) IBOutlet UITextField *classField;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
+@property (strong, nonatomic) IBOutlet UILabel *headerTitle;
+
 //get from popover
 @property (nonatomic,copy) NSString *pTypeCode;
 @property (nonatomic, assign,readwrite) int PTypeSeq;

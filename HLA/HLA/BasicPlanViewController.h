@@ -109,6 +109,7 @@
 @property (retain, nonatomic) IBOutlet UISegmentedControl *advanceIncomeSegment;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *cashDivSgmntCP;
 @property (strong, nonatomic) IBOutlet UILabel *labelAddHL;
+@property (strong, nonatomic) IBOutlet UILabel *headerTitle;
 
 
 - (IBAction)btnPlanPressed:(id)sender;
