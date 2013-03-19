@@ -364,7 +364,7 @@
         query_stmt = Nil;
     }
 	else{
-						NSLog(@"cannot open");
+		NSLog(@"cannot open");
 	}
     
     dbpath = Nil;
@@ -487,6 +487,13 @@
     }
     else if (txtPassword.text.length <=0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Password is required" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        
+        [txtPassword becomeFirstResponder];
+        alert = Nil;
+    }
+	else if (![txtUsername.text isEqualToString:@"hla"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Login ID." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         
         [txtPassword becomeFirstResponder];

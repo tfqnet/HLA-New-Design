@@ -165,24 +165,24 @@ bool IsContinue = TRUE;
     NSString *zzz = [ContactType objectAtIndex:row];
     
         
-     if (ContactTypeTracker == @"2") {
+     if ([ContactTypeTracker isEqualToString: @"2"]) {
      txtContact2.enabled = true;
      [outletType2 setTitle:zzz forState:UIControlStateNormal];   
      
      }
-     else if (ContactTypeTracker == @"1") {
+     else if ([ContactTypeTracker isEqualToString: @"1"]) {
      txtContact1.enabled = true;
      [outletType1 setTitle:zzz forState:UIControlStateNormal]; 
      
      }
-     else if (ContactTypeTracker == @"3") {
+     else if ([ContactTypeTracker isEqualToString: @"3"]) {
      [outletType3 setTitle:zzz forState:UIControlStateNormal]; 
      
      }
-     else if (ContactTypeTracker == @"4") {
+     else if ([ContactTypeTracker isEqualToString: @"4"]) {
      [outletType4 setTitle:zzz forState:UIControlStateNormal]; 
      }
-     else if (ContactTypeTracker == @"5") {
+     else if ([ContactTypeTracker isEqualToString: @"5"]) {
      [outletType5 setTitle:zzz forState:UIControlStateNormal]; 
      }
      
@@ -452,6 +452,8 @@ bool IsContinue = TRUE;
         NSLog(@"Error opening database");
     }
     
+	dbpath = Nil;
+	statement = Nil;
     
     [self.outletDOB setTitle:pp.ProspectDOB forState:UIControlStateNormal];
     
@@ -1328,13 +1330,21 @@ bool IsContinue = TRUE;
                 return false;
             }
         }
-        else{
-            
-        }
     
     }
     else {
-        return FALSE;
+		if (![[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            if([txtHomePostCode.text isEqualToString:@""]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [txtHomePostCode becomeFirstResponder];
+                
+                [alert show];
+                return false;
+            }
+        }
+        
     }
     
     
@@ -1388,14 +1398,21 @@ bool IsContinue = TRUE;
                 return false;
             }
         }
-        else{
-            
-        }
         
     }
     
     else {
-        return FALSE;
+        if (![[txtOfiiceAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+            if([txtOfficePostCode.text isEqualToString:@""]){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                
+                [txtOfficePostCode becomeFirstResponder];
+                
+                [alert show];
+                return false;
+            }
+        }
     }
     
     
@@ -1875,9 +1892,9 @@ bool IsContinue = TRUE;
         txtHomeTown.text = @"";
         txtHomeCountry.text = @"";
         SelectedStateCode = @"";
-        txtHomeAddr1.text = @"";
-        txtHomeAddr2.text = @"";
-        txtHomeAddr3.text = @"";
+        //txtHomeAddr1.text = @"";
+        //txtHomeAddr2.text = @"";
+        //txtHomeAddr3.text = @"";
         outletDone.enabled = TRUE;
     }
     else{
@@ -1990,9 +2007,9 @@ bool IsContinue = TRUE;
         txtOfficeTown.text = @"";
         txtOfficeCountry.text = @"";
         SelectedOfficeStateCode = @"";
-        txtOfiiceAddr1.text = @"";
-        txtOfficeAddr2.text = @"";
-        txtOfficeAddr3.text = @"";
+        //txtOfiiceAddr1.text = @"";
+        //txtOfficeAddr2.text = @"";
+        //txtOfficeAddr3.text = @"";
         outletDone.enabled = TRUE;
         
     }
