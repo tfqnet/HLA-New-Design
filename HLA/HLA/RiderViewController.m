@@ -138,7 +138,7 @@ BOOL Edit = FALSE;
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(53,430, 80, 50);
+    CGRect frame=CGRectMake(53,454, 80, 50);
     titleRidCode.text = @"Rider";
     titleRidCode.frame = frame;
     titleRidCode.textAlignment = UITextAlignmentCenter;
@@ -146,25 +146,25 @@ BOOL Edit = FALSE;
     titleRidCode.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleRidCode.numberOfLines = 2;
     
-    CGRect frame2=CGRectMake(133,430, 105, 50);
+    CGRect frame2=CGRectMake(133,454, 105, 50);
     titleSA.frame = frame2;
     titleSA.textAlignment = UITextAlignmentCenter;
     titleSA.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleSA.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame3=CGRectMake(238,430, 62, 50);
+    CGRect frame3=CGRectMake(238,454, 62, 50);
     titleTerm.frame = frame3;
     titleTerm.textAlignment = UITextAlignmentCenter;
     titleTerm.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleTerm.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame4=CGRectMake(300,430, 62, 50);
+    CGRect frame4=CGRectMake(300,454, 62, 50);
     titleUnit.frame = frame4;
     titleUnit.textAlignment = UITextAlignmentCenter;
     titleUnit.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleUnit.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame5=CGRectMake(362,430, 62, 50);
+    CGRect frame5=CGRectMake(362,454, 62, 50);
     titleClass.text = @"Occ \nClass";
     titleClass.frame = frame5;
     titleClass.textAlignment = UITextAlignmentCenter;
@@ -172,7 +172,7 @@ BOOL Edit = FALSE;
     titleClass.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleClass.numberOfLines = 2;
 
-    CGRect frame6=CGRectMake(424,430, 62, 50);
+    CGRect frame6=CGRectMake(424,454, 62, 50);
     titleLoad.text = @"Occp \nLoading";
     titleLoad.frame = frame6;
     titleLoad.textAlignment = UITextAlignmentCenter;
@@ -180,14 +180,14 @@ BOOL Edit = FALSE;
     titleLoad.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleLoad.numberOfLines = 2;
     
-    CGRect frame7=CGRectMake(486,430, 63, 50);
+    CGRect frame7=CGRectMake(486,454, 63, 50);
     titleHL1K.text = @"HL 1";
     titleHL1K.frame = frame7;
     titleHL1K.textAlignment = UITextAlignmentCenter;
     titleHL1K.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHL1K.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame8=CGRectMake(549,430, 63, 50);
+    CGRect frame8=CGRectMake(549,454, 63, 50);
     titleHL100.text = @"HL 1\nTerm";
     titleHL100.frame = frame8;
     titleHL100.textAlignment = UITextAlignmentCenter;
@@ -195,14 +195,14 @@ BOOL Edit = FALSE;
     titleHL100.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     titleHL100.numberOfLines = 2;
     
-    CGRect frame9=CGRectMake(612,430, 63, 50);
+    CGRect frame9=CGRectMake(612,454, 63, 50);
     titleHLP.text = @"HL 2";
     titleHLP.frame = frame9;
     titleHLP.textAlignment = UITextAlignmentCenter;
     titleHLP.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     titleHLP.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame10=CGRectMake(675,430, 64, 50);
+    CGRect frame10=CGRectMake(675,454, 64, 50);
     titleHLPTerm.text = @"HL 2\nTerm";
     titleHLPTerm.frame = frame10;
     titleHLPTerm.textAlignment = UITextAlignmentCenter;
@@ -259,9 +259,12 @@ BOOL Edit = FALSE;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    /*
     self.headerTitle.frame = CGRectMake(320, -20, 128, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
-    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    self.view.frame = CGRectMake(0, 20, 768, 1004); */
+    
+    self.view.frame = CGRectMake(0, 0, 788, 1004);
     [super viewWillAppear:animated];
 }
 
@@ -289,8 +292,8 @@ BOOL Edit = FALSE;
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
 	Edit = TRUE;
-    self.myScrollView.frame = CGRectMake(0, 20, 768, 453-100);
-    self.myScrollView.contentSize = CGSizeMake(768, 453);
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 453-100);
+    self.myScrollView.contentSize = CGSizeMake(768, 413);
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
     [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
@@ -301,7 +304,7 @@ BOOL Edit = FALSE;
     minDisplayLabel.text = @"";
     maxDisplayLabel.text = @"";
     
-    self.myScrollView.frame = CGRectMake(0, 20, 768, 453);
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 453);
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField

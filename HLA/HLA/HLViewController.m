@@ -40,10 +40,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    /*
     self.headerTitle.frame = CGRectMake(309, -20, 151, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
-    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    self.view.frame = CGRectMake(0, 20, 768, 1004); */
     
+    self.view.frame = CGRectMake(0, 0, 788, 1004);
     [super viewWillAppear:animated];
 }
 

@@ -176,11 +176,13 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated
-{    
+{
+    /*
     self.headerTitle.frame = CGRectMake(290, -20, 124, 44);
     self.myToolBar.frame = CGRectMake(0, 0, 768, 44);
-    self.view.frame = CGRectMake(0, 20, 768, 1004);
+    self.view.frame = CGRectMake(0, 20, 768, 1004); */
     
+    self.view.frame = CGRectMake(0, 0, 788, 1004);
     [super viewWillAppear:animated];
 }
 
