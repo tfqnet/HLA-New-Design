@@ -41,18 +41,18 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     if (!plistExist)
         [fileManager copyItemAtPath:viewerPlistFromApp toPath:viewerPlistFromDoc error:nil];
     
-    //databaseName = @"0000000000000001.sqlite";//actual
-    NSString *databaseName1 = @"hladb.sqlite";//dummy
+
     NSString *WebSQLSubdir1 = @"Caches";
     NSString *WebSQLPath1 = [library stringByAppendingPathComponent:WebSQLSubdir1];
-    NSString *WebSQLDb1 = [WebSQLPath1 stringByAppendingPathComponent:@"file__0"];
-    
-    
-    NSString *masterFile = [WebSQLPath1 stringByAppendingPathComponent:@"Databases.db"];
+	NSString *masterFile = [WebSQLPath1 stringByAppendingPathComponent:@"Databases.db"];
+	
+	//databaseName = @"0000000000000001.sqlite";//dummy
+    NSString *databaseName1 = @"hladb.sqlite";//actual
+	NSString *WebSQLDb1 = [WebSQLPath1 stringByAppendingPathComponent:@"file__0"];
     NSString *databaseFile = [WebSQLDb1 stringByAppendingPathComponent:databaseName1];
     
-    [fileManager removeItemAtPath:databaseFile error:nil];
-    [fileManager removeItemAtPath:masterFile error:nil];
+    [fileManager removeItemAtPath:databaseFile error:nil]; //remove hladb.sqlite
+    [fileManager removeItemAtPath:masterFile error:nil]; //remove databases.db
     fileManager = Nil;
     //for ios6 end
     

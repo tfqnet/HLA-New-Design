@@ -60,7 +60,7 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     //return [dataItems count];
-	return 2;
+	return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -147,6 +147,9 @@
             break;
         case 1:
             title = @"Rider";
+			break;
+		case 2:
+            title = @"Standalone";
             break;
 			
         default:

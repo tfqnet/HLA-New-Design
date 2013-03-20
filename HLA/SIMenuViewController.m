@@ -1261,6 +1261,11 @@ id RiderCount;
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
             alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
+			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			
 		}
 		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
@@ -1268,6 +1273,11 @@ id RiderCount;
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
 			[alert show];
 			alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
+			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
         else{
 			AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
@@ -1507,6 +1517,12 @@ id RiderCount;
 						UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
 						[v removeFromSuperview];
 						v = Nil;
+						
+						if (previousPath == Nil) {
+							previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+						}
+						
+						[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 					});
 					
 					ReportPage = Nil;
@@ -1527,6 +1543,7 @@ id RiderCount;
 				
 			}
 			
+			
 			statement = Nil;
 		}
         
@@ -1538,6 +1555,11 @@ id RiderCount;
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
             alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
+			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			
 		}
 		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
@@ -1545,6 +1567,11 @@ id RiderCount;
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
 			[alert show];
 			alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
+			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
 		else{
 			
@@ -1648,6 +1675,12 @@ id RiderCount;
 					
 					navController = Nil;
 					container = Nil;
+					
+					if (previousPath == Nil) {
+						previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+					}
+					
+					[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 				});
 				
 				PDSPage = Nil;
@@ -1665,6 +1698,11 @@ id RiderCount;
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
             alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
+			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			
 		}
 		else if ([getBasicPlan isEqualToString:@"HLACP"] && getAge > 63 ) {
@@ -1672,6 +1710,11 @@ id RiderCount;
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
 			[alert show];
 			alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
+			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
 		
 		else{
@@ -1776,6 +1819,12 @@ id RiderCount;
 				});
 				
 				PDSPage = Nil;
+				
+				if (previousPath == Nil) {
+					previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+				}
+				
+				[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 				
 				
 			});

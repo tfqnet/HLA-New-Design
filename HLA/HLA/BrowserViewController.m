@@ -132,6 +132,45 @@ NSMutableArray *ItemPages;
     browserController.webView = Nil;
     browserController.webView.delegate = Nil;
     */
+
+	NSString *databaseName = @"hladb.sqlite";
+    NSString *masterName = @"Databases.db";
+	NSString *library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+    NSString *WebSQLSubdir;
+    NSString *WebSQLPath;
+    NSString *WebSQLDb;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+	if (IsAtLeastiOSVersion(@"6.0")){
+            WebSQLSubdir = @"WebKit/LocalStorage";
+            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+        
+    }
+    else{
+        
+        WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
+        WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
+        WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
+    }
+    
+	
+    NSString *masterFile = [WebSQLPath stringByAppendingPathComponent:masterName];
+    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName];
+
+	if([fileManager fileExistsAtPath:databaseFile]){
+		NSLog(@"database file exists");
+	}
+	
+	if([fileManager fileExistsAtPath:masterFile]){
+		NSLog(@"master file exists");
+	}
+	
+	databaseName = Nil, WebSQLSubdir = Nil, WebSQLPath = Nil, WebSQLDb =Nil;
+	masterName = Nil, fileManager = Nil;
+	library = Nil, masterFile = Nil, databaseFile = Nil;
+	
 	
     statement = Nil;
     dirPaths = Nil;

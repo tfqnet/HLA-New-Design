@@ -57,7 +57,7 @@
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-03-18"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-03-19"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -65,11 +65,11 @@
                                                         fromDate:StartDate
                                                           toDate:endDate
                                                          options:0];
-    if ([components day ] > 30 ) {
+    if ([components day ] > 42 ) {
          labelVersion.text = @"";
         lblForgotPwd.hidden = YES;
         labelUpdated.numberOfLines = 2;
-            labelUpdated.text = @"Thank you for using iMobile Planner (beta release), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
+            labelUpdated.text = @"Thank you for using iMobile Planner (1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
         outletLogin.hidden = TRUE;
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Expire" message:@"Thank you for using iMobile Planner "
@@ -81,7 +81,7 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 18 MArch 2013";
+        labelUpdated.text = @"Last Updated: 19 MArch 2013";
                 outletLogin.hidden = FALSE;
     }
     
@@ -187,7 +187,7 @@
 	{
 	 
 		NSString *querySQL = [NSString stringWithFormat:
-							  @"Delete from adm_occp_loading_penta where OccpCode in ('OCC00081', 'OCC00196', 'OCC01027', 'OCC01237', 'OCC01238');"];
+							  @"Update Trad_Sys_Rider_Mtn set MaxSA = '1500000' where RiderCode in ('LCPR', 'CIR');"];
 							  
 		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
 			if (sqlite3_step(statement) == SQLITE_DONE){
@@ -220,23 +220,24 @@
 
         defaultDBPath = Nil;
     }
-    else {
+
         
-        if([fileManager fileExistsAtPath:RatesDatabasePath] == FALSE ){
-            NSString *RatesDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"HLA_Rates.sqlite"];
-            success = [fileManager copyItemAtPath:RatesDBPath toPath:RatesDatabasePath error:&error];
-            if (!success) {
-                NSAssert1(0, @"Failed to create writable Rates database file with message '%@'.", [error localizedDescription]);
-            }
-            RatesDBPath = Nil;
-        }
-        else {
-            return;
-        }
-         
-        
-    }
+	if([fileManager fileExistsAtPath:RatesDatabasePath] == FALSE ){
+		NSString *RatesDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"HLA_Rates.sqlite"];
+		success = [fileManager copyItemAtPath:RatesDBPath toPath:RatesDatabasePath error:&error];
+		if (!success) {
+			NSAssert1(0, @"Failed to create writable Rates database file with message '%@'.", [error localizedDescription]);
+		}
+		RatesDBPath = Nil;
+	}
+	else {
+		return;
+	}
     
+	NSString *masterPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Databases.db"];
+	[fileManager removeItemAtPath:masterPath error:Nil];
+	
+	
 	fileManager = Nil;
     error = Nil;
     

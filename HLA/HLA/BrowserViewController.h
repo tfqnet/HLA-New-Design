@@ -43,4 +43,6 @@
 @property (nonatomic, assign) int gPages;
 @property (nonatomic, assign) int Module;
 
+#define IsAtLeastiOSVersion(X) ([[[UIDevice currentDevice] systemVersion] compare:X options:NSNumericSearch] != NSOrderedAscending)
+
 @end

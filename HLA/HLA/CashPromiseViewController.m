@@ -544,7 +544,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
             WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
             
-            
+            viewerPlistFromDoc =Nil;
             
         }
         else{
@@ -558,7 +558,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             
         }
-        
+		
+        viewerPlist = Nil;
     }
     else{
         /*
@@ -574,17 +575,18 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     }
     
     NSString *masterFile = [WebSQLPath stringByAppendingPathComponent:masterName];
-    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName1];
-    
+    //NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName1]; //edited on 19/3/13
+    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName];
+	
     [fileManager removeItemAtPath:databaseFile error:&error];
 	if(!error){
 		NSLog(@"Error at remove databaseFile --> %@", error);
 	}
 		
     [fileManager removeItemAtPath:masterFile error:&error];
-		if(!error){
-			NSLog(@"Error at remove masterFile --> %@", error);
-		}
+	if(!error){
+		NSLog(@"Error at remove masterFile --> %@", error);
+	}
     //NSString *databasePathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
     NSString *masterPathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:masterName];
     
@@ -605,8 +607,16 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 	if(!error){
 		NSLog(@"Error at copying to masterpath --> %@", error);
 	}
+	/*
+	if([fileManager fileExistsAtPath:databaseFile]){
+		NSLog(@"database file exists");
+	}
 	
-	
+	if([fileManager fileExistsAtPath:masterFile]){
+		NSLog(@"master file exists");
+	}
+	*/
+	error = Nil;
     fileManager = Nil;
     masterFile = Nil;
     databaseFile = Nil;

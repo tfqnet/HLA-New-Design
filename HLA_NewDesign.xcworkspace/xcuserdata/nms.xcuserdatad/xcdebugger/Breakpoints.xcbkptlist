@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/Login.m"
-         timestampString = "385352800.742396"
+         timestampString = "385435028.204107"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "502"
-         endingLineNumber = "502"
+         startingLineNumber = "503"
+         endingLineNumber = "503"
          landmarkName = "-btnLogin:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/Login.m"
-         timestampString = "385352800.742396"
+         timestampString = "385435028.204107"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "512"
-         endingLineNumber = "512"
+         startingLineNumber = "513"
+         endingLineNumber = "513"
          landmarkName = "-btnLogin:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1321,11 +1321,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "385270146.207927"
+         timestampString = "385370801.738177"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1631"
-         endingLineNumber = "1631"
+         startingLineNumber = "1641"
+         endingLineNumber = "1641"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1334,11 +1334,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "385270146.207927"
+         timestampString = "385370801.738177"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1632"
-         endingLineNumber = "1632"
+         startingLineNumber = "1642"
+         endingLineNumber = "1642"
          landmarkName = "-InsertToSI_Temp_Trad_Basic"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1358,11 +1358,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/CashPromiseViewController.m"
-         timestampString = "385270146.207927"
+         timestampString = "385370801.738177"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2374"
-         endingLineNumber = "2374"
+         startingLineNumber = "2384"
+         endingLineNumber = "2384"
          landmarkName = "-InsertToSI_Temp_Trad_Rider"
          landmarkType = "5">
       </FileBreakpoint>
