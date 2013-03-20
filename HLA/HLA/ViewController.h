@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Login.h"
+#import "CarouselViewController.h"
 
-@interface ViewController : UIViewController
-
+@interface ViewController : UIViewController<LoginDelegate, CarouselDelegate >{
+	    Login *_Login;
+		CarouselViewController *_CVC;
+}
+@property (nonatomic, retain) Login *Login;
+@property (nonatomic, retain) CarouselViewController *CVC;
+@property (nonatomic, assign,readwrite) int sss;
 @end

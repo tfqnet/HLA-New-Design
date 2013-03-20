@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "CarouselViewController.h"
 #import "SecurityQuestion.h"
+#import "ViewController.h"
 
 @interface Login ()
 
@@ -27,11 +28,13 @@
 @synthesize lblForgotPwd;
 @synthesize statusLogin,indexNo,agentID;
 @synthesize labelUpdated,labelVersion,outletLogin;
+@synthesize delegate = _delegate;
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+   
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
@@ -234,10 +237,6 @@
 		return;
 	}
     
-	NSString *masterPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Databases.db"];
-	[fileManager removeItemAtPath:masterPath error:Nil];
-	
-	
 	fileManager = Nil;
     error = Nil;
     
@@ -532,6 +531,8 @@
             securityPage = Nil;
             scrollViewLogin = Nil;
             activeField = Nil;
+			
+			
             
         } else if (statusLogin == 0 && indexNo != 0) {
             
@@ -564,8 +565,6 @@
             
         }
     }
-    
-    
     
 }
 
@@ -621,6 +620,14 @@
         sqlite3_close(contactDB);
     }
     
+
+	/*
+	if(_delegate != Nil){
+		[(ViewController *)_delegate setSss:1 ];
+		[self dismissModalViewControllerAnimated:NO];
+		[_delegate Dismiss:@""];
+	}
+	 */
 }
 
 #pragma mark - memory

@@ -9,13 +9,23 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 
+
+@protocol LoginDelegate
+- (void)Dismiss: (NSString *)ViewToBePresented;
+@end
+
+
 @interface Login : UIViewController
 {
     NSString *databasePath;
     NSString *RatesDatabasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
+	id<LoginDelegate> _delegate;
+	
 }
+
+@property (nonatomic, strong) id<LoginDelegate> delegate;
 
 @property (nonatomic, assign) int statusLogin;
 @property (nonatomic, assign) int indexNo;

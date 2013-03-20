@@ -2384,7 +2384,8 @@ BOOL Edit = FALSE;
 
 - (IBAction)doSaveRider:(id)sender
 {
-	if (Edit == TRUE) {
+	if (Edit == TRUE ) {
+	
 		[self resignFirstResponder];
 		[self.view endEditing:YES];
 		
@@ -5294,6 +5295,8 @@ BOOL Edit = FALSE;
 -(void)RiderListController:(RiderListTbViewController *)inController didSelectCode:(NSString *)code desc:(NSString *)desc
 {
     //reset value existing
+	Edit = TRUE;
+	
     if (riderCode != NULL) {
         [self clearField];
     }

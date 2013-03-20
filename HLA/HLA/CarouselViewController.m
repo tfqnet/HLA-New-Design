@@ -17,6 +17,7 @@
 #import "AppDelegate.h"
 #import "eBrochureViewController.h"
 #import "eBrochureListingViewController.h"
+#import "ViewController.h"
 
 const int numberOfModule = 4;
 
@@ -26,6 +27,7 @@ const int numberOfModule = 4;
 
 @implementation CarouselViewController
 @synthesize outletCarousel;
+@synthesize delegate = _delegate;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -145,8 +147,13 @@ const int numberOfModule = 4;
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.ProspectListingIndex;
-        [self presentViewController:zzz animated:NO completion:Nil];
-        zzz= Nil;
+		[self presentViewController:zzz animated:NO completion:Nil];
+		zzz= Nil;
+		/*
+		[self dismissModalViewControllerAnimated:NO];
+		[(ViewController *)_delegate setSss:1 ];
+		[_delegate PresentMain];
+		 */
         
     }
     
