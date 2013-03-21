@@ -308,7 +308,8 @@ BOOL Edit = FALSE;
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{    
+{
+	
     switch (textField.tag) {
         case 0:
             minDisplayLabel.text = @"";
@@ -346,7 +347,13 @@ BOOL Edit = FALSE;
                 maxDisplayLabel.text = [NSString stringWithFormat:@"Max GYI: %@",ValueToDisplay];
                 
             }
+			else if([riderCode isEqualToString:@"EDB"]){
+				minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
+                maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: Subject to underwriting"];
+				
+			}
             else {
+				
                 minDisplayLabel.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
                 maxDisplayLabel.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
             }
@@ -2439,7 +2446,7 @@ BOOL Edit = FALSE;
 			[self validateSaver];
 		}
 
-		Edit = FALSE;
+		//Edit = FALSE;
 	}
 	
 }
@@ -2715,11 +2722,11 @@ BOOL Edit = FALSE;
     else if ([HLTField.text intValue] > [termField.text intValue]) {
         NSString *msg;
         if (HL1kTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HL100kTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HLPTerm) {
-            msg = [NSString stringWithFormat:@"Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 1 (%%) Term cannot be greater than %d",[termField.text intValue]];
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -2728,21 +2735,52 @@ BOOL Edit = FALSE;
     else if ([tempHLTField.text intValue] > [termField.text intValue]) {
         NSString *msg;
         if (HL1kTerm) {
-            msg = [NSString stringWithFormat:@"Temporary Health Loading (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 1k SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HL100kTerm) {
-            msg = [NSString stringWithFormat:@"Temporary Health Loading (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 100 SA) Term cannot be greater than %d",[termField.text intValue]];
         } else if (HLPTerm) {
-            msg = [NSString stringWithFormat:@"Temporary Health Loading (%%) Term cannot be greater than %d",[termField.text intValue]];
+            msg = [NSString stringWithFormat:@"Health Loading 2 (%%) Term cannot be greater than %d",[termField.text intValue]];
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [tempHLTField becomeFirstResponder];
     }
-    else if (sumA) {
+	else if ([HLField.text intValue] >= 10000 && ![riderCode isEqualToString:@"HMM"] && ![riderCode isEqualToString:@"MG_IV"]
+			 && ![riderCode isEqualToString:@"MG_II"] && ![riderCode isEqualToString:@"HSP_II"] && ![riderCode isEqualToString:@"HB"]) {
+		
+		NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 1k SA) cannot be greater than 10000"];
+        } else if (HL100kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 100 SA) cannot be greater than 10000"];
+        } else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (%%) cannot be greater than 500"];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [HLField becomeFirstResponder];
+	}
+	else if ([tempHLField.text intValue] >= 10000 && ![riderCode isEqualToString:@"HMM"] && ![riderCode isEqualToString:@"MG_IV"]
+			 && ![riderCode isEqualToString:@"MG_II"] && ![riderCode isEqualToString:@"HSP_II"] && ![riderCode isEqualToString:@"HB"]) {
+		
+		NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 1k SA) cannot be greater than 10000"];
+        } else if (HL100kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 100 SA) cannot be greater than 10000"];
+        } else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 2 (%%) cannot be greater than 500"];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLField becomeFirstResponder];
+	}
+	else if (sumA) {
         NSLog(@"validate - 1st sum");
         [self validateSum];
     } else if (unit) {
         NSLog(@"validate - 1st unit");
+
         [self validateUnit];
     } else {
         NSLog(@"validate - 1st save");
@@ -2929,6 +2967,7 @@ BOOL Edit = FALSE;
         [alert show];
         [HLField becomeFirstResponder];
     }
+	
     else if (HLField.text.length == 0 && [HLTField.text intValue] != 0) {
        
         NSString *msg;
@@ -2957,9 +2996,9 @@ BOOL Edit = FALSE;
         [alert show];
         [HLTField becomeFirstResponder];
     }
-    else if (inputHL1KSA.length != 0 && [HLField.text intValue] > 10000) {
+    else if (inputHL1KSA.length != 0 && [HLField.text intValue] >= 10000) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLField becomeFirstResponder];
     }
@@ -3079,9 +3118,9 @@ BOOL Edit = FALSE;
         [alert show];
         [tempHLTField becomeFirstResponder];
     }
-    else if (HL1kTerm && [tempHLField.text intValue] > 10000) {
+    else if (HL1kTerm && [tempHLField.text intValue] >= 10000) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [tempHLField becomeFirstResponder];
     }
@@ -3099,12 +3138,12 @@ BOOL Edit = FALSE;
     }
     else if (HLPTerm && substring.length > 1) {
         
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (%) must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (%) must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [tempHLField becomeFirstResponder];
     }
     else if (HLPTerm && msgTemp.length > 1) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Temporary Health Loading (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [tempHLField becomeFirstResponder];
     }
@@ -3112,11 +3151,11 @@ BOOL Edit = FALSE;
         
         NSString *msg;
         if (HL1kTerm) {
-            msg = @"Invalid input. Please enter numeric value (0-9) into Temporary Health Loading (per 1k SA) Term.";
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 2 (per 1k SA) Term.";
         } else if (HL100kTerm) {
-            msg = @"Invalid input. Please enter numeric value (0-9) into Temporary Health Loading (per 100k SA) Term.";
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 2 (per 100k SA) Term.";
         } else if (HLPTerm) {
-            msg = @"Invalid input. Please enter numeric value (0-9) into Temporary Health Loading (%) Term.";
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 2 (%) Term.";
         }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
@@ -3164,28 +3203,45 @@ BOOL Edit = FALSE;
         [alert show];
         [tempHLTField becomeFirstResponder];
     }
+	else if ([tempHLField.text intValue] > 500 && ([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"MG_IV"]
+				|| [riderCode isEqualToString:@"MG_II"] || [riderCode isEqualToString:@"HSP_II"] || [riderCode isEqualToString:@"HB"])) {
+		
+		NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 1k SA) cannot be greater than 10000"];
+        } else if (HL100kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 2 (per 100 SA) cannot be greater than 10000"];
+        } else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 2 (%%) cannot be greater than 500%%"];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLField becomeFirstResponder];
+	}
     //--
     
     else if (([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"MG_II"] ||
               [riderCode isEqualToString:@"MG_IV"] || [riderCode isEqualToString:@"HSP_II"]) && LRiderCode.count != 0) {
         NSLog(@"go RoomBoard!");
+				Edit = FALSE;
         [self RoomBoard];
     }
     else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count != 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count != 0)) {
-        
+        		Edit = FALSE;
         NSLog(@"go Negative Yield!");
         [self calculateIncomeRider];        //calculate existing income rider
         [self calculateIncomeRiderInput];   //calculate entered income rider         
         [self NegativeYield];
     }
     else if (([riderCode isEqualToString:@"I20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"I40R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"IE30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID20R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID30R"] && LRiderCode.count == 0) || ([riderCode isEqualToString:@"ID40R"] && LRiderCode.count == 0)) {
-        
+        		Edit = FALSE;
         NSLog(@"go Negative Yield2 - empty listing!");
         [self calculateIncomeRider];
         [self calculateIncomeRiderInput];
         [self NegativeYield];
     }
     else {
+		Edit = FALSE;
         [self checkingRider];
         if (existRidCode.length == 0) {
             
@@ -5526,7 +5582,18 @@ BOOL Edit = FALSE;
     CGRect frame5=CGRectMake(309,0, 62, 50);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
-    label5.text= [NSString stringWithFormat:@"%d",occClass];
+    //label5.text= [NSString stringWithFormat:@"%d",occClass];
+	if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"CPA" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"HMM" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"HSP_II"] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"MG_II" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"MG_IV" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PA" ]) {
+			label5.text= [NSString stringWithFormat:@"%d",occClass];
+	}
+	else{
+			label5.text= [NSString stringWithFormat:@"-"];
+	}
     label5.textAlignment = UITextAlignmentCenter;
     label5.tag = 2005;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -5535,7 +5602,21 @@ BOOL Edit = FALSE;
     CGRect frame6=CGRectMake(371,0, 62, 50);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
-    label6.text= [NSString stringWithFormat:@"%@",occLoadType];
+    //label6.text= [NSString stringWithFormat:@"%@",occLoadType];
+	if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"C+" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"CCTR" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"EDB"] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ETPDB" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LCPR" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LCWP" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PR" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"SP_PRE" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"SP_STD" ]) {
+		label6.text= [NSString stringWithFormat:@"%@",occLoadType];
+	}
+	else{
+		label6.text= [NSString stringWithFormat:@"-"];
+	}
     label6.textAlignment = UITextAlignmentCenter;
     label6.tag = 2006;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];

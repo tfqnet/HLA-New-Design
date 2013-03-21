@@ -90,6 +90,7 @@
 @property (nonatomic, copy) NSString *occuCode;
 @property (nonatomic, copy) NSString *occuDesc;
 @property (nonatomic, copy) NSString *occLoading;
+@property (nonatomic, copy) NSString *strPA_CPA;
 @property (nonatomic, assign,readwrite) int occuClass;
 @property(nonatomic , assign,readwrite) int occCPA_PA;
 @property(nonatomic , assign,readwrite) int occPA;

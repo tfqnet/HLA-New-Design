@@ -572,13 +572,19 @@ id temp;
     }
     
     //----------
+	
+	else if ([planChoose isEqualToString:@"HLACP"] && parAccField.text.length==0 && parPayoutField.text.length==0  ) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Percentage of Yearly Income Option." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [parAccField becomeFirstResponder];
+    }
     else if ([planChoose isEqualToString:@"HLACP"] && parAccField.text.length==0 ) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Total Percentage of Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Percentage of Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parAccField becomeFirstResponder];
     }
     else if ([planChoose isEqualToString:@"HLACP"] && parPayoutField.text.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please key in the Total Percentage of Yearly Income Option" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Total Percentage of Yearly Income Option must be 100%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [parPayoutField becomeFirstResponder];
     }

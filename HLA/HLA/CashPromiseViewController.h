@@ -50,6 +50,8 @@
 @property (retain, nonatomic) NSMutableArray *OtherRiderHL100SATerm;
 @property (retain, nonatomic) NSMutableArray *OtherRiderHLPercentage;
 @property (retain, nonatomic) NSMutableArray *OtherRiderHLPercentageTerm;
+@property (retain, nonatomic) NSMutableArray *OtherRiderTempHL;
+@property (retain, nonatomic) NSMutableArray *OtherRiderTempHLTerm;
 
 //summary
 @property (retain, nonatomic) NSMutableArray *SummaryGuaranteedTotalGYI;

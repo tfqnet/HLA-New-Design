@@ -84,7 +84,7 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 19 MArch 2013";
+        labelUpdated.text = @"Last Updated: 21 MArch 2013";
                 outletLogin.hidden = FALSE;
     }
     
@@ -190,8 +190,8 @@
 	{
 	 
 		NSString *querySQL = [NSString stringWithFormat:
-							  @"Update Trad_Sys_Rider_Mtn set MaxSA = '1500000' where RiderCode in ('LCPR', 'CIR');"];
-							  
+							  @"Update Trad_Sys_Rider_Mtn set MaxAge = '63' where RiderCode in ('ETPDB', 'EDB');"];
+					
 		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
 			if (sqlite3_step(statement) == SQLITE_DONE){
 				
@@ -204,6 +204,23 @@
 			}
 			sqlite3_finalize(statement);
 		}
+		
+		querySQL = [NSString stringWithFormat:
+							  @"Delete From Adm_Occp_Loading_Penta where OccpCode = 'OCC01717';"];
+		
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+			if (sqlite3_step(statement) == SQLITE_DONE){
+				
+			}
+			else {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+																message:@"ERROR" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+				[alert show];
+				alert = Nil;
+			}
+			sqlite3_finalize(statement);
+		}
+		
 		
 		
 		sqlite3_close(contactDB);

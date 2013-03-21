@@ -981,14 +981,18 @@ id RiderCount;
     cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
     
 	
-	
-	if([[ListOfSubMenu objectAtIndex:indexPath.row] isEqualToString:@"Product Disclosure Sheet"] ){
 
+	if(self.myTableView.frame.size.height > 400.00 && indexPath.row == 8 ){
 			cell.textLabel.backgroundColor = [UIColor grayColor];
 			cell.detailTextLabel.backgroundColor = [UIColor grayColor];
 			cell.contentView.backgroundColor = [UIColor grayColor];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		 
+	}
+	else if(self.myTableView.frame.size.height < 400.00 && indexPath.row == 3 ){
+		cell.textLabel.backgroundColor = [UIColor clearColor];
+		cell.detailTextLabel.backgroundColor = [UIColor clearColor ];
+		cell.contentView.backgroundColor = [UIColor clearColor];
+		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 	}
 	else{
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;

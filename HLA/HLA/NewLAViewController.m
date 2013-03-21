@@ -44,7 +44,7 @@
 @synthesize prospectPopover = _prospectPopover;
 @synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile,planChoose,ridCode,atcRidCode,atcPlanChoice;
 @synthesize delegate = _delegate;
-@synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker;
+@synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker, strPA_CPA;
 @synthesize LADate = _LADate;
 @synthesize datePopover = _datePopover;
 
@@ -979,6 +979,7 @@ id temp;
     {
         NSString *querySQL = [NSString stringWithFormat:
                 @"SELECT a.OccpDesc, b.OccLoading, b.CPA, b.PA, b.Class from Adm_Occp_Loading_Penta a LEFT JOIN Adm_Occp_Loading b ON a.OccpCode = b.OccpCode WHERE b.OccpCode = \"%@\"",occuCode];
+
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -988,7 +989,8 @@ id temp;
                 occCPA_PA  = sqlite3_column_int(statement, 2);
                 occPA  = sqlite3_column_int(statement, 3);
                 occuClass = sqlite3_column_int(statement, 4);
-                
+                strPA_CPA = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+				
                 NSLog(@"OccpLoad:%@, cpa:%d, pa:%d, class:%d",occLoading, occCPA_PA,occPA,occuClass);
             }
             else {
@@ -1547,7 +1549,7 @@ id temp;
     NSString *querySQL;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        if (self.occuClass == 4) {
+        if (self.occuClass == 4 && ![strPA_CPA isEqualToString:@"D" ]) {
             querySQL = [NSString stringWithFormat:
                         @"SELECT j.*, k.MinAge, k.MaxAge FROM"
                         "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\" AND a.RiderCode != \"MG_IV\")j "
@@ -1559,13 +1561,19 @@ id temp;
                         "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\" AND a.RiderCode != \"CPA\" AND a.RiderCode != \"PA\" AND a.RiderCode != \"HMM\" AND a.RiderCode != \"HB\" AND a.RiderCode != \"MG_II\" AND a.RiderCode != \"MG_IV\" AND a.RiderCode != \"HSP_II\")j "
                         "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"",planChoose, age, age];
         }
+		else if ([strPA_CPA isEqualToString:@"D"]){
+			querySQL = [NSString stringWithFormat:
+                        @"SELECT j.*, k.MinAge, k.MaxAge FROM"
+                        "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\" AND a.RiderCode != \"MG_IV\" AND a.RiderCode != \"CPA\")j "
+                        "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"", planChoose, age, age];
+		}
         else {
             querySQL = [NSString stringWithFormat:
                         @"SELECT j.*, k.MinAge, k.MaxAge FROM"
                         "(SELECT a.RiderCode,b.RiderDesc FROM Trad_Sys_RiderComb a LEFT JOIN Trad_Sys_Rider_Profile b ON a.RiderCode=b.RiderCode WHERE a.PlanCode=\"%@\")j "
                         "LEFT JOIN Trad_Sys_Rider_Mtn k ON j.RiderCode=k.RiderCode WHERE k.MinAge <= \"%d\" AND k.MaxAge >= \"%d\"",planChoose, age, age];
         }
-        
+		
         if (age > 60) {
             querySQL = [querySQL stringByAppendingFormat:@" AND j.RiderCode != \"I20R\""];
         }

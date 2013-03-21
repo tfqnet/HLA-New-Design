@@ -49,7 +49,9 @@
     
     function formatCurrency(num) {
         num = num.toString().replace(/\$|\,/g, '');
-        if (isNaN(num)) num = "0";
+        if (isNaN(num)){
+           return "-";
+        }
         sign = (num == (num = Math.abs(num)));
         num = Math.floor(num * 100 + 0.50000000001);
         cents = num % 100;
