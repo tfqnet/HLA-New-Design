@@ -22,6 +22,11 @@
     var mcashPaymentD = '';
     var CRiderTerm = '';
     var CRiderPrem = '';
+    var CRiderHL = '';
+    var CRiderTempHL = '';
+    var CRiderHLTerm = '';
+    var CRiderTempHLTerm = '';
+    var CRiderSA = '';
     //var cashPayment = 0;
     
     function errorHandler(transaction, error) {
@@ -102,6 +107,11 @@
 			var row = result.rows.item(i);
 			if(row.RiderCode == 'C+' ){
 			    CRiderTerm = row.RiderTerm;
+			    CRiderHL = row.HL1KSA;
+			    CRiderHLTerm = row.HL1KSATerm;
+			    CRiderTempHL = row.TempHL1KSA;
+			    CRiderTempHLTerm = row.TempHL1KSATerm;
+			    CRiderSA = row.SumAssured;
 			}
 		    }
                 }
@@ -130,13 +140,36 @@
 	    }
 	    
             transaction.executeSql("SELECT * FROM Trad_Sys_Commission WHERE polTerm = '" + PolicyTerm + "' ORDER BY PolYear ASC", [], function(transaction, result) {
+		var actualPremium;
 		
                 if (result != null && result.rows != null) {
 		    
                     for(var i = 1; i <=result.rows.length; i++){
 			var row = result.rows.item(i-1);
-			$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(CRiderPrem)));                      
-			//$('#table-1 > tbody').append('<tr>' + '<td>Year ' + i + ' </td>' + '<td>' + formatCurrency(parseFloat(row.Rate)/100 * parseFloat(CRiderPrem)) + '</td>' + '</tr>');
+			//$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(CRiderPrem)));
+			if(!CRiderHL){
+			    actualPremium = parseFloat(row.Rate)/100 * parseFloat(CRiderPrem);
+			}
+			else{
+			    if(parseInt(i) <=  parseInt(CRiderHLTerm)){
+				actualPremium = parseFloat(row.Rate)/100 * parseFloat(CRiderPrem);
+				
+			    }
+			    else{
+				actualPremium = (parseFloat(row.Rate)/100 ) * ((parseFloat(CRiderPrem)) - (parseFloat(CRiderSA)/1000 * parseFloat(CRiderHL)));
+			    }
+			}
+			
+			
+			if(CRiderTempHL){
+			    if(parseInt(i) > parseInt(CRiderTempHLTerm)){
+				actualPremium = parseFloat(actualPremium) - ((parseFloat(row.Rate)/100 ) * (parseFloat(CRiderSA)/1000 * parseFloat(CRiderTempHL)));
+			    }
+			}
+			
+			//$('#Year'+i).html(formatCurrency(parseFloat(row.Rate)/100 * parseFloat(CRiderPrem)));
+			$('#Year'+i).html(formatCurrency(parseFloat(actualPremium)));
+			
 		    }
                 }
             },errorHandler);

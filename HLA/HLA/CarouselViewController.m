@@ -136,11 +136,14 @@ const int numberOfModule = 4;
     */
     AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     
+	NSLog(@"%d", [outletCarousel indexOfItemView:sender] );
+	
     if ([outletCarousel indexOfItemView:sender] % numberOfModule == 1) { //setting
         setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz = Nil;
+		NSLog(@"setting");
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //prospect
@@ -154,7 +157,7 @@ const int numberOfModule = 4;
 		[(ViewController *)_delegate setSss:1 ];
 		[_delegate PresentMain];
 		 */
-        
+					NSLog(@"main");
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 2) {
@@ -162,6 +165,7 @@ const int numberOfModule = 4;
         BrochureListing.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:BrochureListing animated:NO completion:Nil];
         BrochureListing = Nil;
+							NSLog(@"brochure");
     }
     
     else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 3) {
@@ -171,6 +175,7 @@ const int numberOfModule = 4;
         zzz.IndexTab = MenuOption.SIListingIndex;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz= Nil;
+							NSLog(@"si listing");
         /*
         //--edited by bob
         NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];

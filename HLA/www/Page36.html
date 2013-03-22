@@ -133,6 +133,15 @@
 						rider = row.riders.split(";");
 					}
                 	
+					if(parseInt(rider.length) == 2){
+					    //document.getElementById("pageLength").style.height = '850px';
+					}
+					else{
+					    document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';	
+					}
+					
+					
+			
 			//document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
                 	//document.getElementById("pageLength").height = '800px';
             		
@@ -244,6 +253,9 @@
             		
             		
             	}
+		if ($("#pageLength").height() < 400){
+		    document.getElementById("pageLength").style.height = '500px';  
+		}
         	},errorHandler);
     	},errorHandler,nullHandler);
         
@@ -284,7 +296,7 @@
 
 
 
-<div id="pageLength" class="pageLength" style="position:relative;">
+<div id="pageLength" class="pageLength" style="position: relative">
 <table id="table-design1" style="font-style: italic;"  >
 <script>
 //$('#table-design1').css('display','none');
@@ -1966,8 +1978,8 @@ Jumlah Rider Diinsuranskan akan dibayar untuk mengurangkan premium masa hadapan 
 kedua meninggal dunia / mengalami TPD dalam tempoh diinsuranskan.<br/>
 <br/>
 Rider ini tidak melindungi kejadian berikut:<br/>
-i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh pengembalian semula,<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mengikut mana-mana yang terkemudian.<br/>
+i.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kematian hayat diinsuranskan kerana membunuh diri dalam tempoh 12 bulan pertama dari tarikh Penyertaan atau tarikh
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pengembalian semula, mengikut mana-mana yang terkemudian.<br/>
 ii.&nbsp;&nbsp;&nbsp;&nbsp;Hilang Upaya Menyeluruh dan Kekal yang berpunca secara langsung atau tidak langsung:<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa kecederaan anggota badan yang disengajakan ketika siuman atau tidak siuman;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;daripada apa-apa gangguan saraf atau penyakit mental;<br/>

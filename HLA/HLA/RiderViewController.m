@@ -2517,6 +2517,7 @@ BOOL Edit = FALSE;
 {
     if (alertView.tag==1001 && buttonIndex == 0) //delete
     {
+		Edit = TRUE;
         if (ItemToBeDeleted.count < 1) {
             return;
         }
@@ -2785,6 +2786,16 @@ BOOL Edit = FALSE;
         [alert show];
         [tempHLField becomeFirstResponder];
 	}
+	else if (([riderCode isEqualToString:@"ETPDB"] || [riderCode isEqualToString:@"EDB"]) && [termField.text intValue ] > 6 ) {
+		NSString *msg;
+		
+		msg = @"Health Loading 1 (per 1k SA) term cannot be greater than 6";
+		
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLField becomeFirstResponder];
+	}
+
 	else if (sumA) {
         NSLog(@"validate - 1st sum");
         [self validateSum];
@@ -3227,6 +3238,24 @@ BOOL Edit = FALSE;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [tempHLField becomeFirstResponder];
+	}
+	else if (([riderCode isEqualToString:@"ETPDB"] || [riderCode isEqualToString:@"EDB"]) && [HLTField.text intValue ] > 6 ) {
+		NSString *msg;
+		
+		msg = @"Health Loading 1 (per 1k SA) term cannot be greater than 6";
+		
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [HLTField becomeFirstResponder];
+	}
+	else if (([riderCode isEqualToString:@"ETPDB"] || [riderCode isEqualToString:@"EDB"]) && [tempHLTField.text intValue ] > 6 ) {
+		NSString *msg;
+		
+		msg = @"Health Loading 2 (per 1k SA) term cannot be greater than 6";
+		
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [tempHLTField becomeFirstResponder];
 	}
     //--
     
@@ -5464,6 +5493,7 @@ BOOL Edit = FALSE;
 
 -(void)PlanView:(RiderPlanTb *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
 {
+	Edit = TRUE;
     NSLog(@"selectPlan:%@",itemdesc);
     if ([atcRidCode count] != 0)
     {
@@ -5509,6 +5539,7 @@ BOOL Edit = FALSE;
 
 -(void)deductView:(RiderDeducTb *)inController didSelectItem:(NSString *)item desc:(NSString *)itemdesc
 {
+	Edit = TRUE;
     NSLog(@"selectDeduc:%@",itemdesc);
     [self.deducBtn setTitle:itemdesc forState:UIControlStateNormal];
     deductible = [[NSString alloc] initWithFormat:@"%@",itemdesc];

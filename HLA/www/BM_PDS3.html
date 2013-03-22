@@ -119,7 +119,7 @@
 			rider = row.riders.split(";");
 		    }
 				   
-		    document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
+		    //document.getElementById("pageLength").height = parseInt(rider.length) * 250 + 'px';		   
 		       
 		    //rider = row.riders.split(";");
 		    for(var i=0;i<(rider.length);i++){
@@ -390,6 +390,9 @@
 		    }
 				   
 				   
+		}
+		if ($("#pageLength").height() < 400){
+		    document.getElementById("pageLength").style.height = '500px';  
 		}
 	    },errorHandler);
 	},errorHandler,nullHandler);

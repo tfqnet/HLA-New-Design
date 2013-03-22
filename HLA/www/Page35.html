@@ -271,6 +271,9 @@
                                               
                                               
                                     }
+				    if ($("#pageLength").height() < 400){
+					document.getElementById("pageLength").style.height = '500px';  
+				    }
                         },errorHandler);
         },errorHandler,nullHandler);
     	
@@ -309,7 +312,7 @@
 </table>
 <span id="riderInPage" style="display:none"><b>Description of Rider(s) Benefits</b><br/><br/></span>
 
-<div id="pageLength" class="pageLength" style="position:relative;height: 850px">
+<div id="pageLength" class="pageLength" style="position:relative;">
 <table id="table-design1">
 <script>
 //$('#table-design1').css('display','none');
@@ -1934,7 +1937,7 @@ vi.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnes
 <td class="contentSmall" style="text-align:center;"><span id="SP_STDRiderTerm">{SP_STDRiderTerm}</span></td>
 <td class="contentSmall" style="text-align:center;">2nd Life Assured</td>
 <td class="content">
-The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the 2nd life assured during the coverage<br/>
+The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD of the 2nd life assured during the coverage
 period.<br/>
 <br/>
 The rider does not cover the following occurrences:<br/>
