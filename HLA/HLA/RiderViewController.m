@@ -1186,10 +1186,7 @@ BOOL Edit = FALSE;
             [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
         }
         
-//        double BasicSA = getBasicSA;
-//        double BasicHLoad = getBasicHL;
         double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
-//        double PolicyTerm = getTerm;
         double riderHLoad = 0;
         double riderTempHLoad = 0;
         
@@ -1974,10 +1971,7 @@ BOOL Edit = FALSE;
         //get rate
         [self getRiderRateAgeSex:planCodeRider riderTerm:ridTerm];
         
-//        double BasicSA = getBasicSA;
-//        double BasicHLoad = getBasicHL;
         double ridSA = [[LSumAssured objectAtIndex:i] doubleValue];
-//        double PolicyTerm = getTerm;
         double riderHLoad = 0;
         double riderTempHLoad = 0;
         
@@ -2016,12 +2010,20 @@ BOOL Edit = FALSE;
             double waiverHalfPrem = ridSA/100 * (waiverHalfSum+basicPremHalf) *2;
             double waiverQuarPrem = ridSA/100 * (waiverQuarSum+basicPremQuar) *4;
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum+basicPremMonth) *12;
-            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverAnnPrem]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverHalfPrem]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverQuarPrem]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverMonthPrem]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"waiverSA A:%@, S:%@, Q:%@, M:%@",str_ann,str_half,str_quar,str_month);
             
-            double annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
-            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
-            double quarterRider_ = waiverQuarPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
-            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            double annualRider_ = [str_ann doubleValue] * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            double halfYearRider_ = [str_half doubleValue] * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            double quarterRider_ = [str_quar doubleValue] * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
+            double monthlyRider_ = [str_month doubleValue] * (riderRate/100 + (double)ridTerm/1000 *0 + (riderHLoad+riderTempHLoad)/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
             annualRider = annualRider_ * annFac;
@@ -2035,12 +2037,20 @@ BOOL Edit = FALSE;
             double waiverHalfPrem = ridSA/100 * (waiverHalfSum2+basicPremHalf) *2;
             double waiverQuarPrem = ridSA/100 * (waiverQuarSum2+basicPremQuar) *4;
             double waiverMonthPrem = ridSA/100 * (waiverMonthSum2+basicPremMonth) *12;
-            NSLog(@"waiverSA A:%.2f, S:%.2f, Q:%.2f, M:%.2f",waiverAnnPrem,waiverHalfPrem,waiverQuarPrem,waiverMonthPrem);
+            NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverAnnPrem]];
+            NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverHalfPrem]];
+            NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverQuarPrem]];
+            NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:waiverMonthPrem]];
+            str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+            str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSLog(@"waiverSA A:%@, S:%@, Q:%@, M:%@",str_ann,str_half,str_quar,str_month);
             
-            double annualRider_ = waiverAnnPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
-            double halfYearRider_ = waiverHalfPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
-            double quarterRider_ = waiverQuarPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
-            double monthlyRider_ = waiverMonthPrem * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            double annualRider_ = [str_ann doubleValue] * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            double halfYearRider_ = [str_half doubleValue] * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            double quarterRider_ = [str_quar doubleValue] * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
+            double monthlyRider_ = [str_month doubleValue] * (riderRate/100 + (double)ridTerm/1000 * occLoadRider + (riderHLoad+riderTempHLoad)/100);
             NSLog(@"waiverPrem A:%.2f S:%.2f, Q:%.2f, M:%.2f",annualRider_,halfYearRider_,quarterRider_,monthlyRider_);
             
             annualRider = annualRider_ * annFac;
