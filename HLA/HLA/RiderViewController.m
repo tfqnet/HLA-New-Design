@@ -2588,6 +2588,10 @@ BOOL Edit = FALSE;
         deleteBtn.enabled = FALSE;
         [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
         [_delegate RiderAdded];
+		[self clearField];
+		riderCode = @"";
+		[self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+		
     }
     else if (alertView.tag == 1002 && buttonIndex == 0) //delete
     {

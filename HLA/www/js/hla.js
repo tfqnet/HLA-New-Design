@@ -1,5 +1,5 @@
 function setPage(){
-	$('#rptVersion').html('MP (Trad) Version 6.8.1 (Agency) - Last Updated 07 Feb 2013 - E&amp;OE-');
+	$('#rptVersion').html('MP (Trad) Version 6.9 (Agency) - Last Updated 01 March 2013 - E&amp;OE-');
 
         db.transaction(function(transaction) {
             transaction.executeSql('select count(*) as pCount from SI_Temp_Pages', [], function(transaction, result) {
@@ -52,7 +52,7 @@ function setPage(){
 }
 
 function setPageDesc(page){
-	$('#rptVersion').html('MP (Trad) Version 6.8.1 (Agency) - Last Updated 07 Feb 2013 - E&amp;OE-');
+	$('#rptVersion').html('MP (Trad) Version 6.9 (Agency) - Last Updated 01 Mar 2013 - E&amp;OE-');
 
         db.transaction(function(transaction) {
             transaction.executeSql('select count(*) as pCount from SI_Temp_Pages', [], function(transaction, result) {

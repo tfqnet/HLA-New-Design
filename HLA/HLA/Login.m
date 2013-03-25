@@ -60,7 +60,7 @@
      NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-03-19"];
+    NSDate *StartDate = [formatter dateFromString:@"2013-03-26"];
     
     
     NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -68,7 +68,7 @@
                                                         fromDate:StartDate
                                                           toDate:endDate
                                                          options:0];
-    if ([components day ] > 42 ) {
+    if ([components day ] > 35 ) {
          labelVersion.text = @"";
         lblForgotPwd.hidden = YES;
         labelUpdated.numberOfLines = 2;
@@ -84,7 +84,7 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 21 MArch 2013";
+        labelUpdated.text = @"Last Updated: 25 MArch 2013";
                 outletLogin.hidden = FALSE;
     }
     

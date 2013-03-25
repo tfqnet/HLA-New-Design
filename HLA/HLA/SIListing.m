@@ -1381,12 +1381,12 @@ int DateOption;
     lblPlan.highlighted = FALSE;
     lblSINO.highlighted = FALSE;
     [self resignFirstResponder];
-    [self.view endEditing:YES];
+    //[self.view endEditing:YES];
     outletGender.selectedSegmentIndex = -1;
     outletGender.enabled = FALSE;
     _SortBy = Nil;
     isFilter = FALSE;
-    [myTableView setEditing:NO animated:NO];
+    //[myTableView setEditing:NO animated:NO];
     
     [self LoadAllResult];
     
