@@ -140,7 +140,7 @@
 }
 
 - (IBAction)btnClose:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:NO];
 }
 
 - (IBAction)ActionProfile:(id)sender {
@@ -151,6 +151,7 @@
     UserProfileView.idRequest = self.userRequest;
     [self presentModalViewController:UserProfileView animated:YES];
     UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 748);
+
 }
 
 - (IBAction)ActionSecurity:(id)sender {

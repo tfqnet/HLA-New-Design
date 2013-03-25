@@ -1070,6 +1070,7 @@ int DateOption;
             */
             
             if (ItemToBeDeleted.count < 1) {
+				
                 return;
             }
             else{
@@ -1216,6 +1217,13 @@ int DateOption;
         
     }
     
+	if (ItemToBeDeleted.count == 0) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+														message:@"Please select at least one record to delete" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+		[alert show ];
+		return;
+	}
+	
     if (RecCount == 1) {
         NSString *deleteMsg = [NSString stringWithFormat: @"Delete this SI: %@ and all related records?", FirstSINo];
         UIAlertView *alert = [[UIAlertView alloc] 
@@ -1387,7 +1395,9 @@ int DateOption;
     _SortBy = Nil;
     isFilter = FALSE;
     //[myTableView setEditing:NO animated:NO];
-    
+    ItemToBeDeleted = [[NSMutableArray alloc] init ];
+	indexPaths = [[NSMutableArray alloc] init ];
+	
     [self LoadAllResult];
     
     [myTableView reloadData];

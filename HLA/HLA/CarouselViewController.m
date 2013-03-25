@@ -74,6 +74,7 @@ const int numberOfModule = 4;
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view
 {
+	//NSLog(@"dasdasdas%d", index);
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     /*
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
@@ -89,25 +90,29 @@ const int numberOfModule = 4;
         //[button setTitle:[NSString stringWithFormat:@"Setting", index] forState:UIControlStateNormal];    
         //NSString *filename = [NSString stringWithFormat:@"btn_setting_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"20130108Settings.png"] forState:UIControlStateNormal];  
+        [button setBackgroundImage:[UIImage imageNamed:@"20130108Settings.png"] forState:UIControlStateNormal];
+		button.tag = 1;
     }
     else if (index % numberOfModule == 0) {
         //[button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_prospect_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
         [button setBackgroundImage:[UIImage imageNamed:@"20130108Prospect.png"] forState:UIControlStateNormal];
+				button.tag = 0;
     }
     else if (index % numberOfModule == 2) {
         //[button setTitle:[NSString stringWithFormat:@"SI Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_brochure_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
         [button setBackgroundImage:[UIImage imageNamed:@"20130108eBrochure.png" ] forState:UIControlStateNormal];
+				button.tag = 2;
     }
     else if (index % numberOfModule == 3) {
         //[button setTitle:[NSString stringWithFormat:@"New SI", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_SI_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];  
+        [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];
+				button.tag = 3;
     }
     /*
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -120,13 +125,16 @@ const int numberOfModule = 4;
     
     button.titleLabel.font = [button.titleLabel.font fontWithSize:50];
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
     return button;
 
     button = Nil;
 }
 
+
 - (void)buttonTapped:(UIButton *)sender
 {
+
     /*
     [[[[UIAlertView alloc] initWithTitle:@"Button Tapped"
                                  message:[NSString stringWithFormat:@"You tapped button number %i", [outletCarousel indexOfItemView:sender]]
@@ -136,17 +144,17 @@ const int numberOfModule = 4;
     */
     AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     
-	NSLog(@"%d", [outletCarousel indexOfItemView:sender] );
 	
-    if ([outletCarousel indexOfItemView:sender] % numberOfModule == 1) { //setting
+    if (sender.tag % numberOfModule == 1) { //setting
         setting *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Setting"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz = Nil;
 		NSLog(@"setting");
+		[self.outletCarousel reloadData ];
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 0) { //prospect
+    else if (sender.tag % numberOfModule == 0) { //prospect
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.ProspectListingIndex;
@@ -157,10 +165,10 @@ const int numberOfModule = 4;
 		[(ViewController *)_delegate setSss:1 ];
 		[_delegate PresentMain];
 		 */
-					NSLog(@"main");
+		NSLog(@"main");
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 2) {
+    else if (sender.tag % numberOfModule == 2) {
         eBrochureListingViewController *BrochureListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eBrochureListing"];
         BrochureListing.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:BrochureListing animated:NO completion:Nil];
@@ -168,7 +176,7 @@ const int numberOfModule = 4;
 							NSLog(@"brochure");
     }
     
-    else if ([outletCarousel indexOfItemView:sender] % numberOfModule == 3) {
+    else if (sender.tag % numberOfModule == 3) {
         
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
