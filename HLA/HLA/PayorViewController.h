@@ -39,6 +39,7 @@
 @property (nonatomic,strong) PayorHandler *payorHand;
 @property (nonatomic,strong) BasicPlanHandler *basicHand;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
+@property (strong, nonatomic) NSMutableArray *RiderToBeDeleted;
 
 //--request
 @property (nonatomic, assign,readwrite) int requestLAIndexNo;

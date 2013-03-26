@@ -1527,6 +1527,7 @@ id RiderCount;
 						}
 						
 						[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+						selectedPath = previousPath;
 					});
 					
 					ReportPage = Nil;
@@ -1684,7 +1685,9 @@ id RiderCount;
 						previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
 					}
 					
+					
 					[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+					selectedPath = previousPath;
 				});
 				
 				PDSPage = Nil;
@@ -1820,15 +1823,20 @@ id RiderCount;
 					UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
 					[v removeFromSuperview];
 					v = Nil;
+					
+					if (previousPath == Nil) {
+						previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+					}
+					
+					
+					[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+					selectedPath = previousPath;
 				});
 				
 				PDSPage = Nil;
 				
-				if (previousPath == Nil) {
-					previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
-				}
 				
-				[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+				
 				
 				
 			});

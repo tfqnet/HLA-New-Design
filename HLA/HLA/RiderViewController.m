@@ -316,8 +316,23 @@ BOOL Edit = FALSE;
             maxDisplayLabel.text = @"";
             break;
         case 1:
-            minDisplayLabel.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
-            maxDisplayLabel.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
+			 if([riderCode isEqualToString:@"PTR"] || [riderCode isEqualToString:@"PLCP"] ){
+				minDisplayLabel.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
+				 
+				int TermToDisplay = 60 - age;
+				 if(TermToDisplay > 25){
+					 TermToDisplay = 25;
+				 }
+				 
+				 maxRiderTerm = TermToDisplay;
+                maxDisplayLabel.text = [NSString stringWithFormat:@"Max Term: %.d",TermToDisplay];
+				
+			 }
+			 else{
+				 minDisplayLabel.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
+				 maxDisplayLabel.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
+			 }
+            
             break;
         case 2:
             if (incomeRider) {

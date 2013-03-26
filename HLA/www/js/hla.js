@@ -49,6 +49,15 @@ function setPage(){
                                           }
                                           },errorHandler);
                    },errorHandler,nullHandler);
+    
+    
+	$('#footerHLA').html('This sales illustration consists of <span class=totalPages>{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the' +
+		'information printed on each and every page.<br/>' +
+		'<i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal' +
+		'pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>' +
+		'<b>MP (Trad) Version 6.9 (Agency) - Last Updated 01 March 2013 - E&amp;OE-</b> <br/>' + 
+		'Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Malaysia. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my');
+	
 }
 
 function setPageDesc(page){
@@ -94,6 +103,17 @@ function setPageDesc(page){
                                           }
                                           },errorHandler);
                    },errorHandler,nullHandler);
+    
+	$('#footerHLA').html('This sales illustration consists of <span class=totalPages>{totalPages}</span> pages and each page forms an integral part of the sales illustration. A prospective policy owner is advised to read and understand the' +
+		'information printed on each and every page.<br/>' +
+		'<i>Illustrasi Jualan ini mengandungi <span class="totalPages">{totalPages}</span> muka surat and setiap muka surat membentuk sebahagian daripada illustrasi jualan. Bakal' +
+		'pemunya polisi adalah dinasihatkan untuk membaca dan memahami maklumat yang tercetak pada setiap muka surat.</i><br/>' +
+		'<b>MP (Trad) Version 6.9 (Agency) - Last Updated 01 March 2013 - E&amp;OE-</b> <br/>' + 
+		'Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Malaysia. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my');
+    
+    
+	
+    
 }
 
 function writeInvestmentScenarios(){

@@ -29,7 +29,7 @@
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo,requestCommDate;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert,getSINo;
 @synthesize delegate = _delegate;
-@synthesize getLAIndexNo,requestLAIndexNo,requestLAAge,getLAAge,occPA,occuClass;
+@synthesize getLAIndexNo,requestLAIndexNo,requestLAAge,getLAAge,occPA,occuClass, RiderToBeDeleted;
 
 - (void)viewDidLoad
 {
@@ -315,6 +315,14 @@
         if (self.requestSINo) {
             if (useExist) {
                 [self updatePayor];
+				[self CheckValidRider];
+				if(RiderToBeDeleted.count > 0){
+					
+					[_delegate RiderAdded];
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule."
+																   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+					[alert show];
+				}
             } else {
                 [self savePayor];
             }
@@ -853,6 +861,69 @@
     self.deleteBtn.hidden = YES;
     useExist = NO;
 }
+
+-(void)CheckValidRider
+{
+    RiderToBeDeleted = [[NSMutableArray alloc] init ];
+	
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"Select RiderTerm From trad_Rider_Details where SINO = \"%@\" AND RiderCode in ('PTR') ", SINo];
+		//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {	int SQLTerm = 0;
+					SQLTerm	= [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] intValue ];
+				
+				if(SQLTerm + age > 60){
+					
+					[RiderToBeDeleted addObject:@"PTR" ];
+				}
+            }
+            else {
+
+            }
+            sqlite3_finalize(statement);
+        }
+		
+		querySQL = [NSString stringWithFormat:@"Select RiderTerm From trad_Rider_Details where SINO = \"%@\" AND RiderCode in ('PLCP') ", SINo];
+		//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {	int SQLTerm = 0;
+				SQLTerm	= [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] intValue ];
+				
+				if(SQLTerm + age > 60){
+					[RiderToBeDeleted addObject:@"PLCP" ];
+				}
+            }
+            else {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+		
+		if (RiderToBeDeleted.count > 0) {
+			querySQL = [NSString stringWithFormat:@"DELETE From trad_Rider_Details where SINO = \"%@\" AND RiderCode = \"%@\" ", SINo, [RiderToBeDeleted objectAtIndex:0]];
+			//        NSLog(@"%@",querySQL);
+			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			{
+				if (sqlite3_step(statement) == SQLITE_DONE)
+				{
+					
+				}
+				
+				sqlite3_finalize(statement);
+			}
+		}
+		
+        sqlite3_close(contactDB);
+    }
+}
+
 
 -(void)checkingRider
 {

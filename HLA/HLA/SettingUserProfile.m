@@ -69,7 +69,6 @@
     [self setTxtLeaderName:nil];
     [self setTxtBixRegNo:nil];
     [self setTxtEmail:nil];
-    
     [self setOutletSave:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.

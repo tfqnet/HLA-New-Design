@@ -84,7 +84,7 @@
     else{
         
          labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 25 MArch 2013";
+        labelUpdated.text = @"Last Updated: 26 MArch 2013";
                 outletLogin.hidden = FALSE;
     }
     
