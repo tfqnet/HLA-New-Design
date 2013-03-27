@@ -288,9 +288,14 @@
         
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlRider];
         htmlString = [htmlString stringByAppendingString:htmlTail];
+        
         NSURL *baseURL = [NSURL URLWithString:@""];
+        self.WebView.backgroundColor = [UIColor clearColor];
+		self.WebView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+        [self.WebView setOpaque:NO];
         [WebView loadHTMLString:htmlString baseURL:baseURL];
-    } else {
+    }
+    else {
         
         htmlTail = [[NSString alloc] initWithFormat:
                     @"<tr>"
@@ -305,9 +310,9 @@
                     "</tr>"
                     "</table></body></html>",basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
         
+        
         NSString *htmlString = [htmlBasic stringByAppendingString:htmlTail];
         NSURL *baseURL = [NSURL URLWithString:@""];
-		
 		self.WebView.backgroundColor = [UIColor clearColor];
 		self.WebView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
         [self.WebView setOpaque:NO];
