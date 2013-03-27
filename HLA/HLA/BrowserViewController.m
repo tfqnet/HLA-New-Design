@@ -104,6 +104,7 @@ NSMutableArray *ItemPages;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 
         NSString *QuerySQL = @"";
+		
         
                 QuerySQL = [NSString stringWithFormat: @"Select htmlName from SI_Temp_Pages"];
         
