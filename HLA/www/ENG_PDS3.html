@@ -220,7 +220,7 @@
 			var temp1 = rider[y];
 			if(temp1 == 'CIWP'){
 			     
-			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'CIWP' )/100  as Total " +
+			     var query2 = "Select sum(replace(Annually, ',', '' )) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'CIWP' )/100  as Total " +
 					    "from SI_Store_Premium where FromAge IS NULL " +
 					   "AND Type not in ('CIWP', 'LCWP', 'B', 'LCPR', 'CIR', 'PR', 'SP_STD', 'ICR', 'SP_PRE') ";
 			     
@@ -240,7 +240,7 @@
 			 }
 			 else if(temp1 == 'LCWP'){
 			     
-			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'LCWP' )/100  as Total " +
+			     var query2 = "Select sum(replace(Annually, ',', '' )) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'LCWP' )/100  as Total " +
 					    "from SI_Store_Premium where FromAge IS NULL " +
 					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
 			     
@@ -259,7 +259,7 @@
 			 }
 			 else if(temp1 == 'PR'){
 			     
-			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'PR' )/100  as Total " +
+			     var query2 = "Select sum(replace(Annually, ',', '' )) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'PR' )/100  as Total " +
 					    "from SI_Store_Premium where FromAge IS NULL " +
 					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
 			     
@@ -279,7 +279,7 @@
 			 }
 			 else if(temp1 == 'SP_PRE'){
 			     
-			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'SP_PRE' )/100  as Total " +
+			     var query2 = "Select sum(replace(Annually, ',', '' )) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'SP_PRE' )/100  as Total " +
 					    "from SI_Store_Premium where FromAge IS NULL " +
 					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
 			     
@@ -299,7 +299,7 @@
 			 }
 			 else if(temp1 == 'SP_STD'){
 			     
-			     var query2 = "Select sum(Annually) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'SP_STD' )/100  as Total " +
+			     var query2 = "Select sum(replace(Annually, ',', '' )) * (select SumAssured from Trad_Rider_Details where sino = '" + siNo + "' and RiderCode = 'SP_STD' )/100  as Total " +
 					    "from SI_Store_Premium where FromAge IS NULL " +
 					   "AND Type not in ('CIWP', 'LCWP', 'B', 'PLCP', 'PR', 'SP_STD', 'SP_PRE', 'PTR') ";
 			     
@@ -388,7 +388,9 @@
 		    }
 				   
 		}
-		if ($("#pageLength").height() < 400){
+		
+		
+		if ($("#pageLength").height() < 480){
 		    document.getElementById("pageLength").style.height = '500px';  
 		}
 	    },errorHandler);

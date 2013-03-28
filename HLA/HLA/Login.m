@@ -182,6 +182,9 @@
 		insert into Adm_Occp Values('OCC02456', 'SERVICE ENGINEER', '1', '', '', '', '', '' );
 	 u5, update trad_sys_mtn
 		update trad_sys_mtn set MaxAge = '63' where PlanCode = 'HLACP';
+	 u6, Delete From Adm_Occp_Loading_Penta where OccpCode = 'OCC01717';
+		 Update Trad_Sys_Rider_Mtn set MaxAge = '63' where RiderCode in ('ETPDB', 'EDB');
+
 	 */
 	
 	/*
@@ -190,7 +193,7 @@
 	{
 	 
 		NSString *querySQL = [NSString stringWithFormat:
-							  @"Update Trad_Sys_Rider_Mtn set MaxAge = '63' where RiderCode in ('ETPDB', 'EDB');"];
+							  @"update trad_sys_Rider_mtn set MaxSA = '1500000' where RiderCode = 'CIR';"];
 					
 		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
 			if (sqlite3_step(statement) == SQLITE_DONE){
@@ -204,24 +207,6 @@
 			}
 			sqlite3_finalize(statement);
 		}
-		
-		querySQL = [NSString stringWithFormat:
-							  @"Delete From Adm_Occp_Loading_Penta where OccpCode = 'OCC01717';"];
-		
-		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
-			if (sqlite3_step(statement) == SQLITE_DONE){
-				
-			}
-			else {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-																message:@"ERROR" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
-				[alert show];
-				alert = Nil;
-			}
-			sqlite3_finalize(statement);
-		}
-		
-		
 		
 		sqlite3_close(contactDB);
 		querySQL = Nil;

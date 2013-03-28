@@ -245,12 +245,18 @@
                                    col8Total = 0.00;
                     for (var i = 0; i < result.rows.length; i++) {
 			var row = result.rows.item(i);
-			
+			/*
                         col5Total = col5Total + parseFloat(formatCurrency(row.Annually).replace(',','').replace('-', '0'));
                         col6Total = col6Total + parseFloat(formatCurrency(row.SemiAnnually).replace(',','').replace('-', '0'));
                         col7Total = col7Total + parseFloat(formatCurrency(row.Quarterly).replace(',','').replace('-', '0'));
                         col8Total = col8Total + parseFloat(formatCurrency(row.Monthly).replace(',','').replace('-', '0'));
-           
+			*/
+			
+			col5Total = col5Total + parseFloat(formatCurrency(row.Annually).replace(/,/g,'').replace('-', '0'));
+                        col6Total = col6Total + parseFloat(formatCurrency(row.SemiAnnually).replace(/,/g,'').replace('-', '0'));
+                        col7Total = col7Total + parseFloat(formatCurrency(row.Quarterly).replace(/,/g,'').replace('-', '0'));
+                        col8Total = col8Total + parseFloat(formatCurrency(row.Monthly).replace(/,/g,'').replace('-', '0'));
+			
 			if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
 			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}

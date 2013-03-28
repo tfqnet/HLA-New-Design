@@ -127,13 +127,11 @@
         riderCount++;
         curRider = [row objectAtIndex:0];
         
-        //NSLog(@"%@",curRider);
-        
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"]
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"]  || [curRider isEqualToString:@"PR"] ||
             [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"] || [curRider isEqualToString:@"PTR"]
-            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"] ){
+			|| [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"] ){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -189,7 +187,7 @@
 
         }
         else{
-            
+
             if (riderInPageCount == 2){
                 //NSLog(@"%@",riderInPage);
                 pageNum++;
@@ -227,6 +225,7 @@
                 curRider = [headerTitle stringByAppendingString:curRider];
             descRiderCountStart++;
             sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(riders,htmlName, PageNum, PageDesc) VALUES ('%@','ENG_PDS%d.html',%d,'%@')",curRider,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+
             DBID = [_db ExecuteINSERT:sqlStmt];
             if (DBID <= 0){
                 NSLog(@"Error inserting data into database.");
@@ -665,7 +664,7 @@
             || [curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"]
             || [curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PA"] || [curRider isEqualToString:@"PR"] ||
             [curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"ICR"] || [curRider isEqualToString:@"PTR"]
-            || [curRider isEqualToString:@"CIR"] || [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"]){
+			|| [curRider isEqualToString:@"CPA"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"]){
             riderInPageCount++;
             prevRider = curRider;
             

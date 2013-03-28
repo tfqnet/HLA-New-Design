@@ -148,6 +148,7 @@
 		C4EF087316496A5A000444BA /* pages.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087216496A5A000444BA /* pages.m */; };
 		C4EF087616496B13000444BA /* SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087516496B13000444BA /* SidebarViewController.m */; };
 		C4EF087916496B43000444BA /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087816496B43000444BA /* BrowserViewController.m */; };
+		C4EF74F71704481400434B02 /* iMPLogo_Curve.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EF74F61704481400434B02 /* iMPLogo_Curve.png */; };
 		C4F08D5B161DA491008BCC1A /* ContactTypeClass.h in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D59161DA491008BCC1A /* ContactTypeClass.h */; };
 		C4F08D5C161DA491008BCC1A /* ContactTypeClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */; };
 		C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F08D5F161DBDBB008BCC1A /* SIDate.m */; };
@@ -425,6 +426,7 @@
 		C4EF087516496B13000444BA /* SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarViewController.m; sourceTree = "<group>"; };
 		C4EF087716496B42000444BA /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
 		C4EF087816496B43000444BA /* BrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserViewController.m; sourceTree = "<group>"; };
+		C4EF74F61704481400434B02 /* iMPLogo_Curve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iMPLogo_Curve.png; sourceTree = "<group>"; };
 		C4F08D59161DA491008BCC1A /* ContactTypeClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTypeClass.h; sourceTree = "<group>"; };
 		C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTypeClass.m; sourceTree = "<group>"; };
 		C4F08D5E161DBDBB008BCC1A /* SIDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDate.h; sourceTree = "<group>"; };
@@ -787,6 +789,7 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4EF74F61704481400434B02 /* iMPLogo_Curve.png */,
 				C4C501E216A64C4900096156 /* eBrochure */,
 				C4B8446A169C62E000E1A0D3 /* 20130108 */,
 				C4E5A45D168AAA4B007848CE /* Setting */,
@@ -1292,6 +1295,7 @@
 				C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */,
 				EFF7441A16F6B3A60075E66E /* hladb.sqlite in Resources */,
 				EFA879A11702A0A4003BB288 /* HLA_Rates.sqlite in Resources */,
+				C4EF74F71704481400434B02 /* iMPLogo_Curve.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

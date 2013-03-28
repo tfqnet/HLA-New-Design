@@ -665,10 +665,13 @@ BOOL Edit = FALSE;
 {
     [self getListingRider];
     
+	NSString *currentSelectedRider = riderCode;
     BOOL dodelete = NO;
     for (int p=0; p<LRiderCode.count; p++) {
-     
+
+		
         riderCode = [LRiderCode objectAtIndex:p];
+				
         [self getRiderTermRule];
         [self calculateTerm];
         [self calculateSA];
@@ -761,6 +764,11 @@ BOOL Edit = FALSE;
             [self MHIGuideLines];
         }
         [_delegate RiderAdded];
+		
+		riderCode = currentSelectedRider;
+		[self getRiderTermRule];
+        [self calculateTerm];
+        [self calculateSA];
     }
 }
 
@@ -2416,6 +2424,7 @@ BOOL Edit = FALSE;
 
 - (IBAction)doSaveRider:(id)sender
 {
+	
 	if (Edit == TRUE ) {
 	
 		[self resignFirstResponder];
@@ -2775,7 +2784,7 @@ BOOL Edit = FALSE;
         [alert show];
         [tempHLTField becomeFirstResponder];
     }
-	else if ([HLField.text intValue] >= 10000 && ![riderCode isEqualToString:@"HMM"] && ![riderCode isEqualToString:@"MG_IV"]
+	else if ([HLField.text intValue] > 10000 && ![riderCode isEqualToString:@"HMM"] && ![riderCode isEqualToString:@"MG_IV"]
 			 && ![riderCode isEqualToString:@"MG_II"] && ![riderCode isEqualToString:@"HSP_II"] && ![riderCode isEqualToString:@"HB"]) {
 		
 		NSString *msg;
@@ -2790,7 +2799,7 @@ BOOL Edit = FALSE;
         [alert show];
         [HLField becomeFirstResponder];
 	}
-	else if ([tempHLField.text intValue] >= 10000 && ![riderCode isEqualToString:@"HMM"] && ![riderCode isEqualToString:@"MG_IV"]
+	else if ([tempHLField.text intValue] > 10000 && ![riderCode isEqualToString:@"HMM"] && ![riderCode isEqualToString:@"MG_IV"]
 			 && ![riderCode isEqualToString:@"MG_II"] && ![riderCode isEqualToString:@"HSP_II"] && ![riderCode isEqualToString:@"HB"]) {
 		
 		NSString *msg;
@@ -3036,7 +3045,7 @@ BOOL Edit = FALSE;
         [alert show];
         [HLTField becomeFirstResponder];
     }
-    else if (inputHL1KSA.length != 0 && [HLField.text intValue] >= 10000) {
+    else if (inputHL1KSA.length != 0 && [HLField.text intValue] > 10000) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3081,7 +3090,7 @@ BOOL Edit = FALSE;
         [alert show];
         [HLTField becomeFirstResponder];
     }
-    else if ([HLTField.text intValue] > [termField.text intValue]) {
+    else if ([HLTField.text intValue] > [termField.text intValue] && ![riderCode isEqualToString:@"ETPDB"] && ![riderCode isEqualToString:@"EDB"]) {
         
         NSString *msg;
         if (HL1kTerm) {
@@ -3158,7 +3167,7 @@ BOOL Edit = FALSE;
         [alert show];
         [tempHLTField becomeFirstResponder];
     }
-    else if (HL1kTerm && [tempHLField.text intValue] >= 10000) {
+    else if (HL1kTerm && [tempHLField.text intValue] > 10000) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
@@ -3201,7 +3210,7 @@ BOOL Edit = FALSE;
         [alert show];
         [tempHLTField becomeFirstResponder];
     }
-    else if ([tempHLTField.text intValue] > [termField.text intValue]) {
+    else if ([tempHLTField.text intValue] > [termField.text intValue] && ![riderCode isEqualToString:@"ETPDB"] && ![riderCode isEqualToString:@"EDB"]) {
         
         NSString *msg;
         if (HL1kTerm) {
@@ -4475,9 +4484,9 @@ BOOL Edit = FALSE;
 
     if (secondLARidCode.length != 0) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert setTag:1004];
-        [alert show];
+        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        //[alert setTag:1004];
+        //[alert show];
     }
     
     [self getListingRiderByType];
