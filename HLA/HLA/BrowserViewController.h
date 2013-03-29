@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "JTRevealSidebarV2Delegate.h"
 #import <Cordova/CDVViewController.h>
-#import "SIHandler.h"
 #import "BasicPlanHandler.h"
 
 // Orientation changing is not an officially completed feature,

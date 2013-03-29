@@ -23,7 +23,7 @@
 @synthesize CPAField;
 @synthesize PAField;
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
-@synthesize popOverController,requestSINo,la2ndHand,laHand,basicHand;
+@synthesize popOverController,requestSINo,la2ndHand,basicHand;
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;

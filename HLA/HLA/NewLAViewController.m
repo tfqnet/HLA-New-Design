@@ -14,7 +14,6 @@
 
 #import "AppDelegate.h"
 #import "SIMenuViewController.h"
-#import "SIHandler.h"
 #import "MainScreen.h"
 
 @interface NewLAViewController ()
@@ -35,7 +34,7 @@
 @synthesize sex,smoker,age,ANB,DOB,jobDesc,SINo,CustCode;
 @synthesize occDesc,occCode,occLoading,payorSINo,occCPA_PA;
 @synthesize popOverController,requestSINo,clientName,occuCode,occuDesc,CustCode2,payorCustCode;
-@synthesize dataInsert,laH,commDate,occuClass,IndexNo,laBH;
+@synthesize dataInsert,commDate,occuClass,IndexNo,laBH;
 @synthesize ProspectList=_ProspectList;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,occPA,headerTitle;
 @synthesize LADOBField,LAOccpField,getSINo,dataInsert2;

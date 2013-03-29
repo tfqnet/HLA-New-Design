@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
-#import "SIHandler.h"
 #import "BasicPlanHandler.h"
 #import "PayorHandler.h"
 #import "SecondLAHandler.h"
@@ -53,7 +52,6 @@
 
 @property (retain, nonatomic) NSMutableArray *ListOfSubMenu;
 @property (retain, nonatomic) NSMutableArray *SelectedRow;
-@property (nonatomic,strong) SIHandler *menulaH;
 @property (nonatomic,strong) BasicPlanHandler *menuBH;
 @property (nonatomic,strong) PayorHandler *menuPH;
 @property (nonatomic,strong) SecondLAHandler *menuLa2ndH;

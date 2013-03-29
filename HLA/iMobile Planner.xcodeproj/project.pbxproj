@@ -212,7 +212,6 @@
 		EF1343C1165C7CFD00BF69B3 /* RiderPlanTb.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */; };
 		EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
-		EF28C323161C11C2009585CC /* SIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C322161C11C2009585CC /* SIHandler.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
 		EFA879A11702A0A4003BB288 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
@@ -516,8 +515,6 @@
 		EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pdfData.plist; sourceTree = "<group>"; };
 		EF28C317161BE224009585CC /* SIMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMenuViewController.h; path = ../SIMenuViewController.h; sourceTree = "<group>"; };
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
-		EF28C321161C11C2009585CC /* SIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIHandler.h; path = ../SIHandler.h; sourceTree = "<group>"; };
-		EF28C322161C11C2009585CC /* SIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIHandler.m; path = ../SIHandler.m; sourceTree = "<group>"; };
 		EF33ACEE162D42B2006BB4C6 /* PlanList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlanList.h; path = ../PlanList.h; sourceTree = "<group>"; };
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
 		EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
@@ -1055,8 +1052,6 @@
 			children = (
 				EF059838161A8BD0004A9095 /* NewLAViewController.h */,
 				EF059837161A8BCF004A9095 /* NewLAViewController.m */,
-				EF28C321161C11C2009585CC /* SIHandler.h */,
-				EF28C322161C11C2009585CC /* SIHandler.m */,
 				EF059841161A901A004A9095 /* PayorViewController.h */,
 				EF059840161A901A004A9095 /* PayorViewController.m */,
 				EFB3D5851685604400A7B517 /* PayorHandler.h */,
@@ -1344,7 +1339,6 @@
 				C4E7B388161B119E00066CBF /* SIListing.m in Sources */,
 				C4E7B38B161B147800066CBF /* siListingSortBy.m in Sources */,
 				EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */,
-				EF28C323161C11C2009585CC /* SIHandler.m in Sources */,
 				EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */,
 				C4F08D60161DBDBB008BCC1A /* SIDate.m in Sources */,
 				C4660E63161F118B00BA4AFE /* ColorHexCode.m in Sources */,

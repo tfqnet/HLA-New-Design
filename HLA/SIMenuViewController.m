@@ -29,7 +29,7 @@
 @synthesize myTableView, SIshowQuotation;
 @synthesize RightView;
 @synthesize ListOfSubMenu,SelectedRow;
-@synthesize menulaH,menuBH,menuPH,menuLa2ndH,getCommDate;
+@synthesize menuBH,menuPH,menuLa2ndH,getCommDate;
 @synthesize getAge,getSINo,getOccpCode,getbasicSA;
 @synthesize payorCustCode,payorSINo,CustCode2,clientID2,getPayorIndexNo,get2ndLAIndexNo;
 @synthesize LAController = _LAController;
@@ -2065,7 +2065,6 @@ id RiderCount;
     [self setCustCode2:nil];
     [self setGetbasicSA:nil];
     [self setMenuBH:nil];
-    [self setMenulaH:nil];
     [self setMenuPH:nil];
     [self setGetOccpCode:nil];
     [self setGetCommDate:nil];

@@ -24,7 +24,7 @@
 @synthesize CPAField;
 @synthesize PAField;
 @synthesize sex,smoker,DOB,jobDesc,age,ANB,OccpCode,occLoading,SINo,CustLastNo,CustDate,CustCode,clientName,clientID,OccpDesc,occCPA_PA;
-@synthesize popOverController,requestSINo,payorHand,laHand;
+@synthesize popOverController,requestSINo,payorHand;
 @synthesize ProspectList = _ProspectList;
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo,requestCommDate;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert,getSINo;
@@ -451,34 +451,6 @@
     
     NSLog(@"msgAge:%@",msgAge);
 }
-
-/*
--(void)closeScreen
-{
-    if (dataInsert.count != 0) {
-        for (NSUInteger i=0; i< dataInsert.count; i++) {
-            PayorHandler *ss = [dataInsert objectAtIndex:i];
-            MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-            main.modalPresentationStyle = UIModalPresentationFullScreen;
-            main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            main.IndexTab = 3;
-            main.mainLaH = laHand;
-            main.mainBH = basicHand;
-            main.mainPH = ss;
-            [self presentModalViewController:main animated:YES];
-        }
-    }
-    else {
-        MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        main.modalPresentationStyle = UIModalPresentationFullScreen;
-        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        main.mainLaH = laHand;
-        main.mainBH = basicHand;
-        main.IndexTab = 3;
-        [self presentViewController:main animated:YES completion:nil];
-    }
-} */
-
 
 #pragma mark - delegate
 

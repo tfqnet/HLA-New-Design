@@ -11,7 +11,6 @@
 #import "NewLAViewController.h"
 #import "PremiumViewController.h"
 #import "SIMenuViewController.h"
-#import "SIHandler.h"
 #import "MainScreen.h"
 #import "BasicPlanHandler.h"
 #import "AppDelegate.h"
@@ -41,7 +40,7 @@
 @synthesize ageClient,requestSINo,termCover,planChoose,maxSA,minSA,halfMedRiderPrem;
 @synthesize MOP,yearlyIncome,advanceYearlyIncome,basicRate,cashDividend;
 @synthesize getSINo,getSumAssured,getPolicyTerm,getHL,getHLTerm,getTempHL,getTempHLTerm;
-@synthesize planCode,requestOccpCode,basicH,dataInsert,basicBH,basicPH,basicLa2ndH;
+@synthesize planCode,requestOccpCode,dataInsert,basicBH,basicPH,basicLa2ndH;
 @synthesize SINo,LACustCode,PYCustCode,SIDate,SILastNo,CustDate,CustLastNo;
 @synthesize NamePP,DOBPP,OccpCodePP,GenderPP,secondLACustCode,IndexNo,PayorIndexNo,secondLAIndexNo;
 @synthesize delegate = _delegate;

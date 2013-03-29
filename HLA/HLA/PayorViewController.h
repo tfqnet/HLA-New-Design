@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "ListingTbViewController.h"
-#import "SIHandler.h"
 #import "BasicPlanHandler.h"
 #import "PayorHandler.h"
 
@@ -35,7 +34,6 @@
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
 @property (nonatomic,strong) id <PayorViewControllerDelegate> delegate;
 
-@property (nonatomic,strong) SIHandler *laHand;
 @property (nonatomic,strong) PayorHandler *payorHand;
 @property (nonatomic,strong) BasicPlanHandler *basicHand;
 @property (strong, nonatomic) NSMutableArray *dataInsert;

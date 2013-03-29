@@ -11,7 +11,6 @@
 #import "RiderPTypeTbViewController.h"
 #import "RiderListTbViewController.h"
 #import "BasicPlanHandler.h"
-#import "SIHandler.h"
 #import "RiderPlanTb.h"
 #import "RiderDeducTb.h"
 
@@ -57,7 +56,6 @@
 @property (nonatomic,strong) UIPopoverController *pTypePopOver;
 
 @property (nonatomic,strong) BasicPlanHandler *riderBH;
-@property (nonatomic,strong) SIHandler *riderH;
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 @property (nonatomic, retain) RiderListTbViewController *RiderList;
 @property (nonatomic, retain) RiderPlanTb *planList;

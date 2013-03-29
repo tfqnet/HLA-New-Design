@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "FSVerticalTabBarController.h"
-#import "SIHandler.h"
 #import "BasicPlanHandler.h"
 #import "PayorHandler.h"
 #import "SecondLAHandler.h"
@@ -22,7 +21,6 @@
 @property (nonatomic,strong) id requestSINo;
 
 @property (nonatomic, assign,readwrite) int IndexTab;
-@property (nonatomic,strong) SIHandler *mainLaH;
 @property (nonatomic,strong) BasicPlanHandler *mainBH;
 @property (nonatomic,strong) PayorHandler *mainPH;
 @property (nonatomic,strong) SecondLAHandler *mainLa2ndH;

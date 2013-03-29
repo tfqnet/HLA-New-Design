@@ -28,7 +28,7 @@
 @implementation MainScreen
 @synthesize indexNo, showQuotation;
 @synthesize userRequest;
-@synthesize IndexTab,mainLaH,mainBH,mainPH,mainLa2ndH;
+@synthesize IndexTab,mainBH,mainPH,mainLa2ndH;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -46,7 +46,6 @@
     self.delegate = self;
     
     //passing value
-    NSLog(@"MAINLA-age:%d, job:%@",mainLaH.storedAge,mainLaH.storedOccpCode);
     NSLog(@"MAINBasic-SINo:%@, age:%d, job:%@",mainBH.storedSINo,mainBH.storedAge,mainBH.storedOccpCode);
     
     //Create view controllers
@@ -83,7 +82,6 @@
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
     /*
-    menuSIPage.menulaH = mainLaH;
     menuSIPage.menuBH = mainBH;
     menuSIPage.menuPH = mainPH;
     menuSIPage.menuLa2ndH = mainLa2ndH; */
@@ -142,7 +140,6 @@
     userRequest = Nil;
     mainBH = Nil;
     mainLa2ndH = Nil;
-    mainLaH = Nil;
     mainPH = Nil;
     showQuotation = Nil;
     

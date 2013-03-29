@@ -10,7 +10,6 @@
 #import <sqlite3.h>
 #import "ListingTbViewController.h"
 #import "DateViewController.h"
-#import "SIHandler.h"
 #import "BasicPlanHandler.h"
 
 @class NewLAViewController;
@@ -45,7 +44,6 @@
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;
 @property (strong, nonatomic) NSMutableArray *dataInsert2;
-@property (nonatomic,strong) SIHandler *laH;
 @property (nonatomic,strong) BasicPlanHandler *laBH;
 @property (nonatomic,strong) id <NewLAViewControllerDelegate> delegate;
 

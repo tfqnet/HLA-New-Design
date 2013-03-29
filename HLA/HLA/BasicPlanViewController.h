@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
-#import "SIHandler.h"
 #import "PlanList.h"
 #import "BasicPlanHandler.h"
 #import "PayorHandler.h"
@@ -36,7 +35,6 @@
 @property (nonatomic, retain) UIPopoverController *planPopover;
 @property (nonatomic, retain) PlanList *planList;
 @property (nonatomic,strong) id <BasicPlanViewControllerDelegate> delegate;
-@property (nonatomic,strong) SIHandler *basicH;
 @property (nonatomic,strong) BasicPlanHandler *basicBH;
 @property (nonatomic,strong) PayorHandler *basicPH;
 @property (nonatomic,strong) SecondLAHandler *basicLa2ndH;

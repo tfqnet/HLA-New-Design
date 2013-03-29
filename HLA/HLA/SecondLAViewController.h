@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "ListingTbViewController.h"
-#import "SIHandler.h"
 #import "BasicPlanHandler.h"
 #import "SecondLAHandler.h"
 
@@ -32,7 +31,6 @@
     id <SecondLAViewControllerDelegate> _delegate;
 }
 
-@property (nonatomic,strong) SIHandler *laHand;
 @property (nonatomic,strong) BasicPlanHandler *basicHand;
 @property (nonatomic,strong) SecondLAHandler *la2ndHand;
 @property (strong, nonatomic) NSMutableArray *dataInsert;

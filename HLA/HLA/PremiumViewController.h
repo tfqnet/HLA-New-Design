@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
-#import "SIHandler.h"
 #import "BasicPlanHandler.h"
 #import "BrowserViewController.h"
 
@@ -22,7 +21,6 @@
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
 @property (strong, nonatomic) IBOutlet UILabel *headerTitle;
 
-@property (nonatomic,strong) SIHandler *premH;
 @property (nonatomic,strong) BasicPlanHandler *premBH;
 //--request
 @property (nonatomic, assign,readwrite) int requestAge;
