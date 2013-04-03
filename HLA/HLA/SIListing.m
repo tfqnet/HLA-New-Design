@@ -1335,7 +1335,7 @@ int DateOption;
             
         }
         
-        else if ([zzz isEqualToString:@"Basic SA"]) {
+        else if ([zzz isEqualToString:@"Yearly Income"]) {
             lblBasicSA.highlightedTextColor = [UIColor blueColor];
             lblBasicSA.highlighted = TRUE;
             

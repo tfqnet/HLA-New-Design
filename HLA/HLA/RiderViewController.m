@@ -250,6 +250,10 @@ BOOL Edit = FALSE;
     indexPaths = [[NSMutableArray alloc] init];
     
     [super viewDidLoad];
+	
+
+	
+	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -5437,6 +5441,13 @@ BOOL Edit = FALSE;
     if ([riderCode isEqualToString:@"PLCP"]) { foundLiving = NO; }
     
     //validation part
+	
+	//----reset back pTypeOccp to first life assured occp code
+	if (PTypeSeq == 1 && [pTypeCode isEqualToString:@"LA"]) {
+		pTypeOccp = [[NSString alloc] initWithFormat:@"%@",self.PTypeList.selectedOccp];
+	}
+	//----
+	
     [self getOccpNotAttach];
     
     if ([atcRidCode count] != 0 && [riderCode isEqualToString:@"CPA"])
@@ -5672,8 +5683,7 @@ BOOL Edit = FALSE;
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
     //label6.text= [NSString stringWithFormat:@"%@",occLoadType];
-	if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"C+" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"CCTR" ] ||
+	if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"CCTR" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"EDB"] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ETPDB" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LCPR" ] ||

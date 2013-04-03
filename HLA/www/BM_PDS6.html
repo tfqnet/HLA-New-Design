@@ -27,6 +27,8 @@
     var PRSA = '';
     var SP_STDSA = '';
     var SP_PRESA = '';
+    var PA = '';
+    var CustCode = '';
     
     function errorHandler(transaction, error) {
         alert('Error: ' + error.message + ' code: ' + error.code);
@@ -169,6 +171,35 @@
             },errorHandler);
         },errorHandler,nullHandler);
 	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_LAPayor where SINO = '" + siNo + "' AND PTypeCode = 'LA' AND Sequence = '1' ", [], function(transaction, result) {
+                
+		if (result != null && result.rows != null) {
+		    var row = result.rows.item(0);
+		     CustCode = row.CustCode;
+		     
+                }
+                else{
+			alert('No data can be found');
+                    }
+		                  
+            },errorHandler);
+	    
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            
+	    transaction.executeSql("select PA from clt_profile AS A, Adm_Occp_Loading as B where A.OccpCode = B.OccpCode AND custcode = '" + CustCode + "' ", [], function(transaction, result) {
+		if (result != null && result.rows != null) {
+		    var row = result.rows.item(0);
+		    PA = row.PA;
+		    
+		}
+	     
+	    },errorHandler);
+        },errorHandler,nullHandler);
+	
+	
         db.transaction(function(transaction) {
             transaction.executeSql('select RiderDesc, "Jika anda menamatkan rider ini sebelum tempoh matang, anda akan mendapat kurang daripada jumlah yang telah anda bayar." as Desc, A.RiderCode from trad_rider_details as A, '+
 				   'trad_sys_rider_profile as B where A.RiderCode = B.RiderCode and sino = "' + siNo  + '" and A.RiderCode Not in ("MG_II","MG_IV", "C+","HSP_II","HMM") ;'
@@ -200,7 +231,10 @@
 			    else if(row.RiderCode == 'SP_STD'){
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + SP_STDSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
 			    }
-			    else if(row.RiderCode == 'CPA' || row.RiderCode == 'PA' || row.RiderCode == 'ETPD' || row.RiderCode == 'ICR' ){
+			    else if(row.RiderCode == 'CPA' || row.RiderCode == 'PA'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(Class' + PA  +')</td>' + '<td>Jika rider ini ditamatkan sebelum tempoh matang, tidak akan ada pembayaran balik dan penamatan tersebut akan berkuat kuasa dari tarikh genap tempoh premium yang berikutnya jika Polisi Asas masih berkuat kuasa.</td>' + '</tr>');
+			    }
+			    else if(row.RiderCode == 'ETPD' || row.RiderCode == 'ICR' ){
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>Jika rider ini ditamatkan sebelum tempoh matang, tidak akan ada pembayaran balik dan penamatan tersebut akan berkuat kuasa dari tarikh genap tempoh premium yang berikutnya jika Polisi Asas masih berkuat kuasa.</td>' + '</tr>');
 			    }
 			    else if(row.RiderCode == 'HB'){

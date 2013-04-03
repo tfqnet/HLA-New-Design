@@ -123,6 +123,25 @@
 			    
 			    $('#PlanOption').html(row.PlanOption);
 			    $('#RiderTerm').html(row.RiderTerm);
+			    
+			    if(row.PlanOption == 'HMM_1000'){
+				$('#PlanName').html('HLA Major Medi Plus Rider');
+				$('#PlanName2').html('HLA Major Medi Plus Rider');
+				document.getElementById('hideQ2').style.visibility = "hidden";
+				
+				document.getElementById('HMMOther').style.display = "none";
+				document.getElementById('HMM1000').style.visibility = "visible";
+				
+				
+			    }
+			    else{
+				$('#PlanName').html('HLA Major Medi Rider');
+				$('#PlanName2').html('HLA Major Medi Rider');
+				document.getElementById('hideQ2').style.visibility = "visible";
+				
+				document.getElementById('HMMOther').style.visibility = "visible";
+				document.getElementById('HMM1000').style.display = "none";
+			    }
 			
 			}
 		    
@@ -215,8 +234,8 @@
     </tr>
     <tr>
 	<td style="text-align:left;padding: 0px 0px 0px 5px;" rowspan="2"><b>Read this Product Disclosure Sheet before you decide to take up the
-	<i>HLA Major Medi rider</i>. Be sure to also read the general terms and conditions.</b></td>
-	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b>HLA Major Medi rider</b></td>
+	<i><span id="PlanName2">{PlanName2}</span></i>. Be sure to also read the general terms and conditions.</b></td>
+	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b><span id="PlanName">{PlanName}</span></b></td>
     </tr>
     <tr>
 	<td><b><span id="PrintDate">{PrintDate}</span></b></td>
@@ -240,15 +259,16 @@
 	<tr>
 	    <td width="10" valign="top"></td>
 	    <td>
-		HLA Major Medi Rider is available in 4 plans which are MM 150, MM 200, MM 300 and MM 400. The plan selected is
-		<span id="PlanOption">{PlanOption}</span> plan. The duration of coverage of this rider is <span id="RiderTerm">{RiderTerm}</span> years or upon termination, whichever occurs first.<br/><br/>
-		
+		<div id="hideQ2">HLA Major Medi Rider is available in 4 plans which are MM 150, MM 200, MM 300 and MM 400. The plan selected is
+		<span id="PlanOption">{PlanOption}</span> plan.</div>
+		The duration of coverage of this rider is <span id="RiderTerm">{RiderTerm}</span> years or upon termination, whichever occurs first.<br/><br/>
 	    </td>
 	</tr>
-	<tr>
+	
+	<tr  id="HMMOther" >
 	    <td></td>
 	    <td>
-		<table  border="1" style="border-collapse: collapse" width="100%">
+		<table border="1" style="border-collapse: collapse;" width="100%">
 		    <tr>
 			<td width="60%" style="padding: 0px 0px 5px 5px;" align="center"><b>Designation Plan</b></td>
 			<td align="center"><b>MM 150<br/>(RM)</b></td>
@@ -267,7 +287,7 @@
 			<td align="center">400</td>
 		    </tr>
 		    <tr>
-			<td style="padding: 0px 0px 5px 5px;">Daily Cash as a result of hospitalisation due to road accidents on a Malaysian Highway<br/>(up to 150 days per any one disability)</td>
+			<td style="padding: 0px 0px 5px 5px;">Daily Cash as a result of hospitalisation due to road accidents on a Malaysian Highway*<br/>(up to 150 days per any one disability)</td>
 			<td align="center">150</td>
 			<td align="center">200</td>
 			<td align="center">300</td>
@@ -282,7 +302,7 @@
 		    </tr>
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;" > Intensive Care Unit<br/>(up to 75 days per any one disability)</td>
-			<td  align="center"colspan="4" rowspan="14">Reasonable & Customary Charges *</td>
+			<td  align="center"colspan="4" rowspan="14">Reasonable & Customary Charges **</td>
 			
 		    </tr>
 		    <tr>
@@ -336,7 +356,93 @@
 		    
 		</table>
 	    </td>
+	</tr>    
+	
+	
+	<tr id="HMM1000">
+	    <td></td>
+	    <td>
+		<table  border="1" style="border-collapse: collapse" width="100%">
+		    <tr>
+			<td width="60%" style="padding: 0px 0px 5px 5px;" align="center"><b>Designated Plan</b></td>
+			<td align="center"><b>MM 1000<br/>(RM)</b></td>
+		    </tr>
+		    <tr>
+			<td colspan="5" style="padding: 0px 0px 5px 5px;"><b>Hospital & Surgical</b></td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Hospital Room & Board<br/>(up to 150 days per any one disability)</td>
+			<td align="center">1000</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Daily Cash as a result of hospitalisation due to road accidents on a Malaysian Highway*<br/>(up to 150 days per any one disability)</td>
+			<td align="center">1000</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Daily Cash Allowance at Government Hospital<br/>(up to 60 days per any one disability)</td>
+			<td align="center">500</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" > Intensive Care Unit<br/>(up to 75 days per any one disability)</td>
+			<td  align="center" rowspan="14">Reasonable & Customary Charges **</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Lodger Expenses<br/>(up to 150 days per any one disability)</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Hospital Supplies & Services</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Surgical Fees(including pre-surgical assessment, Specialist's visits and
+			post-Surgery care up to the 60 days from the date of Surgery)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Anaesthetist Fee</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Operating Theatres</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">In-Hospital Physician Visit</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">In-Hospital Physiotherapy Treatment Fees</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Pre-Hospital Diagnostic Tests<br/>(within 60 days prior to hospitalisation)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Pre-Hospital Specialist Consultation<br/>(within 60 days prior to hospitalisation)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Post-Hospitalisation Treatment<br/>(within 60 days following discharge from hospital)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Organ Transplant</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Day Surgery Benefit</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Ambulance Fees</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Government Service Tax</td>
+			<td align="center">(Applicable Percentage) x Room & Board Benefit</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" colspan="5"><b>Outpatient Treatment Benefits</b></td>
+		    </tr>
+		    
+		</table>
+	    </td>
 	</tr>
+	
 	
     </table>
 	

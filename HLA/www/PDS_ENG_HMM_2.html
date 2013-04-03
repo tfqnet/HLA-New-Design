@@ -98,6 +98,19 @@
 			    HMMRiderTerm = row.RiderTerm;
 			    $('#PlanOption').html(row.PlanOption);
 			    $('#Deductible').html(row.Deductible);
+			    
+			    if(row.PlanOption == 'HMM_1000'){
+				
+				document.getElementById('HMMOther').style.display = "none";
+				document.getElementById('HMM1000').style.visibility = "visible";
+				
+				
+			    }
+			    else{
+				
+				document.getElementById('HMMOther').style.visibility = "visible";
+				document.getElementById('HMM1000').style.display = "none";
+			    }
 		    }
                 }
             },errorHandler);
@@ -223,14 +236,14 @@
     
     <table>
 	
-	<tr>
+	<tr >
 	    <td></td>
 	    <td>
-		<table border="1" style="border-collapse: collapse" width="100%">
+		<table id="HMMOther" border="1" style="border-collapse: collapse" width="100%">
 		    
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;" width="60%" >Emergency Accidental Outpatient Treatment(within 30 days following such emergency treatment)</td>
-			<td rowspan="5" colspan="4" align="center">Reasonable & Customary Charges *</td>
+			<td rowspan="5" colspan="4" align="center">Reasonable & Customary Charges **</td>
 		    </tr>
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;">Emergency Accidental Dental Treatment</td>
@@ -275,6 +288,50 @@
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;" >Deductible (RM) per disability</td>
 			<td colspan="4" align="center" >5,000<br/>10,000<br/>15,000</td>
+		    </tr>
+		    
+		</table>
+		<table id="HMM1000" border="1" style="border-collapse: collapse" width="100%">
+		    
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" width="60%" >Emergency Accidental Outpatient Treatment(within 30 days following such emergency treatment)</td>
+			<td rowspan="5" align="center">Reasonable & Customary Charges **</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Emergency Accidental Dental Treatment</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Outpatient Physiotherapy Treatment</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;"  >Outpatient Cancer Treatment</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Outpatient Kidney Dialysis Treatment</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Home Nursing Care (up to 180 days per lifetime)</td>
+			<td align="center">220</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Overall Annual (per policy Year) limit</td>
+			<td align="center" >600,000</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Aggregate Term Limit</td>
+			<td align="center"  >3,000,000</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Emergency Evacuation & Repatriation (limit per event)</td>
+			<td align="center"  >150,000</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Deductible (RM) per disability</td>
+			<td  align="center" >30,000</td>
 			
 		    </tr>
 		    
@@ -285,7 +342,8 @@
 	    <td></td>
 	    <td>
 		<br/>
-		* Charges for medical care which is Medically Necessary shall be considered reasonable and customary to the extent that it does not exceed the general level of charges being made by other similar standing in the
+		* A Malaysian Highway shall mean highway or expressway as listed by the Malaysian Highway Authority.<br/>
+		** Charges for medical care which is Medically Necessary shall be considered reasonable and customary to the extent that it does not exceed the general level of charges being made by other similar standing in the
 		locality where the charge is incurred, when furnishing like or comparable treatment, services or supplies to individual of the same sex and of comparable age for a similar Sickness, Disease or Injury and in
 		accordance with accepted medical standards and practice could not have been omitted without adversely affecting the Life Assured's medical condition.
 	    </td>
@@ -369,11 +427,11 @@
 		    <tr>
 			<td><b>Rider</b></td>
 			<td><b>Insured Lives</b></td>
-			<td><b>Premium payable until age</b></td>
+			<td><b>Premium payable until Insured Life's age</b></td>
 		    </tr>
 		    <tbody>
 			<td>HLA Major Medi rider</td>
-			<td><b>Life Assured</b></td>
+			<td>Life Assured</td>
 			<td><span id="PayableAge">{PayableAge}</span></td>
 		    </tbody>
 		</table>    

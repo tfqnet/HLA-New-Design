@@ -14,6 +14,8 @@
 
 @end
 
+NSString *gNameSecond = @"";
+
 @implementation SecondLAViewController
 @synthesize nameField;
 @synthesize sexSegment;
@@ -29,7 +31,7 @@
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP;
 @synthesize DOBField,OccpField,deleteBtn,getCommDate,dataInsert;
 @synthesize delegate = _delegate;
-@synthesize getSINo,getLAIndexNo,requestLAIndexNo,occPA,occuClass,headerTitle;
+@synthesize getSINo,getLAIndexNo,requestLAIndexNo,occPA,occuClass,headerTitle, LAView, Change;
 
 - (void)viewDidLoad
 {
@@ -110,6 +112,7 @@
 {
     BOOL valid = TRUE;
     
+	
     if (![NamePP isEqualToString:clientName]) {
         valid = FALSE;
     }
@@ -125,13 +128,16 @@
     if (![OccpCode isEqualToString:OccpCodePP]) {
         valid = FALSE;
     }
+	
+
     
 //    NSLog(@"nameSI:%@, genderSI:%@, dobSI:%@, occpSI:%@",clientName,sex,DOB,OccpCode);
 //    NSLog(@"namepp:%@, genderpp:%@, dobPP:%@, occpPP:%@",NamePP,GenderPP,DOBPP,OccpCodePP);
     
     if (valid) {
-        
+
         nameField.text = clientName;
+		gNameSecond = clientName;
         DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
         ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
         
@@ -168,12 +174,14 @@
         [_delegate LA2ndIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         zzz.SICompleted = YES;
+		Change = @"no";
     }
     else {
         
         nameField.text = NamePP;
+		gNameSecond = NamePP;
         sex = GenderPP;
-        
+		
         if ([sex isEqualToString:@"M"]) {
             sexSegment.selectedSegmentIndex = 0;
         } else {
@@ -211,11 +219,26 @@
         }
         
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information will synchronize to this SI." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert setTag:1004];
-        [alert show];
+        
+		//Change = @"yes";
+		if ([LAView isEqualToString:@"1"] ) {
+			[self updateData];
+			[self CheckValidRider];
+			Change = @"yes";
+			[_delegate RiderAdded];
+
+		}
+		else
+		{
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information will synchronize to this SI." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert setTag:1004];
+			[alert show];
+
+		}
+		
     }
 }
+
 
 #pragma mark - action
 - (IBAction)doSelectProspect:(id)sender
@@ -314,6 +337,9 @@
         if (self.requestSINo) {
             if (useExist) {
                 [self updateData];
+				[self CheckValidRider];
+				[_delegate RiderAdded];
+				
             } else {
                 [self saveData];
             }
@@ -333,6 +359,7 @@
                 [_delegate RiderAdded];
             }
             nameField.text = @"";
+			gNameSecond = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
             DOBField.text = @"";
             ageField.text = @"";
@@ -343,6 +370,7 @@
         }
         else {
             nameField.text = @"";
+			gNameSecond = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
             DOBField.text = @"";
             ageField.text = @"";
@@ -364,6 +392,8 @@
             [alert show];
         } else {
             [self updateData];
+			[self CheckValidRider];
+			[_delegate RiderAdded];
         }
     }
     else if (alertView.tag == 1005 && buttonIndex == 0) {
@@ -479,6 +509,7 @@
         
         [_delegate saved:NO];
         nameField.text = aaName;
+		gNameSecond = aaName;
         sex = aaGender;
     
         if ([sex isEqualToString:@"M"]) {
@@ -792,8 +823,11 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
-        
+
+        //NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",
+							  gNameSecond,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
+		
         NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -815,6 +849,53 @@
         sqlite3_close(contactDB);
     }
 }
+
+-(void)CheckValidRider
+{
+    
+    sqlite3_stmt *statement;
+	BOOL popMsg = FALSE;
+	
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+		if ([OccpCode isEqualToString:@"OCC01975"]) {
+			NSString *querySQL = [NSString stringWithFormat:@"Select * From trad_Rider_Details where SINO = \"%@\" AND RiderCode in ('LCWP', 'PR', 'SP_PRE', 'SP_STD') ", SINo];
+			//        NSLog(@"%@",querySQL);
+			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			{
+				if (sqlite3_step(statement) == SQLITE_ROW)
+				{
+					popMsg = TRUE;
+				}
+				
+				sqlite3_finalize(statement);
+			}
+		
+			if (popMsg == TRUE) {
+				querySQL = [NSString stringWithFormat:@"DELETE From trad_Rider_Details where SINO = \"%@\" AND RiderCode in ('LCWP', 'PR', 'SP_PRE', 'SP_STD') ", SINo];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_DONE)
+					{
+
+					}
+					sqlite3_finalize(statement);
+					
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+					[alert show];
+				}
+				
+				
+			}
+			
+		}
+		
+        sqlite3_close(contactDB);
+		
+    }
+}
+
 
 -(void)deleteLA
 {

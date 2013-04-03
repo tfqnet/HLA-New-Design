@@ -15,6 +15,8 @@
 
 @end
 
+NSString *gName = @"";
+
 @implementation PayorViewController
 @synthesize nameField;
 @synthesize sexSegment;
@@ -29,7 +31,8 @@
 @synthesize CheckRiderCode,DOBField,OccpField,IndexNo,requestCommDate;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,basicHand,deleteBtn,getCommDate,dataInsert,getSINo;
 @synthesize delegate = _delegate;
-@synthesize getLAIndexNo,requestLAIndexNo,requestLAAge,getLAAge,occPA,occuClass, RiderToBeDeleted;
+@synthesize getLAIndexNo,requestLAIndexNo,requestLAAge,getLAAge,occPA,occuClass, RiderToBeDeleted, LAView, Change;
+
 
 - (void)viewDidLoad
 {
@@ -130,6 +133,7 @@
     if (valid) {
     
         nameField.text = clientName;
+		gName = clientName;
         DOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
         ageField.text = [[NSString alloc] initWithFormat:@"%d",age];
     
@@ -167,11 +171,12 @@
         [_delegate PayorIndexNo:IndexNo andSmoker:smoker andSex:sex andDOB:DOB andAge:age andOccpCode:OccpCode];
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         zzz.SICompleted = YES;
-        
+        Change = @"no";
     }
     else {
      
         nameField.text = NamePP;
+		gName = NamePP;
         sex = GenderPP;
         
         if ([sex isEqualToString:@"M"]) {
@@ -210,10 +215,20 @@
             PAField.text = [NSString stringWithFormat:@"%d",occPA];
         }
         
+		if ([LAView isEqualToString:@"1"] ) {
+			[self updatePayor];
+			[self CheckValidRider];
+			Change = @"yes";
+			[_delegate RiderAdded];
+			
+		}
+		else{
+		
 //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There are changes in Prospect's information. Are you sure want to apply changes to this SI?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information will synchronize to this SI." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert setTag:2003];
-        [alert show];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information will synchronize to this SI." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert setTag:2003];
+			[alert show];
+		}
     }
 }
 
@@ -314,17 +329,11 @@
     {
         if (self.requestSINo) {
             if (useExist) {
-                [self updatePayor];
+				[self updatePayor];
 				[self CheckValidRider];
-				if(RiderToBeDeleted.count > 0){
-					
-					[_delegate RiderAdded];
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule."
-																   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-					[alert show];
-				}
+				
             } else {
-                [self savePayor];
+				[self savePayor];
             }
         }
         else {
@@ -342,6 +351,7 @@
                 [_delegate RiderAdded];
             }
             nameField.text = @"";
+			gName = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
             DOBField.text = @"";
             ageField.text = @"";
@@ -353,6 +363,7 @@
         else {
             NSLog(@"delete 2");
             nameField.text = @"";
+			gName = @"";
             [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
             DOBField.text = @"";
             ageField.text = @"";
@@ -470,6 +481,7 @@
         
         [_delegate payorSaved:NO];
         nameField.text = aaName;
+		gName = aaName;
         sex = aaGender;
         
         if ([sex isEqualToString:@"M"]) {
@@ -767,8 +779,13 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
-        
+		/*
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",
+							  nameField.text,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
+       */
+		NSString *querySQL = [NSString stringWithFormat:@"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\", indexNo=\"%d\" WHERE id=\"%d\"",
+							  gName ,smoker,sex,DOB,age,ANB,OccpCode,currentdate,IndexNo,clientID];
+		
 //        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -878,18 +895,47 @@
             sqlite3_finalize(statement);
         }
 		
-		if (RiderToBeDeleted.count > 0) {
-			querySQL = [NSString stringWithFormat:@"DELETE From trad_Rider_Details where SINO = \"%@\" AND RiderCode = \"%@\" ", SINo, [RiderToBeDeleted objectAtIndex:0]];
+		NSString *temp;
+		
+		if ([OccpCode isEqualToString:@"OCC01975"]) {
+			NSString *querySQL = [NSString stringWithFormat:@"Select Ridercode From trad_Rider_Details where SINO = \"%@\" AND RiderCode in ('LCWP', 'PR', 'PTR', 'PLCP') ", SINo];
 			//        NSLog(@"%@",querySQL);
 			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
 			{
-				if (sqlite3_step(statement) == SQLITE_DONE)
+				while (sqlite3_step(statement) == SQLITE_ROW)
 				{
-					
+					temp =[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+					[RiderToBeDeleted addObject:temp];
 				}
 				
 				sqlite3_finalize(statement);
 			}
+			
+		}
+		
+		temp = Nil;
+		
+		if (RiderToBeDeleted.count > 0) {
+			
+			for (int i=0; i < RiderToBeDeleted.count; i++) {
+				querySQL = [NSString stringWithFormat:@"DELETE From trad_Rider_Details where SINO = \"%@\" AND RiderCode = \"%@\" ", SINo, [RiderToBeDeleted objectAtIndex:i]];
+				//        NSLog(@"%@",querySQL);
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_DONE)
+					{
+						
+					}
+					
+					sqlite3_finalize(statement);
+				}
+			}
+			
+			[_delegate RiderAdded];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule."
+															   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			
 		}
 		
         sqlite3_close(contactDB);

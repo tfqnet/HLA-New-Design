@@ -42,7 +42,7 @@
     [_SortBy addObject:@"SI NO"];
     [_SortBy addObject:@"Name"];
     [_SortBy addObject:@"Plan Name"];
-    [_SortBy addObject:@"Basic SA"];
+    [_SortBy addObject:@"Yearly Income"];
     [_SortBy addObject:@"Date Created"];
     SelectedSortBy = [[NSMutableArray alloc] init ];
     

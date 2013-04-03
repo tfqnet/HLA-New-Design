@@ -50,43 +50,103 @@
     //NSString *path = [[NSBundle mainBundle] pathForResource:@"HLA Ipad-Info"  ofType:@"plist"];
     //NSMutableDictionary *dictionary = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
     
-    //outletReset.hidden = YES;
+    outletReset.hidden = YES;
     
    // NSString *version = [NSString stringWithFormat:
      //                    @"Version %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
    
-    NSString *version = @"1.0";
-    
-     NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
-    NSDate *StartDate = [formatter dateFromString:@"2013-03-26"];
-    
-    
-    NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
-                                                        fromDate:StartDate
-                                                          toDate:endDate
-                                                         options:0];
-    if ([components day ] > 35 ) {
-         labelVersion.text = @"";
-        lblForgotPwd.hidden = YES;
-        labelUpdated.numberOfLines = 2;
-            labelUpdated.text = @"Thank you for using iMobile Planner (1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
-        outletLogin.hidden = TRUE;
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Expire" message:@"Thank you for using iMobile Planner "
-                              "(beta release), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
-                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
-        alert.tag = 1001;
-        [alert show];
-    }
-    else{
-        
-         labelVersion.text = version;
-        labelUpdated.text = @"Last Updated: 26 MArch 2013";
-                outletLogin.hidden = FALSE;
-    }
+	
+	sqlite3_stmt *statement;
+    int intStatus = 0;
+  
+	if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
+	{
+		NSString *querySQL = [NSString stringWithFormat: @"SELECT AgentStatus FROM User_Profile WHERE AgentLoginID=\"hla\" "];
+		
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				intStatus = sqlite3_column_int(statement, 0);
+			}
+			sqlite3_finalize(statement);
+		}
+		sqlite3_close(contactDB);
+		querySQL = Nil;
+	}
+
+	NSString *version = @"1.0";
+	NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
+	[formatter setDateFormat:@"yyyy-MM-dd"];
+	NSDate *StartDate = [formatter dateFromString:@"2013-04-03"];
+	
+	NSCalendar *gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [gregorianCalendar components:NSDayCalendarUnit
+														fromDate:StartDate
+														  toDate:endDate
+														 options:0];
+	
+	if (intStatus != 0) {
+		
+		if ([components day ] > 43 ) {
+			labelVersion.text = @"";
+			lblForgotPwd.hidden = YES;
+			labelUpdated.numberOfLines = 2;
+			labelUpdated.text = @"Thank you for using iMobile Planner (1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
+			outletLogin.hidden = TRUE;
+			
+			if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
+			{
+				NSString *querySQL = [NSString stringWithFormat: @"UPDATE User_Profile set AgentStatus = \"0\" WHERE AgentLoginID=\"hla\" "];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+					if (sqlite3_step(statement) == SQLITE_DONE){
+						
+					}
+					
+					sqlite3_finalize(statement);
+				}
+				
+				sqlite3_close(contactDB);
+				querySQL = Nil;
+			}
+			
+		    statement = Nil;
+			
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Expire" message:@"Thank you for using iMobile Planner "
+								  "(1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+			alert.tag = 1001;
+			[alert show];
+		}
+		else{
+			
+			labelVersion.text = version;
+			labelUpdated.text = @"Last Updated: 3 April 2013";
+			outletLogin.hidden = FALSE;
+		}
+	}
+	else{
+		/*
+		if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
+		{
+			NSString *querySQL = [NSString stringWithFormat: @"Update User_Profile set AgentStatus = 1 WHERE AgentLoginID=\"hla\" "];
+			
+			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+				if (sqlite3_step(statement) == SQLITE_DONE){
+					
+				}
+				sqlite3_finalize(statement);
+			}
+			sqlite3_close(contactDB);
+			querySQL = Nil;
+		}
+		*/
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Expire" message:@"Thank you for using iMobile Planner "
+							  "(1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
+													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
+		alert.tag = 1001;
+		[alert show];
+	}
     
     dirPaths = Nil;
     docsDir = Nil;
@@ -290,6 +350,7 @@
     statement = Nil;
         
 }
+
 
 -(void)isFirstTimeLogin
 {

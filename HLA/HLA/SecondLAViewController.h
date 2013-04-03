@@ -91,4 +91,7 @@
 - (IBAction)doSave:(id)sender;
 - (IBAction)doDelete:(id)sender;
 
+@property(nonatomic , retain) NSString *Change;
+@property(nonatomic , retain) NSString *LAView;
+
 @end

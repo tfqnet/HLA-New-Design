@@ -219,7 +219,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"] ||
 			[curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"] ||
 			[curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PR"] ||
-			[curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"]){
+			[curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"EDB"] ||
+			[curRider isEqualToString:@"ETPDB"]){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -286,6 +287,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     NSLog(@"Error inserting data into database.");
                 }
                 //NSLog(@"%@",sqlStmt);
+				prevRider= @"";
                 riderInPageCount = 0;
                 riderInPage = @"";
             }
@@ -449,6 +451,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                     NSLog(@"Error inserting data into database.");
                 }
                 //NSLog(@"%@",sqlStmt);
+				prevRider= @"";
                 riderInPageCount = 0;
                 riderInPage = @"";
             }
@@ -1385,8 +1388,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                         
                         QuerySQL  = [ NSString stringWithFormat:@"Insert INTO SI_Temp_Trad_LA (\"SINo\", \"LADesc\", "
                                      "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
-                                     " VALUES (\"%@\",\"Payor\",\"PY\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
-                                     " \"Pemunya\")", SINo, 1, PYName, PYAge, PYsex, PYsmoker ];
+                                     " VALUES (\"%@\",\"Policy Owner\",\"PY\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+                                     " \"Pemunya Polisi\")", SINo, 1, PYName, PYAge, PYsex, PYsmoker ];
                         
                         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {
                             if (sqlite3_step(statement3) == SQLITE_DONE) {
@@ -1625,7 +1628,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 	if (PolicyTerm > 25) {
 		PolicyTerm = 25;
 	}
-	
+		
     for (int i =1; i <= PolicyTerm; i++) {
         
 		if (i <= 6) {
@@ -1672,7 +1675,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 			[DBValue addObject:[NSString stringWithFormat:@"%.3f", (26 - i) * BasicSA + 12.5 * BasicSA ]];
 		}
 		else if (Age > 40 && Age <= 50){
-			if ((26 - i) * BasicSA >= 12.5 * BasicSA) {
+			if ((26 - i) * BasicSA + 6.25 * BasicSA >= 12.5 * BasicSA) {
 				[DBValue addObject:[NSString stringWithFormat:@"%.3f", (26 - i) * BasicSA + 6.25 * BasicSA ]];
 			}
 			else{

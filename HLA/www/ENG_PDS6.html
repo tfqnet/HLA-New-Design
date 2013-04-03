@@ -27,6 +27,8 @@
     var PRSA = '';
     var SP_STDSA = '';
     var SP_PRESA = '';
+    var PA = '';
+    var CustCode = '';
     
     function errorHandler(transaction, error) {
         alert('Error: ' + error.message + ' code: ' + error.code);
@@ -169,6 +171,34 @@
             },errorHandler);
         },errorHandler,nullHandler);
 	
+	db.transaction(function(transaction) {
+            transaction.executeSql("SELECT * FROM Trad_LAPayor where SINO = '" + siNo + "' AND PTypeCode = 'LA' AND Sequence = '1' ", [], function(transaction, result) {
+                
+		if (result != null && result.rows != null) {
+		    var row = result.rows.item(0);
+		     CustCode = row.CustCode;
+		     
+                }
+                else{
+			alert('No data can be found');
+                    }
+		                  
+            },errorHandler);
+	    
+        },errorHandler,nullHandler);
+	
+	db.transaction(function(transaction) {
+            
+	    transaction.executeSql("select PA from clt_profile AS A, Adm_Occp_Loading as B where A.OccpCode = B.OccpCode AND custcode = '" + CustCode + "' ", [], function(transaction, result) {
+		if (result != null && result.rows != null) {
+		    var row = result.rows.item(0);
+		    PA = row.PA;
+		    
+		}
+	     
+	    },errorHandler);
+        },errorHandler,nullHandler);
+	
 	
         db.transaction(function(transaction) {
             transaction.executeSql('select RiderDesc, "If you terminate this rider prematurely, you may get less than the amount you have paid in." as Desc, A.RiderCode from trad_rider_details as A, '+
@@ -201,8 +231,8 @@
 			    else if(row.RiderCode == 'SP_STD'){
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(' + SP_STDSA + '%)</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
 			    }
-			    else if(row.RiderCode == 'CPA'){
-				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
+			    else if(row.RiderCode == 'CPA' || row.RiderCode == 'PA'){
+				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '(Class' + PA  +')</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
 			    }
 			    else if(row.RiderCode == 'ETPD'){
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
@@ -213,9 +243,7 @@
 			    else if(row.RiderCode == 'ICR'){
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
 			    }
-			    else if(row.RiderCode == 'PA'){
-				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force</td>' + '</tr>');
-			    }
+			    
 			    else{
 				$('#table-Cancel > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.RiderDesc + '</td>' + '<td>' + row.Desc + '</td>' + '</tr>');
 			    }

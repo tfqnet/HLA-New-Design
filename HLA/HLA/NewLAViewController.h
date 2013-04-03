@@ -124,6 +124,7 @@
 @property (nonatomic, copy) NSString *CustCode2;
 @property (nonatomic, copy) NSString *payorSINo;
 @property (nonatomic, copy) NSString *payorCustCode;
+@property (nonatomic, assign,readwrite) int payorAge;
 
 //for occupation
 @property(nonatomic , retain) NSMutableArray *occDesc;

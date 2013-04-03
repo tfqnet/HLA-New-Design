@@ -13,10 +13,6 @@
 				<string>Premier Life</string>
 				<string>Brochure_PremierLife</string>
 			</array>
-			<array>
-				<string>PA Care</string>
-				<string>Brochure_PACare</string>
-			</array>
 		</array>
 		<array>
 			<array>
@@ -50,7 +46,7 @@
 				<string>Brochure_CSecure(Standalone)</string>
 			</array>
 			<array>
-				<string>HLA Major Medic</string>
+				<string>HLA Major Medi</string>
 				<string>Brochure_MajorMedi</string>
 			</array>
 			<array>

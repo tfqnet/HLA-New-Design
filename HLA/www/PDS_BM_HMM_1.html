@@ -123,6 +123,25 @@
 			    
 			    $('#PlanOption').html(row.PlanOption);
 			    $('#RiderTerm').html(row.RiderTerm);
+			    
+			    if(row.PlanOption == 'HMM_1000'){
+				$('#PlanName').html('HLA Major Medi Plus Rider');
+				$('#PlanName2').html('HLA Major Medi Plus Rider');
+				document.getElementById('hideQ2').style.visibility = "hidden";
+				
+				document.getElementById('HMMOther').style.display = "none";
+				document.getElementById('HMM1000').style.visibility = "visible";
+				
+				
+			    }
+			    else{
+				$('#PlanName').html('HLA Major Medi Rider');
+				$('#PlanName2').html('HLA Major Medi Rider');
+				document.getElementById('hideQ2').style.visibility = "visible";
+				
+				document.getElementById('HMMOther').style.visibility = "visible";
+				document.getElementById('HMM1000').style.display = "none";
+			    }
 			
 			}
 		    
@@ -214,9 +233,9 @@
 	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Hong Leong Assurance Berhad</b></td>
     </tr>
     <tr>
-	<td style="text-align:left;padding: 0px 0px 0px 5px;" rowspan="2"><b>Baca Risalah Pendedahan Produk ini sebelum anda membuat keputusan untuk mengambil Rider HLA Major Medi. Pastikan anda juga
+	<td style="text-align:left;padding: 0px 0px 0px 5px;" rowspan="2"><b>Baca Risalah Pendedahan Produk ini sebelum anda membuat keputusan untuk mengambil <i><span id="PlanName2">{PlanName2}</span></i>. Pastikan anda juga
 	    membaca terma dan syarat am.</b></td>
-	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b>Rider HLA Major Medi</b></td>
+	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b><span id="PlanName">{PlanName}</span></b></td>
     </tr>
     <tr>
 	<td style="text-align:left;padding: 0px 0px 0px 5px;"><b><span id="PrintDate">{PrintDate}</span></b></td>
@@ -242,8 +261,8 @@
 	<tr>
 	    <td width="10" valign="top"></td>
 	    <td>
-		Rider HLA Major Medi boleh didapati dalam 4 pelan iaitu MM 150, MM 200, MM 300 dan MM 400. Pelan yang dipilih adalah pelan
-		<span id="PlanOption">{PlanOption}</span>. Tempoh diinsuranskan rider ini ialah <span id="RiderTerm">{RiderTerm}</span> tahun atau apabila
+		<div id="hideQ2">HLA Major Medi Rider boleh didapati dalam 4 pelan iaitu MM 150, MM 200, MM 300 dan MM 400. Pelan yang dipilih adalah pelan
+		<span id="PlanOption">{PlanOption}</span>.</div> Tempoh diinsuranskan rider ini ialah <span id="RiderTerm">{RiderTerm}</span> tahun atau apabila
 		rider ditamatkan, yang mana berlaku dahulu.<br/><br/>
 		
 	    </td>
@@ -251,7 +270,7 @@
 	<tr>
 	    <td></td>
 	    <td>
-		<table  border="1" style="border-collapse: collapse" width="100%">
+		<table id="HMMOther"  border="1" style="border-collapse: collapse" width="100%">
 		    <tr>
 			<td width="60%" style="padding: 0px 0px 5px 5px;" align="center"><b>Pelan Bakal</b></td>
 			<td align="center"><b>MM 150<br/>(RM)</b></td>
@@ -271,7 +290,7 @@
 		    </tr>
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;">Tunai Harian Penghospitalan disebabkan oleh Kemalangan Jalan Raya di Lebuhraya
-				Malaysia <br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
+				Malaysia* <br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
 			<td align="center">150</td>
 			<td align="center">200</td>
 			<td align="center">300</td>
@@ -286,7 +305,7 @@
 		    </tr>
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;" > Elaun Tunai Harian di Hospital Kerajaan<br/>(hingga 60 hari untuk Mana-mana Satu Hilang Upaya)</td>
-			<td  align="center"colspan="4" rowspan="14">Bayaran Munasabah dan Biasa Diamalkan *</td>
+			<td  align="center"colspan="4" rowspan="14">Bayaran Munasabah dan Biasa Diamalkan **</td>
 			
 		    </tr>
 		    <tr>
@@ -333,6 +352,86 @@
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;">Cukai Perkhidmatan Kerajaan</td>
 			<td colspan="4" align="center">(Peratusan yang Berkenaan) x Faedah Bilik Hospital dan Makan</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" colspan="5"><b>Faedah Rawatan Pesakit Luar</b></td>
+		    </tr>
+		    
+		</table>
+		<table id="HMM1000"  border="1" style="border-collapse: collapse" width="100%">
+		    <tr>
+			<td width="60%" style="padding: 0px 0px 5px 5px;" align="center"><b>Pelan Bakal</b></td>
+			<td align="center"><b>MM 1000<br/>(RM)</b></td>
+			
+		    </tr>
+		    <tr>
+			<td colspan="5" style="padding: 0px 0px 5px 5px;"><b>Hospital & Pembedahan</b></td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bilik Hospital dan Makan<br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td align="center">1000</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Tunai Harian Penghospitalan disebabkan oleh Kemalangan Jalan Raya di Lebuhraya
+				Malaysia* <br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td align="center">1000</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Elaun Tunai Harian di Hospital Kerajaan<br/>(hingga 60 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td align="center">500</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" > Elaun Tunai Harian di Hospital Kerajaan<br/>(hingga 60 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			<td  align="center" rowspan="14">Bayaran Munasabah dan Biasa Diamalkan **</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Perbelanjaan Penginap<br/>(hingga 150 hari untuk Mana-mana Satu Hilang Upaya)</td>
+			
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bekalan dan Khidmat Hospital</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bayaran Pembedahan(termasuk pemeriksaan pra-pembedahan, lawatan Doktor Pakar dan
+			Penjagaan selepas Pembedahan sehingga 60 hari daripada tarikh Pembedahan)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bayaran Pakar Bius</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bilik Bedah</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Lawatan Pakar Perubatan dalam Hospital</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Yuran Rawatan Fisioterapi dalam Hospital</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Ujian Diagnostik Prahospital<br/>(dalam tempoh 60 hari sebelum penghospitalan)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Rundingan Pakar Prahospital<br/>(dalam tempoh 60 hari sebelum penghospitalan)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;" >Rawatan Selepas Penghospitalan<br/>(dalam tempoh 60 hari selepas keluar dari hospital)</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Transplan Organ</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Pembedahan Harian</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Bayaran Ambulans</td>
+		    </tr>
+		    <tr>
+			<td style="padding: 0px 0px 5px 5px;">Cukai Perkhidmatan Kerajaan</td>
+			<td align="center">(Peratusan yang Berkenaan) x Faedah Bilik Hospital dan Makan</td>
 		    </tr>
 		    <tr>
 			<td style="padding: 0px 0px 5px 5px;" colspan="5"><b>Faedah Rawatan Pesakit Luar</b></td>

@@ -43,7 +43,7 @@
 @synthesize prospectPopover = _prospectPopover;
 @synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile,planChoose,ridCode,atcRidCode,atcPlanChoice;
 @synthesize delegate = _delegate;
-@synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker, strPA_CPA;
+@synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker, strPA_CPA,payorAge;
 @synthesize LADate = _LADate;
 @synthesize datePopover = _datePopover;
 
@@ -102,6 +102,59 @@ id temp;
     if (requestIndexNo != 0) {
         [self tempView];
     }
+	
+	[self checking2ndLA];
+	
+	if (CustCode2.length != 0) {
+		SecondLAViewController *ccc = [[SecondLAViewController alloc] init ];
+		ccc.requestLAIndexNo = requestIndexNo;
+		ccc.requestCommDate = commDate;
+		ccc.requestSINo = getSINo;
+		ccc.LAView = @"1";
+		ccc.delegate = (SIMenuViewController *)_delegate;
+		
+		UIView *iii = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0) ];
+		[iii addSubview:ccc.view];
+		
+		if ([ccc.Change isEqualToString:@"yes"]) {
+			NSLog(@"prospect info sync into second life assured");
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information(2nd life Assured) will synchronize to this SI."
+														   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+		}
+		
+		ccc.Change = @"No";
+		ccc = Nil;
+		iii = Nil;
+	}
+	
+	[self checkingPayor];
+
+	if (payorSINo.length != 0) {
+		PayorViewController *ggg = [[PayorViewController alloc] init ];
+		ggg.requestLAIndexNo = requestIndexNo;
+		ggg.requestLAAge = payorAge;
+		ggg.requestCommDate = commDate;
+		ggg.requestSINo = getSINo;
+		ggg.LAView = @"1";
+		ggg.delegate = (SIMenuViewController *)_delegate;
+		
+		UIView *iii = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0) ];
+		[iii addSubview:ggg.view];
+
+		if ([ggg.Change isEqualToString:@"yes"]) {
+			NSLog(@"prospect info sync into payor");
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information(Payor) will synchronize to this SI."
+														   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+		}
+		
+		ggg.Change = @"no";
+		ggg = Nil;
+		iii = Nil;
+	}
+
+	 
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -1361,6 +1414,7 @@ id temp;
             {
                 payorSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 payorCustCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+				payorAge = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
                 
             } else {
                 NSLog(@"error access checkingPayor");

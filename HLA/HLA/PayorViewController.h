@@ -88,10 +88,14 @@
 @property(nonatomic , retain) NSString *GenderPP;
 @property(nonatomic , retain) NSString *OccpCodePP;
 
+@property(nonatomic , retain) NSString *Change;
+@property(nonatomic , retain) NSString *LAView;
+
 - (IBAction)doSelectProspect:(id)sender;
 - (IBAction)sexSegmentChange:(id)sender;
 - (IBAction)smokerSegmentChange:(id)sender;
 - (IBAction)doSave:(id)sender;
 - (IBAction)doDelete:(id)sender;
+
 
 @end

@@ -257,7 +257,7 @@
                         col7Total = col7Total + parseFloat(formatCurrency(row.Quarterly).replace(/,/g,'').replace('-', '0'));
                         col8Total = col8Total + parseFloat(formatCurrency(row.Monthly).replace(/,/g,'').replace('-', '0'));
 			
-			if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' ){
+			if(row.Plan == 'Hospital & Surgical Plus II' || row.Plan == 'MedGLOBAL II' || row.Plan == 'MedGLOBAL IV Plus' || row.Plan == 'Comprehensive Personal Accident' || row.Plan == 'Personal Accident'){
 			    $('#table-data > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.Plan + ' (Class' + PA + ')' + '</td>' + '<td style="text-align:center;">' + row.Desc + '</td>' + '<td>' + formatCurrency(row.Annually) + '</td>' + '<td>' + formatCurrency(row.SemiAnnually) + '</td>'  + '<td>' + formatCurrency(row.Quarterly) + '</td>' + '<td>' + formatCurrency(row.Monthly) + '</td>' + '</tr>');
 			}
 			else if(row.Plan == 'HLA Major Medi' ){
@@ -370,10 +370,13 @@
 			    }
 			}
 			else if(row.RiderCode == 'SP_PRE'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>'  + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_PRESA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>'  + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
 			}
 			else if(row.RiderCode == 'SP_STD'){
-			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(' + SP_STDSA  + '%)'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan ke-2</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(SecondAge) ) + '</td>' + '</tr>');     
+			}
+			else if(row.RiderCode == 'CPA' || row.RiderCode == 'PA'){
+			    $('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '(Class' + PA  + ')'+ '</td>' + '<td>' + row.Type + '</td>' + '<td>Hayat Diinsuranskan</td>' + '<td style="text-align:center;">' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');     
 			}
 			else{
 			    //$('#table-PremiumDuration > tbody').append('<tr>' + '<td style="text-align:left;padding: 0px 0px 0px 5px;">' + row.PlanCode + '</td>' + '<td>' + row.Type + '</td>' + '<td>' + Insured(row.PTypeCode, row.Seq)  + '</td>' + '<td>' + (parseInt(row.PremiumPaymentOption) + parseInt(FirstAge) ) + '</td>' + '</tr>');
@@ -589,7 +592,7 @@
 		<br/><br/>
 		- Kepentingan pendedahan - anda mestilah mendedahkan semua fakta penting seperti keadaan perubatan, dan nyatakan umur anda dengan betul.<br/>
 		- Tempoh bertenang - anda boleh membatalkan polisi anda dengan mengembalikan polisi dalam tempoh 15 hari setelah anda menerima polisi tersebut. Premium yang telah anda bayar (selepas tolak perbelanjaan<br/>
-		    perubatan yang telah dibuat) akan dipulangkan kepada anda.<br/>
+		   &nbsp;&nbsp;&nbsp;perubatan yang telah dibuat) akan dipulangkan kepada anda.<br/>
 		- <b>Kesemua permohanan adalah tertakluk kepada kelulusan pengunderaitan</b><br/>    
 		<br/>
 		<i>Nota: Senarai ini tidak lengkap. Sila rujuk kontrak polisi untuk mendapatkan terma dan syarat di bawah polisi ini.</i>
