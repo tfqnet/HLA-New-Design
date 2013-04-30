@@ -14,6 +14,9 @@
 
 @implementation BrowserViewController
 @synthesize SIFilePath;
+@synthesize PagesList = _PagesList;
+@synthesize PagesPopover = _PagesPopover;
+@synthesize _PDSorSI;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -24,17 +27,20 @@
     return self;
 }
 
-- (id)initWithFilePath:(NSString *)fullFilePath
+- (id)initWithFilePath:(NSString *)fullFilePath PDSorSI:(NSString *)PDSorSI
 {
     if ((self = [super init])) // Initialize the superclass object first
     {
         //NSLog(@"*********************************%@",fullFilePath);
+		_PDSorSI = PDSorSI;
 		SIFilePath = fullFilePath;
 	}
     return self;
 }
 
 -(void) emailSI{
+	
+	[self.PagesPopover dismissPopoverAnimated:YES];
 	if ([MFMailComposeViewController canSendMail] == NO){
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Email Account found" message:@"Please set up your default email account in iPad first"
 													   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -87,6 +93,8 @@
 }
 
 -(void)printSI{
+	
+	[self.PagesPopover dismissPopoverAnimated:YES]; 
 	Class printInteractionController = NSClassFromString(@"UIPrintInteractionController");
 	
 	if ((printInteractionController != nil) && [printInteractionController isPrintingAvailable])
@@ -134,6 +142,42 @@
 	SIFilePath = Nil;
 	
     [self dismissModalViewControllerAnimated:YES];
+	[printInteraction dismissAnimated:YES];
+	[self.PagesPopover dismissPopoverAnimated:YES];
+	printInteraction = Nil;
+	print = nil;
+	email= nil;
+	webView = nil;
+	
+}
+
+-(void)pagesSI:(UIBarButtonItem *)sender        //--**added by bob
+{
+    if (_PagesList == nil) {
+        
+        self.PagesList = [[PagesController alloc] initWithStyle:UITableViewStylePlain];
+        _PagesList.delegate = self;
+		_PagesList.PDSorSI =_PDSorSI;
+        self.PagesPopover = [[UIPopoverController alloc] initWithContentViewController:_PagesList];
+    }
+	
+    [self.PagesPopover setPopoverContentSize:CGSizeMake(230.0f, 600.0f)];
+    [self.PagesPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+-(void)getPages:(NSString *)pdsPages    //--**added by bob
+{
+    //NSLog(@"select:%@",pdsPages);
+    NSString *aa = [[pdsPages componentsSeparatedByString:@"Page"] objectAtIndex:1];
+	
+	int bb = [aa intValue];
+	
+	double cc = 761.5 * (bb - 1);
+	
+	[[webView scrollView] setContentOffset:CGPointMake(0, (cc)) animated:YES];
+	
+	
+	[self.PagesPopover dismissPopoverAnimated:YES];
 }
 
 - (void)viewDidLoad
@@ -148,15 +192,14 @@
     print = [[UIBarButtonItem alloc] initWithTitle:@"Print" style:UIBarButtonItemStyleBordered target:self action:@selector(printSI) ];
     email = [[UIBarButtonItem alloc] initWithTitle:@"Email" style:UIBarButtonItemStyleBordered target:self action:@selector(emailSI) ];
 	
-
+	pages = [[UIBarButtonItem alloc] initWithTitle:@"Pages" style:UIBarButtonItemStyleBordered target:self action:
+             @selector(pagesSI:)];
 	
-	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:email, print, Nil];
-
+	//self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:email, print, Nil];
+	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:email, print, pages, Nil]; 
 	
 	
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
-    
-    
+	webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)];
     
     //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     //Considering your pdf is stored in documents directory with name as "pdfFileName"
@@ -175,7 +218,7 @@
     [webView loadRequest:requestObj];
     [webView setScalesPageToFit:YES];
     [self.view addSubview:webView];
-    webView = nil;
+    //webView = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

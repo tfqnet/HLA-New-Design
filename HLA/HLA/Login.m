@@ -40,6 +40,7 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"HLA_Rates.sqlite"]];
+	CommDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"Rates.json"]];
     [self makeDBCopy];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forgotPassword:)];
@@ -74,7 +75,7 @@
 		querySQL = Nil;
 	}
 
-	NSString *version = @"1.0";
+	NSString *version = @"1.1";
 	NSDate *endDate =  [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init ];
 	[formatter setDateFormat:@"yyyy-MM-dd"];
@@ -86,13 +87,19 @@
 														  toDate:endDate
 														 options:0];
 	
+	labelVersion.text = version;
+	labelUpdated.text = @"Last Updated: 15 May 2013";
+	outletLogin.hidden = FALSE;
+	
+	[txtUsername becomeFirstResponder];
+	/*
 	if (intStatus != 0) {
 		
 		if ([components day ] > 43 ) {
 			labelVersion.text = @"";
 			lblForgotPwd.hidden = YES;
 			labelUpdated.numberOfLines = 2;
-			labelUpdated.text = @"Thank you for using iMobile Planner (1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
+			labelUpdated.text = @"Thank you for using iMobile Planner (1.1), this version is now EXPIRED. \nPlease watch up for our announcement for a new release ";
 			outletLogin.hidden = TRUE;
 			
 			if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
@@ -114,7 +121,7 @@
 		    statement = Nil;
 			
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Expire" message:@"Thank you for using iMobile Planner "
-								  "(1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
+								  "(1.1), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
 			alert.tag = 1001;
 			[alert show];
@@ -122,35 +129,21 @@
 		else{
 			
 			labelVersion.text = version;
-			labelUpdated.text = @"Last Updated: 17 April 2013";
-			outletLogin.hidden = FALSE;
+			labelUpdated.text = @"Last Updated: 25 April 2013";
+			outletLogin.hidden = FALSE;	
 			
 			[txtUsername becomeFirstResponder];
 		}
 	}
 	else{
-		/*
-		if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
-		{
-			NSString *querySQL = [NSString stringWithFormat: @"Update User_Profile set AgentStatus = 1 WHERE AgentLoginID=\"hla\" "];
-			
-			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
-				if (sqlite3_step(statement) == SQLITE_DONE){
-					
-				}
-				sqlite3_finalize(statement);
-			}
-			sqlite3_close(contactDB);
-			querySQL = Nil;
-		}
-		*/
+		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Expire" message:@"Thank you for using iMobile Planner "
-							  "(1.0), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
+							  "(1.1), this version is now EXPIRED. \nPlease watch up for our announcement for a new release "
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
 		alert.tag = 1001;
 		[alert show];
 	}
-    
+    */
     dirPaths = Nil;
     docsDir = Nil;
     version = Nil;
@@ -310,6 +303,20 @@
         defaultDBPath = Nil;
     }
 
+		
+	if([fileManager fileExistsAtPath:CommDatabasePath] == FALSE ){
+		
+		//if there are any changes, system will delete the old rates.json file and replace with the new one
+		// code here
+		//--------------
+		
+		NSString *CommissionRatesPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Rates.json"];
+		success = [fileManager copyItemAtPath:CommissionRatesPath toPath:CommDatabasePath error:&error];
+		if (!success) {
+			NSAssert1(0, @"Failed to create Commision Rates json file with message '%@'.", [error localizedDescription]);
+		}
+		CommissionRatesPath= Nil;
+	}
         
 	if([fileManager fileExistsAtPath:RatesDatabasePath] == FALSE ){
 		NSString *RatesDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"HLA_Rates.sqlite"];

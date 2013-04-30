@@ -51,8 +51,15 @@ id RiderCount;
     
     
 	//BrowserViewController *controller = [[BrowserViewController alloc] init];
-	BrowserViewController *controller = [[BrowserViewController alloc] initWithFilePath:htmlToPDF.PDFpath];
-    controller.title = [NSString stringWithFormat:@"%@.pdf",self.getSINo];
+	BrowserViewController *controller = [[BrowserViewController alloc] initWithFilePath:htmlToPDF.PDFpath PDSorSI:PDSorSI];
+	if([PDSorSI isEqualToString:@"PDS"]){
+		controller.title = [NSString stringWithFormat:@"PDS_%@.pdf",self.getSINo];
+
+	}	
+	else{
+		controller.title = [NSString stringWithFormat:@"%@.pdf",self.getSINo];
+	}
+	
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     
     //#if EXPERIEMENTAL_ORIENTATION_SUPPORT
@@ -93,8 +100,8 @@ id RiderCount;
 	spinner_SI = Nil;
 	
     [self presentModalViewController:container animated:YES];
-    
-    
+    container = Nil;
+	controller= Nil;
 }
 
 - (void)HTMLtoPDFDidFail:(NDHTMLtoPDF*)htmlToPDF
@@ -223,7 +230,7 @@ id RiderCount;
         [self RemovePDS];
         
         [self clearDataLA];
-        [self clearDataPayor];
+        [self clearDataPayor];	
         [self clearData2ndLA];
         [self clearDataBasic];
         
@@ -583,6 +590,76 @@ id RiderCount;
         }
         else {
             
+			if (_FS == Nil) {
+				self.FS = [FSVerticalTabBarController alloc];
+				_FS.delegate = self;
+			}
+			
+			spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+			spinner_SI.center = CGPointMake(400, 350);
+			
+			[self.view addSubview:spinner_SI];
+			UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+			spinnerLabel.text  = @" Please Wait...";
+			spinnerLabel.backgroundColor = [UIColor blackColor];
+			spinnerLabel.opaque = YES;
+			spinnerLabel.textColor = [UIColor whiteColor];
+			[self.view addSubview:spinnerLabel];
+			[self.view setUserInteractionEnabled:NO];
+			[spinner_SI startAnimating];
+			
+			
+			[_FS Test ];
+			
+			[self RemovePDS];
+            [ListOfSubMenu addObject:@"Quotation"];
+            [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
+            [ListOfSubMenu addObject:@"   English"];
+            [ListOfSubMenu addObject:@"   Malay"];
+            PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+            premView.requestAge = getAge;
+            premView.requestOccpClass = getOccpClass;
+            premView.requestOccpCode = getOccpCode;
+			
+            premView.requestSINo = getSINo;
+            premView.requestMOP = getMOP;
+            premView.requestTerm = getTerm;
+            premView.requestBasicSA = getbasicSA;
+            premView.requestBasicHL = getbasicHL;
+            premView.requestBasicTempHL = getbasicTempHL;
+            premView.requestPlanCode = getPlanCode;
+            premView.requestBasicPlan = getBasicPlan;
+			[self addChildViewController:premView];
+			
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+				
+				if ([RiderCount intValue ] > 10) {
+					sleep(5);
+				}
+				else{
+					sleep(1);
+				}
+
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					
+					[self.RightView addSubview:premView.view];
+					previousPath = selectedPath;
+					blocked = NO;
+					[self hideSeparatorLine];
+					
+					//[myTableView reloadData];
+					[spinner_SI stopAnimating ];
+					[self.view setUserInteractionEnabled:YES];
+					[_FS Reset];
+					UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+					[v removeFromSuperview];
+					v = Nil;
+					spinner_SI = nil;
+				});
+			});
+			
+			/*
             [self RemovePDS];
             [ListOfSubMenu addObject:@"Quotation"];
             [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
@@ -607,6 +684,7 @@ id RiderCount;
             previousPath = selectedPath;
             blocked = NO;
             [self hideSeparatorLine]; 
+			 */
         }
     }
     else if (getAge > 70) {
@@ -1250,7 +1328,7 @@ id RiderCount;
 				[alert setTag:1002];
 				[alert show];
 			}
-			else if (!payorSaved) {
+			else if (!payorSaved) {		
 				
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
 				[alert setTag:2002];
@@ -1307,8 +1385,9 @@ id RiderCount;
 			alert = Nil;
 		}
 		else{
-			[self calculatedPrem];
-			[myTableView reloadData];
+			
+				[self calculatedPrem];
+				[myTableView reloadData];
 		}
 
         
@@ -1317,6 +1396,7 @@ id RiderCount;
     }
     else if (indexPath.row == 7)    //quotation
     {
+		PDSorSI = @"SI";
 
 		if ([getOccpCode isEqualToString:@"OCC01975"]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -1445,22 +1525,6 @@ id RiderCount;
 			 }
 			 */
 			
-			PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
-			premView.requestAge = getAge;
-			premView.requestOccpClass = getOccpClass;
-			premView.requestOccpCode = getOccpCode;
-			premView.requestSINo = getSINo;
-			premView.requestMOP = getMOP;
-			premView.requestTerm = getTerm;
-			premView.requestBasicSA = getbasicSA;
-			premView.requestBasicHL = getbasicHL;
-			premView.requestBasicTempHL = getbasicTempHL;
-			premView.requestPlanCode = getPlanCode;
-			
-			UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
-			[zzz addSubview:premView.view];
-			
-			premView = Nil, zzz = Nil;
 			
 			sqlite3_stmt *statement;
 			BOOL cont = FALSE;
@@ -1499,6 +1563,24 @@ id RiderCount;
 			
 			
 			if (cont == TRUE) {
+				/*
+				PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
+				premView.requestAge = getAge;
+				premView.requestOccpClass = getOccpClass;
+				premView.requestOccpCode = getOccpCode;
+				premView.requestSINo = getSINo;
+				premView.requestMOP = getMOP;
+				premView.requestTerm = getTerm;
+				premView.requestBasicSA = getbasicSA;
+				premView.requestBasicHL = getbasicHL;
+				premView.requestBasicTempHL = getbasicTempHL;
+				premView.requestPlanCode = getPlanCode;
+				
+				UIView *zzz = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) ];
+				[zzz addSubview:premView.view];
+				
+				premView = Nil, zzz = Nil;
+				*/
 				
 				//UIActivityIndicatorView *spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 				spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -1521,12 +1603,29 @@ id RiderCount;
 				
 				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
 					
+					PremiumViewController *premView = [[PremiumViewController alloc] init ];
+					premView.requestAge = getAge;
+					premView.requestOccpClass = getOccpClass;
+					premView.requestOccpCode = getOccpCode;
+					premView.requestSINo = getSINo;
+					premView.requestMOP = getMOP;
+					premView.requestTerm = getTerm;
+					premView.requestBasicSA = getbasicSA;
+					premView.requestBasicHL = getbasicHL;
+					premView.requestBasicTempHL = getbasicTempHL;
+					premView.requestPlanCode = getPlanCode;
+					[self presentViewController:premView animated:NO completion:Nil];
+					[premView dismissViewControllerAnimated:NO completion:Nil];
+					
+					premView = Nil;
+					
 					ReportViewController *ReportPage;
 					CashPromiseViewController *CPReportPage;
 					
 					if([getBasicPlan isEqualToString:@"HLACP" ]){
 						CPReportPage = [[CashPromiseViewController alloc] init ];
 						CPReportPage.SINo = getSINo;
+						CPReportPage.PDSorSI = @"SI";
 						[self presentViewController:CPReportPage animated:NO completion:Nil];
 						
 					}
@@ -1642,6 +1741,8 @@ id RiderCount;
     }
     
     else if (indexPath.row == 9) {   //English PDS
+		
+		PDSorSI = @"PDS";
         
 		if ([getOccpCode isEqualToString:@"OCC01975"]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -1681,6 +1782,7 @@ id RiderCount;
 			appDel = Nil;
 			//appDel.MhiMessage = Nil;
 			
+			/*
 			PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
 			premView.requestAge = getAge;
 			premView.requestOccpClass = getOccpClass;
@@ -1697,12 +1799,13 @@ id RiderCount;
 			[zzz addSubview:premView.view];
 			
 			premView = Nil, zzz= Nil;
+			*/
+
+			spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+			spinner_SI.center = CGPointMake(400, 350);
 			
-			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-			spinner.center = CGPointMake(400, 350);
-			
-			spinner.hidesWhenStopped = YES;
-			[self.view addSubview:spinner];
+			spinner_SI.hidesWhenStopped = YES;
+			[self.view addSubview:spinner_SI];
 			UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
 			spinnerLabel.text  = @" Please Wait...";
 			spinnerLabel.backgroundColor = [UIColor blackColor];
@@ -1710,7 +1813,7 @@ id RiderCount;
 			spinnerLabel.textColor = [UIColor whiteColor];
 			[self.view addSubview:spinnerLabel];
 			[self.view setUserInteractionEnabled:NO];
-			[spinner startAnimating];
+			[spinner_SI startAnimating];
 			
 			if (_FS == Nil) {
 				self.FS = [FSVerticalTabBarController alloc];
@@ -1719,10 +1822,54 @@ id RiderCount;
 			
 			[_FS Test ];
 			
+			
+			
 			//dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
 				//dispatch_async(downloadQueue, ^{
+			
+				PremiumViewController *premView = [[PremiumViewController alloc] init ];
+				premView.requestAge = getAge;
+				premView.requestOccpClass = getOccpClass;
+				premView.requestOccpCode = getOccpCode;
+				premView.requestSINo = getSINo;
+				premView.requestMOP = getMOP;
+				premView.requestTerm = getTerm;
+				premView.requestBasicSA = getbasicSA;
+				premView.requestBasicHL = getbasicHL;
+				premView.requestBasicTempHL = getbasicTempHL;
+				premView.requestPlanCode = getPlanCode;
+				[self presentViewController:premView animated:NO completion:Nil];
+				[premView dismissViewControllerAnimated:NO completion:Nil];
 				
+				premView = Nil;
+				
+				ReportViewController *ReportPage;
+				CashPromiseViewController *CPReportPage;
+				
+				if([getBasicPlan isEqualToString:@"HLACP" ]){
+					CPReportPage = [[CashPromiseViewController alloc] init ];
+					CPReportPage.SINo = getSINo;
+					CPReportPage.PDSorSI = @"PDS";
+					[self presentViewController:CPReportPage animated:NO completion:Nil];
+					
+				}
+				else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+					ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+					ReportPage.SINo = getSINo;
+					[self presentViewController:ReportPage animated:NO completion:Nil];
+				}
+				
+				if([getBasicPlan isEqualToString:@"HLACP" ]){
+					
+					[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+				}
+				else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+					[ReportPage dismissViewControllerAnimated:NO completion:Nil];
+				}
+				
+				ReportPage = Nil;
+				CPReportPage = Nil;
 				
 				PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
 				PDSPage.SINo = getSINo;
@@ -1733,13 +1880,19 @@ id RiderCount;
 				else{
 					PDSPage.PDSPlanCode = @"HLAIB";
 				}
+				
 				[self presentViewController:PDSPage animated:NO completion:Nil];
 				
+				[self generateJSON_HLCP];
+				[self copyPDSToDoc];
+				
+				
 				dispatch_async(dispatch_get_main_queue(), ^{
-					[spinner stopAnimating];
-					spinnerLabel.text = @"";
-					[self.view setUserInteractionEnabled:YES];
-					[_FS Reset];
+					
+					//[spinner stopAnimating];
+					//spinnerLabel.text = @"";
+					//[self.view setUserInteractionEnabled:YES];
+					//[_FS Reset];
 					
 					[PDSPage dismissViewControllerAnimated:NO completion:Nil];
 					
@@ -1761,6 +1914,38 @@ id RiderCount;
 					
 					controller = Nil;
 					*/
+					
+					
+					NSString *path = [[NSBundle mainBundle] pathForResource:@"PDS/PDS_Eng_Page1" ofType:@"html"];
+					NSURL *pathURL = [NSURL fileURLWithPath:path];
+					NSArray* path_forDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+					NSString* documentsDirectory = [path_forDirectory objectAtIndex:0];
+					
+					NSData* data = [NSData dataWithContentsOfURL:pathURL];
+					[data writeToFile:[NSString stringWithFormat:@"%@/PDS_Eng_Temp.html",documentsDirectory] atomically:YES];
+					
+					NSString *HTMLPath = [documentsDirectory stringByAppendingPathComponent:@"PDS_Eng_Temp.html"];
+					//NSLog(@"delete HTML file Path: %@",HTMLPath);
+					if([[NSFileManager defaultManager] fileExistsAtPath:HTMLPath]) {
+						
+						NSURL *targetURL = [NSURL fileURLWithPath:HTMLPath];
+						//NSLog(@"zzzz%@",targetURL);
+						
+						// Converting HTML to PDF
+						//sleep(2);
+						NSString *SIPDFName = [NSString stringWithFormat:@"PDS_%@.pdf",self.getSINo];
+						self.PDFCreator = [NDHTMLtoPDF createPDFWithURL:targetURL
+															 pathForPDF:[documentsDirectory stringByAppendingPathComponent:SIPDFName]
+															   delegate:self
+															   pageSize:kPaperSizeA4
+										   //                   margins:UIEdgeInsetsMake(20, 5, 90, 5)];
+																margins:UIEdgeInsetsMake(0, 0, 0, 0)];
+						
+						targetURL = nil, SIPDFName = nil;
+					}
+					
+					path = nil,pathURL = nil,path_forDirectory = nil, documentsDirectory = nil, data = nil, HTMLPath =nil;
+					/*
 					UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
 					[v removeFromSuperview];
 					v = Nil;
@@ -1773,18 +1958,21 @@ id RiderCount;
 					
 					[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 					selectedPath = previousPath;
+					 */
 				});
 				
 				PDSPage = Nil;
 				
 				
 			});
-			spinner = Nil;
+			
 
 		}
         
     }
     else if (indexPath.row == 10) {   //Malay PDS
+		
+		PDSorSI = @"PDS";
         
 		if ([getOccpCode isEqualToString:@"OCC01975"]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
@@ -1824,7 +2012,7 @@ id RiderCount;
 			RevisedSumAssured = Nil;
 			appDel = Nil;
 			//appDel.MhiMessage = Nil;
-			
+			/*
 			PremiumViewController *premView = [self.storyboard instantiateViewControllerWithIdentifier:@"premiumView"];
 			premView.requestAge = getAge;
 			premView.requestOccpClass = getOccpClass;
@@ -1841,12 +2029,12 @@ id RiderCount;
 			[zzz addSubview:premView.view];
 			
 			premView = Nil, zzz= Nil;
+			*/
+			spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+			spinner_SI.center = CGPointMake(400, 350);
 			
-			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-			spinner.center = CGPointMake(400, 350);
-			
-			spinner.hidesWhenStopped = YES;
-			[self.view addSubview:spinner];
+			spinner_SI.hidesWhenStopped = YES;
+			[self.view addSubview:spinner_SI];
 			UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
 			spinnerLabel.text  = @" Please Wait...";
 			spinnerLabel.backgroundColor = [UIColor blackColor];
@@ -1854,7 +2042,7 @@ id RiderCount;
 			spinnerLabel.textColor = [UIColor whiteColor];
 			[self.view addSubview:spinnerLabel];
 			[self.view setUserInteractionEnabled:NO];
-			[spinner startAnimating];
+			[spinner_SI startAnimating];
 			
 			if (_FS == Nil) {
 				self.FS = [FSVerticalTabBarController alloc];
@@ -1868,6 +2056,47 @@ id RiderCount;
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
 				//dispatch_async(downloadQueue, ^{
 				
+				PremiumViewController *premView = [[PremiumViewController alloc] init ];
+				premView.requestAge = getAge;
+				premView.requestOccpClass = getOccpClass;
+				premView.requestOccpCode = getOccpCode;
+				premView.requestSINo = getSINo;
+				premView.requestMOP = getMOP;
+				premView.requestTerm = getTerm;
+				premView.requestBasicSA = getbasicSA;
+				premView.requestBasicHL = getbasicHL;
+				premView.requestBasicTempHL = getbasicTempHL;
+				premView.requestPlanCode = getPlanCode;
+				[self presentViewController:premView animated:NO completion:Nil];
+				[premView dismissViewControllerAnimated:NO completion:Nil];
+				
+				premView = Nil;
+				
+				ReportViewController *ReportPage;
+				CashPromiseViewController *CPReportPage;
+				
+				if([getBasicPlan isEqualToString:@"HLACP" ]){
+					CPReportPage = [[CashPromiseViewController alloc] init ];
+					CPReportPage.SINo = getSINo;
+					[self presentViewController:CPReportPage animated:NO completion:Nil];
+					
+				}
+				else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+					ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
+					ReportPage.SINo = getSINo;
+					[self presentViewController:ReportPage animated:NO completion:Nil];
+				}
+				
+				if([getBasicPlan isEqualToString:@"HLACP" ]){
+					
+					[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+				}
+				else if([getBasicPlan isEqualToString:@"HLAIB" ]){
+					[ReportPage dismissViewControllerAnimated:NO completion:Nil];
+				}
+				
+				ReportPage = Nil;
+				CPReportPage = Nil;
 				
 				PDSViewController *PDSPage = [[PDSViewController alloc ] init ];
 				PDSPage.SINo = getSINo;
@@ -1880,14 +2109,47 @@ id RiderCount;
 				}
 				[self presentViewController:PDSPage animated:NO completion:Nil];
 				
+				[self generateJSON_HLCP];
+				[self copyPDSToDoc];
+				
+				
 				dispatch_async(dispatch_get_main_queue(), ^{
-					[spinner stopAnimating];
-					spinnerLabel.text = @"";
-					[self.view setUserInteractionEnabled:YES];
-					[_FS Reset];
+					//[spinner stopAnimating];
+					//spinnerLabel.text = @"";
+					//[self.view setUserInteractionEnabled:YES];
+					//[_FS Reset];
 					
 					[PDSPage dismissViewControllerAnimated:NO completion:Nil];
 					
+					NSString *path = [[NSBundle mainBundle] pathForResource:@"PDS/PDS_BM_Page1" ofType:@"html"];
+					NSURL *pathURL = [NSURL fileURLWithPath:path];
+					NSArray* path_forDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+					NSString* documentsDirectory = [path_forDirectory objectAtIndex:0];
+					
+					NSData* data = [NSData dataWithContentsOfURL:pathURL];
+					[data writeToFile:[NSString stringWithFormat:@"%@/PDS_BM_Temp.html",documentsDirectory] atomically:YES];
+					
+					NSString *HTMLPath = [documentsDirectory stringByAppendingPathComponent:@"PDS_BM_Temp.html"];
+					//NSLog(@"delete HTML file Path: %@",HTMLPath);
+					if([[NSFileManager defaultManager] fileExistsAtPath:HTMLPath]) {
+						
+						NSURL *targetURL = [NSURL fileURLWithPath:HTMLPath];
+						//NSLog(@"zzzz%@",targetURL);
+						
+						// Converting HTML to PDF
+						//sleep(2);
+						NSString *SIPDFName = [NSString stringWithFormat:@"PDS_%@.pdf",self.getSINo];
+						self.PDFCreator = [NDHTMLtoPDF createPDFWithURL:targetURL
+															 pathForPDF:[documentsDirectory stringByAppendingPathComponent:SIPDFName]
+															   delegate:self
+															   pageSize:kPaperSizeA4
+										   //                   margins:UIEdgeInsetsMake(20, 5, 90, 5)];
+																margins:UIEdgeInsetsMake(0, 0, 0, 0)];
+						
+						targetURL = nil, SIPDFName = nil;
+					}
+					
+					path = nil,pathURL = nil,path_forDirectory = nil, documentsDirectory = nil, data = nil, HTMLPath =nil;
 					/*
 					PDSBrowserViewController *controller = [[PDSBrowserViewController alloc] init];
 					controller.PDSLanguage = @"M";
@@ -1903,7 +2165,7 @@ id RiderCount;
 					[container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
 					
 					[self presentModalViewController:container animated:YES];
-					*/
+					
 					
 					UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
 					[v removeFromSuperview];
@@ -1916,6 +2178,7 @@ id RiderCount;
 					
 					[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 					selectedPath = previousPath;
+					 */
 				});
 				
 				PDSPage = Nil;
@@ -1926,7 +2189,6 @@ id RiderCount;
 				
 			});
 			
-			spinner = Nil;
 
 		}
 	
@@ -2209,8 +2471,12 @@ id RiderCount;
     }
     
     int TotalPages = 0;
-    results = [database executeQuery:@"select count(*) as cnt from SI_Temp_Pages"];
-    if ([results next]) {
+	if ([PDSorSI isEqualToString:@"SI"])
+		results = [database executeQuery:@"select count(*) as cnt from SI_Temp_Pages"];
+    else
+		results = [database executeQuery:@"select count(*) as cnt from SI_Temp_Pages_PDS"];
+	
+	if ([results next]) {
         TotalPages = [results intForColumn:@"cnt"];
     }
     
@@ -2314,6 +2580,7 @@ id RiderCount;
     //SI_Temp_Trad_Details start
     totalRecords = 0;
     currentRecord = 0;
+	NSString *rCode;
     results = [database executeQuery:@"select count(*) as cnt from SI_Temp_Trad_Details"];
     if ([results next]) {
         totalRecords = [results intForColumn:@"cnt"];
@@ -2330,6 +2597,10 @@ id RiderCount;
         currentRecord++;
         content = [content stringByAppendingString:@"{\n"];
         content = [content stringByAppendingFormat:@"\"col0_1\":\"%@\",\n", [results stringForColumn:@"col0_1"]];
+		
+		rCode = [self getRiderCode:[results stringForColumn:@"col0_1"]];
+		content = [content stringByAppendingFormat:@"\"RiderCode\":\"%@\",\n", rCode];
+		
         content = [content stringByAppendingFormat:@"\"col0_2\":\"%@\",\n", [results stringForColumn:@"col0_2"]];
         content = [content stringByAppendingFormat:@"\"col1\":\"%@\",\n", [results stringForColumn:@"col1"]];
         content = [content stringByAppendingFormat:@"\"col2\":\"%@\",\n", [results stringForColumn:@"col2"]];
@@ -2899,6 +3170,7 @@ id RiderCount;
         content = [content stringByAppendingString:@"{\n"];
         content = [content stringByAppendingFormat:@"\"RiderCode\":\"%@\",\n", [results stringForColumn:@"RiderCode"]];
         content = [content stringByAppendingFormat:@"\"PTypeCode\":\"%@\",\n", [results stringForColumn:@"PTypeCode"]];
+		content = [content stringByAppendingFormat:@"\"Seq\":\"%@\",\n", [results stringForColumn:@"Seq"]];
         content = [content stringByAppendingFormat:@"\"RiderTerm\":\"%@\",\n", [results stringForColumn:@"RiderTerm"]];
         content = [content stringByAppendingFormat:@"\"SumAssured\":\"%@\",\n", [results stringForColumn:@"SumAssured"]];
         content = [content stringByAppendingFormat:@"\"PlanOption\":\"%@\",\n", [results stringForColumn:@"PlanOption"]];
@@ -3074,7 +3346,7 @@ id RiderCount;
     NSString *riderName;
     
     if([[rider substringWithRange:NSMakeRange(0,3)] isEqualToString:@"WOP"]){
-        riderName = [[rider componentsSeparatedByString:@")("] objectAtIndex:0];
+        riderName = [[rider componentsSeparatedByString:@") ("] objectAtIndex:0];
         riderName = [riderName stringByAppendingString:@")"];
     }
     else{

@@ -17,6 +17,7 @@
 }
 
 @property (nonatomic,strong) id SINo;
+@property (nonatomic,strong) id PDSorSI;
 @property (nonatomic,strong) id YearlyIncome;
 @property (nonatomic,strong) id CashDividend;
 @property (nonatomic,strong) id CustCode;

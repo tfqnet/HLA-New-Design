@@ -118,25 +118,25 @@
   				
   		
   		
-				for(j=0;j<data.SI[0].SI_Temp_Pages.data.length;j++)
+				for(j=0;j<data.SI[0].SI_Temp_Pages_PDS.data.length;j++)
 				{
-					row = gdata.SI[0].SI_Temp_Pages.data[j];
+					row = gdata.SI[0].SI_Temp_Pages_PDS.data[j];
 					if (row.PageDesc != "Page1")
 					{
 						if (row.PageDesc == "Page2")
-							htmlPages = '<div id="' + row.PageDesc + '" style="margin-top:6px;padding: 15px 0px 0px 0px;"></div>';
+							htmlPages = '<div id="' + row.PageDesc + '" style="margin-top:6px;padding: 17px 0px 0px 0px;"></div>';
 						else
-							htmlPages = '<div id="' + row.PageDesc + '" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
-						//$(htmlPages).appendTo('#externalPages');
+							htmlPages = '<div id="' + row.PageDesc + '" style="margin-top:900px;padding: 14px 0px 0px 0px;"></div>';
+						$(htmlPages).appendTo('#externalPages');
 					}
 				}
   		
-  		/*
-				for(j=0;j<data.SI[0].SI_Temp_Pages.data.length;j++)
+  		
+				for(j=0;j<data.SI[0].SI_Temp_Pages_PDS.data.length;j++)
 				{
-					row = gdata.SI[0].SI_Temp_Pages.data[j];
+					row = gdata.SI[0].SI_Temp_Pages_PDS.data[j];
 						$.ajax({
-  							url: "SI/" + row.htmlName,
+  							url: "PDS/" + row.htmlName,
   							async: false,
   							dataType: 'html',
   							success: function (data) {
@@ -145,20 +145,126 @@
 						});
 				}
 	
-		*/
+		
   				
   				
-  				//$('#Page2').load('HTML_Demo.html');
-  				
-  				
+/*
 						$.ajax({
-  							url: "PDS/PDS_ENG_MG4_4.html",
+  							url: "PDS/PDS_ENG_Page2.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page2").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_Page2.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page3").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_Page2.html",
   							async: false,
   							dataType: 'html',
   							success: function (data) {
   								$("#Page4").html(data);
   							}
 						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_Page3.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page5").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_Page6.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page6").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_Page6.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page7").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_Page7.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page8").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_C_1.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page9").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_C_2.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page10").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_C_3.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page11").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_HMM_1.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page12").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_HMM_2.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page13").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_HMM_3.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page14").html(data);
+  							}
+						});
+						$.ajax({
+  							url: "PDS/PDS_ENG_HMM_4.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#Page15").html(data);
+  							}
+						});
+  				
+
+						*/
+
 						
 						$.ajax({
   							url: 'Rates.json',
@@ -201,19 +307,7 @@ function loadJson()
 //  		success: function (data){
 //			gdata = data;
 			setPage();
-			writeAttachingRider_1(); //page2
-			writeEstimateTotalPremium(); //page3
-			writePremiumDuration(); //page3
-			writeItem456_page3_page4()//page3 and page5
-			//page5 not in use
-			writeAttachingRider_2(); //page6
-			writeCancel(); //page7
-			
-			writePDS_C();
-			writePDS_HMM();
-			writePDS_HS();
-			writePDS_MG2();
-			writePDS_MG4();
+
 
 //alert(gdata.SI[0].SI_Temp_trad_LA.data.length)
 			//writeSummary1_HLCP();
@@ -254,6 +348,22 @@ function loadJson()
 			
 			//alert(gdata.SI[0].SI_Temp_trad_LA.data.length)
 			
+			
+			
+			writeAttachingRider_1(); //page2
+			writeEstimateTotalPremium('EN'); //page3
+			writePremiumDuration('EN'); //page3
+			writeItem456_page3_page4()//page3 and page5
+			writeAttachingRider_2(); //page6
+			writeCancel('EN'); //page7
+			writePDS_C();
+			writePDS_HMM();
+			writePDS_HS();
+			writePDS_MG2();
+			writePDS_MG4();
+			
+			
+			
 			//alert(gdata.SI[0].Trad_Details.data[0].BasicSA)
 			$('.BasicSA').html(formatCurrency(gdata.SI[0].Trad_Details.data[0].BasicSA));
 }
@@ -293,7 +403,7 @@ function loadJson()
   <body onload="onBodyLoad()">
   
 <div id="header">
-  <img src="img/HLA.png"/>
+  <img src="PDS/img/HLA.png"/>
 	<div class="welcome">
   		Prepared By : <span id="agentName" class="agentName">{agentName}</span>
   		<br/>Code : <span id="agentCode" class="agentCode">{agentCode}</span>
@@ -339,7 +449,7 @@ function loadJson()
 
 
 
-<div style="width:100%;height:679px;background-color: #fff;">
+<div style="width:100%;height:703px;background-color: #fff;">
 
     <table cellspacing="3">
 	<tr>
@@ -360,8 +470,8 @@ function loadJson()
 	    <td>
 		<table width="100%" border="0" cellspacing="0" id="table2-page1">
 		    <tr>
-			<td width="20"style="padding: 0px 0px 10px 0px;"><b>A)</b></td>
-			<td colspan="2" style="padding: 0px 0px 10px 0px;"><u><b>Basic Plan</b></u></td>
+			<td width="20"style="padding: 0px 0px 5px 0px;"><b>A)</b></td>
+			<td colspan="2" style="padding: 0px 0px 5px 0px;"><u><b>Basic Plan</b></u></td>
 		    </tr>
 		    <tr>
 			<td></td>
@@ -415,7 +525,7 @@ function loadJson()
 		    <tr>
 			<td></td>
 			<td></td>
-			<td style="padding: 0px 0px 10px 0px;">
+			<td style="padding: 0px 0px 5px 0px;">
 			    In the event of Total and Permanent Disability of the Life Assured prior to attaining age 65 during the premium payment term (TPD), the TPD benefit payable shall be 100% of the Total Basic Premium<br/>
 			    Paid up to the premium due date prior to the event date that gives rise to TPD. In addition, all future basic premium due starting from the premium due date immediately following the event date that<br/>
 			    gives rise to TPD shall be waived. All other benefits shall remain intact after a TPD claim.
@@ -434,7 +544,7 @@ function loadJson()
 		    <tr>
 			<td></td>
 			<td></td>
-			<td style="padding: 0px 0px 10px 0px;">
+			<td style="padding: 0px 0px 5px 0px;">
 			This plan provides Guaranteed Yearly Income of RM<span id="BasicSA4" class="BasicSA">{BasicSA4}</span> starting from end of of 1st policy year up to maturity, inclusive of both dates.
 			</td>
 		    </tr>
@@ -453,7 +563,7 @@ function loadJson()
 		    <tr>
 			<td></td>
 			<td></td>
-			<td>(i) Guaranteed Maturity Benefit as shown in table below:<br/>
+			<td>(i)&nbsp;&nbsp;&nbsp;&nbsp;Guaranteed Maturity Benefit as shown in table below:<br/>
 			    <table width="35%" style="border-collapse: collapse; margin-left: 20px" border="1">
 				<tr>
 				    <td width="30%" align="center"><b>Entry Age<br/>(Last Birthday)</b></td>
@@ -472,9 +582,9 @@ function loadJson()
 				    <td style="padding: 0px 0px 0px 5px;">10.0 times of Guaranteed Yearly Income</td>
 				</tr>
 			    </table>
-			    (ii) Accumulated Guaranteed Yearly Income (if any),<br/>
-			    (iii) Accumulated Cash Dividend (if any), and<br/>
-			    (iv) Terminal Dividend (if any)
+			    (ii)&nbsp;&nbsp;&nbsp;&nbsp;Accumulated Guaranteed Yearly Income (if any),<br/>
+			    (iii)&nbsp;&nbsp;&nbsp;Accumulated Cash Dividend (if any), and<br/>
+			    (iv)&nbsp;&nbsp;Terminal Dividend (if any)
 			</td>
 		    </tr>
 		</table>
@@ -503,11 +613,26 @@ understand the information printed on each and every page.<br/>
 Level 3, Tower B, PJ City Development, No. 15A Jalan 219, Seksyen 51A, 46100 Petaling Jaya, Selangor. Tel: 03-7650 1818 Fax: 03-7650 1991 Website: www.hla.com.my<br/>
 </td>
 <td width="9%" align="left" valign="bottom" style="padding: 0px 0px 0px 0px;font-family:Arial;font-size:10px;">Page <span class="currentPage">1</span> of <span class="totalPages">56</span></td>
-<td width="16%" align="right" valign="bottom" style="padding: 0px 0px 0px 0px;font-family:Arial;font-size:12px;"><img src="img/barcode.png" style="vertical-align:text-top;padding: 0px 0px 0px 0px;" height="70%" height="70%"/>Ref: <span id=SICode class="SICode">{SINo}</span></td>
+<td width="16%" align="right" valign="bottom" style="padding: 0px 0px 0px 0px;font-family:Arial;font-size:12px;"><img src="PDS/img/barcode.png" style="vertical-align:text-top;padding: 0px 0px 0px 0px;" height="70%" height="70%"/><br/>Ref: <span id=SICode class="SICode">{SINo}</span></td>
 </tr>
 </table>
 	<div id="externalPages">
+<!--		
+		<div id="Page2" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page3" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
 		<div id="Page4" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page5" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page6" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page7" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page8" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page9" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page10" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page11" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page12" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page13" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page14" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+		<div id="Page15" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>
+	-->	
 	</div>
 </div>
 </body>

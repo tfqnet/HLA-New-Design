@@ -13,7 +13,7 @@
 @end
 
 @implementation PagesController
-@synthesize pageDesc,htmlName;
+@synthesize pageDesc,htmlName,PDSorSI;
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad
@@ -35,8 +35,12 @@
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT htmlName, PageNum, PageDesc FROM SI_Temp_Pages_PDS"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+		NSString *querySQL;
+        if ([PDSorSI isEqualToString:@"PDS"])
+			querySQL = [NSString stringWithFormat:@"SELECT htmlName, PageNum, PageDesc FROM SI_Temp_Pages_PDS"];
+        else
+			querySQL = [NSString stringWithFormat:@"SELECT htmlName, PageNum, PageDesc FROM SI_Temp_Pages"];
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
             {

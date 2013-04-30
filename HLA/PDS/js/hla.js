@@ -1,6 +1,7 @@
 //ver1.8
 function setPage(){
-	$('.rptVersion').html('Win MP (Trad) Version 6.9 (Agency) - Last Updated 01 March 2013 - E&amp;OE-'); //set version info
+
+	$('.rptVersion').html('iMP (Trad) Version 1.1 (Agency) - Last Updated 15 May 2013 - E&amp;OE-'); //set version info
 	
 	
 	
@@ -86,7 +87,7 @@ function setPage(){
         //    },errorHandler);
         //},errorHandler,nullHandler);
 
-$.each(gdata.SI[0].SI_Temp_Pages.data, function(index, row) {
+$.each(gdata.SI[0].SI_Temp_Pages_PDS.data, function(index, row) {
 	$("#" + row.PageDesc + " .currentPage").html(row.PageNum);
 });
 
@@ -856,12 +857,28 @@ function Insured(PersonType, Sequence){
 	    }
 	}
 	else{
-	    return 'Payor';
+	    return 'Policy Owner';
 	}
 }
 
-function writeEstimateTotalPremium()
+function InsuredBM(PersonType, Sequence){
+	if(PersonType == 'LA'){
+		if(Sequence == '1'){
+			return 'Hayat Diinsuranskan';
+		}
+		else{
+			return 'Hayat Diinsuranskan ke-2';
+	    }
+	}
+	else{
+	    return 'Pemunya Polisi';
+	}
+}
+
+function writeEstimateTotalPremium(lang)
 {
+//alert(lang)
+
 	var type;
 	var planRider;
     var col5Total, col6Total, col7Total, col8Total;
@@ -872,11 +889,15 @@ function writeEstimateTotalPremium()
     col8Total = 0.00;
 	
 	$.each(gdata.SI[0].SI_Store_Premium.data, function(index, SI_Store_Premium) {
+	if (SI_Store_Premium.FromAge == "(null)" && SI_Store_Premium.ToAge == "(null)"){
 		type = SI_Store_Premium.Type;
 		planRider = "Rider";
 		if (type == "B"){
 			type = gdata.SI[0].PlanCode;
-			planRider = "Basic Plan";
+			if (lang == "EN")
+				planRider = "Basic Plan";
+			else if (lang == "BM")
+				planRider = "Pelan Asas";
 		}
 
 		col5Total = col5Total + parseFloat(formatCurrency(SI_Store_Premium.Annually).replace(/,/g,'').replace('-', '0'));
@@ -885,17 +906,28 @@ function writeEstimateTotalPremium()
         col8Total = col8Total + parseFloat(formatCurrency(SI_Store_Premium.Monthly).replace(/,/g,'').replace('-', '0'));
 		
 		$(".table-estimate > tbody").append('<tr><td>' + getPlanRider(type) + '</td><td style="text-align:center">' + planRider + '</td><td style="text-align:right">' + SI_Store_Premium.Annually + '</td><td style="text-align:right">' + SI_Store_Premium.SemiAnnually + '</td><td style="text-align:right">' + SI_Store_Premium.Quarterly + '</td><td style="text-align:right">' + SI_Store_Premium.Monthly + '</td></tr>');
+	}
 	});
 	
-	$('.table-estimate > tfoot').append('<tr>' + '<td colspan="2" style="text-align:left;padding: 0px 0px 0px 5px;"><b>Total Premium</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' + '</tr>');
-	$('.table-tax > tbody').append('<tr>' + '<td style="text-align:left">Service tax chargeable</td>' + '<td style="text-align:center">' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
+	if (lang == "EN"){
+		$('.table-estimate > tfoot').append('<tr>' + '<td colspan="2" style="text-align:left;padding: 0px 0px 0px 5px;"><b>Total Premium</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' + '</tr>');
+		$('.table-tax > tbody').append('<tr>' + '<td style="text-align:left">Service tax chargeable</td>' + '<td style="text-align:center">' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
+	}
+	else{
+		$('.table-estimate > tfoot').append('<tr>' + '<td colspan="2" style="text-align:left;padding: 0px 0px 0px 5px;"><b>Jumlah Bayaran Premium</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col5Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col6Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col7Total.toFixed(2)) + '</b></td>' + '<td style="text-align:right"><b>' + formatCurrency(col8Total.toFixed(2)) + '</b></td>' + '</tr>');
+		$('.table-tax > tbody').append('<tr>' + '<td style="text-align:left">Cukai Perkhidmatan yang Dikenakan</td>' + '<td style="text-align:center">' + formatCurrency(col5Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col6Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col7Total.toFixed(2) * 0.06) + '</td>' + '<td style="text-align:center">' + formatCurrency(col8Total.toFixed(2) * 0.06) + '</td>' + '</tr>');
+	}
 }
 
 var PremiumDurationCount = 0;
-function writePremiumDuration()
+function writePremiumDuration(lang)
 {
+	
 	LAAge = gdata.SI[0].SI_Temp_trad_LA.data[0].Age;
-	$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(gdata.SI[0].PlanCode) + '</td><td style="text-align:left">Basic Plan</td><td style="text-align:left">Life Assured</td><td style="text-align:center">' + (parseInt(LAAge) + 6) + '</td></tr>');
+	if (lang == "EN")
+		$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(gdata.SI[0].PlanCode) + '</td><td style="text-align:left">Basic Plan</td><td style="text-align:left">Life Assured</td><td style="text-align:center">' + (parseInt(LAAge) + 6) + '</td></tr>');
+	else
+		$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(gdata.SI[0].PlanCode) + '</td><td style="text-align:left">Pelan Asas</td><td style="text-align:left">Hayat Diinsuranskan</td><td style="text-align:center">' + (parseInt(LAAge) + 6) + '</td></tr>');
 	PremiumDurationCount++;
 
 	if(gdata.SI[0].SI_Temp_trad_LA.data.length == 1)
@@ -908,39 +940,101 @@ function writePremiumDuration()
 		if (Trad_Rider_Details.PlanOption == "(null)" || Trad_Rider_Details.PlanOption == "")
 		{
 			PremiumDurationCount++;
-			$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="text-align:left">Rider</td><td style="text-align:left">' + Insured(Trad_Rider_Details.PTypeCode, Trad_Rider_Details.Seq) + '</td><td style="text-align:center">' + (parseInt(LAAge) + parseInt(Trad_Rider_Details.RiderTerm)) + '</td></tr>');
+			
+			if (lang == "EN"){ //english
+				if(Trad_Rider_Details.RiderCode == 'ETPDB' || Trad_Rider_Details.RiderCode == 'EDB' ){
+					LAAge = gdata.SI[0].SI_Temp_trad_LA.data[0].Age;
+					$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="text-align:left">Rider</td><td style="text-align:left">' + Insured(Trad_Rider_Details.PTypeCode, Trad_Rider_Details.Seq) + '</td><td style="text-align:center">' + (parseInt(LAAge) + parseInt(6)) + '</td></tr>');
+				}
+				else{
+					if(Trad_Rider_Details.PTypeCode == 'LA' && Trad_Rider_Details.Seq == '1'){ //1st life assured
+						LAAge = gdata.SI[0].SI_Temp_trad_LA.data[0].Age;
+					}
+					else if(Trad_Rider_Details.PTypeCode == 'LA' && Trad_Rider_Details.Seq == '2'){ //2nd life assured
+						LAAge = gdata.SI[0].SI_Temp_trad_LA.data[1].Age;
+					}
+					else{ //payor
+						LAAge = gdata.SI[0].SI_Temp_trad_LA.data[1].Age;
+					}
+					$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="text-align:left">Rider</td><td style="text-align:left">' + Insured(Trad_Rider_Details.PTypeCode, Trad_Rider_Details.Seq) + '</td><td style="text-align:center">' + (parseInt(LAAge) + parseInt(Trad_Rider_Details.RiderTerm)) + '</td></tr>');	
+				}
+				
+			}
+			else{ //bm
+				if(Trad_Rider_Details.RiderCode == 'ETPDB' || Trad_Rider_Details.RiderCode == 'EDB' ){
+					LAAge = gdata.SI[0].SI_Temp_trad_LA.data[0].Age;
+					$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="text-align:left">Rider</td><td style="text-align:left">' + InsuredBM(Trad_Rider_Details.PTypeCode, Trad_Rider_Details.Seq) + '</td><td style="text-align:center">' + (parseInt(LAAge) + parseInt(6)) + '</td></tr>');
+				}
+				else{
+					if(Trad_Rider_Details.PTypeCode == 'LA' && Trad_Rider_Details.Seq == '1'){ //1st life assured
+						LAAge = gdata.SI[0].SI_Temp_trad_LA.data[0].Age;
+					}
+					else if(Trad_Rider_Details.PTypeCode == 'LA' && Trad_Rider_Details.Seq == '2'){ //2nd life assured
+						LAAge = gdata.SI[0].SI_Temp_trad_LA.data[1].Age;
+					}
+					else{ //payor
+						LAAge = gdata.SI[0].SI_Temp_trad_LA.data[1].Age;
+					}
+					$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="text-align:left">Rider</td><td style="text-align:left">' + InsuredBM(Trad_Rider_Details.PTypeCode, Trad_Rider_Details.Seq) + '</td><td style="text-align:center">' + (parseInt(LAAge) + parseInt(Trad_Rider_Details.RiderTerm)) + '</td></tr>');	
+				}
+				
+			}
 		}
 	});
 }
 
 function writeItem456_page3_page4()
 {
+	//alert(PremiumDurationCount)
 	var temp;
-	temp = gdata.SI[0].SI_Store_Premium.data.length + PremiumDurationCount;
 	
+	estimateCount = 0;
+	$.each(gdata.SI[0].SI_Store_Premium.data, function(index, SI_Store_Premium) {
+		if (SI_Store_Premium.FromAge == "(null)" && SI_Store_Premium.ToAge == "(null)"){
+			estimateCount++;
+		}
+	});
+	//alert(estimateCount)
+	
+	
+	
+	
+	
+	temp = estimateCount + PremiumDurationCount;
+	
+	
+	//alert(temp)
 	if (temp <=14){
-		$(".item4").show();
-		$(".item5").show();
-		$(".item6").show();
+		//alert("1")
+		$(".item4-page3").show();
+		$(".item5-page3").show();
+		$(".item6-page3").show();
+		
 		
 		$(".item4-page4").hide();
 		$(".item5-page4").hide();
 		$(".item6-page4").hide();
 		
+		
+		
 	}
 	else if (temp > 14 && temp <= 26){
-		$(".item4").show();
-		$(".item5").show();
-		$(".item6").hide();
+		//alert("2")
+		$(".item4-page3").show();
+		$(".item5-page3").show();
+		$(".item6-page3").hide();
 		
 		$(".item4-page4").hide();
 		$(".item5-page4").hide();
 		$(".item6-page4").show();
 	}
 	else if (temp >= 27){
-		$(".item4").show();
-		$(".item5").hide();
-		$(".item6").hide();
+
+		//alert("3")
+		
+		$(".item4-page3").show();
+		$(".item5-page3").hide();
+		$(".item6-page3").hide();
 		
 		$(".item4-page4").hide();
 		$(".item5-page4").show();
@@ -954,20 +1048,29 @@ function writeAttachingRider_1()
 	var tblHeader = "";
 	$.each(gdata.SI[0].SI_Temp_Pages_PDS.data, function(index, row) {
 		if (row.riders != "" && row.riders != "(null)" && row.riders.substring(0,1) == "2"){
-			riders = row.riders.substring(2)
+			riders = row.riders.substring(2);
+			//alert(riders)
+			//alert(riders.slice(0, -1))
 			
-			if(riders.charAt(row.riders.length-1) == ";"){
+			if(riders.charAt(riders.length-1) == ";"){
+				//alert(riders.slice(0, -1))
 				rider = riders.slice(0, -1).split(";");
             }
         	else{
 				rider = riders.split(";");
             }
             
-            
             for (i=0;i<rider.length;i++){
+            	//alert(rider[i])
 
 				tblRider = "#" + row.PageDesc + " #table-attachingRider1 tr." + rider[i];
 				$(tblRider).css('display','table-row');		
+				
+				//alert(rider[0])
+				if (rider[0] != "tblHeader")
+					$("#" + row.PageDesc + ' .2B').html('');
+					
+					//$("#" + row.PageDesc + ' .2B').css('display','none');
 				
 				if (rider[i] == "CCTR"){
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {
@@ -990,8 +1093,13 @@ function writeAttachingRider_1()
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {
 						if (rowRider.RiderCode == "CIWP"){
 							$("#" + row.PageDesc + " .CIWPRiderTerm").html(rowRider.RiderTerm);	
-							$("#" + row.PageDesc + " .CIWPRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");					
+							//$("#" + row.PageDesc + " .CIWPRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");					
 							$("#" + row.PageDesc + ' #illness tr').css('display','table-row');
+							$.each(gdata.SI[0].SI_Temp_Trad_Details.data, function(rowIndex, rowTemp) {
+								if (rowTemp.RiderCode == "CIWP"){
+									$("#" + row.PageDesc + " .CIWPRiderGYI").html(formatCurrency(gdata.SI[0].SI_Temp_Trad_Details.data[rowIndex+1].col2));
+								}
+							});
 						}
 					});
 				}
@@ -1008,6 +1116,7 @@ function writeAttachingRider_1()
 						if (rowRider.RiderCode == "EDB"){
 							$("#" + row.PageDesc + " .EDBRiderTerm").html(rowRider.RiderTerm);	
 							$("#" + row.PageDesc + " .EDBRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + " .EDBGYI").html(formatCurrency(rowRider.SumAssured)+"");
 						}
 					});
 				}
@@ -1016,6 +1125,8 @@ function writeAttachingRider_1()
 						if (rowRider.RiderCode == "ETPD"){
 							$("#" + row.PageDesc + " .ETPDRiderTerm").html(rowRider.RiderTerm);	
 							$("#" + row.PageDesc + " .ETPDRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + " .ETPDGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							
 						}
 					});
 				}
@@ -1024,6 +1135,7 @@ function writeAttachingRider_1()
 						if (rowRider.RiderCode == "ETPDB"){
 							$("#" + row.PageDesc + " .ETPDBRiderTerm").html(rowRider.RiderTerm);	
 							$("#" + row.PageDesc + " .ETPDBRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + " .ETPDBGYI").html(formatCurrency(rowRider.SumAssured)+"");
 							$("#" + row.PageDesc + ' #illness tr').css('display','table-row');
 						}
 					});
@@ -1032,7 +1144,9 @@ function writeAttachingRider_1()
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {
 						if (rowRider.RiderCode == "HB"){
 							$("#" + row.PageDesc + " .HBRiderTerm").html(rowRider.RiderTerm);	
-							$("#" + row.PageDesc + " .HBRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							//$("#" + row.PageDesc + " .HBRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + " .HBRiderGYI").html(rowRider.Units + ' unit(s)');
+							$("#" + row.PageDesc + " .HBRiderGYI_BM").html(rowRider.Units + ' unit');
 							$("#" + row.PageDesc + " .HBBenefit").html(parseInt(rowRider.Units) * 45);
 						}
 					});
@@ -1042,6 +1156,7 @@ function writeAttachingRider_1()
 						if (rowRider.RiderCode == "ICR"){
 							$("#" + row.PageDesc + " .ICRRiderTerm").html(rowRider.RiderTerm);	
 							$("#" + row.PageDesc + " .ICRRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + " .ICRGYI").html(formatCurrency(rowRider.SumAssured)+"");
 							$("#" + row.PageDesc + ' #illness tr').css('display','table-row');
 						}
 					});
@@ -1051,6 +1166,8 @@ function writeAttachingRider_1()
 						if (rowRider.RiderCode == "LCPR"){
 							$("#" + row.PageDesc + " .LCPRRiderTerm").html(rowRider.RiderTerm);	
 							$("#" + row.PageDesc + " .LCPRRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + " .LCPRGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + ' #illness tr').css('display','table-row');
 						}
 					});
 				}
@@ -1066,17 +1183,26 @@ function writeAttachingRider_1()
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {	
 						if (rowRider.RiderCode == "LCWP"){
 							$("#" + row.PageDesc + " .LCWPRiderTerm").html(rowRider.RiderTerm);
-							$("#" + row.PageDesc + " .LCWPRRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");				
+							//$("#" + row.PageDesc + " .LCWPRRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");				
 							$("#" + row.PageDesc + ' #illness tr').css('display','table-row');
+							
+							$.each(gdata.SI[0].SI_Temp_Trad_Details.data, function(rowIndex, rowTemp) {
+								if (rowTemp.RiderCode == "LCWP"){
+									$("#" + row.PageDesc + " .LCWPRRiderGYI").html(formatCurrency(gdata.SI[0].SI_Temp_Trad_Details.data[rowIndex+1].col2));
+								}
+							});
 							
 							if(rowRider.PTypeCode == "LA"){
 							    $("#" + row.PageDesc + " .LCWPInsuredLives").html('2nd Life<br/>Assured');
+							    $("#" + row.PageDesc + " .LCWPInsuredLives_BM").html('Hayat<br/>Diinsuranskan<br/>ke-2');
 							}
 							else if (rowRider.PTypeCode == "PY"){
 								$("#" + row.PageDesc + " .LCWPInsuredLives").html('Policy<br/>Owner');
+								$("#" + row.PageDesc + " .LCWPInsuredLives_BM").html('Pemunya<br/>Polisi');
 							}
 							else{
 							    $("#" + row.PageDesc + " .LCWPInsuredLives").html('Payor');
+							    $("#" + row.PageDesc + " .LCWPInsuredLives_BM").html('Payor');
 							}
 						}
 					});
@@ -1085,16 +1211,25 @@ function writeAttachingRider_1()
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {	
 						if (rowRider.RiderCode == "PR"){
 							$("#" + row.PageDesc + " .PRRiderTerm").html(rowRider.RiderTerm);
-							$("#" + row.PageDesc + " .PRRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");					
+							//$("#" + row.PageDesc + " .PRRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							
+							$.each(gdata.SI[0].SI_Temp_Trad_Details.data, function(rowIndex, rowTemp) {
+								if (rowTemp.RiderCode == "PR"){
+									$("#" + row.PageDesc + " .PRRiderGYI").html(formatCurrency(gdata.SI[0].SI_Temp_Trad_Details.data[rowIndex+1].col2));
+								}
+							});					
 							
 							if(rowRider.PTypeCode == "LA"){
 							    $("#" + row.PageDesc + " .PRInsuredLives").html('2nd Life<br/>Assured');
+							    $("#" + row.PageDesc + " .PRInsuredLives_BM").html('Hayat<br/>Diinsuranskan<br/>ke-2');
 							}
 							else if (rowRider.PTypeCode == "PY"){
 								$("#" + row.PageDesc + " .PRInsuredLives").html('Policy<br/>Owner');
+								$("#" + row.PageDesc + " .PRInsuredLives_BM").html('Pemunya<br/>Polisi');
 							}
 							else{
 							    $("#" + row.PageDesc + " .PRInsuredLives").html('Payor');
+							    $("#" + row.PageDesc + " .PRInsuredLives_BM").html('Payor');
 							}
 						}
 					});
@@ -1103,7 +1238,14 @@ function writeAttachingRider_1()
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {
 						if (rowRider.RiderCode == "SP_STD"){
 							$("#" + row.PageDesc + " .SP_STDRiderTerm").html(rowRider.RiderTerm);
-							$("#" + row.PageDesc + " .SP_STDRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							//$("#" + row.PageDesc + " .SP_STDRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							
+							$.each(gdata.SI[0].SI_Temp_Trad_Details.data, function(rowIndex, rowTemp) {
+								if (rowTemp.RiderCode == "SP_STD"){
+									$("#" + row.PageDesc + " .SP_STDRiderTerm").html(formatCurrency(gdata.SI[0].SI_Temp_Trad_Details.data[rowIndex+1].col2));
+								}
+							});
+
 						}
 					});
 				}
@@ -1111,8 +1253,14 @@ function writeAttachingRider_1()
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {
 						if (rowRider.RiderCode == "SP_PRE"){
 							$("#" + row.PageDesc + " .SP_PRERiderTerm").html(rowRider.RiderTerm);
-							$("#" + row.PageDesc + " .SP_PRERiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							//$("#" + row.PageDesc + " .SP_PRERiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
 							$("#" + row.PageDesc + ' #illness tr').css('display','table-row');
+						
+							$.each(gdata.SI[0].SI_Temp_Trad_Details.data, function(rowIndex, rowTemp) {
+								if (rowTemp.RiderCode == "SP_PRE"){
+									$("#" + row.PageDesc + " .SP_PRERiderGYI").html(formatCurrency(gdata.SI[0].SI_Temp_Trad_Details.data[rowIndex+1].col2));
+								}
+							});
 						}
 					});
 				}
@@ -1130,39 +1278,55 @@ function writeAttachingRider_1()
 						if (rowRider.RiderCode == "PTR"){
 							$("#" + row.PageDesc + " .PTRRiderTerm").html(rowRider.RiderTerm);
 							$("#" + row.PageDesc + " .PTRRiderGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + " .PTRGYI").html(formatCurrency(rowRider.SumAssured)+"");
 						}
 					});
 				}
 			}
+
+    
+
 		}
 	});
-	
+	//alert("xx")
 }
 
 function writeAttachingRider_2()
 {
 	var tblHeader = "";
 	$.each(gdata.SI[0].SI_Temp_Pages_PDS.data, function(index, row) {
+		//alert(row.PageNum + "=" + row.riders)
+		//alert()
 		if (row.riders != "" && row.riders != "(null)" && row.riders.substring(0,1) == "5"){
-			riders = row.riders.substring(2)
+			riders = row.riders.substring(2);
+			//alert(riders)
 			
-			if(riders.charAt(row.riders.length-1) == ";"){
+			if(riders.charAt(riders.length-1) == ";"){
 				rider = riders.slice(0, -1).split(";");
             }
         	else{
 				rider = riders.split(";");
             }
             for (i=0;i<rider.length;i++){
+				
 				if (rider[i] == 'tblFooter'){
 					tblFooter = "#" + row.PageDesc + " #rujuk"
 					$(tblFooter).css('display','inline');
 				}
 				
+				
+				if (rider[0] != "tblHeader")
+					$("#" + row.PageDesc + ' .6B').html('');
+					//$("#" + row.PageDesc + ' .6B').css('display','none');
+				
+				
 				tblRider = "#" + row.PageDesc + " #table-attachingRider2 tr." + rider[i];
+				//alert(tblRider)
 				$(tblRider).css('display','table-row');
             }
         }
 	});	
+	//alert("ssss")
 }
 
 /*
@@ -1172,12 +1336,25 @@ function writeAttachingRider_2()
 			</tr>
 */
 
-function writeCancel()
+function writeCancel(lang)
 {
 	var desc = new Array();
 	desc[0] = "If you terminate this rider prematurely, you may get less than the amount you have paid in.";
 	desc[1] = "If you terminate this rider prematurely, there will be no refund and the termination will take effect from next premium due date if the Basic Policy remains in force.";
 	desc[2] = "Upon cancellation, you are entitle to a certain amount of refund of the premium provided that you have not made any claim of the policy.";
+	
+	var descBM = new Array();
+	descBM[0] = "Jika anda menamatkan rider ini sebelum tempoh matang, anda akan mendapat kurang daripada jumlah yang telah anda bayar.";
+	descBM[1] = "Jika rider ini ditamatkan sebelum tempoh matang, tidak akan ada pembayaran balik dan penamatan tersebut akan berkuat kuasa dari tarikh genap tempoh premium yang berikutnya jika Polisi Asas masih berkuat kuasa.";
+	descBM[2] = "Jika tiada tuntutan dibuat, anda akan menerima kembali premium yang ditetapkan.";
+	
+	//$(".10B").css('display','none');
+	//$('.item10BB').css('display','none');
+	//alert("aaa")
+
+	
+	
+	toHide = 1;
 	$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, Trad_Rider_Details) {
 		if (Trad_Rider_Details.PlanOption == "(null)" || Trad_Rider_Details.PlanOption == "")
 		{
@@ -1185,58 +1362,148 @@ function writeCancel()
 			//PremiumDurationCount++;
 			//$(".table-duration > tbody").append('<tr><td style="text-align:left">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="text-align:left">Rider</td><td style="text-align:left">' + Insured(Trad_Rider_Details.PTypeCode, Trad_Rider_Details.Seq) + '</td><td style="text-align:center">' + (parseInt(LAAge) + parseInt(Trad_Rider_Details.RiderTerm)) + '</td></tr>');
 			if (Trad_Rider_Details.RiderCode == "CCTR"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "CIR"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "CIWP"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "CPA"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[1] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[1];
+				else
+					temp = descBM[1];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "EDB"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "ETPD"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[1] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[1];
+				else
+					temp = descBM[1];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "ETPDB"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "HB"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[2] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[2];
+				else
+					temp = descBM[2];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "ICR"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[1] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[1];
+				else
+					temp = descBM[1];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "LCPR"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[1] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[1];
+				else
+					temp = descBM[1];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "PA"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[1] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[1];
+				else
+					temp = descBM[1];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "LCWP"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "PR"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "SP_STD"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "SP_PRE"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "PLCP"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "PTR"){
-				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + desc[0] + '</td></tr>')
+				toHide = 0;
+				if (lang == "EN")
+					temp = desc[0];
+				else
+					temp = descBM[0];
+				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 		}
 	});
+	
+	if (toHide == 1)
+	{
+			$('.item10BB').css('display','none');
+	}
 }
 
 function writePDS_C()
@@ -1252,44 +1519,81 @@ function writePDS_C()
 			    CRiderTempHLTerm = row.TempHL1KSATerm;
 			    CRiderSA = row.SumAssured;
 		
-			if(row.PlanOption == 'Increasing_NCB' || row.PlanOption == 'Level_NCB'){
-			//alert(row.PlanOption.split("_")[0])
-				$('.COption').html(row.PlanOption.split("_")[0] + ' Cover and No Claims Benefit');
+		
+		
+			if(row.PlanOption == 'Level'){
+				$('.COption').html('Level Cover');
+				$('.COption_BM').html('Perlindungan Biasa');
 			}
-			else{
-				$('.COption').html(row.PlanOption + ' Cover');
+			else if(row.PlanOption == 'Increasing'){
+				$('.COption').html('Increasing Cover');
+				$('.COption_BM').html('Perlindungan Meningkat');
+			}
+			else if(row.PlanOption == 'Level_NCB'){
+				$('.COption').html('Level Cover and No Claims Benefit');
+				$('.COption_BM').html('Perlindungan Biasa dan Faedah Tanpa Tuntutan');
+			}
+			else if(row.PlanOption == 'Increasing_NCB'){
+				$('.COption').html('Increasing Cover and No Claims Benefit');
+				$('.COption_BM').html('Perlindungan Meningkat dan Faedah Tanpa Tuntutan');
 			}
 			
 			$('.CSumAssured').html(formatCurrency(row.SumAssured));
 			$('.CRiderTerm').html(row.RiderTerm);
-			$('.CPayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
+
 			
-			if(row.PlanOption == 'Level' || row.PlanOption == 'Level_NCB' ){
+			if(row.PlanOption == 'Level'){
 				$('#VeryEarlyCancers').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 0.5));
 				$('#EarlyCancers').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 1.5));
 				$('#AdvancedCancers').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 2.5));
-				$('#cGuaranteedIncreasingSumAssured').html('');				
+				$('#VeryEarlyCancers_BM').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 0.5));
+				$('#EarlyCancers_BM').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 1.5));
+				$('#AdvancedCancers_BM').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 2.5));
+				$('#cGuaranteedIncreasingSumAssured').html('');
+				$('#cNoClaimBenefit').html('');
+				$('#cGuaranteedIncreasingSumAssured_BM').html('');
+				$('#cNoClaimBenefit_BM').html('');
+				$('.CPayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
 			}
-			else{ //increasing and increasing_ncb
-				//$('#VeryEarlyCancers').html(formatCurrency(parseFloat(row.SumAssured) * 0.5));
-				//$('#EarlyCancers').html(formatCurrency(parseFloat(row.SumAssured) * 1.5));
-				//$('#AdvancedCancers').html(formatCurrency(parseFloat(row.SumAssured) * 2.5));
-				$('#VeryEarlyCancers').html("50% of Rider Sum Assured");
-				$('#EarlyCancers').html("150% of Rider Sum Assured");
-				$('#AdvancedCancers').html("250% of Rider Sum Assured");
-				
-				$('#cGuaranteedIncreasingSumAssured').html('<br/><u><b>Guaranteed Increasing Sum Assured</b></u><br/>The Rider Sum Assured shall increase by 10% every 2 years with ' +
-							'the first such increase starting on 2nd Anniversary of the Commencement Date of this Policy and the last on the 20th ' +
-							'Anniversary of this Policy and<br/>remains level thereafter.');
+			else if(row.PlanOption == 'Increasing'){
+				$('#VeryEarlyCancers').html('50% of Rider Sum Assured');
+				$('#EarlyCancers').html('150% of Rider Sum Assured');
+				$('#AdvancedCancers').html('250% of Rider Sum Assured');
+				$('#VeryEarlyCancers_BM').html('50% daripada Jumlah Rider Diinsuranskan');
+				$('#EarlyCancers_BM').html('150% daripada Jumlah Rider Diinsuranskan');
+				$('#AdvancedCancers_BM').html('250% daripada Jumlah Rider Diinsuranskan');
+				$('#cGuaranteedIncreasingSumAssured').html('<u><b>Guaranteed Increasing Sum Assured</b></u><br/>The Rider Sum Assured shall increase by 10% every 2 years with the first such increase starting on 2nd Anniversary of the Commencement Date of this Policy and the last on the 20th Anniversary of this Policy and<br/>remains level thereafter.<br/><br/>');
+				$('#cNoClaimBenefit').html('');
+				$('#cGuaranteedIncreasingSumAssured_BM').html('<u><b>Jumlah Diinsuranskan Meningkat Terjamin</b></u><br/>Jumlah Rider Diinsuranskan akan meningkat bersamaan dengan 10% bagi setiap 2 tahun dengan peningkatan pertama tersebut bermula pada Ulang tahun ke-2 bagi Tarikh Permulaan Polisi ini dan<br/>peningkatan yang terakhir pada Ulang tahun ke-20 Polisi dan kekal sam kemudian dari ini.<br/><br/>');
+				$('#cNoClaimBenefit_BM').html('');
+				$('.CPayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
 			}
-			if(row.PlanOption == 'Level_NCB' || row.PlanOption == 'Increasing_NCB' ){
-				$('#cNoClaimBenefit').html('<br/><u><b>No Claim Benefit</b></u><br/>Upon survival of the Life Assured on the Expiry Date of this Policy and ' +
-				'provided that no claim has been admitted prior to this date, the Company will pay ' +
-				'the Policy Owner a No Claim benefit<br/>equivalent to RM ' + formatCurrency(row.SumAssured));
+			else if(row.PlanOption == 'Level_NCB'){
+				$('#VeryEarlyCancers').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 0.5));
+				$('#EarlyCancers').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 1.5));
+				$('#AdvancedCancers').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 2.5));
+				$('#VeryEarlyCancers_BM').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 0.5));
+				$('#EarlyCancers_BM').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 1.5));
+				$('#AdvancedCancers_BM').html('RM ' + formatCurrency(parseFloat(row.SumAssured) * 2.5));
+				$('#cGuaranteedIncreasingSumAssured').html('');
+				$('#cNoClaimBenefit').html('<u><b>No Claim Benefit</b></u><br/>Upon survival of the Life Assured on the Expiry Date of this Policy and provided that no claim has been admitted prior to this date, the Company will pay the Policy Owner a No Claim benefit<br/>equivalent to RM ' + formatCurrency(row.SumAssured) + '.<br/><br/>');
+				$('#cGuaranteedIncreasingSumAssured_BM').html('');
+				$('#cNoClaimBenefit_BM').html('<u><b>Faedah Tanpa Tuntutan</b></u><br/>Selagi Hayat Diinsurankan masih hidup pada Tarikh Tamat Tempoh Polisi ini dengan syarat tiada tuntutanyang dimohon sebelum tarikh tersebut. Syarikat akan membayar Pemunya Polisi Faedah<br/>Tanpa Tuntutan bersamaan dengan RM ' + formatCurrency(row.SumAssured) + '.<br/><br/>');
+				$('.CPayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
 			}
-			else{
-    			$('#cNoClaimBenefit').html('');
-			}
+			else if(row.PlanOption == 'Increasing_NCB'){
+				$('#VeryEarlyCancers').html('50% of Rider Sum Assured');
+				$('#EarlyCancers').html('150% of Rider Sum Assured');
+				$('#AdvancedCancers').html('250% of Rider Sum Assured');
+				$('#VeryEarlyCancers_BM').html('50% daripada Jumlah Rider Diinsuranskan');
+				$('#EarlyCancers_BM').html('150% daripada Jumlah Rider Diinsuranskan');
+				$('#AdvancedCancers_BM').html('250% daripada Jumlah Rider Diinsuranskan');
+				$('#cGuaranteedIncreasingSumAssured').html('<u><b>Guaranteed Increasing Sum Assured</b></u><br/>The Rider Sum Assured shall increase by 10% every 2 years with the first such increase starting on 2nd Anniversary of the Commencement Date of this Policy and the last on the 20th Anniversary of this Policy and<br/>remains level thereafter.<br/><br/>');
+				$('#cNoClaimBenefit').html('<u><b>No Claim Benefit</b></u><br/>Upon survival of the Life Assured on the Expiry Date of this Policy and provided that no claim has been admitted prior to this date, the Company will pay the Policy Owner a No Claim benefit<br/>equivalent to RM ' + formatCurrency(row.SumAssured) + '.<br/><br/>');
+				$('#cGuaranteedIncreasingSumAssured_BM').html('<u><b>Jumlah Diinsuranskan Meningkat Terjamin</b></u><br/>Jumlah Rider Diinsuranskan akan meningkat bersamaan dengan 10% bagi setiap 2 tahun dengan peningkatan pertama tersebut bermula pada Ulang tahun ke-2 bagi Tarikh Permulaan Polisi ini dan<br/>peningkatan yang terakhir pada Ulang tahun ke-20 Polisi dan kekal sam kemudian dari ini.<br/><br/>');
+				$('#cNoClaimBenefit_BM').html('<u><b>Faedah Tanpa Tuntutan</b></u><br/>Selagi Hayat Diinsurankan masih hidup pada Tarikh Tamat Tempoh Polisi ini dengan syarat tiada tuntutanyang dimohon sebelum tarikh tersebut. Syarikat akan membayar Pemunya Polisi Faedah<br/>Tanpa Tuntutan bersamaan dengan RM ' + formatCurrency(row.SumAssured) + '.<br/><br/>');
+				$('.CPayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
+			}		
 			
 			$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
 				if (row.Type == "C+"){
@@ -1355,23 +1659,105 @@ function writePDS_HMM()
 			$('.HMMRiderTerm').html(row.RiderTerm);
 			$('.HMMPlanOption').html(row.PlanOption);
 			$('.HMMOption').html(row.PlanOption + " with deductible of RM " + row.Deductible);
+			$('.HMMOption_BM').html(row.PlanOption + " dengan penolakan sebanyak RM " + row.Deductible);
 			$('.HMMPayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
 			
 			$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
-				if (row.Type == "HMM"){
+				if (row.Type == "HMM" && row.FromAge == "(null)"){
 					$('.HMMValueA').html(row.Annually);
 					$('.HMMValueB').html(row.SemiAnnually);
 					$('.HMMValueC').html(row.Quarterly);
 					$('.HMMValueD').html(row.Monthly);
 			
-					CRiderPrem = row.Annually.replace(',', '');
+					HMMRiderPrem = row.Annually.replace(',', '');
 					return false;
 				}
 			});
 			
+			firstAge = parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age);
+			
+			var LAAge;
+			var zzz = 0;
+			var PremList = new Array();
+			for (LAAge = 0;LAAge<7;LAAge++)
+			{
+				zzz = firstAge + LAAge;
+				$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
+					if (row.Type == "HMM" && row.FromAge != "(null)")
+					{
+						if (parseInt(row.FromAge) <= zzz && parseInt(row.ToAge) >= zzz)
+						{
+							//alert("q")
+							PremList[LAAge] = row.Annually;
+						}
+					}
+
+				});
+			}
+			
+			if(HMMRiderTerm > 21){
+				PolicyTerm = 20;
+			}
+			else{
+				PolicyTerm = HMMRiderTerm;
+			}
+			
+
+			j = 1;
+			$.each(gCommision.Rates[0].Trad_Sys_Commission.data, function(index, row) {
+				if (row.PolTerm == PolicyTerm)
+				{
+					if(HMMRiderHL && HMMRiderTempHL ){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(HMMRiderHL)/100 ) + 1);
+					}
+					else if(HMMRiderHL && !HMMRiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(HMMRiderHL)/100) + 1); 
+					}
+					else if(!HMMRiderHL && HMMRiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/// (( parseFloat(HMMRiderTempHL)/100) + 1);
+					}
+					else{
+			    		BaseValue = parseFloat(PremList[j - 1]);
+					}
+						
+
+					if(!HMMRiderHL){
+			    		PremiumA = 0;
+					}
+					else{
+			    		if(parseInt(j) <=  parseInt(HMMRiderHLTerm))
+			    		{
+							PremiumA =  (BaseValue * parseFloat(HMMRiderHL)/100);
+			    		}
+			    		else
+			    		{
+							//actualPremium = (parseFloat(row.Rate)/100 ) * ((parseFloat(CRiderPrem)) - (parseFloat(CRiderSA)/1000 * parseFloat(CRiderHL)));
+							PremiumA = 0;
+			    		}
+					}
+					if(!HMMRiderTempHL){
+			    		PremiumB = 0;
+					}
+					else{
+			    		if(parseInt(i) <=  parseInt(HMMRiderTempHLTerm)){
+							PremiumB =  (BaseValue * parseFloat(HMMRiderTempHL)/100);
+							//alert(PremiumB);
+			    		}
+			    		else{
+							PremiumB = 0;
+			    		}
+					}
+					TotalPremium = parseFloat(BaseValue) + parseFloat(PremiumA) + parseFloat(PremiumB);
+						
+					//alert(TotalPremium)
+					$('#HMMYear'+j).html('RM ' +formatCurrency(parseFloat(row.Rate)/100 * parseFloat(TotalPremium)));
+					j++;
+				}
+			});
 			return false;
 		}
 	});
+	//alert("uuu")
 }
 
 
@@ -1392,17 +1778,94 @@ function writePDS_HS()
 
 			
 			$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
-				if (row.Type == "HSP_II"){
+				if (row.Type == "HSP_II" && row.FromAge == "(null)"){
 					$('.HSValueA').html(row.Annually);
 					$('.HSValueB').html(row.SemiAnnually);
 					$('.HSValueC').html(row.Quarterly);
 					$('.HSValueD').html(row.Monthly);
 			
-					CRiderPrem = row.Annually.replace(',', '');
+					HSRiderPrem = row.Annually.replace(',', '');
 					return false;
 				}
 			});
-		
+
+			firstAge = parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age);
+			
+			var LAAge;
+			var zzz = 0;
+			var PremList = new Array();
+			for (LAAge = 0;LAAge<7;LAAge++)
+			{
+				zzz = firstAge + LAAge;
+				$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
+					if (row.Type == "HSP_II" && row.FromAge != "(null)")
+					{
+						if (parseInt(row.FromAge) <= zzz && parseInt(row.ToAge) >= zzz)
+						{
+							PremList[LAAge] = row.Annually;
+						}
+					}
+				});
+			}
+			
+			if(HSRiderTerm > 21){
+				PolicyTerm = 20;
+			}
+			else{
+				PolicyTerm = HSRiderTerm;
+			}
+			
+			j = 1;
+			$.each(gCommision.Rates[0].Trad_Sys_Commission.data, function(index, row) {
+				if (row.PolTerm == PolicyTerm)
+				{
+					if(HSRiderHL && HSRiderTempHL ){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(HSRiderHL)/100 ) + 1);
+					}
+					else if(HSRiderHL && !HSRiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(HSRiderHL)/100) + 1); 
+					}
+					else if(!HSRiderHL && HSRiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/// (( parseFloat(HMMRiderTempHL)/100) + 1);
+					}
+					else{
+			    		BaseValue = parseFloat(PremList[j - 1]);
+					}
+						
+
+					if(!HSRiderHL){
+			    		PremiumA = 0;
+					}
+					else{
+			    		if(parseInt(j) <=  parseInt(HSRiderHLTerm))
+			    		{
+							PremiumA =  (BaseValue * parseFloat(HSRiderHL)/100);
+			    		}
+			    		else
+			    		{
+							//actualPremium = (parseFloat(row.Rate)/100 ) * ((parseFloat(CRiderPrem)) - (parseFloat(CRiderSA)/1000 * parseFloat(CRiderHL)));
+							PremiumA = 0;
+			    		}
+					}
+					if(!HSRiderTempHL){
+			    		PremiumB = 0;
+					}
+					else{
+			    		if(parseInt(i) <=  parseInt(HSRiderTempHLTerm)){
+							PremiumB =  (BaseValue * parseFloat(HSRiderTempHL)/100);
+							//alert(PremiumB);
+			    		}
+			    		else{
+							PremiumB = 0;
+			    		}
+					}
+					TotalPremium = parseFloat(BaseValue) + parseFloat(PremiumA) + parseFloat(PremiumB);
+						
+					//alert(TotalPremium)
+					$('#HSYear'+j).html('RM ' +formatCurrency(parseFloat(row.Rate)/100 * parseFloat(TotalPremium)));
+					j++;
+				}
+			});		
 			return false;
 		}
 	});
@@ -1421,21 +1884,98 @@ function writePDS_MG2()
 		
 			$('.MG2RiderTerm').html(row.RiderTerm);
 			$('.MG2PlanOption').html(row.PlanOption);
-			$('.MG2Option').html(row.PlanOption + " with deductible of RM " + row.Deductible);
+			//$('.MG2Option').html(row.PlanOption + " with deductible of RM " + row.Deductible);
 			$('.MG2PayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
 			
 			$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
-				if (row.Type == "MG_II"){
+				if (row.Type == "MG_II" && row.FromAge == "(null)"){
 					$('.MG2ValueA').html(row.Annually);
 					$('.MG2ValueB').html(row.SemiAnnually);
 					$('.MG2ValueC').html(row.Quarterly);
 					$('.MG2ValueD').html(row.Monthly);
 			
-					CRiderPrem = row.Annually.replace(',', '');
+					MG2RiderPrem = row.Annually.replace(',', '');
 					return false;
 				}
 			});
 			
+			firstAge = parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age);
+			
+			var LAAge;
+			var zzz = 0;
+			var PremList = new Array();
+			for (LAAge = 0;LAAge<7;LAAge++)
+			{
+				zzz = firstAge + LAAge;
+				$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
+					if (row.Type == "MG_II" && row.FromAge != "(null)")
+					{
+						if (parseInt(row.FromAge) <= zzz && parseInt(row.ToAge) >= zzz)
+						{
+							PremList[LAAge] = row.Annually;
+						}
+					}
+				});
+			}
+			if(MG2RiderTerm > 21){
+				PolicyTerm = 20;
+			}
+			else{
+				PolicyTerm = MG2RiderTerm;
+			}
+			
+			
+			j = 1;
+			$.each(gCommision.Rates[0].Trad_Sys_Commission.data, function(index, row) {
+				if (row.PolTerm == PolicyTerm)
+				{
+					if(MG2RiderHL && MG2RiderTempHL ){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(MG2RiderHL)/100 ) + 1);
+					}
+					else if(MG2RiderHL && !MG2RiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(MG2RiderHL)/100) + 1); 
+					}
+					else if(!MG2RiderHL && MG2RiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/// (( parseFloat(HMMRiderTempHL)/100) + 1);
+					}
+					else{
+			    		BaseValue = parseFloat(PremList[j - 1]);
+					}
+						
+
+					if(!MG2RiderHL){
+			    		PremiumA = 0;
+					}
+					else{
+			    		if(parseInt(j) <=  parseInt(MG2RiderHLTerm))
+			    		{
+							PremiumA =  (BaseValue * parseFloat(MG2RiderHL)/100);
+			    		}
+			    		else
+			    		{
+							//actualPremium = (parseFloat(row.Rate)/100 ) * ((parseFloat(CRiderPrem)) - (parseFloat(CRiderSA)/1000 * parseFloat(CRiderHL)));
+							PremiumA = 0;
+			    		}
+					}
+					if(!MG2RiderTempHL){
+			    		PremiumB = 0;
+					}
+					else{
+			    		if(parseInt(i) <=  parseInt(MG2RiderTempHLTerm)){
+							PremiumB =  (BaseValue * parseFloat(MG2RiderTempHL)/100);
+							//alert(PremiumB);
+			    		}
+			    		else{
+							PremiumB = 0;
+			    		}
+					}
+					TotalPremium = parseFloat(BaseValue) + parseFloat(PremiumA) + parseFloat(PremiumB);
+						
+					//alert(TotalPremium)
+					$('#MG2Year'+j).html('RM ' +formatCurrency(parseFloat(row.Rate)/100 * parseFloat(TotalPremium)));
+					j++;
+				}
+			});		
 			return false;
 		}
 	});
@@ -1454,21 +1994,96 @@ function writePDS_MG4()
 		
 			$('.MG4RiderTerm').html(row.RiderTerm);
 			$('.MG4PlanOption').html(row.PlanOption);
-			$('.MG4Option').html(row.PlanOption + " with deductible of RM " + row.Deductible);
+			//$('.MG4Option').html(row.PlanOption + " with deductible of RM " + row.Deductible);
 			$('.MG4PayableAge').html((parseInt(row.RiderTerm) + parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age)));
 			
 			$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
-				if (row.Type == "MG_IV"){
+				if (row.Type == "MG_IV" && row.FromAge == "(null)"){
 					$('.MG4ValueA').html(row.Annually);
 					$('.MG4ValueB').html(row.SemiAnnually);
 					$('.MG4ValueC').html(row.Quarterly);
 					$('.MG4ValueD').html(row.Monthly);
 			
-					CRiderPrem = row.Annually.replace(',', '');
+					MG4RiderPrem = row.Annually.replace(',', '');
 					return false;
 				}
 			});
+			firstAge = parseInt(gdata.SI[0].SI_Temp_trad_LA.data[0].Age);
 			
+			var LAAge;
+			var zzz = 0;
+			var PremList = new Array();
+			for (LAAge = 0;LAAge<7;LAAge++)
+			{
+				zzz = firstAge + LAAge;
+				$.each(gdata.SI[0].SI_Store_Premium.data, function(index, row) {
+					if (row.Type == "MG_IV" && row.FromAge != "(null)")
+					{
+						if (parseInt(row.FromAge) <= zzz && parseInt(row.ToAge) >= zzz)
+						{
+							PremList[LAAge] = row.Annually;
+						}
+					}
+				});
+			}
+			if(MG4RiderTerm > 21){
+				PolicyTerm = 20;
+			}
+			else{
+				PolicyTerm = MG4RiderTerm;
+			}
+			
+			j = 1;
+			$.each(gCommision.Rates[0].Trad_Sys_Commission.data, function(index, row) {
+				if (row.PolTerm == PolicyTerm)
+				{
+					if(MG4RiderHL && MG4RiderTempHL ){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(MG4RiderHL)/100 ) + 1);
+					}
+					else if(MG4RiderHL && !MG4RiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/ (( parseFloat(MG4RiderHL)/100) + 1); 
+					}
+					else if(!MG4RiderHL && MG4RiderTempHL){
+			    		BaseValue = parseFloat(PremList[j - 1])/// (( parseFloat(HMMRiderTempHL)/100) + 1);
+					}
+					else{
+			    		BaseValue = parseFloat(PremList[j - 1]);
+					}
+						
+
+					if(!MG4RiderHL){
+			    		PremiumA = 0;
+					}
+					else{
+			    		if(parseInt(j) <=  parseInt(MG4RiderHLTerm))
+			    		{
+							PremiumA =  (BaseValue * parseFloat(MG4RiderHL)/100);
+			    		}
+			    		else
+			    		{
+							//actualPremium = (parseFloat(row.Rate)/100 ) * ((parseFloat(CRiderPrem)) - (parseFloat(CRiderSA)/1000 * parseFloat(CRiderHL)));
+							PremiumA = 0;
+			    		}
+					}
+					if(!MG4RiderTempHL){
+			    		PremiumB = 0;
+					}
+					else{
+			    		if(parseInt(i) <=  parseInt(MG4RiderTempHLTerm)){
+							PremiumB =  (BaseValue * parseFloat(MG4RiderTempHL)/100);
+							//alert(PremiumB);
+			    		}
+			    		else{
+							PremiumB = 0;
+			    		}
+					}
+					TotalPremium = parseFloat(BaseValue) + parseFloat(PremiumA) + parseFloat(PremiumB);
+						
+					//alert(TotalPremium)
+					$('#MG4Year'+j).html('RM ' +formatCurrency(parseFloat(row.Rate)/100 * parseFloat(TotalPremium)));
+					j++;
+				}
+			});
 			return false;
 		}
 	});

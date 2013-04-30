@@ -43,6 +43,7 @@
     BOOL saved;
     BOOL payorSaved;
     BOOL added;
+	NSString *PDSorSI;
 }
 
 @property (nonatomic, strong) NDHTMLtoPDF *PDFCreator;

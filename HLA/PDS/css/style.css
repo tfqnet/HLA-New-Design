@@ -811,6 +811,7 @@
 	height:1px;
 	color: #000;
 	background-color: #000;
+	float: right;
 }
 
 	.agentInfo {	
@@ -820,7 +821,7 @@
 	padding-right: 20px;
 	padding-top:2px;
 	font-family:Arial, Helvetica, sans-serif;
-	font-size:10px;
+	font-size:8px;
 	text-align:right;	
 	font-weight:normal;
 	margin-top:-3px;
@@ -831,7 +832,7 @@
 .ContentInfo{	
 	height: auto;
 	font-family:Arial, Helvetica, sans-serif;
-	font-size:10px;	
+	font-size:8px;	
 	font-weight:normal;       
 	color: #000000;
 	margin-top:10px;
@@ -847,42 +848,59 @@
 
 .contentArea{
 	width:100%;
-	height:793px;
+	height:800px;
 	background-color: #fff;
 	margin-top:-38px;
 }
 
 
-#table-attachingRider1 {
-	
+#table-attachingRider1,
+
+#table-attachingRider2
+
+{
     border-collapse:collapse;
     border: 1px solid black;
-    width: 100%;
-
-        
+    width: 100%;        
 }
-#table-attachingRider1 td {
+#table-attachingRider1 td,
+
+#table-attachingRider2 td
+
+{
 	padding: 5px 5px 5px 5px;
 	text-align:left;
     border: 1px solid black;
     vertical-align: text-top;
 }
 
-#table-attachingRider1 th.content {
+#table-attachingRider1 th.content,
+
+#table-attachingRider2 th.content
+
+{
 	width:99%;
 	padding: 5px 5px 5px 5px;
 	text-align:left;
     border: 1px solid black; 
 }
 
-#table-attachingRider1 th.contentSmall {
+#table-attachingRider1 th.contentSmall,
+
+#table-attachingRider2 th.contentSmall
+
+{
 	width:1%;
 	padding: 5px 5px 5px 5px;
 	text-align:left;
     border: 1px solid black; 
 }
 
-#table-attachingRider1 td.content {
+#table-attachingRider1 td.content,
+
+#table-attachingRider2 td.content
+
+{
 	width:99%;
 	padding: 5px 5px 5px 5px;
 	text-align:left;
@@ -890,7 +908,11 @@
     vertical-align: text-top; 
 }
 
-#table-attachingRider1 td.contentSmall {
+#table-attachingRider1 td.contentSmall,
+
+#table-attachingRider2 td.contentSmall
+
+{
 	width:1%;
 	padding: 5px 5px 5px 5px;
 	text-align:left;

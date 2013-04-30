@@ -235,7 +235,9 @@ function loadJson()
                 $('.LADesc').html(row.LADesc + '<br/><i>' + row.LADescM + '</i>');
                 $('.LAName').html(row.Name);
                 $('.LAAge').html(row.Age);
+	      
                 if (row.Sex == 'M'){
+		  
                 	$('.LASex').html('Male<br/><i>Lelaki</i>');
             	}
                 else{
@@ -539,7 +541,7 @@ function loadJson()
 	  <td style="text-align:left;padding: 2px 2px 2px 2px;border: 2px solid black;" id="LADesc" class="LADesc">{LADesc}</td>
 	  <td style="text-align:left;padding: 2px 2px 2px 2px;border: 2px solid black;" id="LAName" class="LAName">{LANAME}</td>
 	  <td style="text-align:right;padding: 2px 2px 2px 2px;border: 2px solid black;" id="LAAge" class="LAAge">{LAAge}</td>
-	  <td style="text-align:right;padding: 2px 2px 2px 2px;border: 2px solid black;" id="LASex" class="LAAge">{LASex}</td>
+	  <td style="text-align:right;padding: 2px 2px 2px 2px;border: 2px solid black;" id="LASex" class="LASex">{LASex}</td>
 	  <td style="text-align:right;padding: 2px 2px 2px 2px;border: 2px solid black;" id="LASmoker" class="LASmoker">{LASmoker}</td>
       </tr>
     </table>
@@ -556,13 +558,13 @@ function loadJson()
 	  </tr> 
 	  <tr>
 	      <th class="contentLeft">Basic Plan/ Rider<br/><i>Pelan Asas/ Rider</i></th>
-	      <th class="contentMediumLeft">Plan Choice<br/><i>Pelan Pilihan</i></th>
+	      <th class="contentMediumLeft">Plan Choice<br/><i>Pilihan Pelan</i></th>
 		  <th class="contentSmallLeft">Units<br/><i>Unit</i></th>
 		  <th class="contentRight">Benefit Amount<br/><br/><i>Amaun Faedah</i></th>
 		  <th class="contentSmallRight">Coverage Period<br/><i>Tempoh<br/>Diinsuranskan</i><br/>(Yrs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tahun</i>)</th>
 		  <th class="contentSmallRight">Payment Period<br/><i>Tempoh<br/>Bayaran</i><br/>(Yrs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Tahun</i>)</th>
-		  <th class="contentSmallRight">Annually<br/><i>Tahunan</i></th>
-		  <th class="contentSmallRight">Semi-Annually<br/><i>Setengah Tahun</i></th>
+		  <th class="contentSmallRight">Annual<br/><i>Tahunan</i></th>
+		  <th class="contentSmallRight">Semi-Annual<br/><i>Setengah Tahun</i></th>
 		  <th class="contentSmallRight">Quarterly<br/><i>Suku Tahun</i></th>
 		  <th class="contentSmallRight">Monthly<br/><i>Bulanan</i></th>
 		  <th class="contentSmallRight" id="hLoading" class="hLoading">HLoading<br/><i>Caj Tambahan<br/>Kesihatan</i></th>

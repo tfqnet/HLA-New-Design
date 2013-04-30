@@ -1,6 +1,6 @@
 //ver1.9
 function setPage(){
-	$('.rptVersion').html('Win MP (Trad) Version 6.9 (Agency) - Last Updated 01 March 2013 - E&amp;OE-'); //set version info
+	$('.rptVersion').html('iMP (Trad) Version 1.1 (Agency) - Last Updated 15 May 2013 - E&amp;OE-'); //set version info
 	
 	$('.dateModified').html(gdata.SI[0].DateModified);
 	$('.agentName').html(gdata.SI[0].agentName); //set agent name
@@ -286,7 +286,7 @@ function writeRiderPage1_HLCP()
     }
     for (var i = 3; i < gdata.SI[0].SI_Temp_Trad_Rider.p1[0].data.length; i++) {//row data
     	row = gdata.SI[0].SI_Temp_Trad_Rider.p1[0].data[i];
-        $('#table-Rider1 > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + formatCurrency(row.col1) + '</td><td>' + CurrencyNoCents(row.col2) + '</td><td>' + CurrencyNoCents(row.col3) + '</td><td>' + CurrencyNoCents(row.col4) + '</td><td>' + formatCurrency(row.col5) + '</td><td>' + CurrencyNoCents(row.col6) + '</td><td>' + row.col7 + '</td><td>' + row.col8 + '</td><td>' + formatCurrency(row.col9) + '</td><td>' + CurrencyNoCents(row.col10) + '</td><td>' + CurrencyNoCents(row.col11) + '</td><td>' + CurrencyNoCents(row.col12) +'</td></tr>');
+        $('#table-Rider1 > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + formatCurrency(row.col1) + '</td><td>' + CurrencyNoCents(row.col2) + '</td><td>' + CurrencyNoCents(row.col3) + '</td><td>' + CurrencyNoCents(row.col4) + '</td><td>' + formatCurrency(row.col5) + '</td><td>' + CurrencyNoCents(row.col6) + '</td><td>' + CurrencyNoCents(row.col7) + '</td><td>' + CurrencyNoCents(row.col8) + '</td><td>' + formatCurrency(row.col9) + '</td><td>' + CurrencyNoCents(row.col10) + '</td><td>' + CurrencyNoCents(row.col11) + '</td><td>' + CurrencyNoCents(row.col12) +'</td></tr>');
     }
     }
 }
@@ -411,7 +411,7 @@ function writeRiderPage5_HLCP()
 	if(gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data.length > 0){
 		$('#rider1Page5').html(gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[0].col1);
     	$('#rider2Page5').html(gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[0].col5);
-    	$('#rider3Page4').html(gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[0].col9);
+    	$('#rider3Page5').html(gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[0].col9);
     	
     	$('#col0_1_EPage5').html(gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[1].col0_1 + "<br/><br/><i>" + gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[2].col0_1 + "</i>");
     	$('#col0_2_EPage5').html(gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[1].col0_2 + "<br/><br/><i>" + gdata.SI[0].SI_Temp_Trad_Rider.p5[0].data[2].col0_2 + "</i>");
@@ -578,30 +578,42 @@ function writeRiderDescription_EN()
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {	
 						if (rowRider.RiderCode == "C+"){
 							$("#" + row.PageDesc + " .CRiderTerm").html(rowRider.RiderTerm);
-							$("#" + row.PageDesc + " .cVeryEarly").html(formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 50) / 100));
-							$("#" + row.PageDesc + " .cEarly").html(formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 150) / 100));
-							$("#" + row.PageDesc + " .cAdvance").html(formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 250) / 100));
+							$("#" + row.PageDesc + " .cVeryEarly").html('RM ' + formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 50) / 100));
+							$("#" + row.PageDesc + " .cEarly").html('RM ' + formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 150) / 100));
+							$("#" + row.PageDesc + " .cAdvance").html('RM ' + formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 250) / 100));
 							$("#" + row.PageDesc + " .cNursingCareAllowance").html('RM ' + formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 25) / 100));
+							$("#" + row.PageDesc + " .cNursingCareAllowance_BM").html('RM ' + formatCurrency((parseFloat(formatCurrency(rowRider.SumAssured).replace(",","")) * 25) / 100));
 						
 							if (rowRider.PlanOption == "Level"){
 							    $("#" + row.PageDesc + ' .cPlanOption').html('Level Cover');
 							    $("#" + row.PageDesc + ' .cGuaranteedIncreasingSumAssured').html('');
 							    $("#" + row.PageDesc + ' .cNoClaimBenefit').html('');
+							    $("#" + row.PageDesc + ' .cGuaranteedIncreasingSumAssured_BM').html('');
+							    $("#" + row.PageDesc + ' .cNoClaimBenefit_BM').html('');
 							}
 							else if (rowRider.PlanOption == "Increasing"){ //wideTable value? nursing care allowance?
 							    //alert("aaa")
 							    $("#" + row.PageDesc + ' .cPlanOption').html('Increasing Cover');
 							    $("#" + row.PageDesc + ' .cNoClaimBenefit').html('');
+							    $("#" + row.PageDesc + ' .cNoClaimBenefit_BM').html('');
 							    $("#" + row.PageDesc + ' .cGuaranteedIncreasingSumAssured').html("<u>Guaranteed Increasing Sum Assured</u><br/>" + 
 								"-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Rider's Sum Assured shall increase by 10% every 2 years with the first such increase staring on 2nd Anniversary of the Commencement Date of this<br/> " +
-								"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>");
+								"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rider and the last on the 20th Anniversary of this Rider and remains level thereafter.<br/><br/>");				
+							    $("#" + row.PageDesc + ' .cGuaranteedIncreasingSumAssured_BM').html("<u>Jumlah Diinsuranskan Meningkat Terjamin</u><br/>" + 
+								"-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah Rider Diinsuranskan akan meningkat bersamaan dengan 10% bagi setiap 2 tahun dengan peningkatan pertama tersebut bermula pada<br/> " +
+								"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ulang tahun ke-2 bagi Tarikh Permulaan Polisi ini dan peningkatan yang terakhir pada Ulang tahun ke-20 Polisi ini dan kekal sama kemudian dari ini.<br/><br/>");
 							}
 							else if (rowRider.PlanOption == "Level_NCB"){
 							    $("#" + row.PageDesc + ' .cPlanOption').html('Level Cover with NCB');
 							    $("#" + row.PageDesc + ' .cGuaranteedIncreasingSumAssured').html('');
+							    $("#" + row.PageDesc + ' .cGuaranteedIncreasingSumAssured_BM').html('');
 							    $('#cNoClaimBenefit').html("<u>No Claim Benefit</u><br/> " +
 							    "-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date, the company will pay the<br/>" +
-							    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner a No Claim benefit equivalent to RM" + formatCurrency(rowRider.SumAssured) + "<br/><br/>");
+							    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner a No Claim benefit equivalent to RM" + formatCurrency(rowRider.SumAssured) + "<br/><br/>");				    
+							    $('#cNoClaimBenefit_BM').html("<u>Faedah Tanpa Tuntutan</u><br/> " +
+							    "-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selagi Hayat Diinsuranskan masih hidup pada Tarikh Tamat Tempoh Polisi ini dengan syarat tiada tuntutan yang dimohon sebelum tarikh<br/>" +
+							    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tersebut, Syarikat akan membayar Pemunya Polisi Faedah Tanpa Tuntutan bersamaan dengan RM" + formatCurrency(rowRider.SumAssured) + "<br/><br/>");
+							    
 							}
 							else if (rowRider.PlanOption == "Increasing_NCB"){
 							    $("#" + row.PageDesc + ' .cPlanOption').html('Increasing Cover with NCB');
@@ -612,10 +624,23 @@ function writeRiderDescription_EN()
 							    "-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Upon survival of the Life Assured on the Expiry Date of this Rider and provided that no claim has been admitted prior to this date, the company will pay the<br/>" +
 							    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Policy Owner a No Claim benefit equivalent to RM" + formatCurrency(rowRider.SumAssured) + "<br/><br/>");
 							    
+							    $("#" + row.PageDesc + ' .cGuaranteedIncreasingSumAssured_BM').html("<u>Jumlah Diinsuranskan Meningkat Terjamin</u><br/>" + 
+								"-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jumlah Rider Diinsuranskan akan meningkat bersamaan dengan 10% bagi setiap 2 tahun dengan peningkatan pertama tersebut bermula pada<br/> " +
+								"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ulang tahun ke-2 bagi Tarikh Permulaan Polisi ini dan peningkatan yang terakhir pada Ulang tahun ke-20 Polisi ini dan kekal sama kemudian dari ini.<br/><br/>");
+							    
+							    $('#cNoClaimBenefit_BM').html("<u>Faedah Tanpa Tuntutan</u><br/> " +
+							    "-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Selagi Hayat Diinsuranskan masih hidup pada Tarikh Tamat Tempoh Polisi ini dengan syarat tiada tuntutan yang dimohon sebelum tarikh<br/>" +
+							    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tersebut, Syarikat akan membayar Pemunya Polisi Faedah Tanpa Tuntutan bersamaan dengan RM" + formatCurrency(rowRider.SumAssured) + "<br/><br/>");
+							    
 							    $("#" + row.PageDesc + " .cVeryEarlyTD").html('50% of Rider Sum Assured');
 							    $("#" + row.PageDesc + " .cEarlyTD").html('150% of Rider Sum Assured');
 							    $("#" + row.PageDesc + " .cAdvanceTD").html('250% of Rider Sum Assured');
 							    $("#" + row.PageDesc + " .cNursingCareAllowance").html('25% of Rider Sum Assured');
+							    
+							    $("#" + row.PageDesc + " .cVeryEarlyTD_BM").html('50% daripada jumlah diinsuranskan rider');
+							    $("#" + row.PageDesc + " .cEarlyTD_BM").html('150% daripada jumlah diinsuranskan rider');
+							    $("#" + row.PageDesc + " .cAdvanceTD_BM").html('250% daripada jumlah diinsuranskan rider');
+							    $("#" + row.PageDesc + " .cNursingCareAllowance_BM").html('25% daripada Jumlah Rider Diinsurankan');
                             }
 						
 						
@@ -677,13 +702,15 @@ function writeRiderDescription_EN()
 						if (rowRider.RiderCode == "ETPDB"){
 							$("#" + row.PageDesc + " .ETPDBRiderTerm").html(rowRider.RiderTerm);	
 							$("#" + row.PageDesc + " .ETPDBGYI").html(formatCurrency(rowRider.SumAssured)+"");
+							$("#" + row.PageDesc + ' #illness tr').css('display','table-row');
+							
 						}
 					});
 				}
 				else if (rider[i] == "HB"){
 					$.each(gdata.SI[0].Trad_Rider_Details.data, function(index, rowRider) {	
 						if (rowRider.RiderCode == "HB"){
-							$("#" + row.PageDesc + " .HBRiderTerm").html(rowRider.RiderTerm);	
+							$("#" + row.PageDesc + " .HBRiderTerm").html(rowRider.RiderTerm);
 							$("#" + row.PageDesc + " .HBBenefit").html(parseInt(rowRider.Units) * 45);
 						}
 					});
@@ -749,6 +776,7 @@ function writeRiderDescription_EN()
 							
 							//please check the PTypeCode......
 							if(rowRider.PTypeCode == "LA"){
+							    $("#" + row.PageDesc + " .LCWPInsuredLives_BM").html('Hayat Diinsuranskan ke-2');
 							    $("#" + row.PageDesc + " .LCWPInsuredLives").html('2nd Life Assured');
 							}
 							else if (rowRider.PTypeCode == "PY"){

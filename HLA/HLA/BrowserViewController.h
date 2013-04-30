@@ -8,14 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "PagesController.h"
 
-@interface BrowserViewController : UIViewController<MFMailComposeViewControllerDelegate>
+@interface BrowserViewController : UIViewController<MFMailComposeViewControllerDelegate,PagesControllerDelegate>
 {
 	UIBarButtonItem *email;
 	UIBarButtonItem *print;
+	UIBarButtonItem *pages;
 @private // Instance variables
 	UIPrintInteractionController *printInteraction;
+	PagesController *_PagesList;
+	UIPopoverController *_PagesPopover;
+	UIWebView  *webView;
 }
 @property (nonatomic,strong) NSString *SIFilePath;
-- (id)initWithFilePath:(NSString *)fullFilePath;
+@property (nonatomic,strong) NSString *_PDSorSI;
+- (id)initWithFilePath:(NSString *)fullFilePath PDSorSI:(NSString *)PDSorSI;
+@property (nonatomic, retain) PagesController *PagesList;
+@property (nonatomic, retain) UIPopoverController *PagesPopover;
 @end

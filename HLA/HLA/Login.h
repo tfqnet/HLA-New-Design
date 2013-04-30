@@ -19,6 +19,7 @@
 {
     NSString *databasePath;
     NSString *RatesDatabasePath;
+	    NSString *CommDatabasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
 	id<LoginDelegate> _delegate;

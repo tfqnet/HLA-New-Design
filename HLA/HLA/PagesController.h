@@ -25,4 +25,6 @@
 @property(nonatomic , retain) NSMutableArray *htmlName;
 @property(nonatomic , retain) NSMutableArray *pageDesc;
 
+@property(nonatomic , retain) NSString *PDSorSI;
+
 @end
