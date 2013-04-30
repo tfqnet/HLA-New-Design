@@ -37,15 +37,12 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    
-    
     [self deleteTemp]; //clear all temp data
     [self InsertToSI_Temp_Trad];
     [self InsertToSI_Temp_Trad_LA];
     
     if ([PDSLanguage isEqualToString:@"E"]) {
         [self EnglishPDS];
- 
     }
     else{
         [self MalayPDS];
@@ -69,8 +66,6 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     NSString *siNo = @"";
     NSString *databaseName = @"hladb.sqlite";
-    NSString *databaseName1 = @"0000000000000001.db";
-    NSString *masterName = @"Databases.db";
     int pageNum = 0;
     int riderCount = 0;
     NSString *desc = @"Page";
@@ -234,6 +229,13 @@
         }
     }
     
+	sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ",siNo];
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
+    
+	if (_dataTable.rows.count > 3) {
+		
+	}
+	
     pageNum++;
     sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(htmlName, PageNum, PageDesc) VALUES ('ENG_PDS4.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
@@ -280,7 +282,7 @@
             if (DBID <= 0){
                 NSLog(@"Error inserting data into database.");
             }
-            //NSLog(@"%@",sqlStmt);
+            //NSLog(@"%@",sqlStmt);m
             riderInPageCount = 0;
             riderInPage = @"";
         }
@@ -320,6 +322,13 @@
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
+	
+	sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ",siNo];
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
+    
+	if (_dataTable.rows.count > 3) {
+		
+	}
     
     // for C+ only
     sqlStmt = [NSString stringWithFormat:@"SELECT * FROM Trad_Rider_Details Where SINo = '%@' AND RiderCode = \"C+\"  ",siNo];
@@ -348,7 +357,6 @@
             NSLog(@"Error inserting data into database.");
         }
     }
-    // C+ end
     
     // for HMM only
     sqlStmt = [NSString stringWithFormat:@"SELECT * FROM Trad_Rider_Details Where SINo = '%@' AND RiderCode = \"HMM\"  ",siNo];
@@ -492,91 +500,7 @@
     }
     // pds END---
     
-    NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString *WebSQLSubdir;
-    NSString *WebSQLPath;
-    NSString *WebSQLDb;
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    if (IsAtLeastiOSVersion(@"6.0")){
-        /*
-         WebSQLSubdir = @"WebKit/LocalStorage";
-         WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-         WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-         */
-        NSString *viewerPlist = [library stringByAppendingPathComponent:@"viewer.plist"];
-        BOOL plistExist = [fileManager fileExistsAtPath:viewerPlist];
-        if (!plistExist){
-            NSLog(@"not exist!");
-            NSString *viewerPlistFromDoc = [documents stringByAppendingPathComponent:@"viewer.plist"];
-            [fileManager copyItemAtPath:viewerPlistFromDoc toPath:viewerPlist error:nil];
-            
-            databaseName = @"hladb.sqlite";//actual
-            databaseName1 = @"hladb.sqlite";//dummy
-            WebSQLSubdir = @"Caches";
-            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-            
-            
-            
-        }
-        else{
-            NSLog(@"exist!");
-            
-            databaseName = @"hladb.sqlite";//actual
-            databaseName1 = @"hladb.sqlite";//dummy
-            WebSQLSubdir = @"WebKit/LocalStorage";
-            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-            
-            
-        }
-        
-    }
-    else{
-        /*
-         WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
-         WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-         WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-         */
-        databaseName = @"hladb.sqlite";//actual
-        databaseName1 = @"hladb.sqlite";//dummy
-        WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
-        WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-        WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-    }
-    
-    NSString *masterFile = [WebSQLPath stringByAppendingPathComponent:masterName];
-    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName1];
-    
-    [fileManager removeItemAtPath:databaseFile error:nil];
-    [fileManager removeItemAtPath:masterFile error:nil];
-    
-    //NSString *databasePathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
-    NSString *masterPathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:masterName];
-    
-    
-    NSString *databasePathFromDoc = [docsDir stringByAppendingPathComponent:databaseName];
-    //NSString *masterPathFromDoc = [docsDir stringByAppendingPathComponent:masterName];
-    
-    [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:NULL];
-    [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
-    [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
-    
 
-    fileManager = Nil;
-    masterFile = Nil;
-    databaseFile = Nil;
-    masterPathFromApp = Nil;
-    databasePathFromDoc = Nil;
-    library = Nil;
-    documents = Nil;
-    WebSQLSubdir = Nil;
-    WebSQLPath = Nil;
-    WebSQLDb = Nil;
     _dataTable = Nil;
     _db = Nil;
     sqlStmt = Nil;
@@ -588,8 +512,6 @@
     docsDir = Nil;
     siNo = Nil;
     databaseName = Nil;
-    databaseName1 = Nil;
-    masterName = Nil;
     desc = Nil;
     
 }
@@ -600,8 +522,6 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     NSString *siNo = @"";
     NSString *databaseName = @"hladb.sqlite";
-    NSString *databaseName1 = @"0000000000000001.db";
-    NSString *masterName = @"Databases.db";
     int pageNum = 0;
     int riderCount = 0;
     NSString *desc = @"Page";
@@ -732,7 +652,7 @@
                 }
                 //NSLog(@"%@",sqlStmt);
                 prevRider= @"";
-                riderInPageCount = 0;
+                riderInPageCount = 0; 
                 riderInPage = @"";
             }
             if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
@@ -761,13 +681,22 @@
         }
     }
     
+	
+	
     pageNum++;
     sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages_PDS(htmlName, PageNum, PageDesc) VALUES ('BM_PDS4.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
+
+    sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ",siNo];
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
     
+	if (_dataTable.rows.count > 3) {
+		
+	}
+	
     riderCount = 0; //reset rider count
     descRiderCountStart = 20; //start of rider description page
     riderInPageCount = 0; //number of rider in a page, maximum 3
@@ -784,7 +713,7 @@
     {
         riderCount++;
         curRider = [row objectAtIndex:0];
-        
+			
         //NSLog(@"%@",curRider);
         
         riderInPageCount++;
@@ -846,7 +775,16 @@
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
+		
+		
     }
+	
+	sqlStmt = [NSString stringWithFormat:@"SELECT RiderCode FROM Trad_Rider_Details Where SINo = '%@' ",siNo];
+    _dataTable = [_db  ExecuteQuery:sqlStmt];
+    
+	if (_dataTable.rows.count > 3) {
+		
+	}
     
     // for C+ only
     sqlStmt = [NSString stringWithFormat:@"SELECT * FROM Trad_Rider_Details Where SINo = '%@' AND RiderCode = \"C+\"  ",siNo];
@@ -875,7 +813,6 @@
             NSLog(@"Error inserting data into database.");
         }
     }
-    // C+ end
     
     // for HMM only
     sqlStmt = [NSString stringWithFormat:@"SELECT * FROM Trad_Rider_Details Where SINo = '%@' AND RiderCode = \"HMM\"  ",siNo];
@@ -1019,90 +956,11 @@
     }
     // pds END---
     
-    NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-    NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString *WebSQLSubdir;
-    NSString *WebSQLPath;
-    NSString *WebSQLDb;
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    if (IsAtLeastiOSVersion(@"6.0")){
-        /*
-         WebSQLSubdir = @"WebKit/LocalStorage";
-         WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-         WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-         */
-        NSString *viewerPlist = [library stringByAppendingPathComponent:@"viewer.plist"];
-        BOOL plistExist = [fileManager fileExistsAtPath:viewerPlist];
-        if (!plistExist){
-            NSLog(@"not exist!");
-            NSString *viewerPlistFromDoc = [documents stringByAppendingPathComponent:@"viewer.plist"];
-            [fileManager copyItemAtPath:viewerPlistFromDoc toPath:viewerPlist error:nil];
-            
-            databaseName = @"hladb.sqlite";//actual
-            databaseName1 = @"hladb.sqlite";//dummy
-            WebSQLSubdir = @"Caches";
-            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-            
-            
-            
-        }
-        else{
-            NSLog(@"exist!");
-            
-            databaseName = @"hladb.sqlite";//actual
-            databaseName1 = @"hladb.sqlite";//dummy
-            WebSQLSubdir = @"WebKit/LocalStorage";
-            WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-            WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-            
-            
-        }
-        
-    }
-    else{
-        /*
-         WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
-         WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-         WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-         */
-        databaseName = @"hladb.sqlite";//actual
-        databaseName1 = @"hladb.sqlite";//dummy
-        WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
-        WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-        WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-    }
-    
-    NSString *masterFile = [WebSQLPath stringByAppendingPathComponent:masterName];
-    NSString *databaseFile = [WebSQLDb stringByAppendingPathComponent:databaseName1];
-    
-    [fileManager removeItemAtPath:databaseFile error:nil];
-    [fileManager removeItemAtPath:masterFile error:nil];
-    
-    //NSString *databasePathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
-    NSString *masterPathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:masterName];
     
     
-    NSString *databasePathFromDoc = [docsDir stringByAppendingPathComponent:databaseName];
-    //NSString *masterPathFromDoc = [docsDir stringByAppendingPathComponent:masterName];
     
-    [fileManager createDirectoryAtPath:WebSQLDb withIntermediateDirectories:YES attributes:nil error:NULL];
-    [fileManager copyItemAtPath:databasePathFromDoc toPath:databaseFile error:nil];
-    [fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil];
     
-    fileManager = Nil;
-    masterFile = Nil;
-    databaseFile = Nil;
-    masterPathFromApp = Nil;
-    databasePathFromDoc = Nil;
-    library = Nil;
-    documents = Nil;
-    WebSQLSubdir = Nil;
-    WebSQLPath = Nil;
-    WebSQLDb = Nil;
+    
     _dataTable = Nil;
     _db = Nil;
     sqlStmt = Nil;
@@ -1114,8 +972,6 @@
     docsDir = Nil;
     siNo = Nil;
     databaseName = Nil;
-    databaseName1 = Nil;
-    masterName = Nil;
     desc = Nil;
     
 }

@@ -9,7 +9,6 @@
 #import "PremiumViewController.h"
 #import "MainScreen.h"
 #import "ReportViewController.h"
-#import "BrowserViewController.h"
 #import "AppDelegate.h"
 #import "RiderViewController.h"
 
@@ -31,7 +30,6 @@
 @synthesize premBH,age,riderSex,sex,waiverRiderAnn,waiverRiderHalf,waiverRiderQuar,waiverRiderMonth;
 @synthesize basicPremAnn,basicPremHalf,basicPremMonth,basicPremQuar,ReportHMMRates;
 @synthesize waiverRiderAnn2,waiverRiderHalf2,waiverRiderMonth2,waiverRiderQuar2,ReportFromAge,ReportToAge;
-@synthesize Browser = _Browser;
 @synthesize riderOccp,strOccp,occLoadRider,getAge,SINo,getOccpCode,getMOP,getTerm,getBasicSA,getBasicHL,getPlanCode,getOccpClass;
 @synthesize getBasicTempHL,requestBasicTempHL,requestOccpClass;
 @synthesize BasicAnnually,BasicHalfYear,BasicMonthly,BasicQuarterly,getBasicPlan,requestBasicPlan;
@@ -48,6 +46,7 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+	RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"HLA_Rates.sqlite"]];
     
     getAge = self.requestAge;
     getOccpClass = self.requestOccpClass;
@@ -73,7 +72,7 @@
             lblMessage.hidden = TRUE;
         }
         else {
-            lblMessage.text = [NSString stringWithFormat:@"Basic Sum Assured will be increase to RM%@ in accordance to MHI Guideline",RevisedSumAssured];
+            lblMessage.text = [NSString stringWithFormat:@"Guaranteed Yearly Income will be increase to RM%@ in accordance to MHI Guideline",RevisedSumAssured];
             lblMessage.hidden = FALSE;
         }
     }
@@ -151,22 +150,6 @@
     
     doGenerate.hidden = TRUE;
     
-    //----- meng chiong part --------
-    if (IsAtLeastiOSVersion(@"6.0")){
-        NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSString *viewerPlist = [library stringByAppendingPathComponent:@"viewer.plist"];
-        BOOL plistExist = [fileManager fileExistsAtPath:viewerPlist];
-        if (!plistExist){
-            CDVViewController* browserController_page = [CDVViewController new];
-            browserController_page.wwwFolderName = @"www";
-            browserController_page.startPage = @"dummy.html";//(NSString *)objectHTML;
-            browserController_page.view.frame = CGRectMake(0, 0, 0, 0);
-            [self.view addSubview:browserController_page.view];
-            browserController_page = nil;
-        }
-    }
-    //------ end ---------
     
 }
 
@@ -226,35 +209,35 @@
                            "<td width='17%%' align='center' style='height:45px; background-color:#4F81BD;'><font face='TreBuchet MS' size='4'>Monthly</font></td>"
                            "</tr>"
                            "<tr>"
-                           "<td style='height:35px;'><font face='TreBuchet MS' size='3'>Basic Plan</font></td>"
+                           "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3'>Basic Plan</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "</tr>"
                            "<tr>"
-                           "<td style='height:35px;'><font face='TreBuchet MS' size='3'>Occupation Loading</font></td>"
+                           "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3'>Occupation Loading</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "</tr>"
                            "<tr>"
-                           "<td style='height:35px;'><font face='TreBuchet MS' size='3'>Health Loading</font></td>"
+                           "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3'>Health Loading</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "</tr>"
                            "<tr>"
-                           "<td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                           "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "</tr>"
                            "<tr>"
-                           "<td style='height:35px;'><font face='TreBuchet MS' size='3'>Sub-Total</font></td>"
+                           "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3'>Sub-Total</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                            "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
@@ -277,12 +260,12 @@
                     @"<tr>"
                     "<td colspan='5'>&nbsp;</td>"
                     "</tr>"
-                    "<tr>"
-                    "<td style='height:35px;'><font face='TreBuchet MS' size='3'>Total</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                    "<tr style=\"background-color: black;\">"
+                    "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3' color='white'><b>Total</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
                     "</tr>"
                     "</table></body></html>",annualSUM,halfSUM,quarterSUM,monthSUM];
         
@@ -301,12 +284,12 @@
                     @"<tr>"
                     "<td colspan='5'>&nbsp;</td>"
                     "</tr>"
-                    "<tr>"
-                    "<td style='height:35px;'><font face='TreBuchet MS' size='3'>Total</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
-                    "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                    "<tr style=\"background-color: black;\">"
+                    "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3' color='white'><b>Total</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
+                    "<td align='right'><font face='TreBuchet MS' size='3' color='white'><b>%@</b></font></td>"
                     "</tr>"
                     "</table></body></html>",basicTotalA, basicTotalS, basicTotalQ, basicTotalM];
         
@@ -1426,7 +1409,7 @@
                          "<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>"
                          "</tr>"
                          "<tr>"
-                         "<td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                         "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
@@ -1436,7 +1419,7 @@
             
             htmlRider = [htmlRider stringByAppendingFormat:
                          @"<tr>"
-                         "<td style='height:35px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
+                         "<td style='height:35px;padding: 5px 5px 5px 5px;'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
                          "<td align='right'><font face='TreBuchet MS' size='3'>%@</font></td>"
@@ -1952,7 +1935,7 @@
 
 -(void)getRiderRateAgeSexClass:(NSString *)aaplan riderTerm:(int)aaterm code:(NSString *)strRiderCode
 {
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [RatesDatabasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
@@ -2003,7 +1986,7 @@
 
 -(void)getRiderRateAgeClass:(NSString *)aaplan riderTerm:(int)aaterm code:(NSString *)strRiderCode
 {
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [RatesDatabasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
@@ -2164,7 +2147,6 @@
     [self setWaiverRiderMonth2:nil];
     [self setDoGenerate:nil];
     [self setLblMessage:nil];
-    [self setBrowser:nil];
     [self setReportHMMRates:nil];
     [self setReportFromAge:nil];
     [self setReportToAge:nil];

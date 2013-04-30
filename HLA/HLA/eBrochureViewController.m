@@ -39,6 +39,15 @@
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
     label.text = [NSString stringWithFormat:@"%@",[self.fileTitle description]];
     self.navigationItem.titleView = label;
+	
+	fileName = Nil;
+	fileTitle = Nil;
+	label = Nil;
+	targetURL = Nil;
+	path = Nil;
+	pdfFile = Nil;
+	request = Nil;
+	CustomColor = Nil;
 }
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{

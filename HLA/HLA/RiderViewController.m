@@ -729,10 +729,12 @@ BOOL Edit = FALSE;
         
         if (riderTerm > maxRiderTerm)
         {
+				
             dodelete = YES;
             sqlite3_stmt *statement;
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
             {
+				
                 NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"%@\"",requestSINo,riderCode];
                 
                 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -745,6 +747,38 @@ BOOL Edit = FALSE;
                     }
                     sqlite3_finalize(statement);
                 }
+				
+				if([riderCode isEqualToString:@"LCWP" ]){
+					NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"PLCP\"",requestSINo];
+					
+					if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+					{
+						if (sqlite3_step(statement) == SQLITE_DONE)
+						{
+							NSLog(@"rider PLCP delete!");
+						} else {
+							NSLog(@"rider PLCP delete Failed!");
+						}
+						sqlite3_finalize(statement);
+					}
+				}
+
+				if([riderCode isEqualToString:@"PR" ]){
+					NSString *querySQL = [NSString stringWithFormat:@"DELETE FROM Trad_Rider_Details WHERE SINo=\"%@\" AND RiderCode=\"PTR\"",requestSINo];
+					
+					if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+					{
+						if (sqlite3_step(statement) == SQLITE_DONE)
+						{
+							NSLog(@"rider PTR delete!");
+						} else {
+							NSLog(@"rider PTR delete Failed!");
+						}
+						sqlite3_finalize(statement);
+					}
+				}
+
+				
                 sqlite3_close(contactDB);
             }
         }
@@ -5436,7 +5470,7 @@ BOOL Edit = FALSE;
     BOOL foundPayor = YES;
     BOOL foundLiving = YES;
     BOOL either = NO;
-    BOOL either2 = NO;
+    //BOOL either2 = NO;
     if ([riderCode isEqualToString:@"PTR"]) { foundPayor = NO; }
     if ([riderCode isEqualToString:@"PLCP"]) { foundLiving = NO; }
     
@@ -5470,12 +5504,37 @@ BOOL Edit = FALSE;
                 foundLiving = YES;
                 NSLog(@"enterList-b");
             }
+			/*
             if (([riderCode isEqualToString:@"LCWP"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) || ([riderCode isEqualToString:@"PR"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"])) {
                 either = YES;
             }
             if (([riderCode isEqualToString:@"SP_PRE"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"]) || ([riderCode isEqualToString:@"SP_STD"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"])) {
                 either2 = YES;
             }
+			 */
+			/*
+			if (([[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"] || [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"] ||
+				[[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"] || [[LRiderCode objectAtIndex:i] isEqualToString:@"PR"])
+				&& ([riderCode isEqualToString:@"LCWP"] || [riderCode isEqualToString:@"PR"] || [riderCode isEqualToString:@"SP_PRE"]
+					|| [riderCode isEqualToString:@"SP_STD"])) {
+                either = YES;
+            }
+			 */
+			if (([riderCode isEqualToString:@"LCWP"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) ||
+				([riderCode isEqualToString:@"PR"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]) ||
+				([riderCode isEqualToString:@"LCWP"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]) ||
+				([riderCode isEqualToString:@"SP_PRE"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]) ||
+				([riderCode isEqualToString:@"LCWP"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"]) ||
+				([riderCode isEqualToString:@"SP_STD"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"LCWP"]) ||
+				([riderCode isEqualToString:@"PR"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"]) ||
+				([riderCode isEqualToString:@"SP_STD"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) ||
+				([riderCode isEqualToString:@"PR"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"]) ||
+				([riderCode isEqualToString:@"SP_PRE"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"PR"]) ||
+				([riderCode isEqualToString:@"SP_PRE"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_STD"]) ||
+				([riderCode isEqualToString:@"SP_STD"] && [[LRiderCode objectAtIndex:i] isEqualToString:@"SP_PRE"])) {
+                either = YES;
+            }
+			
         }
         if (!(foundPayor)) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Rider PR before PTR" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -5487,6 +5546,7 @@ BOOL Edit = FALSE;
             [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
             [alert show];
         }
+		/*
         else if (either) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select either PR or LCWP." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
@@ -5496,6 +5556,22 @@ BOOL Edit = FALSE;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select either WOP_SP(Standard) or WOP_SP(Premier)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [alert show];
             [self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+        }
+		 */
+		else if (either) {
+			if (PTypeSeq == 1 ) { //payor
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select only either one of LCWP or PR." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+				[alert show];
+				[self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+			}
+			else{ //2nd life assured
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select only either one of PR, LCWP, SP_PRE, or SP_STD." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+				[alert show];
+				[self.btnAddRider setTitle:@"" forState:UIControlStateNormal];
+			}
+		
+			
+            
         }
         else {
             NSLog(@"enterList-2!");

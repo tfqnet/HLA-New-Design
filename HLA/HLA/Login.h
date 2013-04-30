@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
-
+#import "Reachability.h"
 
 @protocol LoginDelegate
 - (void)Dismiss: (NSString *)ViewToBePresented;
@@ -22,6 +22,7 @@
     sqlite3 *contactDB;
     UITextField *activeField;
 	id<LoginDelegate> _delegate;
+	Reachability *internetReachableFoo;
 	
 }
 

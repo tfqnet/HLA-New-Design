@@ -15,6 +15,7 @@
 #import "CarouselViewController.h"
 #import "SecurityQuestion.h"
 #import "ViewController.h"
+#import "Reachability.h"
 
 @interface Login ()
 
@@ -121,8 +122,10 @@
 		else{
 			
 			labelVersion.text = version;
-			labelUpdated.text = @"Last Updated: 3 April 2013";
+			labelUpdated.text = @"Last Updated: 17 April 2013";
 			outletLogin.hidden = FALSE;
+			
+			[txtUsername becomeFirstResponder];
 		}
 	}
 	else{
@@ -156,6 +159,27 @@
     StartDate = Nil;
     gregorianCalendar = Nil;
     components = Nil;
+	/*
+	internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
+	
+	internetReachableFoo.reachableBlock = ^(Reachability*reach)
+    {
+        // Update the UI on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Yayyy, we have the interwebs!");
+        });
+    };
+	
+	internetReachableFoo.unreachableBlock = ^(Reachability*reach)
+    {
+        // Update the UI on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"dasdasdasd");
+        });
+    };
+	
+	[internetReachableFoo startNotifier];
+	*/
 }
 
 
@@ -409,7 +433,7 @@
                 statusLogin = sqlite3_column_int(statement, 2);
                 
                 txtPassword.text = @"";
-                
+					
             } else {
 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Password. Please check your password" delegate:Nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
@@ -433,6 +457,47 @@
     dbpath = Nil;
     statement = Nil;
 }
+
+-(void)checkingPassword
+{
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
+    {
+		
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT \"AgentPassword\" FROM User_Profile WHERE \"AgentLoginID\"=\"%@\"", txtUsername.text];
+		
+        const char *query_stmt = [querySQL UTF8String];
+        if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                
+                NSLog(@"password is %@", [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]);
+                
+				
+            } else {
+				
+                
+            }
+            sqlite3_finalize(statement);
+        }
+		else{
+			NSLog(@"wrong query");
+		}
+        sqlite3_close(contactDB);
+        querySQL = Nil;
+        query_stmt = Nil;
+    }
+	else{
+		NSLog(@"cannot open");
+	}
+    
+    dbpath = Nil;
+    statement = Nil;
+}
+
 
 -(void)updateDateLogin
 {
@@ -539,6 +604,7 @@
 #pragma mark - action
 
 - (IBAction)btnLogin:(id)sender {
+	//[self checkingPassword];
     if (txtUsername.text.length <= 0) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Username is required" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -632,7 +698,7 @@
 }
 
 - (IBAction)btnReset:(id)sender
-{
+{/*
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     sqlite3_stmt *statement2;
@@ -682,15 +748,15 @@
         }
         sqlite3_close(contactDB);
     }
-    
+    */
 
-	/*
+	
 	if(_delegate != Nil){
 		[(ViewController *)_delegate setSss:1 ];
 		[self dismissModalViewControllerAnimated:NO];
 		[_delegate Dismiss:@""];
 	}
-	 */
+	 
 }
 
 #pragma mark - memory

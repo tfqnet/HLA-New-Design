@@ -30,6 +30,7 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     NewSIIndex = 3;
     ExitIndex = 4;
     
+	/*
     //for ios6 start, will also clear out ios5.1
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -59,7 +60,7 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     documents = Nil, viewerPlistFromApp = Nil, viewerPlistFromDoc = Nil;
     library = Nil, databaseName1 = Nil, WebSQLDb1 = Nil, WebSQLPath1 = Nil, WebSQLSubdir1 = Nil, masterFile = Nil;
     databaseFile = Nil;
-    
+    */
     return YES;
 }
 							

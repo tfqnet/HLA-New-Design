@@ -222,6 +222,7 @@
 
 - (IBAction)btnClose:(id)sender
 {
+	dataItems = Nil;
     [self dismissModalViewControllerAnimated:YES];
 }
 @end

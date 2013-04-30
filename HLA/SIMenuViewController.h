@@ -18,11 +18,16 @@
 #import "BasicPlanViewController.h"
 #import "RiderViewController.h"
 #import "HLViewController.h"
-
 #import "FSVerticalTabBarController.h"
+#import "FMDatabase.h"
+#import "NDHTMLtoPDF.h"
 
-@interface SIMenuViewController : UIViewController <FSTabBarControllerDelegate,NewLAViewControllerDelegate,PayorViewControllerDelegate,SecondLAViewControllerDelegate,BasicPlanViewControllerDelegate,RiderViewControllerDelegate,HLViewControllerDelegate> {
-    NSString *databasePath;
+@interface SIMenuViewController : UIViewController <FSTabBarControllerDelegate,NewLAViewControllerDelegate,PayorViewControllerDelegate,SecondLAViewControllerDelegate,BasicPlanViewControllerDelegate,RiderViewControllerDelegate,HLViewControllerDelegate, NDHTMLtoPDFDelegate> {
+    
+	UIActivityIndicatorView *spinner_SI;
+	//UILabel *spinnerLabel_SI;
+	
+	NSString *databasePath;
     sqlite3 *contactDB;
     BOOL PlanEmpty;
     NewLAViewController *_LAController;
@@ -40,6 +45,7 @@
     BOOL added;
 }
 
+@property (nonatomic, strong) NDHTMLtoPDF *PDFCreator;
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *RightView;
 @property (nonatomic, retain) NewLAViewController *LAController;
@@ -104,4 +110,10 @@
 
 @property (nonatomic,strong) id SIshowQuotation;
 -(void)Reset;
+-(void)copySIToDoc;
+
+//@property(nonatomic,retain) IBOutlet UIActivityIndicatorView *spinner_SI;
+
+@property (nonatomic, strong) NSMutableDictionary *riderCode;
+
 @end

@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "BasicPlanHandler.h"
-#import "BrowserViewController.h"
 
-@interface PremiumViewController : UIViewController<BrowserDelegate> {
+@interface PremiumViewController : UIViewController {
     NSString *databasePath;
+	NSString *RatesDatabasePath;
     sqlite3 *contactDB;
-     BrowserViewController *_Browser;
+     //BrowserViewController *_Browser;
 }
 
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
@@ -132,7 +132,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *doGenerate;
 - (IBAction)btnGenerate:(id)sender;
 
-@property (nonatomic, retain) BrowserViewController *Browser;
 
 @property(nonatomic , retain) NSMutableArray *ReportHMMRates;
 @property(nonatomic , retain) NSMutableArray *ReportFromAge;

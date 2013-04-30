@@ -9,7 +9,6 @@
 #import "ReportViewController.h"
 #import "DBController.h"
 #import "DataTable.h"
-#import "BrowserViewController.h"
 
 @interface ReportViewController ()
 

@@ -142,21 +142,21 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     DBID = [_db ExecuteINSERT:sqlStmt];
     
 	pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page1.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
 
 	pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page2.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
     }
 	
 	pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page3.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page3.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
@@ -181,7 +181,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     //description of basic plan, 2 pages
     pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page30.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page30.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
@@ -196,7 +196,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     */
     //rider benefits
     riderCount = 0; //reset rider count
-    int descRiderCountStart = 100; //start of rider description page
+    int descRiderCountStart = 35; //start of rider description page
     int riderInPageCount = 0; //number of rider in a page, maximum 3
     NSString *riderInPage = @""; //rider in a page, write to db
     //NSString *riderInPage1 = @"";
@@ -220,7 +220,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 			[curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"] ||
 			[curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PR"] ||
 			[curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"EDB"] ||
-			[curRider isEqualToString:@"ETPDB"]){
+			[curRider isEqualToString:@"ETPDB"] || [curRider isEqualToString:@"PA"]  ){
             riderInPageCount++;
             prevRider = curRider;
             
@@ -235,7 +235,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 pageNum++;
                 //if(riderCount == 1)
 				//  riderInPage = [headerTitle stringByAppendingString:riderInPage];
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -250,7 +250,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
                 //NSLog(@"%@",riderInPage);
                 pageNum++;
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -263,7 +263,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             if (riderInPageCount == 2 && riderCount == _dataTable.rows.count) {
                 pageNum++;
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -280,7 +280,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 pageNum++;
                 if(riderCount == 1)
                     riderInPage = [headerTitle stringByAppendingString:riderInPage];
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -293,18 +293,40 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
 				[prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] ||
-				[prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PR"] ||
+				[prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"PA"] ||
 				[prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
-                prevRider = [prevRider stringByAppendingString:@";"];
-                curRider = [prevRider stringByAppendingString:curRider];
-                riderInPageCount = 0;
-                riderInPage = @"";
+				if (![curRider isEqualToString:@"ICR"] && ![curRider isEqualToString:@"LCPR"] && ![curRider isEqualToString:@"LCWP"]
+					&& ![curRider isEqualToString:@"PLCP"] && ![prevRider isEqualToString:@""]) {
+					prevRider = [prevRider stringByAppendingString:@";"];
+					curRider = [prevRider stringByAppendingString:curRider];
+					riderInPageCount = 0;
+					riderInPage = @"";
+					
+				}
+				else{
+					pageNum++;
+				
+					if(riderCount == 1){
+						riderInPage = [headerTitle stringByAppendingString:riderInPage];
+					}
+					
+					sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES "
+							   "('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+					DBID = [_db ExecuteINSERT:sqlStmt];
+					if (DBID <= 0){
+						NSLog(@"Error inserting data into database.");
+					}
+					prevRider = @"";
+					riderInPage = @"";
+					riderInPageCount = 0;
+				}
+    
             }
             //NSLog(@"%@",curRider);
             pageNum++;
             if(riderCount == 1)
                 curRider = [headerTitle stringByAppendingString:curRider];
-            descRiderCountStart++;
+            //descRiderCountStart++;
             sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",curRider,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
             DBID = [_db ExecuteINSERT:sqlStmt];
             if (DBID <= 0){
@@ -315,7 +337,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     }
     
     pageNum++;
-    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('HLACP_Page40.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+    sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page40.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
     DBID = [_db ExecuteINSERT:sqlStmt];
     if (DBID <= 0){
         NSLog(@"Error inserting data into database.");
@@ -363,7 +385,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     }*/
     
     riderCount = 0; //reset rider count
-    descRiderCountStart = 200; //start of rider description page
+    descRiderCountStart = 36; //start of rider description page
     riderInPageCount = 0; //number of rider in a page, maximum 3
     riderInPage = @""; //rider in a page, write to db
     //NSString *riderInPage1 = @"";
@@ -380,7 +402,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         
         if ([curRider isEqualToString:@"CCTR"] || [curRider isEqualToString:@"ETPD"] || [curRider isEqualToString:@"HB"] ||
 			[curRider isEqualToString:@"HMM"] || [curRider isEqualToString:@"HSP_II"] || [curRider isEqualToString:@"MG_II"] ||
-			[curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PR"] ||
+			[curRider isEqualToString:@"MG_IV"] || [curRider isEqualToString:@"PR"] || [curRider isEqualToString:@"PA"] ||
 			[curRider isEqualToString:@"SP_STD"] || [curRider isEqualToString:@"PTR"] || [curRider isEqualToString:@"EDB"] || [curRider isEqualToString:@"ETPDB"]){
             riderInPageCount++;
             prevRider = curRider;
@@ -395,7 +417,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 pageNum++;
                 //if(riderCount == 1)
 				//riderInPage = [headerTitle stringByAppendingString:riderInPage];
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -414,7 +436,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             if (riderInPageCount == 1 && riderCount == _dataTable.rows.count){
                 //NSLog(@"%@",riderInPage);
                 pageNum++;
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -427,7 +449,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             if (riderInPageCount == 2 && riderCount == _dataTable.rows.count) {
                 pageNum++;
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -444,7 +466,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 pageNum++;
                 if(riderCount == 1)
                     riderInPage = [headerTitle stringByAppendingString:riderInPage];
-                descRiderCountStart++;
+                //descRiderCountStart++;
                 sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
                 DBID = [_db ExecuteINSERT:sqlStmt];
                 if (DBID <= 0){
@@ -457,18 +479,38 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             }
             if ([prevRider isEqualToString:@"CCTR"] || [prevRider isEqualToString:@"ETPD"] || [prevRider isEqualToString:@"HB"] ||
 				[prevRider isEqualToString:@"HMM"] || [prevRider isEqualToString:@"HSP_II"] || [prevRider isEqualToString:@"MG_II"] ||
-				[prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PR"] ||
+				[prevRider isEqualToString:@"MG_IV"] || [prevRider isEqualToString:@"PR"] || [prevRider isEqualToString:@"PA"] ||
 				[prevRider isEqualToString:@"SP_STD"] || [prevRider isEqualToString:@"PTR"]){
-                prevRider = [prevRider stringByAppendingString:@";"];
-                curRider = [prevRider stringByAppendingString:curRider];
-                riderInPageCount = 0;
-                riderInPage = @"";
+				if (![curRider isEqualToString:@"ICR"] && ![curRider isEqualToString:@"LCPR"] && ![curRider isEqualToString:@"LCWP"]
+					&& ![curRider isEqualToString:@"PLCP"] && ![prevRider isEqualToString:@""]) {
+					prevRider = [prevRider stringByAppendingString:@";"];
+					curRider = [prevRider stringByAppendingString:curRider];
+					riderInPageCount = 0;
+					riderInPage = @"";
+					
+				}
+				else{
+					pageNum++;
+					if(riderCount == 1){
+						riderInPage = [headerTitle stringByAppendingString:riderInPage];
+					}
+					sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES "
+							   "('%@','Page%d.html',%d,'%@')",riderInPage,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+					DBID = [_db ExecuteINSERT:sqlStmt];
+					if (DBID <= 0){
+						NSLog(@"Error inserting data into database.");
+					}
+					prevRider = @"";
+					riderInPage = @"";
+					riderInPageCount = 0;
+				}
+                
             }
             //NSLog(@"%@",curRider);
             pageNum++;
             if(riderCount == 1)
                 curRider = [headerTitle stringByAppendingString:curRider];
-            descRiderCountStart++;
+            //descRiderCountStart++;
             sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(riders,htmlName, PageNum, PageDesc) VALUES ('%@','Page%d.html',%d,'%@')",curRider,descRiderCountStart,pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
             DBID = [_db ExecuteINSERT:sqlStmt];
             if (DBID <= 0){
@@ -513,7 +555,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     //------- end ---------
     
-    
+    /*
     NSString* library = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)objectAtIndex:0];
     NSString* documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
@@ -527,11 +569,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     
     if (IsAtLeastiOSVersion(@"6.0")){
         
-        /*
-		 WebSQLSubdir = @"WebKit/LocalStorage";
-		 WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-		 WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-         */
+        
         NSString *viewerPlist = [library stringByAppendingPathComponent:@"viewer.plist"];
         BOOL plistExist = [fileManager fileExistsAtPath:viewerPlist];
         if (!plistExist){
@@ -565,11 +603,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         viewerPlist = Nil;
     }
     else{
-        /*
-		 WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
-		 WebSQLPath = [library stringByAppendingPathComponent:WebSQLSubdir];
-		 WebSQLDb = [WebSQLPath stringByAppendingPathComponent:@"file__0"];
-         */
+     
         databaseName = @"hladb.sqlite";//actual
         databaseName1 = @"hladb.sqlite";//dummy
         WebSQLSubdir = (IsAtLeastiOSVersion(@"5.1")) ? @"Caches" : @"WebKit/Databases";
@@ -610,15 +644,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 	if(!error){
 		NSLog(@"Error at copying to masterpath --> %@", error);
 	}
-	/*
-	if([fileManager fileExistsAtPath:databaseFile]){
-		NSLog(@"database file exists");
-	}
 	
-	if([fileManager fileExistsAtPath:masterFile]){
-		NSLog(@"master file exists");
-	}
-	*/
+	 
 	error = Nil;
     fileManager = Nil;
     masterFile = Nil;
@@ -628,8 +655,10 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     library = Nil;
     documents = Nil;
     WebSQLSubdir = Nil;
+	 
     WebSQLPath = Nil;
     WebSQLDb = Nil;
+	 */
     _dataTable = Nil;
     _db = Nil;
     sqlStmt = Nil;
@@ -826,7 +855,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 				strBasicSemiAnnually = strSemiAnnually;
 				strBasicQuarterly = strQuarterly;
 				strBasicMonthly = strMonthly;
-			}
+			}	
 			sqlite3_finalize(statement);
 		}
 		

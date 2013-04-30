@@ -167,7 +167,7 @@
         [alert show];
         [HLField becomeFirstResponder];
     }
-    else if ([HLField.text intValue] >= 10000) {
+    else if ([HLField.text intValue] > 10000) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLField becomeFirstResponder];
@@ -187,7 +187,7 @@
         [alert show];
         [HLTermField becomeFirstResponder];
     }
-    else if ([HLTermField.text intValue] > termCover) {
+    else if ([HLTermField.text intValue] > termCover &&  ![planChoose isEqualToString:@"HLACP" ]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Health Loading 1 (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLTermField becomeFirstResponder];
@@ -220,7 +220,7 @@
         [alert show];
         [TempHLTermField becomeFirstResponder];
     }
-    else if ([TempHLField.text intValue] >= 10000) {
+    else if ([TempHLField.text intValue] > 10000) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (Per 1k SA) cannot greater than 10000" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [TempHLField becomeFirstResponder];
@@ -235,7 +235,7 @@
         [alert show];
         [TempHLField becomeFirstResponder];
     }
-    else if ([TempHLTermField.text intValue] > termCover) {
+    else if ([TempHLTermField.text intValue] > termCover && ![planChoose isEqualToString:@"HLACP" ]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Health Loading 2 (per 1k SA) Term cannot be greater than %d",termCover] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [TempHLTermField becomeFirstResponder];
@@ -250,16 +250,17 @@
         [alert show];
         [TempHLTermField becomeFirstResponder];
     }
-	else if ([TempHLTermField.text intValue] > 6) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (per 1k SA) term cannot greater than 6" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [TempHLTermField becomeFirstResponder];
-    }
-	else if ([HLTermField.text intValue] > 6) {
+	else if ([HLTermField.text intValue] > 6 && [planChoose isEqualToString:@"HLACP"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (per 1k SA) term cannot greater than 6" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [HLTermField becomeFirstResponder];
     }
+	else if ([TempHLTermField.text intValue] > 6 && [planChoose isEqualToString:@"HLACP"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 2 (per 1k SA) term cannot greater than 6" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [TempHLTermField becomeFirstResponder];
+    }
+	
     else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
