@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
+#import "DateViewController.h"
 
-@interface UserProfile : UIViewController{
+@interface UserProfile : UIViewController <DateViewControllerDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
+    DateViewController *_DatePicker;
+    UIPopoverController *_datePopover;
 }
 @property (nonatomic,strong) id idRequest;
 @property (nonatomic, assign) int indexNo;
@@ -45,5 +48,21 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *outletCancel;
 @property (weak, nonatomic) IBOutlet UIButton *outletSave;
 
+//--bob
+@property (strong, nonatomic) IBOutlet UITextField *txtICNo;
+@property (strong, nonatomic) IBOutlet UIButton *btnContractDate;
+- (IBAction)btnContractDatePressed:(id)sender;
+@property (strong, nonatomic) IBOutlet UITextField *txtAddr1;
+@property (strong, nonatomic) IBOutlet UITextField *txtAddr2;
+@property (strong, nonatomic) IBOutlet UITextField *txtAddr3;
+
+@property (nonatomic, retain) DateViewController *DatePicker;
+@property (nonatomic, retain) UIPopoverController *datePopover;
+@property (nonatomic, copy) NSString *contDate;
+@property (nonatomic, copy) NSString *ICNo;
+@property (nonatomic, copy) NSString *Addr1;
+@property (nonatomic, copy) NSString *Addr2;
+@property (nonatomic, copy) NSString *Addr3;
+//--end
 
 @end
