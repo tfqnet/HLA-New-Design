@@ -16,10 +16,14 @@
 #import "SecurityQuestion.h"
 #import "ViewController.h"
 #import "Reachability.h"
+#import "AFJSONRequestOperation.h"
+#import "AFNetworking.h"
+#import "SettingUserProfile.h"
 
 @interface Login ()
 
 @end
+NSString *ProceedStatus = @"";
 
 @implementation Login
 @synthesize outletReset;
@@ -28,9 +32,10 @@
 @synthesize txtPassword;
 @synthesize lblForgotPwd;
 @synthesize statusLogin,indexNo,agentID;
-@synthesize labelUpdated,labelVersion,outletLogin;
+@synthesize labelUpdated,labelVersion,outletLogin,agentPortalLoginID,agentPortalPassword;
 @synthesize delegate = _delegate;
-
+@synthesize previousElementName, agentCode;
+@synthesize elementName;
 
 - (void)viewDidLoad
 {
@@ -152,27 +157,9 @@
     StartDate = Nil;
     gregorianCalendar = Nil;
     components = Nil;
-	/*
-	internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
 	
-	internetReachableFoo.reachableBlock = ^(Reachability*reach)
-    {
-        // Update the UI on the main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"Yayyy, we have the interwebs!");
-        });
-    };
 	
-	internetReachableFoo.unreachableBlock = ^(Reachability*reach)
-    {
-        // Update the UI on the main thread
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"dasdasdasd");
-        });
-    };
 	
-	[internetReachableFoo startNotifier];
-	*/
 }
 
 
@@ -214,6 +201,15 @@
     if (alertView.tag == 1001) {
         exit(0);
     }
+	else if (alertView.tag == 1){
+		SettingUserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingUserProfile"];
+		UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
+		UserProfileView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		UserProfileView.indexNo = self.indexNo;
+		[self presentModalViewController:UserProfileView animated:YES];
+		UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 748);
+		UserProfileView = nil;
+	}
     
 }
 
@@ -262,6 +258,8 @@
 	 u6, Delete From Adm_Occp_Loading_Penta where OccpCode = 'OCC01717';
 		 Update Trad_Sys_Rider_Mtn set MaxAge = '63' where RiderCode in ('ETPDB', 'EDB');
 
+	 u7, ALTER TABLE \"Agent_profile\" ADD COLUMN \"AgentPortalLoginID\" VARCHAR
+		 ALTER TABLE \"Agent_profile\" ADD COLUMN \"AgentPortalPassword\" VARCHAR
 	 */
 	
 	/*
@@ -428,7 +426,10 @@
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
 
-        NSString *querySQL = [NSString stringWithFormat: @"SELECT \"IndexNo\",\"AgentLoginID\",\"FirstLogin\" FROM User_Profile WHERE \"AgentLoginID\"=\"%@\" and \"AgentPassword\"=\"%@\"", txtUsername.text,txtPassword.text];
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT A.IndexNo,A.AgentLoginID,A.FirstLogin,B.AgentPortalLoginID, "
+							  "B.AgentPortalPassword, B.AgentCode FROM User_Profile A, Agent_Profile B WHERE A.AgentLoginID = B.AgentLoginID AND "
+							  "A.AgentLoginID=\"%@\" and A.AgentPassword=\"%@\"",
+							  txtUsername.text,txtPassword.text];
 
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -438,9 +439,11 @@
                 indexNo = sqlite3_column_int(statement, 0);
                 agentID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 statusLogin = sqlite3_column_int(statement, 2);
-                
+                agentPortalLoginID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+				agentPortalPassword = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+				agentCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
                 txtPassword.text = @"";
-					
+		
             } else {
 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Invalid Password. Please check your password" delegate:Nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
@@ -656,7 +659,7 @@
             databasePath = Nil;
             RatesDatabasePath = Nil;
             contactDB = Nil;
-            
+				
             SecurityQuestion *securityPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SecurityQuestion"];
             securityPage.userID = indexNo;
             securityPage.FirstTimeLogin = 1;
@@ -686,23 +689,73 @@
              [self presentViewController:mainMenu animated:YES completion:nil];
              */
             
-            CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
-            [self presentViewController:carouselMenu animated:YES completion:Nil];
-            
-            [self updateDateLogin];
+			//check internet connection
+			internetReachableFoo = [Reachability reachabilityWithHostname:@"www.google.com"];
+
+			
+			NSString *_zz = agentPortalLoginID;
+			NSString *_zzz = agentPortalPassword;
+			NSString *_zzz2 = agentCode;
+			id __weak weakself = self;
+			
+			internetReachableFoo.reachableBlock = ^(Reachability*reach)
+			{
+
+				// Update the UI on the main thread
+				dispatch_async(dispatch_get_main_queue(), ^{
+					NSString *strURL = [NSString stringWithFormat:@"http://www.hla.com.my:2880/eSubmissionWS/eSubmissionXMLService.asmx/"
+										"ValidateLogin?strid=%@&strpwd=%@&strIPAddres=123&iBadAttempts=0&strFirstAgentCode=%@",  _zz
+										, _zzz, _zzz2];
+					NSLog(@"%@", strURL);
+					NSURL *url = [NSURL URLWithString:strURL];
+					NSURLRequest *request = [NSURLRequest requestWithURL:url];
+					
+					AFXMLRequestOperation *operation =
+					[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+																		success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+																			
+																			XMLParser.delegate = weakself;
+																			[XMLParser setShouldProcessNamespaces:YES];
+																			[XMLParser parse];
+																			
+																		} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+																			NSLog(@"error in calling web service");
+																		}];
+					
+					[operation start];
+					
+				});
+			};
+			
+			internetReachableFoo.unreachableBlock = ^(Reachability*reach)
+			{
+				// Update the UI on the main thread
+				dispatch_async(dispatch_get_main_queue(), ^{
+					
+				});
+			};
+			
+			[internetReachableFoo startNotifier];
+			internetReachableFoo = nil;
+			//-------- check end
+			
+			
             
             databasePath = Nil;
             RatesDatabasePath = Nil;
             zzz = Nil;
-            carouselMenu = Nil;
+            //carouselMenu = Nil;
             contactDB = Nil;
             scrollViewLogin = Nil;
             activeField = Nil;
+			_zz = nil, _zzz = nil, _zzz2 = nil;
             
         }
     }
     
 }
+
+
 
 - (IBAction)btnReset:(id)sender
 {/*
@@ -765,6 +818,71 @@
 	}
 	 
 }
+
+#pragma mark - XML parser
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+    attributes:(NSDictionary *)attributeDict  {
+    
+	self.previousElementName = self.elementName;
+	
+    if (qName) {
+        self.elementName = qName;
+    }
+	
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    if (!self.elementName){
+        return;
+    }
+		
+	if([self.elementName isEqualToString:@"LoginError"]){
+	
+		if ([string isEqualToString:@""]) {
+			
+			ProceedStatus = @"0";
+			
+		}
+		else{
+			/*
+			ProceedStatus = @"1";
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agency Portal" message:[NSString stringWithFormat:@"%@", string]
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			alert.tag = 1;
+			//[alert show];
+
+			alert = Nil;
+			 
+			
+			
+			 */
+		}
+	 
+	}
+	
+	if([self.elementName isEqualToString:@"BadAttempts"]){
+		
+	}
+	
+
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+
+	self.elementName = nil;
+}
+
+-(void) parserDidEndDocument:(NSXMLParser *)parser {
+
+	//if ([ProceedStatus isEqualToString:@"0"]) {
+		CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+		[self presentViewController:carouselMenu animated:YES completion:Nil];
+		[self updateDateLogin];
+	//}
+	
+}
+
+
 
 #pragma mark - memory
 

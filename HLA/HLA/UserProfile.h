@@ -63,6 +63,11 @@
 @property (nonatomic, copy) NSString *Addr1;
 @property (nonatomic, copy) NSString *Addr2;
 @property (nonatomic, copy) NSString *Addr3;
+
 //--end
+
+@property (weak, nonatomic) IBOutlet UITextField *txtAgencyPortalLogin;
+@property (weak, nonatomic) IBOutlet UITextField *txtAgencyPortalPwd;
+
 
 @end

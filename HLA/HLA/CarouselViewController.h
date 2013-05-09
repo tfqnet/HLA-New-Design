@@ -14,12 +14,14 @@
 @end
 
 
-@interface CarouselViewController : UIViewController<iCarouselDataSource, iCarouselDelegate>{
+@interface CarouselViewController : UIViewController<iCarouselDataSource, iCarouselDelegate, NSXMLParserDelegate>{
 	id<CarouselDelegate> _delegate;
 }
 
 @property (nonatomic, strong) id<CarouselDelegate> delegate;
 @property (weak, nonatomic) IBOutlet iCarousel *outletCarousel;
+@property(strong) NSString *previousElementName;
+@property(strong) NSString *elementName;
 
 - (IBAction)btnExit:(id)sender;
 

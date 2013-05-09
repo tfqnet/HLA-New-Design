@@ -15,7 +15,7 @@
 @end
 
 
-@interface Login : UIViewController
+@interface Login : UIViewController<NSXMLParserDelegate>
 {
     NSString *databasePath;
     NSString *RatesDatabasePath;
@@ -32,6 +32,9 @@
 @property (nonatomic, assign) int statusLogin;
 @property (nonatomic, assign) int indexNo;
 @property (nonatomic, copy) NSString *agentID;
+@property (nonatomic, copy) NSString *agentPortalLoginID;
+@property (nonatomic, copy) NSString *agentPortalPassword;
+@property (nonatomic, copy) NSString *agentCode;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewLogin;
 @property (weak, nonatomic) IBOutlet UITextField *txtUsername;
@@ -39,6 +42,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblForgotPwd;
 @property (strong, nonatomic) IBOutlet UILabel *labelVersion;
 @property (strong, nonatomic) IBOutlet UILabel *labelUpdated;
+@property(strong) NSString *previousElementName;
+@property(strong) NSString *elementName;
 
 - (IBAction)btnLogin:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletLogin;

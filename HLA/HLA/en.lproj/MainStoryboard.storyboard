@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11E53" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -737,7 +737,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Kjs-eG-Zzm">
-                                        <rect key="frame" x="263" y="549" width="224" height="46"/>
+                                        <rect key="frame" x="263" y="552" width="224" height="46"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="16"/>
                                         <state key="normal" title="Save" backgroundImage="button.png">
@@ -813,6 +813,32 @@
                                             <action selector="btnContractDatePressed:" destination="Xma-Uf-txG" eventType="touchUpInside" id="FIm-Bc-2e7"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Agency Portal Login ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Cwq-bi-s2f">
+                                        <rect key="frame" x="152" y="477" width="174" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="FXU-nt-I4T">
+                                        <rect key="frame" x="373" y="473" width="244" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="pwg-sM-zi0">
+                                        <rect key="frame" x="373" y="509" width="244" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Agency Portal Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OXY-nP-Q22">
+                                        <rect key="frame" x="151" y="513" width="186" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                             <navigationBar contentMode="scaleToFill" id="KPl-Vd-1Ur">
@@ -854,6 +880,8 @@
                         <outlet property="txtAddr1" destination="2bx-63-0XH" id="gA8-ao-fG2"/>
                         <outlet property="txtAddr2" destination="520-Na-eL9" id="tqy-tS-neV"/>
                         <outlet property="txtAddr3" destination="daL-Mj-PLR" id="0PO-L0-cYo"/>
+                        <outlet property="txtAgencyPortalLogin" destination="FXU-nt-I4T" id="38C-f9-OvZ"/>
+                        <outlet property="txtAgencyPortalPwd" destination="pwg-sM-zi0" id="ae3-n4-Wt2"/>
                         <outlet property="txtAgentCode" destination="Ee6-yW-Plu" id="0yk-BA-cKy"/>
                         <outlet property="txtAgentContactNo" destination="Bf7-JB-AB3" id="uzo-KG-Aee"/>
                         <outlet property="txtAgentName" destination="hiC-pS-7hB" id="3Ib-C6-Ncf"/>
@@ -972,7 +1000,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="k6Y-x6-aQz">
-                                        <rect key="frame" x="377" y="505" width="224" height="46"/>
+                                        <rect key="frame" x="377" y="546" width="224" height="46"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="16"/>
                                         <state key="normal" title="Save" backgroundImage="button.png">
@@ -1068,6 +1096,32 @@
                                             <action selector="btnContractDatePressed:" destination="381-AA-ICO" eventType="touchUpInside" id="FvK-Sx-Z56"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Agency Portal Login ID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zEB-ar-oVg">
+                                        <rect key="frame" x="153" y="476" width="174" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="UuI-TW-SgC">
+                                        <rect key="frame" x="374" y="472" width="244" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="aVJ-TR-jTF">
+                                        <rect key="frame" x="374" y="508" width="244" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Agency Portal Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gh2-xK-IFn">
+                                        <rect key="frame" x="152" y="512" width="186" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </scrollView>
                             <navigationBar contentMode="scaleToFill" id="EcP-1M-6Ot">
@@ -1107,6 +1161,8 @@
                         <outlet property="txtAddr1" destination="HxA-qw-XuF" id="jOR-4c-Can"/>
                         <outlet property="txtAddr2" destination="p4b-cs-Gi7" id="zsp-ss-QKi"/>
                         <outlet property="txtAddr3" destination="VEc-9q-tJE" id="1gb-yZ-NG0"/>
+                        <outlet property="txtAgencyPortalLogin" destination="UuI-TW-SgC" id="4kR-DC-BJJ"/>
+                        <outlet property="txtAgencyPortalPwd" destination="aVJ-TR-jTF" id="GgM-Fo-Tue"/>
                         <outlet property="txtAgentCode" destination="GHl-ua-zHh" id="xEG-D7-5x6"/>
                         <outlet property="txtAgentContactNo" destination="x4O-1R-vrw" id="rGV-B8-ufd"/>
                         <outlet property="txtAgentName" destination="zTY-4n-wGn" id="j6G-Va-cRa"/>

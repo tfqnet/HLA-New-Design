@@ -25,9 +25,10 @@
 @synthesize txtEmail;
 @synthesize txtBixRegNo;
 @synthesize txtICNo,txtAddr1,txtAddr2,txtAddr3,btnContractDate,myScrollView;
-@synthesize contDate,ICNo,Addr1,Addr2,Addr3;
+@synthesize contDate,ICNo,Addr1,Addr2,Addr3,txtAgencyPortalLogin, txtAgencyPortalPwd, AgentPortalLoginID, AgentPortalPassword;
 @synthesize datePopover = _datePopover;
 @synthesize DatePicker = _DatePicker;
+
 
 id temp;
 
@@ -111,7 +112,7 @@ id temp;
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
     self.myScrollView.frame = CGRectMake(0, 44, 768, 704-352);
-    self.myScrollView.contentSize = CGSizeMake(768, 505);
+    self.myScrollView.contentSize = CGSizeMake(768, 605);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
@@ -299,6 +300,22 @@ id temp;
         return FALSE;
     }
     
+	if ([[txtAgencyPortalLogin.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Agent Portal Login ID is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtAgencyPortalLogin becomeFirstResponder];
+        return false;
+    }
+	
+	if ([[txtAgencyPortalPwd.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Agent Portal Login Password is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtAgencyPortalPwd becomeFirstResponder];
+        return false;
+    }
+	
     return TRUE;
 }
 
@@ -386,7 +403,11 @@ id temp;
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT IndexNo, AgentLoginID, AgentCode, AgentName, AgentContactNo, ImmediateLeaderCode, ImmediateLeaderName, BusinessRegNumber, AgentEmail, AgentICNo, AgentContractDate, AgentAddr1, AgentAddr2, AgentAddr3 FROM Agent_Profile WHERE IndexNo=\"%d\"",self.indexNo];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT IndexNo, AgentLoginID, AgentCode, AgentName, AgentContactNo, "
+							  "ImmediateLeaderCode, ImmediateLeaderName, BusinessRegNumber, AgentEmail, AgentICNo, "
+							  "AgentContractDate, AgentAddr1, AgentAddr2, AgentAddr3, AgentPortalLoginID, AgentPortalPassword "
+							  "FROM Agent_Profile WHERE IndexNo=\"%d\"",
+							  self.indexNo];
         const char *query_stmt = [querySQL UTF8String];
         
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
@@ -431,6 +452,13 @@ id temp;
                 const char *add3 = (const char*)sqlite3_column_text(statement, 13);
                 Addr3 = add3 == NULL ? @"" : [[NSString alloc] initWithUTF8String:add3];
                 
+				const char *temp1 = (const char*)sqlite3_column_text(statement, 14);
+                AgentPortalLoginID = temp1 == NULL ? @"" : [[NSString alloc] initWithUTF8String:temp1];
+                
+				const char *temp2 = (const char*)sqlite3_column_text(statement, 15);
+                AgentPortalPassword = temp2 == NULL ? @"" : [[NSString alloc] initWithUTF8String:temp2];
+                
+				
                 txtAgentCode.text = code;
                 txtAgentName.text = name;
                 txtAgentContactNo.text = contactNo;
@@ -444,7 +472,8 @@ id temp;
                 txtAddr1.text = Addr1;
                 txtAddr2.text = Addr2;
                 txtAddr3.text = Addr3;
-                
+                txtAgencyPortalLogin.text = AgentPortalLoginID;
+				txtAgencyPortalPwd.text = AgentPortalPassword;
                 
                 
             } else {
@@ -466,7 +495,14 @@ id temp;
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
             
-            NSString *querySQL = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\", AgentName= \"%@\", AgentContactNo= \"%@\", ImmediateLeaderCode= \"%@\", ImmediateLeaderName= \"%@\", BusinessRegNumber = \"%@\", AgentEmail= \"%@\", AgentICNo=\"%@\", AgentContractDate=\"%@\", AgentAddr1=\"%@\", AgentAddr2=\"%@\", AgentAddr3=\"%@\" WHERE IndexNo=\"%d\"", txtAgentCode.text, txtAgentName.text, txtAgentContactNo.text, txtLeaderCode.text, txtLeaderName.text,txtBixRegNo.text,txtEmail.text,txtICNo.text, contDate, txtAddr1.text, txtAddr2.text, txtAddr3.text, self.indexNo];
+            NSString *querySQL = [NSString stringWithFormat:@"UPDATE Agent_Profile SET AgentCode= \"%@\", AgentName= \"%@\", "
+								  "AgentContactNo= \"%@\", ImmediateLeaderCode= \"%@\", ImmediateLeaderName= \"%@\", "
+								  "BusinessRegNumber = \"%@\", AgentEmail= \"%@\", AgentICNo=\"%@\", AgentContractDate=\"%@\", "
+								  "AgentAddr1=\"%@\", AgentAddr2=\"%@\", AgentAddr3=\"%@\", AgentPortalLoginID = \"%@\", "
+								  "AgentPortalPassword = \"%@\" WHERE IndexNo=\"%d\"",
+								  txtAgentCode.text, txtAgentName.text, txtAgentContactNo.text, txtLeaderCode.text,
+								  txtLeaderName.text,txtBixRegNo.text,txtEmail.text,txtICNo.text, contDate, txtAddr1.text,
+								  txtAddr2.text, txtAddr3.text, txtAgencyPortalLogin.text, txtAgencyPortalPwd.text, self.indexNo];
             
             
             const char *query_stmt = [querySQL UTF8String];
@@ -565,6 +601,32 @@ id temp;
             sqlite3_finalize(statement);
         }
         
+		NSString *querySQL6 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentPortalLoginID VARCHAR"];
+        if (sqlite3_prepare_v2(contactDB, [querySQL6 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"alterDB_Agent_Profile AgentPortalLoginID success!");
+                
+            } else {
+                NSLog(@"alterDB_Agent_Profile failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        
+		NSString *querySQL7 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentPortalPassword VARCHAR"];
+        if (sqlite3_prepare_v2(contactDB, [querySQL7 UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"alterDB_Agent_Profile AgentPortalPassword success!");
+                
+            } else {
+                NSLog(@"alterDB_Agent_Profile failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+		
         sqlite3_close(contactDB);
     }
     
@@ -594,6 +656,8 @@ id temp;
     [self setTxtBixRegNo:nil];
     [self setTxtEmail:nil];
     [self setOutletSave:nil];
+	[self setTxtAgencyPortalLogin:nil];
+	[self setTxtAgencyPortalPwd:nil];
     [super viewDidUnload];
 }
 

@@ -18,6 +18,7 @@
 #import "eBrochureViewController.h"
 #import "eBrochureListingViewController.h"
 #import "ViewController.h"
+#import "AFNetworking.h"
 
 const int numberOfModule = 4;
 
@@ -26,7 +27,7 @@ const int numberOfModule = 4;
 @end
 
 @implementation CarouselViewController
-@synthesize outletCarousel;
+@synthesize outletCarousel, elementName, previousElementName;
 @synthesize delegate = _delegate;
 
 
@@ -48,7 +49,102 @@ const int numberOfModule = 4;
     outletCarousel.delegate = self;
     outletCarousel.type = iCarouselTypeRotary;
     // Do any additional setup after loading the view.
+	
+	NSString *strURL = [NSString stringWithFormat:@"http://www.hla.com.my:2880/eSubmissionWS/eSubmissionXMLService.asmx/"
+						"GetSIVersion_TRADUL?Type=TRAD&Remarks=Agency&OSType=32"];//, [[UIDevice currentDevice] systemVersion]];
+	NSLog(@"%@", strURL);
+	NSURL *url = [NSURL URLWithString:strURL];
+	NSURLRequest *request = [NSURLRequest requestWithURL:url];
+	
+	AFXMLRequestOperation *operation =
+	[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+														success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+															
+															XMLParser.delegate = self;
+															[XMLParser setShouldProcessNamespaces:YES];
+															[XMLParser parse];
+															
+														} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+															NSLog(@"error in calling web service");
+														}];
+	
+	[operation start];
 }
+
+#pragma mark - XML parser
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+    attributes:(NSDictionary *)attributeDict  {
+    
+	self.previousElementName = self.elementName;
+	
+    if (qName) {
+        self.elementName = qName;
+    }
+	
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    if (!self.elementName){
+        return;
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	if([self.elementName isEqualToString:@"string"]){
+		
+		NSString *strURL = [NSString stringWithFormat:@"%@",  string];
+		NSLog(@"%@", strURL);
+		NSURL *url = [NSURL URLWithString:strURL];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+
+		AFXMLRequestOperation *operation =
+		[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+															success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+																
+																XMLParser.delegate = self;
+																[XMLParser setShouldProcessNamespaces:YES];
+																[XMLParser parse];
+																
+															} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+																NSLog(@"error in calling web service");
+															}];
+		
+		[operation start];
+	}
+	else if ([self.elementName isEqualToString:@"SITradVersion"]){
+		NSLog(@"%@", string);
+	}
+	else if ([self.elementName isEqualToString:@"DLURL"]){
+		NSLog(@"%@", string);
+	}
+	else if ([self.elementName isEqualToString:@"DLFilename"]){
+		NSLog(@"%@", string);
+	}
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+	
+	self.elementName = nil;
+}
+
+
+-(void) parserDidEndDocument:(NSXMLParser *)parser {
+	
+	//NSLog(@"ppppp");
+	
+}
+
 
 - (void)viewDidUnload
 {

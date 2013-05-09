@@ -116,7 +116,7 @@ function writeSummary1_HLCP()
         $('.paymentDesc').html(gdata.SI[0].SI_Temp_Trad.data[0].CashPaymentD  + '&nbsp;(Cash Dividend Accumulate)<br/><i>' + gdata.SI[0].SI_Temp_Trad.data[0].MCashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
                 	
 		if (parseInt(gdata.SI[0].Trad_Details.data[0].CashPayment_PO) == 100)
-        {
+        {	
 			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)');
         	$('.tpdBenefit').html('(7)=(4B)+(10)+(12)');
             $('.accumulationYearlyIncome').hide(); //# description. Cash Promise
