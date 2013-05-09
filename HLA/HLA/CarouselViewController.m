@@ -20,7 +20,7 @@
 #import "ViewController.h"
 #import "AFNetworking.h"
 
-const int numberOfModule = 4;
+const int numberOfModule = 5;
 
 @interface CarouselViewController ()<UIActionSheetDelegate>
 
@@ -210,6 +210,12 @@ const int numberOfModule = 4;
         [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];
 				button.tag = 3;
     }
+    
+    else if (index % numberOfModule == 4) {
+        
+        [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];
+        button.tag = 4;
+    }
     /*
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     NSString *filename = [NSString stringWithFormat:@"IMG_00%i", (index+39)];
@@ -293,6 +299,11 @@ const int numberOfModule = 4;
         }];
          */
         
+    }
+    
+    else if (sender.tag % numberOfModule == 4) {
+        
+        NSLog(@"e-sub!");
     }
     
     outletCarousel = Nil;

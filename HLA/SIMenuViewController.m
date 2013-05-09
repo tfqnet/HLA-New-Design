@@ -270,6 +270,7 @@ id RiderCount;
         [ListOfSubMenu addObject:@"Rider"];
         [ListOfSubMenu addObject:@"Premium"];
         [ListOfSubMenu addObject:@"Quotation"];
+        [ListOfSubMenu addObject:@"Proposal"];
         [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
         [ListOfSubMenu addObject:@"   English"];
         [ListOfSubMenu addObject:@"   Malay"];
@@ -613,6 +614,7 @@ id RiderCount;
 			
 			[self RemovePDS];
             [ListOfSubMenu addObject:@"Quotation"];
+            [ListOfSubMenu addObject:@"Proposal"];
             [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
             [ListOfSubMenu addObject:@"   English"];
             [ListOfSubMenu addObject:@"   Malay"];
@@ -1117,7 +1119,7 @@ id RiderCount;
     
 	
 
-	if(self.myTableView.frame.size.height > 400.00 && indexPath.row == 8 ){
+	if(self.myTableView.frame.size.height > 450.00 && indexPath.row == 9 ){
 			cell.textLabel.backgroundColor = [UIColor grayColor];
 			cell.detailTextLabel.backgroundColor = [UIColor grayColor];
 			cell.contentView.backgroundColor = [UIColor grayColor];
@@ -1389,10 +1391,6 @@ id RiderCount;
 				[self calculatedPrem];
 				[myTableView reloadData];
 		}
-
-        
-        
-
     }
     else if (indexPath.row == 7)    //quotation
     {
@@ -1740,7 +1738,17 @@ id RiderCount;
         
     }
     
-    else if (indexPath.row == 9) {   //English PDS
+    else if (indexPath.row == 8)    //proposal
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Under progress!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        alert = Nil;
+        
+//        previousPath = selectedPath;
+        blocked = YES;
+    }
+    
+    else if (indexPath.row == 10) {   //English PDS
 		
 		PDSorSI = @"PDS";
         
@@ -1970,7 +1978,7 @@ id RiderCount;
 		}
         
     }
-    else if (indexPath.row == 10) {   //Malay PDS
+    else if (indexPath.row == 11) {   //Malay PDS
 		
 		PDSorSI = @"PDS";
         
@@ -3446,6 +3454,7 @@ id RiderCount;
 
 -(void)RemovePDS{
     [ListOfSubMenu removeObject:@"Quotation"];
+    [ListOfSubMenu removeObject:@"Proposal"];
     [ListOfSubMenu removeObject:@"Product Disclosure Sheet"];
     [ListOfSubMenu removeObject:@"   English"];
     [ListOfSubMenu removeObject:@"   Malay"];

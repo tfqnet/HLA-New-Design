@@ -71,36 +71,43 @@ int DateOption;
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(0,234, 200, 50);
+    CGRect frame=CGRectMake(0,234, 170, 50);
     lblSINO.frame = frame;
     lblSINO.textAlignment = UITextAlignmentCenter;
     lblSINO.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblSINO.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame2=CGRectMake(200,234, 200, 50);
+    CGRect frame2=CGRectMake(170,234, 150, 50);
     lblDateCreated.frame = frame2;
     lblDateCreated.textAlignment = UITextAlignmentCenter;
         lblDateCreated.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblDateCreated.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame3=CGRectMake(400,234, 200, 50);
+    CGRect frame3=CGRectMake(320,234, 180, 50);
     lblName.frame = frame3;
     lblName.textAlignment = UITextAlignmentCenter;
     lblName.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblName.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame4=CGRectMake(600,234, 200, 50);
+    CGRect frame4=CGRectMake(500,234, 150, 50);
     lblPlan.frame = frame4;
     lblPlan.textAlignment = UITextAlignmentCenter;
     lblPlan.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblPlan.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame5=CGRectMake(800,234, 150, 50);
+    CGRect frame5=CGRectMake(650,234, 150, 50);
     lblBasicSA.frame = frame5;
     lblBasicSA.textAlignment = UITextAlignmentCenter;
     lblBasicSA.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lblBasicSA.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
+    UILabel *lblProposalStat = [[UILabel alloc] initWithFrame:CGRectMake(800, 234, 150, 50)];
+    lblProposalStat.text = @"Proposal Status";
+    lblProposalStat.textAlignment = UITextAlignmentCenter;
+    lblProposalStat.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    lblProposalStat.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    lblProposalStat.font = [UIFont fontWithName:@"TrebuchetMS-Bold" size:17];
+    [self.view addSubview:lblProposalStat];
     
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -440,11 +447,12 @@ int DateOption;
     [[cell.contentView viewWithTag:1003] removeFromSuperview ];
     [[cell.contentView viewWithTag:1004] removeFromSuperview ];
     [[cell.contentView viewWithTag:1005] removeFromSuperview ];
+    [[cell.contentView viewWithTag:1006] removeFromSuperview ];
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
     if (isFilter == false) {
-        CGRect frame=CGRectMake(-30,0, 230, 50);
+        CGRect frame=CGRectMake(-30,0, 200, 50);
         UILabel *label1=[[UILabel alloc]init];            
         label1.frame=frame;
         label1.text= [SINO objectAtIndex:indexPath.row];
@@ -454,7 +462,7 @@ int DateOption;
         
         //label1.backgroundColor = [UIColor lightGrayColor];
         
-        CGRect frame2=CGRectMake(200,0, 200, 50);
+        CGRect frame2=CGRectMake(170,0, 150, 50);
         UILabel *label2=[[UILabel alloc]init];
         label2.frame=frame2;
         label2.text= [DateCreated objectAtIndex:indexPath.row];
@@ -463,7 +471,7 @@ int DateOption;
         //label2.backgroundColor = [UIColor grayColor];
         [cell.contentView addSubview:label2];
         
-        CGRect frame3=CGRectMake(400,0, 200, 50);
+        CGRect frame3=CGRectMake(320,0, 180, 50);
         UILabel *label3=[[UILabel alloc]init];            
         label3.frame=frame3;
         label3.text= [Name objectAtIndex:indexPath.row];
@@ -472,7 +480,7 @@ int DateOption;
         [cell.contentView addSubview:label3];
         //label3.backgroundColor = [UIColor lightGrayColor];
         
-        CGRect frame4=CGRectMake(600,0, 200, 50);
+        CGRect frame4=CGRectMake(500,0, 150, 50);
         UILabel *label4=[[UILabel alloc]init];
         label4.frame=frame4;
         label4.text= [PlanName objectAtIndex:indexPath.row];
@@ -481,7 +489,7 @@ int DateOption;
         //label4.backgroundColor = [UIColor grayColor];
         [cell.contentView addSubview:label4];
         
-        CGRect frame5=CGRectMake(800,0, 150, 50);
+        CGRect frame5=CGRectMake(650,0, 150, 50);
         UILabel *label5=[[UILabel alloc]init];            
         label5.frame=frame5;
         double zzz = [[BasicSA objectAtIndex:indexPath.row] doubleValue ] / (double) 1.00 ;
@@ -492,29 +500,29 @@ int DateOption;
         [cell.contentView addSubview:label5];
         //label5.backgroundColor = [UIColor lightGrayColor];
         
-        /*
-         CGRect frame6=CGRectMake(850,0, 150, 50);
-         UILabel *label6=[[UILabel alloc]init];
-         label6.frame=frame6;
-         label6.text= [SIStatus objectAtIndex:indexPath.row];
-         label6.textAlignment = UITextAlignmentCenter;    
-         label6.tag = 1006;
+        CGRect frame6=CGRectMake(800,0, 150, 50);
+        UILabel *label6=[[UILabel alloc]init];
+        label6.frame=frame6;
+        label6.text= [SIStatus objectAtIndex:indexPath.row];
+        label6.textAlignment = UITextAlignmentCenter;
+        label6.tag = 1006;
          //label6.backgroundColor = [UIColor grayColor];
          [cell.contentView addSubview:label6];
-         */
+         
         if (indexPath.row % 2 == 0) {
             label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label5.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label6.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 
             label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
-            
+            label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         }
         else {
             label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
@@ -522,17 +530,19 @@ int DateOption;
             label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             label5.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label6.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             
             label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+            label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             
         }
     }
     else {
-        CGRect frame=CGRectMake(0,0, 200, 50);
+        CGRect frame=CGRectMake(0,0, 170, 50);
         UILabel *label1=[[UILabel alloc]init];            
         label1.frame=frame;
         label1.text= [FilteredSINO objectAtIndex:indexPath.row];
@@ -541,7 +551,7 @@ int DateOption;
         [cell.contentView addSubview:label1];
         label1.backgroundColor = [UIColor lightGrayColor];
         
-        CGRect frame2=CGRectMake(200,0, 200, 50);
+        CGRect frame2=CGRectMake(170,0, 150, 50);
         UILabel *label2=[[UILabel alloc]init];
         label2.frame=frame2;
         label2.text= [FilteredDateCreated objectAtIndex:indexPath.row];
@@ -550,7 +560,7 @@ int DateOption;
         //label2.backgroundColor = [UIColor grayColor];
         [cell.contentView addSubview:label2];
         
-        CGRect frame3=CGRectMake(400,0, 200, 50);
+        CGRect frame3=CGRectMake(320,0, 180, 50);
         UILabel *label3=[[UILabel alloc]init];            
         label3.frame=frame3;
         label3.text= [FilteredName objectAtIndex:indexPath.row];
@@ -559,7 +569,7 @@ int DateOption;
         [cell.contentView addSubview:label3];
         //label3.backgroundColor = [UIColor lightGrayColor];
         
-        CGRect frame4=CGRectMake(600,0, 200, 50);
+        CGRect frame4=CGRectMake(500,0, 150, 50);
         UILabel *label4=[[UILabel alloc]init];
         label4.frame=frame4;
         label4.text= [FilteredPlanName objectAtIndex:indexPath.row];
@@ -568,7 +578,7 @@ int DateOption;
         //label4.backgroundColor = [UIColor grayColor];
         [cell.contentView addSubview:label4];
         
-        CGRect frame5=CGRectMake(800,0, 150, 50);
+        CGRect frame5=CGRectMake(650,0, 150, 50);
         UILabel *label5=[[UILabel alloc]init];            
         label5.frame=frame5;
         label5.text= [FilteredBasicSA objectAtIndex:indexPath.row];
@@ -577,16 +587,16 @@ int DateOption;
         [cell.contentView addSubview:label5];
         //label5.backgroundColor = [UIColor lightGrayColor];
         
-        /*
-         CGRect frame6=CGRectMake(850,0, 150, 50);
-         UILabel *label6=[[UILabel alloc]init];
-         label6.frame=frame6;
-         label6.text= [FilteredSIStatus objectAtIndex:indexPath.row];
-         label6.textAlignment = UITextAlignmentCenter;    
-         label6.tag = 1006;
-         //label6.backgroundColor = [UIColor grayColor];
-         [cell.contentView addSubview:label6];
-         */
+        
+        CGRect frame6=CGRectMake(800,0, 150, 50);
+        UILabel *label6=[[UILabel alloc]init];
+        label6.frame=frame6;
+        label6.text= [FilteredSIStatus objectAtIndex:indexPath.row];
+        label6.textAlignment = UITextAlignmentCenter;
+//        label6.tag = 1006;
+        //label6.backgroundColor = [UIColor grayColor];
+        [cell.contentView addSubview:label6];
+        
         
         if (indexPath.row % 2 == 0) {
             label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
@@ -594,13 +604,14 @@ int DateOption;
             label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             label5.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+            label6.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
             
             label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
-            
+            label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         }
         else {
             label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
@@ -608,13 +619,14 @@ int DateOption;
             label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             label5.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+            label6.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
             
             label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
             label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
-            
+            label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         }
     }
     //[cell setSelected:NO animated:NO];
