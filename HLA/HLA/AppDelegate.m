@@ -61,6 +61,46 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     library = Nil, databaseName1 = Nil, WebSQLDb1 = Nil, WebSQLPath1 = Nil, WebSQLSubdir1 = Nil, masterFile = Nil;
     databaseFile = Nil;
     */
+    
+    
+//    sleep(5);
+    /*
+    UIView *layer = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024)];
+    layer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg18.jpg"]];
+    [self.window addSubview:layer];
+    
+    
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.center = CGPointMake(400, 350);
+    spinner.hidesWhenStopped = YES;
+    [self.window addSubview:spinner];
+    UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+    spinnerLabel.text  = @" Please Wait...";
+    spinnerLabel.backgroundColor = [UIColor blackColor];
+    spinnerLabel.opaque = YES;
+    spinnerLabel.textColor = [UIColor whiteColor];
+    [self.window addSubview:spinnerLabel];
+    [self.window setUserInteractionEnabled:NO];
+    [spinner startAnimating];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+        
+        //any action here
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [spinner stopAnimating];
+            spinnerLabel.text = @"";
+            [self.window setUserInteractionEnabled:YES];
+            
+            UIView *v =  [[self.window subviews] objectAtIndex:[self.window subviews].count - 1 ];
+            [v removeFromSuperview];
+            v = Nil;
+            
+        });
+    });
+    
+    spinner = nil; */
+    
     return YES;
 }
 							

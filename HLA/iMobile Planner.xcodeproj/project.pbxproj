@@ -218,6 +218,8 @@
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
 		EF5B6119173B577C00751157 /* eSubmission.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B6118173B577C00751157 /* eSubmission.m */; };
+		EF5B611C173C96A000751157 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */; };
+		EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B611E173C9ED800751157 /* CustomerProfile.m */; };
 		EFA879A11702A0A4003BB288 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
@@ -518,6 +520,9 @@
 		EF33ACEF162D42B3006BB4C6 /* PlanList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlanList.m; path = ../PlanList.m; sourceTree = "<group>"; };
 		EF5B6117173B577C00751157 /* eSubmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eSubmission.h; sourceTree = "<group>"; };
 		EF5B6118173B577C00751157 /* eSubmission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eSubmission.m; sourceTree = "<group>"; };
+		EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		EF5B611D173C9ED700751157 /* CustomerProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerProfile.h; sourceTree = "<group>"; };
+		EF5B611E173C9ED800751157 /* CustomerProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerProfile.m; sourceTree = "<group>"; };
 		EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
@@ -735,6 +740,7 @@
 		C4E9D1851612C64900016053 = {
 			isa = PBXGroup;
 			children = (
+				EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */,
 				C4E7C0C2172FC9CD00038FA9 /* AFNetworking */,
 				C4E6437F1724E821001DF8F8 /* PDS */,
 				C4E6437A171BE656001DF8F8 /* Reachability */,
@@ -787,6 +793,7 @@
 		C4E9D19A1612C64900016053 /* HLA */ = {
 			isa = PBXGroup;
 			children = (
+				EF5B6120173C9EE400751157 /* CustomerProfile */,
 				EF5B611A173B579E00751157 /* eSubmission */,
 				C4C501FB16A64D7700096156 /* eBrochure */,
 				C4B84457169B1A5B00E1A0D3 /* PDS */,
@@ -1128,6 +1135,15 @@
 			name = eSubmission;
 			sourceTree = "<group>";
 		};
+		EF5B6120173C9EE400751157 /* CustomerProfile */ = {
+			isa = PBXGroup;
+			children = (
+				EF5B611D173C9ED700751157 /* CustomerProfile.h */,
+				EF5B611E173C9ED800751157 /* CustomerProfile.m */,
+			);
+			name = CustomerProfile;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1303,6 +1319,7 @@
 				C4E1B9471714091000D7F83B /* SI in Resources */,
 				C4E643801724E821001DF8F8 /* PDS in Resources */,
 				C4E643821724F175001DF8F8 /* Rates.json in Resources */,
+				EF5B611C173C96A000751157 /* Default-Landscape~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1392,6 +1409,7 @@
 				C4E7C0DD172FC9CD00038FA9 /* AFXMLRequestOperation.m in Sources */,
 				C4E7C0DE172FC9CD00038FA9 /* UIImageView+AFNetworking.m in Sources */,
 				EF5B6119173B577C00751157 /* eSubmission.m in Sources */,
+				EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

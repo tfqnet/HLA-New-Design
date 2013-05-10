@@ -1,23 +1,24 @@
 //
-//  eSubmission.m
+//  CustomerProfile.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 5/9/13.
+//  Created by shawal sapuan on 5/10/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "eSubmission.h"
+#import "CustomerProfile.h"
 
-@interface eSubmission ()
+@interface CustomerProfile ()
 
 @end
 
-@implementation eSubmission
+@implementation CustomerProfile
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+	
 }
 
 - (void)didReceiveMemoryWarning

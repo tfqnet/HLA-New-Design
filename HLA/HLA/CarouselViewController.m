@@ -19,8 +19,10 @@
 #import "eBrochureListingViewController.h"
 #import "ViewController.h"
 #import "AFNetworking.h"
+#import "eSubmission.h"
+#import "CustomerProfile.h"
 
-const int numberOfModule = 5;
+const int numberOfModule = 6;
 
 @interface CarouselViewController ()<UIActionSheetDelegate>
 
@@ -211,11 +213,18 @@ const int numberOfModule = 5;
 				button.tag = 3;
     }
     
-    else if (index % numberOfModule == 4) {
+    else if (index % numberOfModule == 4) { //e-sub
         
         [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];
         button.tag = 4;
     }
+    
+    else if (index % numberOfModule == 5) { //customer profile
+        
+        [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];
+        button.tag = 5;
+    }
+    
     /*
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     NSString *filename = [NSString stringWithFormat:@"IMG_00%i", (index+39)];
@@ -303,7 +312,20 @@ const int numberOfModule = 5;
     
     else if (sender.tag % numberOfModule == 4) {
         
-        NSLog(@"e-sub!");
+        eSubmission *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
+        zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:zzz animated:NO completion:Nil];
+        zzz = Nil;
+		NSLog(@"e-sub!");
+    }
+    
+    else if (sender.tag % numberOfModule == 5) {
+        
+        CustomerProfile *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"customerProfile"];
+        zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:zzz animated:NO completion:Nil];
+        zzz = Nil;
+        NSLog(@"customer profile!");
     }
     
     outletCarousel = Nil;
