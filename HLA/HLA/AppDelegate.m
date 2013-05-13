@@ -19,13 +19,16 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    NSLog(@"%@",databasePath);
+    
     SICompleted = YES;
     ExistPayor = YES;
-    // Override point for customization after application launch.
     
     HomeIndex = 0;
     ProspectListingIndex = 1;
-    //NewProspectIndex = 2;
     SIListingIndex = 2;
     NewSIIndex = 3;
     ExitIndex = 4;
@@ -100,6 +103,20 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     });
     
     spinner = nil; */
+    
+    [SIUtilities makeDBCopy:databasePath];
+    [SIUtilities addColumnTable:@"Agent_Profile" column:@"AgentICNo" type:@"INTEGER" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"Agent_Profile" column:@"AgentContractDate" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"Agent_Profile" column:@"AgentAddr1" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"Agent_Profile" column:@"AgentAddr2" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"Agent_Profile" column:@"AgentAddr3" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"Agent_Profile" column:@"AgentPortalLoginID" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"Agent_Profile" column:@"AgentPortalPassword" type:@"VARCHAR" dbpath:databasePath];
+    
+    [SIUtilities updateTable:@"Trad_Sys_Mtn" set:@"MaxAge" value:@"63" where:@"PlanCode" equal:@"HLACP" dbpath:databasePath];
+    
+    [SIUtilities addColumnTable:@"Trad_Rider_Details" column:@"TempHL1KSA" type:@"DOUBLE" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"Trad_Rider_Details" column:@"TempHL1KSATerm" type:@"INTEGER" dbpath:databasePath];
     
     return YES;
 }

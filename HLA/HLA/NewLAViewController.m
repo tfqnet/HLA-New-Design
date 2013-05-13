@@ -58,11 +58,6 @@ id temp;
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     NSLog(@"%@",databasePath);
     
-    //--for update db due to upgrading version or changes
-    [self updateDB_maxAge];
-    [self updateTB_Rider_Details];
-    [self updateTB_Rider_Label];
-    
     LANameField.enabled = NO;
     sexSegment.enabled = NO;
     LAAgeField.enabled = NO;
@@ -842,188 +837,6 @@ id temp;
 
 #pragma mark - Handle Data
 
--(void)updateDB_maxAge
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat: @"UPDATE Trad_Sys_Mtn SET MaxAge= \"63\" WHERE PlanCode=\"HLACP\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateDB_maxAge success!");
-                
-            } else {
-                NSLog(@"updateDB_maxAge failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
-
--(void)updateTB_Rider_Details
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:@"ALTER TABLE Trad_Rider_Details ADD COLUMN TempHL1KSA DOUBLE"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Details success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Details failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL2 = [NSString stringWithFormat:@"ALTER TABLE Trad_Rider_Details ADD COLUMN TempHL1KSATerm INTEGER "];
-        if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Details success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Details failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        sqlite3_close(contactDB);
-    }
-}
-
--(void)updateTB_Rider_Label
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Sum Assured (%%)\" WHERE LabelCode=\"SUMA\" AND RiderCode = \"PR\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL2 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Sum Assured (%%)\" WHERE LabelCode=\"SUMA\" AND RiderCode = \"SP_PRE\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL3 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Sum Assured (%%)\" WHERE LabelCode=\"SUMA\" AND RiderCode = \"SP_STD\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL3 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL4 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 1K SA)\" WHERE LabelCode=\"HL1K\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL4 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL5 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 1K SA) Term\" WHERE LabelCode=\"HL1KT\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL5 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL6 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 100 SA)\" WHERE LabelCode=\"HL10\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL6 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL7 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (Per 100 SA) Term\" WHERE LabelCode=\"HL10T\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL7 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL8 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (%%)\" WHERE LabelCode=\"HLP\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL8 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL9 = [NSString stringWithFormat:@"UPDATE Trad_Sys_Rider_Label SET LabelDesc=\"Health Loading 1 (%%) Term\" WHERE LabelCode=\"HLPT\""];
-        if (sqlite3_prepare_v2(contactDB, [querySQL9 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"updateTB_Rider_Lable success!");
-                
-            } else {
-                NSLog(@"updateTB_Rider_Lable failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        sqlite3_close(contactDB);
-    }
-}
-
 -(void)getOccLoadExist
 {
     sqlite3_stmt *statement;
@@ -1414,7 +1227,7 @@ id temp;
             {
                 payorSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
                 payorCustCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
-				payorAge = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
+				payorAge = sqlite3_column_int(statement, 6);
                 
             } else {
                 NSLog(@"error access checkingPayor");

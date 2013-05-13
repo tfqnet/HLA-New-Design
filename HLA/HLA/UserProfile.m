@@ -63,7 +63,6 @@ id temp;
     //NSLog(@"receive Index:%d",self.indexNo);
     
     lblAgentLoginID.text = [NSString stringWithFormat:@"%@",[self.idRequest description]];
-    [self alterDB_Agent_Profile];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -130,7 +129,7 @@ id temp;
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
     self.ScrollView.frame = CGRectMake(0, 44, 768, 704-352);
-    self.ScrollView.contentSize = CGSizeMake(768, 505);
+    self.ScrollView.contentSize = CGSizeMake(768, 605);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
@@ -554,107 +553,6 @@ id temp;
             sqlite3_close(contactDB);
         }
     }
-}
-
--(void)alterDB_Agent_Profile
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentICNo INTEGER"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"alterDB_Agent_Profile AgentICNo success!");
-                
-            } else {
-                NSLog(@"alterDB_Agent_Profile failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL2 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentContractDate VARCHAR"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"alterDB_Agent_Profile AgentContractDate success!");
-                
-            } else {
-                NSLog(@"alterDB_Agent_Profile failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL3 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentAddr1 VARCHAR"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL3 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"alterDB_Agent_Profile AgentAddr1 success!");
-                
-            } else {
-                NSLog(@"alterDB_Agent_Profile failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL4 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentAddr2 VARCHAR"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL4 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"alterDB_Agent_Profile AgentAddr2 success!");
-                
-            } else {
-                NSLog(@"alterDB_Agent_Profile failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-        NSString *querySQL5 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentAddr3 VARCHAR"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL5 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"alterDB_Agent_Profile AgentAddr3 success!");
-                
-            } else {
-                NSLog(@"alterDB_Agent_Profile failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-
-		NSString *querySQL6 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentPortalLoginID VARCHAR"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL6 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"alterDB_Agent_Profile AgentPortalLoginID success!");
-                
-            } else {
-                NSLog(@"alterDB_Agent_Profile failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-        
-		NSString *querySQL7 = [NSString stringWithFormat:@"ALTER TABLE Agent_Profile ADD COLUMN AgentPortalPassword VARCHAR"];
-        if (sqlite3_prepare_v2(contactDB, [querySQL7 UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_DONE)
-            {
-                NSLog(@"alterDB_Agent_Profile AgentPortalPassword success!");
-                
-            } else {
-                NSLog(@"alterDB_Agent_Profile failed!");
-            }
-            sqlite3_finalize(statement);
-        }
-		
-        sqlite3_close(contactDB);
-    }
-    
 }
 
 

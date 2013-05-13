@@ -220,6 +220,7 @@
 		EF5B6119173B577C00751157 /* eSubmission.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B6118173B577C00751157 /* eSubmission.m */; };
 		EF5B611C173C96A000751157 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */; };
 		EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B611E173C9ED800751157 /* CustomerProfile.m */; };
+		EF5B612A1740B70C00751157 /* SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B61291740B70C00751157 /* SIUtilities.m */; };
 		EFA879A11702A0A4003BB288 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
@@ -523,6 +524,8 @@
 		EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		EF5B611D173C9ED700751157 /* CustomerProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerProfile.h; sourceTree = "<group>"; };
 		EF5B611E173C9ED800751157 /* CustomerProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerProfile.m; sourceTree = "<group>"; };
+		EF5B61281740B70C00751157 /* SIUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIUtilities.h; sourceTree = "<group>"; };
+		EF5B61291740B70C00751157 /* SIUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIUtilities.m; sourceTree = "<group>"; };
 		EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
@@ -809,6 +812,8 @@
 				EF05984C161A9201004A9095 /* Rider */,
 				C4E9D1A31612C64900016053 /* AppDelegate.h */,
 				C4E9D1A41612C64900016053 /* AppDelegate.m */,
+				EF5B61281740B70C00751157 /* SIUtilities.h */,
+				EF5B61291740B70C00751157 /* SIUtilities.m */,
 				C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */,
 				C4E9D1A91612C64900016053 /* ViewController.h */,
 				C4E9D1AA1612C64900016053 /* ViewController.m */,
@@ -1410,6 +1415,7 @@
 				C4E7C0DE172FC9CD00038FA9 /* UIImageView+AFNetworking.m in Sources */,
 				EF5B6119173B577C00751157 /* eSubmission.m in Sources */,
 				EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */,
+				EF5B612A1740B70C00751157 /* SIUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

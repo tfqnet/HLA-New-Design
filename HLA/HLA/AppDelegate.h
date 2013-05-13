@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SIUtilities.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    NSString *databasePath;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, assign,readwrite) int indexNo;

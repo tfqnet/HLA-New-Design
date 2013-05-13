@@ -439,9 +439,15 @@ NSString *ProceedStatus = @"";
                 indexNo = sqlite3_column_int(statement, 0);
                 agentID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 statusLogin = sqlite3_column_int(statement, 2);
-                agentPortalLoginID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
-				agentPortalPassword = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
-				agentCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+                
+                const char *portalLogin = (const char*)sqlite3_column_text(statement, 3);
+                agentPortalLoginID = portalLogin == NULL ? nil : [[NSString alloc] initWithUTF8String:portalLogin];
+                
+                const char *portalPswd = (const char*)sqlite3_column_text(statement, 4);
+                agentPortalPassword = portalPswd == NULL ? nil : [[NSString alloc] initWithUTF8String:portalPswd];
+                
+                const char *portalCode = (const char*)sqlite3_column_text(statement, 5);
+                agentCode = portalCode == NULL ? nil : [[NSString alloc] initWithUTF8String:portalCode];
                 txtPassword.text = @"";
 		
             } else {
