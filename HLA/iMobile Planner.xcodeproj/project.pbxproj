@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42500B601740D66D00AEEDE3 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */; };
+		42500B621740D67A00AEEDE3 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B611740D67A00AEEDE3 /* hladb.sqlite */; };
 		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
 		C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */; };
@@ -221,16 +223,16 @@
 		EF5B611C173C96A000751157 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */; };
 		EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B611E173C9ED800751157 /* CustomerProfile.m */; };
 		EF5B612A1740B70C00751157 /* SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B61291740B70C00751157 /* SIUtilities.m */; };
-		EFA879A11702A0A4003BB288 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
-		EFF7441A16F6B3A60075E66E /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = EFF7441916F6B3A60075E66E /* hladb.sqlite */; };
 		EFFC253716E7219500313A96 /* HLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFC253616E7219400313A96 /* HLViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
+		42500B611740D67A00AEEDE3 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		C40059F816BB678000B03041 /* CashPromiseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashPromiseViewController.h; sourceTree = "<group>"; };
 		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
 		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
@@ -526,7 +528,6 @@
 		EF5B611E173C9ED800751157 /* CustomerProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerProfile.m; sourceTree = "<group>"; };
 		EF5B61281740B70C00751157 /* SIUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIUtilities.h; sourceTree = "<group>"; };
 		EF5B61291740B70C00751157 /* SIUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIUtilities.m; sourceTree = "<group>"; };
-		EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
 		EFB3D5861685604400A7B517 /* PayorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayorHandler.m; sourceTree = "<group>"; };
@@ -534,7 +535,6 @@
 		EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLAHandler.m; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
-		EFF7441916F6B3A60075E66E /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		EFFC253516E7219400313A96 /* HLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLViewController.h; sourceTree = "<group>"; };
 		EFFC253616E7219400313A96 /* HLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -992,9 +992,9 @@
 			children = (
 				C4E643811724F175001DF8F8 /* Rates.json */,
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
-				EFA879A01702A0A4003BB288 /* HLA_Rates.sqlite */,
-				EFF7441916F6B3A60075E66E /* hladb.sqlite */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
+				42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */,
+				42500B611740D67A00AEEDE3 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1318,13 +1318,13 @@
 				C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */,
 				EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */,
 				C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */,
-				EFF7441A16F6B3A60075E66E /* hladb.sqlite in Resources */,
-				EFA879A11702A0A4003BB288 /* HLA_Rates.sqlite in Resources */,
 				C4EF74F71704481400434B02 /* iMPLogo_Curve.png in Resources */,
 				C4E1B9471714091000D7F83B /* SI in Resources */,
 				C4E643801724E821001DF8F8 /* PDS in Resources */,
 				C4E643821724F175001DF8F8 /* Rates.json in Resources */,
 				EF5B611C173C96A000751157 /* Default-Landscape~ipad.png in Resources */,
+				42500B601740D66D00AEEDE3 /* HLA_Rates.sqlite in Resources */,
+				42500B621740D67A00AEEDE3 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
