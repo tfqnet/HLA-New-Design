@@ -118,6 +118,8 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     [SIUtilities addColumnTable:@"Trad_Rider_Details" column:@"TempHL1KSA" type:@"DOUBLE" dbpath:databasePath];
     [SIUtilities addColumnTable:@"Trad_Rider_Details" column:@"TempHL1KSATerm" type:@"INTEGER" dbpath:databasePath];
     
+    [SIUtilities createTableCFF:databasePath];
+    
     return YES;
 }
 							
