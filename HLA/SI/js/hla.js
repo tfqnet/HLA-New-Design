@@ -108,45 +108,46 @@ function writeSummary1_HLCP()
     
     //advanced yearly income
     if (parseInt(gdata.SI[0].Trad_Details.data[0].AdvanceYearlyIncome) == 0){ //Cash promise. Only 1 title
-		$('.advanceYearlyIncome').html('Illustration of HLA Cash Promise Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Cash Promise</i>');
+		$('.advanceYearlyIncome').html('Illustration of HLA Cash Promise Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi Pelan HLA Cash Promise</i>');
 	}
 	
 	if ($.trim(gdata.SI[0].Trad_Details.data[0].CashDividend) == 'ACC')//payment description
-    {
-        $('.paymentDesc').html(gdata.SI[0].SI_Temp_Trad.data[0].CashPaymentD  + '&nbsp;(Cash Dividend Accumulate)<br/><i>' + gdata.SI[0].SI_Temp_Trad.data[0].MCashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
-                	
-		if (parseInt(gdata.SI[0].Trad_Details.data[0].CashPayment_PO) == 100)
-        {	
+	{
+		$('.paymentDesc').html(gdata.SI[0].SI_Temp_Trad.data[0].CashPaymentD  + '&nbsp;(Cash Dividend Accumulate)<br/><i>' + gdata.SI[0].SI_Temp_Trad.data[0].MCashPaymentD + '&nbsp;(Dividen Tunai Terkumpul)</i>');
+			    
+		if (parseInt(gdata.SI[0].Trad_Details.data[0].PartialPayout) == 100)
+		{	
 			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)');
-        	$('.tpdBenefit').html('(7)=(4B)+(10)+(12)');
-            $('.accumulationYearlyIncome').hide(); //# description. Cash Promise
-        }
-        else
-        {
-        	$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)+(12)');
-        	$('.tpdBenefit').html('(7)=(4B)+(10)+(12)+(13)');
-            $('.cashPayment1').html('#');
-            $('.cashPayment2').html('#');
-        }
-    }
+			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)');
+			$('.accumulationYearlyIncome').hide(); //# description. Cash Promise
+		}
+		else
+		{
+			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)+(12)');
+			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)+(13)');
+			$('.cashPayment1').html('#');
+			 $('.cashPayment2').html('#');
+		}
+	}
 	else if (gdata.SI[0].Trad_Details.data[0].CashDividend == 'POF')
-    {
-    	$('.paymentDesc').html(gdata.SI[0].SI_Temp_Trad.data[0].CashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + gdata.SI[0].SI_Temp_Trad.data[0].MCashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
-        
-        if (parseInt(gdata.SI[0].Trad_Details.data[0].CashPayment_PO) == 100)
-        {
-        	$('.totalSurrenderValue').html('(6)=(3)+(10)');
-            $('.tpdBenefit').html('(7)=(4B)+(11)');
-            $('.accumulationYearlyIncome').hide(); //# description. Cash Promise
-        }
-        else
-        {
-        	$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)');
-            $('.tpdBenefit').html('(7)=(4B)+(10)+(12)');
-            $('.cashPayment1').html('#');
-            $('.cashPayment2').html('#');
-        }
-    }
+	{
+		$('.paymentDesc').html(gdata.SI[0].SI_Temp_Trad.data[0].CashPaymentD  + '&nbsp;(Cash Dividend Pay Out)&nbsp;<i>' + gdata.SI[0].SI_Temp_Trad.data[0].MCashPaymentD + '&nbsp;(Dividen Tunai Dibayar)</i>');
+		
+		//if (parseInt(gdata.SI[0].Trad_Details.data[0].CashPayment_PO) == 100)
+		if (parseInt(gdata.SI[0].Trad_Details.data[0].PartialPayout) == 100)
+		{
+			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)');
+			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)');
+			$('.accumulationYearlyIncome').hide(); //# description. Cash Promise
+		}
+		else
+		{
+			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)+(12)');
+			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)+(13)');
+			$('.cashPayment1').html('#');
+			$('.cashPayment2').html('#');
+		}
+	}
 
 }
 
@@ -154,7 +155,7 @@ function writeSummary2_HLCP()
 {
 	var colType = 0;
     if (parseInt(gdata.SI[0].Trad_Details.data[0].AdvanceYearlyIncome) == 0){ //Cash promise. Only 1 title
-	$('.advanceYearlyIncome').html('Illustration of HLA Cash Promise Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi HLA Cash Promise</i>');
+	$('.advanceYearlyIncome').html('Illustration of HLA Cash Promise Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi Pelan HLA Cash Promise</i>');
     }
 	
      if ($.trim(gdata.SI[0].Trad_Details.data[0].CashDividend) == 'ACC')//payment description

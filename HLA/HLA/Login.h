@@ -35,6 +35,7 @@
 @property (nonatomic, copy) NSString *agentPortalLoginID;
 @property (nonatomic, copy) NSString *agentPortalPassword;
 @property (nonatomic, copy) NSString *agentCode;
+@property (nonatomic, copy) NSString *msg;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewLogin;
 @property (weak, nonatomic) IBOutlet UITextField *txtUsername;

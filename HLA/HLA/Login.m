@@ -19,6 +19,7 @@
 #import "AFJSONRequestOperation.h"
 #import "AFNetworking.h"
 #import "SettingUserProfile.h"
+#import "SIUtilities.h"
 
 @interface Login ()
 
@@ -35,7 +36,7 @@ NSString *ProceedStatus = @"";
 @synthesize labelUpdated,labelVersion,outletLogin,agentPortalLoginID,agentPortalPassword;
 @synthesize delegate = _delegate;
 @synthesize previousElementName, agentCode;
-@synthesize elementName;
+@synthesize elementName, msg;
 
 - (void)viewDidLoad
 {
@@ -149,6 +150,9 @@ NSString *ProceedStatus = @"";
 		[alert show];
 	}
     */
+	
+	
+	
     dirPaths = Nil;
     docsDir = Nil;
     version = Nil;
@@ -202,6 +206,7 @@ NSString *ProceedStatus = @"";
         exit(0);
     }
 	else if (alertView.tag == 1){
+		/*
 		SettingUserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingUserProfile"];
 		UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
 		UserProfileView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -209,6 +214,7 @@ NSString *ProceedStatus = @"";
 		[self presentModalViewController:UserProfileView animated:YES];
 		UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 748);
 		UserProfileView = nil;
+		 */
 	}
     
 }
@@ -422,7 +428,11 @@ NSString *ProceedStatus = @"";
 {
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
-    
+    agentPortalLoginID = @"";
+	agentPortalPassword = @"";
+	agentID = @"";
+	agentCode =@"";
+	
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
 
@@ -460,6 +470,7 @@ NSString *ProceedStatus = @"";
             sqlite3_finalize(statement);
         }
 		else{
+			statusLogin = 2;
 			NSLog(@"wrong query");
 		}
         sqlite3_close(contactDB);
@@ -703,15 +714,16 @@ NSString *ProceedStatus = @"";
 			NSString *_zzz = agentPortalPassword;
 			NSString *_zzz2 = agentCode;
 			id __weak weakself = self;
+			id __weak weakself3 = self.storyboard;
 			
 			internetReachableFoo.reachableBlock = ^(Reachability*reach)
 			{
 
 				// Update the UI on the main thread
 				dispatch_async(dispatch_get_main_queue(), ^{
-					NSString *strURL = [NSString stringWithFormat:@"http://www.hla.com.my:2880/eSubmissionWS/eSubmissionXMLService.asmx/"
-										"ValidateLogin?strid=%@&strpwd=%@&strIPAddres=123&iBadAttempts=0&strFirstAgentCode=%@",  _zz
-										, _zzz, _zzz2];
+					NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
+										"ValidateLogin?strid=%@&strpwd=%@&strIPAddres=123&iBadAttempts=0&strFirstAgentCode=%@",
+										[SIUtilities WSLogin],  _zz, _zzz, _zzz2];
 					NSLog(@"%@", strURL);
 					NSURL *url = [NSURL URLWithString:strURL];
 					NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -726,6 +738,10 @@ NSString *ProceedStatus = @"";
 																			
 																		} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
 																			NSLog(@"error in calling web service");
+																			CarouselViewController *carouselMenu = [weakself3 instantiateViewControllerWithIdentifier:@"carouselView"];
+																			carouselMenu.getInternet = @"No";
+																			[weakself presentViewController:carouselMenu animated:YES completion:Nil];
+																			[weakself updateDateLogin];
 																		}];
 					
 					[operation start];
@@ -737,7 +753,11 @@ NSString *ProceedStatus = @"";
 			{
 				// Update the UI on the main thread
 				dispatch_async(dispatch_get_main_queue(), ^{
-					
+					CarouselViewController *carouselMenu = [weakself3 instantiateViewControllerWithIdentifier:@"carouselView"];
+					carouselMenu.getInternet = @"No";
+					[weakself presentViewController:carouselMenu animated:YES completion:Nil];
+					[weakself updateDateLogin];
+
 				});
 			};
 			
@@ -746,7 +766,7 @@ NSString *ProceedStatus = @"";
 			//-------- check end
 			
 			
-            
+            /*
             databasePath = Nil;
             RatesDatabasePath = Nil;
             zzz = Nil;
@@ -754,9 +774,17 @@ NSString *ProceedStatus = @"";
             contactDB = Nil;
             scrollViewLogin = Nil;
             activeField = Nil;
+			 */
 			_zz = nil, _zzz = nil, _zzz2 = nil;
             
         }
+		else if (statusLogin == 2){
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please Contact System Admin." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+			
+			alert = Nil;
+		}
+
     }
     
 }
@@ -764,7 +792,7 @@ NSString *ProceedStatus = @"";
 
 
 - (IBAction)btnReset:(id)sender
-{/*
+{
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     sqlite3_stmt *statement2;
@@ -814,14 +842,15 @@ NSString *ProceedStatus = @"";
         }
         sqlite3_close(contactDB);
     }
-    */
-
+    
+/*
 	
 	if(_delegate != Nil){
 		[(ViewController *)_delegate setSss:1 ];
 		[self dismissModalViewControllerAnimated:NO];
 		[_delegate Dismiss:@""];
 	}
+ */
 	 
 }
 
@@ -850,8 +879,9 @@ NSString *ProceedStatus = @"";
 			
 		}
 		else{
-			/*
+			
 			ProceedStatus = @"1";
+			/*
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agency Portal" message:[NSString stringWithFormat:@"%@", string]
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 			alert.tag = 1;
@@ -862,6 +892,8 @@ NSString *ProceedStatus = @"";
 			
 			
 			 */
+			msg = string;
+
 		}
 	 
 	}
@@ -880,11 +912,34 @@ NSString *ProceedStatus = @"";
 
 -(void) parserDidEndDocument:(NSXMLParser *)parser {
 
-	//if ([ProceedStatus isEqualToString:@"0"]) {
+	if ([ProceedStatus isEqualToString:@"0"]) {
 		CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+		carouselMenu.getInternet = @"Yes";
+		carouselMenu.getValid = @"Valid";
+		carouselMenu.indexNo = self.indexNo;
+		carouselMenu.ErrorMsg = @"";
 		[self presentViewController:carouselMenu animated:YES completion:Nil];
 		[self updateDateLogin];
-	//}
+	}
+	else{
+		CarouselViewController *carouselMenu = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+		carouselMenu.getInternet = @"Yes";
+		carouselMenu.getValid = @"Invalid";
+		carouselMenu.indexNo = self.indexNo;
+		
+		if ([[agentPortalLoginID stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""] ||
+			[[agentPortalLoginID stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@"(null)"] ||
+			[[agentPortalLoginID stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@"(null)"]){
+			carouselMenu.ErrorMsg = @"Please Fill in your Agent Portal Login and Agent Portal Password";
+		}
+		else{
+			carouselMenu.ErrorMsg = msg;
+		}
+		
+		[self presentViewController:carouselMenu animated:YES completion:Nil];
+		[self updateDateLogin];
+	}
+
 	
 }
 

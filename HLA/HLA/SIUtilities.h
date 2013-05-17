@@ -16,5 +16,6 @@
 +(BOOL)addColumnTable:(NSString *)table column:(NSString *)columnName type:(NSString *)columnType dbpath:(NSString *)path;
 +(BOOL)updateTable:(NSString *)table set:(NSString *)column value:(NSString *)val where:(NSString *)param equal:(NSString *)val2 dbpath:(NSString *)path;
 +(BOOL)createTableCFF:(NSString *)path;
++(NSString *)WSLogin;
 
 @end

@@ -21,6 +21,8 @@
 #import "AFNetworking.h"
 #import "eSubmission.h"
 #import "CustomerProfile.h"
+#import "SettingUserProfile.h"
+#import "SIUtilities.h"
 
 const int numberOfModule = 6;
 
@@ -29,7 +31,7 @@ const int numberOfModule = 6;
 @end
 
 @implementation CarouselViewController
-@synthesize outletCarousel, elementName, previousElementName;
+@synthesize outletCarousel, elementName, previousElementName, getInternet, getValid, indexNo, ErrorMsg;
 @synthesize delegate = _delegate;
 
 
@@ -52,25 +54,42 @@ const int numberOfModule = 6;
     outletCarousel.type = iCarouselTypeRotary;
     // Do any additional setup after loading the view.
 	
-	NSString *strURL = [NSString stringWithFormat:@"http://www.hla.com.my:2880/eSubmissionWS/eSubmissionXMLService.asmx/"
-						"GetSIVersion_TRADUL?Type=TRAD&Remarks=Agency&OSType=32"];//, [[UIDevice currentDevice] systemVersion]];
-	NSLog(@"%@", strURL);
-	NSURL *url = [NSURL URLWithString:strURL];
-	NSURLRequest *request = [NSURLRequest requestWithURL:url];
-	
-	AFXMLRequestOperation *operation =
-	[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+	if([getValid isEqualToString:@"Valid" ]){
+		if ([getInternet isEqualToString:@"Yes" ]) {
+					NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
+													"GetSIVersion_TRADUL?Type=IPAD_TRAD&Remarks=Agency&OSType=32", [SIUtilities WSLogin]];
+					NSLog(@"%@", strURL);
+					NSURL *url = [NSURL URLWithString:strURL];
+					NSURLRequest *request = [NSURLRequest requestWithURL:url];
+			
+					AFXMLRequestOperation *operation =
+					[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
 														success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
-															
-															XMLParser.delegate = self;
-															[XMLParser setShouldProcessNamespaces:YES];
-															[XMLParser parse];
-															
+							 
+														XMLParser.delegate = self;
+														[XMLParser setShouldProcessNamespaces:YES];
+														[XMLParser parse];
+							 
 														} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
 															NSLog(@"error in calling web service");
 														}];
-	
-	[operation start];
+			
+						[operation start];
+
+		}
+	}
+	else{
+		if ([getInternet isEqualToString:@"Yes" ]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agency Portal" message:[NSString stringWithFormat:@"%@", ErrorMsg]
+							delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			alert.tag = 1;
+			[alert show];
+								
+			alert = Nil;
+								
+		}
+	}
+
 }
 
 #pragma mark - XML parser
@@ -90,19 +109,6 @@ const int numberOfModule = 6;
         return;
     }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	if([self.elementName isEqualToString:@"string"]){
 		
 		NSString *strURL = [NSString stringWithFormat:@"%@",  string];
@@ -125,7 +131,17 @@ const int numberOfModule = 6;
 		[operation start];
 	}
 	else if ([self.elementName isEqualToString:@"SITradVersion"]){
-		NSLog(@"%@", string);
+		NSString * AppsVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+		
+		if (![string isEqualToString:AppsVersion]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Latest Version"
+								message:[NSString stringWithFormat:@"Latest version is available for download. Do you want to download now ?"]
+								delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+			alert.tag = 2;
+			[alert show];
+			
+			alert = Nil;
+		}
 	}
 	else if ([self.elementName isEqualToString:@"DLURL"]){
 		NSLog(@"%@", string);
@@ -147,7 +163,7 @@ const int numberOfModule = 6;
 	
 }
 
-
+#pragma mark - other
 - (void)viewDidUnload
 {
     [self setOutletCarousel:nil];
@@ -335,10 +351,33 @@ const int numberOfModule = 6;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 0 && alertView.tag == 0 ) {
         [self updateDateLogout];
         
     }
+	else if (buttonIndex == 0 && alertView.tag == 1){
+
+		SettingUserProfile * UserProfileView = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingUserProfile"];
+		UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
+		UserProfileView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		UserProfileView.indexNo = self.indexNo;
+		[self presentModalViewController:UserProfileView animated:YES];
+		
+		UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 748);
+		UserProfileView = nil;
+				 
+	}
+	else if (buttonIndex == 0 && alertView.tag == 2){
+		//download latest version
+/*
+		NSString *strURL = [NSString stringWithFormat:@"http://www.hla.com.my/agencyportal/includes/DLrotate2.asp?file=iMP/iMP.plist"];
+		NSURL *url = [NSURL URLWithString:strURL];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+ */
+		
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:
+								@"http://www.hla.com.my/agencyportal/includes/DLrotate2.asp?file=iMP/iMP.plist"]];
+	}
 }
 
 -(void)updateDateLogout
@@ -398,6 +437,7 @@ const int numberOfModule = 6;
                           cancelButtonTitle: NSLocalizedString(@"Yes",nil)
                           otherButtonTitles: NSLocalizedString(@"No",nil), nil];
     
+	alert.tag = 0;
     [alert show ];
     alert = Nil;
 }

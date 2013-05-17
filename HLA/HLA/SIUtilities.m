@@ -148,5 +148,10 @@ static sqlite3 *contactDB = nil;
     return YES;
 }
 
++(NSString *)WSLogin{
+	
+	return @"http://echannel.dev/";
+	//return @"http://www.hla.com.my:2880/";
+}
 
 @end

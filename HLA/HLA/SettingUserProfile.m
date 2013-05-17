@@ -9,6 +9,8 @@
 #import "SettingUserProfile.h"
 #import "Login.h"
 #import "AppDelegate.h"
+#import "AFNetworking.h"
+#import "SIUtilities.h"
 
 @interface SettingUserProfile ()
 
@@ -28,6 +30,7 @@
 @synthesize contDate,ICNo,Addr1,Addr2,Addr3,txtAgencyPortalLogin, txtAgencyPortalPwd, AgentPortalLoginID, AgentPortalPassword;
 @synthesize datePopover = _datePopover;
 @synthesize DatePicker = _DatePicker;
+@synthesize previousElementName, elementName;
 
 
 id temp;
@@ -100,6 +103,33 @@ id temp;
             
         }
      */
+	        if (alertView.tag == 1) {
+				NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
+									"GetSIVersion_TRADUL?Type=IPAD_TRAD&Remarks=Agency&OSType=32", [SIUtilities WSLogin]];
+				NSLog(@"%@", strURL);
+				NSURL *url = [NSURL URLWithString:strURL];
+				NSURLRequest *request = [NSURLRequest requestWithURL:url];
+				
+				AFXMLRequestOperation *operation =
+				[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+																	success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+																		
+																		XMLParser.delegate = self;
+																		[XMLParser setShouldProcessNamespaces:YES];
+																		[XMLParser parse];
+																		
+																	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+																		NSLog(@"error in calling web service");
+																	}];
+				
+				[operation start];
+			}
+			else if (alertView.tag == 2){
+				//download latest version
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:
+									@"http://www.hla.com.my/agencyportal/includes/DLrotate2.asp?file=iMP/iMP.plist"]];
+				
+			}
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -113,10 +143,20 @@ id temp;
     self.myScrollView.frame = CGRectMake(0, 44, 768, 704-352);
     self.myScrollView.contentSize = CGSizeMake(768, 605);
     
+	if ([txtAgencyPortalLogin isFirstResponder]) {
+		activeField = txtAgencyPortalLogin;
+	}
+	if ([txtAgencyPortalPwd isFirstResponder]) {
+		activeField = txtAgencyPortalPwd;
+	}
+	
     CGRect textFieldRect = [activeField frame];
-    textFieldRect.origin.y += 10;
+    textFieldRect.origin.y += 30;
+	
     [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
-    
+    activeField = nil;
+	activeField = [[UITextField alloc] init ];
+
 }
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
@@ -346,6 +386,7 @@ id temp;
     [self.view endEditing:TRUE];
     [self resignFirstResponder];
     [self updateUserData ];
+	//[self CheckAgentPortal];
 }
 
 - (IBAction)btnContractDatePressed:(id)sender     //--bob
@@ -393,6 +434,128 @@ id temp;
     [self.datePopover dismissPopoverAnimated:YES];
 }
 
+-(void)CheckAgentPortal{
+	NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
+									"ValidateLogin?strid=%@&strpwd=%@&strIPAddres=123&iBadAttempts=0&strFirstAgentCode=%@",
+						[SIUtilities WSLogin], txtAgencyPortalLogin.text, txtAgencyPortalPwd.text, txtAgentCode.text];
+	
+		NSLog(@"%@", strURL);
+		NSURL *url = [NSURL URLWithString:strURL];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+	
+		AFXMLRequestOperation *operation =
+		[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+		 													success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+			 													XMLParser.delegate = self;
+			 														[XMLParser setShouldProcessNamespaces:YES];
+			 														[XMLParser parse];
+			 
+			 													} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+				 													NSLog(@"error in calling web service");
+				 												UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+																message:@"Error in connecting to web service."
+																							   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+				 															[alert show];
+				 												
+				 															alert = Nil;
+				 														}];
+		
+		[operation start];
+}
+
+#pragma mark - XML parser
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+    attributes:(NSDictionary *)attributeDict  {
+    
+	self.previousElementName = self.elementName;
+	
+    if (qName) {
+        self.elementName = qName;
+    }
+	
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    if (!self.elementName){
+        return;
+    }
+	
+	if([self.elementName isEqualToString:@"LoginError"]){
+		
+		if ([string isEqualToString:@""]) {
+			UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+															  message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+			success.tag = 1;
+			[success show];
+			
+		}
+		else{
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agent Portal"
+									message:string delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+			
+			[alert show];
+			
+		}
+		
+	}
+	
+	else if([self.elementName isEqualToString:@"BadAttempts"]){
+		
+	}
+	
+	else if([self.elementName isEqualToString:@"string"]){
+		
+		NSString *strURL = [NSString stringWithFormat:@"%@",  string];
+		NSLog(@"%@", strURL);
+		NSURL *url = [NSURL URLWithString:strURL];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+		
+		AFXMLRequestOperation *operation =
+		[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+															success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+																
+																XMLParser.delegate = self;
+																[XMLParser setShouldProcessNamespaces:YES];
+																[XMLParser parse];
+																
+															} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+																NSLog(@"error in calling web service");
+															}];
+		
+		[operation start];
+	}
+	else if ([self.elementName isEqualToString:@"SITradVersion"]){
+		NSString * AppsVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+		
+		if (![string isEqualToString:AppsVersion]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Latest Version" message:[NSString stringWithFormat:@"Latest version is available for download"]
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			alert.tag = 2;
+			[alert show];
+			
+			alert = Nil;
+		}
+		NSLog(@"%@", string);
+	}
+	else if ([self.elementName isEqualToString:@"DLURL"]){
+		NSLog(@"%@", string);
+	}
+	else if ([self.elementName isEqualToString:@"DLFilename"]){
+		NSLog(@"%@", string);
+	}
+	
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+	
+	self.elementName = nil;
+}
+
+-(void) parserDidEndDocument:(NSXMLParser *)parser {
+	
+	
+	
+}
 
 #pragma mark - sqlite DB
 
@@ -506,17 +669,18 @@ id temp;
             
             const char *query_stmt = [querySQL UTF8String];
             
-            NSLog(@"%@",querySQL);
+            //NSLog(@"%@",querySQL);
             
             if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-                    
+                    /*
                     UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
                                                                       message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
                     success.tag = 1;
                     [success show];
+					 */
                     
                 } else {
                     //lblStatus.text = @"Failed to update!";
@@ -527,6 +691,8 @@ id temp;
             }
             sqlite3_close(contactDB);
         }
+		
+		[self CheckAgentPortal];
     }
 }
 

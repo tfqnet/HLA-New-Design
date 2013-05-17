@@ -11,6 +11,8 @@
 #import "SecurityQuestion.h"
 #import "Login.h"
 #import "AppDelegate.h"
+#import "AFNetworking.h"
+#import "SIUtilities.h"
 
 @interface UserProfile ()
 
@@ -34,6 +36,7 @@
 @synthesize contDate,ICNo,Addr1,Addr2,Addr3,txtAgencyPortalLogin, txtAgencyPortalPwd;
 @synthesize datePopover = _datePopover;
 @synthesize DatePicker = _DatePicker;
+@synthesize previousElementName, elementName;
 
 id temp;
 
@@ -100,7 +103,8 @@ id temp;
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{   
+{
+
     if (FirstTimeLogin == 1) {
         if (alertView.tag == 1) {
             Login *LoginPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Login"];
@@ -108,10 +112,18 @@ id temp;
             LoginPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentModalViewController:LoginPage animated:YES ];
             
-            [self dismissModalViewControllerAnimated:YES];
+            //[self dismissModalViewControllerAnimated:YES];
             
         }
+		else if (alertView.tag == 2 && buttonIndex == 0){
+			UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+															  message:@"Registration successful! Please re-login with the new password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+			success.tag = 1;
+			[success show];
+		}
     }
+	
+	
     
     /*
     else {
@@ -368,6 +380,7 @@ id temp;
     [self.view endEditing:TRUE];
     [self resignFirstResponder];
     [self updateUserData ];
+	
 }
 
 - (IBAction)btnContractDatePressed:(id)sender     //--bob
@@ -527,10 +540,12 @@ id temp;
                             
                             if (sqlite3_step(statement2) == SQLITE_DONE)
                             {
+								/*
                                 UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
                                                                                   message:@"Registration successful! Please re-login with the new password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
                                 success.tag = 1;
                                 [success show];
+								 */
                             }
                             
                             sqlite3_finalize(statement2);
@@ -552,8 +567,97 @@ id temp;
             }
             sqlite3_close(contactDB);
         }
+		[self CheckAgentPortal];
     }
 }
+
+-(void)CheckAgentPortal{
+	NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
+						"ValidateLogin?strid=%@&strpwd=%@&strIPAddres=123&iBadAttempts=0&strFirstAgentCode=%@",
+					   	[SIUtilities WSLogin], txtAgencyPortalLogin.text, txtAgencyPortalPwd.text, txtAgentCode.text];
+	
+	NSLog(@"%@", strURL);
+	NSURL *url = [NSURL URLWithString:strURL];
+	NSURLRequest *request = [NSURLRequest requestWithURL:url];
+	
+	AFXMLRequestOperation *operation =
+	[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+														success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+															XMLParser.delegate = self;
+															[XMLParser setShouldProcessNamespaces:YES];
+															[XMLParser parse];
+															
+														} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+															UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+																			message:@"Error in connecting to web service. Do you want to skip this process ?"
+																			delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+															
+															alert.tag = 2;
+															[alert show];
+															
+															alert = Nil;
+														}];
+	
+	[operation start];
+}
+
+#pragma mark - XML parser
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+    attributes:(NSDictionary *)attributeDict  {
+    
+	self.previousElementName = self.elementName;
+	
+    if (qName) {
+        self.elementName = qName;
+    }
+	
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    if (!self.elementName){
+        return;
+    }
+	
+	if([self.elementName isEqualToString:@"LoginError"]){
+		
+		if ([string isEqualToString:@""]) {
+
+			UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+															  message:@"Registration successful! Please re-login with the new password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+			success.tag = 1;
+			[success show];
+			
+		}
+		else{
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agent Portal"
+									message:[string stringByAppendingFormat:@". Do you want to skip this process ?" ]
+									delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil ];
+
+
+			
+			[alert show];
+			
+		}
+		
+	}
+	
+	else if([self.elementName isEqualToString:@"BadAttempts"]){
+		
+	}
+	
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+	
+	self.elementName = nil;
+}
+
+-(void) parserDidEndDocument:(NSXMLParser *)parser {
+	
+	
+	
+}
+
 
 
 #pragma mark - memory release

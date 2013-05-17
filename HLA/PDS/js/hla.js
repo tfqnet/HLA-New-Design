@@ -1436,9 +1436,9 @@ function writeCancel(lang)
 			else if (Trad_Rider_Details.RiderCode == "LCPR"){
 				toHide = 0;
 				if (lang == "EN")
-					temp = desc[1];
+					temp = desc[0];
 				else
-					temp = descBM[1];
+					temp = descBM[0];
 				$(".table-Cancel > tbody").append('<tr><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + getPlanRider(Trad_Rider_Details.RiderCode) + '</td><td style="padding: 1px 0px 1px 5px;vertical-align: text-top">' + temp + '</td></tr>')
 			}
 			else if (Trad_Rider_Details.RiderCode == "PA"){

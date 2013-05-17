@@ -6,8 +6,12 @@
 	<array>
 		<array>
 			<array>
-				<string>HLA Cash Promise</string>
-				<string>Brochure_CashPromise</string>
+				<string>HLA Cash Promise (English + BM)</string>
+				<string>Brochure_Cashpromise_ENGBM</string>
+			</array>
+			<array>
+				<string>HLA Cash Promise (English + Mandarin)</string>
+				<string>Brochure_Cashpromise_ENGMAND</string>
 			</array>
 			<array>
 				<string>Premier Life</string>

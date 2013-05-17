@@ -22,6 +22,11 @@
 @property (weak, nonatomic) IBOutlet iCarousel *outletCarousel;
 @property(strong) NSString *previousElementName;
 @property(strong) NSString *elementName;
+@property (nonatomic, retain) NSString *getInternet;
+@property (nonatomic, retain) NSString *getValid;
+@property (nonatomic, retain) NSString *ErrorMsg;
+@property (nonatomic, assign) int indexNo;
+
 
 - (IBAction)btnExit:(id)sender;
 

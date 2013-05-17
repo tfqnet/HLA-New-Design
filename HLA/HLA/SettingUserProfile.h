@@ -10,7 +10,7 @@
 #import <sqlite3.h>
 #import "DateViewController.h"
 
-@interface SettingUserProfile : UIViewController <DateViewControllerDelegate, UITextFieldDelegate>{
+@interface SettingUserProfile : UIViewController <DateViewControllerDelegate, UITextFieldDelegate, NSXMLParserDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -41,6 +41,9 @@
 @property (nonatomic, copy) NSString *registerNo;
 @property (nonatomic, copy) NSString *email;
 @property (weak, nonatomic) IBOutlet UIButton *outletSave;
+
+@property(strong) NSString *previousElementName;
+@property(strong) NSString *elementName;
 
 - (IBAction)btnClose:(id)sender;
 - (IBAction)btnSave:(id)sender;
