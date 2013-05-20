@@ -37,7 +37,7 @@
 @synthesize dataInsert,commDate,occuClass,IndexNo,laBH;
 @synthesize ProspectList=_ProspectList;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,occPA,headerTitle;
-@synthesize LADOBField,LAOccpField,getSINo,dataInsert2;
+@synthesize getSINo,dataInsert2,btnDOB,btnOccp;
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,cashDividend,advanceYearlyIncome,yearlyIncome;
 @synthesize termCover,planCode,arrExistRiderCode,arrExistPlanChoice;
 @synthesize prospectPopover = _prospectPopover;
@@ -46,6 +46,10 @@
 @synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker, strPA_CPA,payorAge;
 @synthesize LADate = _LADate;
 @synthesize datePopover = _datePopover;
+@synthesize dobPopover = _dobPopover;
+@synthesize OccupationList = _OccupationList;
+@synthesize OccupationListPopover = _OccupationListPopover;
+
 
 id temp;
 - (void)viewDidLoad
@@ -64,8 +68,8 @@ id temp;
     LAOccLoadingField.enabled = NO;
     LACPAField.enabled = NO;
     LAPAField.enabled = NO;
-    LADOBField.enabled = NO;
-    LAOccpField.enabled = NO;
+    btnOccp.enabled = NO;
+    btnDOB.enabled = NO;
     useExist = NO;
     AgeChanged = NO;
     JobChanged = NO;
@@ -192,8 +196,8 @@ id temp;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704-264);
-    self.myScrollView.contentSize = CGSizeMake(1024, 704);
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 960-264);
+    self.myScrollView.contentSize = CGSizeMake(768, 960);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
@@ -203,7 +207,7 @@ id temp;
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
-    self.myScrollView.frame = CGRectMake(0, 0, 1024, 704);
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 960);
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -239,7 +243,7 @@ id temp;
     if (valid) {
         
         LANameField.text = clientName;
-        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+        [btnDOB setTitle:DOB forState:UIControlStateNormal];
         LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
         [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
         
@@ -258,7 +262,7 @@ id temp;
         NSLog(@"smoker:%@",smoker);
         
         [self getOccLoadExist];
-        LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        [btnOccp setTitle:occuDesc forState:UIControlStateNormal];
         LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
         if (occCPA_PA == 0) {
@@ -297,13 +301,13 @@ id temp;
         DOB = DOBPP;
         [self calculateAge];
             
-        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+        [btnDOB setTitle:DOB forState:UIControlStateNormal];
         LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
         [btnCommDate setTitle:commDate forState:UIControlStateNormal];
         
         occuCode = OccpCodePP;
         [self getOccLoadExist];
-        LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        [btnOccp setTitle:occuDesc forState:UIControlStateNormal];
         LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
         if (occCPA_PA == 0) {
@@ -387,7 +391,7 @@ id temp;
     DOB = DOBPP;
     commDate = [self.requestCommDate description];
     [self calculateAge];
-    LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOBPP];
+    [btnDOB setTitle:DOBPP forState:UIControlStateNormal];
     LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
     [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
     
@@ -409,7 +413,7 @@ id temp;
     
     occuCode = OccpCodePP;
     [self getOccLoadExist];
-    LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+    [btnOccp setTitle:occuDesc forState:UIControlStateNormal];
     LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
     
     if (occCPA_PA == 0) {
@@ -475,7 +479,7 @@ id temp;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 70 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
-    else if (occuCode.length == 0 || LAOccpField.text.length == 0) {
+    else if (occuCode.length == 0 || btnOccp.titleLabel.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     } else if ([LANameField.text rangeOfCharacterFromSet:set].location != NSNotFound) {
@@ -515,6 +519,15 @@ id temp;
 
 - (IBAction)selectProspect:(id)sender
 {
+    LANameField.enabled = NO;
+    LANameField.backgroundColor = [UIColor lightGrayColor];
+    LANameField.textColor = [UIColor darkGrayColor];
+    
+    sexSegment.enabled = NO;
+    btnDOB.enabled = NO;
+    
+    btnOccp.enabled = NO;
+    
     if (_ProspectList == nil) {
         self.ProspectList = [[ListingTbViewController alloc] initWithStyle:UITableViewStylePlain];
         _ProspectList.delegate = self;
@@ -524,8 +537,39 @@ id temp;
     [self.prospectPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 }
 
+- (IBAction)enableFields:(id)sender
+{
+    LANameField.enabled = YES;
+    LANameField.backgroundColor = [UIColor whiteColor];
+    LANameField.textColor = [UIColor blackColor];
+    sexSegment.enabled = YES;
+    btnOccp.enabled = YES;
+    
+    btnDOB.enabled = YES;
+    
+}
+
+- (IBAction)btnDOBPressed:(id)sender
+{
+    date1 = YES;
+    date2 = NO;
+    
+    if (_LADate == Nil) {
+        
+        self.LADate = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
+        _LADate.delegate = self;
+        self.dobPopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
+    }
+    
+    [self.dobPopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    [self.dobPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+}
+
 - (IBAction)btnCommDatePressed:(id)sender
 {
+    date1 = NO;
+    date2 = YES;
+    
     if (commDate.length==0) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
@@ -548,6 +592,17 @@ id temp;
     
     [self.datePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.datePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+}
+
+- (IBAction)btnOccpPressed:(id)sender
+{
+    if (_OccupationList == nil) {
+        self.OccupationList = [[OccupationList alloc] initWithStyle:UITableViewStylePlain];
+        _OccupationList.delegate = self;
+        self.OccupationListPopover = [[UIPopoverController alloc] initWithContentViewController:_OccupationList];
+    }
+    
+    [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -687,7 +742,7 @@ id temp;
     }
     else if (alertView.tag==1004 && buttonIndex == 1) { // added by heng
         LANameField.text = clientName;
-        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+        [btnDOB setTitle:DOB forState:UIControlStateNormal];
         LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
         [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
         
@@ -706,9 +761,8 @@ id temp;
         NSLog(@"smoker:%@",smoker);
         
         [self getOccLoadExist];
-        LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        [btnOccp setTitle:occuDesc forState:UIControlStateNormal];
         LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
-        
         
         if (occCPA_PA == 0) {
             LACPAField.text = @"D";
@@ -726,10 +780,10 @@ id temp;
         
         LANameField.text = @"";
         [sexSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
-        LADOBField.text = @"";
+        [btnDOB setTitle:@"" forState:UIControlStateNormal];
         LAAgeField.text = @"";
         [self.btnCommDate setTitle:@"" forState:UIControlStateNormal];
-        LAOccpField.text = @"";
+        [btnOccp setTitle:@"" forState:UIControlStateNormal];
         LAOccLoadingField.text = @"";
         LACPAField.text = @"";
         LAPAField.text = @"";
@@ -1618,13 +1672,13 @@ id temp;
         }
         NSLog(@"sex:%@",sex);
         
-        LADOBField.text = [[NSString alloc] initWithFormat:@"%@",DOB];
+        [btnDOB setTitle:DOB forState:UIControlStateNormal];
         LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
         [self.btnCommDate setTitle:commDate forState:UIControlStateNormal];
         
         occuCode = aaCode;
         [self getOccLoadExist];
-        LAOccpField.text = [[NSString alloc] initWithFormat:@"%@",occuDesc];
+        [btnOccp setTitle:occuDesc forState:UIControlStateNormal];
         LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
         if (occCPA_PA == 0) {
@@ -1649,21 +1703,60 @@ id temp;
 
 -(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB
 {
-    if (aDate == NULL) {
-        [btnCommDate setTitle:temp forState:UIControlStateNormal];
-        commDate = temp;
+    if (date1) {
+        [btnDOB setTitle:aDate forState:UIControlStateNormal];
+        LAAgeField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
+        DOB = aDate;
+        age = bAge;
+        ANB = aANB;
+        [self.dobPopover dismissPopoverAnimated:YES];
+        date1 = NO;
+    }
+    else if (date2) {
+        if (aDate == NULL) {
+            [btnCommDate setTitle:temp forState:UIControlStateNormal];
+            commDate = temp;
+        }
+        else {
+            [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
+            commDate = aDate;
+        }
+        
+        if (DOB.length != 0 || btnOccp.titleLabel.text.length != 0) {
+            [self calculateAge];
+            LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+        }
+        
+        [self.datePopover dismissPopoverAnimated:YES];
+        date2 = NO;
+    }
+    
+}
+
+- (void)OccupCodeSelected:(NSString *)OccupCode{
+    
+    occuCode = OccupCode;
+    [self getOccLoadExist];
+    LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
+    
+    if (occCPA_PA == 0) {
+        LACPAField.text = @"D";
     }
     else {
-        [self.btnCommDate setTitle:aDate forState:UIControlStateNormal];
-        commDate = aDate;
+        LACPAField.text = [NSString stringWithFormat:@"%d",occCPA_PA];
     }
     
-    if (DOB.length != 0 || LADOBField.text.length != 0) {
-        [self calculateAge];
-        LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+    if (occPA == 0) {
+        LAPAField.text = @"D";
     }
-    
-    [self.datePopover dismissPopoverAnimated:YES];
+    else {
+        LAPAField.text = [NSString stringWithFormat:@"%d",occPA];
+    }
+}
+
+- (void)OccupDescSelected:(NSString *)color {
+    [btnOccp setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", color]forState:UIControlStateNormal];
+    [self.OccupationListPopover dismissPopoverAnimated:YES];
 }
 
 
@@ -1697,8 +1790,6 @@ id temp;
     [self setLAPAField:nil];
     [self setBtnCommDate:nil];
     [self setStatusLabel:nil];
-    [self setLADOBField:nil];
-    [self setLAOccpField:nil];
     [self setMyToolBar:nil];
     [self setSINo:nil];
     [self setCustCode:nil];
@@ -1728,6 +1819,8 @@ id temp;
     [self setArrExistRiderCode:nil];
     [self setPlanChoose:nil];
     [self setHeaderTitle:nil];
+    [self setBtnDOB:nil];
+    [self setBtnOccp:nil];
     [super viewDidUnload];
 }
 

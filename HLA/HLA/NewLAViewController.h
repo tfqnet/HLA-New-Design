@@ -11,6 +11,7 @@
 #import "ListingTbViewController.h"
 #import "DateViewController.h"
 #import "BasicPlanHandler.h"
+#import "OccupationList.h"
 
 @class NewLAViewController;
 @protocol NewLAViewControllerDelegate
@@ -23,15 +24,18 @@
 -(void)PayorDeleted;
 @end
 
-@interface NewLAViewController : UIViewController<UITextFieldDelegate,UIPopoverControllerDelegate,ListingTbViewControllerDelegate,DateViewControllerDelegate>{
+@interface NewLAViewController : UIViewController<UITextFieldDelegate,UIPopoverControllerDelegate,ListingTbViewControllerDelegate,DateViewControllerDelegate,OccupationListDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
     UIPopoverController *popOverController;
     UIPopoverController *_prospectPopover;
     UIPopoverController *_datePopover;
+    UIPopoverController *_dobPopover;
+    UIPopoverController *_OccupationListPopover;
     ListingTbViewController *_ProspectList;
     DateViewController *_LADate;
+    OccupationList *_OccupationList;
     id <NewLAViewControllerDelegate> _delegate;
     BOOL Saved;
     BOOL Inserted;
@@ -40,6 +44,8 @@
     BOOL DiffClient;
     BOOL AgeChanged;
     BOOL JobChanged;
+    BOOL date1;
+    BOOL date2;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;
@@ -59,10 +65,13 @@
 @property (nonatomic, copy) NSString *getSINo;
 //--
 
+@property (nonatomic, retain) OccupationList *OccupationList;
 @property (nonatomic, retain) ListingTbViewController *ProspectList;
 @property (nonatomic, retain) DateViewController *LADate;
 @property (nonatomic, retain) UIPopoverController *prospectPopover;
 @property (nonatomic, retain) UIPopoverController *datePopover;
+@property (nonatomic, retain) UIPopoverController *dobPopover;
+@property (nonatomic, retain) UIPopoverController *OccupationListPopover;
 @property (retain, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, retain) UIPopoverController *popOverController;
 //LA Field
@@ -75,10 +84,10 @@
 @property (retain, nonatomic) IBOutlet UITextField *LAPAField;
 @property (strong, nonatomic) IBOutlet UIButton *btnCommDate;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
-@property (strong, nonatomic) IBOutlet UITextField *LADOBField;
-@property (strong, nonatomic) IBOutlet UITextField *LAOccpField;
 @property (strong, nonatomic) IBOutlet UIToolbar *myToolBar;
 @property (strong, nonatomic) IBOutlet UILabel *headerTitle;
+@property (strong, nonatomic) IBOutlet UIButton *btnDOB;
+@property (strong, nonatomic) IBOutlet UIButton *btnOccp;
 
 @property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, copy) NSString *CustCode;
@@ -147,6 +156,10 @@
 - (IBAction)doSaveLA:(id)sender;
 - (IBAction)selectProspect:(id)sender;
 - (IBAction)btnCommDatePressed:(id)sender;
+- (IBAction)enableFields:(id)sender;
+- (IBAction)btnDOBPressed:(id)sender;
+- (IBAction)btnOccpPressed:(id)sender;
+
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;
