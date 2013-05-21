@@ -22,6 +22,7 @@
 @property (nonatomic, copy) NSString *msgAge;
 @property (nonatomic,assign,readwrite) int Age;
 @property (nonatomic, assign,readwrite) int ANB;
+@property (nonatomic,assign,readwrite) int btnSender;
 @property (nonatomic, strong) id <DateViewControllerDelegate> delegate;
 
 @property (readonly) NSString *selectedStrDate;

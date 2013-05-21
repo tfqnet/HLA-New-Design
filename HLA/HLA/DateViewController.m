@@ -14,7 +14,7 @@
 
 @implementation DateViewController
 @synthesize datePickerView = _datePickerView;
-@synthesize msgDate,msgAge,selectedStrDate,selectedStrAge,Age,ANB;
+@synthesize msgDate,msgAge,selectedStrDate,selectedStrAge,Age,ANB,btnSender;
 @synthesize delegate = _delegate;
 
 id msg, ComDate;
@@ -144,7 +144,7 @@ id msg, ComDate;
     if ((yearN<yearB)||(yearN==yearB && monthN<monthB)||(yearN==yearB && monthN==monthB && dayN<dayB)) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Entered date cannot be greater than today." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
-    } else if (diffDays > 182) {
+    } else if (diffDays > 182 && btnSender == 2) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Maximum backdating days allowed is 182 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }

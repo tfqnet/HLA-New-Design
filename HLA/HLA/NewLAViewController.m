@@ -52,6 +52,7 @@
 
 
 id temp;
+id dobtemp;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -543,10 +544,9 @@ id temp;
     LANameField.backgroundColor = [UIColor whiteColor];
     LANameField.textColor = [UIColor blackColor];
     sexSegment.enabled = YES;
-    btnOccp.enabled = YES;
     
     btnDOB.enabled = YES;
-    
+    btnOccp.enabled = YES;
 }
 
 - (IBAction)btnDOBPressed:(id)sender
@@ -554,12 +554,23 @@ id temp;
     date1 = YES;
     date2 = NO;
     
-    if (_LADate == Nil) {
+    if (DOB.length==0) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
         
-        self.LADate = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
-        _LADate.delegate = self;
-        self.dobPopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
+        [btnDOB setTitle:dateString forState:UIControlStateNormal];
+        dobtemp = btnDOB.titleLabel.text;
     }
+    else {
+        dobtemp = btnDOB.titleLabel.text;
+    }
+    
+    self.LADate = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
+    _LADate.delegate = self;
+    _LADate.msgDate = dobtemp;
+    _LADate.btnSender = 1;
+    self.dobPopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
     
     [self.dobPopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.dobPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
@@ -582,13 +593,11 @@ id temp;
         temp = btnCommDate.titleLabel.text;
     }
 
-    if (_LADate == Nil) {
-        
-        self.LADate = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
-        _LADate.delegate = self;
-        _LADate.msgDate = temp;
-        self.datePopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
-    }
+    self.LADate = [self.storyboard instantiateViewControllerWithIdentifier:@"showDate"];
+    _LADate.delegate = self;
+    _LADate.msgDate = temp;
+    _LADate.btnSender = 2;
+    self.datePopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
     
     [self.datePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
     [self.datePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
@@ -1704,11 +1713,19 @@ id temp;
 -(void)datePick:(DateViewController *)inController strDate:(NSString *)aDate strAge:(NSString *)aAge intAge:(int)bAge intANB:(int)aANB
 {
     if (date1) {
-        [btnDOB setTitle:aDate forState:UIControlStateNormal];
-        LAAgeField.text = [[NSString alloc] initWithFormat:@"%@",aAge];
-        DOB = aDate;
-        age = bAge;
-        ANB = aANB;
+        if (aDate == NULL) {
+            [btnDOB setTitle:dobtemp forState:UIControlStateNormal];
+            DOB = dobtemp;
+            [self calculateAge];
+            LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
+            
+        } else {
+            [btnDOB setTitle:aDate forState:UIControlStateNormal];
+            DOB = aDate;
+            [self calculateAge];
+            LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",bAge];
+        }
+        
         [self.dobPopover dismissPopoverAnimated:YES];
         date1 = NO;
     }
@@ -1722,7 +1739,7 @@ id temp;
             commDate = aDate;
         }
         
-        if (DOB.length != 0 || btnOccp.titleLabel.text.length != 0) {
+        if (DOB.length != 0 || btnDOB.titleLabel.text.length != 0) {
             [self calculateAge];
             LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",age];
         }
@@ -1730,10 +1747,10 @@ id temp;
         [self.datePopover dismissPopoverAnimated:YES];
         date2 = NO;
     }
-    
 }
 
-- (void)OccupCodeSelected:(NSString *)OccupCode{
+- (void)OccupCodeSelected:(NSString *)OccupCode
+{
     
     occuCode = OccupCode;
     [self getOccLoadExist];
