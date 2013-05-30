@@ -525,9 +525,12 @@ id dobtemp;
     LANameField.textColor = [UIColor darkGrayColor];
     
     sexSegment.enabled = NO;
+    
     btnDOB.enabled = NO;
+    self.btnDOB.titleLabel.textColor = [UIColor darkGrayColor];
     
     btnOccp.enabled = NO;
+    self.btnOccp.titleLabel.textColor = [UIColor darkGrayColor];
     
     if (_ProspectList == nil) {
         self.ProspectList = [[ListingTbViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -546,7 +549,10 @@ id dobtemp;
     sexSegment.enabled = YES;
     
     btnDOB.enabled = YES;
+    self.btnDOB.titleLabel.textColor = [UIColor blackColor];
+    
     btnOccp.enabled = YES;
+    self.btnOccp.titleLabel.textColor = [UIColor blackColor];
 }
 
 - (IBAction)btnDOBPressed:(id)sender
@@ -554,13 +560,14 @@ id dobtemp;
     date1 = YES;
     date2 = NO;
     
-    if (DOB.length==0) {
+    if (DOB.length==0 || btnDOB.titleLabel.text.length == 0) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
         NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
         
-        [btnDOB setTitle:dateString forState:UIControlStateNormal];
+        [self.btnDOB setTitle:dateString forState:UIControlStateNormal];
         dobtemp = btnDOB.titleLabel.text;
+        NSLog(@"here!, %@",dateString);
     }
     else {
         dobtemp = btnDOB.titleLabel.text;
@@ -907,7 +914,7 @@ id dobtemp;
     {
         NSString *querySQL = [NSString stringWithFormat:
                 @"SELECT a.OccpDesc, b.OccLoading, b.CPA, b.PA, b.Class from Adm_Occp_Loading_Penta a LEFT JOIN Adm_Occp_Loading b ON a.OccpCode = b.OccpCode WHERE b.OccpCode = \"%@\"",occuCode];
-
+        
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -1688,6 +1695,7 @@ id dobtemp;
         occuCode = aaCode;
         [self getOccLoadExist];
         [btnOccp setTitle:occuDesc forState:UIControlStateNormal];
+        self.btnOccp.titleLabel.textColor = [UIColor darkGrayColor];
         LAOccLoadingField.text = [NSString stringWithFormat:@"%@",occLoading];
         
         if (occCPA_PA == 0) {
@@ -1726,6 +1734,7 @@ id dobtemp;
             LAAgeField.text = [[NSString alloc] initWithFormat:@"%d",bAge];
         }
         
+        self.btnDOB.titleLabel.textColor = [UIColor blackColor];
         [self.dobPopover dismissPopoverAnimated:YES];
         date1 = NO;
     }
