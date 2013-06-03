@@ -20,18 +20,11 @@
 @end
 
 @implementation ProspectListing
-@synthesize searchBar, ProspectTableData, FilteredProspectTableData, isFiltered;
+@synthesize ProspectTableData, FilteredProspectTableData, isFiltered;
 @synthesize EditProspect = _EditProspect;
 @synthesize ProspectViewController = _ProspectViewController;
+@synthesize idNoLabel,idTypeLabel,clientNameLabel,editBtn,deleteBtn,nametxt;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -48,7 +41,7 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
-    searchBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
+//    searchBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
     
     CGRect frame = CGRectMake(0, 0, 400, 44);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
@@ -57,15 +50,13 @@
     label.font = [UIFont boldSystemFontOfSize:20];
     label.textAlignment = UITextAlignmentCenter;
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
-    label.text = @"Prospect Listing";
+    label.text = @"Client Listing";
     self.navigationItem.titleView = label;
     
-    searchBar.delegate = (id)self;
+//    searchBar.delegate = (id)self;
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
-    
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    
     
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -94,17 +85,13 @@
     NSString *ProspectRemark = @"";
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-        //NSString *querySQL = [NSString stringWithFormat: @"SELECT * from tbl_prospect_profile"];
         NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile order by ProspectName ASC"];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
-            
             ProspectTableData = [[NSMutableArray alloc] init];
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
-                // [occCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
-                //[occDesc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)]];
                 ProspectID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                 NickName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 ProspectName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
@@ -152,7 +139,7 @@
         query_stmt = Nil, query_stmt = Nil;
     }
     
-    CustomColor = Nil, label = Nil, dirPaths = Nil, docsDir = Nil, dbpath = Nil, statement = Nil, statement = Nil;
+    label = Nil, dirPaths = Nil, docsDir = Nil, dbpath = Nil, statement = Nil, statement = Nil;
     ProspectID = Nil;
     NickName = Nil;
     ProspectName = Nil ;
@@ -176,19 +163,40 @@
     ProspectOccupationCode = Nil;
     ExactDuties = Nil;
     ProspectRemark = Nil;
+    
+    self.myTableView.rowHeight = 50;
+    self.myTableView.backgroundColor = [UIColor clearColor];
+    self.myTableView.separatorColor = [UIColor clearColor];
+    deleteBtn.hidden = TRUE;
+    deleteBtn.enabled = FALSE;
+    ItemToBeDeleted = [[NSMutableArray alloc] init];
+    indexPaths = [[NSMutableArray alloc] init];
+    
+    CGRect frame1=CGRectMake(0,233, 200, 50);
+    idTypeLabel.frame = frame1;
+    idTypeLabel.textAlignment = UITextAlignmentCenter;
+    idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    idTypeLabel.numberOfLines = 2;
+    
+    CGRect frame2=CGRectMake(200,233, 200, 50);
+    idNoLabel.frame = frame2;
+    idNoLabel.textAlignment = UITextAlignmentCenter;
+    idNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    idNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame3=CGRectMake(400,233, 624, 50);
+    clientNameLabel.frame = frame3;
+    clientNameLabel.textAlignment = UITextAlignmentCenter;
+    clientNameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    clientNameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CustomColor = Nil;
 }
 
-- (void)viewDidUnload
+-(void)viewDidAppear:(BOOL)animated
 {
-    [self setSearchBar:nil];
-    [super viewDidUnload];
-    FilteredProspectTableData = Nil;
-    ProspectTableData = Nil;
-}
-
--(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
-    //[self ReloadTableData];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -196,6 +204,11 @@
 	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight || interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
         return YES;
     
+    return NO;
+}
+
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
     return NO;
 }
 
@@ -209,14 +222,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    /*
     int rowCount;
     if(self.isFiltered)
-        //rowCount = filteredTableData.count;
         rowCount = FilteredProspectTableData.count;
     else
-        //rowCount = allTableData.count;
         rowCount = ProspectTableData.count;
-    return rowCount;
+    return rowCount;*/
+    return [ProspectTableData count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -227,23 +240,78 @@
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
-    //Food* food;
+    /*
     ProspectProfile* pp;
     if(isFiltered)
-        //food = [filteredTableData objectAtIndex:indexPath.row];
         pp = [FilteredProspectTableData objectAtIndex:indexPath.row];
     else
-        //food = [allTableData objectAtIndex:indexPath.row];
-        pp = [ProspectTableData objectAtIndex:indexPath.row];
-    //cell.textLabel.text = food.name;
-    //cell.detailTextLabel.text = food.description;
+        
+        pp = [ProspectTableData objectAtIndex:indexPath.row]; 
+     
     cell.textLabel.text = pp.ProspectName;
     cell.detailTextLabel.text = pp.NickName;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+     */
+    
+    [[cell.contentView viewWithTag:2001] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2002] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2003] removeFromSuperview ];
+    
+    ProspectProfile *pp = [ProspectTableData objectAtIndex:indexPath.row];
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    
+    CGRect frame=CGRectMake(0,0, 200, 50);
+    UILabel *label1=[[UILabel alloc]init];
+    label1.frame=frame;
+    label1.text= @"IC Number";
+    label1.textAlignment = UITextAlignmentCenter;
+    label1.tag = 2001;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label1];
+    
+    CGRect frame2=CGRectMake(200,0, 200, 50);
+    UILabel *label2=[[UILabel alloc]init];
+    label2.frame=frame2;
+    label2.text= @"8877665544";
+    label2.textAlignment = UITextAlignmentCenter;
+    label2.tag = 2002;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label2];
+    
+    CGRect frame3=CGRectMake(400,0, 600, 50);
+    UILabel *label3=[[UILabel alloc]init];
+    label3.frame=frame3;
+    label3.text= pp.ProspectName;
+    label3.textAlignment = UITextAlignmentCenter;
+    label3.tag = 2003;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label3];
+    
+    if (indexPath.row % 2 == 0) {
+        label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        
+        label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    }
+    else {
+        label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label2.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        
+        label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
     pp = Nil;
 }
 
+/*
 -(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
 {
     if(text.length == 0)
@@ -253,19 +321,7 @@
     else
     {
         isFiltered = true;
-        //  filteredTableData = [[NSMutableArray alloc] init];
         FilteredProspectTableData = [[NSMutableArray alloc] init];
-        /*
-         for (Food* food in allTableData)
-         {
-         NSRange nameRange = [food.name rangeOfString:text options:NSCaseInsensitiveSearch];
-         NSRange descriptionRange = [food.description rangeOfString:text options:NSCaseInsensitiveSearch];
-         if(nameRange.location != NSNotFound || descriptionRange.location != NSNotFound)
-         {
-         [filteredTableData addObject:food];
-         }	
-         }
-         */
         
         ProspectProfile* pp;
         for (pp in ProspectTableData)
@@ -282,19 +338,75 @@
         pp = Nil;
     }
     
-    [self.tableView reloadData];
-}
+    [self.myTableView reloadData];
+}*/
+
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self showDetailsForIndexPath:indexPath];
+    if ([self.myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
+        
+        for (UITableViewCell *zzz in [self.myTableView visibleCells])
+        {
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+        }
+        
+        if (!gotRowSelected) {
+            [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            deleteBtn.enabled = FALSE;
+        }
+        else {
+            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            deleteBtn.enabled = TRUE;
+        }
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted addObject:zzz];
+        [indexPaths addObject:indexPath];
+    }
+    else {
+        [self showDetailsForIndexPath:indexPath];
+    }
+    
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
+        
+        for (UITableViewCell *zzz in [self.myTableView visibleCells])
+        {
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+        }
+        
+        if (!gotRowSelected) {
+            [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+            deleteBtn.enabled = FALSE;
+        }
+        else {
+            [deleteBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            deleteBtn.enabled = TRUE;
+        }
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted removeObject:zzz];
+        [indexPaths removeObject:indexPath];
+    }
 }
 
 -(void) showDetailsForIndexPath:(NSIndexPath*)indexPath
 {
-    [self.searchBar resignFirstResponder];
+//    [self.searchBar resignFirstResponder];
     EditProspect* zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"EditProspect"];
     ProspectProfile* pp;
     
@@ -335,26 +447,11 @@
 
 }
 
-- (IBAction)btnAddNew:(id)sender {
-    /*
-    ProspectViewController *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
-    pvc.modalPresentationStyle = UIModalPresentationPageSheet;
-    pvc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:pvc animated:YES];
-    pvc.view.superview.frame = CGRectMake(20, 0, 1000, 768);
-    //[self.navigationController pushViewController:pvc animated:YES ];
-     */
-    
-    /*
-    if (_ProspectViewController == Nil) {
-        self.ProspectViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
-        _ProspectViewController.delegate = self;
-    }
-    _ProspectViewController.modalPresentationStyle = UIModalPresentationPageSheet;
-    _ProspectViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:_ProspectViewController animated:YES];
-    _ProspectViewController.view.superview.frame = CGRectMake(50, 0, 970, 768);
-    */
+
+#pragma mark - action
+
+- (IBAction)btnAddNew:(id)sender
+{
     
     if (_ProspectViewController == Nil) {
         self.ProspectViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
@@ -366,20 +463,12 @@
     _ProspectViewController.navigationItem.rightBarButtonItem = _ProspectViewController.outletDone;
     
 }
-/*
-- (IBAction)btnRefresh:(id)sender {
-    //[self.tableView reloadData];
-    [self ReloadTableData];
-}
-*/
--(void) ReloadTableData{
 
-    
+-(void) ReloadTableData
+{
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
-
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-
 
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
@@ -389,7 +478,6 @@
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
-        
             ProspectTableData = [[NSMutableArray alloc] init];
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
@@ -461,7 +549,7 @@
         sqlite3_close(contactDB);
         query_stmt = Nil, querySQL = Nil;
     }
-    [self.tableView reloadData];
+    [self.myTableView reloadData];
     dirPaths = Nil;
     docsDir = Nil;
     dbpath = Nil;
@@ -469,26 +557,246 @@
     
 }
 
--(void) FinishEdit{
+-(void) FinishEdit
+{
     isFiltered = FALSE;
     [self ReloadTableData];
-    searchBar.text = @"";
+//    searchBar.text = @"";
     _EditProspect = Nil;
     
 }
 
--(void) FinishInsert{
+-(void) FinishInsert
+{
     isFiltered = FALSE;
     [self ReloadTableData];
-    searchBar.text = @"";
+//    searchBar.text = @"";
     _ProspectViewController = nil;
 }
 
-- (BOOL)disablesAutomaticKeyboardDismissal {
-    return NO;
+- (IBAction)searchPressed:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    if(nametxt.text.length != 0)
+    {
+        sqlite3_stmt *statement;
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile WHERE ProspectName like \"%%%@%%\" order by ProspectName ASC",nametxt.text];
+            
+            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+            {
+                ProspectTableData = [[NSMutableArray alloc] init];
+                while (sqlite3_step(statement) == SQLITE_ROW)
+                {
+                    NSString *ProspectID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                    NSString *NickName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                    NSString *ProspectName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    NSString *ProspectDOB = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                    NSString *ProspectGender = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                    NSString *ResidenceAddress1 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+                    NSString *ResidenceAddress2 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
+                    NSString *ResidenceAddress3 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 7)];
+                    NSString *ResidenceAddressTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 8)];
+                    NSString *ResidenceAddressState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 9)];
+                    NSString *ResidenceAddressPostCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 10)];
+                    NSString *ResidenceAddressCountry = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 11)];
+                    NSString *OfficeAddress1 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 12)];
+                    NSString *OfficeAddress2 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 13)];
+                    NSString *OfficeAddress3 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 14)];
+                    NSString *OfficeAddressTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 15)];
+                    NSString *OfficeAddressState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 16)];
+                    NSString *OfficeAddressPostCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 17)];
+                    NSString *OfficeAddressCountry = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 18)];
+                    NSString *ProspectEmail = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 19)];
+                    NSString *ProspectOccupationCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 20)];
+                    NSString *ExactDuties = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 21)];
+                    NSString *ProspectRemark = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 22)];
+                    
+                    [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName
+                                                                      AndProspecGender:ProspectGender AndResidenceAddress1:ResidenceAddress1
+                                                                  AndResidenceAddress2:ResidenceAddress2 AndResidenceAddress3:ResidenceAddress3
+                                                               AndResidenceAddressTown:ResidenceAddressTown AndResidenceAddressState:ResidenceAddressState
+                                                           AndResidenceAddressPostCode:ResidenceAddressPostCode AndResidenceAddressCountry:ResidenceAddressCountry
+                                                                     AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown
+                                                                 AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode
+                                                               AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark
+                                                             AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties ]];
+                    
+                    ProspectID = Nil;
+                    NickName = Nil;
+                    ProspectName = Nil ;
+                    ProspectDOB = Nil  ;
+                    ProspectGender = Nil;
+                    ResidenceAddress1 = Nil;
+                    ResidenceAddress2 = Nil;
+                    ResidenceAddress3 = Nil;
+                    ResidenceAddressTown = Nil;
+                    ResidenceAddressState = Nil;
+                    ResidenceAddressPostCode = Nil;
+                    ResidenceAddressCountry = Nil;
+                    OfficeAddress1 = Nil;
+                    OfficeAddress2 = Nil;
+                    OfficeAddress3 = Nil;
+                    OfficeAddressTown = Nil;
+                    OfficeAddressState = Nil;
+                    OfficeAddressPostCode = Nil;
+                    OfficeAddressCountry = Nil;
+                    ProspectEmail = Nil;
+                    ProspectOccupationCode = Nil;
+                    ExactDuties = Nil;
+                    ProspectRemark = Nil;
+                }
+                sqlite3_finalize(statement);
+                
+            }
+            sqlite3_close(contactDB);
+            querySQL = Nil;
+        }
+        [self.myTableView reloadData];
+        statement = Nil;
+    }
 }
 
--(void)Clear{
+- (IBAction)resetPressed:(id)sender
+{
+    nametxt.text = @"";
+    [self ReloadTableData];
+    
+    [self.myTableView reloadData];
+}
+
+- (IBAction)editPressed:(id)sender
+{
+    [self resignFirstResponder];
+    if ([self.myTableView isEditing]) {
+        [self.myTableView setEditing:NO animated:TRUE];
+        deleteBtn.hidden = true;
+        deleteBtn.enabled = false;
+        [editBtn setTitle:@"Delete" forState:UIControlStateNormal ];
+        
+        ItemToBeDeleted = [[NSMutableArray alloc] init];
+        indexPaths = [[NSMutableArray alloc] init];
+    }
+    else{
+        [self.myTableView setEditing:YES animated:TRUE];
+        deleteBtn.hidden = FALSE;
+        [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        [editBtn setTitle:@"Cancel" forState:UIControlStateNormal ];
+    }
+}
+
+- (IBAction)deletePressed:(id)sender
+{
+    NSString *clt;
+    int RecCount = 0;
+    for (UITableViewCell *cell in [self.myTableView visibleCells])
+    {
+        if (cell.selected == TRUE) {
+            NSIndexPath *selectedIndexPath = [self.myTableView indexPathForCell:cell];
+            if (RecCount == 0) {
+                ProspectProfile *pp = [ProspectTableData objectAtIndex:selectedIndexPath.row];
+                clt = pp.ProspectName;
+            }
+            
+            RecCount = RecCount + 1;
+            
+            if (RecCount > 1) {
+                break;
+            }
+        }
+    }
+    
+    NSString *msg;
+    if (RecCount == 1) {
+        msg = [NSString stringWithFormat:@"Delete %@",clt];
+    }
+    else {
+        msg = @"Are you sure want to delete these Client(s)?";
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [alert setTag:1001];
+    [alert show];
+}
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==1001 && buttonIndex == 0) //delete
+    {
+        NSLog(@"delete!");
+        NSLog(@"itemToBeDeleted:%d", ItemToBeDeleted.count);
+        
+        if (ItemToBeDeleted.count < 1) {
+            return;
+        }
+        else{
+            NSLog(@"itemToBeDeleted:%d", ItemToBeDeleted.count);
+        }
+        
+        NSArray *sorted = [[NSArray alloc] init ];
+        sorted = [ItemToBeDeleted sortedArrayUsingComparator:^(id firstObject, id secondObject){
+            return [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch];
+        }];
+        
+        sqlite3_stmt *statement;
+        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+        {
+            for(int a=0; a<sorted.count; a++) {
+                int value = [[sorted objectAtIndex:a] intValue];
+                value = value - a;
+                
+                ProspectProfile *pp = [ProspectTableData objectAtIndex:value];
+                NSString *DeleteSQL = [NSString stringWithFormat:@"Delete from prospect_profile where indexNo = \"%@\"", pp.ProspectID];
+                NSLog(@"%@",DeleteSQL);
+                
+                const char *Delete_stmt = [DeleteSQL UTF8String];
+                if(sqlite3_prepare_v2(contactDB, Delete_stmt, -1, &statement, NULL) == SQLITE_OK)
+                {
+                    sqlite3_step(statement);
+                    sqlite3_finalize(statement);
+                }
+                else {
+                    
+                    NSLog(@"Error in Delete Statement");
+                }
+                
+                [ProspectTableData removeObjectAtIndex:value];
+            }
+            sqlite3_close(contactDB);
+        }
+        [self.myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [self ReloadTableData];
+        [self.myTableView reloadData];
+        
+        ItemToBeDeleted = [[NSMutableArray alloc] init];
+        indexPaths = [[NSMutableArray alloc] init];
+        deleteBtn.enabled = FALSE;
+        [deleteBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        
+    }
+}
+
+#pragma mark - memory management
+
+- (void)viewDidUnload
+{
+    [self setMyTableView:nil];
+    [self setIdTypeLabel:nil];
+    [self setIdNoLabel:nil];
+    [self setClientNameLabel:nil];
+    [self setEditBtn:nil];
+    [self setDeleteBtn:nil];
+    [self setNametxt:nil];
+    [super viewDidUnload];
+    FilteredProspectTableData = Nil;
+    ProspectTableData = Nil;
+}
+
+-(void)Clear
+{
 	ProspectTableData = Nil;
 	FilteredProspectTableData = Nil;
 	databasePath = Nil;
