@@ -81,7 +81,7 @@ bool IsContinue = TRUE;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    outletDelete.hidden = true;
     
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     
