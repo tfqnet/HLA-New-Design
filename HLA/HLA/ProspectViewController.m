@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ColorHexCode.h"
 #import "IDTypeViewController.h"
+#import "TitleViewController.h"
 
 @interface ProspectViewController ()
 
@@ -69,6 +70,7 @@
 @synthesize SIDatePopover = _SIDatePopover;
 @synthesize delegate = _delegate;
 @synthesize IDTypePicker = _IDTypePicker;
+@synthesize TitlePicker = _TitlePicker;
 
 bool PostcodeContinue = TRUE;
 
@@ -234,6 +236,7 @@ bool PostcodeContinue = TRUE;
     [self setLblOfficeAddr:nil];
     [self setLblPostCode:nil];
     [self setOutletDone:nil];
+    [self setOutletTitle:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -1998,4 +2001,47 @@ PostcodeContinue = TRUE;
     
 }
 
+-(void)selectedTitle:(NSString *)selectedTitle
+{
+    //NSLog(@"%@",selectedTitle);
+    [_outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
+    
+    if (_TitlePickerPopover) {
+        [_TitlePickerPopover dismissPopoverAnimated:YES];
+        _TitlePickerPopover = nil;
+    }
+}
+
+- (IBAction)btnTitle:(id)sender {
+    //NSLog(@"aa");
+    
+    if (_TitlePicker == nil) {
+        //Create the ColorPickerViewController.
+        _TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
+        
+        //Set this VC as the delegate.
+        _TitlePicker.delegate = self;
+    }
+    
+    if (_TitlePickerPopover == nil) {
+        //NSLog(@"aa");
+        //The color picker popover is not showing. Show it.
+        _TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
+        //[_IDTypePickerPopover presentPopoverFromRect:<#(CGRect)#> inView:<#(UIView *)#> permittedArrowDirections:<#(UIPopoverArrowDirection)#> animated:<#(BOOL)#>];
+        
+        
+        [_TitlePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        
+        
+        
+        //[_TitlePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+        //                             permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        //The color picker popover is showing. Hide it.
+        [_TitlePickerPopover dismissPopoverAnimated:YES];
+        _TitlePickerPopover = nil;
+    }
+    
+
+}
 @end
