@@ -233,6 +233,7 @@
 		EFEB7A05175D9FA4004FF3CE /* ClientTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */; };
 		EFEB7A06175D9FA4004FF3CE /* ClientTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A01175D9FA3004FF3CE /* ClientTabBarButton.m */; };
 		EFEB7A07175D9FA4004FF3CE /* ClientTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A02175D9FA4004FF3CE /* ClientTabBar.m */; };
+		EFEB7A49175ED366004FF3CE /* GroupListing.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A48175ED365004FF3CE /* GroupListing.m */; };
 		EFFC253716E7219500313A96 /* HLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFC253616E7219400313A96 /* HLViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -551,6 +552,8 @@
 		EFEB7A02175D9FA4004FF3CE /* ClientTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTabBar.m; sourceTree = "<group>"; };
 		EFEB7A03175D9FA4004FF3CE /* ClientTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTabBar.h; sourceTree = "<group>"; };
 		EFEB7A04175D9FA4004FF3CE /* ClientTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTabBarButton.h; sourceTree = "<group>"; };
+		EFEB7A47175ED365004FF3CE /* GroupListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupListing.h; sourceTree = "<group>"; };
+		EFEB7A48175ED365004FF3CE /* GroupListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupListing.m; sourceTree = "<group>"; };
 		EFFC253516E7219400313A96 /* HLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLViewController.h; sourceTree = "<group>"; };
 		EFFC253616E7219400313A96 /* HLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -777,6 +780,7 @@
 				C4E9D1B11612C65000016053 /* FSVerticalTabBarController */,
 				EFEB7A08175D9FBB004FF3CE /* ClientTabBarController */,
 				C4E9D19A1612C64900016053 /* HLA */,
+				C4E9D19B1612C64900016053 /* Supporting Files */,
 				C4E9D1931612C64900016053 /* Frameworks */,
 				C4E9D1911612C64900016053 /* Products */,
 			);
@@ -829,6 +833,7 @@
 				EF05983A161A8BDB004A9095 /* LA */,
 				EF05984D161A9230004A9095 /* BasicPlan */,
 				EF05984C161A9201004A9095 /* Rider */,
+				EFEB7A4A175ED3A7004FF3CE /* ClientGroup */,
 				C4E9D1A31612C64900016053 /* AppDelegate.h */,
 				C4E9D1A41612C64900016053 /* AppDelegate.m */,
 				EF5B61281740B70C00751157 /* SIUtilities.h */,
@@ -836,7 +841,6 @@
 				C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */,
 				C4E9D1A91612C64900016053 /* ViewController.h */,
 				C4E9D1AA1612C64900016053 /* ViewController.m */,
-				C4E9D19B1612C64900016053 /* Supporting Files */,
 				EFEB79F0175D994F004FF3CE /* MainClient.h */,
 				EFEB79F1175D994F004FF3CE /* MainClient.m */,
 				C4E9D1C81612C7D300016053 /* MainScreen.h */,
@@ -864,6 +868,7 @@
 				C4E9D1A21612C64900016053 /* iMobile Planner-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = HLA;
 			sourceTree = "<group>";
 		};
 		C4E9D1B11612C65000016053 /* FSVerticalTabBarController */ = {
@@ -1183,6 +1188,15 @@
 			name = ClientTabBarController;
 			sourceTree = "<group>";
 		};
+		EFEB7A4A175ED3A7004FF3CE /* ClientGroup */ = {
+			isa = PBXGroup;
+			children = (
+				EFEB7A47175ED365004FF3CE /* GroupListing.h */,
+				EFEB7A48175ED365004FF3CE /* GroupListing.m */,
+			);
+			name = ClientGroup;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1456,6 +1470,7 @@
 				EFEB7A05175D9FA4004FF3CE /* ClientTabBarController.m in Sources */,
 				EFEB7A06175D9FA4004FF3CE /* ClientTabBarButton.m in Sources */,
 				EFEB7A07175D9FA4004FF3CE /* ClientTabBar.m in Sources */,
+				EFEB7A49175ED366004FF3CE /* GroupListing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

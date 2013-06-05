@@ -10,6 +10,7 @@
 #import "CarouselViewController.h"
 #import "ProspectListing.h"
 #import "Logout.h"
+#import "GroupListing.h"
 
 @interface MainClient () {
     NSArray* viewControllers;
@@ -36,6 +37,11 @@
     ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"clientListing"];
     ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
     [controllersToAdd addObject:ProspectListingPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
+    GroupListing *groupPage = [self.storyboard instantiateViewControllerWithIdentifier:@"groupListing"];
+    groupPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Group" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag:0];
+    [controllersToAdd addObject:groupPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
