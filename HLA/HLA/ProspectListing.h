@@ -10,8 +10,9 @@
 #import <sqlite3.h>
 #import "EditProspect.h"
 #import "ProspectViewController.h"
+#import "IDTypeViewController.h"
 
-@interface ProspectListing : UIViewController<EditProspectDelegate,ProspectViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface ProspectListing : UIViewController<EditProspectDelegate, IDTypeDelegate, ProspectViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     NSString *databasePath;
     sqlite3 *contactDB;
@@ -20,6 +21,11 @@
     NSMutableArray *ItemToBeDeleted;
     NSMutableArray *indexPaths;
 }
+
+@property (weak, nonatomic) IBOutlet UIButton *IDType;
+- (IBAction)IdType:(id)sender;
+@property (nonatomic, strong) IDTypeViewController *IDTypePicker;
+@property (nonatomic, strong) UIPopoverController *IDTypePickerPopover;
 
 @property (nonatomic, retain) EditProspect *EditProspect;
 @property (nonatomic, retain) ProspectViewController *ProspectViewController;

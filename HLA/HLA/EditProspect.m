@@ -10,6 +10,7 @@
 #import "ProspectListing.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ColorHexCode.h"
+#import "IDTypeViewController.h"
 
 @interface EditProspect ()
 
@@ -66,6 +67,7 @@
 @synthesize ContactTypePopover = _ContactTypePopover;
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
+@synthesize IDTypePicker = _IDTypePicker;
 
 bool IsContinue = TRUE;
 
@@ -145,7 +147,7 @@ bool IsContinue = TRUE;
     ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 }
-
+/*
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)picker;
 {
     return 1;
@@ -187,7 +189,7 @@ bool IsContinue = TRUE;
      }
      
 }
-
+*/
 - (void)textViewDidBeginEditing:(UITextView *)textView{
     strChanges = @"Yes";
 
@@ -2416,4 +2418,47 @@ bool IsContinue = TRUE;
     }
     
 }
+-(void)selectedIDType:(NSString *)selectedIDType
+{
+    //NSLog(@"%@",selectedIDType);
+    [_IDType setTitle:selectedIDType forState:UIControlStateNormal];
+    
+    if (_IDTypePickerPopover) {
+        [_IDTypePickerPopover dismissPopoverAnimated:YES];
+        _IDTypePickerPopover = nil;
+    }
+}
+
+- (IBAction)IdType:(id)sender {
+    //NSLog(@"aa");
+    
+    if (_IDTypePicker == nil) {
+        //Create the ColorPickerViewController.
+        _IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
+        
+        //Set this VC as the delegate.
+        _IDTypePicker.delegate = self;
+    }
+    
+    if (_IDTypePickerPopover == nil) {
+        //NSLog(@"aa");
+        //The color picker popover is not showing. Show it.
+        _IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
+        //[_IDTypePickerPopover presentPopoverFromRect:<#(CGRect)#> inView:<#(UIView *)#> permittedArrowDirections:<#(UIPopoverArrowDirection)#> animated:<#(BOOL)#>];
+        
+        
+        [_IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        
+        
+        
+        //[_IDTypePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+        //                             permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        //The color picker popover is showing. Hide it.
+        [_IDTypePickerPopover dismissPopoverAnimated:YES];
+        _IDTypePickerPopover = nil;
+    }
+    
+}
+
 @end

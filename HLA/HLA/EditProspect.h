@@ -12,12 +12,13 @@
 #import "OccupationList.h"
 #import "ContactTypeClass.h"
 #import "SIDate.h"
+#import "IDTypeViewController.h"
 
 @protocol EditProspectDelegate
 - (void)FinishEdit;
 @end
 
-@interface EditProspect : UIViewController<OccupationListDelegate, ContactTypeClassDelegate, SIDateDelegate, UITextViewDelegate>{
+@interface EditProspect : UIViewController<OccupationListDelegate,IDTypeDelegate, ContactTypeClassDelegate, SIDateDelegate, UITextViewDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -31,6 +32,12 @@
     
     UIAlertView *rrr;
 }
+@property (weak, nonatomic) IBOutlet UIButton *IDType;
+- (IBAction)IdType:(id)sender;
+@property (nonatomic, strong) IDTypeViewController *IDTypePicker;
+@property (nonatomic, strong) UIPopoverController *IDTypePickerPopover;
+
+
 @property (strong, nonatomic) ProspectProfile* pp;
 @property (nonatomic, copy) NSString *gender;
 @property (nonatomic, copy) NSString *DOB;

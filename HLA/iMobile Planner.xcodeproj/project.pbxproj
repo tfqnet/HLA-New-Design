@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		42500B601740D66D00AEEDE3 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */; };
 		42500B621740D67A00AEEDE3 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B611740D67A00AEEDE3 /* hladb.sqlite */; };
+		42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867E99175F2D93001CE661 /* IDTypeViewController.m */; };
+		42867E9D175F2E0C001CE661 /* IDType.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867E9C175F2E0C001CE661 /* IDType.plist */; };
 		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
 		C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */; };
@@ -240,6 +242,9 @@
 /* Begin PBXFileReference section */
 		42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		42500B611740D67A00AEEDE3 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		42867E98175F2D93001CE661 /* IDTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDTypeViewController.h; sourceTree = "<group>"; };
+		42867E99175F2D93001CE661 /* IDTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDTypeViewController.m; sourceTree = "<group>"; };
+		42867E9C175F2E0C001CE661 /* IDType.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = IDType.plist; sourceTree = "<group>"; };
 		C40059F816BB678000B03041 /* CashPromiseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashPromiseViewController.h; sourceTree = "<group>"; };
 		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
 		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
@@ -860,6 +865,7 @@
 		C4E9D19B1612C64900016053 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				42867E9C175F2E0C001CE661 /* IDType.plist */,
 				EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */,
 				C4E9D19C1612C64900016053 /* iMobile Planner-Info.plist */,
 				C486D9D3163E6622009F8F21 /* Cordova.plist */,
@@ -955,6 +961,8 @@
 				EF33ACEF162D42B3006BB4C6 /* PlanList.m */,
 				C4F45DEF165B38A20035CAA9 /* PasswordTips.h */,
 				C4F45DF0165B38A20035CAA9 /* PasswordTips.m */,
+				42867E98175F2D93001CE661 /* IDTypeViewController.h */,
+				42867E99175F2D93001CE661 /* IDTypeViewController.m */,
 			);
 			name = PopOver;
 			sourceTree = "<group>";
@@ -1375,6 +1383,7 @@
 				42500B621740D67A00AEEDE3 /* hladb.sqlite in Resources */,
 				C4CA65A41745DD06002AB907 /* Brochure_Cashpromise_ENGMAND.pdf in Resources */,
 				C4CA65A51745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf in Resources */,
+				42867E9D175F2E0C001CE661 /* IDType.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1471,6 +1480,7 @@
 				EFEB7A06175D9FA4004FF3CE /* ClientTabBarButton.m in Sources */,
 				EFEB7A07175D9FA4004FF3CE /* ClientTabBar.m in Sources */,
 				EFEB7A49175ED366004FF3CE /* GroupListing.m in Sources */,
+				42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
