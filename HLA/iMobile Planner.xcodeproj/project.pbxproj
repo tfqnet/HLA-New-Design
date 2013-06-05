@@ -229,6 +229,10 @@
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
+		EFEB79F2175D994F004FF3CE /* MainClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79F1175D994F004FF3CE /* MainClient.m */; };
+		EFEB7A05175D9FA4004FF3CE /* ClientTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */; };
+		EFEB7A06175D9FA4004FF3CE /* ClientTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A01175D9FA3004FF3CE /* ClientTabBarButton.m */; };
+		EFEB7A07175D9FA4004FF3CE /* ClientTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A02175D9FA4004FF3CE /* ClientTabBar.m */; };
 		EFFC253716E7219500313A96 /* HLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFC253616E7219400313A96 /* HLViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -539,6 +543,14 @@
 		EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLAHandler.m; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
+		EFEB79F0175D994F004FF3CE /* MainClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainClient.h; sourceTree = "<group>"; };
+		EFEB79F1175D994F004FF3CE /* MainClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainClient.m; sourceTree = "<group>"; };
+		EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTabBarController.m; sourceTree = "<group>"; };
+		EFEB7A00175D9FA3004FF3CE /* ClientTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTabBarController.h; sourceTree = "<group>"; };
+		EFEB7A01175D9FA3004FF3CE /* ClientTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTabBarButton.m; sourceTree = "<group>"; };
+		EFEB7A02175D9FA4004FF3CE /* ClientTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTabBar.m; sourceTree = "<group>"; };
+		EFEB7A03175D9FA4004FF3CE /* ClientTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTabBar.h; sourceTree = "<group>"; };
+		EFEB7A04175D9FA4004FF3CE /* ClientTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTabBarButton.h; sourceTree = "<group>"; };
 		EFFC253516E7219400313A96 /* HLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLViewController.h; sourceTree = "<group>"; };
 		EFFC253616E7219400313A96 /* HLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -763,6 +775,7 @@
 				C4EB491A161537B100C7FC8C /* Database */,
 				C4E9D1BF1612C6A500016053 /* Images */,
 				C4E9D1B11612C65000016053 /* FSVerticalTabBarController */,
+				EFEB7A08175D9FBB004FF3CE /* ClientTabBarController */,
 				C4E9D19A1612C64900016053 /* HLA */,
 				C4E9D1931612C64900016053 /* Frameworks */,
 				C4E9D1911612C64900016053 /* Products */,
@@ -824,6 +837,8 @@
 				C4E9D1A91612C64900016053 /* ViewController.h */,
 				C4E9D1AA1612C64900016053 /* ViewController.m */,
 				C4E9D19B1612C64900016053 /* Supporting Files */,
+				EFEB79F0175D994F004FF3CE /* MainClient.h */,
+				EFEB79F1175D994F004FF3CE /* MainClient.m */,
 				C4E9D1C81612C7D300016053 /* MainScreen.h */,
 				C4E9D1C91612C7D300016053 /* MainScreen.m */,
 				EF28C317161BE224009585CC /* SIMenuViewController.h */,
@@ -1155,6 +1170,19 @@
 			name = CustomerProfile;
 			sourceTree = "<group>";
 		};
+		EFEB7A08175D9FBB004FF3CE /* ClientTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				EFEB7A00175D9FA3004FF3CE /* ClientTabBarController.h */,
+				EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */,
+				EFEB7A04175D9FA4004FF3CE /* ClientTabBarButton.h */,
+				EFEB7A01175D9FA3004FF3CE /* ClientTabBarButton.m */,
+				EFEB7A03175D9FA4004FF3CE /* ClientTabBar.h */,
+				EFEB7A02175D9FA4004FF3CE /* ClientTabBar.m */,
+			);
+			name = ClientTabBarController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1424,6 +1452,10 @@
 				EF5B6119173B577C00751157 /* eSubmission.m in Sources */,
 				EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */,
 				EF5B612A1740B70C00751157 /* SIUtilities.m in Sources */,
+				EFEB79F2175D994F004FF3CE /* MainClient.m in Sources */,
+				EFEB7A05175D9FA4004FF3CE /* ClientTabBarController.m in Sources */,
+				EFEB7A06175D9FA4004FF3CE /* ClientTabBarButton.m in Sources */,
+				EFEB7A07175D9FA4004FF3CE /* ClientTabBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1517,8 +1549,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1533,8 +1565,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				PROVISIONING_PROFILE = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -1544,8 +1576,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1560,8 +1592,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				PROVISIONING_PROFILE = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;

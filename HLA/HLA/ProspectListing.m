@@ -664,8 +664,6 @@
 {
     nametxt.text = @"";
     [self ReloadTableData];
-    
-    [self.myTableView reloadData];
 }
 
 - (IBAction)editPressed:(id)sender
@@ -769,7 +767,6 @@
         }
         [self.myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
         [self ReloadTableData];
-        [self.myTableView reloadData];
         
         ItemToBeDeleted = [[NSMutableArray alloc] init];
         indexPaths = [[NSMutableArray alloc] init];

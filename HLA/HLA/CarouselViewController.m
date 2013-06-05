@@ -23,6 +23,7 @@
 #import "CustomerProfile.h"
 #import "SettingUserProfile.h"
 #import "SIUtilities.h"
+#import "MainClient.h"
 
 const int numberOfModule = 6;
 
@@ -282,7 +283,8 @@ const int numberOfModule = 6;
     }
     
     else if (sender.tag % numberOfModule == 0) { //prospect
-        MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+//        MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+        MainClient *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"mainClient"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.ProspectListingIndex;
 		[self presentViewController:zzz animated:NO completion:Nil];
@@ -295,22 +297,23 @@ const int numberOfModule = 6;
 		NSLog(@"main");
     }
     
-    else if (sender.tag % numberOfModule == 2) {
+    else if (sender.tag % numberOfModule == 2) {    //ebrochure
         eBrochureListingViewController *BrochureListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eBrochureListing"];
         BrochureListing.modalPresentationStyle = UIModalPresentationFullScreen;
         [self presentViewController:BrochureListing animated:NO completion:Nil];
         BrochureListing = Nil;
-							NSLog(@"brochure");
+        NSLog(@"brochure");
     }
     
-    else if (sender.tag % numberOfModule == 3) {
+    else if (sender.tag % numberOfModule == 3) {    //si listing
         
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.SIListingIndex;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz= Nil;
-							NSLog(@"si listing");
+        NSLog(@"si listing");
+        
         /*
         //--edited by bob
         NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
@@ -326,7 +329,7 @@ const int numberOfModule = 6;
         
     }
     
-    else if (sender.tag % numberOfModule == 4) {
+    else if (sender.tag % numberOfModule == 4) {    //e-sub
         
         eSubmission *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -335,7 +338,7 @@ const int numberOfModule = 6;
 		NSLog(@"e-sub!");
     }
     
-    else if (sender.tag % numberOfModule == 5) {
+    else if (sender.tag % numberOfModule == 5) {    //customer
         
         CustomerProfile *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"customerProfile"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;

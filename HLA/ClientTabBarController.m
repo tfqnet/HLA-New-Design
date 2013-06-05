@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Future Simple. All rights reserved.
 //
 
-#import "FSVerticalTabBarController.h"
+#import "ClientTabBarController.h"
 #import "Login.h"
 
 #import "MainScreen.h"
@@ -26,13 +26,13 @@
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
 
-@interface FSVerticalTabBarController ()
+@interface ClientTabBarController ()
 - (void)_performInitialization;
 @end
 
 int rrr;
 
-@implementation FSVerticalTabBarController
+@implementation ClientTabBarController
 
 
 @synthesize delegate = _delegate;
@@ -42,11 +42,11 @@ int rrr;
 @synthesize tabBarWidth = _tabBarWidth;
 
 
-- (FSVerticalTabBar *)tabBar
+- (ClientTabBar *)tabBar
 {
     if (_tabBar == nil)
     {
-        _tabBar = [[FSVerticalTabBar alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _tabBar = [[ClientTabBar alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         _tabBar.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleRightMargin;
         _tabBar.delegate = self;
     }
@@ -93,7 +93,7 @@ int rrr;
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
 {
-    AppDelegate *MenuOption = (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    
     if (selectedIndex != _selectedIndex && selectedIndex < [self.viewControllers count])
     {
         [self.view endEditing:YES];
@@ -106,142 +106,28 @@ int rrr;
         // add new view controller to hierarchy
         UIViewController *selectedViewController = [self.viewControllers objectAtIndex:selectedIndex];
         
-        if (selectedIndex == MenuOption.HomeIndex) {
+        if (selectedIndex == 0) {
             
-            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-            if (!zzz.SICompleted) {
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
-                [alert setTag:2001];
-                [alert show];
-                alert = Nil;
-            }
-            else if (!zzz.ExistPayor) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                [alert show];
-                alert = Nil;
-            }
-            else {
-                zzz.SICompleted = YES;
-                zzz.ExistPayor = YES;
-                [self presentViewController:selectedViewController animated:NO completion:Nil];
-					
-                [self updateTabBar];
-            }
-            zzz = Nil;
+            [self presentViewController:selectedViewController animated:NO completion:Nil];
+            [self updateTabBar];
         }
         else {
             
-            if (selectedIndex == MenuOption.ProspectListingIndex) {
-                
-//                [(ProspectListing *)selectedViewController ReloadTableData];
-                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-                if (!zzz.SICompleted) {
-                    
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
-                    [alert setTag:3001];
-                    [alert show];
-                    alert = Nil;
-                }
-                else if (!zzz.ExistPayor) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                    [alert show];
-                    alert = Nil;
-                }
-                else {
-                    [self addChildViewController:selectedViewController];
-                    selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
-                                                                   0,
-                                                                   self.view.bounds.size.width-self.tabBarWidth,
-                                                                   self.view.bounds.size.height);
-                    selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-                    [self.view addSubview:selectedViewController.view];
-                    
-                    [self updateTabBar];
-                }
-                
-                zzz = Nil;
-            }
-            
-            if (selectedIndex == MenuOption.NewProspectIndex) {
-                
-                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-                if (!zzz.SICompleted) {
-                    
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
-                    [alert setTag:3001];
-                    [alert show];
-                    alert = Nil;
-                }
-                else if (!zzz.ExistPayor) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                    [alert show];
-                    alert = Nil;
-                }
-                else {
-                    [self addChildViewController:selectedViewController];
-                    selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
-                                                                   0,
-                                                                   self.view.bounds.size.width-self.tabBarWidth,
-                                                                   self.view.bounds.size.height);
-                    selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-                    [self.view addSubview:selectedViewController.view];
-                    
-                    [self updateTabBar];
-                }
-                zzz = Nil;
-            }
-            
-            if (selectedIndex == MenuOption.SIListingIndex) {
-                
-                [(SIListing *)selectedViewController RefreshZZZ];
-                AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-                if (!zzz.SICompleted) {
-                    
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Are you sure you want to discard all the changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: @"Cancel",nil];
-                    [alert setTag:3001];
-                    [alert show];
-                    alert = Nil;
-                }
-                else if (!zzz.ExistPayor) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-                    [alert show];
-                    alert = Nil;
-                }
-                else {
-                    [self addChildViewController:selectedViewController];
-                    selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
-                                                                   0,
-                                                                   self.view.bounds.size.width-self.tabBarWidth,
-                                                                   self.view.bounds.size.height);
-                    selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-                    [self.view addSubview:selectedViewController.view];
-                    
-                    [self updateTabBar];
-                }
-                zzz = Nil;
-            }
-            
-            if (selectedIndex == MenuOption.NewSIIndex) {
-                
-                [(SIMenuViewController *)selectedViewController Reset];
+            if (selectedIndex == 1) {
                 
                 [self addChildViewController:selectedViewController];
                 selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
-                                                               0,
-                                                               self.view.bounds.size.width-self.tabBarWidth,
-                                                               self.view.bounds.size.height);
+                                                                   0,
+                                                                   self.view.bounds.size.width-self.tabBarWidth,
+                                                                   self.view.bounds.size.height);
                 selectedViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
                 [self.view addSubview:selectedViewController.view];
                 
                 [self updateTabBar];
             }
-            //move code to updateTabBar
         }
         selectedViewController = Nil;
     }
-    
-    MenuOption = Nil;
 }
 
 -(void)updateTabBar
@@ -383,9 +269,7 @@ int rrr;
 	
 		clickIndex = indexPath.row;
     
-		AppDelegate *MenuOption = (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-    
-		if (indexPath.row == MenuOption.ExitIndex) {
+		if (indexPath.row == 2) {
         
 			UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: NSLocalizedString(@"Log Out",nil)
@@ -400,8 +284,6 @@ int rrr;
 		else {
 			[self setSelectedIndex:indexPath.row];
 		}
-    
-		MenuOption = Nil;
     }
 }
 
