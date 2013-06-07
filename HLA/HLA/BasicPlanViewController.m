@@ -253,8 +253,14 @@ id temp;
             break;
         
         case 1:
-            minSALabel.text = [NSString stringWithFormat:@"Min: %d",minSA];
-            maxSALabel.text = [NSString stringWithFormat:@"Max: %d",maxSA];
+			
+			if (ageClient < 41) {
+				minSA = 600;
+			}
+			
+			minSALabel.text = [NSString stringWithFormat:@"Min: %d",minSA];
+			maxSALabel.text = [NSString stringWithFormat:@"Max: %d",maxSA];
+            
             break;
             
         default:
@@ -2768,8 +2774,15 @@ id temp;
                 int minAge =  sqlite3_column_int(statement, 0);
                 maxAge =  sqlite3_column_int(statement, 1);
                 int maxTermB  =  sqlite3_column_int(statement, 3);
-                minSA = sqlite3_column_int(statement, 4);
-                maxSA = sqlite3_column_int(statement, 5);
+                
+                if (ageClient > 40) {
+						minSA = sqlite3_column_int(statement, 4);
+				}
+				else{
+					minSA = 600;
+				}
+				
+				maxSA = sqlite3_column_int(statement, 5);
                 
                 if ([planChoose isEqualToString:@"HLAIB"]) {
                     termCover = maxTermB - ageClient;

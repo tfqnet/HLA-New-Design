@@ -121,6 +121,9 @@ id temp;
 			success.tag = 1;
 			[success show];
 		}
+		else if (alertView.tag == 3){
+			exit(0);
+		}
     }
 	
 	
@@ -540,12 +543,12 @@ id temp;
                             
                             if (sqlite3_step(statement2) == SQLITE_DONE)
                             {
-								/*
+								
                                 UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
                                                                                   message:@"Registration successful! Please re-login with the new password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
                                 success.tag = 1;
                                 [success show];
-								 */
+								 
                             }
                             
                             sqlite3_finalize(statement2);
@@ -567,7 +570,7 @@ id temp;
             }
             sqlite3_close(contactDB);
         }
-		[self CheckAgentPortal];
+		//[self CheckAgentPortal];
     }
 }
 
@@ -578,7 +581,7 @@ id temp;
 	
 	NSLog(@"%@", strURL);
 	NSURL *url = [NSURL URLWithString:strURL];
-	NSURLRequest *request = [NSURLRequest requestWithURL:url];
+	NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:10];
 	
 	AFXMLRequestOperation *operation =
 	[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
@@ -588,7 +591,7 @@ id temp;
 															[XMLParser parse];
 															
 														} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
-															UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+															/*UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
 																			message:@"Error in connecting to web service. Do you want to skip this process ?"
 																			delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
 															
@@ -596,6 +599,12 @@ id temp;
 															[alert show];
 															
 															alert = Nil;
+															 */
+															UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+																											  message:@"Registration successful! Please re-login with the new password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+															success.tag = 1;
+															[success show];
+															NSLog(@"error in connecting to web service");
 														}];
 	
 	[operation start];
@@ -629,13 +638,72 @@ id temp;
 			
 		}
 		else{
+			/*
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agent Portal"
 									message:[string stringByAppendingFormat:@". Do you want to skip this process ?" ]
 									delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil ];
 
-
+			alert.tag = 2;
 			
 			[alert show];
+			*/
+			if([string isEqualToString:@"Account suspended."]){
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agent Portal"
+																  message:@"Account suspended. Please Contact Hong Leong Assurance." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+				alert.tag = 3;
+
+				//reset back to first time login
+				sqlite3_stmt *statement2;
+				if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+				{
+					if (FirstTimeLogin == 1) {
+						NSString *FinalSQL = [NSString stringWithFormat:@"UPDATE User_Profile SET FirstLogin = 1, AgentCode = \"\", AgentName = \"\", "
+											  "AgentEmail = \"\"  WHERE IndexNo=\"%d\"", self.indexNo];
+								
+							if (sqlite3_prepare_v2(contactDB, [FinalSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK){
+									
+								if (sqlite3_step(statement2) == SQLITE_DONE)
+								{
+
+								}
+									
+								sqlite3_finalize(statement2);
+							}
+					}
+					
+					sqlite3_close(contactDB);
+				}
+				
+				[alert show];
+			}
+			else{ // for incorrect id or password
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agency Portal"
+															message:[NSString stringWithFormat:@"%@", string]
+															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+				//success.tag = 1;
+				
+				//reset back to first time login
+				sqlite3_stmt *statement2;
+				if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+				{
+					if (FirstTimeLogin == 1) {
+						NSString *FinalSQL = [NSString stringWithFormat:@"UPDATE User_Profile SET FirstLogin = 1 WHERE IndexNo=\"%d\"", self.indexNo];
+						
+						if (sqlite3_prepare_v2(contactDB, [FinalSQL UTF8String], -1, &statement2, NULL) == SQLITE_OK){
+							
+							if (sqlite3_step(statement2) == SQLITE_DONE)
+							{
+								
+							}
+							
+							sqlite3_finalize(statement2);
+						}
+					}
+					
+					sqlite3_close(contactDB);
+				}
+				[alert show];
+			}
 			
 		}
 		

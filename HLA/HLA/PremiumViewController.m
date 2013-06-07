@@ -184,7 +184,7 @@
     double BasicSA = [getBasicSA doubleValue];
     
     NSString *displayLSD = nil;
-    if (BasicSA < 1000) {
+    if (BasicSA < 1200) {
         displayLSD = @"Policy Fee Loading";
     }
     else {
@@ -410,9 +410,9 @@
     //calculate Total basic premium
     double _basicTotalA = 0;
     double _basicTotalS = 0;
-    double _basicTotalQ = 0;
+    double _basicTotalQ = 0;	
     double _basicTotalM = 0;
-    if (BasicSA < 1000) {
+    if (BasicSA < 1200) {
         _basicTotalA = BasicAnnually_ + OccpLoadA_ + BasicHLAnnually_ + LSDAnnually_;
         _basicTotalS = BasicHalfYear_ + OccpLoadH_ + BasicHLHalfYear_ + LSDHalfYear_;
         _basicTotalQ = BasicQuarterly_ + OccpLoadQ_ + BasicHLQuarterly_ + LSDQuarterly_;
@@ -457,7 +457,7 @@
     double valueBeforeAdjustedS;
     double valueBeforeAdjustedQ;
     double valueBeforeAdjustedM;
-    if (BasicSA < 1000) {
+    if (BasicSA < 1200) {
         valueBeforeAdjustedA = BasicAnnually_ + _OccpLoadA + BasicHLAnnually_ + LSDAnnually_;
         valueBeforeAdjustedS = BasicHalfYear_ + _OccpLoadH + BasicHLHalfYear_ + LSDHalfYear_;
         valueBeforeAdjustedQ = BasicQuarterly_ + _OccpLoadQ + BasicHLQuarterly_ + LSDQuarterly_;

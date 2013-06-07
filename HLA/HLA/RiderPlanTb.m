@@ -16,9 +16,9 @@
 @implementation RiderPlanTb
 @synthesize selectedItem,itemDesc,itemValue,selectedItemDesc;
 @synthesize delegate = _delegate;
-@synthesize requestSA,requestCondition;
+@synthesize requestSA,requestCondition,requestOccpCat;
 
--(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)valueSum
+-(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)valueSum andOccpCat:(NSString *)OccpCat
 {
     self = [super init];
     if (self != nil) {
@@ -31,8 +31,8 @@
         [self getRiderCondition];
         NSLog(@"condition:%@, sumA:%.2f",self.requestCondition,self.requestSA);
         
-        
-        if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"]) {
+        if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"] &&
+			![OccpCat isEqualToString:@"UNEMP"]) {
             [itemValue addObject:@"HMM1000"];
             [itemDesc addObject:@"HMM_1000"];
         }

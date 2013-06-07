@@ -148,6 +148,145 @@ static sqlite3 *contactDB = nil;
     return YES;
 }
 
++(BOOL)UPDATETrad_Sys_Medical_Comb:(NSString *)path
+{
+    FMDatabase *database = [FMDatabase databaseWithPath:path];
+    [database open];
+    
+    NSString *query = [NSString stringWithFormat:@"UPDATE Trad_Sys_Medical_Comb SET \"LIMIT\" = '400' where OccpCode like '%%UNEMP%%'"];
+    [database executeUpdate:query];
+
+    [database close];
+    return YES;
+}
+
++(BOOL)InstallUpdate:(NSString *)path
+{
+	NSString * AppsVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+
+	if ([AppsVersion doubleValue ] < 1.3) {
+		[self InstallVersion1dot3:path];
+	}
+	
+    return YES;
+}
+
++(void)InstallVersion1dot3:(NSString *)path{
+	
+	FMDatabase *database = [FMDatabase databaseWithPath:path];
+    [database open];
+	
+	NSString *query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Details (\"RiderCode\" VARCHAR, \"isEDD\" INTEGER, \"MinAge\" "
+					   "INTEGER, \"MaxAge\" INTEGER, \"ExpiryAge\" INTEGER, \"MinSA\" DOUBLE, \"MaxSA\" DOUBLE, \"MinTerm\" INTEGER, "
+					   "\"MaxTerm\" INTEGER, \"PlanCode\" VARCHAR, \"PTypeCode\" VARCHAR) "];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_LAPayor (\"SINO\" VARCHAR, \"CustCode\"	VARCHAR, \"PTypeCode\" "
+					   "VARCHAR, \"Seq\" INTEGER, \"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR) "];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_ReducedPaidUp (\"SINO\" VARCHAR, \"ReducedYear\" INTEGER, \"Amount\" "
+					   "DOUBLE) "];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_RegTopUp (\"SINO\" VARCHAR, \"FromYear\" VARCHAR, \"ToYear\" "
+			 "VARCHAR, \"Amount\" DOUBLE)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Rider_Details (\"SINO\" VARCHAR, \"RiderCode\" VARCHAR, \"PTypeCode\" "
+			 "VARCHAR, \"Seq\" INTEGER, \"RiderTerm\" INTEGER, \"SumAssured\" DOUBLE, \"Units\" INTEGER, \"MGType\" VARCHAR, "
+			 "\"HLoading\" DOUBLE, \"HLoadingTerm\" INTEGER, \"HLoadingPCt\" INTEGER, \"HLoadingPCtTerm\" INTEGER, \"Premium\" DOUBLE, "
+			 "\"Deductible\" VARCHAR, \"PaymentTerm\" INTEGER, \"ReinvestYI\" VARCHAR, \"GYIYear\" INTEGER, \"RRTUOFromYear\" INTEGER, "
+			 "\"RRTUOYear\" INTEGER) "];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TopupPrem (\"SINO\" VARCHAR, \"PolYear\" INTEGER, \"Amount\" "
+			 "DOUBLE) "];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TPExcess (\"SINO\" VARCHAR, \"FromYear\" INTEGER, \"YearInt\" INTEGER, \"Amount\" "
+			 "DOUBLE, \"ForYear\" INTEGER,) "];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TPIncrease (\"SINO\" VARCHAR, \"FromYear\" INTEGER, \"YearInt\" INTEGER, \"Amount\" "
+			 "DOUBLE) "];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Fund_Maturity_Option (\"SINO\" VARCHAR, \"Fund\" VARCHAR, \"Option\" VARCHAR, "
+			 "\"Partial_withd_Pct\" DOUBLE, \"EverGreen2025\" DOUBLE, \"EverGreen2028\" DOUBLE, \"EverGreen2030\" DOUBLE, "
+			 "\"EverGreen2035\" DOUBLE, \"CashFund\" DOUBLE, \"RetireFund\" DOUBLE) "];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Rider_mtn (\"RiderCode\" VARCHAR, \"isEDD\" INTEGER, \"MinAge\" INTEGER, "
+			 "\"MaxAge\" INTEGER, \"ExpiryAge\" INTEGER, \"MinSA\" DOUBLE, \"MaxSA\" DOUBLE, "
+			 "\"MinTerm\" INTEGER, \"MaxTerm\" INTEGER, \"PlanCode\" VARCHAR, \"PTypeCode\" VARCHAR, \"Seq\" INTEGER)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000,0 , 100, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"CIRD\", 0, 30, 55, 65, 20000, 100000, 10 , 10, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"CIWP\", 0, 0, 70, -80, 0.00, 0.00, 3 , 25, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"DCA\", 0, 0, 70, -75, 10000, 0.00, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"DHI\", 0, 0, 70, -75, 50, 0.00, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ECAR\", 0, 0, 65, 80, 45000, 0.00, 20 , 25, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ECAR55\", 0, 0, 50, -100, 50.00, 0.00, 0 , 100, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"HMM\", 0, 0, 70, -100, 0.00, 0.00,0 , 100, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LCWP\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"PY\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LCWP\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"LA\", 2 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LSR\", 0, 0, 70, -100, 20000, 0.00, 0 , 100, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"MG_IV\", 0, 0, 70, -100, 0.00, 0.00, 0 , 100, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"MR\", 0, 0, 70, 75, 1000, 5000, 5, 75, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PA\", 0, 0, 70, 75, 10000, 0.00, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PR\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"PY\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PR\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"LA\", 2 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"RRTUO\", 0, 0, 100, 100, 1.00, 10000, 1 , 100, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"TPDMLA\", 0, 0, 70, 75, 500, 10000, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"TPDWP\", 0, 0, 65, 80, 0.00, 0.00, 3 , 80, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"WI\", 0, 20, 65, 70, 100, 8000, 5 , 70, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	
+	[database close];
+}
+
+
 +(NSString *)WSLogin{
 	
 	return @"http://echannel.dev/";

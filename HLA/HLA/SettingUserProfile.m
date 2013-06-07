@@ -30,7 +30,7 @@
 @synthesize contDate,ICNo,Addr1,Addr2,Addr3,txtAgencyPortalLogin, txtAgencyPortalPwd, AgentPortalLoginID, AgentPortalPassword;
 @synthesize datePopover = _datePopover;
 @synthesize DatePicker = _DatePicker;
-@synthesize previousElementName, elementName;
+@synthesize previousElementName, elementName, getLatest;
 
 
 id temp;
@@ -104,31 +104,37 @@ id temp;
         }
      */
 	        if (alertView.tag == 1) {
-				NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
-									"GetSIVersion_TRADUL?Type=IPAD_TRAD&Remarks=Agency&OSType=32", [SIUtilities WSLogin]];
-				NSLog(@"%@", strURL);
-				NSURL *url = [NSURL URLWithString:strURL];
-				NSURLRequest *request = [NSURLRequest requestWithURL:url];
+				if ([getLatest isEqualToString:@"Yes"]) { //not need check latest version when user edit on user profile
+					NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
+										"GetSIVersion_TRADUL?Type=IPAD_TRAD&Remarks=Agency&OSType=32", [SIUtilities WSLogin]];
+					NSLog(@"%@", strURL);
+					NSURL *url = [NSURL URLWithString:strURL];
+					NSURLRequest *request = [NSURLRequest requestWithURL:url];
+					
+					AFXMLRequestOperation *operation =
+					[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
+																		success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
+																			
+																			XMLParser.delegate = self;
+																			[XMLParser setShouldProcessNamespaces:YES];
+																			[XMLParser parse];
+																			
+																		} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
+																			NSLog(@"error in calling web service");
+																		}];
+					
+					[operation start];
+				}
 				
-				AFXMLRequestOperation *operation =
-				[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
-																	success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSXMLParser *XMLParser) {
-																		
-																		XMLParser.delegate = self;
-																		[XMLParser setShouldProcessNamespaces:YES];
-																		[XMLParser parse];
-																		
-																	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
-																		NSLog(@"error in calling web service");
-																	}];
-				
-				[operation start];
 			}
-			else if (alertView.tag == 2){
+			else if (alertView.tag == 2 && buttonIndex == 0){
 				//download latest version
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:
 									@"http://www.hla.com.my/agencyportal/includes/DLrotate2.asp?file=iMP/iMP.plist"]];
 				
+			}
+			else if (alertView.tag == 3){
+				exit(0);
 			}
 }
 
@@ -441,7 +447,7 @@ id temp;
 	
 		NSLog(@"%@", strURL);
 		NSURL *url = [NSURL URLWithString:strURL];
-		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:5];
 	
 		AFXMLRequestOperation *operation =
 		[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
@@ -452,13 +458,11 @@ id temp;
 			 
 			 													} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, NSXMLParser *XMLParser) {
 				 													NSLog(@"error in calling web service");
-				 												UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-																message:@"Error in connecting to web service."
-																							   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-				 															[alert show];
-				 												
-				 															alert = Nil;
-				 														}];
+																	UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
+																													  message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
+																	success.tag = 1;
+																	[success show];
+																}];
 		
 		[operation start];
 }
@@ -487,6 +491,54 @@ id temp;
 															  message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
 			success.tag = 1;
 			[success show];
+			
+			sqlite3_stmt *statement;
+			if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
+			{
+				NSString *querySQL = [NSString stringWithFormat: @"UPDATE User_Profile set AgentStatus = \"1\" WHERE "
+									  "AgentLoginID=\"hla\" "];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+					if (sqlite3_step(statement) == SQLITE_DONE){
+						
+					}
+					
+					sqlite3_finalize(statement);
+				}
+				
+				sqlite3_close(contactDB);
+				querySQL = Nil;
+			}
+			statement = nil;
+			
+		}
+		else if ([string isEqualToString:@"Account suspended."]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Agency Portal"
+															message:[NSString stringWithFormat:@"Your Account is suspended. Please contact Hong Leong Assurance."]
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			alert.tag = 3;
+			[alert show];
+			
+			alert = Nil;
+			
+			sqlite3_stmt *statement;
+			if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK)
+			{
+				NSString *querySQL = [NSString stringWithFormat: @"UPDATE User_Profile set AgentStatus = \"0\" WHERE "
+									  "AgentLoginID=\"hla\" "];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+					if (sqlite3_step(statement) == SQLITE_DONE){
+						
+					}
+					
+					sqlite3_finalize(statement);
+				}
+				
+				sqlite3_close(contactDB);
+				querySQL = Nil;
+			}
+			statement = nil;
 			
 		}
 		else{
@@ -528,8 +580,10 @@ id temp;
 		NSString * AppsVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
 		
 		if (![string isEqualToString:AppsVersion]) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Latest Version" message:[NSString stringWithFormat:@"Latest version is available for download"]
-														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+				NSLog(@"latest version is available %@", AppsVersion);
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Latest Version"
+															message:[NSString stringWithFormat:@"Latest version is available for download. Do you want to download now ? "]
+														   delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
 			alert.tag = 2;
 			[alert show];
 			
@@ -675,12 +729,12 @@ id temp;
             {
                 if (sqlite3_step(statement) == SQLITE_DONE)
                 {
-                    /*
+                    
                     UIAlertView *success = [[UIAlertView alloc] initWithTitle:@"Success"
                                                                       message:@"Record Saved" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil ];
                     success.tag = 1;
                     [success show];
-					 */
+					 
                     
                 } else {
                     //lblStatus.text = @"Failed to update!";
@@ -692,7 +746,7 @@ id temp;
             sqlite3_close(contactDB);
         }
 		
-		[self CheckAgentPortal];
+		//[self CheckAgentPortal];
     }
 }
 

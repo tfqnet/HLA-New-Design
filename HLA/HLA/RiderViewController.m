@@ -571,7 +571,8 @@ BOOL Edit = FALSE;
         classField.hidden = YES;
         
         NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
-        self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
+        //self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
+		self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat];
         _planList.delegate = self;
         
         [self.planBtn setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
@@ -2413,6 +2414,8 @@ BOOL Edit = FALSE;
         _RiderList.requestSeq = self.PTypeSeq;
         _RiderList.requestOccpClass = getOccpClass;
         _RiderList.requestAge = self.pTypeAge;
+		_RiderList.requestOccpCat = self.OccpCat;
+		
         self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
         
         [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
@@ -2432,7 +2435,9 @@ BOOL Edit = FALSE;
     //if (_planList == Nil) {
         NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
         self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
-        self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
+		//self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andoccpCat:OccpCat];
+	self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat];
+		
     
     //}
         _planList.delegate = self;
@@ -4486,6 +4491,65 @@ BOOL Edit = FALSE;
 
 -(void)saveRider
 {
+	sqlite3_stmt *statement;
+	double CI = 0.00;
+	NSMutableArray *ArrayCIRider = [[NSMutableArray alloc] init ];
+	
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *SelectSQL = [NSString stringWithFormat:
+							   @"select sum(sumAssured) from trad_rider_details where ridercode in "
+							   "('CIR', 'ICR', 'LCPR') and sino = \"%@\" ", getSINo];
+
+        if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+				CI = sqlite3_column_double(statement, 0);
+            }
+			else {
+            }
+            sqlite3_finalize(statement);
+        }
+		
+		NSString *SelectSQL2 = [NSString stringWithFormat:
+							   @"select ridercode from trad_rider_details where ridercode in "
+							   "('CIR', 'ICR', 'LCPR') and sino = \"%@\" ", getSINo];
+		
+        if(sqlite3_prepare_v2(contactDB, [SelectSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+				[ArrayCIRider addObject:
+				 [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+
+            }
+
+            sqlite3_finalize(statement);
+        }
+		
+        sqlite3_close(contactDB);
+    }
+
+	
+	
+	if (CI + [sumField.text doubleValue] > 1500000) {
+		
+		NSString *strCIRider = @"";
+		for (int i=0; i < ArrayCIRider.count; i++) {
+			strCIRider = [strCIRider stringByAppendingFormat:@"\n%d. %@", i + 1, [ArrayCIRider objectAtIndex:i]];
+		}
+		
+		UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+									message:[ NSString stringWithFormat:@"CI Benefit Limit per Life is capped at RM1.5mil. "
+								    "Please revise the RSA of CI related rider(s) below as the CI Benefit Limit per Life for 1st Life Assured"
+									" has exceeded RM1.5mil. %@", strCIRider]
+									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[Alert show];
+		Alert = nil;
+		return;
+	}
+	
+	ArrayCIRider = Nil;
+	
     if (([pTypeCode isEqualToString:@"LA"]) && (PTypeSeq == 2)) {
         [self check2ndLARider];
     }
@@ -4496,7 +4560,7 @@ BOOL Edit = FALSE;
     
     inputSA = [sumField.text doubleValue];
     
-    sqlite3_stmt *statement;
+    
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
@@ -4826,11 +4890,67 @@ BOOL Edit = FALSE;
 
 -(void)updateRider
 {
+	sqlite3_stmt *statement;
+	double CI = 0.00;
+	NSMutableArray *ArrayCIRider = [[NSMutableArray alloc] init];
+	
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *SelectSQL = [NSString stringWithFormat:
+							   @"select sum(sumAssured) from trad_rider_details where ridercode in "
+							   "('CIR', 'ICR', 'LCPR') and ridercode <> \"%@\" and sino = \"%@\" ", riderCode, getSINo];
+		
+        if(sqlite3_prepare_v2(contactDB, [SelectSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+				CI = sqlite3_column_double(statement, 0);
+            }
+			else {
+            }
+            sqlite3_finalize(statement);
+        }
+		
+		NSString *SelectSQL2 = [NSString stringWithFormat:
+								@"select ridercode from trad_rider_details where ridercode in "
+								"('CIR', 'ICR', 'LCPR') and sino = \"%@\" ", getSINo];
+		
+        if(sqlite3_prepare_v2(contactDB, [SelectSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+				[ArrayCIRider addObject:
+				 [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+				
+            }
+            sqlite3_finalize(statement);
+        }
+		
+        sqlite3_close(contactDB);
+    }
+	
+	if (CI + [sumField.text doubleValue] > 1500000) {
+	
+		NSString *strCIRider = @"";
+		for (int i=0; i < ArrayCIRider.count; i++) {
+			strCIRider = [strCIRider stringByAppendingFormat:@"\n%d. %@", i + 1, [ArrayCIRider objectAtIndex:i]];
+		}
+		
+		UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[ NSString stringWithFormat:@"CI Benefit Limit per Life is capped at RM1.5mil. "
+																 "Please revise the RSA of CI related rider(s) below as the CI Benefit Limit per Life for 1st Life Assured"
+																 " has exceeded RM1.5mil. %@", strCIRider]
+													   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[Alert show];
+		Alert = nil;
+		return;
+	}
+
+	ArrayCIRider = Nil;
+	
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
     
-    sqlite3_stmt *statement;
+    //sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
@@ -5761,10 +5881,14 @@ BOOL Edit = FALSE;
     //label6.text= [NSString stringWithFormat:@"%@",occLoadType];
 	if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"CCTR" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"EDB"] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ETPD"] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ETPDB" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ICR" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LCPR" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LCWP" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PR" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PLCP" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PTR" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"SP_PRE" ] ||
 		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"SP_STD" ]) {
 		label6.text= [NSString stringWithFormat:@"%@",occLoadType];

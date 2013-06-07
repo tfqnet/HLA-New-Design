@@ -360,7 +360,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 			
 			if([sss isEqualToString:@"HMM" ] || [sss isEqualToString:@"HB" ] || [sss isEqualToString:@"MG_IV" ] || [sss isEqualToString:@"MG_II" ]
 			   || [sss isEqualToString:@"CIR" ] || [sss isEqualToString:@"CIWP" ] || [sss isEqualToString:@"HSP_II" ] || [sss isEqualToString:@"LCPR" ]
-			   || [sss isEqualToString:@"LCWP" ] || [sss isEqualToString:@"ICR"]  || [sss isEqualToString:@"SP_PRE" ]){
+			   || [sss isEqualToString:@"LCWP" ] || [sss isEqualToString:@"ICR"]  || [sss isEqualToString:@"SP_PRE" ] || [sss isEqualToString:@"PLCP" ] ){
 				
 				pageNum++;
 				sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page42.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
@@ -545,7 +545,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 			
 			if([sss isEqualToString:@"HMM" ] || [sss isEqualToString:@"HB" ] || [sss isEqualToString:@"MG_IV" ] || [sss isEqualToString:@"MG_II" ]
 			   || [sss isEqualToString:@"CIR" ] || [sss isEqualToString:@"CIWP" ] || [sss isEqualToString:@"HSP_II" ]|| [sss isEqualToString:@"LCPR" ]
-			   || [sss isEqualToString:@"LCWP" ] || [sss isEqualToString:@"ICR"]   || [sss isEqualToString:@"SP_PRE" ]){
+			   || [sss isEqualToString:@"LCWP" ] || [sss isEqualToString:@"ICR"]   || [sss isEqualToString:@"SP_PRE" ] || [sss isEqualToString:@"PLCP" ] ){
 				
 				pageNum++;
 				sqlStmt = [NSString stringWithFormat:@"INSERT INTO SI_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page62.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];

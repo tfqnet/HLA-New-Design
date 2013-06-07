@@ -67,6 +67,7 @@
 @property (nonatomic, copy) NSString *Addr3;
 @property (nonatomic, copy) NSString *AgentPortalLoginID;
 @property (nonatomic, copy) NSString *AgentPortalPassword;
+@property (nonatomic, copy) NSString *getLatest;
 //--end
 
 @property (weak, nonatomic) IBOutlet UITextField *txtAgencyPortalLogin;

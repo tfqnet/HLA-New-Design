@@ -107,7 +107,7 @@ function writeSummary1_HLCP()
     $('.TotalYearlyIncome1').html(formatCurrency(gdata.SI[0].SI_Temp_Trad_Overall.data[0].TotYearlyIncome1));
     
     //advanced yearly income
-    if (parseInt(gdata.SI[0].Trad_Details.data[0].AdvanceYearlyIncome) == 0){ //Cash promise. Only 1 title
+	if (parseInt(gdata.SI[0].Trad_Details.data[0].AdvanceYearlyIncome) == 0){ //Cash promise. Only 1 title
 		$('.advanceYearlyIncome').html('Illustration of HLA Cash Promise Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Ilustrasi Pelan HLA Cash Promise</i>');
 	}
 	
@@ -124,7 +124,7 @@ function writeSummary1_HLCP()
 		else
 		{
 			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)+(12)');
-			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)+(13)');
+			$('.tpdBenefit').html('(7)=(4B)+(10)+(11)+(13)');
 			$('.cashPayment1').html('#');
 			 $('.cashPayment2').html('#');
 		}
@@ -136,14 +136,14 @@ function writeSummary1_HLCP()
 		//if (parseInt(gdata.SI[0].Trad_Details.data[0].CashPayment_PO) == 100)
 		if (parseInt(gdata.SI[0].Trad_Details.data[0].PartialPayout) == 100)
 		{
-			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)');
-			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)');
+			$('.totalSurrenderValue').html('(6)=(3)+(10)');
+			$('.tpdBenefit').html('(7)=(4B)+(11)');
 			$('.accumulationYearlyIncome').hide(); //# description. Cash Promise
 		}
 		else
 		{
-			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)+(12)');
-			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)+(13)');
+			$('.totalSurrenderValue').html('(6)=(3)+(10)+(11)');
+			$('.tpdBenefit').html('(7)=(4B)+(10)+(12)');
 			$('.cashPayment1').html('#');
 			$('.cashPayment2').html('#');
 		}
