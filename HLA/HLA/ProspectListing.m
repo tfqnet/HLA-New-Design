@@ -778,42 +778,8 @@
     }
 }
 
-#pragma mark - memory management
-
-- (void)viewDidUnload
+- (IBAction)IdType:(id)sender
 {
-    [self setIDType:nil];
-    [self setMyTableView:nil];
-    [self setIdTypeLabel:nil];
-    [self setIdNoLabel:nil];
-    [self setClientNameLabel:nil];
-    [self setEditBtn:nil];
-    [self setDeleteBtn:nil];
-    [self setNametxt:nil];
-    [self setIDType:nil];
-    [super viewDidUnload];
-    FilteredProspectTableData = Nil;
-    ProspectTableData = Nil;
-}
-
--(void)Clear
-{
-	ProspectTableData = Nil;
-	FilteredProspectTableData = Nil;
-	databasePath = Nil;
-}
--(void)selectedIDType:(NSString *)selectedIDType
-{
-    //NSLog(@"%@",selectedIDType);
-    [_IDType setTitle:selectedIDType forState:UIControlStateNormal];
-    
-    if (_IDTypePickerPopover) {
-        [_IDTypePickerPopover dismissPopoverAnimated:YES];
-        _IDTypePickerPopover = nil;
-    }
-}
-
-- (IBAction)IdType:(id)sender {
     //NSLog(@"aa");
     
     if (_IDTypePicker == nil) {
@@ -844,4 +810,43 @@
     }
     
 }
+
+#pragma mark - memory management
+
+- (void)viewDidUnload
+{
+    [self setIDType:nil];
+    [self setMyTableView:nil];
+    [self setIdTypeLabel:nil];
+    [self setIdNoLabel:nil];
+    [self setClientNameLabel:nil];
+    [self setEditBtn:nil];
+    [self setDeleteBtn:nil];
+    [self setNametxt:nil];
+    [self setIDType:nil];
+    [super viewDidUnload];
+    FilteredProspectTableData = Nil;
+    ProspectTableData = Nil;
+}
+
+-(void)Clear
+{
+	ProspectTableData = Nil;
+	FilteredProspectTableData = Nil;
+	databasePath = Nil;
+}
+
+-(void)selectedIDType:(NSString *)selectedIDType
+{
+    //NSLog(@"%@",selectedIDType);
+    [_IDType setTitle:selectedIDType forState:UIControlStateNormal];
+    
+    if (_IDTypePickerPopover) {
+        [_IDTypePickerPopover dismissPopoverAnimated:YES];
+        _IDTypePickerPopover = nil;
+    }
+}
+
+
+
 @end
