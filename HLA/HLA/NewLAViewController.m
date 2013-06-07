@@ -103,6 +103,10 @@ id dobtemp;
         [self tempView];
     }
 	
+	if(age < 17){
+		smokerSegment.enabled = FALSE;
+	}
+	
 	[self checking2ndLA];
 	
 	if (CustCode2.length != 0) {

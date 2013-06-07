@@ -54,14 +54,14 @@ const int numberOfModule = 6;
     outletCarousel.delegate = self;
     outletCarousel.type = iCarouselTypeRotary;
     // Do any additional setup after loading the view.
-	
+	/*
 	if([getValid isEqualToString:@"Valid" ]){
 		if ([getInternet isEqualToString:@"Yes" ]) {
 					NSString *strURL = [NSString stringWithFormat:@"%@eSubmissionWS/eSubmissionXMLService.asmx/"
 													"GetSIVersion_TRADUL?Type=IPAD_TRAD&Remarks=Agency&OSType=32", [SIUtilities WSLogin]];
 					NSLog(@"%@", strURL);
 					NSURL *url = [NSURL URLWithString:strURL];
-					NSURLRequest *request = [NSURLRequest requestWithURL:url];
+					NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:5];
 			
 					AFXMLRequestOperation *operation =
 					[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
@@ -90,7 +90,7 @@ const int numberOfModule = 6;
 								
 		}
 	}
-
+*/
 }
 
 #pragma mark - XML parser
@@ -115,7 +115,7 @@ const int numberOfModule = 6;
 		NSString *strURL = [NSString stringWithFormat:@"%@",  string];
 		NSLog(@"%@", strURL);
 		NSURL *url = [NSURL URLWithString:strURL];
-		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:5];
 
 		AFXMLRequestOperation *operation =
 		[AFXMLRequestOperation XMLParserRequestOperationWithRequest:request
@@ -133,7 +133,7 @@ const int numberOfModule = 6;
 	}
 	else if ([self.elementName isEqualToString:@"SITradVersion"]){
 		NSString * AppsVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-		
+		NSLog(@"latest version is available %@", AppsVersion);
 		if (![string isEqualToString:AppsVersion]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Latest Version"
 								message:[NSString stringWithFormat:@"Latest version is available for download. Do you want to download now ?"]
@@ -364,6 +364,7 @@ const int numberOfModule = 6;
 		UserProfileView.modalPresentationStyle = UIModalPresentationPageSheet;
 		UserProfileView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		UserProfileView.indexNo = self.indexNo;
+		UserProfileView.getLatest = @"Yes";
 		[self presentModalViewController:UserProfileView animated:YES];
 		
 		UserProfileView.view.superview.frame = CGRectMake(150, 50, 700, 748);
@@ -376,6 +377,15 @@ const int numberOfModule = 6;
 		NSString *strURL = [NSString stringWithFormat:@"http://www.hla.com.my/agencyportal/includes/DLrotate2.asp?file=iMP/iMP.plist"];
 		NSURL *url = [NSURL URLWithString:strURL];
 		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+		NSURLResponse *response;
+		NSError *error;
+		NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+		NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+		if(!error)
+		{
+			//log response
+			NSLog(@"Response from server = %@", responseString);
+		}
  */
 		
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:

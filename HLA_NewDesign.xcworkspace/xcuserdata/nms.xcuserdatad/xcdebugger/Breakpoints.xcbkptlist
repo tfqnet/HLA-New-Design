@@ -169,8 +169,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1162"
          endingLineNumber = "1162"
-         landmarkName = "@implementation ProspectViewController"
-         landmarkType = "3">
+         landmarkName = "-NSStringIsValidEmail:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -299,7 +299,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1536"
          endingLineNumber = "1536"
-         landmarkName = "-keyboardDidHide:"
+         landmarkName = "-keyboardDidShow:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -364,8 +364,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "18"
          endingLineNumber = "18"
-         landmarkName = "@implementation ProspectViewController"
-         landmarkType = "3">
+         landmarkName = "@interface ProspectViewController()"
+         landmarkType = "2">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -567,11 +567,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/NewLAViewController.m"
-         timestampString = "390798634.917534"
+         timestampString = "392267631.076079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "682"
-         endingLineNumber = "682"
+         startingLineNumber = "686"
+         endingLineNumber = "686"
          landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -580,11 +580,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/NewLAViewController.m"
-         timestampString = "390798634.917534"
+         timestampString = "392267631.076079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "683"
-         endingLineNumber = "683"
+         startingLineNumber = "687"
+         endingLineNumber = "687"
          landmarkName = "-alertView:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1020,11 +1020,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/NewLAViewController.m"
-         timestampString = "390798634.917534"
+         timestampString = "392267631.076079"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "490"
-         endingLineNumber = "490"
+         startingLineNumber = "494"
+         endingLineNumber = "494"
          landmarkName = "-doSaveLA:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1259,7 +1259,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1934"
          endingLineNumber = "1934"
-         landmarkName = "-DateSelected::"
+         landmarkName = "-ContactTypeSelected:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
