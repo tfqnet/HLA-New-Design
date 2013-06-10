@@ -27,5 +27,7 @@
 - (IBAction)deletePressed:(id)sender;
 
 @property (strong, nonatomic) NSMutableArray *itemInArray;
+@property (strong, nonatomic) NSMutableArray* FilteredTableData;
+@property (nonatomic, assign) bool isFiltered;
 
 @end

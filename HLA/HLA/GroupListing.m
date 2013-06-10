@@ -14,7 +14,7 @@
 @end
 
 @implementation GroupListing
-@synthesize itemInArray,memberLabel,groupLabel,txtName,deleteBtn,editBtn;
+@synthesize itemInArray,memberLabel,groupLabel,txtName,deleteBtn,editBtn,FilteredTableData,isFiltered;
 
 - (void)viewDidLoad
 {
@@ -22,9 +22,13 @@
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     self.myTableView.backgroundColor = [UIColor clearColor];
     self.myTableView.separatorColor = [UIColor clearColor];
+    ItemToBeDeleted = [[NSMutableArray alloc] init];
+    indexPaths = [[NSMutableArray alloc] init];
+    FilteredTableData = [[NSMutableArray alloc] init];
     
     deleteBtn.hidden = TRUE;
     deleteBtn.enabled = FALSE;
+    isFiltered = FALSE;
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
@@ -72,12 +76,33 @@
 
 - (IBAction)search:(id)sender
 {
+    NSString *txt = txtName.text;
+    if(txt.length == 0)
+    {
+        isFiltered = FALSE;
+    }
+    else
+    {
+        isFiltered = true;
+        FilteredTableData = [[NSMutableArray alloc] init];
+        
+        for (NSString *zzz in itemInArray)
+        {
+            NSRange Fullname = [zzz  rangeOfString:txt options:NSCaseInsensitiveSearch];
+            if (Fullname.location != NSNotFound) {
+                [FilteredTableData addObject:zzz];
+            }
+        }
+        [self.myTableView reloadData];
+    }
     
 }
 
 - (IBAction)reset:(id)sender
 {
-    
+    isFiltered = FALSE;
+    txtName.text = @"";
+    [self refreshData];
 }
 
 - (IBAction)editPressed:(id)sender
@@ -159,7 +184,33 @@
     }
     else if (alertView.tag == 1002 && buttonIndex == 0)
     {
-        NSLog(@"delete!");
+        NSLog(@"itemToBeDeleted:%d", ItemToBeDeleted.count);
+        
+        if (ItemToBeDeleted.count < 1) {
+            return;
+        }
+        else{
+            NSLog(@"itemToBeDeleted:%d", ItemToBeDeleted.count);
+        }
+        
+        NSArray *sorted = [[NSArray alloc] init ];
+        sorted = [ItemToBeDeleted sortedArrayUsingComparator:^(id firstObject, id secondObject){
+            return [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch];
+        }];
+        
+        for(int a=0; a<sorted.count; a++) {
+            int value = [[sorted objectAtIndex:a] intValue];
+            value = value - a;
+            
+            [itemInArray removeObjectAtIndex:value];
+        }
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsPath = [paths objectAtIndex:0];
+        NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"dataGroup.plist"];
+        
+        [itemInArray writeToFile:plistPath atomically: TRUE];
+        [self.myTableView reloadData];
     }
 }
 
@@ -184,7 +235,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [itemInArray count];
+    int rowCount;
+    if(self.isFiltered)
+        rowCount = FilteredTableData.count;
+    else
+        rowCount = itemInArray.count;
+    return rowCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -201,10 +257,18 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
+    NSString *itemDisplay = nil;
+    if(isFiltered) {
+        itemDisplay = [FilteredTableData objectAtIndex:indexPath.row];
+    }
+    else {
+        itemDisplay = [itemInArray objectAtIndex:indexPath.row];
+    }
+    
     CGRect frame=CGRectMake(0,0, 640, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
-    label1.text= [NSString stringWithFormat:@"  %@",[itemInArray objectAtIndex:indexPath.row]];
+    label1.text= [NSString stringWithFormat:@"  %@",itemDisplay];
     label1.textAlignment = UITextAlignmentLeft;
     label1.tag = 2001;
     [cell.contentView addSubview:label1];
