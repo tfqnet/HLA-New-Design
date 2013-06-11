@@ -179,7 +179,6 @@
     idTypeLabel.textAlignment = UITextAlignmentCenter;
     idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
-    idTypeLabel.numberOfLines = 2;
     
     CGRect frame2=CGRectMake(200,233, 200, 50);
     idNoLabel.frame = frame2;

@@ -7,13 +7,28 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SIDate.h"
 
 
-//**not yet use this controller
+@interface eSubmission : UIViewController <UITableViewDelegate,UITableViewDataSource,SIDateDelegate>{
+    SIDate *_SIDate;
+    UIPopoverController *_SIDatePopover;
+}
 
-@interface eSubmission : UIViewController
+@property (strong, nonatomic) IBOutlet UILabel *idTypeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *idNoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *policyNoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *statusLabel;
+@property (strong, nonatomic) IBOutlet UITableView *myTableView;
+@property (strong, nonatomic) IBOutlet UIButton *btnDate;
+
+@property (strong, nonatomic) NSMutableArray *clientData;
+@property (nonatomic, retain) SIDate *SIDate;
+@property (nonatomic, retain) UIPopoverController *SIDatePopover;
 
 - (IBAction)doClosed:(id)sender;
+- (IBAction)btnDatePressed:(id)sender;
 
 
 @end
