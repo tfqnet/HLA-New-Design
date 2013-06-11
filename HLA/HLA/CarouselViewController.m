@@ -232,13 +232,13 @@ const int numberOfModule = 6;
     
     else if (index % numberOfModule == 4) { //e-sub
         
-        [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"homeScreenEApp.png" ] forState:UIControlStateNormal];
         button.tag = 4;
     }
     
     else if (index % numberOfModule == 5) { //customer profile
         
-        [button setBackgroundImage:[UIImage imageNamed:@"20130108SalesIllustration.png" ] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"homeScreenCFF.png" ] forState:UIControlStateNormal];
         button.tag = 5;
     }
     

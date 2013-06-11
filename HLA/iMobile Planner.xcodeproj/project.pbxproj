@@ -239,6 +239,8 @@
 		EFEB7A06175D9FA4004FF3CE /* ClientTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A01175D9FA3004FF3CE /* ClientTabBarButton.m */; };
 		EFEB7A07175D9FA4004FF3CE /* ClientTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A02175D9FA4004FF3CE /* ClientTabBar.m */; };
 		EFEB7A49175ED366004FF3CE /* GroupListing.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A48175ED365004FF3CE /* GroupListing.m */; };
+		EFEB7A4F1766E8C1004FF3CE /* homeScreenCFF.png in Resources */ = {isa = PBXBuildFile; fileRef = EFEB7A4E1766E8C1004FF3CE /* homeScreenCFF.png */; };
+		EFEB7A511766E8CC004FF3CE /* homeScreenEApp.png in Resources */ = {isa = PBXBuildFile; fileRef = EFEB7A501766E8CC004FF3CE /* homeScreenEApp.png */; };
 		EFFC253716E7219500313A96 /* HLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFFC253616E7219400313A96 /* HLViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -567,6 +569,8 @@
 		EFEB7A04175D9FA4004FF3CE /* ClientTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTabBarButton.h; sourceTree = "<group>"; };
 		EFEB7A47175ED365004FF3CE /* GroupListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupListing.h; sourceTree = "<group>"; };
 		EFEB7A48175ED365004FF3CE /* GroupListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupListing.m; sourceTree = "<group>"; };
+		EFEB7A4E1766E8C1004FF3CE /* homeScreenCFF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeScreenCFF.png; sourceTree = "<group>"; };
+		EFEB7A501766E8CC004FF3CE /* homeScreenEApp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeScreenEApp.png; sourceTree = "<group>"; };
 		EFFC253516E7219400313A96 /* HLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLViewController.h; sourceTree = "<group>"; };
 		EFFC253616E7219400313A96 /* HLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -906,6 +910,8 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EFEB7A501766E8CC004FF3CE /* homeScreenEApp.png */,
+				EFEB7A4E1766E8C1004FF3CE /* homeScreenCFF.png */,
 				C4EF74F61704481400434B02 /* iMPLogo_Curve.png */,
 				C4C501E216A64C4900096156 /* eBrochure */,
 				C4B8446A169C62E000E1A0D3 /* 20130108 */,
@@ -1398,6 +1404,8 @@
 				C4CA65A51745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf in Resources */,
 				42867E9D175F2E0C001CE661 /* IDType.plist in Resources */,
 				42867EAF175F75BD001CE661 /* Title.plist in Resources */,
+				EFEB7A4F1766E8C1004FF3CE /* homeScreenCFF.png in Resources */,
+				EFEB7A511766E8CC004FF3CE /* homeScreenEApp.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
