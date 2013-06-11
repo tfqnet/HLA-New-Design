@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Future Simple. All rights reserved.
 //
 
-#import "ClientTabBarController.h"
+#import "eAppTabBarController.h"
 #import "Login.h"
 
 #import "MainScreen.h"
@@ -26,13 +26,13 @@
 #define DEFAULT_TAB_BAR_HEIGHT 60.0
 
 
-@interface ClientTabBarController ()
+@interface eAppTabBarController ()
 - (void)_performInitialization;
 @end
 
 int rrr;
 
-@implementation ClientTabBarController
+@implementation eAppTabBarController
 
 
 @synthesize delegate = _delegate;
@@ -42,11 +42,11 @@ int rrr;
 @synthesize tabBarWidth = _tabBarWidth;
 
 
-- (ClientTabBar *)tabBar
+- (eAppTabBar *)tabBar
 {
     if (_tabBar == nil)
     {
-        _tabBar = [[ClientTabBar alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _tabBar = [[eAppTabBar alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
         _tabBar.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleRightMargin;
         _tabBar.delegate = self;
     }
@@ -113,7 +113,7 @@ int rrr;
         }
         else {
             
-            if (selectedIndex == 1||selectedIndex == 2) {
+            if (selectedIndex == 1 ) {
                 
                 [self addChildViewController:selectedViewController];
                 selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
@@ -270,7 +270,7 @@ int rrr;
 	
 		clickIndex = indexPath.row;
     
-		if (indexPath.row == 3) {
+		if (indexPath.row == 2) {
         
 			UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: NSLocalizedString(@"Log Out",nil)

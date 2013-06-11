@@ -164,7 +164,7 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(0,0, 222, 50);
+    CGRect frame=CGRectMake(0,0, 204, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [[clientData objectAtIndex:0]objectAtIndex:indexPath.row];
@@ -173,7 +173,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
     
-    CGRect frame2=CGRectMake(222,0, 196, 50);
+    CGRect frame2=CGRectMake(204,0, 167, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
     label2.text= [[clientData objectAtIndex:1]objectAtIndex:indexPath.row];
@@ -182,7 +182,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(418,0, 181, 50);
+    CGRect frame3=CGRectMake(371,0, 181, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
     label3.text= [[clientData objectAtIndex:2]objectAtIndex:indexPath.row];
@@ -191,7 +191,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
     
-    CGRect frame4=CGRectMake(599,0, 262, 50);
+    CGRect frame4=CGRectMake(552,0, 241, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     label4.text= [[clientData objectAtIndex:3]objectAtIndex:indexPath.row];
@@ -200,7 +200,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
     
-    CGRect frame5=CGRectMake(861,0, 163, 50);
+    CGRect frame5=CGRectMake(793,0, 163, 50);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text= [[clientData objectAtIndex:4]objectAtIndex:indexPath.row];

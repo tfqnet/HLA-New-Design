@@ -26,18 +26,33 @@
     self.myTableView.backgroundColor = [UIColor clearColor];
     self.myTableView.separatorColor = [UIColor clearColor];
     
+    CGRect frame=CGRectMake(0,239, 204, 50);
+    idTypeLabel.frame = frame;
+    idTypeLabel.textAlignment = UITextAlignmentCenter;
     idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
 
+    CGRect frame2=CGRectMake(204,239, 200, 50);
+    idNoLabel.frame = frame2;
+    idNoLabel.textAlignment = UITextAlignmentCenter;
     idNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
 	
+    CGRect frame3=CGRectMake(404,239, 212, 50);
+    nameLabel.frame = frame3;
+    nameLabel.textAlignment = UITextAlignmentLeft;
     nameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     nameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
+    CGRect frame4=CGRectMake(616,239, 167, 50);
+    lastUpdateLabel.frame = frame4;
+    lastUpdateLabel.textAlignment = UITextAlignmentCenter;
     lastUpdateLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     lastUpdateLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
+    CGRect frame5=CGRectMake(783,239, 173, 50);
+    statusLabel.frame = frame5;
+    statusLabel.textAlignment = UITextAlignmentCenter;
     statusLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     statusLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
@@ -68,11 +83,6 @@
 
 
 #pragma mark - action
-
-- (IBAction)doClosed:(id)sender
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
 
 - (IBAction)doSearch:(id)sender
 {
@@ -114,7 +124,7 @@
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(0,0, 230, 50);
+    CGRect frame=CGRectMake(0,0, 204, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [[clientData objectAtIndex:0]objectAtIndex:indexPath.row];
@@ -123,7 +133,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
     
-    CGRect frame2=CGRectMake(230,0, 200, 50);
+    CGRect frame2=CGRectMake(204,0, 200, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
     label2.text= [[clientData objectAtIndex:1]objectAtIndex:indexPath.row];
@@ -132,7 +142,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(430,0, 254, 50);
+    CGRect frame3=CGRectMake(404,0, 212, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
     label3.text= [[clientData objectAtIndex:2]objectAtIndex:indexPath.row];
@@ -141,7 +151,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
     
-    CGRect frame4=CGRectMake(684,0, 167, 50);
+    CGRect frame4=CGRectMake(616,0, 167, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     label4.text= [[clientData objectAtIndex:3]objectAtIndex:indexPath.row];
@@ -150,7 +160,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
     
-    CGRect frame5=CGRectMake(851,0, 173, 50);
+    CGRect frame5=CGRectMake(783,0, 173, 50);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text= [[clientData objectAtIndex:4]objectAtIndex:indexPath.row];

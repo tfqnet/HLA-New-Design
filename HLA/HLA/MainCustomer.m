@@ -1,30 +1,29 @@
 //
-//  MainClient.m
+//  MainCustomer.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 6/4/13.
+//  Created by shawal sapuan on 6/11/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "MainClient.h"
+#import "MainCustomer.h"
 #import "CarouselViewController.h"
-#import "ProspectListing.h"
+#import "CustomerProfile.h"
 #import "Logout.h"
-#import "GroupListing.h"
 
-@interface MainClient () {
+@interface MainCustomer () {
     NSArray* viewControllers;
 }
 
 @end
 
-@implementation MainClient
+@implementation MainCustomer
 @synthesize indexNo,IndexTab;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+	
     self.delegate = self;
 	
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
@@ -34,14 +33,9 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"clientListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
-    [controllersToAdd addObject:ProspectListingPage];
-    viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    
-    GroupListing *groupPage = [self.storyboard instantiateViewControllerWithIdentifier:@"groupListing"];
-    groupPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Group" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag:0];
-    [controllersToAdd addObject:groupPage];
+    CustomerProfile *CFFListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"customerProfile"];
+    CFFListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
+    [controllersToAdd addObject:CFFListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
@@ -64,7 +58,7 @@
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);
     }
     
-    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, ProspectListingPage = Nil, LogoutPage = Nil;
+    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, CFFListingPage = Nil, LogoutPage = Nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -79,7 +73,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    
 }
 
 - (void)viewDidUnload
@@ -87,7 +80,7 @@
     [super viewDidUnload];
 }
 
--(BOOL)tabBarController:(ClientTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+-(BOOL)tabBarController:(CFFTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     if ([viewControllers indexOfObject:viewController] == 6) {
         return NO;

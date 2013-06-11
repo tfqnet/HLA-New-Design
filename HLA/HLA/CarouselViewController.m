@@ -24,6 +24,8 @@
 #import "SettingUserProfile.h"
 #import "SIUtilities.h"
 #import "MainClient.h"
+#import "MainCustomer.h"
+#import "MaineApp.h"
 
 const int numberOfModule = 6;
 
@@ -289,12 +291,6 @@ const int numberOfModule = 6;
         zzz.IndexTab = MenuOption.ProspectListingIndex;
 		[self presentViewController:zzz animated:NO completion:Nil];
 		zzz= Nil;
-		/*
-		[self dismissModalViewControllerAnimated:NO];
-		[(ViewController *)_delegate setSss:1 ];
-		[_delegate PresentMain];
-		 */
-		NSLog(@"main");
     }
     
     else if (sender.tag % numberOfModule == 2) {    //ebrochure
@@ -313,38 +309,28 @@ const int numberOfModule = 6;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz= Nil;
         NSLog(@"si listing");
-        
-        /*
-        //--edited by bob
-        NewLAViewController *NewLAPage  = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
-        MainScreen *MainScreenPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
-        MainScreenPage.IndexTab = 3;
-        NewLAPage.modalPresentationStyle = UIModalPresentationPageSheet;
-        
-        [self presentViewController:MainScreenPage animated:YES completion:^(){
-            [MainScreenPage presentModalViewController:NewLAPage animated:NO];
-            NewLAPage.view.superview.bounds =  CGRectMake(-300, 0, 1024, 748);
-        }];
-         */
-        
     }
     
-    else if (sender.tag % numberOfModule == 4) {    //e-sub
+    else if (sender.tag % numberOfModule == 4) {    //e-app
         
-        eSubmission *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
+//        eSubmission *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
+        MaineApp *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"maineApp"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+        zzz.IndexTab = 1;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz = Nil;
 		NSLog(@"e-sub!");
     }
     
-    else if (sender.tag % numberOfModule == 5) {    //customer
+    else if (sender.tag % numberOfModule == 5) {    //cff
         
-        CustomerProfile *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"customerProfile"];
+//        CustomerProfile *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"customerProfile"];
+        MainCustomer *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"mainCFF"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+        zzz.IndexTab = 1;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz = Nil;
-        NSLog(@"customer profile!");
+        NSLog(@"cff!");
     }
     
     outletCarousel = Nil;

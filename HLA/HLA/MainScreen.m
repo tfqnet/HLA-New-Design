@@ -82,10 +82,6 @@
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
-    /*
-    menuSIPage.menuBH = mainBH;
-    menuSIPage.menuPH = mainPH;
-    menuSIPage.menuLa2ndH = mainLa2ndH; */
     menuSIPage.requestSINo = [self.requestSINo description];
     menuSIPage.SIshowQuotation = showQuotation;
     menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
@@ -94,7 +90,7 @@
 
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
-    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Exit" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];
+    LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];
     [controllersToAdd addObject:LogoutPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     

@@ -22,7 +22,6 @@
 
 @property (strong, nonatomic) NSMutableArray *clientData;
 
-- (IBAction)doClosed:(id)sender;
 - (IBAction)doSearch:(id)sender;
 - (IBAction)doReset:(id)sender;
 

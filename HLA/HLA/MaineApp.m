@@ -1,30 +1,29 @@
 //
-//  MainClient.m
+//  MaineApp.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 6/4/13.
+//  Created by shawal sapuan on 6/11/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "MainClient.h"
+#import "MaineApp.h"
 #import "CarouselViewController.h"
-#import "ProspectListing.h"
+#import "eSubmission.h"
 #import "Logout.h"
-#import "GroupListing.h"
 
-@interface MainClient () {
+@interface MaineApp () {
     NSArray* viewControllers;
 }
 
 @end
 
-@implementation MainClient
-@synthesize indexNo,IndexTab;
+@implementation MaineApp
+@synthesize IndexTab,indexNo;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+	
     self.delegate = self;
 	
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
@@ -34,14 +33,9 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    ProspectListing* ProspectListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"clientListing"];
-    ProspectListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Prospect" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag: 0];
-    [controllersToAdd addObject:ProspectListingPage];
-    viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    
-    GroupListing *groupPage = [self.storyboard instantiateViewControllerWithIdentifier:@"groupListing"];
-    groupPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Group" image:[UIImage imageNamed:@"btn_prospect_off.png"] tag:0];
-    [controllersToAdd addObject:groupPage];
+    eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
+    eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
+    [controllersToAdd addObject:eAppListing];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
@@ -64,7 +58,8 @@
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);
     }
     
-    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, ProspectListingPage = Nil, LogoutPage = Nil;
+    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, eAppListing = Nil, LogoutPage = Nil;
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -79,7 +74,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    
+    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewDidUnload
@@ -87,7 +82,7 @@
     [super viewDidUnload];
 }
 
--(BOOL)tabBarController:(ClientTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+-(BOOL)tabBarController:(eAppTabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     if ([viewControllers indexOfObject:viewController] == 6) {
         return NO;
