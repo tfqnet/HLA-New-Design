@@ -69,6 +69,12 @@
 @property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedDBValueA;
 @property (retain, nonatomic) NSMutableArray *SummaryNonGuaranteedDBValueB;
 
+//for CI
+@property (retain, nonatomic) NSMutableArray *CIRiders;
+@property (retain, nonatomic) NSMutableArray *CIRiders2;
+@property (nonatomic, assign) double TotalCI;
+@property (nonatomic, assign) double TotalCI2; 
+
 //for total sum Basic
 @property (nonatomic, assign) double BasicTotalPremiumPaid;
 @property (nonatomic, assign) double BasicMaturityValueA;

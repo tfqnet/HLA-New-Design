@@ -142,6 +142,7 @@
 		C4E9D1C71612C78400016053 /* magnifying-glass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E9D1C41612C78400016053 /* magnifying-glass@2x.png */; };
 		C4E9D1CA1612C7D300016053 /* MainScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1C91612C7D300016053 /* MainScreen.m */; };
 		C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1CB1612C9C300016053 /* QuartzCore.framework */; };
+		C4E9F3D21765E2430070EA8A /* EverSeriesMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9F3D11765E2420070EA8A /* EverSeriesMasterViewController.m */; };
 		C4EA9BCD1616D7C700D51FE9 /* SecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */; };
 		C4EA9BD21616DB7F00D51FE9 /* SecurityQuesTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */; };
 		C4EA9BDB16171E5200D51FE9 /* RetreivePwdTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BDA16171E5200D51FE9 /* RetreivePwdTbViewController.m */; };
@@ -419,6 +420,8 @@
 		C4E9D1C81612C7D300016053 /* MainScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreen.h; sourceTree = "<group>"; };
 		C4E9D1C91612C7D300016053 /* MainScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreen.m; sourceTree = "<group>"; };
 		C4E9D1CB1612C9C300016053 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C4E9F3D01765E2420070EA8A /* EverSeriesMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverSeriesMasterViewController.h; sourceTree = "<group>"; };
+		C4E9F3D11765E2420070EA8A /* EverSeriesMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverSeriesMasterViewController.m; sourceTree = "<group>"; };
 		C4EA9BCB1616D7C600D51FE9 /* SecurityQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestion.h; sourceTree = "<group>"; };
 		C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestion.m; sourceTree = "<group>"; };
 		C4EA9BD01616DB7F00D51FE9 /* SecurityQuesTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuesTbViewController.h; sourceTree = "<group>"; };
@@ -863,6 +866,8 @@
 				C4660E62161F118B00BA4AFE /* ColorHexCode.m */,
 				C4660EEB16259AD500BA4AFE /* CarouselViewController.h */,
 				C4660EEC16259AD600BA4AFE /* CarouselViewController.m */,
+				C4E9F3D01765E2420070EA8A /* EverSeriesMasterViewController.h */,
+				C4E9F3D11765E2420070EA8A /* EverSeriesMasterViewController.m */,
 			);
 			path = HLA;
 			sourceTree = "<group>";
@@ -1491,6 +1496,7 @@
 				EFEB7A49175ED366004FF3CE /* GroupListing.m in Sources */,
 				42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */,
 				42867EB3175F75E6001CE661 /* TitleViewController.m in Sources */,
+				C4E9F3D21765E2430070EA8A /* EverSeriesMasterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

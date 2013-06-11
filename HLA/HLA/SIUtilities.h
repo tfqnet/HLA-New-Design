@@ -17,6 +17,7 @@
 +(BOOL)updateTable:(NSString *)table set:(NSString *)column value:(NSString *)val where:(NSString *)param equal:(NSString *)val2 dbpath:(NSString *)path;
 +(BOOL)createTableCFF:(NSString *)path;
 +(BOOL)UPDATETrad_Sys_Medical_Comb:(NSString *)path;
++(BOOL)InstallUpdate:(NSString *)path;
 +(NSString *)WSLogin;
 
 @end

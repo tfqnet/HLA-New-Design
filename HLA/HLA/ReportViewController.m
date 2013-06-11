@@ -17,6 +17,7 @@
 //double CIWPAnnual, CIWPSemiAnnual, CIWPQuarterly, CIWPMonthly;
 NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQuarterly, *gWaiverMonthly;
 
+
 @implementation ReportViewController
 @synthesize SINo, PolicyTerm, BasicSA, PremiumPaymentOption, AdvanceYearlyIncome,OtherRiderCode,OtherRiderDesc,OtherRiderTerm,sex;
 @synthesize YearlyIncome, CashDividend,CustCode, Age, IncomeRiderCode,IncomeRiderDesc,IncomeRiderTerm;
@@ -1778,6 +1779,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         NSString *strUnits = @"";
         NSString *seq = @"", *OtherHLoading= @"";
         
+		
         if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"ICR" ]) {
             seq = @"4";
         }
@@ -5223,7 +5225,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
         NSString *QuerySQL = @"";
         
         for (int i = 0; i< UpdateTradDetail.count; i++) {
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+
+			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
             //[formatter setMaximumFractionDigits:3];
             [formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
@@ -5233,9 +5236,11 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             NSString *SAQuaterly = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverQuarterly objectAtIndex:i] doubleValue ]]];
             NSString *SAMonthly = [formatter stringFromNumber:[NSNumber numberWithFloat:[[gWaiverMonthly objectAtIndex:i] doubleValue ]]];
             
-            
+			
+
+			
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
-                QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Annual\" AND col11 = \"%@\" ", 
+                QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Telmp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Annual\" AND col11 = \"%@\" ", 
                             SAAnnual, [UpdateTradDetail objectAtIndex:i ]];
                 
                 if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {

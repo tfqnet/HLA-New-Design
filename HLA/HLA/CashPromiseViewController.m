@@ -13,8 +13,7 @@
 @interface CashPromiseViewController ()
 
 @end
-NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQuarterly, *gWaiverMonthly;
-
+NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQuarterly, *gWaiverMonthly, *UpdateTradDetailTerm;
 
 @implementation CashPromiseViewController
 @synthesize SINo, PolicyTerm, BasicSA,OtherRiderCode,OtherRiderDesc,OtherRiderTerm,sex;
@@ -34,6 +33,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 @synthesize dataTable = _dataTable;
 @synthesize db = _db;
 @synthesize OtherRiderHL100SA, OtherRiderHL100SATerm,OtherRiderHL1kSA,OtherRiderHL1kSATerm,OtherRiderHLPercentage,OtherRiderHLPercentageTerm;
+@synthesize TotalCI, CIRiders, TotalCI2, CIRiders2;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -54,6 +54,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"HLA_Rates.sqlite"]];
     
     UpdateTradDetail = [[NSMutableArray alloc] init ];
+	UpdateTradDetailTerm = [[NSMutableArray alloc] init ];
     gWaiverAnnual = [[NSMutableArray alloc] init ];
     gWaiverSemiAnnual = [[NSMutableArray alloc] init ];
     gWaiverQuarterly = [[NSMutableArray alloc] init ];
@@ -79,7 +80,9 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     SummaryNonGuaranteedDBValueB = [[NSMutableArray alloc] init ];
     SummaryNonGuaranteedSurrenderValueA = [[NSMutableArray alloc] init ];
     SummaryNonGuaranteedSurrenderValueB = [[NSMutableArray alloc] init ];
-    
+    CIRiders = [[NSMutableArray alloc] init ];
+	CIRiders2 = [[NSMutableArray alloc] init ];
+	
     OccLoading = [[NSMutableArray alloc] init ];
     
     BasicTotalYearlyIncome = 0.00;
@@ -91,6 +94,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
     EntireMaturityValueA = 0.00;
     EntireMaturityValueB = 0.00;
     EntireTotalPremiumPaid = 0.00;
+	TotalCI = 0.00;
+	TotalCI2 = 0.00;
 	
 	[self deleteTemp]; //clear all temp data
 	
@@ -997,6 +1002,24 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             seq = @"6";
         }
 		
+		
+		//for total CI
+		if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"CIR" ] ||
+			[[OtherRiderCode objectAtIndex:a] isEqualToString:@"LCPR" ]  ) {
+			TotalCI = TotalCI + [[OtherRiderSA objectAtIndex:a] doubleValue];
+			[CIRiders addObject:[OtherRiderCode objectAtIndex:a]];
+		}
+		else if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"ICR" ]){
+			TotalCI = TotalCI + ([[OtherRiderSA objectAtIndex:a] doubleValue] * 10);
+			[CIRiders addObject:[OtherRiderCode objectAtIndex:a]];
+		}
+		else if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"PLCP" ]){
+			TotalCI2 = TotalCI2 + ([[OtherRiderSA objectAtIndex:a] doubleValue]);
+			[CIRiders2 addObject:[OtherRiderCode objectAtIndex:a]];
+		}
+		//end
+		
+		
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 			
             SelectSQL = [ NSString stringWithFormat:@"Select \"Type\", \"Annually\",\"SemiAnnually\",\"Quarterly\",\"Monthly\", \"Units\"  "
@@ -1069,7 +1092,8 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"PR" ] || [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_PRE" ] ||
                 [[OtherRiderCode objectAtIndex:a] isEqualToString:@"SP_STD" ]) {
                 [UpdateTradDetail addObject:[OtherRiderCode objectAtIndex:a]];
-                
+                [UpdateTradDetailTerm addObject:[OtherRiderTerm objectAtIndex:a]];
+				
                 RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\") VALUES ( "
                             " \"%@\",\"%@\",\"DATA\",\"%@\",\"%@\",\"0\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\" "
@@ -1133,6 +1157,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             //special case for ciwp only --> first life assured riders
             else if ([[OtherRiderCode objectAtIndex:a] isEqualToString:@"CIWP"  ]) {
                 [UpdateTradDetail addObject:[OtherRiderCode objectAtIndex:a]];
+				[UpdateTradDetailTerm addObject:[OtherRiderTerm objectAtIndex:a]];
                 
                 RiderSQL = [NSString stringWithFormat: @"Insert INTO SI_Temp_Trad_Details (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
                             "\"col3\",\"col4\",\"col5\",\"col6\",\"col7\",\"col8\",\"col9\",\"col10\",\"col11\") VALUES ( "
@@ -4268,7 +4293,30 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
             
             //NSLog(@"dasdasdasdas%.9f", [[gWaiverAnnual objectAtIndex:i] doubleValue ]);
 		
-			
+			if ([[UpdateTradDetail objectAtIndex:i ] isEqualToString:@"CIWP" ]) {
+				if([[UpdateTradDetailTerm objectAtIndex:i] integerValue ] > 10){
+					TotalCI = TotalCI + ([[gWaiverAnnual objectAtIndex:i] doubleValue ] * 8);
+					[CIRiders addObject:[UpdateTradDetail objectAtIndex:i ]];
+				}
+				else{
+					TotalCI = TotalCI + ([[gWaiverAnnual objectAtIndex:i] doubleValue ] * 4);
+					[CIRiders addObject:[UpdateTradDetail objectAtIndex:i ]];
+				}
+				
+			}
+			else if([[UpdateTradDetail objectAtIndex:i ] isEqualToString:@"LCWP" ] ||
+					[[UpdateTradDetail objectAtIndex:i ] isEqualToString:@"SP_PRE" ]){
+				
+				if([[UpdateTradDetailTerm objectAtIndex:i] integerValue ] > 10){
+						TotalCI2 = TotalCI2 + ([[gWaiverAnnual objectAtIndex:i] doubleValue ] * 8);
+						[CIRiders2 addObject:[UpdateTradDetail objectAtIndex:i ]];
+				}
+				else{
+						TotalCI2 = TotalCI2 + ([[gWaiverAnnual objectAtIndex:i] doubleValue ] * 4);
+						[CIRiders2 addObject:[UpdateTradDetail objectAtIndex:i ]];
+				}
+			}
+
             if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
                 //QuerySQL = [ NSString stringWithFormat:@"UPDATE SI_Temp_Trad_Details set col2 = \"%@\" where col0_1 = \"-Annual\" AND col11 = \"%@\" ",
                 //            SAAnnual, [UpdateTradDetail objectAtIndex:i ]];

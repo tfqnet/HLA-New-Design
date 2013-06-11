@@ -124,6 +124,7 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     //[SIUtilities updateTable:@"Trad_Sys_Medical_Comb" set:@"Limit" value:@"400" where:@"OccpCode" equal:@"UNEMP" dbpath:databasePath];
 	[SIUtilities UPDATETrad_Sys_Medical_Comb:databasePath];
 	[SIUtilities updateTable:@"Trad_Sys_Basic_LSD" set:@"FromSA" value:@"600" where:@"ToSA" equal:@"1199.99" dbpath:databasePath];
+	[SIUtilities InstallUpdate:databasePath];
 	
     return YES;
 }

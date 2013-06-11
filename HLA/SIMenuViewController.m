@@ -1626,6 +1626,7 @@ id RiderCount;
 						CPReportPage.PDSorSI = @"SI";
 						[self presentViewController:CPReportPage animated:NO completion:Nil];
 						
+						
 					}
 					else if([getBasicPlan isEqualToString:@"HLAIB" ]){
 						ReportPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Report"];
@@ -1640,7 +1641,81 @@ id RiderCount;
 						
 						if([getBasicPlan isEqualToString:@"HLACP" ]){
 							
-							[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+							if (CPReportPage.TotalCI > 1500000){
+								[spinner_SI stopAnimating ];
+								[self.view setUserInteractionEnabled:YES];
+								[_FS Reset];
+								
+								UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+								[v removeFromSuperview];
+								v = Nil;
+								
+								if (previousPath == Nil) {
+									previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+								}
+								
+								[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+								selectedPath = previousPath;
+								spinner_SI = Nil;
+
+								NSString *strCIRiders = @"";
+								
+								for (int i = 0; i < CPReportPage.CIRiders.count; i++) {
+									strCIRiders = [strCIRiders stringByAppendingFormat:@"\n%d. %@", i + 1, [CPReportPage.CIRiders objectAtIndex:i]];
+								}
+								
+								UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																				message:[ NSString stringWithFormat:@"CI Benefit Limit per Life is capped at RM1.5mil. "
+																						 "Please revise the RSA of CI related rider(s) below as the CI Benefit Limit per Life for 1st Life Assured"
+																						 " has exceeded RM1.5mil. %@", strCIRiders]
+																			   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+								[Alert show];
+								Alert = nil;
+								
+								[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+								
+								return;
+							}
+							else if (CPReportPage.TotalCI2 > 1500000){
+								[spinner_SI stopAnimating ];
+								[self.view setUserInteractionEnabled:YES];
+								[_FS Reset];
+								
+								UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+								[v removeFromSuperview];
+								v = Nil;
+								
+								if (previousPath == Nil) {
+									previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+								}
+								
+								[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+								selectedPath = previousPath;
+								spinner_SI = Nil;
+								
+								NSString *strCIRiders2 = @"";
+								
+								for (int i = 0; i < CPReportPage.CIRiders2.count; i++) {
+									strCIRiders2 = [strCIRiders2 stringByAppendingFormat:@"\n%d. %@", i + 1, [CPReportPage.CIRiders2 objectAtIndex:i]];
+								}
+								
+								UIAlertView *Alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																				message:[ NSString stringWithFormat:@"CI Benefit Limit per Life is capped at RM1.5mil. "
+																						 "Please revise the RSA of CI related rider(s) below as the CI Benefit Limit per Life for 2nd Life Assured"
+																						 " has exceeded RM1.5mil. %@", strCIRiders2]
+																			   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+								[Alert show];
+								Alert = nil;
+								
+								[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+								
+								return;
+							}
+							else{
+								[CPReportPage dismissViewControllerAnimated:NO completion:Nil];
+							}
+							
+
 						}
 						else if([getBasicPlan isEqualToString:@"HLAIB" ]){
 							[ReportPage dismissViewControllerAnimated:NO completion:Nil];

@@ -163,8 +163,9 @@ static sqlite3 *contactDB = nil;
 +(BOOL)InstallUpdate:(NSString *)path
 {
 	NSString * AppsVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-
+	
 	if ([AppsVersion doubleValue ] < 1.3) {
+
 		[self InstallVersion1dot3:path];
 	}
 	
@@ -222,6 +223,16 @@ static sqlite3 *contactDB = nil;
 			 "\"MinTerm\" INTEGER, \"MaxTerm\" INTEGER, \"PlanCode\" VARCHAR, \"PTypeCode\" VARCHAR, \"Seq\" INTEGER)"];
     [database executeUpdate:query];
 	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Rider_Profile ('RiderCode' VARCHAR, 'RiderDesc' VARCHAR, 'LifePlan' INTEGER, "
+			 "'Status' INTEGER)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Rider_Label (\"LabelCode\" VARCHAR, \"LabelDesc\" VARCHAR, \"RiderCode\" VARCHAR, "
+			 "\"RiderName\" VARCHAR, \"InputCode\" VARCHAR, \"TableName\" VARCHAR, \"FieldName\" VARCHAR, \"Condition\" VARCHAR, "
+			 "\"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
+    [database executeUpdate:query];
+	
+	//
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000,0 , 100, \"EverLife\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
@@ -280,6 +291,224 @@ static sqlite3 *contactDB = nil;
     [database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"WI\", 0, 20, 65, 70, 100, 8000, 5 , 70, \"EverLife\", \"LA\", 1 )"];
+    [database executeUpdate:query];
+	
+	//
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES('DCA', 'Acc. Death & Compassionate Allowance Rider', 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"DHI\", \"Acc. Daily Hospitalisation Income Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"ECAR\", \"EverCash 1 Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"ECAR55\", \"EverCash 55 Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"LSR\", \"LifeShield Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"MR\", \"Acc. Medical Reimbursement Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"RRTUO\", \"Rider Regular Top Up Option\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"TPDMLA\", \"Acc. TPD Monthly Living Allowance Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"TPDWP\", \"TPD Waiver of Premium Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"WI\", \"Acc. Weekly Indemnity Rider\", 0, 1)"];
+    [database executeUpdate:query];
+	
+	//
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"ACIR\", \"\", \"TF\", "
+										"\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"SUMA\", \"Sum Assured\", \"ACIR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"ACIR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"CIWP\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1K\", \"Health Loading (Per 1K SA)\", \"CIWP\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"DCA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"SUMA\", \"Sum Assured\", \"DCA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PAYT\", \"Payment Term\", \"DCA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"DCA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"DHI\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"SUMA\", \"Sum Assured\", \"DHI\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PAYT\", \"Payment Term\", \"DHI\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"DHI\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"ECAR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"YINC\", \"Yearly Income\", \"ECAR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PAYT\", \"Payment Term\", \"ECAR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"REYI\", \"Reinvestment of Yearly Income\", \"ECAR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1KSA)\", \"ECAR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"MINC\", \"Monthly Income\", \"ECAR55\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PAYT\", \"Payment Term\", \"ECAR55\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"REMI\", \"Reinvestment of Month Income\", \"ECAR55\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1KSA)\", \"ECAR55\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PLCH\", \"Plan Choice\", \"HMM\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"DEDUC\", \"Deductible\", \"HMM\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"HMM\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"SUMA\", \"Sum Assured\", \"LSR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1KSA)\", \"LSR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PLCH\", \"Plan Choice\", \"MGIV\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"MGIV\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"MR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"SUMA\", \"Sum Assured\", \"MR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"MR\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"PA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"SUMA\", \"Sum Assured\", \"PA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"PA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"CFPA\", \"Commencing From(pol. anniversary)\", \"RRTUO\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"FORY\", \"for(year)\", \"RRTUO\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PREM\", \"Premium\", \"RRTUO\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"TPDMLA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"MINC\", \"Sum Assured\", \"TPDMLA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"TPDMLA\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"TPDWP\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1K SA)\", \"TPDWP\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"WI\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"MINC\", \"Sum Assured\", \"WI\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"WI\", \"\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
 	
