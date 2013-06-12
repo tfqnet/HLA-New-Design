@@ -27,7 +27,7 @@
 #import "MainCustomer.h"
 #import "MaineApp.h"
 
-const int numberOfModule = 6;
+const int numberOfModule = 7;
 
 @interface CarouselViewController ()<UIActionSheetDelegate>
 
@@ -243,7 +243,11 @@ const int numberOfModule = 6;
         [button setBackgroundImage:[UIImage imageNamed:@"homeScreenCFF.png" ] forState:UIControlStateNormal];
         button.tag = 5;
     }
-    
+    else if (index % numberOfModule == 6) { //Ever Series
+		
+		[button setBackgroundImage:[UIImage imageNamed:@"bg8.jpg" ] forState:UIControlStateNormal];
+		button.tag = 6;
+	}
     /*
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     NSString *filename = [NSString stringWithFormat:@"IMG_00%i", (index+39)];
@@ -304,6 +308,7 @@ const int numberOfModule = 6;
     else if (sender.tag % numberOfModule == 3) {    //si listing
         
         MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+		zzz.tradOrEver = @"TRAD";
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = MenuOption.SIListingIndex;
         [self presentViewController:zzz animated:NO completion:Nil];
@@ -332,6 +337,16 @@ const int numberOfModule = 6;
         zzz = Nil;
         NSLog(@"cff!");
     }
+	else if (sender.tag % numberOfModule == 6) {    //Ever Series
+		
+				MainScreen *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+				zzz.tradOrEver = @"EVER";
+				zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+				zzz.IndexTab = MenuOption.SIListingIndex;
+				[self presentViewController:zzz animated:NO completion:Nil];
+				zzz= Nil;
+				
+	}
     
     outletCarousel = Nil;
     MenuOption = Nil;

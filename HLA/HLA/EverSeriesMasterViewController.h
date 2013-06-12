@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 
-@interface EverSeriesMasterViewController : UIViewController<UITableViewDelegate>{
+@interface EverSeriesMasterViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>{
 	NSString *databasePath;
     sqlite3 *contactDB;
 }

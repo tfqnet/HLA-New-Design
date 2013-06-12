@@ -18,7 +18,7 @@
 
 #import "ReportViewController.h"
 #import "NewLAViewController.h"
-
+#import "EverSeriesMasterViewController.h"
 
 @interface MainScreen (){
      NSArray* viewControllers;
@@ -28,7 +28,7 @@
 @implementation MainScreen
 @synthesize indexNo, showQuotation;
 @synthesize userRequest;
-@synthesize IndexTab,mainBH,mainPH,mainLa2ndH;
+@synthesize IndexTab,mainBH,mainPH,mainLa2ndH, tradOrEver;;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -82,12 +82,28 @@
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     SIMenuViewController *menuSIPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+	EverSeriesMasterViewController *EverPage = [self.storyboard instantiateViewControllerWithIdentifier:@"EverSeriesMaster"];
+	/*
     menuSIPage.requestSINo = [self.requestSINo description];
     menuSIPage.SIshowQuotation = showQuotation;
     menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
     [controllersToAdd addObject:menuSIPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
-
+*/
+	if ([tradOrEver isEqualToString:@"TRAD"]) {
+		menuSIPage.requestSINo = [self.requestSINo description];
+		menuSIPage.SIshowQuotation = showQuotation;
+		menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
+		[controllersToAdd addObject:menuSIPage];
+				viewControllers = [NSArray arrayWithArray:controllersToAdd];
+	}
+	else{
+		
+		EverPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
+		[controllersToAdd addObject:EverPage];
+		viewControllers = [NSArray arrayWithArray:controllersToAdd];
+	}
+	
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
     LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];

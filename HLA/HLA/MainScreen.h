@@ -19,6 +19,7 @@
 @property (nonatomic, assign,readwrite) int indexNo;
 @property (nonatomic,strong) id userRequest;
 @property (nonatomic,strong) id requestSINo;
+@property (nonatomic,strong) id tradOrEver;
 
 @property (nonatomic, assign,readwrite) int IndexTab;
 @property (nonatomic,strong) BasicPlanHandler *mainBH;

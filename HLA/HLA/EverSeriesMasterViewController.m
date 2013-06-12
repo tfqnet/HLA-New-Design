@@ -27,10 +27,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	    [self resignFirstResponder];
+	[self resignFirstResponder];
 	
-	[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]]];
-	self.myTableView.delegate = self;
+
+	self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
 
 	NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -40,12 +40,48 @@
     [self.view addSubview:self.RightView];
 	
 	ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor",
-					 @"Basic Account", @"Health Loading", nil ];
+					 @"Basic Account", @"Fund Allocation & Others", @"Riders",  nil ];
 	
+	self.myTableView.delegate = self;
+	self.myTableView.dataSource = self;
 	self.myTableView.rowHeight = 44;
+	self.myTableView.scrollEnabled = false;
     [self.myTableView reloadData];
 }
 
+-(void)Reset{
+	NSLog(@"");
+}
+
+#pragma mark - table view
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)myTableView numberOfRowsInSection:(NSInteger)section
+{
+    return ListOfSubMenu.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)myTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [self.myTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+	
+	cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:17];
+    cell.textLabel.textAlignment = UITextAlignmentLeft;
+	
+	return  cell;
+}
+
+#pragma mark - 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
