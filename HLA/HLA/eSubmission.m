@@ -69,11 +69,6 @@
 
 #pragma mark - action
 
-- (IBAction)doClosed:(id)sender
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
-
 - (IBAction)btnDatePressed:(id)sender
 {
     [self resignFirstResponder];

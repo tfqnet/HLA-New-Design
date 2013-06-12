@@ -27,7 +27,6 @@
 @property (nonatomic, retain) SIDate *SIDate;
 @property (nonatomic, retain) UIPopoverController *SIDatePopover;
 
-- (IBAction)doClosed:(id)sender;
 - (IBAction)btnDatePressed:(id)sender;
 
 
