@@ -699,6 +699,7 @@ int DateOption;
         MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
         //main.modalPresentationStyle = UIModalPresentationPageSheet;
 //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		main.tradOrEver = @"TRAD";
         main.IndexTab = MenuOption.NewSIIndex ;
         main.requestSINo = [SINO objectAtIndex:indexPath.row];
         

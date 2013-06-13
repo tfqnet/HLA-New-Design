@@ -143,6 +143,9 @@
 		C4E9D1CA1612C7D300016053 /* MainScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9D1C91612C7D300016053 /* MainScreen.m */; };
 		C4E9D1CC1612C9C300016053 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E9D1CB1612C9C300016053 /* QuartzCore.framework */; };
 		C4E9F3D21765E2430070EA8A /* EverSeriesMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9F3D11765E2420070EA8A /* EverSeriesMasterViewController.m */; };
+		C4E9F3D6176878E90070EA8A /* BasicAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9F3D5176878E90070EA8A /* BasicAccountViewController.m */; };
+		C4E9F3D9176879190070EA8A /* EverRiderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9F3D8176879190070EA8A /* EverRiderViewController.m */; };
+		C4E9F3DC17687D4A0070EA8A /* EverLAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E9F3DB17687D4A0070EA8A /* EverLAViewController.m */; };
 		C4EA9BCD1616D7C700D51FE9 /* SecurityQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */; };
 		C4EA9BD21616DB7F00D51FE9 /* SecurityQuesTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BD11616DB7F00D51FE9 /* SecurityQuesTbViewController.m */; };
 		C4EA9BDB16171E5200D51FE9 /* RetreivePwdTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EA9BDA16171E5200D51FE9 /* RetreivePwdTbViewController.m */; };
@@ -432,6 +435,12 @@
 		C4E9D1CB1612C9C300016053 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C4E9F3D01765E2420070EA8A /* EverSeriesMasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverSeriesMasterViewController.h; sourceTree = "<group>"; };
 		C4E9F3D11765E2420070EA8A /* EverSeriesMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverSeriesMasterViewController.m; sourceTree = "<group>"; };
+		C4E9F3D4176878E90070EA8A /* BasicAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicAccountViewController.h; sourceTree = "<group>"; };
+		C4E9F3D5176878E90070EA8A /* BasicAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicAccountViewController.m; sourceTree = "<group>"; };
+		C4E9F3D7176879190070EA8A /* EverRiderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverRiderViewController.h; sourceTree = "<group>"; };
+		C4E9F3D8176879190070EA8A /* EverRiderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverRiderViewController.m; sourceTree = "<group>"; };
+		C4E9F3DA17687D4A0070EA8A /* EverLAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverLAViewController.h; sourceTree = "<group>"; };
+		C4E9F3DB17687D4A0070EA8A /* EverLAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverLAViewController.m; sourceTree = "<group>"; };
 		C4EA9BCB1616D7C600D51FE9 /* SecurityQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuestion.h; sourceTree = "<group>"; };
 		C4EA9BCC1616D7C700D51FE9 /* SecurityQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityQuestion.m; sourceTree = "<group>"; };
 		C4EA9BD01616DB7F00D51FE9 /* SecurityQuesTbViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityQuesTbViewController.h; sourceTree = "<group>"; };
@@ -862,6 +871,7 @@
 		C4E9D19A1612C64900016053 /* HLA */ = {
 			isa = PBXGroup;
 			children = (
+				C4E9F3D31768784A0070EA8A /* EverSeries */,
 				EFEB7A4A175ED3A7004FF3CE /* ClientGroup */,
 				EF5B6120173C9EE400751157 /* CFF */,
 				EF5B611A173B579E00751157 /* eApp */,
@@ -977,6 +987,19 @@
 				C4E9D1C41612C78400016053 /* magnifying-glass@2x.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		C4E9F3D31768784A0070EA8A /* EverSeries */ = {
+			isa = PBXGroup;
+			children = (
+				C4E9F3D4176878E90070EA8A /* BasicAccountViewController.h */,
+				C4E9F3D5176878E90070EA8A /* BasicAccountViewController.m */,
+				C4E9F3D7176879190070EA8A /* EverRiderViewController.h */,
+				C4E9F3D8176879190070EA8A /* EverRiderViewController.m */,
+				C4E9F3DA17687D4A0070EA8A /* EverLAViewController.h */,
+				C4E9F3DB17687D4A0070EA8A /* EverLAViewController.m */,
+			);
+			name = EverSeries;
 			sourceTree = "<group>";
 		};
 		C4EA9BCF1616DAFF00D51FE9 /* PopOver */ = {
@@ -1569,6 +1592,9 @@
 				EFEB7A661766FDCC004FF3CE /* eAppTabBar.m in Sources */,
 				EFEB7A671766FDCC004FF3CE /* eAppTabBarButton.m in Sources */,
 				EFEB7A6B1766FF55004FF3CE /* MaineApp.m in Sources */,
+				C4E9F3D6176878E90070EA8A /* BasicAccountViewController.m in Sources */,
+				C4E9F3D9176879190070EA8A /* EverRiderViewController.m in Sources */,
+				C4E9F3DC17687D4A0070EA8A /* EverLAViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

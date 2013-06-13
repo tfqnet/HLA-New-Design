@@ -10,6 +10,7 @@
 #import <sqlite3.h>
 #import "FMDatabase.h"
 
+
 @interface SIUtilities : NSObject
 
 +(BOOL)makeDBCopy:(NSString *)path;

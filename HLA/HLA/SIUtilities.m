@@ -7,6 +7,8 @@
 //
 
 #import "SIUtilities.h"
+#import "DataTable.h"
+
 
 static sqlite3 *contactDB = nil;
 
@@ -163,10 +165,39 @@ static sqlite3 *contactDB = nil;
 +(BOOL)InstallUpdate:(NSString *)path
 {
 	NSString * AppsVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-	
-	if ([AppsVersion doubleValue ] < 1.3) {
 
-		[self InstallVersion1dot3:path];
+	sqlite3_stmt *statement;
+    NSString *QuerySQL;
+	NSString *CurrenVersion = @"";
+	
+	if (sqlite3_open([path UTF8String], &contactDB) == SQLITE_OK){
+		
+		QuerySQL = [ NSString stringWithFormat:@"select SIVersion FROM Trad_Sys_SI_version_Details"];
+		if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW) {
+				CurrenVersion = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+			}
+			sqlite3_finalize(statement);
+		}
+		sqlite3_close(contactDB);
+	}
+	
+	
+	if (![AppsVersion isEqualToString:CurrenVersion]) {
+		//[self InstallVersion1dot3:path];
+			
+		if (sqlite3_open([path UTF8String], &contactDB) == SQLITE_OK){
+			
+			QuerySQL = [ NSString stringWithFormat:@"Update Trad_Sys_SI_version_Details set SIVersion = '%@'", AppsVersion];
+			if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+				if (sqlite3_step(statement) == SQLITE_DONE) {
+					
+				}
+				sqlite3_finalize(statement);
+			}
+			sqlite3_close(contactDB);
+		}
+		
 	}
 	
     return YES;
@@ -226,12 +257,12 @@ static sqlite3 *contactDB = nil;
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Rider_Profile ('RiderCode' VARCHAR, 'RiderDesc' VARCHAR, 'LifePlan' INTEGER, "
 			 "'Status' INTEGER)"];
     [database executeUpdate:query];
-	
+
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Rider_Label (\"LabelCode\" VARCHAR, \"LabelDesc\" VARCHAR, \"RiderCode\" VARCHAR, "
 			 "\"RiderName\" VARCHAR, \"InputCode\" VARCHAR, \"TableName\" VARCHAR, \"FieldName\" VARCHAR, \"Condition\" VARCHAR, "
 			 "\"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
     [database executeUpdate:query];
-	
+
 	//
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000,0 , 100, \"EverLife\", \"LA\", 1 )"];
     [database executeUpdate:query];
@@ -323,7 +354,7 @@ static sqlite3 *contactDB = nil;
 	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"WI\", \"Acc. Weekly Indemnity Rider\", 0, 1)"];
     [database executeUpdate:query];
-	
+
 	//
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"ACIR\", \"\", \"TF\", "
 										"\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
