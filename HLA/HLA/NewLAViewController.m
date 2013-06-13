@@ -61,7 +61,6 @@ id dobtemp;
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    NSLog(@"%@",databasePath);
     
     LANameField.enabled = NO;
     sexSegment.enabled = NO;

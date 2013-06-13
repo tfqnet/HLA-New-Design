@@ -208,9 +208,17 @@ static sqlite3 *contactDB = nil;
 	FMDatabase *database = [FMDatabase databaseWithPath:path];
     [database open];
 	
-	NSString *query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Details (\"RiderCode\" VARCHAR, \"isEDD\" INTEGER, \"MinAge\" "
-					   "INTEGER, \"MaxAge\" INTEGER, \"ExpiryAge\" INTEGER, \"MinSA\" DOUBLE, \"MaxSA\" DOUBLE, \"MinTerm\" INTEGER, "
-					   "\"MaxTerm\" INTEGER, \"PlanCode\" VARCHAR, \"PTypeCode\" VARCHAR) "];
+	NSString *query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Details (\"PlanCode\" VARCHAR, \"CovTypeCode\" INTEGER, \"ATPrem\" "
+					   "INTEGER, \"BasicSA\" INTEGER, \"CovPeriod\" INTEGER, \"OccpCode\" DOUBLE, \"OccLoading\" DOUBLE, \"CPA\" INTEGER, "
+					   "\"PA\" INTEGER, \"HLoading\" VARCHAR, \"HloadingTerm\" VARCHAR, \"HloadingPct\" VARCHAR, \"HloadingPctTerm\" VARCHAR "
+					   ", \"MedicalReq\" VARCHAR, \"ComDate\" VARCHAR, \"HLGES\" VARCHAR, \"ATU\" VARCHAR, \"BUMPMode\" VARCHAR "
+					   ", \"InvCode\" VARCHAR, \"InvHorizon\" VARCHAR, \"RiderRTU\" VARCHAR, \"RiderRTUTerm\" VARCHAR, \"PolicySustainYear\" VARCHAR"
+					   ", \"Package\" VARCHAR, \"TotATPrem\" VARCHAR, \"TotUpPrem\" VARCHAR, \"VU2023\" VARCHAR, \"VU2023To\" VARCHAR"
+					   ", \"VU2025\" VARCHAR, \"VU2025To\" VARCHAR, \"VU2028\" VARCHAR, \"VU2028To\" VARCHAR, \"VU2030\" VARCHAR"
+					   ", \"VU2030To\" VARCHAR, \"VU2035\" VARCHAR, \"VU2035To\" VARCHAR, \"VUCash\" VARCHAR, \"VUCashTo\" VARCHAR"
+					   ", \"ReinvestYI\" VARCHAR, \"FullyPaidUp6Year\" VARCHAR, \"FullyPaidUp10Year\" VARCHAR, \"ReduceBSA\" VARCHAR"
+					   ", \"SpecialVersion\" VARCHAR, \"VURet\" VARCHAR, \"VURetTo\" VARCHAR, \"VURetOpt\" VARCHAR, \"VURetToOpt\" VARCHAR"
+					   ", \"VUCashOpt\" VARCHAR, \"VUCashToOpt\" VARCHAR)"];
     [database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_LAPayor (\"SINO\" VARCHAR, \"CustCode\"	VARCHAR, \"PTypeCode\" "
