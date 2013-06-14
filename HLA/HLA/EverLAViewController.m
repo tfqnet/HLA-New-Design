@@ -15,11 +15,10 @@
 
 @implementation EverLAViewController
 @synthesize txtName, segGender, segSmoker,segStatus;
-@synthesize txtALB;
+@synthesize txtALB, txtCommDate, txtDOB;
 @synthesize txtOccpLoad;
 @synthesize txtCPA;
 @synthesize txtPA;
-@synthesize btnComDate;
 @synthesize statusLabel;
 @synthesize sex,smoker,age,ANB,DOB,jobDesc,SINo,CustCode;
 @synthesize occDesc,occCode,occLoading,payorSINo,occCPA_PA;
@@ -72,7 +71,7 @@
 }
 
 
-#pragma handle Data
+#pragma mark - handle Data
 -(void)getOccLoadExist
 {
     sqlite3_stmt *statement;
@@ -109,12 +108,13 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-							   @"INSERT INTO UL_LAPayor (PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"LA\",\"1\",\"%@\",\"hla\")",commDate];
+							   @"INSERT INTO UL_LAPayor (PTypeCode,Seq,DateCreated,CreatedBy) VALUES (\"LA\",\"1\",\"%@\","
+							   "\"hla\")",commDate];
 
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"Done LA");
+                NSLog(@"Done Ever LA");
             }
             else {
                 NSLog(@"Failed LA");
@@ -129,9 +129,9 @@
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"Done LA2");
-                //[self getLastIDPayor];
-                //[self getLastIDProfile];
+                NSLog(@"Done Ever LA2");
+                [self getLastIDPayor];
+                [self getLastIDProfile];
                 
             } else {
                 NSLog(@"Failed LA2");
@@ -141,12 +141,12 @@
             }
             sqlite3_finalize(statement);
         }
-		/*
+		
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
         Inserted = YES;
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         zzz.SICompleted = NO;
-        */
+        
         sqlite3_close(contactDB);
     }
 }
@@ -831,7 +831,7 @@
 }
 
 
-#pragma Delegate
+#pragma mark - Delegate
 -(void) LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker
 {
 	
@@ -870,7 +870,7 @@
 	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.ExistPayor = YES;
 
-	NSLog(@"view new client");
+	NSLog(@"new client");
     if (commDate.length == 0) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
@@ -897,9 +897,11 @@
             segGender.selectedSegmentIndex = 1;
         }
 		
-		[btnDOB setTitle:DOB forState:UIControlStateNormal];
+		//[btnDOB setTitle:DOB forState:UIControlStateNormal];
+		txtDOB.text = DOB;
 		txtALB.text = [[NSString alloc] initWithFormat:@"%d",age];
-		[self.btnComDate setTitle:commDate forState:UIControlStateNormal];
+		//[self.btnComDate setTitle:commDate forState:UIControlStateNormal];
+		txtCommDate.text = commDate;
 		
 		occuCode = aaCode;
 		[self getOccLoadExist];
@@ -925,7 +927,32 @@
 	[self.prospectPopover dismissPopoverAnimated:YES];
 }
 
-#pragma memory management
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+	if (alertView.tag==1001 && buttonIndex == 0) {
+        
+        if (useExist) {
+            NSLog(@"will update");
+            [self updateData];
+        }
+        else if (Inserted) {
+            NSLog(@"will update2");
+            [self updateData2];
+        }
+        else {
+            NSLog(@"will insert new");
+            [self insertData];
+        }
+        Saved = YES;
+    }
+    else if (alertView.tag==1002 && buttonIndex == 0) {
+        [self delete2ndLA];
+    }
+    else if (alertView.tag==1003 && buttonIndex == 0) {
+        [self deletePayor];
+    }
+}
+
+#pragma mark - memory management
 
 - (void)viewDidUnload {
 	[self setSegGender:nil];
@@ -933,23 +960,22 @@
 	[self setSegStatus:nil];
 	[self setBtnDOB:nil];
 	[self setTxtALB:nil];
-	[self setBtnComDate:nil];
-	[self setActionRefresh:nil];
 	[self setBtnOccpDesc:nil];
 	[self setTxtOccpLoad:nil];
 	[self setTxtCPA:nil];
 	[self setTxtPA:nil];
 	[self setMyScrollView:nil];
 	[self setTxtName:nil];
+	[self setTxtDOB:nil];
+	[self setTxtCommDate:nil];
 	[super viewDidUnload];
 }
 
-#pragma Action
+#pragma mark - Button Action
 
 - (IBAction)ActionDOB:(id)sender {
 }
-- (IBAction)ActionCommDate:(id)sender {
-}
+
 - (IBAction)ActionProspect:(id)sender {
 	if (_ProspectList == nil) {
         self.ProspectList = [[ListingTbViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -959,5 +985,70 @@
     
     [self.prospectPopover presentPopoverFromRect:[sender frame] inView:self.view
 						permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+}
+- (IBAction)ActionRefresh:(id)sender {
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"dd/MM/yyyy"];
+	commDate = [dateFormatter stringFromDate:[NSDate date]];
+	
+	txtCommDate.text = commDate;
+}
+- (IBAction)ActionDone:(id)sender {
+	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
+	if (txtName.text.length <= 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        //[Field becomeFirstResponder];
+    }
+    else if (smoker.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+	else if (AgeLess) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1005];
+        [alert show];
+    }else if (age > 100) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+	else if (occuCode.length == 0 || btnOccpDesc.titleLabel.text.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+	else if ([txtName.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }
+    else if ([occuCode isEqualToString:@"OCC01975"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+    }else {
+        //prompt save
+        NSString *msg;
+        if (self.requestSINo) {
+            [self checkingExisting2];
+            
+            if (useExist) {
+                msg = @"Confirm changes?";
+            } else {
+                msg = @"Save?";
+            }
+        }
+        else {
+            if (Inserted) {
+                msg = @"Confirm changes?";
+            } else {
+                msg = @"Save?";
+            }
+        }
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self
+											  cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+        [alert setTag:1001];
+        [alert show];
+    }
+	
 }
 @end

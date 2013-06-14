@@ -101,6 +101,7 @@ id temp;
     
     self.planList = [[PlanList alloc] init];
     _planList.delegate = self;
+	self.planList.TradOrEver = @"TRAD";
     planChoose = [[NSString alloc] initWithFormat:@"%@",self.planList.selectedCode];
     [self.btnPlan setTitle:self.planList.selectedDesc forState:UIControlStateNormal];
     temp = btnPlan.titleLabel.text;
@@ -341,6 +342,7 @@ id temp;
     
     if (_planList == nil) {
         self.planList = [[PlanList alloc] init];
+		self.planList.TradOrEver = @"TRAD";
         _planList.delegate = self;
         self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
     }

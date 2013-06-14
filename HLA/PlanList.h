@@ -22,6 +22,7 @@
 @property (retain, nonatomic) NSMutableArray *ListOfCode;
 @property (nonatomic,strong) id <PlanListDelegate> delegate;
 
+@property (nonatomic,strong) id TradOrEver;
 @property (readonly) NSString *selectedCode;
 @property (readonly) NSString *selectedDesc;
 

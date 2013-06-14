@@ -13,7 +13,7 @@
 @end
 
 @implementation PlanList
-@synthesize ListOfPlan,ListOfCode,selectedCode,selectedDesc;
+@synthesize ListOfPlan,ListOfCode,selectedCode,selectedDesc, TradOrEver;
 @synthesize delegate;
 
 -(id)init {
@@ -22,10 +22,10 @@
         /*
         ListOfPlan = [[NSMutableArray alloc] initWithObjects:@"HLA Income Builder", @"HLA Cash Promise", nil ];
         ListOfCode = [[NSMutableArray alloc] initWithObjects:@"HLAIB", @"HLACP", nil ];
-		 */
+		 
 		ListOfPlan = [[NSMutableArray alloc] initWithObjects:@"HLA Cash Promise", nil ];
         ListOfCode = [[NSMutableArray alloc] initWithObjects:@"HLACP", nil ];
-    
+		 */
     }
     return self;
 }
@@ -33,6 +33,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	if([TradOrEver isEqualToString:@"TRAD"]){
+		ListOfPlan = [[NSMutableArray alloc] initWithObjects:@"HLA Cash Promise", nil ];
+		ListOfCode = [[NSMutableArray alloc] initWithObjects:@"HLACP", nil ];
+	}
+	else{
+		ListOfPlan = [[NSMutableArray alloc] initWithObjects:@"HLA EverLife", nil ];
+		ListOfCode = [[NSMutableArray alloc] initWithObjects:@"HLAEL", nil ];
+	}
     NSLog(@"viewPlan!");
 }
 

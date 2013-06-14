@@ -54,9 +54,6 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segStatus;
 @property (weak, nonatomic) IBOutlet UITextField *txtALB;
 - (IBAction)ActionDOB:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *btnComDate;
-- (IBAction)ActionCommDate:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *ActionRefresh;
 @property (weak, nonatomic) IBOutlet UIButton *btnOccpDesc;
 @property (weak, nonatomic) IBOutlet UITextField *txtOccpLoad;
 @property (weak, nonatomic) IBOutlet UITextField *txtCPA;
@@ -64,6 +61,10 @@
 - (IBAction)ActionProspect:(id)sender;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (weak, nonatomic) IBOutlet UITextField *txtName;
+@property (weak, nonatomic) IBOutlet UITextField *txtDOB;
+- (IBAction)ActionRefresh:(id)sender;
+@property (weak, nonatomic) IBOutlet UITextField *txtCommDate;
+- (IBAction)ActionDone:(id)sender;
 
 
 //--request

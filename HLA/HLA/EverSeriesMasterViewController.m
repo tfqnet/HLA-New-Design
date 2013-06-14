@@ -8,6 +8,8 @@
 
 #import "EverSeriesMasterViewController.h"
 #import "EverLAViewController.h"
+#import "BasicAccountViewController.h"
+
 #import "AppDelegate.h"
 
 @interface EverSeriesMasterViewController ()
@@ -16,7 +18,9 @@
 
 @implementation EverSeriesMasterViewController
 @synthesize EverLAController = _EverLAController;
-@synthesize ListOfSubMenu;
+@synthesize BasicAccount = _BasicAccount;
+@synthesize ListOfSubMenu, getAge,getCommDate,getIdPay,getIdProf,getLAIndexNo,getOccpClass;
+@synthesize getOccpCode,getSex,getSmoker, Name2ndLA,NameLA,NamePayor;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -107,6 +111,19 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
 	
+	//--detail text label
+	
+    if (indexPath.row == 0) {
+        if (NameLA.length != 0) {
+            NSString *str = [[NSString alloc] initWithFormat:@"%@",NameLA];
+            str = [str substringToIndex:MIN(20, [str length])];
+            cell.detailTextLabel.text = str;
+        }
+        else {
+            cell.detailTextLabel.text = @"";
+        }
+    }
+	
 	cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:17];
@@ -127,12 +144,63 @@
 		[self addChildViewController:self.EverLAController];
 		[self.RightView addSubview:self.EverLAController.view];
 	}
+	else if (indexPath.row == 3){
+		self.BasicAccount = [self.storyboard instantiateViewControllerWithIdentifier:@"EverBasic"];
+		_BasicAccount.delegate = self;
+		[self addChildViewController:self.BasicAccount];
+		[self.RightView addSubview:self.BasicAccount.view];
+	}
 }
 
-#pragma mark - db
+#pragma mark - data handler
+-(void)getLAName
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT ProspectName FROM prospect_profile WHERE IndexNo= \"%d\"",getLAIndexNo];
+        
+		//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NameLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+				
+            } else {
+                NSLog(@"error access getLAName");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
 
 
-#pragma mark -
+#pragma mark - delegate
+-(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker{
+	getAge = aaAge;
+    getSex = aaSex;
+    getSmoker = aaSmoker;
+    getOccpClass = aaOccpClass;
+    getOccpCode = aaOccpCode;
+    getCommDate = aaCommDate;
+    getIdPay = aaIdPayor;
+    getIdProf = aaIdProfile;
+    getLAIndexNo = aaIndexNo;
+	
+	[self getLAName];
+	[self.myTableView reloadData];
+	if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+}
+
+#pragma mark - memory management
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
