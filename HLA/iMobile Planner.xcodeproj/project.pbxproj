@@ -13,6 +13,9 @@
 		42867E9D175F2E0C001CE661 /* IDType.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867E9C175F2E0C001CE661 /* IDType.plist */; };
 		42867EAF175F75BD001CE661 /* Title.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867EAE175F75BD001CE661 /* Title.plist */; };
 		42867EB3175F75E6001CE661 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867EB2175F75E6001CE661 /* TitleViewController.m */; };
+		42C9E410176B051100B7EFF8 /* emptyCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C9E40E176B051100B7EFF8 /* emptyCheckBox.png */; };
+		42C9E411176B051100B7EFF8 /* tickCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C9E40F176B051100B7EFF8 /* tickCheckBox.png */; };
+		42C9E415176B0CC500B7EFF8 /* DisclosureStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */; };
 		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
 		C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */; };
@@ -264,6 +267,10 @@
 		42867EAE175F75BD001CE661 /* Title.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Title.plist; sourceTree = "<group>"; };
 		42867EB1175F75E6001CE661 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
 		42867EB2175F75E6001CE661 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
+		42C9E40E176B051100B7EFF8 /* emptyCheckBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptyCheckBox.png; sourceTree = "<group>"; };
+		42C9E40F176B051100B7EFF8 /* tickCheckBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickCheckBox.png; sourceTree = "<group>"; };
+		42C9E413176B0CC500B7EFF8 /* DisclosureStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureStatus.h; sourceTree = "<group>"; };
+		42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureStatus.m; sourceTree = "<group>"; };
 		C40059F816BB678000B03041 /* CashPromiseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashPromiseViewController.h; sourceTree = "<group>"; };
 		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
 		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
@@ -1144,6 +1151,8 @@
 		C4FCDDBB16395EDA0065D024 /* bg */ = {
 			isa = PBXGroup;
 			children = (
+				42C9E40E176B051100B7EFF8 /* emptyCheckBox.png */,
+				42C9E40F176B051100B7EFF8 /* tickCheckBox.png */,
 				C4FCDDBD16395F120065D024 /* background12.png */,
 				C4FCDDBE16395F120065D024 /* background13.png */,
 				C4FCDDBF16395F120065D024 /* background14.png */,
@@ -1249,6 +1258,8 @@
 				EFEB7A531766F239004FF3CE /* MainCustomer.m */,
 				EF5B611D173C9ED700751157 /* CustomerProfile.h */,
 				EF5B611E173C9ED800751157 /* CustomerProfile.m */,
+				42C9E413176B0CC500B7EFF8 /* DisclosureStatus.h */,
+				42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */,
 			);
 			name = CFF;
 			sourceTree = "<group>";
@@ -1485,6 +1496,8 @@
 				42867EAF175F75BD001CE661 /* Title.plist in Resources */,
 				EFEB7A4F1766E8C1004FF3CE /* homeScreenCFF.png in Resources */,
 				EFEB7A511766E8CC004FF3CE /* homeScreenEApp.png in Resources */,
+				42C9E410176B051100B7EFF8 /* emptyCheckBox.png in Resources */,
+				42C9E411176B051100B7EFF8 /* tickCheckBox.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1595,6 +1608,7 @@
 				C4E9F3D6176878E90070EA8A /* BasicAccountViewController.m in Sources */,
 				C4E9F3D9176879190070EA8A /* EverRiderViewController.m in Sources */,
 				C4E9F3DC17687D4A0070EA8A /* EverLAViewController.m in Sources */,
+				42C9E415176B0CC500B7EFF8 /* DisclosureStatus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
