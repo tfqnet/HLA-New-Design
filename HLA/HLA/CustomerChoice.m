@@ -33,6 +33,7 @@
     checked = NO;
 	// Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+     
 }
 
 - (void)didReceiveMemoryWarning

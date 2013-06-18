@@ -32,6 +32,7 @@
 	// Do any additional setup after loading the view.
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     self.navigationItem.title = @"Disclosure";
+     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 }
 
 - (void)didReceiveMemoryWarning

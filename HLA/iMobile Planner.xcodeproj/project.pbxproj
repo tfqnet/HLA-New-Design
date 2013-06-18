@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		423E8BAD176FFEF400E60C20 /* CustomerPersonalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */; };
+		423E8BB1176FFF2800E60C20 /* FinancialAnalysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */; };
+		423E8BB417700ED000E60C20 /* Summary.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB317700ED000E60C20 /* Summary.m */; };
+		423E8BB717700EF900E60C20 /* NomineesTrustees.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB617700EF900E60C20 /* NomineesTrustees.m */; };
+		423E8BBA17700F1700E60C20 /* HealthQuestionnaire.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */; };
+		423E8BBD17700FF200E60C20 /* Declaration.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BBC17700FF200E60C20 /* Declaration.m */; };
 		42500B601740D66D00AEEDE3 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */; };
 		42500B621740D67A00AEEDE3 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B611740D67A00AEEDE3 /* hladb.sqlite */; };
 		42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867E99175F2D93001CE661 /* IDTypeViewController.m */; };
@@ -260,6 +266,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		423E8BAB176FFEF400E60C20 /* CustomerPersonalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerPersonalData.h; sourceTree = "<group>"; };
+		423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerPersonalData.m; sourceTree = "<group>"; };
+		423E8BAF176FFF2800E60C20 /* FinancialAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinancialAnalysis.h; sourceTree = "<group>"; };
+		423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinancialAnalysis.m; sourceTree = "<group>"; };
+		423E8BB217700ECF00E60C20 /* Summary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Summary.h; sourceTree = "<group>"; };
+		423E8BB317700ED000E60C20 /* Summary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Summary.m; sourceTree = "<group>"; };
+		423E8BB517700EF900E60C20 /* NomineesTrustees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NomineesTrustees.h; sourceTree = "<group>"; };
+		423E8BB617700EF900E60C20 /* NomineesTrustees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NomineesTrustees.m; sourceTree = "<group>"; };
+		423E8BB817700F1700E60C20 /* HealthQuestionnaire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestionnaire.h; sourceTree = "<group>"; };
+		423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestionnaire.m; sourceTree = "<group>"; };
+		423E8BBB17700FF200E60C20 /* Declaration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Declaration.h; sourceTree = "<group>"; };
+		423E8BBC17700FF200E60C20 /* Declaration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declaration.m; sourceTree = "<group>"; };
 		42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		42500B611740D67A00AEEDE3 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		42867E98175F2D93001CE661 /* IDTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDTypeViewController.h; sourceTree = "<group>"; };
@@ -1250,6 +1268,14 @@
 				EFEB7A6A1766FF55004FF3CE /* MaineApp.m */,
 				EF5B6117173B577C00751157 /* eSubmission.h */,
 				EF5B6118173B577C00751157 /* eSubmission.m */,
+				423E8BB217700ECF00E60C20 /* Summary.h */,
+				423E8BB317700ED000E60C20 /* Summary.m */,
+				423E8BB517700EF900E60C20 /* NomineesTrustees.h */,
+				423E8BB617700EF900E60C20 /* NomineesTrustees.m */,
+				423E8BB817700F1700E60C20 /* HealthQuestionnaire.h */,
+				423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */,
+				423E8BBB17700FF200E60C20 /* Declaration.h */,
+				423E8BBC17700FF200E60C20 /* Declaration.m */,
 			);
 			name = eApp;
 			sourceTree = "<group>";
@@ -1265,6 +1291,10 @@
 				42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */,
 				42C9E422176B826200B7EFF8 /* CustomerChoice.h */,
 				42C9E423176B826200B7EFF8 /* CustomerChoice.m */,
+				423E8BAB176FFEF400E60C20 /* CustomerPersonalData.h */,
+				423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */,
+				423E8BAF176FFF2800E60C20 /* FinancialAnalysis.h */,
+				423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */,
 			);
 			name = CFF;
 			sourceTree = "<group>";
@@ -1615,6 +1645,12 @@
 				C4E9F3DC17687D4A0070EA8A /* EverLAViewController.m in Sources */,
 				42C9E415176B0CC500B7EFF8 /* DisclosureStatus.m in Sources */,
 				42C9E424176B826200B7EFF8 /* CustomerChoice.m in Sources */,
+				423E8BAD176FFEF400E60C20 /* CustomerPersonalData.m in Sources */,
+				423E8BB1176FFF2800E60C20 /* FinancialAnalysis.m in Sources */,
+				423E8BB417700ED000E60C20 /* Summary.m in Sources */,
+				423E8BB717700EF900E60C20 /* NomineesTrustees.m in Sources */,
+				423E8BBA17700F1700E60C20 /* HealthQuestionnaire.m in Sources */,
+				423E8BBD17700FF200E60C20 /* Declaration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
