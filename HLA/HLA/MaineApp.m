@@ -33,7 +33,8 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
+//    eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
+    eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppsNavi"];
     eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:eAppListing];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];

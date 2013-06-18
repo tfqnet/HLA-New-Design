@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "SIDate.h"
+#import "eAppsListing.h"
 
 
 @interface eSubmission : UIViewController <UITableViewDelegate,UITableViewDataSource,SIDateDelegate>{
     SIDate *_SIDate;
     UIPopoverController *_SIDatePopover;
+    eAppsListing *_eAppsVC;
 }
 
 @property (strong, nonatomic) IBOutlet UILabel *idTypeLabel;
@@ -26,8 +28,9 @@
 @property (strong, nonatomic) NSMutableArray *clientData;
 @property (nonatomic, retain) SIDate *SIDate;
 @property (nonatomic, retain) UIPopoverController *SIDatePopover;
+@property (nonatomic, retain) eAppsListing *eAppsVC;
 
 - (IBAction)btnDatePressed:(id)sender;
-
+- (IBAction)addNew:(id)sender;
 
 @end

@@ -243,6 +243,7 @@
 		EF5B611C173C96A000751157 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */; };
 		EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B611E173C9ED800751157 /* CustomerProfile.m */; };
 		EF5B612A1740B70C00751157 /* SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B61291740B70C00751157 /* SIUtilities.m */; };
+		EF906B2517703EAE00D5F3E3 /* eAppsListing.m in Sources */ = {isa = PBXBuildFile; fileRef = EF906B2417703EAE00D5F3E3 /* eAppsListing.m */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
@@ -597,6 +598,8 @@
 		EF5B611E173C9ED800751157 /* CustomerProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerProfile.m; sourceTree = "<group>"; };
 		EF5B61281740B70C00751157 /* SIUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIUtilities.h; sourceTree = "<group>"; };
 		EF5B61291740B70C00751157 /* SIUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIUtilities.m; sourceTree = "<group>"; };
+		EF906B2317703EAE00D5F3E3 /* eAppsListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eAppsListing.h; sourceTree = "<group>"; };
+		EF906B2417703EAE00D5F3E3 /* eAppsListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eAppsListing.m; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
 		EFB3D5861685604400A7B517 /* PayorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayorHandler.m; sourceTree = "<group>"; };
@@ -1268,6 +1271,8 @@
 				EFEB7A6A1766FF55004FF3CE /* MaineApp.m */,
 				EF5B6117173B577C00751157 /* eSubmission.h */,
 				EF5B6118173B577C00751157 /* eSubmission.m */,
+				EF906B2317703EAE00D5F3E3 /* eAppsListing.h */,
+				EF906B2417703EAE00D5F3E3 /* eAppsListing.m */,
 				423E8BB217700ECF00E60C20 /* Summary.h */,
 				423E8BB317700ED000E60C20 /* Summary.m */,
 				423E8BB517700EF900E60C20 /* NomineesTrustees.h */,
@@ -1651,6 +1656,7 @@
 				423E8BB717700EF900E60C20 /* NomineesTrustees.m in Sources */,
 				423E8BBA17700F1700E60C20 /* HealthQuestionnaire.m in Sources */,
 				423E8BBD17700FF200E60C20 /* Declaration.m in Sources */,
+				EF906B2517703EAE00D5F3E3 /* eAppsListing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

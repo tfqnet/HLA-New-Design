@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--First Time View Controller-->
@@ -4074,7 +4074,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecA-4h-76Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8684" y="4181"/>
+            <point key="canvasLocation" x="9914" y="4181"/>
         </scene>
         <!--Customer Personal Data-->
         <scene sceneID="Xhf-Wl-maq">
@@ -6112,7 +6112,7 @@ HLA.I receive </string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YkT-KR-gkL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-212" y="4419"/>
+            <point key="canvasLocation" x="-2948" y="5579"/>
         </scene>
         <!--Payor View Controller-->
         <scene sceneID="U3N-Qo-18y">
@@ -6673,7 +6673,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hxl-iZ-heA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1758" y="4443"/>
+            <point key="canvasLocation" x="2988" y="4443"/>
         </scene>
         <!--Basic Account View Controller-->
         <scene sceneID="5vl-MZ-wBN">
@@ -6981,7 +6981,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ld-Wq-ra0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3662" y="4443"/>
+            <point key="canvasLocation" x="4892" y="4443"/>
         </scene>
         <!--EverLA View Controller - EverLA-->
         <scene sceneID="xOZ-6c-b8D">
@@ -7248,7 +7248,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yXy-DL-3SJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2843" y="4443"/>
+            <point key="canvasLocation" x="4073" y="4443"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="0fx-QV-Zso">
@@ -7359,31 +7359,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-1346" y="3237"/>
         </scene>
-        <!--E Submission-->
+        <!--E Submission - e-Application-->
         <scene sceneID="h9a-tK-7pe">
             <objects>
                 <viewController storyboardIdentifier="eSubmission" id="1xB-tv-BNE" customClass="eSubmission" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zky-qH-Zug">
-                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                        <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" id="Czl-ff-q83">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                <items>
-                                    <navigationItem id="vhl-lG-4E9"/>
-                                </items>
-                            </navigationBar>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="e-Application" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oKz-ra-thk">
-                                <rect key="frame" x="437" y="0.0" width="151" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
-                                <color key="textColor" red="0.1960784314" green="0.30980392159999998" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="UEd-Nm-3Lp">
-                                <rect key="frame" x="0.0" y="291" width="1015" height="457"/>
+                                <rect key="frame" x="0.0" y="291" width="1015" height="413"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <sections/>
                                 <connections>
@@ -7531,6 +7516,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
+                    <navigationItem key="navigationItem" title="e-Application" id="u1R-gh-tfb">
+                        <barButtonItem key="rightBarButtonItem" title="Add New" id="uU4-Xt-u5o">
+                            <connections>
+                                <action selector="addNew:" destination="1xB-tv-BNE" id="Oi8-pR-JRy"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="btnDate" destination="YCL-JH-5Mx" id="ugK-xz-FLG"/>
@@ -7544,7 +7536,90 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4gC-Wb-B7t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1346" y="4419"/>
+            <point key="canvasLocation" x="-1732" y="4635"/>
+        </scene>
+        <!--E Apps Listing-->
+        <scene sceneID="zV9-8R-0Kf">
+            <objects>
+                <viewController storyboardIdentifier="eAppList" id="oFB-TJ-hzB" customClass="eAppsListing" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0qP-OP-6tt">
+                        <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="aXj-Tr-GJS">
+                                <rect key="frame" x="0.0" y="51" width="1015" height="653"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="oFB-TJ-hzB" id="q8y-xJ-xBh"/>
+                                    <outlet property="delegate" destination="oFB-TJ-hzB" id="26R-nB-J65"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SI No" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="QzT-EE-ue6">
+                                <rect key="frame" x="0.0" y="0.0" width="157" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="IxT-tm-cYg">
+                                <rect key="frame" x="157" y="0.0" width="159" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="DZc-oO-4Ba">
+                                <rect key="frame" x="316" y="0.0" width="181" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="ZGz-YH-kOc">
+                                <rect key="frame" x="497" y="0.0" width="178" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="aLH-Qd-eKz">
+                                <rect key="frame" x="675" y="0.0" width="163" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Plan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="6UH-ig-BE9">
+                                <rect key="frame" x="838" y="0.0" width="163" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem title="Item" id="hID-nI-K4p"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="bvZ-qG-r5T"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="SILabel" destination="QzT-EE-ue6" id="kHG-4c-ibL"/>
+                        <outlet property="dateLabel" destination="IxT-tm-cYg" id="hnC-C6-xah"/>
+                        <outlet property="idNoLabel" destination="ZGz-YH-kOc" id="vk1-wc-1jM"/>
+                        <outlet property="idTypeLabel" destination="DZc-oO-4Ba" id="dP7-0q-XuG"/>
+                        <outlet property="myTableView" destination="aXj-Tr-GJS" id="y56-9e-61d"/>
+                        <outlet property="nameLabel" destination="aLH-Qd-eKz" id="eBH-og-EdW"/>
+                        <outlet property="planLabel" destination="6UH-ig-BE9" id="7Eh-na-ljP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fgE-Jc-bzq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-648" y="4635"/>
         </scene>
         <!--Premium View Controller-->
         <scene sceneID="qrJ-bT-hQ0">
@@ -8006,7 +8081,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I8H-JL-739" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6240" y="5338"/>
+            <point key="canvasLocation" x="7470" y="5338"/>
         </scene>
         <!--Declaration-->
         <scene sceneID="Ajy-aP-Y8R">
@@ -8456,7 +8531,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CsC-RM-mAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6222" y="4472"/>
+            <point key="canvasLocation" x="7452" y="4472"/>
         </scene>
         <!--Summary-->
         <scene sceneID="GaH-wI-G79">
@@ -8761,6 +8836,24 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jG2-k5-sfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6247" y="3613"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="t7M-Eh-YEJ">
+            <objects>
+                <navigationController storyboardIdentifier="eAppsNavi" id="YlK-WS-a9f" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ige-oI-J0T">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="1xB-tv-BNE" kind="relationship" relationship="rootViewController" id="u1p-km-mjM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Cr-aa-Oqf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2962" y="4635"/>
         </scene>
     </scenes>
     <resources>
@@ -9453,36 +9546,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         </class>
         <class className="Summary" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/Summary.h"/>
-            <relationships>
-                <relationship kind="action" name="checboxButton10:"/>
-                <relationship kind="action" name="checboxButton11:"/>
-                <relationship kind="action" name="checboxButton12:"/>
-                <relationship kind="action" name="checboxButton13:"/>
-                <relationship kind="action" name="checboxButton7:"/>
-                <relationship kind="action" name="checboxButton9:"/>
-                <relationship kind="action" name="checkboxButton10:"/>
-                <relationship kind="action" name="checkboxButton11:"/>
-                <relationship kind="action" name="checkboxButton12:"/>
-                <relationship kind="action" name="checkboxButton13:"/>
-                <relationship kind="action" name="checkboxButton14:"/>
-                <relationship kind="action" name="checkboxButton15:"/>
-                <relationship kind="action" name="checkboxButton5:"/>
-                <relationship kind="action" name="checkboxButton6:"/>
-                <relationship kind="action" name="checkboxButton7:"/>
-                <relationship kind="action" name="checkboxButton8:"/>
-                <relationship kind="action" name="checkboxButton9:"/>
-                <relationship kind="outlet" name="checkButton10" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton11" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton12" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton13" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton14" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton15" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton5" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton6" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton7" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton8" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton9" candidateClass="UIButton"/>
-            </relationships>
         </class>
         <class className="UserProfile" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UserProfile.h"/>
@@ -9517,6 +9580,18 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <class className="eAppTabBarController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppTabBarController.h"/>
         </class>
+        <class className="eAppsListing" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppsListing.h"/>
+            <relationships>
+                <relationship kind="outlet" name="SILabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="dateLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="idNoLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="idTypeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="planLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
         <class className="eBrochureListingViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/eBrochureListingViewController.h"/>
             <relationships>
@@ -9532,6 +9607,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <class className="eSubmission" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/eSubmission.h"/>
             <relationships>
+                <relationship kind="action" name="addNew:"/>
                 <relationship kind="action" name="btnDatePressed:"/>
                 <relationship kind="outlet" name="btnDate" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="idNoLabel" candidateClass="UILabel"/>
@@ -9566,10 +9642,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="9Zp-aJ-QIM"/>
-        <segue reference="EHx-6g-i8u"/>
         <segue reference="Xpc-NA-xAc"/>
-        <segue reference="VyI-kc-JYq"/>
+        <segue reference="fwZ-aE-Fhr"/>
         <segue reference="IME-3U-quu"/>
+        <segue reference="VyI-kc-JYq"/>
+        <segue reference="9Zp-aJ-QIM"/>
     </inferredMetricsTieBreakers>
 </document>

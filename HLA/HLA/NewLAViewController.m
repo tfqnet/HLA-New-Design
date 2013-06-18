@@ -73,6 +73,7 @@ id dobtemp;
     useExist = NO;
     AgeChanged = NO;
     JobChanged = NO;
+    self.btnOccp.titleLabel.textColor = [UIColor darkGrayColor];
     
     getSINo = [self.requestSINo description];
     NSLog(@"LA-SINo: %@",getSINo);
