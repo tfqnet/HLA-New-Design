@@ -14,7 +14,7 @@
 
 @implementation RiderPTypeTbViewController
 @synthesize ptype,seqNo,desc,requestSINo,selectedCode,selectedDesc,selectedSeqNo,SINoPlan,age,Occp;
-@synthesize selectedAge,selectedOccp;
+@synthesize selectedAge,selectedOccp, TradOrEver;
 @synthesize delegate = _delegate;
 
 -(id)initWithString:(NSString *)stringCode {
@@ -63,10 +63,26 @@
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode "
-                              "FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
-                              "LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
+				NSString *querySQL;
+		querySQL = [NSString stringWithFormat:
+					@"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode "
+					"FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
+					"LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
+		/*
+		NSString *querySQL;
+		if ([TradOrEver isEqualToString:@"TRAD"]) {
+			querySQL = [NSString stringWithFormat:
+								  @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode "
+								  "FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
+								  "LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
+		}
+		else{
+			querySQL = [NSString stringWithFormat:
+						@"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode "
+						"FROM UL_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
+						"LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
+		}
+        */
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {

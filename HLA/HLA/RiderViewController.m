@@ -126,6 +126,7 @@ BOOL Edit = FALSE;
     
     if (requestSINo) {
         self.PTypeList = [[RiderPTypeTbViewController alloc]initWithString:getSINo];
+		self.PTypeList.TradOrEver = @"TRAD";
         _PTypeList.delegate = self;
         pTypeCode = [[NSString alloc] initWithFormat:@"%@",self.PTypeList.selectedCode];
         PTypeSeq = [self.PTypeList.selectedSeqNo intValue];
@@ -2380,6 +2381,7 @@ BOOL Edit = FALSE;
     if(_PTypeList == nil){
         
 		self.PTypeList = [[RiderPTypeTbViewController alloc] initWithString:getSINo];
+		self.PTypeList.TradOrEver = @"TRAD";
         _PTypeList.delegate = self;
         self.pTypePopOver = [[UIPopoverController alloc] initWithContentViewController:_PTypeList];
 	}

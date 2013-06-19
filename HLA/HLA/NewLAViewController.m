@@ -94,6 +94,10 @@ id dobtemp;
             [self getSavedField];
             NSLog(@"will use existing data");
         }
+		
+		if(age < 17){
+			smokerSegment.enabled = FALSE;
+		}
     }
     else {
         NSLog(@"SINo not exist!");
@@ -103,9 +107,7 @@ id dobtemp;
         [self tempView];
     }
 	
-	if(age < 17){
-		smokerSegment.enabled = FALSE;
-	}
+	
 	
 	[self checking2ndLA];
 	

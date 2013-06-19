@@ -26,8 +26,8 @@
 @synthesize commDate,occuClass,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,occPA,headerTitle;
 @synthesize getSINo,btnDOB, btnOccpDesc;
-@synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getTempHL,getTempHLTerm,MOP,yearlyIncome;
-@synthesize termCover,planCode,arrExistRiderCode,arrExistPlanChoice;
+@synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getHLPct,getHLPctTerm;
+@synthesize termCover,planCode,arrExistRiderCode,arrExistPlanChoice,getPrem;
 @synthesize prospectPopover = _prospectPopover;
 @synthesize idPayor,idProfile,idProfile2,lastIdPayor,lastIdProfile,planChoose,ridCode,atcRidCode,atcPlanChoice;
 @synthesize basicSINo,requestCommDate,requestIndexNo,requestLastIDPay,requestLastIDProf,requestSex,requestSmoker, strPA_CPA,payorAge;
@@ -60,8 +60,105 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
-    
 	
+	getSINo = [self.requestSINo description];
+    
+	if (getSINo.length != 0) {
+		[self checkingExisting];
+        [self checkingExistingSI];
+	
+		if (basicSINo.length != 0) {
+            [self getExistingBasic];
+            [self getTerm];
+            [self toogleExistingBasic];
+        }
+		
+		if (SINo.length != 0) {
+            [self getProspectData];
+            [self getSavedField];
+            NSLog(@"will use existing data");
+        }
+		if(age < 17){
+			segSmoker.enabled = FALSE;
+		}
+	}
+	else{
+		
+	}
+	
+	if (requestIndexNo != 0) {
+        [self tempView];
+    }
+	
+
+	
+	[self checking2ndLA];
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	if (CustCode2.length != 0) {
+		/*
+		SecondLAViewController *ccc = [[SecondLAViewController alloc] init ];
+		ccc.requestLAIndexNo = requestIndexNo;
+		ccc.requestCommDate = commDate;
+		ccc.requestSINo = getSINo;
+		ccc.LAView = @"1";
+		ccc.delegate = (SIMenuViewController *)_delegate;
+		
+		UIView *iii = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0) ];
+		[iii addSubview:ccc.view];
+		
+		if ([ccc.Change isEqualToString:@"yes"]) {
+			NSLog(@"prospect info sync into second life assured");
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information(2nd life Assured) will synchronize to this SI."
+														   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+		}
+		
+		ccc.Change = @"No";
+		ccc = Nil;
+		iii = Nil;
+		 */
+	}
+	
+	[self checkingPayor];
+	
+	if (payorSINo.length != 0) {
+		/*
+		PayorViewController *ggg = [[PayorViewController alloc] init ];
+		ggg.requestLAIndexNo = requestIndexNo;
+		ggg.requestLAAge = payorAge;
+		ggg.requestCommDate = commDate;
+		ggg.requestSINo = getSINo;
+		ggg.LAView = @"1";
+		ggg.delegate = (SIMenuViewController *)_delegate;
+		
+		UIView *iii = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0) ];
+		[iii addSubview:ggg.view];
+		
+		if ([ggg.Change isEqualToString:@"yes"]) {
+			NSLog(@"prospect info sync into payor");
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Prospect's information(Payor) will synchronize to this SI."
+														   delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+		}
+		
+		ggg.Change = @"no";
+		ggg = Nil;
+		iii = Nil;
+		 */
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -70,8 +167,288 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Handle KeyboardShow
+
+-(void)keyboardDidShow:(NSNotificationCenter *)notification
+{
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 960-264);
+    self.myScrollView.contentSize = CGSizeMake(768, 960);
+    
+    CGRect textFieldRect = [activeField frame];
+    textFieldRect.origin.y += 10;
+    [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
+    
+}
+
+-(void)keyboardDidHide:(NSNotificationCenter *)notification
+{
+    self.myScrollView.frame = CGRectMake(0, 44, 768, 960);
+}
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    activeField = textField;
+    return YES;
+    Saved = NO;
+}
+
+
 
 #pragma mark - handle Data
+
+
+-(void)toogleExistingBasic
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE UL_Details SET PolicyTerm=\"%d\", UpdatedAt=%@ "
+							  "WHERE SINo=\"%@\"",termCover,  @"datetime(\"now\", \"+8 hour\")", getSINo];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"termCover update!");
+            }
+            else {
+                NSLog(@"termCover update Failed!");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    [formatter setMaximumFractionDigits:2];
+    NSString *sumAss = [formatter stringFromNumber:[NSNumber numberWithDouble:getSumAssured]];
+    sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
+	
+	[_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL
+		andBasicHLTerm:getHLTerm andBasicHLPct:getHL andBasicHLPctTerm:getHLTerm andPlanCode:planCode];
+
+    AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+    zzz.SICompleted = YES;
+}
+
+-(void)checking2ndLA
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, "
+							  "b.id FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
+							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",getSINo];
+        
+		//        NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                CustCode2 = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                idProfile2 = sqlite3_column_int(statement, 9);
+            } else {
+                NSLog(@"error access Trad_LAPayor");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)tempView
+{
+    IndexNo = requestIndexNo;
+    lastIdPayor = requestLastIDPay;
+    lastIdProfile = requestLastIDProf;
+    [self getProspectData];
+    
+	txtName.text = NamePP;
+    DOB = DOBPP;
+    commDate = [self.requestCommDate description];
+    [self calculateAge];
+    [btnDOB setTitle:DOBPP forState:UIControlStateNormal];
+	txtALB.text = [[NSString alloc] initWithFormat:@"%d",age];
+	txtCommDate.text = commDate;
+    
+    sex = [self.requestSex description];
+    if ([sex isEqualToString:@"M"]) {
+		segGender.selectedSegmentIndex = 0;
+    } else {
+		segGender.selectedSegmentIndex = 1;
+    }
+    NSLog(@"sex:%@",sex);
+    
+    smoker = [self.requestSmoker description];
+    if ([smoker isEqualToString:@"Y"]) {
+		segSmoker.selectedSegmentIndex = 0;
+    } else {
+		segSmoker.selectedSegmentIndex = 1;
+    }
+    NSLog(@"smoker:%@",smoker);
+    
+    occuCode = OccpCodePP;
+    [self getOccLoadExist];
+    [btnOccpDesc setTitle:occuDesc forState:UIControlStateNormal];
+	txtOccpLoad.text = [NSString stringWithFormat:@"%@",occLoading];
+    
+    if (occCPA_PA == 0) {
+		txtCPA.text = @"D";
+    } else {
+		txtCPA.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+    }
+    
+    if (occPA == 0) {
+		txtPA.text = @"D";
+    } else {
+		txtPA.text = [NSString stringWithFormat:@"%d",occPA];
+    }
+    [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+    Inserted = YES;
+}
+
+
+-(void)getSavedField
+{
+    BOOL valid = TRUE;
+    if (![NamePP isEqualToString:clientName]) {
+        valid = FALSE;
+    }
+    
+    if (![GenderPP isEqualToString:sex]) {
+        valid = FALSE;
+    }
+    
+    if (![DOB isEqualToString:DOBPP]) {
+        valid = FALSE;
+        AgeChanged = YES;
+    }
+    
+    if (![occuCode isEqualToString:OccpCodePP]) {
+        valid = FALSE;
+        JobChanged = YES;
+    }
+    
+    if (valid) {
+        
+		txtName.text = clientName;
+        [btnDOB setTitle:DOB forState:UIControlStateNormal];
+		txtALB.text = [[NSString alloc] initWithFormat:@"%d",age];
+		self.txtCommDate.text =  commDate;
+        
+        if ([sex isEqualToString:@"M"]) {
+            segGender.selectedSegmentIndex = 0;
+        } else {
+            segGender.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",sex);
+        
+        if ([smoker isEqualToString:@"Y"]) {
+			segSmoker.selectedSegmentIndex = 0;
+        } else {
+			segSmoker.selectedSegmentIndex = 1;
+        }
+        NSLog(@"smoker:%@",smoker);
+        
+        [self getOccLoadExist];
+        [btnOccpDesc setTitle:occuDesc forState:UIControlStateNormal];
+		txtOccpLoad.text = [NSString stringWithFormat:@"%@",occLoading];
+        
+        if (occCPA_PA == 0) {
+			txtCPA.text = @"D";
+        } else {
+			txtCPA.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occPA == 0) {
+			txtPA.text = @"D";
+        } else {
+			txtPA.text = [NSString stringWithFormat:@"%d",occPA];
+        }
+        
+        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass
+					  andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+    }
+    else {
+        
+		txtName.text = NamePP;
+        sex = GenderPP;
+        
+        if ([GenderPP isEqualToString:@"M"]) {
+			segGender.selectedSegmentIndex = 0;
+        } else {
+			segGender.selectedSegmentIndex = 1;
+        }
+        NSLog(@"sex:%@",GenderPP);
+        
+        if ([smoker isEqualToString:@"Y"]) {
+			segSmoker.selectedSegmentIndex = 0;
+        } else if ([smoker isEqualToString:@"N"]) {
+			segSmoker.selectedSegmentIndex = 1;
+        }
+        NSLog(@"smoker:%@",smoker);
+        
+        DOB = DOBPP;
+        [self calculateAge];
+		
+        [btnDOB setTitle:DOB forState:UIControlStateNormal];
+		txtALB.text = [[NSString alloc] initWithFormat:@"%d",age];
+        txtCommDate.text= commDate;
+        
+        occuCode = OccpCodePP;
+        [self getOccLoadExist];
+        [btnOccpDesc setTitle:occuDesc forState:UIControlStateNormal];
+		txtOccpLoad.text = [NSString stringWithFormat:@"%@",occLoading];
+        
+        if (occCPA_PA == 0) {
+			txtCPA.text = @"D";
+        } else {
+			txtCPA.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+        }
+        
+        if (occPA == 0) {
+			txtPA.text = @"D";
+        } else {
+			txtPA.text = [NSString stringWithFormat:@"%d",occPA];
+        }
+		
+        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+        
+        if (age > 100) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Age Last Birthday must be less than or equal to 100 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        }
+        else {
+			
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Prospect's information will synchronize to this SI." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert setTag:1004];
+            [alert show];
+        }
+    }
+    
+    if (age < 10) {
+        [self checkingPayor];
+        if (payorSINo.length == 0) {
+            
+            AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+            zzz.ExistPayor = NO;
+        }
+    }
+}
+
+
+
+-(void) getTerm
+{
+	int maxTerm  =  100;
+    termCover = maxTerm - age;
+}
+
+
 -(void)getOccLoadExist
 {
     sqlite3_stmt *statement;
@@ -161,7 +538,9 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-							  @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", DateCreated = \"%@\"  WHERE id=\"%d\"",
+							  @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", "
+							  "ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", "
+							  "DateCreated = \"%@\"  WHERE id=\"%d\"",
                               txtName.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,idProfile];
 		//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -259,7 +638,9 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", DateCreated = \"%@\"  WHERE id=\"%d\"",
+                              @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", "
+							  "ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", "
+							  "DateCreated = \"%@\"  WHERE id=\"%d\"",
                               txtName.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,lastIdProfile];
 		//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -295,7 +676,7 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
 							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, "
-							  "b.id, b.IndexNo, a.rowid FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
+							  "b.id, b.IndexNo, a.rowid FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
 							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -317,7 +698,7 @@
                 NSLog(@"age:%d, indexNo:%d, idPayor:%d, idProfile:%d",age,IndexNo,idPayor,idProfile);
 				
             } else {
-                NSLog(@"error access tbl_SI_Trad_LAPayor");
+                NSLog(@"error access UL_LAPayor");
                 useExist = NO;
             }
             sqlite3_finalize(statement);
@@ -339,7 +720,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"SELECT a.SINo, b.id FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
+                              @"SELECT a.SINo, b.id FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
+							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
         
 		//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -419,8 +801,8 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT SINo, PlanCode, PolicyTerm, BasicSA, PremiumPaymentOption, CashDividend, YearlyIncome, "
-							  "AdvanceYearlyIncome, HL1KSA, HL1KSATerm, TempHL1KSA, TempHL1KSATerm FROM UL_Details "
+							  @"SELECT SINo, planCode, CovPeriod, BasicSA, ATPrem "
+							  "HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm FROM UL_Details "
 							  "WHERE SINo=\"%@\"",getSINo];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -430,19 +812,16 @@
                 planChoose = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
                 getPolicyTerm = sqlite3_column_int(statement, 2);
                 getSumAssured = sqlite3_column_double(statement, 3);
-                MOP = sqlite3_column_int(statement, 4);
-                yearlyIncome = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
-                
-                const char *getHL2 = (const char*)sqlite3_column_text(statement, 8);
+				getPrem = sqlite3_column_double(statement, 4);
+                const char *getHL2 = (const char*)sqlite3_column_text(statement, 5);
                 getHL = getHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getHL2];
-                getHLTerm = sqlite3_column_int(statement, 9);
-                
-                const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 10);
-                getTempHL = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
-                getTempHLTerm = sqlite3_column_int(statement, 11);
+                getHLTerm = sqlite3_column_int(statement, 6);
+                const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 7);
+                getHLPct = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
+                getHLPctTerm = sqlite3_column_int(statement, 8);
                 
             } else {
-                NSLog(@"error access Trad_Details");
+                NSLog(@"error access UL_Details");
             }
             sqlite3_finalize(statement);
         }
@@ -471,32 +850,6 @@
                 
             } else {
                 NSLog(@"error access checkingPayor");
-            }
-            sqlite3_finalize(statement);
-        }
-        sqlite3_close(contactDB);
-    }
-}
-
--(void)checking2ndLA
-{
-    sqlite3_stmt *statement;
-    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id FROM"
-							  "UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\""
-							  "AND a.Sequence=2",getSINo];
-        
-		//        NSLog(@"%@",querySQL);
-        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-        {
-            if (sqlite3_step(statement) == SQLITE_ROW)
-            {
-                CustCode2 = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
-                idProfile2 = sqlite3_column_int(statement, 9);
-            } else {
-                NSLog(@"error access Trad_LAPayor");
             }
             sqlite3_finalize(statement);
         }
@@ -949,6 +1302,27 @@
     }
     else if (alertView.tag==1003 && buttonIndex == 0) {
         [self deletePayor];
+    }
+	else if (alertView.tag==1004 && buttonIndex == 0) {
+		if (smoker.length == 0) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+        }
+		else if ([OccpCodePP isEqualToString:@"OCC01975"]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+			
+        }
+		else if (age > 100){
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+			alert = Nil;
+		}
+		else {
+		}
+	}
+	else if (alertView.tag == 1007 && buttonIndex == 0) {
+        [self deleteRider];
     }
 }
 

@@ -12,7 +12,9 @@
 
 @class EverBasicPlanViewController;
 @protocol EverBasicPlanViewControllerDelegate
--(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance andBasicPlan:(NSString *)aabasicPlan;
+-(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
+		andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA
+		andPlanCode:(NSString *)aaPlanCode andBasicPrem:(double)aaBasicPrem;
 -(void)RiderAdded;
 -(void) BasicSARevised:(NSString *)aabasicSA;
 @end
@@ -24,6 +26,7 @@
     UITextField *activeField;
     UIPopoverController *_planPopover;
     PlanList *_planList;
+	    BOOL useExist;
 	id <EverBasicPlanViewControllerDelegate> _delegate;
 }
 
@@ -49,7 +52,81 @@
 @property (weak, nonatomic) IBOutlet UILabel *label2;
 @property (weak, nonatomic) IBOutlet UILabel *labelComm;
 @property (weak, nonatomic) IBOutlet UILabel *labelFor;
+
+//--request from previous
+@property (nonatomic, assign,readwrite) int requestAge;
+@property (nonatomic,strong) id requestOccpCode;
+@property (nonatomic, assign,readwrite) int requestOccpClass;
+@property (nonatomic,strong) id requestSINo;
+@property (nonatomic, assign,readwrite) int requestIDProf;
+@property (nonatomic, assign,readwrite) int requestIDPay;
+@property (nonatomic, assign,readwrite) int requestIndexPay;
+@property (nonatomic,strong) id requestSmokerPay;
+@property (nonatomic,strong) id requestSexPay;
+@property (nonatomic,strong) id requestDOBPay;
+@property (nonatomic, assign,readwrite) int requestAgePay;
+@property (nonatomic,strong) id requestOccpPay;
+@property (nonatomic, assign,readwrite) int requestIndex2ndLA;
+@property (nonatomic,strong) id requestSmoker2ndLA;
+@property (nonatomic,strong) id requestSex2ndLA;
+@property (nonatomic,strong) id requestDOB2ndLA;
+@property (nonatomic, assign,readwrite) int requestAge2ndLA;
+@property (nonatomic,strong) id requestOccp2ndLA;
+
+@property (nonatomic, assign,readwrite) int ageClient;
+@property(nonatomic , retain) NSString *OccpCode;
+@property (nonatomic, assign,readwrite) int OccpClass;
+@property (nonatomic, copy) NSString *SINo;
+@property (nonatomic, assign,readwrite) int idPay;
+@property (nonatomic, assign,readwrite) int idProf;
+@property (nonatomic, assign,readwrite) int PayorIndexNo;
+@property (nonatomic, copy) NSString *PayorSmoker;
+@property (nonatomic, copy) NSString *PayorSex;
+@property (nonatomic, copy) NSString *PayorDOB;
+@property (nonatomic, assign,readwrite) int PayorAge;
+@property (nonatomic, copy) NSString *PayorOccpCode;
+@property (nonatomic, assign,readwrite) int secondLAIndexNo;
+@property (nonatomic, copy) NSString *secondLASmoker;
+@property (nonatomic, copy) NSString *secondLASex;
+@property (nonatomic, copy) NSString *secondLADOB;
+@property (nonatomic, assign,readwrite) int secondLAAge;
+@property (nonatomic, copy) NSString *secondLAOccpCode;
+
+@property (nonatomic, assign,readwrite) double minSA;
+@property (nonatomic, assign,readwrite) double minPremium;
+
 - (IBAction)ActionDone:(id)sender;
 
+//for SINo
+@property (nonatomic, assign,readwrite) int SILastNo;
+@property (nonatomic, assign,readwrite) int CustLastNo;
+@property (nonatomic, copy) NSString *SIDate;
+@property (nonatomic, copy) NSString *CustDate;
+
+@property (nonatomic, copy) NSString *LACustCode;
+@property (nonatomic, copy) NSString *PYCustCode;
+@property (nonatomic, copy) NSString *secondLACustCode;
+@property (nonatomic, assign,readwrite) int IndexNo;
+
+@property (nonatomic, assign,readwrite) int termCover;
+@property (nonatomic, assign,readwrite) int maxAge;
+@property (nonatomic,strong) NSString *planChoose;
+
+@property(nonatomic , retain) NSString *NamePP;
+@property(nonatomic , retain) NSString *DOBPP;
+@property(nonatomic , retain) NSString *GenderPP;
+@property(nonatomic , retain) NSString *OccpCodePP;
+
+//to display
+@property (nonatomic,strong) NSString *getSINo;
+@property (nonatomic,assign,readwrite) int getPolicyTerm;
+@property (nonatomic,assign,readwrite) double getSumAssured;
+@property (nonatomic,copy) NSString *getHL;
+@property (nonatomic,copy) NSString *getHLPct;
+@property (nonatomic,assign,readwrite) int getHLPctTerm;
+@property (nonatomic,assign,readwrite) int getHLTerm;
+@property (nonatomic,copy) NSString *getBumpMode;
+@property (nonatomic,assign,readwrite) double getBasicPrem;
+@property (nonatomic,strong) NSString *getPlanCode;
 
 @end

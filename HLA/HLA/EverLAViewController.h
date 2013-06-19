@@ -19,8 +19,8 @@
 		andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
 		andSmoker:(NSString *)aaSmoker;
 -(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered
-		andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL
-		andMOP:(int)aaMOP andPlanCode:(NSString *)aaPlanCode andAdvance:(int)aaAdvance andBasicPlan:(NSString *)aabasicPlan;
+		andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicHLTerm:(int)aaBasicHLTerm
+		andBasicHLPct:(NSString *)aaBasicHLPct andBasicHLPctTerm:(int)aaBasicHLPctTerm andPlanCode:(NSString *)aaPlanCode;
 -(void)RiderAdded;
 -(void)secondLADelete;
 -(void)PayorDeleted;
@@ -115,12 +115,11 @@
 @property (nonatomic,strong) NSString *basicSINo;
 @property (nonatomic,assign,readwrite) int getPolicyTerm;
 @property (nonatomic,assign,readwrite) double getSumAssured;
+@property (nonatomic,assign,readwrite) double getPrem;
 @property (nonatomic,copy) NSString *getHL;
-@property (nonatomic,copy) NSString *getTempHL;
-@property (nonatomic,assign,readwrite) int getTempHLTerm;
+@property (nonatomic,copy) NSString *getHLPct;
+@property (nonatomic,assign,readwrite) int getHLPctTerm;
 @property (nonatomic,assign,readwrite) int getHLTerm;
-@property (nonatomic, assign,readwrite) int MOP;
-@property (nonatomic, copy) NSString *yearlyIncome;
 @property (nonatomic, assign,readwrite) int termCover;
 @property (nonatomic,strong) NSString *planCode;
 

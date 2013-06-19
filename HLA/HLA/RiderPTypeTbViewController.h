@@ -22,6 +22,7 @@
 }
 
 @property (nonatomic,strong) NSString *SINoPlan;
+@property (nonatomic,strong) NSString *TradOrEver;
 @property (nonatomic,strong) id <RiderPTypeTbViewControllerDelegate> delegate;
 @property (readonly) NSString *selectedCode;
 @property (readonly) NSString *selectedSeqNo;

@@ -9,6 +9,7 @@
 #import "EverSeriesMasterViewController.h"
 #import "EverLAViewController.h"
 #import "BasicAccountViewController.h"
+#import "EverRiderViewController.h"
 
 #import "AppDelegate.h"
 
@@ -19,8 +20,12 @@
 @implementation EverSeriesMasterViewController
 @synthesize EverLAController = _EverLAController;
 @synthesize BasicAccount = _BasicAccount;
+@synthesize EverRider = _EverRider;
 @synthesize ListOfSubMenu, getAge,getCommDate,getIdPay,getIdProf,getLAIndexNo,getOccpClass;
-@synthesize getOccpCode,getSex,getSmoker, Name2ndLA,NameLA,NamePayor;
+@synthesize getOccpCode,getSex,getSmoker, Name2ndLA,NameLA,NamePayor, get2ndLAAge,get2ndLADOB,get2ndLAIndexNo;
+@synthesize get2ndLAOccp,get2ndLASex,get2ndLASmoker,getbasicHL,getBasicPlan,getbasicSA,getbasicHLPct;
+@synthesize getPayAge,getPayDOB,getPayOccp,getPayorIndexNo,getPaySex,getPaySmoker,getPlanCode;
+@synthesize getSINo,getTerm, payorCustCode, payorSINo, requestSINo2, CustCode2;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,7 +52,8 @@
     [self.view addSubview:self.RightView];
 	
 	ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor",
-					 @"Basic Account", @"Fund Allocation & Others", @"Riders",  nil ];
+					 @"Basic Account", @"Fund Allocation & Others", @"Rider", @"Health Loading", @"Special Options",
+					 @"Fund Maturity Options", @"Quotation", nil ];
 	
 	PlanEmpty = YES;
     added = NO;
@@ -55,9 +61,13 @@
     payorSaved = YES;
 	
 	if (_EverLAController == nil) {
-        self.EverLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
+        self.EverLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"EverLA"];
 		_EverLAController.delegate = self;
     }
+	
+	self.EverLAController.requestSINo = [self.requestSINo description];
+    [self addChildViewController:self.EverLAController];
+    [self.RightView addSubview:self.EverLAController.view];
 	
 	self.myTableView.delegate = self;
 	self.myTableView.dataSource = self;
@@ -67,6 +77,11 @@
 	
 	selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
 	[self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -85,8 +100,41 @@
 }
 
 
--(void)Reset{
-	NSLog(@"");
+
+-(void)Reset
+{
+    if ([self.requestSINo isEqualToString:self.requestSINo2] || (self.requestSINo == NULL && self.requestSINo2 == NULL) ) {
+        
+        PlanEmpty = YES;
+        added = NO;
+		//        [SelectedRow addObject:@"4" ];
+		//        [SelectedRow addObject:@"5" ];
+        
+        [self RemoveTab];
+        [self clearDataLA];
+        [self clearDataPayor];
+        [self clearData2ndLA];
+        [self clearDataBasic];
+        
+        [self hideSeparatorLine];
+        [self.myTableView reloadData];
+        
+        self.EverLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"EverLA"];
+        _EverLAController.delegate = self;
+        [self addChildViewController:self.EverLAController];
+        [self.RightView addSubview:self.EverLAController.view];
+        blocked = NO;
+        selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        previousPath = selectedPath;
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		
+		AppDelegate *appDel= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+		appDel.MhiMessage = Nil;
+        appDel = Nil;
+    }
+    else {
+        requestSINo2 = self.requestSINo;
+    }
 }
 
 
@@ -137,22 +185,294 @@
 	
 	selectedPath = indexPath;
 	if (indexPath.row == 0) {
+		
+		if (getSINo.length != 0) {
+			NSLog(@"with SI");
+			self.EverLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"EverLA"];
+            _EverLAController.delegate = self;
+            self.EverLAController.requestSINo = getSINo;
+            [self addChildViewController:self.EverLAController];
+            [self.RightView addSubview:self.EverLAController.view];
+		}
+		else{
+			NSLog(@"no SI");
+			self.EverLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"EverLA"];
+            _EverLAController.delegate = self;
+            self.EverLAController.requestIndexNo = getLAIndexNo;
+            self.EverLAController.requestLastIDPay = getIdPay;
+            self.EverLAController.requestLastIDProf = getIdProf;
+            self.EverLAController.requestCommDate = getCommDate;
+            self.EverLAController.requestSex = getSex;
+            self.EverLAController.requestSmoker = getSmoker;
+            [self addChildViewController:self.EverLAController];
+            [self.RightView addSubview:self.EverLAController.view];
+		}
 
-		self.EverLAController = [self.storyboard instantiateViewControllerWithIdentifier:@"EverLA"];
-		_EverLAController.delegate = self;
-		//self.EverLAController.requestSINo = getSINo;
-		[self addChildViewController:self.EverLAController];
-		[self.RightView addSubview:self.EverLAController.view];
+		previousPath = selectedPath;
+        blocked = NO;
+		
+	}
+	else if (indexPath.row == 1){
+		
+	}
+	else if (indexPath.row == 2){
+		
 	}
 	else if (indexPath.row == 3){
-		self.BasicAccount = [self.storyboard instantiateViewControllerWithIdentifier:@"EverBasic"];
-		_BasicAccount.delegate = self;
-		[self addChildViewController:self.BasicAccount];
-		[self.RightView addSubview:self.BasicAccount.view];
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else{
+			if (!saved) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:1001];
+				[alert show];
+			}
+			else if (!payorSaved) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:2001];
+				[alert show];
+			}
+			else {
+				self.BasicAccount = [self.storyboard instantiateViewControllerWithIdentifier:@"EverBasic"];
+				_BasicAccount.delegate = self;
+				
+				//self.BasicAccount.requestAge = getAge;
+				//[self addChildViewController:self.BasicAccount];
+				//[self.RightView addSubview:self.BasicAccount.view];
+				
+				[self selectBasicPlan];
+				[self hideSeparatorLine];
+				[self.myTableView reloadData];
+			}
+			
+		}
+		
+	}
+	else if (indexPath.row == 4){ //Fund Allocation
+		
+	}
+	else if (indexPath.row == 5){ //Rider
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else if (getAge > 100 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			if (getAge < 10 && payorSINo.length == 0) {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+				[alert show];
+				blocked = YES;
+			}
+			else if (!saved) {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"2nd Life Assured has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:1002];
+				[alert show];
+			}
+			else if (!payorSaved) {
+				
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor has not been saved yet.Leave this page without saving?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel",nil];
+				[alert setTag:2002];
+				[alert show];
+			}
+			else {
+				self.EverRider = [self.storyboard instantiateViewControllerWithIdentifier:@"EverRider"];
+				_EverRider.delegate = self;
+				self.EverRider.requestAge = getAge;
+				self.EverRider.requestSex = getSex;
+				self.EverRider.requestOccpCode = getOccpCode;
+				self.EverRider.requestOccpClass = getOccpClass;
+				
+				self.EverRider.requestSINo = getSINo;
+				self.EverRider.requestPlanCode = getPlanCode;
+				self.EverRider.requestCoverTerm = getTerm;
+				self.EverRider.requestBasicSA = getbasicSA;
+				self.EverRider.requestBasicHL = getbasicHL;
+				self.EverRider.requestBasicHLPct = getbasicHLPct;
+				
+				[self addChildViewController:self.EverRider];
+				[self.RightView addSubview:self.EverRider.view];
+				
+				previousPath = selectedPath;
+				blocked = NO;
+				[self hideSeparatorLine];
+				[self.myTableView reloadData];
+			}
+		
+		}
+	}
+	else if (indexPath.row == 6){ //Health Loading
+		
+	}
+	else if (indexPath.row == 7){ //Special Options
+		
+	}
+	else if (indexPath.row == 8){ //Fund Maturity Options
+		
+	}
+	else if (indexPath.row == 9){ //Quotation
+		
+	}
+	else if (indexPath.row == 11){ //Eng PDS
+		
+	}
+	else if (indexPath.row == 12){ //BM PDS
+		
 	}
 }
 
 #pragma mark - data handler
+
+-(void)selectBasicPlan
+{
+    NSLog(@"select basic:: age:%d, occp:%@, SI:%@",getAge,getOccpCode,getSINo);
+    if (getSINo.length != 0 && ![getSINo isEqualToString:@"(null)"]) {
+        NSLog(@"with SI");
+        
+        [self checkingPayor];
+        if (getAge < 10 && payorSINo.length == 0) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+										message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            blocked = YES;
+        }
+        else if (getAge > 100) {
+			
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            blocked = YES;
+        }
+        else {
+            
+            self.BasicAccount = [self.storyboard instantiateViewControllerWithIdentifier:@"EverBasic"];
+            _BasicAccount.delegate = self;
+            
+            self.BasicAccount.requestAge = getAge;
+            self.BasicAccount.requestOccpCode = getOccpCode;
+            self.BasicAccount.requestOccpClass = getOccpClass;
+            self.BasicAccount.requestIDPay = getIdPay;
+            self.BasicAccount.requestIDProf = getIdProf;
+            
+            self.BasicAccount.requestIndexPay = getPayorIndexNo;
+            self.BasicAccount.requestSmokerPay = getPaySmoker;
+            self.BasicAccount.requestSexPay = getPaySex;
+            self.BasicAccount.requestDOBPay = getPayDOB;
+            self.BasicAccount.requestAgePay = getPayAge;
+            self.BasicAccount.requestOccpPay = getPayOccp;
+            
+            self.BasicAccount.requestIndex2ndLA = get2ndLAIndexNo;
+            self.BasicAccount.requestSmoker2ndLA = get2ndLASmoker;
+            self.BasicAccount.requestSex2ndLA = get2ndLASex;
+            self.BasicAccount.requestDOB2ndLA = get2ndLADOB;
+            self.BasicAccount.requestAge2ndLA = get2ndLAAge;
+            self.BasicAccount.requestOccp2ndLA = get2ndLAOccp;
+            
+            self.BasicAccount.requestSINo = getSINo;
+            
+            [self addChildViewController:self.BasicAccount];
+            [self.RightView addSubview:self.BasicAccount.view];
+            
+            previousPath = selectedPath;
+            blocked = NO;
+        }
+    }
+    else if (getOccpCode != 0 && getSINo.length == 0) {
+        NSLog(@"no SI");
+        
+        if (getAge < 10 && getPayorIndexNo == 0) {
+			
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+											message:@"Please attach Payor as Life Assured is below 10 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            blocked = YES;
+        }
+        else {
+            
+            self.BasicAccount = [self.storyboard instantiateViewControllerWithIdentifier:@"EverBasic"];
+            _BasicAccount.delegate = self;
+            
+            self.BasicAccount.requestAge = getAge;
+            self.BasicAccount.requestOccpCode = getOccpCode;
+            self.BasicAccount.requestOccpClass = getOccpClass;
+            self.BasicAccount.requestIDPay = getIdPay;
+            self.BasicAccount.requestIDProf = getIdProf;
+            
+            self.BasicAccount.requestIndexPay = getPayorIndexNo;
+            self.BasicAccount.requestSmokerPay = getPaySmoker;
+            self.BasicAccount.requestSexPay = getPaySex;
+            self.BasicAccount.requestDOBPay = getPayDOB;
+            self.BasicAccount.requestAgePay = getPayAge;
+            self.BasicAccount.requestOccpPay = getPayOccp;
+            
+            self.BasicAccount.requestIndex2ndLA = get2ndLAIndexNo;
+            self.BasicAccount.requestSmoker2ndLA = get2ndLASmoker;
+            self.BasicAccount.requestSex2ndLA = get2ndLASex;
+            self.BasicAccount.requestDOB2ndLA = get2ndLADOB;
+            self.BasicAccount.requestAge2ndLA = get2ndLAAge;
+            self.BasicAccount.requestOccp2ndLA = get2ndLAOccp;
+            
+            self.BasicAccount.requestSINo = getSINo;
+            
+            [self addChildViewController:self.BasicAccount];
+            [self.RightView addSubview:self.BasicAccount.view];
+            
+            previousPath = selectedPath;
+            blocked = NO;
+        }
+    }
+    else {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:@"Please attach a prospect in Life Assured tab first" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+		[alert show];
+        NSLog(@"no where!");
+        blocked = YES;
+    }
+}
+
+-(void)checkingPayor
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, "
+							  "b.id FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
+							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"PY\" AND a.Sequence=1",getSINo];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                payorSINo = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                payorCustCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                NamePayor = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                NSLog(@"PayorSI:%@",payorSINo);
+            }
+            else {
+                NSLog(@"error access checkingPayor");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+
 -(void)getLAName
 {
     sqlite3_stmt *statement;
@@ -177,6 +497,67 @@
     }
 }
 
+-(void)RemoveTab{
+    [ListOfSubMenu removeObject:@"Quotation"];
+    [ListOfSubMenu removeObject:@"Proposal"];
+    [ListOfSubMenu removeObject:@"Product Disclosure Sheet"];
+    [ListOfSubMenu removeObject:@"   English"];
+    [ListOfSubMenu removeObject:@"   Malay"];
+}
+
+-(void)clearDataLA
+{
+    _EverLAController = nil;
+    getAge = 0;
+    getSex = nil;
+    getSmoker = nil;
+    getOccpClass = 0;
+    getOccpCode = nil;
+    getCommDate = nil;
+    getIdPay = 0;
+    getIdProf = 0;
+    getLAIndexNo = 0;
+    NameLA = nil;
+}
+
+-(void)clearDataPayor
+{
+    //_PayorController = nil;
+    getPayorIndexNo = 0;
+    getPaySmoker = nil;
+    getPaySex = nil;
+    getPayDOB = nil;
+    getPayAge = 0;
+    getPayOccp = nil;
+    NamePayor = nil;
+    payorSINo = nil;
+}
+
+-(void)clearData2ndLA
+{
+    //_SecondLAController = nil;
+    get2ndLAIndexNo = 0;
+    get2ndLASmoker = nil;
+    get2ndLASex = nil;
+    get2ndLADOB = nil;
+    get2ndLAAge = 0;
+    get2ndLAOccp = nil;
+    Name2ndLA = nil;
+    CustCode2 = nil;
+}
+
+-(void)clearDataBasic
+{
+    //_BasicController = nil;
+    getSINo = nil;
+    getTerm = 0;
+    getbasicSA = nil;
+    getbasicHL = nil;
+    getPlanCode = nil;
+    getBasicPlan = nil;
+}
+
+
 
 #pragma mark - delegate
 -(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker{
@@ -198,6 +579,26 @@
     else {
         [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
+}
+
+-(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicPlan:(NSString *)aabasicPlan{
+	
+}
+
+-(void)BasicSARevised:(NSString *)aabasicSA{
+	
+}
+
+-(void)RiderAdded{
+	
+}
+
+-(void)PayorDeleted{
+	
+}
+
+-(void)secondLADelete{
+	
 }
 
 #pragma mark - memory management
