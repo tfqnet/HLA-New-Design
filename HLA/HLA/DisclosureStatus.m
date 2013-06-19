@@ -14,25 +14,18 @@
 
 @implementation DisclosureStatus
 @synthesize checkButton;
-@synthesize checkButton1;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize checkButton1,btnDisclose;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     checked = NO;
-	// Do any additional setup after loading the view.
+
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     self.navigationItem.title = @"Disclosure";
-     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+    
+    btnDisclose.highlighted = TRUE;
+    btnDisclose.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,6 +37,7 @@
 - (void)viewDidUnload {
     [self setCheckButton:nil];
     [self setCheckButton1:nil];
+    [self setBtnDisclose:nil];
     [super viewDidUnload];
 }
 - (IBAction)checkboxButton:(id)sender {

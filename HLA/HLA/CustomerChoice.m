@@ -15,25 +15,17 @@
 @implementation CustomerChoice
 @synthesize checkButton2;
 @synthesize checkButton3;
-@synthesize checkButton4;
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize checkButton4,btnCusChoice;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     checked = NO;
-	// Do any additional setup after loading the view.
+    
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-     
+    
+    btnCusChoice.highlighted = TRUE;
+    btnCusChoice.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,6 +38,7 @@
     [self setCheckButton2:nil];
     [self setCheckButton3:nil];
     [self setCheckButton4:nil];
+    [self setBtnCusChoice:nil];
     [super viewDidUnload];
 }
 - (IBAction)checkboxButton2:(id)sender {

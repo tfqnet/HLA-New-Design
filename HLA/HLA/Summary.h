@@ -12,5 +12,6 @@
     BOOL checked;
 }
 
+@property (strong, nonatomic) IBOutlet UIButton *btnSummary;
 
 @end

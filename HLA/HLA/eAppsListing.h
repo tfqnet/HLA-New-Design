@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
 
-@interface eAppsListing : UIViewController <UITableViewDataSource,UITableViewDelegate>
+@interface eAppsListing : UIViewController <UITableViewDataSource,UITableViewDelegate> {
+    NSString *databasePath;
+    sqlite3 *contactDB;
+}
 
 @property (strong, nonatomic) IBOutlet UILabel *SILabel;
 @property (strong, nonatomic) IBOutlet UILabel *dateLabel;
@@ -18,5 +22,12 @@
 @property (strong, nonatomic) IBOutlet UILabel *planLabel;
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
-@property (strong, nonatomic) NSMutableArray *dataItems;
+
+@property (retain, nonatomic) NSMutableArray *SINO;
+@property (retain, nonatomic) NSMutableArray *DateCreated;
+@property (retain, nonatomic) NSMutableArray *Name;
+@property (retain, nonatomic) NSMutableArray *PlanName;
+@property (retain, nonatomic) NSMutableArray *BasicSA;
+@property (retain, nonatomic) NSMutableArray *SIStatus;
+@property (retain, nonatomic) NSMutableArray *CustomerCode;
 @end

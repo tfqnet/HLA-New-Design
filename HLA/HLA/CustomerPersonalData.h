@@ -10,4 +10,7 @@
 
 @interface CustomerPersonalData : UIViewController
 
+@property (strong, nonatomic) IBOutlet UIButton *btnCusData;
+
+
 @end

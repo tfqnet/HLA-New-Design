@@ -10,4 +10,6 @@
 
 @interface FinancialAnalysis : UIViewController
 
+@property (strong, nonatomic) IBOutlet UIButton *btnFinancial;
+
 @end

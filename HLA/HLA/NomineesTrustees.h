@@ -10,4 +10,6 @@
 
 @interface NomineesTrustees : UIViewController
 
+@property (strong, nonatomic) IBOutlet UIButton *btnNominees;
+
 @end

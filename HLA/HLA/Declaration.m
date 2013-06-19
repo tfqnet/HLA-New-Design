@@ -13,21 +13,15 @@
 @end
 
 @implementation Declaration
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize btnDeclare;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
      self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-	// Do any additional setup after loading the view.
+	
+    btnDeclare.highlighted = TRUE;
+    btnDeclare.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning

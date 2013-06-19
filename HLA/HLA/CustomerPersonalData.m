@@ -13,21 +13,15 @@
 @end
 
 @implementation CustomerPersonalData
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize btnCusData;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-	// Do any additional setup after loading the view.
+	
+    btnCusData.highlighted = TRUE;
+    btnCusData.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
@@ -36,4 +30,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidUnload {
+    [self setBtnCusData:nil];
+    [super viewDidUnload];
+}
 @end

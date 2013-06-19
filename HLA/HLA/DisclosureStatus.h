@@ -16,5 +16,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *checkButton1;
 - (IBAction)checkboxButton1:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIButton *btnDisclose;
 
 @end

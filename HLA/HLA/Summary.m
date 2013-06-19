@@ -13,17 +13,7 @@
 @end
 
 @implementation Summary
-
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize btnSummary;
 
 - (void)viewDidLoad
 {
@@ -32,7 +22,8 @@
      self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
   
     
-	// Do any additional setup after loading the view.
+	btnSummary.highlighted = TRUE;
+    btnSummary.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,6 +34,7 @@
 
 - (void)viewDidUnload {
   
+    [self setBtnSummary:nil];
     [super viewDidUnload];
 }
 
