@@ -58,19 +58,19 @@
     
     clientData = [[NSMutableArray alloc] init];
     
-    NSMutableArray *arrIdType = [[NSMutableArray alloc] initWithObjects:@"New Identification Number",@"New Identification Number", nil];
+    NSMutableArray *arrIdType = [[NSMutableArray alloc] initWithObjects:@"New Identification Number",@"New Identification Number",@"New Identification Number",@"New Identification Number",@"New Identification Number", nil];
     [clientData addObject:arrIdType];
     
-    NSMutableArray *arrIdNo = [[NSMutableArray alloc] initWithObjects:@"99911",@"888770", nil];
+    NSMutableArray *arrIdNo = [[NSMutableArray alloc] initWithObjects:@"880101117865",@"880101117865",@"880101117885",@"650101117865",@"750101117865", nil];
     [clientData addObject:arrIdNo];
     
-    NSMutableArray *arrName = [[NSMutableArray alloc] initWithObjects:@"Johny",@"Adam", nil];
+    NSMutableArray *arrName = [[NSMutableArray alloc] initWithObjects:@"Johny",@"Adam",@"Samm",@"Ali",@"Jack", nil];
     [clientData addObject:arrName];
     
-    NSMutableArray *arrDate = [[NSMutableArray alloc]initWithObjects:@"22/05/2013",@"30/05/2013", nil];
+    NSMutableArray *arrDate = [[NSMutableArray alloc]initWithObjects:@"22/05/2013",@"30/05/2013",@"13/09/2013",@"30/01/2013",@"15/06/2013", nil];
     [clientData addObject:arrDate];
     
-    NSMutableArray *arrStatus = [[NSMutableArray alloc]initWithObjects:@"Incomplete",@"Completed", nil];
+    NSMutableArray *arrStatus = [[NSMutableArray alloc]initWithObjects:@"Incomplete",@"Completed",@"Incomplete",@"Incomplete",@"Incomplete", nil];
     [clientData addObject:arrStatus];
     
     CustomColor = nil, arrIdType=nil, arrIdNo=nil, arrName=nil, arrDate=nil, arrStatus=nil;
