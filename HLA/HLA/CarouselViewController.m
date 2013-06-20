@@ -318,8 +318,8 @@ const int numberOfModule = 7;
     
     else if (sender.tag % numberOfModule == 4) {    //e-app
         
-//        eSubmission *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
-        MaineApp *zzz= [self.storyboard instantiateViewControllerWithIdentifier:@"maineApp"];
+        UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];        
+        MaineApp *zzz= [secondStoryboard instantiateViewControllerWithIdentifier:@"maineApp"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
         zzz.IndexTab = 1;
         [self presentViewController:zzz animated:NO completion:Nil];

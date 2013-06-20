@@ -38,18 +38,28 @@
     label.text = @"e-Application";
     self.navigationItem.titleView = label;
     
+//    CGRect frame1=CGRectMake(0,240, 204, 50);
+//    idTypeLabel.frame = frame1;
     idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
+//    CGRect frame2=CGRectMake(204,240, 167, 50);
+//    idNoLabel.frame = frame2;
     idNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
 	
+//    CGRect frame3=CGRectMake(371,240, 181, 50);
+//    nameLabel.frame = frame3;
     nameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     nameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
+//    CGRect frame4=CGRectMake(552,240, 241, 50);
+//    policyNoLabel.frame = frame4;
     policyNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     policyNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
+//    CGRect frame5=CGRectMake(793,240, 163, 50);
+//    policyNoLabel.frame = frame5;
     statusLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     statusLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
@@ -58,7 +68,7 @@
     NSMutableArray *arrIdType = [[NSMutableArray alloc] initWithObjects:@"New Identification Number",@"New Identification Number", nil];
     [clientData addObject:arrIdType];
     
-    NSMutableArray *arrIdNo = [[NSMutableArray alloc] initWithObjects:@"99911",@"888770", nil];
+    NSMutableArray *arrIdNo = [[NSMutableArray alloc] initWithObjects:@"880101117865",@"890101234575", nil];
     [clientData addObject:arrIdNo];
     
     NSMutableArray *arrPolicy = [[NSMutableArray alloc]initWithObjects:@"SI20130523-0001",@"SI20130530-0007", nil];

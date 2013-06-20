@@ -234,7 +234,8 @@
 {
     
     AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-    MainScreen *main = [self.storyboard instantiateViewControllerWithIdentifier:@"Main"];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:Nil];
+    MainScreen *main = [mainStoryboard instantiateViewControllerWithIdentifier:@"Main"];
     main.tradOrEver = @"TRAD";
     main.IndexTab = MenuOption.NewSIIndex ;
     main.requestSINo = [SINO objectAtIndex:indexPath.row];

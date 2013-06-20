@@ -27,19 +27,19 @@
     self.delegate = self;
 	
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:Nil];
     
-    CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
+    CarouselViewController* carouselPage = [mainStoryboard instantiateViewControllerWithIdentifier:@"carouselView"];
     carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Home" image:[UIImage imageNamed:@"btn_home.png"] tag: 0];
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-//    eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eSubmission"];
     eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppsNavi"];
     eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:eAppListing];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
+    Logout* LogoutPage = [mainStoryboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
     LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];
     [controllersToAdd addObject:LogoutPage];

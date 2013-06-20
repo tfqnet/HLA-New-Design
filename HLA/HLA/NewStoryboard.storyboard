@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="xFT-Ix-Jb9">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
+    </dependencies>
+    <scenes>
+        <!--Maine App - eApp-->
+        <scene sceneID="hKV-HC-YoG">
+            <objects>
+                <viewController storyboardIdentifier="maineApp" title="eApp" id="xFT-Ix-Jb9" customClass="MaineApp" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bcb-lA-OwI">
+                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TRK-nZ-uX2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1330" y="4990"/>
+        </scene>
+        <!--E Submission - e-Application-->
+        <scene sceneID="YU5-mv-yxG">
+            <objects>
+                <viewController storyboardIdentifier="eSubmission" id="UiL-DM-zZH" customClass="eSubmission" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cKX-7g-uw5">
+                        <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="wJ5-Go-UHZ">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="413" id="cpu-Hs-gZa"/>
+                                </constraints>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="UiL-DM-zZH" id="JwN-QJ-eCP"/>
+                                    <outlet property="delegate" destination="UiL-DM-zZH" id="6aZ-Vk-xpI"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Life Assured Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="D5S-bw-F8d">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="137" id="LBL-Gm-3yI"/>
+                                    <constraint firstAttribute="height" constant="31" id="gga-EG-vNM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="T4I-Ih-nls">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="285" id="nya-Vh-Vic"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="DtE-uP-LGt">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="DOW-Wf-gI4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="j8c-2c-0F7">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="xWw-44-L2Q"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D3y-4i-fWZ">
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="JWL-ez-gDK">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="89" id="Lpb-wf-0CH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FVN-wT-WUG">
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vuW-4l-hiW">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="TI4-1S-u3M"/>
+                                    <constraint firstAttribute="width" constant="75" id="y7N-hJ-faK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <state key="normal" title="Search">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TT5-1c-h4D">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="4Xd-ld-NbQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Yx-e0-bd8">
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnDatePressed:" destination="UiL-DM-zZH" eventType="touchUpInside" id="gfv-SY-PpW"/>
+                                </connections>
+                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pGA-Nd-mbi">
+                                <segments>
+                                    <segment title="Completed"/>
+                                    <segment title="Incomplete"/>
+                                </segments>
+                            </segmentedControl>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Creation Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="gFZ-pQ-nJZ">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="31" id="i94-Cd-6UY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ID Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="S6c-mp-P4i">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="204" id="2cV-5v-oSv"/>
+                                    <constraint firstAttribute="height" constant="50" id="cmW-El-Fwz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ID Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="JyQ-cJ-QwN">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="167" id="elL-in-eh9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Policy Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="IKR-A1-IwT">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="170" id="1sm-Ew-LT1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Client Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="n8d-Bh-zTY">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="206" id="HGd-Re-Rdg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="JY3-VZ-3b4">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="208" id="w8s-wl-LOS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="vuW-4l-hiW" secondAttribute="trailing" constant="171" id="0St-5q-XKN"/>
+                            <constraint firstAttribute="trailing" secondItem="pGA-Nd-mbi" secondAttribute="trailing" constant="83" id="1aw-nj-xmv"/>
+                            <constraint firstItem="wJ5-Go-UHZ" firstAttribute="leading" secondItem="cKX-7g-uw5" secondAttribute="leading" type="default" id="1bL-Z8-Rd1"/>
+                            <constraint firstItem="T4I-Ih-nls" firstAttribute="leading" secondItem="cKX-7g-uw5" secondAttribute="leading" constant="206" id="1nC-T7-9cf"/>
+                            <constraint firstItem="T4I-Ih-nls" firstAttribute="bottom" secondItem="D5S-bw-F8d" secondAttribute="bottom" type="default" id="3t0-jp-7qc"/>
+                            <constraint firstAttribute="trailing" secondItem="gFZ-pQ-nJZ" secondAttribute="trailing" constant="342" id="69x-3G-Jb9"/>
+                            <constraint firstItem="JyQ-cJ-QwN" firstAttribute="leading" secondItem="cKX-7g-uw5" secondAttribute="leading" constant="204" id="6wU-lU-KJD"/>
+                            <constraint firstItem="IKR-A1-IwT" firstAttribute="baseline" secondItem="n8d-Bh-zTY" secondAttribute="baseline" type="default" id="7We-NL-cFJ"/>
+                            <constraint firstItem="gFZ-pQ-nJZ" firstAttribute="leading" secondItem="JWL-ez-gDK" secondAttribute="leading" type="default" id="7ce-J7-uJD"/>
+                            <constraint firstItem="JWL-ez-gDK" firstAttribute="baseline" secondItem="pGA-Nd-mbi" secondAttribute="baseline" type="default" id="8eM-Me-cZG"/>
+                            <constraint firstItem="9Yx-e0-bd8" firstAttribute="trailing" secondItem="TT5-1c-h4D" secondAttribute="trailing" type="default" id="8vz-rs-CoA"/>
+                            <constraint firstItem="pGA-Nd-mbi" firstAttribute="leading" secondItem="9Yx-e0-bd8" secondAttribute="leading" type="default" id="9hZ-Sm-M97"/>
+                            <constraint firstItem="9Yx-e0-bd8" firstAttribute="trailing" secondItem="pGA-Nd-mbi" secondAttribute="trailing" type="default" id="A8j-N8-aTc"/>
+                            <constraint firstItem="JyQ-cJ-QwN" firstAttribute="baseline" secondItem="IKR-A1-IwT" secondAttribute="baseline" type="default" id="AeW-2N-YSY"/>
+                            <constraint firstItem="DtE-uP-LGt" firstAttribute="bottom" secondItem="FVN-wT-WUG" secondAttribute="bottom" type="default" id="Cyb-cA-wot"/>
+                            <constraint firstItem="TT5-1c-h4D" firstAttribute="top" secondItem="vuW-4l-hiW" secondAttribute="top" type="default" id="E06-ei-0an"/>
+                            <constraint firstItem="S6c-mp-P4i" firstAttribute="top" secondItem="cKX-7g-uw5" secondAttribute="top" constant="240" id="EOE-zl-LS9"/>
+                            <constraint firstItem="vuW-4l-hiW" firstAttribute="bottom" secondItem="TT5-1c-h4D" secondAttribute="bottom" type="default" id="FMo-rW-v7g"/>
+                            <constraint firstItem="JyQ-cJ-QwN" firstAttribute="baseline" secondItem="S6c-mp-P4i" secondAttribute="baseline" type="default" id="H48-gN-0eq"/>
+                            <constraint firstItem="j8c-2c-0F7" firstAttribute="trailing" secondItem="DtE-uP-LGt" secondAttribute="trailing" type="default" id="JCY-JP-vfD"/>
+                            <constraint firstItem="IKR-A1-IwT" firstAttribute="leading" secondItem="cKX-7g-uw5" secondAttribute="leading" constant="371" id="JXf-3N-37G"/>
+                            <constraint firstItem="n8d-Bh-zTY" firstAttribute="top" secondItem="IKR-A1-IwT" secondAttribute="top" type="default" id="OLW-C3-gc3"/>
+                            <constraint firstItem="wJ5-Go-UHZ" firstAttribute="bottom" secondItem="cKX-7g-uw5" secondAttribute="bottom" type="default" id="RZS-Ka-cza"/>
+                            <constraint firstItem="j8c-2c-0F7" firstAttribute="bottom" secondItem="D3y-4i-fWZ" secondAttribute="bottom" type="default" id="RoX-cn-o8P"/>
+                            <constraint firstItem="j8c-2c-0F7" firstAttribute="leading" secondItem="DtE-uP-LGt" secondAttribute="leading" type="default" id="XPm-py-hxM"/>
+                            <constraint firstItem="FVN-wT-WUG" firstAttribute="trailing" secondItem="T4I-Ih-nls" secondAttribute="trailing" type="default" id="bfF-cB-jzR"/>
+                            <constraint firstItem="FVN-wT-WUG" firstAttribute="leading" secondItem="D3y-4i-fWZ" secondAttribute="leading" type="default" id="bp0-ky-Gbg"/>
+                            <constraint firstItem="D3y-4i-fWZ" firstAttribute="top" secondItem="j8c-2c-0F7" secondAttribute="top" type="default" id="co4-U2-JMf"/>
+                            <constraint firstItem="j8c-2c-0F7" firstAttribute="top" secondItem="cKX-7g-uw5" secondAttribute="top" constant="95" id="dXp-cD-p7E"/>
+                            <constraint firstAttribute="trailing" secondItem="JY3-VZ-3b4" secondAttribute="trailing" constant="9" id="ebn-IL-ne2"/>
+                            <constraint firstItem="JyQ-cJ-QwN" firstAttribute="top" secondItem="S6c-mp-P4i" secondAttribute="top" type="default" id="enR-7c-rYQ"/>
+                            <constraint firstItem="D5S-bw-F8d" firstAttribute="top" secondItem="cKX-7g-uw5" secondAttribute="top" constant="21" id="gGx-Qk-rTG"/>
+                            <constraint firstItem="FVN-wT-WUG" firstAttribute="leading" secondItem="T4I-Ih-nls" secondAttribute="leading" type="default" id="gLp-t3-FlU"/>
+                            <constraint firstItem="DtE-uP-LGt" firstAttribute="leading" secondItem="D5S-bw-F8d" secondAttribute="leading" type="default" id="hLp-Fn-mDP"/>
+                            <constraint firstItem="FVN-wT-WUG" firstAttribute="top" secondItem="DtE-uP-LGt" secondAttribute="top" type="default" id="i0B-gM-66N"/>
+                            <constraint firstItem="wJ5-Go-UHZ" firstAttribute="trailing" secondItem="cKX-7g-uw5" secondAttribute="trailing" type="default" id="k3L-Dv-uEs"/>
+                            <constraint firstAttribute="trailing" secondItem="n8d-Bh-zTY" secondAttribute="trailing" constant="217" id="kBL-aq-CgK"/>
+                            <constraint firstItem="vuW-4l-hiW" firstAttribute="top" secondItem="cKX-7g-uw5" secondAttribute="top" constant="144" id="lIt-9F-Fr9"/>
+                            <constraint firstItem="JWL-ez-gDK" firstAttribute="baseline" secondItem="D5S-bw-F8d" secondAttribute="baseline" type="default" id="mdZ-24-iVW"/>
+                            <constraint firstItem="D3y-4i-fWZ" firstAttribute="trailing" secondItem="FVN-wT-WUG" secondAttribute="trailing" type="default" id="nTE-JL-pup"/>
+                            <constraint firstItem="JY3-VZ-3b4" firstAttribute="top" secondItem="n8d-Bh-zTY" secondAttribute="top" type="default" id="ne1-Ji-MUN"/>
+                            <constraint firstItem="JyQ-cJ-QwN" firstAttribute="top" secondItem="IKR-A1-IwT" secondAttribute="top" type="default" id="pED-5E-pGN"/>
+                            <constraint firstItem="9Yx-e0-bd8" firstAttribute="bottom" secondItem="gFZ-pQ-nJZ" secondAttribute="bottom" type="default" id="qpl-pP-cE0"/>
+                            <constraint firstItem="JY3-VZ-3b4" firstAttribute="baseline" secondItem="n8d-Bh-zTY" secondAttribute="baseline" type="default" id="rp5-tE-ddk"/>
+                            <constraint firstItem="S6c-mp-P4i" firstAttribute="leading" secondItem="cKX-7g-uw5" secondAttribute="leading" type="default" id="t0r-4r-87M"/>
+                            <constraint firstItem="D5S-bw-F8d" firstAttribute="leading" secondItem="cKX-7g-uw5" secondAttribute="leading" constant="27" id="tVv-N5-E3v"/>
+                            <constraint firstItem="gFZ-pQ-nJZ" firstAttribute="top" secondItem="9Yx-e0-bd8" secondAttribute="top" type="default" id="u45-Uw-Lk3"/>
+                            <constraint firstItem="pGA-Nd-mbi" firstAttribute="top" secondItem="cKX-7g-uw5" secondAttribute="top" constant="20" symbolic="YES" type="default" id="wUJ-MX-M09"/>
+                            <constraint firstItem="gFZ-pQ-nJZ" firstAttribute="top" secondItem="cKX-7g-uw5" secondAttribute="top" constant="72" id="x3N-rd-YFe"/>
+                            <constraint firstItem="T4I-Ih-nls" firstAttribute="top" secondItem="JWL-ez-gDK" secondAttribute="top" type="default" id="xIt-PC-vup"/>
+                            <constraint firstItem="DtE-uP-LGt" firstAttribute="top" secondItem="cKX-7g-uw5" secondAttribute="top" constant="58" id="y3E-En-icu"/>
+                            <constraint firstItem="T4I-Ih-nls" firstAttribute="top" secondItem="D5S-bw-F8d" secondAttribute="top" type="default" id="ynn-hl-p1b"/>
+                        </constraints>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="e-Application" id="MGj-5v-LKf">
+                        <barButtonItem key="rightBarButtonItem" title="Add New" id="lUx-eZ-i7l">
+                            <connections>
+                                <action selector="addNew:" destination="UiL-DM-zZH" id="qg9-Ld-h7m"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <connections>
+                        <outlet property="btnDate" destination="9Yx-e0-bd8" id="93r-K5-AlH"/>
+                        <outlet property="idNoLabel" destination="JyQ-cJ-QwN" id="jL9-fN-eQt"/>
+                        <outlet property="idTypeLabel" destination="S6c-mp-P4i" id="SJY-Pz-mCk"/>
+                        <outlet property="myTableView" destination="wJ5-Go-UHZ" id="Kv1-eL-KaM"/>
+                        <outlet property="nameLabel" destination="n8d-Bh-zTY" id="d9p-am-9Jt"/>
+                        <outlet property="policyNoLabel" destination="IKR-A1-IwT" id="8rb-aA-aeb"/>
+                        <outlet property="statusLabel" destination="JY3-VZ-3b4" id="inZ-W1-cc7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eeA-Ye-LDq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1104" y="4982"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="rPp-hZ-0dW">
+            <objects>
+                <navigationController storyboardIdentifier="eAppsNavi" id="MKI-yq-xyB" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vKr-aI-D7s">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="UiL-DM-zZH" kind="relationship" relationship="rootViewController" id="w9k-hM-Jhc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NzO-gf-rAl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-46" y="4982"/>
+        </scene>
+        <!--E Apps Listing-->
+        <scene sceneID="Bep-pt-4QA">
+            <objects>
+                <viewController storyboardIdentifier="eAppList" id="g0f-MW-ElV" customClass="eAppsListing" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="G0R-uI-Z8S">
+                        <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="alM-VN-RaY">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="653" id="RsY-TY-mZP"/>
+                                </constraints>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="g0f-MW-ElV" id="zeK-sW-rZT"/>
+                                    <outlet property="delegate" destination="g0f-MW-ElV" id="aBk-Ks-Haw"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SI No" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="fFe-ZL-NFO">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="1my-6L-AAv"/>
+                                    <constraint firstAttribute="width" constant="137" id="rw1-XL-XqY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Lp0-NH-JbB">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="163" id="mpg-PV-iyF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Qxm-XG-sxC">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="195" id="swi-DA-vfS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" preferredMaxLayoutWidth="135" translatesAutoresizingMaskIntoConstraints="NO" id="zHq-OU-I9P">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="135" id="v2w-mP-8EN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="AOr-7H-q4a">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="170" id="uU9-eU-uBe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Plan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="e1R-ca-Wlb">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="177" id="5fz-5R-qYK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="AOr-7H-q4a" secondAttribute="trailing" constant="177" id="0B5-Gb-mWR"/>
+                            <constraint firstItem="Qxm-XG-sxC" firstAttribute="top" secondItem="G0R-uI-Z8S" secondAttribute="top" type="default" id="0cc-Ag-3q0"/>
+                            <constraint firstItem="Lp0-NH-JbB" firstAttribute="leading" secondItem="G0R-uI-Z8S" secondAttribute="leading" constant="137" id="1s0-lo-U0Y"/>
+                            <constraint firstItem="zHq-OU-I9P" firstAttribute="top" secondItem="G0R-uI-Z8S" secondAttribute="top" type="default" id="4ao-fy-uRv"/>
+                            <constraint firstItem="AOr-7H-q4a" firstAttribute="baseline" secondItem="zHq-OU-I9P" secondAttribute="baseline" type="default" id="6gl-7f-rek"/>
+                            <constraint firstItem="e1R-ca-Wlb" firstAttribute="baseline" secondItem="AOr-7H-q4a" secondAttribute="baseline" type="default" id="I1i-mb-WVj"/>
+                            <constraint firstItem="zHq-OU-I9P" firstAttribute="baseline" secondItem="Qxm-XG-sxC" secondAttribute="baseline" type="default" id="IIF-M2-672"/>
+                            <constraint firstItem="Lp0-NH-JbB" firstAttribute="top" secondItem="G0R-uI-Z8S" secondAttribute="top" type="default" id="L2k-kg-UcN"/>
+                            <constraint firstItem="Lp0-NH-JbB" firstAttribute="baseline" secondItem="fFe-ZL-NFO" secondAttribute="baseline" type="default" id="PZZ-Oo-x2o"/>
+                            <constraint firstItem="e1R-ca-Wlb" firstAttribute="top" secondItem="G0R-uI-Z8S" secondAttribute="top" type="default" id="RTt-FI-zhi"/>
+                            <constraint firstItem="alM-VN-RaY" firstAttribute="trailing" secondItem="G0R-uI-Z8S" secondAttribute="trailing" type="default" id="Szl-x5-KUX"/>
+                            <constraint firstItem="alM-VN-RaY" firstAttribute="bottom" secondItem="G0R-uI-Z8S" secondAttribute="bottom" type="default" id="Vrg-4N-qBG"/>
+                            <constraint firstItem="Qxm-XG-sxC" firstAttribute="baseline" secondItem="Lp0-NH-JbB" secondAttribute="baseline" type="default" id="YGP-cZ-uDR"/>
+                            <constraint firstItem="fFe-ZL-NFO" firstAttribute="leading" secondItem="G0R-uI-Z8S" secondAttribute="leading" type="default" id="ZM1-M3-asN"/>
+                            <constraint firstItem="zHq-OU-I9P" firstAttribute="leading" secondItem="G0R-uI-Z8S" secondAttribute="leading" constant="495" id="hkB-12-piX"/>
+                            <constraint firstItem="AOr-7H-q4a" firstAttribute="top" secondItem="G0R-uI-Z8S" secondAttribute="top" type="default" id="kOF-F6-7hi"/>
+                            <constraint firstItem="e1R-ca-Wlb" firstAttribute="trailing" secondItem="G0R-uI-Z8S" secondAttribute="trailing" type="default" id="nXZ-8t-Gt5"/>
+                            <constraint firstItem="Qxm-XG-sxC" firstAttribute="leading" secondItem="G0R-uI-Z8S" secondAttribute="leading" constant="300" id="sEi-tQ-VoR"/>
+                            <constraint firstItem="alM-VN-RaY" firstAttribute="leading" secondItem="G0R-uI-Z8S" secondAttribute="leading" type="default" id="tHP-mh-OeU"/>
+                            <constraint firstItem="fFe-ZL-NFO" firstAttribute="top" secondItem="G0R-uI-Z8S" secondAttribute="top" type="default" id="ywE-tX-kfd"/>
+                        </constraints>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem title="Item" id="syE-Cm-TKX"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="5LP-Ax-xPc"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <connections>
+                        <outlet property="SILabel" destination="fFe-ZL-NFO" id="5gF-pQ-Kbw"/>
+                        <outlet property="dateLabel" destination="Lp0-NH-JbB" id="LNi-cO-S54"/>
+                        <outlet property="idNoLabel" destination="zHq-OU-I9P" id="cdk-KC-cGq"/>
+                        <outlet property="idTypeLabel" destination="Qxm-XG-sxC" id="bTq-AQ-L6T"/>
+                        <outlet property="myTableView" destination="alM-VN-RaY" id="5Pe-9B-gWd"/>
+                        <outlet property="nameLabel" destination="AOr-7H-q4a" id="ae9-V7-XfR"/>
+                        <outlet property="planLabel" destination="e1R-ca-Wlb" id="FhN-TT-J0k"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rtv-WO-Y5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2202" y="4982"/>
+        </scene>
+    </scenes>
+    <classes>
+        <class className="MaineApp" superclassName="eAppTabBarController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MaineApp.h"/>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="eAppTabBarController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppTabBarController.h"/>
+        </class>
+        <class className="eAppsListing" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppsListing.h"/>
+            <relationships>
+                <relationship kind="outlet" name="SILabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="dateLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="idNoLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="idTypeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="planLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="eSubmission" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/eSubmission.h"/>
+            <relationships>
+                <relationship kind="action" name="addNew:"/>
+                <relationship kind="action" name="btnDatePressed:"/>
+                <relationship kind="outlet" name="btnDate" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="idNoLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="idTypeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="policyNoLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+    </classes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination"/>
+    </simulatedMetricsContainer>
+</document>

@@ -243,21 +243,6 @@
             </objects>
             <point key="canvasLocation" x="-1822" y="847"/>
         </scene>
-        <!--Maine App - eApp-->
-        <scene sceneID="XGx-S0-Mrz">
-            <objects>
-                <viewController storyboardIdentifier="maineApp" title="eApp" id="ELV-ce-VbL" customClass="MaineApp" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="jP5-dR-DEE">
-                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gJf-E7-Vbc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3990" y="844"/>
-        </scene>
         <!--Main Customer - CFF-->
         <scene sceneID="riW-dE-I2d">
             <objects>
@@ -6120,7 +6105,7 @@ HLA.I receive </string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YkT-KR-gkL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2948" y="5579"/>
+            <point key="canvasLocation" x="-1338" y="4531"/>
         </scene>
         <!--Payor View Controller-->
         <scene sceneID="U3N-Qo-18y">
@@ -6681,7 +6666,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hxl-iZ-heA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2988" y="4443"/>
+            <point key="canvasLocation" x="4218" y="4443"/>
         </scene>
         <!--Basic Account View Controller-->
         <scene sceneID="5vl-MZ-wBN">
@@ -6989,7 +6974,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ld-Wq-ra0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4892" y="4443"/>
+            <point key="canvasLocation" x="6122" y="4443"/>
         </scene>
         <!--EverLA View Controller - EverLA-->
         <scene sceneID="xOZ-6c-b8D">
@@ -7256,7 +7241,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yXy-DL-3SJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4073" y="4443"/>
+            <point key="canvasLocation" x="5303" y="4443"/>
         </scene>
         <!--Ever Rider View Controller - Ever Rider-->
         <scene sceneID="3QC-IB-ao6">
@@ -7798,268 +7783,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="-1346" y="3237"/>
         </scene>
-        <!--E Submission - e-Application-->
-        <scene sceneID="h9a-tK-7pe">
-            <objects>
-                <viewController storyboardIdentifier="eSubmission" id="1xB-tv-BNE" customClass="eSubmission" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zky-qH-Zug">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="UEd-Nm-3Lp">
-                                <rect key="frame" x="0.0" y="291" width="1015" height="413"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <sections/>
-                                <connections>
-                                    <outlet property="dataSource" destination="1xB-tv-BNE" id="88N-iG-Gsv"/>
-                                    <outlet property="delegate" destination="1xB-tv-BNE" id="dvO-7T-hcv"/>
-                                </connections>
-                            </tableView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Life Assured Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="BUX-HX-2eX">
-                                <rect key="frame" x="27" y="58" width="137" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="dAO-HX-qzb">
-                                <rect key="frame" x="206" y="58" width="285" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="HU7-PT-ael">
-                                <rect key="frame" x="27" y="95" width="158" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="6gB-3m-Nja">
-                                <rect key="frame" x="27" y="132" width="158" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="uqh-Nb-F5u">
-                                <rect key="frame" x="206" y="132" width="285" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="dfT-bI-rTi">
-                                <rect key="frame" x="582" y="58" width="89" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ic1-KP-971">
-                                <rect key="frame" x="206" y="95" width="285" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="35U-AX-lLU">
-                                <rect key="frame" x="778" y="181" width="75" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <state key="normal" title="Search">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="o4z-KC-Wnz">
-                                <rect key="frame" x="869" y="181" width="72" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <state key="normal" title="Reset">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="YCL-JH-5Mx">
-                                <rect key="frame" x="720" y="109" width="221" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal">
-                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnDatePressed:" destination="1xB-tv-BNE" eventType="touchUpInside" id="qTF-4h-u8o"/>
-                                </connections>
-                            </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="0gC-VY-mF9">
-                                <rect key="frame" x="720" y="57" width="221" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="Completed"/>
-                                    <segment title="Incomplete"/>
-                                </segments>
-                            </segmentedControl>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Creation Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="JZh-Bp-Lg1">
-                                <rect key="frame" x="582" y="109" width="100" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ID Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="E1c-1z-aQ5">
-                                <rect key="frame" x="0.0" y="240" width="204" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="ID Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="q8W-wE-t8G">
-                                <rect key="frame" x="204" y="240" width="167" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Policy Number" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="dRD-jq-WxO">
-                                <rect key="frame" x="371" y="240" width="181" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Client Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="bjX-v7-O9e">
-                                <rect key="frame" x="552" y="240" width="241" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="qt4-eR-XG6">
-                                <rect key="frame" x="793" y="240" width="163" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="e-Application" id="u1R-gh-tfb">
-                        <barButtonItem key="rightBarButtonItem" title="Add New" id="uU4-Xt-u5o">
-                            <connections>
-                                <action selector="addNew:" destination="1xB-tv-BNE" id="Oi8-pR-JRy"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    <connections>
-                        <outlet property="btnDate" destination="YCL-JH-5Mx" id="ugK-xz-FLG"/>
-                        <outlet property="idNoLabel" destination="q8W-wE-t8G" id="yWN-op-7cp"/>
-                        <outlet property="idTypeLabel" destination="E1c-1z-aQ5" id="ed2-h0-wcz"/>
-                        <outlet property="myTableView" destination="UEd-Nm-3Lp" id="hrd-9r-uzg"/>
-                        <outlet property="nameLabel" destination="bjX-v7-O9e" id="4OU-yk-XaT"/>
-                        <outlet property="policyNoLabel" destination="dRD-jq-WxO" id="4cv-W7-MPh"/>
-                        <outlet property="statusLabel" destination="qt4-eR-XG6" id="7y6-M5-tF4"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4gC-Wb-B7t" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1732" y="4635"/>
-        </scene>
-        <!--E Apps Listing-->
-        <scene sceneID="zV9-8R-0Kf">
-            <objects>
-                <viewController storyboardIdentifier="eAppList" id="oFB-TJ-hzB" customClass="eAppsListing" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="0qP-OP-6tt">
-                        <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="aXj-Tr-GJS">
-                                <rect key="frame" x="0.0" y="51" width="1029" height="653"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <sections/>
-                                <connections>
-                                    <outlet property="dataSource" destination="oFB-TJ-hzB" id="q8y-xJ-xBh"/>
-                                    <outlet property="delegate" destination="oFB-TJ-hzB" id="26R-nB-J65"/>
-                                </connections>
-                            </tableView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SI No" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="QzT-EE-ue6">
-                                <rect key="frame" x="0.0" y="0.0" width="137" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="IxT-tm-cYg">
-                                <rect key="frame" x="137" y="0.0" width="163" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="DZc-oO-4Ba">
-                                <rect key="frame" x="300" y="0.0" width="195" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" id="ZGz-YH-kOc">
-                                <rect key="frame" x="494" y="0.0" width="135" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="aLH-Qd-eKz">
-                                <rect key="frame" x="629" y="0.0" width="190" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Plan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="6UH-ig-BE9">
-                                <rect key="frame" x="819" y="0.0" width="145" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    </view>
-                    <toolbarItems>
-                        <barButtonItem title="Item" id="hID-nI-K4p"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" id="bvZ-qG-r5T"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="SILabel" destination="QzT-EE-ue6" id="kHG-4c-ibL"/>
-                        <outlet property="dateLabel" destination="IxT-tm-cYg" id="hnC-C6-xah"/>
-                        <outlet property="idNoLabel" destination="ZGz-YH-kOc" id="vk1-wc-1jM"/>
-                        <outlet property="idTypeLabel" destination="DZc-oO-4Ba" id="dP7-0q-XuG"/>
-                        <outlet property="myTableView" destination="aXj-Tr-GJS" id="y56-9e-61d"/>
-                        <outlet property="nameLabel" destination="aLH-Qd-eKz" id="eBH-og-EdW"/>
-                        <outlet property="planLabel" destination="6UH-ig-BE9" id="7Eh-na-ljP"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fgE-Jc-bzq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-648" y="4635"/>
-        </scene>
         <!--Premium View Controller-->
         <scene sceneID="qrJ-bT-hQ0">
             <objects>
@@ -8523,7 +8246,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I8H-JL-739" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8134" y="4970"/>
+            <point key="canvasLocation" x="9364" y="4970"/>
         </scene>
         <!--Declaration-->
         <scene sceneID="Ajy-aP-Y8R">
@@ -8689,7 +8412,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UkB-JZ-79L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6776" y="5006"/>
+            <point key="canvasLocation" x="8006" y="5006"/>
         </scene>
         <!--Nominees Trustees-->
         <scene sceneID="SIc-d1-BMk">
@@ -8979,7 +8702,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CsC-RM-mAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8108" y="3957"/>
+            <point key="canvasLocation" x="9338" y="3957"/>
         </scene>
         <!--Summary-->
         <scene sceneID="GaH-wI-G79">
@@ -9286,25 +9009,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jG2-k5-sfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6751" y="3965"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="t7M-Eh-YEJ">
-            <objects>
-                <navigationController storyboardIdentifier="eAppsNavi" id="YlK-WS-a9f" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ige-oI-J0T">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="1xB-tv-BNE" kind="relationship" relationship="rootViewController" id="u1p-km-mjM"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5Cr-aa-Oqf" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2962" y="4635"/>
+            <point key="canvasLocation" x="7981" y="3965"/>
         </scene>
     </scenes>
     <resources>
@@ -9719,9 +9424,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <class className="MainScreen" superclassName="FSVerticalTabBarController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MainScreen.h"/>
         </class>
-        <class className="MaineApp" superclassName="eAppTabBarController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MaineApp.h"/>
-        </class>
         <class className="NewLAViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NewLAViewController.h"/>
             <relationships>
@@ -10100,21 +9802,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <class className="ViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
         </class>
-        <class className="eAppTabBarController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppTabBarController.h"/>
-        </class>
-        <class className="eAppsListing" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppsListing.h"/>
-            <relationships>
-                <relationship kind="outlet" name="SILabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="dateLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="idNoLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="idTypeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="planLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
         <class className="eBrochureListingViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/eBrochureListingViewController.h"/>
             <relationships>
@@ -10125,20 +9812,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <source key="sourceIdentifier" type="project" relativePath="./Classes/eBrochureViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="outletWebview" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="eSubmission" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/eSubmission.h"/>
-            <relationships>
-                <relationship kind="action" name="addNew:"/>
-                <relationship kind="action" name="btnDatePressed:"/>
-                <relationship kind="outlet" name="btnDate" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="idNoLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="idTypeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="nameLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="policyNoLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="statusLabel" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="iCarousel" superclassName="UIView">

@@ -244,6 +244,7 @@
 		EF5B611F173C9ED900751157 /* CustomerProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B611E173C9ED800751157 /* CustomerProfile.m */; };
 		EF5B612A1740B70C00751157 /* SIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B61291740B70C00751157 /* SIUtilities.m */; };
 		EF906B2517703EAE00D5F3E3 /* eAppsListing.m in Sources */ = {isa = PBXBuildFile; fileRef = EF906B2417703EAE00D5F3E3 /* eAppsListing.m */; };
+		EF906B2717729C0A00D5F3E3 /* NewStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF906B2617729C0900D5F3E3 /* NewStoryboard.storyboard */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
@@ -600,6 +601,7 @@
 		EF5B61291740B70C00751157 /* SIUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIUtilities.m; sourceTree = "<group>"; };
 		EF906B2317703EAE00D5F3E3 /* eAppsListing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eAppsListing.h; sourceTree = "<group>"; };
 		EF906B2417703EAE00D5F3E3 /* eAppsListing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eAppsListing.m; sourceTree = "<group>"; };
+		EF906B2617729C0900D5F3E3 /* NewStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NewStoryboard.storyboard; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
 		EFB3D5861685604400A7B517 /* PayorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayorHandler.m; sourceTree = "<group>"; };
@@ -923,6 +925,7 @@
 				EF5B61281740B70C00751157 /* SIUtilities.h */,
 				EF5B61291740B70C00751157 /* SIUtilities.m */,
 				C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */,
+				EF906B2617729C0900D5F3E3 /* NewStoryboard.storyboard */,
 				C4E9D1A91612C64900016053 /* ViewController.h */,
 				C4E9D1AA1612C64900016053 /* ViewController.m */,
 				C4E9D1C81612C7D300016053 /* MainScreen.h */,
@@ -1538,6 +1541,7 @@
 				EFEB7A511766E8CC004FF3CE /* homeScreenEApp.png in Resources */,
 				42C9E410176B051100B7EFF8 /* emptyCheckBox.png in Resources */,
 				42C9E411176B051100B7EFF8 /* tickCheckBox.png in Resources */,
+				EF906B2717729C0A00D5F3E3 /* NewStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
