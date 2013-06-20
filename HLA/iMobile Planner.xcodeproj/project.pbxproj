@@ -19,10 +19,13 @@
 		42867E9D175F2E0C001CE661 /* IDType.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867E9C175F2E0C001CE661 /* IDType.plist */; };
 		42867EAF175F75BD001CE661 /* Title.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867EAE175F75BD001CE661 /* Title.plist */; };
 		42867EB3175F75E6001CE661 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867EB2175F75E6001CE661 /* TitleViewController.m */; };
-		42C9E410176B051100B7EFF8 /* emptyCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C9E40E176B051100B7EFF8 /* emptyCheckBox.png */; };
-		42C9E411176B051100B7EFF8 /* tickCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 42C9E40F176B051100B7EFF8 /* tickCheckBox.png */; };
 		42C9E415176B0CC500B7EFF8 /* DisclosureStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */; };
 		42C9E424176B826200B7EFF8 /* CustomerChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E423176B826200B7EFF8 /* CustomerChoice.m */; };
+		42F8590B1772DAA7003907CD /* emptyCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F859091772DAA7003907CD /* emptyCheckBox.png */; };
+		42F8590C1772DAA7003907CD /* tickCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F8590A1772DAA7003907CD /* tickCheckBox.png */; };
+		42F8590F1772E4EF003907CD /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F8590D1772E4EF003907CD /* add.png */; };
+		42F859101772E4EF003907CD /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F8590E1772E4EF003907CD /* delete.png */; };
+		42FB604D1772EF6000943E1F /* Preference.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FB604C1772EF6000943E1F /* Preference.m */; };
 		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
 		C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */; };
@@ -288,12 +291,16 @@
 		42867EAE175F75BD001CE661 /* Title.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Title.plist; sourceTree = "<group>"; };
 		42867EB1175F75E6001CE661 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
 		42867EB2175F75E6001CE661 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
-		42C9E40E176B051100B7EFF8 /* emptyCheckBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptyCheckBox.png; sourceTree = "<group>"; };
-		42C9E40F176B051100B7EFF8 /* tickCheckBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickCheckBox.png; sourceTree = "<group>"; };
 		42C9E413176B0CC500B7EFF8 /* DisclosureStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureStatus.h; sourceTree = "<group>"; };
 		42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureStatus.m; sourceTree = "<group>"; };
 		42C9E422176B826200B7EFF8 /* CustomerChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerChoice.h; sourceTree = "<group>"; };
 		42C9E423176B826200B7EFF8 /* CustomerChoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerChoice.m; sourceTree = "<group>"; };
+		42F859091772DAA7003907CD /* emptyCheckBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptyCheckBox.png; sourceTree = "<group>"; };
+		42F8590A1772DAA7003907CD /* tickCheckBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tickCheckBox.png; sourceTree = "<group>"; };
+		42F8590D1772E4EF003907CD /* add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add.png; sourceTree = "<group>"; };
+		42F8590E1772E4EF003907CD /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		42FB604B1772EF6000943E1F /* Preference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preference.h; sourceTree = "<group>"; };
+		42FB604C1772EF6000943E1F /* Preference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preference.m; sourceTree = "<group>"; };
 		C40059F816BB678000B03041 /* CashPromiseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashPromiseViewController.h; sourceTree = "<group>"; };
 		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
 		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
@@ -1178,8 +1185,8 @@
 		C4FCDDBB16395EDA0065D024 /* bg */ = {
 			isa = PBXGroup;
 			children = (
-				42C9E40E176B051100B7EFF8 /* emptyCheckBox.png */,
-				42C9E40F176B051100B7EFF8 /* tickCheckBox.png */,
+				42F859091772DAA7003907CD /* emptyCheckBox.png */,
+				42F8590A1772DAA7003907CD /* tickCheckBox.png */,
 				C4FCDDBD16395F120065D024 /* background12.png */,
 				C4FCDDBE16395F120065D024 /* background13.png */,
 				C4FCDDBF16395F120065D024 /* background14.png */,
@@ -1201,6 +1208,8 @@
 			isa = PBXGroup;
 			children = (
 				C486D9CF163E5466009F8F21 /* btn_home.png */,
+				42F8590D1772E4EF003907CD /* add.png */,
+				42F8590E1772E4EF003907CD /* delete.png */,
 				C486D9D0163E5466009F8F21 /* btn_SIlisting_off.png */,
 				C486D9BF163E5319009F8F21 /* btn_exit.png */,
 				C486D9C1163E5319009F8F21 /* btn_newSI_off.png */,
@@ -1303,6 +1312,8 @@
 				423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */,
 				423E8BAF176FFF2800E60C20 /* FinancialAnalysis.h */,
 				423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */,
+				42FB604B1772EF6000943E1F /* Preference.h */,
+				42FB604C1772EF6000943E1F /* Preference.m */,
 			);
 			name = CFF;
 			sourceTree = "<group>";
@@ -1539,9 +1550,11 @@
 				42867EAF175F75BD001CE661 /* Title.plist in Resources */,
 				EFEB7A4F1766E8C1004FF3CE /* homeScreenCFF.png in Resources */,
 				EFEB7A511766E8CC004FF3CE /* homeScreenEApp.png in Resources */,
-				42C9E410176B051100B7EFF8 /* emptyCheckBox.png in Resources */,
-				42C9E411176B051100B7EFF8 /* tickCheckBox.png in Resources */,
 				EF906B2717729C0A00D5F3E3 /* NewStoryboard.storyboard in Resources */,
+				42F8590B1772DAA7003907CD /* emptyCheckBox.png in Resources */,
+				42F8590C1772DAA7003907CD /* tickCheckBox.png in Resources */,
+				42F8590F1772E4EF003907CD /* add.png in Resources */,
+				42F859101772E4EF003907CD /* delete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,6 +1674,7 @@
 				423E8BBA17700F1700E60C20 /* HealthQuestionnaire.m in Sources */,
 				423E8BBD17700FF200E60C20 /* Declaration.m in Sources */,
 				EF906B2517703EAE00D5F3E3 /* eAppsListing.m in Sources */,
+				42FB604D1772EF6000943E1F /* Preference.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1754,8 +1768,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1770,8 +1784,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -1781,8 +1795,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1797,8 +1811,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
