@@ -242,8 +242,7 @@
     
     [self presentViewController:main animated:NO completion:nil];
     
-    MenuOption = Nil;
-    main = Nil;
+    MenuOption = Nil, mainStoryboard = Nil, main = Nil;
 }
 
 - (void)didReceiveMemoryWarning

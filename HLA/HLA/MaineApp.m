@@ -59,7 +59,7 @@
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);
     }
     
-    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, eAppListing = Nil, LogoutPage = Nil;
+    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, eAppListing = Nil, LogoutPage = Nil, mainStoryboard = Nil;
     
 }
 

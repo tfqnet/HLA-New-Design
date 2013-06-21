@@ -324,6 +324,7 @@ const int numberOfModule = 7;
         zzz.IndexTab = 1;
         [self presentViewController:zzz animated:NO completion:Nil];
         zzz = Nil;
+        secondStoryboard = Nil;
 		NSLog(@"e-sub!");
     }
     

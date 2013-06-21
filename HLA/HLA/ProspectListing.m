@@ -460,7 +460,7 @@
     }
     
     [self.navigationController pushViewController:_ProspectViewController animated:YES];
-    _ProspectViewController.navigationItem.title = @"Prospect Profile";
+    _ProspectViewController.navigationItem.title = @"Client Profile";
     _ProspectViewController.navigationItem.rightBarButtonItem = _ProspectViewController.outletDone;
     
 }
