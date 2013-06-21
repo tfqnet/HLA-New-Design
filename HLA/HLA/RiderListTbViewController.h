@@ -34,4 +34,9 @@
 @property (nonatomic, assign,readwrite) int requestOccpClass;
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestOccpCat;
+@property (nonatomic,strong) id TradOrEver;
+@property (nonatomic,strong) id requestSmoker;
+@property (nonatomic,strong) id request2ndSmoker;
+@property (nonatomic,strong) id requestPayorSmoker;
+@property (nonatomic,strong) id requestOccpCPA;
 @end

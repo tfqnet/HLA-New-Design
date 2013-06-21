@@ -14,6 +14,7 @@
 
 @implementation RiderListTbViewController
 @synthesize requestPtype,requestSeq,ridCode,ridDesc,selectedCode,selectedDesc,requestOccpClass,requestAge,requestPlan, requestOccpCat;
+@synthesize TradOrEver, requestSmoker,requestPayorSmoker,request2ndSmoker, requestOccpCPA;
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad
@@ -25,7 +26,13 @@
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     
-    [self getRiderListing];
+	if ([TradOrEver isEqualToString:@"TRAD"]) {
+			    [self getRiderListing];
+	}
+	else{
+				[self getEverRiderListing];
+	}
+
 }
 
 
@@ -33,6 +40,96 @@
 {
 	return YES;
 }
+
+-(void)getEverRiderListing
+{
+    ridCode = [[NSMutableArray alloc] init];
+    ridDesc = [[NSMutableArray alloc] init];
+    
+    sqlite3_stmt *statement;
+    NSString *querySQL;
+	
+	
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        if (self.requestOccpClass == 4 && ![self.requestOccpCPA isEqualToString:@"D"] ) {
+
+			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
+							"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
+							"AND B.Seq = '%d' AND B.Ridercode != 'MG_IV' AND B.MinAge <= '%d' ANd B.MaxAge >= '%d'",
+							[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
+			
+        }
+        else if (self.requestOccpClass > 4 || [self.requestOccpCPA isEqualToString:@"D"]) {
+			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
+						"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
+						"AND B.Seq = '%d' AND B.Ridercode != 'DCA' AND B.RiderCode != 'DHI' AND B.Ridercode != 'MR' "
+						"AND B.RiderCode != 'PA' AND B.Ridercode != 'HMM' AND B.Ridercode != 'MG_IV' AND B.MinAge "
+						"<= '%d' AND B.MaxAge >= '%d' AND B.Ridercode != 'WI'",
+						[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
+        }
+		else if ([self.requestOccpCat isEqualToString:@"UNEMP"]){
+
+			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
+						"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
+						"AND B.Seq = '%d' AND B.Ridercode != 'DHI' AND B.MinAge <= '%d' ANd B.MaxAge >= '%d' AND B.Ridercode != 'TPDMLA' AND B.Ridercode != 'WI' ",
+						[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
+		}
+		else if ([self.requestPtype isEqualToString:@"LA"] && self.requestSeq == 2 && [self.request2ndSmoker isEqualToString:@"Y"]){
+			
+			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
+						"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
+						"AND B.Seq = '%d' AND B.Ridercode != 'CIRD' AND B.MinAge <= '%d' ANd B.MaxAge >= '%d'",
+						[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
+		}
+		else if ([self.requestPtype isEqualToString:@"LA"] && self.requestSeq == 1 && [self.requestSmoker isEqualToString:@"Y"]){
+			
+			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
+						"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
+						"AND B.Seq = '%d' AND B.Ridercode != 'CIRD' AND B.MinAge <= '%d' ANd B.MaxAge >= '%d'",
+						[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
+		}
+		else if ([self.requestPtype isEqualToString:@"PY"] && [self.request2ndSmoker isEqualToString:@"Y"]){
+			
+			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
+						"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
+						"AND B.Seq = '%d' AND B.Ridercode != 'CIRD' AND B.MinAge <= '%d' ANd B.MaxAge >= '%d'",
+						[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
+		}
+        else {
+		
+			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
+						"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
+						"AND B.Seq = '%d' AND B.RiderCode != 'MG_IV' AND B.MinAge <= '%d' ANd B.MaxAge >= '%d'",
+						[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
+        }
+        
+		
+		
+        if (self.requestAge > 60) {
+            querySQL = [querySQL stringByAppendingFormat:@" AND B.RiderCode != \"I20R\""];
+        }
+        if (self.requestAge > 65) {
+            querySQL = [querySQL stringByAppendingFormat:@" AND B.RiderCode != \"IE20R\""];
+        }
+        
+        querySQL = [querySQL stringByAppendingFormat:@" order by B.RiderCode asc"];
+		
+		        //NSLog(@"%@",querySQL);
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                [ridCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+                [ridDesc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)]];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
 
 -(void)getRiderListing
 {

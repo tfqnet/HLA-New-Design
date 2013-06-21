@@ -40,7 +40,7 @@
 	}
 	else{
 		ListOfPlan = [[NSMutableArray alloc] initWithObjects:@"HLA EverLife", nil ];
-		ListOfCode = [[NSMutableArray alloc] initWithObjects:@"HLAEL", nil ];
+		ListOfCode = [[NSMutableArray alloc] initWithObjects:@"EverLife", nil ];
 	}
     NSLog(@"viewPlan!");
 }

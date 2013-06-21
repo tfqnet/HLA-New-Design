@@ -125,9 +125,9 @@ BOOL Edit = FALSE;
     PtypeChange = NO;
     
     if (requestSINo) {
-        self.PTypeList = [[RiderPTypeTbViewController alloc]initWithString:getSINo];
-		self.PTypeList.TradOrEver = @"TRAD";
-        _PTypeList.delegate = self;
+        //self.PTypeList = [[RiderPTypeTbViewController alloc]initWithString:getSINo];
+		self.PTypeList = [[RiderPTypeTbViewController alloc]initWithString:getSINo str:@"TRAD"];
+		_PTypeList.delegate = self;
         pTypeCode = [[NSString alloc] initWithFormat:@"%@",self.PTypeList.selectedCode];
         PTypeSeq = [self.PTypeList.selectedSeqNo intValue];
         pTypeDesc = [[NSString alloc] initWithFormat:@"%@",self.PTypeList.selectedDesc];
@@ -2380,7 +2380,8 @@ BOOL Edit = FALSE;
 {
     if(_PTypeList == nil){
         
-		self.PTypeList = [[RiderPTypeTbViewController alloc] initWithString:getSINo];
+		//self.PTypeList = [[RiderPTypeTbViewController alloc] initWithString:getSINo];
+		self.PTypeList = [[RiderPTypeTbViewController alloc] initWithString:getSINo str:@"TRAD"];
 		self.PTypeList.TradOrEver = @"TRAD";
         _PTypeList.delegate = self;
         self.pTypePopOver = [[UIPopoverController alloc] initWithContentViewController:_PTypeList];
@@ -2411,6 +2412,7 @@ BOOL Edit = FALSE;
         
         self.RiderList = [[RiderListTbViewController alloc] initWithStyle:UITableViewStylePlain];
         _RiderList.delegate = self;
+		_RiderList.TradOrEver = @"TRAD";
         _RiderList.requestPtype = self.pTypeCode;
         _RiderList.requestPlan = getPlanChoose;
         _RiderList.requestSeq = self.PTypeSeq;

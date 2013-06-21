@@ -40,6 +40,9 @@
     BOOL plan;
     BOOL unit;
     BOOL deduc;
+	BOOL ECARYearlyIncome;
+	BOOL ECAR55MonthlyIncome;
+	BOOL RRTUOPrem;
     BOOL hload;
     BOOL hloadterm;
     BOOL pressedPlan;
@@ -70,6 +73,10 @@
 @property (nonatomic, strong) id requestBasicSA;
 @property (nonatomic, strong) id requestBasicHL;
 @property (nonatomic, strong) id requestBasicHLPct;
+@property (nonatomic, strong) id requestSmoker;
+@property (nonatomic, strong) id request2ndSmoker;
+@property (nonatomic, strong) id requestPayorSmoker;
+@property (nonatomic, strong) id requestOccpCPA;
 
 @property (nonatomic,strong) NSString *getSINo;
 @property (nonatomic,strong) NSString *getPlanCode;
@@ -81,6 +88,10 @@
 @property (nonatomic, assign,readwrite) double getBasicSA;
 @property (nonatomic, assign,readwrite) double getBasicHL;
 @property (nonatomic, assign,readwrite) double getBasicHLPct;
+@property (nonatomic,strong) NSString *getSmoker;
+@property (nonatomic,strong) NSString *get2ndSmoker;
+@property (nonatomic,strong) NSString *getPayorSmoker;
+@property (nonatomic,strong) NSString *getOccpCPA;
 //
 
 @property (weak, nonatomic) IBOutlet UIButton *outletPersonType;
@@ -223,6 +234,38 @@
 @property(nonatomic , retain) NSMutableArray *LTypeAge;
 @property(nonatomic , retain) NSMutableArray *LTypeTempRidHL1K;
 @property(nonatomic , retain) NSMutableArray *LTypeTempRidHLTerm;
+
+@property (nonatomic, assign,readwrite) int age;
+@property (nonatomic,strong) NSString *sex;
+@property (nonatomic, assign,readwrite) double riderRate;
+@property (nonatomic, assign,readwrite) int CombNo;
+@property (nonatomic, assign,readwrite) int RBBenefit;
+@property (nonatomic, assign,readwrite) int RBLimit;
+@property (nonatomic, assign,readwrite) int RBGroup;
+@property (nonatomic, assign,readwrite) int AllCombNo;
+@property (nonatomic,strong) NSString *OccpCat;
+@property (nonatomic,strong) NSString *pentaSQL;
+@property (nonatomic,strong) NSString *medPentaSQL;
+@property (nonatomic,strong) NSString *plnOptC;
+@property (nonatomic,strong) NSString *planOptHMM;
+@property (nonatomic,strong) NSString *deducHMM;
+@property (nonatomic,strong) NSString *planHSPII;
+@property (nonatomic,strong) NSString *planMGII;
+@property (nonatomic,strong) NSString *planMGIV;
+@property (nonatomic,strong) NSString *planCodeRider;
+@property (nonatomic,strong) NSString *medPlanCodeRider;
+@property (nonatomic,strong) NSString *medRiderCode;
+@property (nonatomic,strong) NSString *medPlanOpt;
+@property (nonatomic,strong) NSMutableArray *annualRiderPrem;
+@property (nonatomic,strong) NSMutableArray *quarterRiderPrem;
+@property (nonatomic,strong) NSMutableArray *halfRiderPrem;
+@property (nonatomic,strong) NSMutableArray *monthRiderPrem;
+@property (nonatomic, assign,readwrite) double annualRiderSum;
+@property (nonatomic, assign,readwrite) double halfRiderSum;
+@property (nonatomic, assign,readwrite) double quarterRiderSum;
+@property (nonatomic, assign,readwrite) double monthRiderSum;
+@property (nonatomic,strong) NSMutableArray *arrCombNo;
+@property (nonatomic,strong) NSMutableArray *arrRBBenefit;
 
 
 @end

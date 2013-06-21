@@ -12,9 +12,10 @@
 
 @class EverBasicPlanViewController;
 @protocol EverBasicPlanViewControllerDelegate
--(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
-		andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA
-		andPlanCode:(NSString *)aaPlanCode andBasicPrem:(double)aaBasicPrem;
+-(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered
+	 andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicHLTerm:(int)aaBasicHLTerm
+  andBasicHLPct:(NSString *)aaBasicHLPct andBasicHLPctTerm:(int)aaBasicHLPctTerm andPlanCode:(NSString *)aaPlanCode;
+
 -(void)RiderAdded;
 -(void) BasicSARevised:(NSString *)aabasicSA;
 @end

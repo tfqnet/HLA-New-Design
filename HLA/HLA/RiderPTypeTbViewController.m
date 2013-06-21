@@ -17,7 +17,7 @@
 @synthesize selectedAge,selectedOccp, TradOrEver;
 @synthesize delegate = _delegate;
 
--(id)initWithString:(NSString *)stringCode {
+-(id)initWithString:(NSString *)stringCode str:(NSString *)getTradOrEver {
     self = [super init];
     if (self != nil) {
         NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -26,6 +26,7 @@
         
         NSLog(@"RIDERPTYPE initSINo:%@",stringCode);
         SINoPlan = [NSString stringWithFormat:@"%@",stringCode];
+		TradOrEver = getTradOrEver;
         [self getPersonType];
     }
     return self;
@@ -63,12 +64,8 @@
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-				NSString *querySQL;
-		querySQL = [NSString stringWithFormat:
-					@"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode "
-					"FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
-					"LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
-		/*
+				
+		
 		NSString *querySQL;
 		if ([TradOrEver isEqualToString:@"TRAD"]) {
 			querySQL = [NSString stringWithFormat:
@@ -78,11 +75,11 @@
 		}
 		else{
 			querySQL = [NSString stringWithFormat:
-						@"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode "
-						"FROM UL_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
+						@"SELECT a.PTypeCode,a.Seq,b.PTypeDesc,c.ALB,c.OccpCode "
+						"FROM UL_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq "
 						"LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
 		}
-        */
+        
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {

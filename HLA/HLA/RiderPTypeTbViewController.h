@@ -36,6 +36,6 @@
 @property(nonatomic , retain) NSMutableArray *Occp;
 @property (nonatomic,strong) id requestSINo;
 
--(id)initWithString:(NSString *)stringCode;
+-(id)initWithString:(NSString *)stringCode str:(NSString *)getTradOrEver;
 
 @end

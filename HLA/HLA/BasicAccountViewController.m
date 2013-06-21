@@ -179,6 +179,14 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 
 #pragma mark - delegate
 
+-(void)Planlisting:(PlanList *)inController didSelectCode:(NSString *)aaCode andDesc:(NSString *)aaDesc{
+	[outletBasic setTitle:aaDesc forState:UIControlStateNormal ];
+	[self.planPopover dismissPopoverAnimated:YES];
+	txtPolicyTerm.text =  [NSString stringWithFormat:@"%d", (100 - requestAge)];
+	getPlanCode = aaCode;
+}
+
+
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
 	
 	switch (textField.tag) {
@@ -398,8 +406,8 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
                 NSLog(@"BasicPlan update!");
                 //[self getPlanCodePenta];
                 
-                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover
-						andBasicSA:txtBasicSA.text andPlanCode:getPlanCode andBasicPrem:(double)getBasicPrem];
+				[_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:txtBasicSA.text
+					andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode];
 				
 				
             }
@@ -445,10 +453,10 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-							   @"INSERT INTO UL_Details (SINo,  PlanCode, CovTypeCode, ATPrem, BasicSA, CovPeriod, OccpCode "
-							   "BumpMode, DateCreated, createdBy, DateModified, ModifiedBy) VALUES "
-							   "(\"%@\", \"UV\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\",)"
-							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA' ",
+							   @"INSERT INTO UL_Details (SINo,  PlanCode, CovTypeCode, ATPrem, BasicSA, CovPeriod, OccpCode, "
+							   "BumpMode, DateCreated, CreatedBy, DateModified, ModifiedBy) VALUES "
+							   "(\"%@\", \"EverLife\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", "
+							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA') ",
 							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode,
 							   [self getBumpMode]];
 		
@@ -466,10 +474,12 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
                 if (secondLAIndexNo != 0) {
                     [self saveSecondLA];
                 }
-                
-                [_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover
-						andBasicSA:txtBasicSA.text andPlanCode:getPlanCode andBasicPrem:(double)getBasicPrem];
+				
+				[_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:txtBasicSA.text
+						andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm
+						andPlanCode:getPlanCode];
 
+		
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
                 zzz.SICompleted = YES;
                 
@@ -485,6 +495,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
         sqlite3_close(contactDB);
     }
 }
+
 
 -(void)updateLA
 {
@@ -789,12 +800,6 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 }
 
 
--(void)Planlisting:(PlanList *)inController didSelectCode:(NSString *)aaCode andDesc:(NSString *)aaDesc{
-	[outletBasic setTitle:aaDesc forState:UIControlStateNormal ];
-	[self.planPopover dismissPopoverAnimated:YES];
-	txtPolicyTerm.text =  [NSString stringWithFormat:@"%d", (100 - requestAge)];
-	
-}
 
 #pragma mark - memory management
 

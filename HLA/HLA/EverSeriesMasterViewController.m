@@ -25,7 +25,9 @@
 @synthesize getOccpCode,getSex,getSmoker, Name2ndLA,NameLA,NamePayor, get2ndLAAge,get2ndLADOB,get2ndLAIndexNo;
 @synthesize get2ndLAOccp,get2ndLASex,get2ndLASmoker,getbasicHL,getBasicPlan,getbasicSA,getbasicHLPct;
 @synthesize getPayAge,getPayDOB,getPayOccp,getPayorIndexNo,getPaySex,getPaySmoker,getPlanCode;
-@synthesize getSINo,getTerm, payorCustCode, payorSINo, requestSINo2, CustCode2;
+@synthesize getSINo,getTerm, payorCustCode, payorSINo, requestSINo2, CustCode2, clientID2;
+@synthesize getOccpCPA;
+id EverRiderCount;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,8 +54,7 @@
     [self.view addSubview:self.RightView];
 	
 	ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor",
-					 @"Basic Account", @"Fund Allocation & Others", @"Rider", @"Health Loading", @"Special Options",
-					 @"Fund Maturity Options", @"Quotation", nil ];
+					 @"Basic Account", nil ];
 	
 	PlanEmpty = YES;
     added = NO;
@@ -303,6 +304,10 @@
 				self.EverRider.requestBasicSA = getbasicSA;
 				self.EverRider.requestBasicHL = getbasicHL;
 				self.EverRider.requestBasicHLPct = getbasicHLPct;
+				self.EverRider.requestSmoker = getSmoker;
+				self.EverRider.request2ndSmoker = get2ndLASmoker;
+				self.EverRider.requestPayorSmoker = getPaySmoker;
+				self.EverRider.requestOccpCPA = getOccpCPA;
 				
 				[self addChildViewController:self.EverRider];
 				[self.RightView addSubview:self.EverRider.view];
@@ -497,6 +502,84 @@
     }
 }
 
+-(void)checking2ndLA
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+                              @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, "
+							  "b.id FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" "
+							  "AND a.PTypeCode=\"LA\" AND a.Sequence=2",getSINo];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                CustCode2 = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+                Name2ndLA = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+                clientID2 = sqlite3_column_int(statement, 9);
+				
+            } else {
+                NSLog(@"error access checking2ndLA");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)toogleView
+{
+    if (PlanEmpty && added)
+    {
+        [ListOfSubMenu removeObject:@"Rider"];
+        
+    }
+    else if (!PlanEmpty && !added) {
+		[ListOfSubMenu addObject:@"Fund Allocation and Others"];
+        [ListOfSubMenu addObject:@"Rider"];
+		[ListOfSubMenu addObject:@"Health Loading"];
+		[ListOfSubMenu addObject:@"Special Options"];
+		[ListOfSubMenu addObject:@"Fund Maturity Options"];
+        [ListOfSubMenu addObject:@"Quotation"];
+        [ListOfSubMenu addObject:@"Proposal"];
+        [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
+        [ListOfSubMenu addObject:@"   English"];
+        [ListOfSubMenu addObject:@"   Malay"];
+		
+        added = YES;
+    }
+    [self CalculateRider];
+    [self hideSeparatorLine];
+    
+    [self.myTableView reloadData];
+}
+
+-(void)CalculateRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"select count(*) from UL_rider_details where sino = '%@' ", getSINo ];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+               EverRiderCount = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                
+            } else {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+
+
 -(void)RemoveTab{
     [ListOfSubMenu removeObject:@"Quotation"];
     [ListOfSubMenu removeObject:@"Proposal"];
@@ -557,10 +640,16 @@
     getBasicPlan = nil;
 }
 
+-(void)copySIToDoc{
+	
+}
 
 
 #pragma mark - delegate
--(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker{
+// from LA
+-(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
+	andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
+	   andSmoker:(NSString *)aaSmoker andOccpCPA:(NSString *)aaOccpCPA{
 	getAge = aaAge;
     getSex = aaSex;
     getSmoker = aaSmoker;
@@ -570,6 +659,7 @@
     getIdPay = aaIdPayor;
     getIdProf = aaIdProfile;
     getLAIndexNo = aaIndexNo;
+	getOccpCPA = aaOccpCPA;
 	
 	[self getLAName];
 	[self.myTableView reloadData];
@@ -581,8 +671,35 @@
     }
 }
 
--(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered andBasicSA:(NSString *)aaBasicSA andBasicPlan:(NSString *)aabasicPlan{
+//from LA and Basic
+-(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered
+	andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicHLTerm:(int)aaBasicHLTerm
+	andBasicHLPct:(NSString *)aaBasicHLPct andBasicHLPctTerm:(int)aaBasicHLPctTerm andPlanCode:(NSString *)aaPlanCode{
 	
+	NSLog(@"::receive databasicSINo:%@, PlanCode:%@",aaSINo,aaPlanCode);
+    getSINo = aaSINo;
+    getTerm = aaCovered;
+    getbasicSA = aaBasicSA;
+    getbasicHL = aaBasicHL;
+    getbasicHLPct = aaBasicHLPct;
+    getPlanCode = aaPlanCode;
+    
+    if (getbasicSA.length != 0)
+    {
+        PlanEmpty = NO;
+    }
+    
+    [self checkingPayor];
+    [self checking2ndLA];
+    
+    [self toogleView];
+    if (blocked) {
+        [self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else {
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+
 }
 
 -(void)BasicSARevised:(NSString *)aabasicSA{

@@ -305,7 +305,8 @@
     } else {
 		txtPA.text = [NSString stringWithFormat:@"%d",occPA];
     }
-    [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+    [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode
+			andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
     Inserted = YES;
 }
 
@@ -369,7 +370,7 @@
         }
         
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass
-					  andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+					  andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
     }
     else {
         
@@ -414,7 +415,8 @@
 			txtPA.text = [NSString stringWithFormat:@"%d",occPA];
         }
 		
-        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode
+				andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
         
         if (age > 100) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -519,7 +521,8 @@
             sqlite3_finalize(statement);
         }
 		
-        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+        [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode
+				andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
         Inserted = YES;
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         zzz.SICompleted = NO;
