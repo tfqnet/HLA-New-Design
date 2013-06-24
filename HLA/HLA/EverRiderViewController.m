@@ -35,7 +35,7 @@
 @synthesize request2ndSmoker,requestPayorSmoker,get2ndSmoker,getPayorSmoker, requestOccpCPA, getOccpCPA;
 @synthesize FCondition,FFieldName,FInputCode,FLabelCode,FLabelDesc,FRidName,FTbName;
 @synthesize txtGYIFrom,txtHL,txtHLTerm,txtOccpLoad,txtPaymentTerm,txtReinvestment,txtRiderPremium,txtRiderTerm;
-@synthesize txtRRTUP,txtRRTUPTerm,txtSumAssured;
+@synthesize txtRRTUP,txtRRTUPTerm,txtSumAssured, expAge, existRidCode, lblMax, lblMin;
 @synthesize delegate = _delegate;
 @synthesize RiderList = _RiderList;
 @synthesize RiderListPopover = _RiderListPopover;
@@ -92,6 +92,8 @@
 	outletRiderPlan.hidden =YES;
 	PtypeChange = NO;
 	
+	
+	
 	if (requestSINo) {
         self.PTypeList = [[RiderPTypeTbViewController alloc]initWithString:getSINo str:@"EVER"];
         _PTypeList.delegate = self;
@@ -103,6 +105,22 @@
         [self.outletPersonType setTitle:pTypeDesc forState:UIControlStateNormal];
     }
     _PTypeList = nil;
+	
+	txtRiderTerm.delegate = self;
+	txtPaymentTerm.delegate = self;
+	txtReinvestment.delegate = self;
+	txtGYIFrom.delegate = self;
+	txtSumAssured.delegate = self;
+	txtRRTUPTerm.delegate = self;
+	txtRRTUP.delegate =self;
+	
+	txtRiderTerm.tag = 1;
+	txtPaymentTerm.tag = 2;
+	txtReinvestment.tag = 3;
+	txtGYIFrom.tag = 4;
+	txtSumAssured.tag = 5;
+	txtRRTUPTerm.tag = 6;
+	txtRRTUP.tag =7;
 	
 	ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
 	
@@ -264,6 +282,33 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
 	
+	switch (textField.tag) {
+		case 0:
+			lblMax.text = @"";
+			lblMin.text = @"";
+            break;
+		case 1:
+			lblMin.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
+			lblMax.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
+			break;
+		case 5:
+			lblMin.text = [NSString stringWithFormat:@"Min Term: %d",minSATerm];
+			
+			if ([riderCode isEqualToString:@"LSR"]) {
+				lblMax.text = [NSString stringWithFormat:@"Max Term: Subject to underwriting"];
+			}
+			else{
+				lblMax.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderSA];
+			}
+			
+			
+			break;
+		default:
+			lblMin.text = @"";
+			lblMax.text = @"";
+            break;
+			
+	}
 	return YES;
 }
 
@@ -614,7 +659,12 @@
 			lbl8.text = [NSString stringWithFormat:@"%@ Term :",[FLabelDesc objectAtIndex:i]];
 			hloadterm = YES;
         }
-        
+        else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
+			lbl7.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
+            hload = YES;
+			lbl8.text = [NSString stringWithFormat:@"%@ Term :",[FLabelDesc objectAtIndex:i]];
+			hloadterm = YES;
+        }
         
         /*
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
@@ -765,6 +815,36 @@
 	}
 }
 
+-(void)getRiderTermRule
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT MinAge,MaxAge,ExpiryAge,MinTerm,MaxTerm,MinSA,MaxSA"
+							  " FROM UL_Rider_Mtn WHERE RiderCode=\"%@\"",riderCode];
+		
+		NSLog(@"%@", querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                expAge =  sqlite3_column_int(statement, 2);
+                minTerm =  sqlite3_column_int(statement, 3);
+                maxTerm =  sqlite3_column_int(statement, 4);
+                minSATerm = sqlite3_column_int(statement, 5);
+                maxSATerm = sqlite3_column_int(statement, 6);
+                NSLog(@"expiryAge(%@):%d,minTerm:%d,maxTerm:%d,minSA:%d,maxSA:%d",riderCode,expAge,minTerm,maxTerm,minSATerm,maxSATerm);
+                
+            } else {
+                NSLog(@"error access Trad_Mtn");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -815,6 +895,8 @@
 	[self setOutletEdit:nil];
 	[self setOutletDelete:nil];
 	[self setOutletEdit:nil];
+	[self setLblMax:nil];
+	[self setLblMin:nil];
 	[super viewDidUnload];
 }
 
@@ -1120,10 +1202,458 @@
 	
 	[self getLabelForm];
 	[self toggleForm];
-	//[self getRiderTermRule];
-	//[self calculateTerm];
-	//[self calculateSA];
+	[self getRiderTermRule];
+	[self calculateTerm];
+	[self calculateSA];
 }
+
+#pragma mark - calculation
+
+-(void)calculateTerm
+{
+	if (expAge < 0) {
+		expAge = (0 - expAge);
+	}
+	
+	
+    int period = expAge - self.pTypeAge;
+    int period2 = 80 - self.pTypeAge;
+    double age1 = fmin(period2,60);
+	
+	if ([riderCode isEqualToString:@"ACIR"] || [riderCode isEqualToString:@"DCA"] || [riderCode isEqualToString:@"DHI"] ||
+		[riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"MG_IV"] ||
+		[riderCode isEqualToString:@"MR"] || [riderCode isEqualToString:@"PA"] || [riderCode isEqualToString:@"TPDMLA"] ||
+		[riderCode isEqualToString:@"WI"]	) {
+		maxRiderTerm = expAge - self.pTypeAge;
+	}
+	else if([riderCode isEqualToString:@"CIWP"] || [riderCode isEqualToString:@"ECAR55"] || [riderCode isEqualToString:@"LCWP"] ||
+			[riderCode isEqualToString:@"PR"] || [riderCode isEqualToString:@"TPDWP"]){
+		maxRiderTerm = expAge - self.pTypeAge;
+	}
+	else if([riderCode isEqualToString:@"ECAR"]){
+		minTerm = 20;
+		maxRiderTerm = 25;
+	}
+	else if([riderCode isEqualToString:@"RRTUO"]){
+		minTerm = 1;
+		maxRiderTerm = expAge - self.pTypeAge - 1;
+	}
+	else if([riderCode isEqualToString:@"CIRD"]){
+		minTerm = 10;
+		maxRiderTerm = 10;
+	}
+	
+/*
+    if ([riderCode isEqualToString:@"CIWP"])
+    {
+        [self getMaxRiderTerm];
+        double maxRiderTerm1 = fmin(period,getTerm);
+        double maxRiderTerm2 = fmax(getMOP,storedMaxTerm);
+        maxRiderTerm = fmin(maxRiderTerm1,maxRiderTerm2);
+    }
+    else if ([riderCode isEqualToString:@"LCWP"]||[riderCode isEqualToString:@"PR"]||[riderCode isEqualToString:@"PLCP"]||
+			 [riderCode isEqualToString:@"PTR"]||[riderCode isEqualToString:@"SP_STD"]||[riderCode isEqualToString:@"SP_PRE"])
+    {
+        [self getMaxRiderTerm];
+        double maxRiderTerm1 = fmin(getTerm,age1);
+        double maxRiderTerm2 = fmax(getMOP,storedMaxTerm);
+		//        double maxRiderTerm2 = fmax(getTerm,storedMaxTerm);
+        maxRiderTerm = fmin(maxRiderTerm1,maxRiderTerm2);
+        NSLog(@"maxTerm1:%.f, maxTerm2:%.f, maxTerm:%.f",maxRiderTerm1,maxRiderTerm2,maxRiderTerm);
+        
+        if (maxRiderTerm < minTerm) {
+            maxRiderTerm = maxTerm;
+        }
+        
+        if (([riderCode isEqualToString:@"PLCP"] || [riderCode isEqualToString:@"PTR"]) && maxRiderTerm > maxTerm) {
+            maxRiderTerm = maxTerm;
+        }
+    }
+    else {
+        maxRiderTerm = fmin(period,getTerm);
+    }
+ */
+    //maxRiderTerm = fmin(period,getTerm);
+    NSLog(@"expAge-alb:%d,covperiod:%d,maxRiderTerm:%.f,age1:%.f",period,getTerm,maxRiderTerm,age1);
+}
+
+-(void)calculateSA
+{
+
+    if ([riderCode isEqualToString:@"ACIR"])
+    {
+		maxRiderSA = fmin(maxSATerm, getBasicSA);
+    }
+	else if([riderCode isEqualToString:@"CIRD"]){
+		maxRiderSA = maxSATerm;
+	}
+	else if([riderCode isEqualToString:@"DCA"]){
+		maxRiderSA = fmin(getBasicSA * 5, 1000000);
+	}
+    else if([riderCode isEqualToString:@"DHI"]){
+		if ([OccpCat isEqualToString:@"EMP"]) {
+			maxRiderSA = 800;
+		}
+		else if ([OccpCat isEqualToString:@"UNEMP"]) {
+			maxRiderSA = 0;
+		}
+		else{
+			maxRiderSA = 200;
+		}
+	}
+	else if([riderCode isEqualToString:@"LSR"]){
+			maxRiderSA = -1;
+	}
+	else if([riderCode isEqualToString:@"PA"]){
+		maxRiderSA = getBasicSA * 5;
+	}
+	else if([riderCode isEqualToString:@"TPDMLA"] || [riderCode isEqualToString:@"WI"]){
+		if ([OccpCat isEqualToString:@"UNEMP"]) {
+			maxRiderSA = 0;
+		}
+		else{
+			maxRiderSA = maxRiderTerm;
+		}
+	}
+	
+	//    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
+}
+
+#pragma mark - validate
+
+-(void)validateTerm
+{
+    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    
+    BOOL HL1kTerm = NO;
+    BOOL HLPTerm = NO;
+    NSUInteger i;
+    for (i=0; i<[FLabelCode count]; i++)
+    {
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
+            HL1kTerm = YES;
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
+            HLPTerm = YES;
+        }
+    }
+    
+    if (txtRiderTerm.text.length <= 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtRiderTerm becomeFirstResponder];
+    }
+    else if ([txtRiderTerm.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Rider Term must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtRiderTerm becomeFirstResponder];
+    }
+    else if ([txtRiderTerm.text intValue] > maxRiderTerm) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be less than or equal to %.f",maxRiderTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtRiderTerm becomeFirstResponder];
+    }
+    else if ([txtRiderTerm.text intValue] < minTerm) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Term must be greater than or equal to %d",minTerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtRiderTerm becomeFirstResponder];
+    }
+    else if ([txtHLTerm.text intValue] > [txtRiderTerm.text intValue]) {
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 1k SA) Term cannot be greater than %d",[txtRiderTerm.text intValue]];
+        } 
+		else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (%%) Term cannot be greater than %d",[txtRiderTerm.text intValue]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHLTerm becomeFirstResponder];
+    }
+	else if ([txtHL.text intValue] > 10000 && ![riderCode isEqualToString:@"HMM"] && ![riderCode isEqualToString:@"MG_IV"]
+			 && ![riderCode isEqualToString:@"HSP_II"]) {
+		
+		NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 1k SA) cannot be greater than 10000"];
+        } else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (%%) cannot be greater than 500"];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+	}
+	else if (sumA) {
+        NSLog(@"validate - 1st sum");
+        [self validateSum];
+    } else {
+        NSLog(@"validate - 1st save");
+        [self validateSaver];
+    }
+}
+
+-(void)validateSum
+{
+    NSLog(@"keyin SA:%.f,max:%.f",[txtSumAssured.text doubleValue],maxRiderSA);
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    
+    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+    NSCharacterSet *setHLACP = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    NSRange rangeofDot = [txtSumAssured.text rangeOfString:@"."];
+    NSString *substring = @"";
+    
+    if (rangeofDot.location != NSNotFound) {
+        substring = [txtSumAssured.text substringFromIndex:rangeofDot.location ];
+    }
+    
+    if (txtSumAssured.text.length <= 0) {
+        if (incomeRider) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Guaranteed Yearly Income\n is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert setTag:1006];
+            [alert show];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Sum Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert setTag:1006];
+            [alert show];
+        }
+        [txtSumAssured becomeFirstResponder];
+    }
+    else if ([txtSumAssured.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be numeric 0 to 9 or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+    }
+    //--
+    else if ([txtSumAssured.text rangeOfCharacterFromSet:setHLACP].location != NSNotFound) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Sum Assured does not allows decimal." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+    }//--
+    else if ([txtSumAssured.text doubleValue] < minSATerm) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be greater than or equal to %d",minSATerm] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+    }
+    else if ([txtSumAssured.text doubleValue] > maxRiderSA) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert setTag:1006];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+    }
+    
+     else {
+        NSLog(@"validate - 2nd save");
+        [self validateSaver];
+    }
+}
+
+-(void)validateSaver
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    
+    NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+    
+    NSRange rangeofDot = [txtHL.text rangeOfString:@"."];
+    NSString *substring = @"";
+    if (rangeofDot.location != NSNotFound) {
+        substring = [txtHL.text substringFromIndex:rangeofDot.location ];
+    }
+    
+    double numHL = [txtHL.text doubleValue];
+    double aaHL = numHL/25;
+    int bbHL = aaHL;
+    float ccHL = aaHL - bbHL;
+    NSString *msg2 = [formatter stringFromNumber:[NSNumber numberWithFloat:ccHL]];
+    NSLog(@"value:%.2f,devide:%.2f,int:%d, minus:%.2f,msg:%@",numHL,aaHL,bbHL,ccHL,msg2);
+    
+    BOOL HL1kTerm = NO;
+    BOOL HLPTerm = NO;
+    NSUInteger i;
+    for (i=0; i<[FLabelCode count]; i++)
+    {
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1KT"]]) {
+            HL1kTerm = YES;
+        }
+        if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLPT"]]) {
+            HLPTerm = YES;
+        }
+    }
+    
+    if (plan && planOption.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Plan Option/Choice is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    else if (deduc && deductible.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Deductible is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+    
+    //--
+    else if (inputHLPercentage.length != 0 && [txtHL.text intValue] > 500) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+    }
+	
+    else if (txtHL.text.length == 0 && [txtHLTerm.text intValue] != 0) {
+		
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Health Loading 1 (per 1k SA) is required.";
+        } else if (HLPTerm) {
+            msg = @"Health Loading 1 (%) is required.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+    }
+    else if ([txtHL.text intValue] != 0 && txtHLTerm.text.length == 0) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Health Loading 1 (per 1k SA) Term is required.";
+        } else if (HLPTerm) {
+            msg = @"Health Loading 1 (%) Term is required.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHLTerm becomeFirstResponder];
+    }
+    else if (inputHL1KSA.length != 0 && [txtHL.text intValue] > 10000) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (Per 1k SA) cannot greater than 10000." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+    }
+    else if ([txtHL.text intValue] !=0 && substring.length > 3) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Health Loading 1 (Per 1k SA) only allow 2 decimal places.";
+        }
+        
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+    }
+    else if (inputHLPercentage.length != 0 && substring.length > 1) {
+        
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) must not contains decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+    }
+    else if (inputHLPercentage.length != 0 && msg2.length > 1) {
+        
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+    }
+    else if ([txtHLTerm.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 1 (per 1k SA) Term.";
+        } else if (HLPTerm) {
+            msg = @"Invalid input. Please enter numeric value (0-9) into Health Loading 1 (%) Term.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        [txtHLTerm becomeFirstResponder];
+    }
+    else if ([txtHLTerm.text intValue] > [txtRiderTerm.text intValue]) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (per 1k SA) Term cannot be greater than %d",[txtRiderTerm.text intValue]];
+        }
+		else if (HLPTerm) {
+            msg = [NSString stringWithFormat:@"Health Loading 1 (%%) Term cannot be greater than %d",[txtRiderTerm.text intValue]];
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHLTerm becomeFirstResponder];
+    }
+    
+    else if ([txtHLTerm.text intValue] == 0 && txtHL.text.length != 0) {
+        
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Health Loading 1 (per 1k SA) is required.";
+        } else if (HLPTerm) {
+            msg = @"Health Loading 1 (%) is required.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHL becomeFirstResponder];
+    }
+    else if ([txtHLTerm.text intValue] == 0 && txtHL.text.length != 0) {
+        NSString *msg;
+        if (HL1kTerm) {
+            msg = @"Health Loading 1 (per 1k SA) Term is required.";
+        } else if (HLPTerm) {
+            msg = @"Health Loading 1 (%) Term is required.";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtHLTerm becomeFirstResponder];
+    }
+    //--
+ 
+    
+    else if (([riderCode isEqualToString:@"HMM"] ||
+              [riderCode isEqualToString:@"MG_IV"] || [riderCode isEqualToString:@"HSP_II"]) && LRiderCode.count != 0) {
+        NSLog(@"go RoomBoard!");
+		Edit = FALSE;
+        [self RoomBoard];
+    }
+    else {
+		Edit = FALSE;
+        [self checkingRider];
+        if (existRidCode.length == 0) {
+            
+            //[self saveRider];
+        } else {
+            
+            //[self updateRider];
+        }
+    }
+}
+
+-(void)RoomBoard{
+	
+}
+
+-(void)checkingRider
+{
+    existRidCode = [[NSString alloc] init];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode FROM UL_Rider_Details WHERE SINo=\"%@\" "
+							  "AND RiderCode=\"%@\" AND PTypeCode=\"%@\" AND Seq=\"%d\"",getSINo,riderCode,pTypeCode, PTypeSeq];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                existRidCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+
 
 #pragma mark- Button Action
 - (IBAction)ActionPersonType:(id)sender {
@@ -1217,7 +1747,81 @@
 }
 
 - (IBAction)ActionSave:(id)sender {
+	if (Edit == TRUE ) {
+		[self resignFirstResponder];
+		[self.view endEditing:YES];
+		
+		Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+		id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+		[activeInstance performSelector:@selector(dismissKeyboard)];
+		
+		[myTableView setEditing:FALSE];
+		[self.myTableView setEditing:NO animated:TRUE];
+		outletDelete.hidden = true;
+		[outletEdit setTitle:@"Delete" forState:UIControlStateNormal ];
+		
+		NSUInteger i;
+		for (i=0; i<[FLabelCode count]; i++)
+		{
+			if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
+				inputHL1KSA = [[NSString alloc]initWithFormat:@"%@",txtHL.text];
+				inputHL1KSATerm = [txtHL.text intValue];
+			} else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
+				inputHLPercentage = [[NSString alloc]initWithFormat:@"%@",txtHL.text];
+				inputHLPercentageTerm = [txtHLTerm.text intValue];
+			}
+		}
+		
+		if (riderCode.length == 0 || outletRider.titleLabel.text.length == 0) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+									message:@"Please select a Rider." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+		}
+		else if (term) {
+			NSLog(@"validate - 1st term");
+			[self validateTerm];
+		}
+		/*
+		else if (sumA) {
+			NSLog(@"validate - 2nd sum");
+			[self validateSum];
+		}
+		else if (unit) {
+			NSLog(@"validate - 3rd unit");
+			[self validateUnit];
+		}
+		else {
+			NSLog(@"validate - 4th save");
+			[self validateSaver];
+		}
+		 */
+	}
 	
+	
+}
+
+- (IBAction)ActionPlan:(id)sender {
+	[self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+	
+    //if (_planList == Nil) {
+	NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
+	self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
+	//self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andoccpCat:OccpCat];
+	self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat];
+	
+    
+    //}
+	_planList.delegate = self;
+	self.planPopover = [[UIPopoverController alloc] initWithContentViewController:_planList];
+    
+    [self.planPopover setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
+    [self.planPopover presentPopoverFromRect:[sender frame] inView:self.view
+					permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 #pragma mark - clear textbox field

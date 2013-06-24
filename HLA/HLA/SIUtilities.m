@@ -458,7 +458,7 @@ static sqlite3 *contactDB = nil;
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1KSA)\", \"ECAR\", \"EverCash 1 Rider\", \"TF\", "
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1K\", \"Health Loading (Per 1KSA)\", \"ECAR\", \"EverCash 1 Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
@@ -474,7 +474,7 @@ static sqlite3 *contactDB = nil;
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1KSA)\", \"ECAR55\", \"EverCash 55 Rider\", \"TF\", "
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1K\", \"Health Loading (Per 1KSA)\", \"ECAR55\", \"EverCash 55 Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
@@ -494,7 +494,7 @@ static sqlite3 *contactDB = nil;
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1KSA)\", \"LSR\", \"LifeShield Rider\", \"TF\", "
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1K\", \"Health Loading (Per 1KSA)\", \"LSR\", \"LifeShield Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
@@ -560,7 +560,7 @@ static sqlite3 *contactDB = nil;
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1KSA\", \"Health Loading (Per 1K SA)\", \"TPDWP\", \"TPD Waiver of Premium Rider\", \"TF\", "
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1K\", \"Health Loading (Per 1K SA)\", \"TPDWP\", \"TPD Waiver of Premium Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	

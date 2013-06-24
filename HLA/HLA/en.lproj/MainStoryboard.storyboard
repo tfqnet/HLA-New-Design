@@ -8087,6 +8087,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="ActionPlan:" destination="9qI-YW-xPb" eventType="touchUpInside" id="w6x-ni-D2D"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="GYI Start From :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="NEU-lX-hql">
                                         <rect key="frame" x="336" y="173" width="166" height="31"/>
@@ -8351,7 +8354,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
-                        <outlet property="ActionRiderPlan" destination="aD3-we-KLQ" id="ZY1-Cn-UXr"/>
                         <outlet property="lbl1" destination="Jkf-cJ-sen" id="tHA-Op-K13"/>
                         <outlet property="lbl2" destination="ldK-iZ-zUm" id="IU8-KB-lbW"/>
                         <outlet property="lbl3" destination="dat-yf-RuW" id="V5g-Zl-KRa"/>
@@ -8360,6 +8362,8 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="lbl6" destination="Obm-kN-MZ2" id="SWL-To-Zw1"/>
                         <outlet property="lbl7" destination="VvY-sz-2wk" id="BLv-mb-rZD"/>
                         <outlet property="lbl8" destination="IhM-eT-yas" id="H67-is-rh2"/>
+                        <outlet property="lblMax" destination="gwl-Q9-Eo6" id="lPy-Tl-n1B"/>
+                        <outlet property="lblMin" destination="YLL-Sm-SGz" id="C71-IP-YZ2"/>
                         <outlet property="lblRegular1" destination="gDO-Cu-80f" id="Whw-mb-SE1"/>
                         <outlet property="lblRegular2" destination="mWJ-g7-kBE" id="kpM-RJ-bAQ"/>
                         <outlet property="lblRegularTerm" destination="xUB-fL-zH0" id="AjL-3k-2Vk"/>

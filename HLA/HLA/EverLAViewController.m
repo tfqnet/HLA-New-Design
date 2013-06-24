@@ -83,7 +83,7 @@
 		}
 	}
 	else{
-		
+		NSLog(@"SINo not exist!");
 	}
 	
 	if (requestIndexNo != 0) {
@@ -680,7 +680,7 @@
         NSString *querySQL = [NSString stringWithFormat:
 							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, "
 							  "b.id, b.IndexNo, a.rowid FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
-							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
+							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Seq=1",getSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {

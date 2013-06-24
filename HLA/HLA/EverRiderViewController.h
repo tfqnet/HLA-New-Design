@@ -93,6 +93,7 @@
 @property (nonatomic,strong) NSString *getPayorSmoker;
 @property (nonatomic,strong) NSString *getOccpCPA;
 //
+- (IBAction)ActionPlan:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *outletPersonType;
 - (IBAction)ActionPersonType:(id)sender;
@@ -136,6 +137,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblTable7;
 @property (weak, nonatomic) IBOutlet UILabel *lblTable8;
 @property (weak, nonatomic) IBOutlet UILabel *lblTable9;
+@property (weak, nonatomic) IBOutlet UILabel *lblMax;
+@property (weak, nonatomic) IBOutlet UILabel *lblMin;
+
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
 @property (weak, nonatomic) IBOutlet UIButton *outletEdit;
 - (IBAction)ActionDelete:(id)sender;
