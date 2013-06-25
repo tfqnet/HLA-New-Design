@@ -10,6 +10,7 @@
 #import "CarouselViewController.h"
 #import "eSubmission.h"
 #import "Logout.h"
+#import "MasterMenuEApp.h"
 
 @interface MaineApp () {
     NSArray* viewControllers;
@@ -37,6 +38,11 @@
     eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppsNavi"];
     eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:eAppListing];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
+    MasterMenuEApp *menuEApp = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppMaster"];
+    menuEApp.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New eApp" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
+    [controllersToAdd addObject:menuEApp];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     Logout* LogoutPage = [mainStoryboard instantiateViewControllerWithIdentifier:@"Logout"];

@@ -113,7 +113,7 @@ int rrr;
         }
         else {
             
-            if (selectedIndex == 1 ) {
+            if (selectedIndex == 1 || selectedIndex == 2) {
                 
                 [self addChildViewController:selectedViewController];
                 selectedViewController.view.frame = CGRectMake(self.tabBarWidth,
@@ -270,7 +270,7 @@ int rrr;
 	
 		clickIndex = indexPath.row;
     
-		if (indexPath.row == 2) {
+		if (indexPath.row == 3) {
         
 			UIAlertView *alert = [[UIAlertView alloc]
                               initWithTitle: NSLocalizedString(@"Log Out",nil)
