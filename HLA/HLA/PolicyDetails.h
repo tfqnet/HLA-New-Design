@@ -12,6 +12,9 @@
     UITextField *activeField;
 }
 
-@property (strong, nonatomic) IBOutlet UIScrollView *myScrollView;
+@property (strong, nonatomic) IBOutlet UITableView *myTableView;
+
+@property (retain, nonatomic) NSMutableArray *ArrRider;
+
 
 @end

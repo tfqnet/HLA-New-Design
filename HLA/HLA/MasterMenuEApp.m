@@ -99,8 +99,9 @@
     selectedPath = indexPath;
     if (indexPath.row == 2)     //policy details
     {
-        self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PolicyView"];
+//        self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PolicyView"];
 //        _PolicyVC.delegate = self;
+        self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PolicyNavi"];
         [self addChildViewController:self.PolicyVC];
         [self.rightView addSubview:self.PolicyVC.view];
     }

@@ -7,18 +7,36 @@
 //
 
 #import "PolicyDetails.h"
+#import "ColorHexCode.h"
 
 @interface PolicyDetails ()
 
 @end
 
 @implementation PolicyDetails
-@synthesize myScrollView;
+@synthesize ArrRider,myTableView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
+    
+    CGRect frame = CGRectMake(0, 0, 400, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+    label.font = [UIFont boldSystemFontOfSize:20];
+    label.textAlignment = UITextAlignmentCenter;
+    label.textColor = [CustomColor colorWithHexString:@"234A7D"];
+    label.text = @"Policy Details";
+    self.navigationItem.titleView = label;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(Next:)];
+    
+    ArrRider = [[NSMutableArray alloc] initWithObjects:@"C+",@"CCTR",@"CIR",@"CIWP",@"CPA",@"HMM", nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -29,15 +47,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -45,19 +59,37 @@
 	[super viewDidDisappear:animated];
 }
 
--(void)keyboardDidShow:(NSNotificationCenter *)notification
+#pragma mark - action
+
+-(void)Next:(id)sender
 {
-    self.myScrollView.frame = CGRectMake(0, 44, 768, 960-264);
-    self.myScrollView.contentSize = CGSizeMake(768, 960);
     
-    CGRect textFieldRect = [activeField frame];
-    textFieldRect.origin.y += 10;
-    [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
 }
 
--(void)keyboardDidHide:(NSNotificationCenter *)notification
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    self.myScrollView.frame = CGRectMake(0, 44, 768, 960);
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    return [ArrRider count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    
+    
+    cell.textLabel.text = [ArrRider objectAtIndex:indexPath.row];
+    return cell;
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,8 +97,9 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidUnload {
-    [self setMyScrollView:nil];
+- (void)viewDidUnload
+{
+    [self setMyTableView:nil];
     [super viewDidUnload];
 }
 @end
