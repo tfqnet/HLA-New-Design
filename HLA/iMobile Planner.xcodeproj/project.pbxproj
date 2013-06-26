@@ -103,6 +103,10 @@
 		C4E1B9441713FFBC00D7F83B /* DataTable.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1B9411713FFBC00D7F83B /* DataTable.m */; };
 		C4E1B9451713FFBC00D7F83B /* DBController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1B9431713FFBC00D7F83B /* DBController.m */; };
 		C4E1B9471714091000D7F83B /* SI in Resources */ = {isa = PBXBuildFile; fileRef = C4E1B9461714091000D7F83B /* SI */; };
+		C4E1D5F81779D75C002BDE51 /* EverSecondLAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1D5F71779D75C002BDE51 /* EverSecondLAViewController.m */; };
+		C4E1D5FB1779D76D002BDE51 /* EverPayorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1D5FA1779D76D002BDE51 /* EverPayorViewController.m */; };
+		C4E1D5FE1779D77E002BDE51 /* FundAllocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1D5FD1779D77D002BDE51 /* FundAllocationViewController.m */; };
+		C4E1D6011779D796002BDE51 /* EverHLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1D6001779D796002BDE51 /* EverHLoadingViewController.m */; };
 		C4E5A470168AAA89007848CE /* ChgPwd_24.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A45E168AAA89007848CE /* ChgPwd_24.png */; };
 		C4E5A471168AAA89007848CE /* ChgPwd_32.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A45F168AAA89007848CE /* ChgPwd_32.png */; };
 		C4E5A472168AAA89007848CE /* ChgPwd_48.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E5A460168AAA89007848CE /* ChgPwd_48.png */; };
@@ -399,6 +403,14 @@
 		C4E1B9421713FFBC00D7F83B /* DBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBController.h; sourceTree = "<group>"; };
 		C4E1B9431713FFBC00D7F83B /* DBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBController.m; sourceTree = "<group>"; };
 		C4E1B9461714091000D7F83B /* SI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SI; sourceTree = "<group>"; };
+		C4E1D5F61779D75C002BDE51 /* EverSecondLAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverSecondLAViewController.h; sourceTree = "<group>"; };
+		C4E1D5F71779D75C002BDE51 /* EverSecondLAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverSecondLAViewController.m; sourceTree = "<group>"; };
+		C4E1D5F91779D76D002BDE51 /* EverPayorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverPayorViewController.h; sourceTree = "<group>"; };
+		C4E1D5FA1779D76D002BDE51 /* EverPayorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverPayorViewController.m; sourceTree = "<group>"; };
+		C4E1D5FC1779D77D002BDE51 /* FundAllocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FundAllocationViewController.h; sourceTree = "<group>"; };
+		C4E1D5FD1779D77D002BDE51 /* FundAllocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FundAllocationViewController.m; sourceTree = "<group>"; };
+		C4E1D5FF1779D796002BDE51 /* EverHLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverHLoadingViewController.h; sourceTree = "<group>"; };
+		C4E1D6001779D796002BDE51 /* EverHLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverHLoadingViewController.m; sourceTree = "<group>"; };
 		C4E5A45E168AAA89007848CE /* ChgPwd_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_24.png; sourceTree = "<group>"; };
 		C4E5A45F168AAA89007848CE /* ChgPwd_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_32.png; sourceTree = "<group>"; };
 		C4E5A460168AAA89007848CE /* ChgPwd_48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChgPwd_48.png; sourceTree = "<group>"; };
@@ -1051,6 +1063,14 @@
 				C4E9F3D8176879190070EA8A /* EverRiderViewController.m */,
 				C4E9F3DA17687D4A0070EA8A /* EverLAViewController.h */,
 				C4E9F3DB17687D4A0070EA8A /* EverLAViewController.m */,
+				C4E1D5F61779D75C002BDE51 /* EverSecondLAViewController.h */,
+				C4E1D5F71779D75C002BDE51 /* EverSecondLAViewController.m */,
+				C4E1D5F91779D76D002BDE51 /* EverPayorViewController.h */,
+				C4E1D5FA1779D76D002BDE51 /* EverPayorViewController.m */,
+				C4E1D5FC1779D77D002BDE51 /* FundAllocationViewController.h */,
+				C4E1D5FD1779D77D002BDE51 /* FundAllocationViewController.m */,
+				C4E1D5FF1779D796002BDE51 /* EverHLoadingViewController.h */,
+				C4E1D6001779D796002BDE51 /* EverHLoadingViewController.m */,
 			);
 			name = EverSeries;
 			sourceTree = "<group>";
@@ -1699,6 +1719,10 @@
 				EF97FFB21773F9DD00C95844 /* AdditionalQuestions.m in Sources */,
 				EF6A538A177930DA00D70960 /* MasterMenuEApp.m in Sources */,
 				EF6A538D177943DA00D70960 /* PolicyDetails.m in Sources */,
+				C4E1D5F81779D75C002BDE51 /* EverSecondLAViewController.m in Sources */,
+				C4E1D5FB1779D76D002BDE51 /* EverPayorViewController.m in Sources */,
+				C4E1D5FE1779D77E002BDE51 /* FundAllocationViewController.m in Sources */,
+				C4E1D6011779D796002BDE51 /* EverHLoadingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

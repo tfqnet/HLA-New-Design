@@ -123,6 +123,7 @@ id temp;
             }
             [self tooglePlan];
             [self toogleExistingField];
+			
         } else {
             NSLog(@"create new");
         }

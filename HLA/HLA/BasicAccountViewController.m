@@ -83,13 +83,23 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     secondLAAge = requestAge2ndLA;
     secondLAOccpCode = [self.requestOccp2ndLA description];
     SINo = [self.requestSINo description];
+	temp = outletBasic.titleLabel.text;
 	
-	    [self tooglePlan];
+	    [self togglePlan];
 	if (self.requestSINo) {
 		[self checkingExisting];
 		if (getSINo.length != 0) {
 			NSLog(@"view selected field");
 			[self getExistingBasic];
+			
+			
+			if ([getPlanCode isEqualToString:@"UV"]) {
+                [self.outletBasic setTitle:@"HLA EverLife" forState:UIControlStateNormal];
+                temp = outletBasic.titleLabel.text;
+            }
+			
+			[self togglePlan];
+			[self toggleExistingField];
 			
 		}else {
             NSLog(@"create new");
@@ -121,6 +131,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 	txtBasicPremium.delegate = self;
 	txtBasicSA.delegate = self;
 	txtBasicSA.tag = 1;
+	_planList = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -302,10 +313,25 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 
 #pragma mark - handle data
 
--(void)tooglePlan
+-(void)togglePlan
 {
     NSLog(@"tooglePlan");
     [self getTermRule];
+	
+}
+
+-(void)toggleExistingField{
+	
+	txtPolicyTerm.text = [NSString stringWithFormat:@"%d", getPolicyTerm];
+	txtBasicSA.text = [NSString stringWithFormat:@"%.f", getSumAssured ];
+	txtBasicPremium.text = [NSString stringWithFormat:@"%.f", getBasicPrem ];
+	
+	txtPremiumPayable.text = txtBasicPremium.text;
+	
+	[_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover
+			andBasicSA:txtBasicSA.text andBasicHL:getHL andBasicHLTerm:getHLTerm
+		 andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode];
+	
 }
 
 -(void) getTermRule
@@ -348,7 +374,8 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
         NSString *querySQL = [NSString stringWithFormat:
 							  @"SELECT SINo, CovPeriod, BasicSA, "
 							  "ATPrem, BUMPMode, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, planCode FROM UL_Details"
-							  "WHERE SINo=\"%@\"",SINo];
+							  " WHERE SINo=\"%@\"",SINo];
+
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -360,7 +387,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 				getBumpMode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
                 const char *getHL2 = (const char*)sqlite3_column_text(statement, 5);
                 getHL = getHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getHL2];
-                getHLTerm = sqlite3_column_int(statement, 6);
+                getHLTerm = sqlite3_column_int(statement, 6);	
                 const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 7);
                 getHLPct = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
                 getHLPctTerm = sqlite3_column_int(statement, 8);
@@ -455,7 +482,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
         NSString *insertSQL = [NSString stringWithFormat:
 							   @"INSERT INTO UL_Details (SINo,  PlanCode, CovTypeCode, ATPrem, BasicSA, CovPeriod, OccpCode, "
 							   "BumpMode, DateCreated, CreatedBy, DateModified, ModifiedBy) VALUES "
-							   "(\"%@\", \"EverLife\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", "
+							   "(\"%@\", \"UV\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", "
 							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA') ",
 							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode,
 							   [self getBumpMode]];
@@ -507,7 +534,8 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                              @"UPDATE Clt_Profile SET CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" WHERE id=\"%d\"",LACustCode,currentdate,idProf];
+                              @"UPDATE Clt_Profile SET CustCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\" "
+							  "WHERE id=\"%d\"",LACustCode,currentdate,idProf];
         
 		//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -561,7 +589,8 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-                               @"INSERT INTO UL_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"PY\",\"1\",\"%@\",\"hla\")",SINo, PYCustCode,dateStr];
+                               @"INSERT INTO UL_LAPayor (SINo, CustCode,PTypeCode,Seq,DateCreated,CreatedBy) VALUES "
+							   "(\"%@\",\"%@\",\"PY\",\"1\",\"%@\",\"hla\")",SINo, PYCustCode,dateStr];
         
 		//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -614,7 +643,8 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
-                               @"INSERT INTO UL_LAPayor (SINo, CustCode,PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"%@\",\"%@\",\"LA\",\"2\",\"%@\",\"hla\")",SINo, secondLACustCode,dateStr];
+                               @"INSERT INTO UL_LAPayor (SINo, CustCode,PTypeCode,Seq,DateCreated,CreatedBy) VALUES "
+							   "(\"%@\",\"%@\",\"LA\",\"2\",\"%@\",\"hla\")",SINo, secondLACustCode,dateStr];
         
 		//        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {

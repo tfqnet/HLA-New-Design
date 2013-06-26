@@ -183,9 +183,10 @@ static sqlite3 *contactDB = nil;
 	}
 	
 	
+	
 	if (![AppsVersion isEqualToString:CurrenVersion]) {
+		
 		[self InstallVersion1dot3:path];
-			
 		if (sqlite3_open([path UTF8String], &contactDB) == SQLITE_OK){
 			
 			QuerySQL = [ NSString stringWithFormat:@"Update Trad_Sys_SI_version_Details set SIVersion = '%@'", AppsVersion];
@@ -237,7 +238,7 @@ static sqlite3 *contactDB = nil;
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Rider_Details (\"SINO\" VARCHAR, \"RiderCode\" VARCHAR, \"PTypeCode\" "
 			 "VARCHAR, \"Seq\" INTEGER, \"RiderTerm\" INTEGER, \"SumAssured\" DOUBLE, \"Units\" INTEGER, \"PlanOption\" VARCHAR, "
 			 "\"HLoading\" DOUBLE, \"HLoadingTerm\" INTEGER, \"HLoadingPCt\" INTEGER, \"HLoadingPCtTerm\" INTEGER, \"Premium\" DOUBLE, "
-			 "\"Deductible\" VARCHAR, \"PaymentTerm\" INTEGER, \"ReinvestYI\" VARCHAR, \"GYIYear\" INTEGER, \"RRTUOFromYear\" INTEGER, "
+			 "\"Deductible\" VARCHAR, \"PaymentTerm\" INTEGER, \"ReinvestGYI\" VARCHAR, \"GYIYear\" INTEGER, \"RRTUOFromYear\" INTEGER, "
 			 "\"RRTUOYear\" INTEGER) "];
     [database executeUpdate:query];
 	
@@ -271,66 +272,66 @@ static sqlite3 *contactDB = nil;
 			 "\"RiderName\" VARCHAR, \"InputCode\" VARCHAR, \"TableName\" VARCHAR, \"FieldName\" VARCHAR, \"Condition\" VARCHAR, "
 			 "\"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
     [database executeUpdate:query];
-/*
-	//
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000,0 , 100, \"EverLife\", \"LA\", 1 )"];
+
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000,0 , 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"CIRD\", 0, 30, 55, 65, 20000, 100000, 10 , 10, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"CIRD\", 0, 30, 55, 65, 20000, 100000, 10 , 10, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"CIWP\", 0, 0, 70, -80, 0.00, 0.00, 3 , 25, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"CIWP\", 0, 0, 70, -80, 0.00, 0.00, 3 , 25, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"DCA\", 0, 0, 70, -75, 10000, 0.00, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"DCA\", 0, 0, 70, -75, 10000, 0.00, 5 , 75, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"DHI\", 0, 0, 70, -75, 50, 0.00, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"DHI\", 0, 0, 70, -75, 50, 0.00, 5 , 75, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ECAR\", 0, 0, 65, 80, 45000, 0.00, 20 , 25, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ECAR\", 0, 0, 65, 80, 600, 0.00, 20 , 25, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ECAR55\", 0, 0, 50, -100, 50.00, 0.00, 0 , 100, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ECAR55\", 0, 0, 50, -100, 50.00, 0.00, 0 , 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"HMM\", 0, 0, 70, -100, 0.00, 0.00,0 , 100, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"HMM\", 0, 0, 70, -100, 0.00, 0.00,0 , 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LCWP\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"PY\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LCWP\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"UV\", \"PY\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LCWP\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"LA\", 2 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LCWP\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"UV\", \"LA\", 2 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LSR\", 0, 0, 70, -100, 20000, 0.00, 0 , 100, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"LSR\", 0, 0, 70, -100, 20000, 0.00, 0 , 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"MG_IV\", 0, 0, 70, -100, 0.00, 0.00, 0 , 100, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"MG_IV\", 0, 0, 70, -100, 0.00, 0.00, 0 , 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"MR\", 0, 0, 70, 75, 1000, 5000, 5, 75, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"MR\", 0, 0, 70, 75, 1000, 5000, 5, 75, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PA\", 0, 0, 70, 75, 10000, 0.00, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PA\", 0, 0, 70, 75, 10000, 0.00, 5 , 75, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PR\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"PY\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PR\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"UV\", \"PY\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PR\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"EverLife\", \"LA\", 2 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"PR\", 0, 16, 65, 80, 0.00, 0.00, 3 , 25, \"UV\", \"LA\", 2 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"RRTUO\", 0, 0, 100, 100, 1.00, 10000, 1 , 100, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"RRTUO\", 0, 0, 100, 100, 1.00, 10000, 1 , 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"TPDMLA\", 0, 0, 70, 75, 500, 10000, 5 , 75, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"TPDMLA\", 0, 0, 70, 75, 500, 10000, 5 , 75, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"TPDWP\", 0, 0, 65, 80, 0.00, 0.00, 3 , 80, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"TPDWP\", 0, 0, 65, 80, 0.00, 0.00, 3 , 80, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"WI\", 0, 20, 65, 70, 100, 8000, 5 , 70, \"EverLife\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"WI\", 0, 20, 65, 70, 100, 8000, 5 , 70, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
 	//
@@ -387,7 +388,7 @@ static sqlite3 *contactDB = nil;
 	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES(\"WI\", \"Acc. Weekly Indemnity Rider\", 0, 1)"];
     [database executeUpdate:query];
- */
+ 
 
 	//
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"ACIR\", \"Accelerated Critical Illness\", \"TF\", "

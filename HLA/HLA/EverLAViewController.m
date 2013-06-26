@@ -8,6 +8,9 @@
 
 #import "EverLAViewController.h"
 #import "AppDelegate.h"
+#import "EverSecondLAViewController.h"
+#import "EverSeriesMasterViewController.h"
+#import "EverPayorViewController.h"
 
 @interface EverLAViewController ()
 
@@ -62,7 +65,7 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
 	
 	getSINo = [self.requestSINo description];
-    
+	
 	if (getSINo.length != 0) {
 		[self checkingExisting];
         [self checkingExistingSI];
@@ -108,13 +111,13 @@
 	
 	
 	if (CustCode2.length != 0) {
-		/*
-		SecondLAViewController *ccc = [[SecondLAViewController alloc] init ];
+		
+		EverSecondLAViewController *ccc = [[EverSecondLAViewController alloc] init ];
 		ccc.requestLAIndexNo = requestIndexNo;
 		ccc.requestCommDate = commDate;
 		ccc.requestSINo = getSINo;
 		ccc.LAView = @"1";
-		ccc.delegate = (SIMenuViewController *)_delegate;
+		ccc.delegate = (EverSeriesMasterViewController *)_delegate;
 		
 		UIView *iii = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0) ];
 		[iii addSubview:ccc.view];
@@ -129,20 +132,20 @@
 		ccc.Change = @"No";
 		ccc = Nil;
 		iii = Nil;
-		 */
+		 
 	}
 	
 	[self checkingPayor];
 	
 	if (payorSINo.length != 0) {
-		/*
-		PayorViewController *ggg = [[PayorViewController alloc] init ];
+		
+		EverPayorViewController *ggg = [[EverPayorViewController alloc] init ];
 		ggg.requestLAIndexNo = requestIndexNo;
 		ggg.requestLAAge = payorAge;
 		ggg.requestCommDate = commDate;
 		ggg.requestSINo = getSINo;
 		ggg.LAView = @"1";
-		ggg.delegate = (SIMenuViewController *)_delegate;
+		ggg.delegate = (EverSeriesMasterViewController *)_delegate;
 		
 		UIView *iii = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0) ];
 		[iii addSubview:ggg.view];
@@ -157,7 +160,7 @@
 		ggg.Change = @"no";
 		ggg = Nil;
 		iii = Nil;
-		 */
+		 
 	}
 }
 
@@ -226,7 +229,7 @@
     sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
 	
 	[_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL
-		andBasicHLTerm:getHLTerm andBasicHLPct:getHL andBasicHLPctTerm:getHLTerm andPlanCode:planCode];
+		andBasicHLTerm:getHLTerm andBasicHLPct:getHL andBasicHLPctTerm:getHLTerm andPlanCode:planChoose];
 
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.SICompleted = YES;
@@ -240,7 +243,7 @@
         NSString *querySQL = [NSString stringWithFormat:
 							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, "
 							  "b.id FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
-							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=2",getSINo];
+							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Seq=2",getSINo];
         
 		//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -250,7 +253,7 @@
                 CustCode2 = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
                 idProfile2 = sqlite3_column_int(statement, 9);
             } else {
-                NSLog(@"error access Trad_LAPayor");
+                NSLog(@"error access UL_LAPayor");
             }
             sqlite3_finalize(statement);
         }
@@ -838,11 +841,11 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM"
-							  "UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND"
-							  "a.PTypeCode=\"PY\" AND a.Sequence=1",getSINo];
+							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.id FROM "
+							  "UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND "
+							  "a.PTypeCode=\"PY\" AND a.Seq=1",getSINo];
         
-		//        NSLog(@"%@",querySQL);
+		        //NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

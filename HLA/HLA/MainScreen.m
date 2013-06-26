@@ -100,6 +100,7 @@
 	else{
 		
 		EverPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
+		EverPage.requestSINo = [self.requestSINo description];
 		[controllersToAdd addObject:EverPage];
 		viewControllers = [NSArray arrayWithArray:controllersToAdd];
 	}

@@ -372,11 +372,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/SIListing.m"
-         timestampString = "392714060.299599"
+         timestampString = "393826089.038519"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "809"
-         endingLineNumber = "809"
+         startingLineNumber = "818"
+         endingLineNumber = "818"
          landmarkName = "-segOrderBy:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -385,11 +385,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/SIListing.m"
-         timestampString = "385446014.683395"
+         timestampString = "393825663.820276"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "679"
-         endingLineNumber = "679"
+         startingLineNumber = "686"
+         endingLineNumber = "686"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1362,6 +1362,19 @@
          startingLineNumber = "1035"
          endingLineNumber = "1035"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "HLA/HLA/BasicPlanViewController.m"
+         timestampString = "393846137.964801"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "3700"
+         endingLineNumber = "3700"
+         landmarkName = "-Planlisting:didSelectCode:andDesc:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

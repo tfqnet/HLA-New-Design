@@ -23,10 +23,10 @@
 @synthesize lbl1,lbl2,lbl3,lbl4,lbl5,lbl6,lbl7,lbl8,lblRegular1,lblRegular2,lblRegularTerm,lblRegularTerm2;
 @synthesize lblTable1,lblTable2,lblTable3,lblTable4,lblTable5,lblTable6,lblTable7;
 @synthesize lblTable8,lblTable9, myScrollView, myTableView, outletDelete, outletEdit;
-@synthesize LTempRidHL1K,LAge,LDeduct,LOccpCode,LPlanOpt,LRiderCode,LRidHL100,LRidHL100Term,LRidHL1K,LRidHLP;
-@synthesize LRidHLPTerm,LRidHLTerm,LSex,LSmoker,LSumAssured,LTempRidHLTerm,LTerm,LTypeAge,LTypeDeduct,LTypeOccpCode;
+@synthesize LAge,LDeduct,LOccpCode,LPlanOpt,LRiderCode,LRidHL100,LRidHL100Term,LRidHL1K,LRidHLP;
+@synthesize LRidHLPTerm,LRidHLTerm,LSex,LSmoker,LSumAssured, LTerm,LTypeAge,LTypeDeduct,LTypeOccpCode;
 @synthesize LTypePlanOpt,LTypeRiderCode,LTypeRidHL100,LTypeRidHL100Term,LTypeRidHL1K,LTypeRidHLP,LTypeRidHLPTerm;
-@synthesize LTypeRidHLTerm,LTypeSex,LTypeSmoker,LTypeSumAssured,LTypeTempRidHL1K,LTypeTempRidHLTerm,LTypeTerm;
+@synthesize LTypeRidHLTerm,LTypeSex,LTypeSmoker,LTypeSumAssured, LTypeTerm, LTypePremium;
 @synthesize LTypeUnits, occClass, occLoadType, OccpCat, occCPA, occCPA_PA, occLoad, occLoadRider, occPA;
 @synthesize planOption, payorRidCode, pentaSQL, planCodeRider, planCondition, planHSPII, planMGII, planMGIV;
 @synthesize planOptHMM, deducCondition, deducHMM, deductible, inputHL100SA, inputHL100SATerm, inputHL1KSA;
@@ -72,6 +72,7 @@
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.MhiMessage = @"";
     //-----------
+	
 	
 	getSINo = [self.requestSINo description];
     getPlanCode = [self.requestPlanCode description];
@@ -221,6 +222,7 @@
 	outletDelete.titleLabel.shadowColor = [UIColor lightGrayColor];
     outletDelete.titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
+	[outletEdit setTitle:@"Edit" forState:UIControlStateNormal ];
 	ItemToBeDeleted = [[NSMutableArray alloc] init];
     indexPaths = [[NSMutableArray alloc] init];
 }
@@ -294,7 +296,8 @@
 		case 5:
 			lblMin.text = [NSString stringWithFormat:@"Min Term: %d",minSATerm];
 			
-			if ([riderCode isEqualToString:@"LSR"]) {
+			if ([riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"ECAR"] ||
+				[riderCode isEqualToString:@"ECAR55"] ) {
 				lblMax.text = [NSString stringWithFormat:@"Max Term: Subject to underwriting"];
 			}
 			else{
@@ -388,17 +391,15 @@
     LRidHLPTerm = [[NSMutableArray alloc] init ]; // added by heng
     LRidHL100Term = [[NSMutableArray alloc] init ]; // added by heng
     LOccpCode = [[NSMutableArray alloc] init];
-    LTempRidHL1K = [[NSMutableArray alloc] init];
-    LTempRidHLTerm = [[NSMutableArray alloc] init];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HLoading, "
-							  "a.HLoadingTerm, a.HLoadingPct, a.HLoadingPctTerm, c.Smoker,c.Sex, c.ALB, "
-							  "c.OccpCode FROM UL_Rider_Details a, "
-							  "UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Sequence AND b.CustCode=c.CustCode "
+							  @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Deductible, a.HLoading, "
+							  "a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
+							  "a.HLoadingTerm, a.HLoadingPctTerm, c.OccpCode FROM UL_Rider_Details a, "
+							  "UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
 							  "AND a.SINo=b.SINo AND a.SINo=\"%@\" ORDER by a.RiderCode asc",getSINo];
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -416,41 +417,27 @@
                 const char *zzplan = (const char *) sqlite3_column_text(statement, 3);
                 [LPlanOpt addObject:zzplan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzplan]];
                 
-                const char *aaUnit = (const char *)sqlite3_column_text(statement, 4);
-                [LUnits addObject:aaUnit == NULL ? @"" :[[NSString alloc] initWithUTF8String:aaUnit]];
-                
-                const char *deduct2 = (const char *) sqlite3_column_text(statement, 5);
+                const char *deduct2 = (const char *) sqlite3_column_text(statement, 4);
                 [LDeduct addObject:deduct2 == NULL ? @"" :[[NSString alloc] initWithUTF8String:deduct2]];
                 
-                double ridHL = sqlite3_column_double(statement, 6);
-                [LRidHL1K addObject:[[NSString alloc] initWithFormat:@"%.2f",ridHL]];
+				const char *ridHL = (const char *) sqlite3_column_text(statement, 5);
+                [LRidHL1K addObject:ridHL == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL]];
+
+				const char *ridHLP = (const char *) sqlite3_column_text(statement, 6);
+                [LRidHLP addObject:ridHLP == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHLP]];
+
+                [LSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)]];
+                [LSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)]];
+                [LAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
                 
-                double ridHL100 = sqlite3_column_double(statement, 7);
-                [LRidHL100 addObject:[[NSString alloc] initWithFormat:@"%.2f",ridHL100]];
-                
-                double ridHLP = sqlite3_column_double(statement, 8);
-                [LRidHLP addObject:[[NSString alloc] initWithFormat:@"%.2f",ridHLP]];
-                
-                [LSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
-                [LSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
-                [LAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
-                
-                const char *ridTerm = (const char *)sqlite3_column_text(statement, 12);
+                const char *ridTerm = (const char *)sqlite3_column_text(statement, 10);
                 [LRidHLTerm addObject:ridTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridTerm]]; //added by heng
                 
-                const char *ridPTerm = (const char *)sqlite3_column_text(statement, 13);
+                const char *ridPTerm = (const char *)sqlite3_column_text(statement, 11);
                 [LRidHLPTerm addObject:ridPTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridPTerm]]; //added by heng
                 
-                const char *ridHL100Term = (const char *)sqlite3_column_text(statement, 14);
-                [LRidHL100Term addObject:ridHL100Term == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL100Term]]; //added by heng
+                [LOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 12)]];
                 
-                [LOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 15)]];
-                
-                double TempridHL = sqlite3_column_double(statement, 16);
-                [LTempRidHL1K addObject:[[NSString alloc] initWithFormat:@"%.2f",TempridHL]];
-                
-                const char *TempridHLTerm = (const char *)sqlite3_column_text(statement, 17);
-                [LTempRidHLTerm addObject:TempridHLTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:TempridHLTerm]];
             }
             
             sqlite3_finalize(statement);
@@ -909,8 +896,8 @@
 
 - (NSInteger)tableView:(UITableView *)myTableView numberOfRowsInSection:(NSInteger)section
 {
-    //return [LTypeRiderCode count];
-	return  1;
+    return [LTypeRiderCode count];
+	//return  1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)myTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -923,9 +910,75 @@
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
+	
+	[[cell.contentView viewWithTag:2001] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2002] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2003] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2004] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2005] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2006] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2007] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2008] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2009] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2010] removeFromSuperview ];
     
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    
+	CGRect frame=CGRectMake(-31,0, 111, 50);
+    UILabel *label1=[[UILabel alloc]init];
+    label1.frame=frame;
+    label1.text= [NSString stringWithFormat:@"    %@",[LTypeRiderCode objectAtIndex:indexPath.row]];
+    label1.textAlignment = UITextAlignmentCenter;
+    label1.tag = 2001;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label1];
+	
+	CGRect frame2=CGRectMake(80,0, 105, 50);
+    UILabel *label2=[[UILabel alloc]init];
+    label2.frame=frame2;
+    NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LTypePremium objectAtIndex:indexPath.row] doubleValue]]];
+    label2.text= num;
+    label2.textAlignment = UITextAlignmentCenter;
+    label2.tag = 2002;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label2];
+    
+    CGRect frame3=CGRectMake(185,0, 62, 50);
+    UILabel *label3=[[UILabel alloc]init];
+    label3.frame=frame3;
+    label3.text= [LTypeSumAssured objectAtIndex:indexPath.row];
+    label3.textAlignment = UITextAlignmentCenter;
+    label3.tag = 2003;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label3];
+	
+	//--
+    
+    if (indexPath.row % 2 == 0) {
+        label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 
-	cell.detailTextLabel.text = @"dasdasdas";
+        
+        label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        
+    }
+    else {
+        label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label2.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        
+        
+        label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        
+    }
+	
+	
+	//cell.detailTextLabel.text = @"dasdasdas";
 
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
@@ -1029,8 +1082,8 @@
     LTypeRidHLPTerm = [[NSMutableArray alloc] init ]; // added by heng
     LTypeRidHL100Term = [[NSMutableArray alloc] init ]; // added by heng
     LTypeOccpCode = [[NSMutableArray alloc] init];
-    LTypeTempRidHL1K = [[NSMutableArray alloc] init];
-    LTypeTempRidHLTerm = [[NSMutableArray alloc] init];
+	LTypePremium = [[NSMutableArray alloc] init];
+
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -1039,8 +1092,8 @@
         if ([pTypeCode isEqualToString:@"PY"]) {
             querySQL = [NSString stringWithFormat:
                         @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HLoading, "
-                        "a.HLoadingTerm, a.HLoadingPct, a.HLoadingPctTerm, c.Smoker,c.Sex, c.ALB, "
-						"c.OccpCode, FROM UL_Rider_Details a, "
+                        "a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
+						"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium FROM UL_Rider_Details a, "
                         "UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
                         "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'PY' ",getSINo];
         }
@@ -1048,8 +1101,8 @@
             if (PTypeSeq == 2) {
 				querySQL = [NSString stringWithFormat:
 							@"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HLoading, "
-							"a.HLoadingTerm, a.HLoadingPct, a.HLoadingPctTerm, c.Smoker,c.Sex, c.ALB, "
-							"c.OccpCode, FROM UL_Rider_Details a, "
+							"a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
+							"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium FROM UL_Rider_Details a, "
 							"UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
 							"AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND  b.Seq = '2'  ",getSINo];
 				
@@ -1057,8 +1110,8 @@
             else {
                 querySQL = [NSString stringWithFormat:
 							@"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HLoading, "
-							"a.HLoadingTerm, a.HLoadingPct, a.HLoadingPctTerm, c.Smoker,c.Sex, c.ALB, "
-							"c.OccpCode, FROM UL_Rider_Details a, "
+							" a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
+							"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium FROM UL_Rider_Details a, "
 							"UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
 							"AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND  b.Seq = '1'  ",getSINo];
 				
@@ -1089,32 +1142,23 @@
                 const char *ridHL = (const char *)sqlite3_column_text(statement, 6);
                 [LTypeRidHL1K addObject:ridHL == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL]];
                 
-                const char *ridHL100 = (const char *)sqlite3_column_text(statement, 7);
-                [LTypeRidHL100 addObject:ridHL100 == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL100]];
-                
-                const char *ridHLP = (const char *)sqlite3_column_text(statement, 8);
+                const char *ridHLP = (const char *)sqlite3_column_text(statement, 7);
                 [LTypeRidHLP addObject:ridHLP == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHLP]];
                 
-                [LTypeSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
-                [LTypeSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
-                [LTypeAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 11)]];
+                [LTypeSmoker addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)]];
+                [LTypeSex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)]];
+                [LTypeAge addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 10)]];
                 
-                const char *ridTerm = (const char *)sqlite3_column_text(statement, 12);
+                const char *ridTerm = (const char *)sqlite3_column_text(statement, 11);
                 [LTypeRidHLTerm addObject:ridTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridTerm]]; //added by heng
                 
-                const char *ridPTerm = (const char *)sqlite3_column_text(statement, 13);
+                const char *ridPTerm = (const char *)sqlite3_column_text(statement, 12);
                 [LTypeRidHLPTerm addObject:ridPTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridPTerm]]; //added by heng
                 
-                const char *ridHL100Term = (const char *)sqlite3_column_text(statement, 14);
-                [LTypeRidHL100Term addObject:ridHL100Term == NULL ? @"" :[[NSString alloc] initWithUTF8String:ridHL100Term]]; //added by heng
+                [LTypeOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 13)]];
+				
+				[LTypePremium addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 14)]];
                 
-                [LTypeOccpCode addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 15)]];
-                
-                const char *TempridHL = (const char *)sqlite3_column_text(statement, 16);
-                [LTypeTempRidHL1K addObject:TempridHL == NULL ? @"" :[[NSString alloc] initWithUTF8String:TempridHL]];
-                
-                const char *TempridHLTerm = (const char *)sqlite3_column_text(statement, 17);
-                [LTypeTempRidHLTerm addObject:TempridHLTerm == NULL ? @"" :[[NSString alloc] initWithUTF8String:TempridHLTerm]];
             }
             
             if ([LTypeRiderCode count] == 0) {
@@ -1498,9 +1542,9 @@
     }
     
     //--
-    else if (inputHLPercentage.length != 0 && [txtHL.text intValue] > 500) {
+    else if (inputHLPercentage.length != 0 && [txtHL.text intValue] > 999) {
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) cannot greater than 500%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) cannot greater than 999%" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHL becomeFirstResponder];
     }
@@ -1552,12 +1596,7 @@
         [alert show];
         [txtHL becomeFirstResponder];
     }
-    else if (inputHLPercentage.length != 0 && msg2.length > 1) {
-        
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading 1 (%) must be in multiple of 25 or 0." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-        [txtHL becomeFirstResponder];
-    }
+    
     else if ([txtHLTerm.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
         
         NSString *msg;
@@ -1608,8 +1647,38 @@
         [txtHLTerm becomeFirstResponder];
     }
     //--
- 
-    
+	else if ([riderCode isEqualToString:@"DHI"] && [txtSumAssured.text integerValue] % 50 != 0){
+		NSString *msg = @"DHI Sum Assured Must be in multiple of 50";
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+	}
+	else if ([riderCode isEqualToString:@"ECAR"] && [txtRiderTerm.text integerValue] % 5 != 0){
+		NSString *msg = @"Rider Term must be 20 or 25 only.";
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtRiderTerm becomeFirstResponder];
+	}
+	else if ([riderCode isEqualToString:@"RRTUO"]){
+		bool unitization = false;
+		for (int i = 0; i < LTypeRiderCode.count ; i++) {
+			if ([[LTypeRiderCode objectAtIndex:i] isEqualToString:@"MR"] || [[LTypeRiderCode objectAtIndex:i] isEqualToString:@"WI"] ||
+				[[LTypeRiderCode objectAtIndex:i] isEqualToString:@"DHI"] || [[LTypeRiderCode objectAtIndex:i] isEqualToString:@"TPDMLA"] ||
+				[[LTypeRiderCode objectAtIndex:i] isEqualToString:@"PA"] || [[LTypeRiderCode objectAtIndex:i] isEqualToString:@"DCA"] ||
+				[[LTypeRiderCode objectAtIndex:i] isEqualToString:@"CIRD"] || [[LTypeRiderCode objectAtIndex:i] isEqualToString:@"ACIR"] ||
+				[[LTypeRiderCode objectAtIndex:i] isEqualToString:@"HMM"] || [[LTypeRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"]) {
+				unitization = TRUE;
+				break;
+			}
+		}
+		if (unitization == FALSE) {
+			NSString *msg = @"RRTUO is not allowed if no unitization rider is attached";
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			[alert show];
+		}
+		
+	}
+	
     else if (([riderCode isEqualToString:@"HMM"] ||
               [riderCode isEqualToString:@"MG_IV"] || [riderCode isEqualToString:@"HSP_II"]) && LRiderCode.count != 0) {
         NSLog(@"go RoomBoard!");
@@ -1621,17 +1690,106 @@
         [self checkingRider];
         if (existRidCode.length == 0) {
             
-            //[self saveRider];
+            [self saveRider];
         } else {
-            
-            //[self updateRider];
+            [self updateRider];
         }
     }
 }
 
+
+
 -(void)RoomBoard{
 	
 }
+
+-(void)saveRider
+{
+	sqlite3_stmt *statement;
+	
+    if (([pTypeCode isEqualToString:@"LA"]) && (PTypeSeq == 2)) {
+        [self check2ndLARider];
+    }
+
+    inputSA = [txtSumAssured.text doubleValue];
+    		   
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *insertSQL = [NSString stringWithFormat:
+							   @"INSERT INTO UL_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, "
+							   "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
+							   "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear ) VALUES"
+							   "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
+							   "\"%@\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
+							   getSINo,riderCode, pTypeCode, PTypeSeq, txtRiderTerm.text, txtSumAssured.text, planOption,
+							   deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
+							   inputHLPercentageTerm, @"12", @"3", @"Yes", @"12", @"12", @"12"];
+		
+		        //NSLog(@"%@",insertSQL);
+        if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Saved Rider!");
+                [_delegate RiderAdded];
+            } else {
+                NSLog(@"Failed Save Rider!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in inserting record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+	
+    if (secondLARidCode.length != 0) {
+        
+        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        //[alert setTag:1004];
+        //[alert show];
+    }
+    
+    [self getListingRiderByType];
+    [self getListingRider];
+    
+   
+}
+
+-(void)updateRider
+{
+	sqlite3_stmt *statement;
+	
+    //sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
+								@"UPDATE UL_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", "
+								"Deductible=\"%@\", HLoading=\"%@\", HLoadingTerm=\"%d\", "
+								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\" WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
+								"PTypeCode=\"%@\" AND Seq=\"%d\"", txtRiderTerm.text, txtSumAssured.text, planOption,
+								deductible, inputHL1KSA, inputHL1KSATerm,inputHLPercentage,
+								inputHLPercentageTerm, getSINo,
+								riderCode,pTypeCode, PTypeSeq];
+		
+        if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                //[self validateRules];
+                
+            } else {
+                NSLog(@"Update Rider failed!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+    
+}
+
+
 
 -(void)checkingRider
 {
@@ -1653,6 +1811,24 @@
     }
 }
 
+-(void)check2ndLARider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode FROM UL_Rider_Details WHERE SINo=\"%@\" AND "
+							  "PTypeCode=\"%@\" AND Seq=\"%d\"",getSINo,pTypeCode, PTypeSeq];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                secondLARidCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
 
 
 #pragma mark- Button Action
@@ -1781,20 +1957,17 @@
 			NSLog(@"validate - 1st term");
 			[self validateTerm];
 		}
-		/*
+		
 		else if (sumA) {
 			NSLog(@"validate - 2nd sum");
 			[self validateSum];
 		}
-		else if (unit) {
-			NSLog(@"validate - 3rd unit");
-			[self validateUnit];
-		}
+		
 		else {
 			NSLog(@"validate - 4th save");
 			[self validateSaver];
 		}
-		 */
+		 
 	}
 	
 	

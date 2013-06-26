@@ -115,7 +115,7 @@
         
         querySQL = [querySQL stringByAppendingFormat:@" order by B.RiderCode asc"];
 		
-		        //NSLog(@"%@",querySQL);
+		        NSLog(@"%@",querySQL);
         
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {

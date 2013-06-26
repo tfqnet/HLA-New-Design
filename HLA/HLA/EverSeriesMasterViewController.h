@@ -11,9 +11,14 @@
 #import "EverLAViewController.h"
 #import "BasicAccountViewController.h"
 #import "EverRiderViewController.h"
+#import "EverSecondLAViewController.h"
+#import "EverPayorViewController.h"
+#import "EverHLoadingViewController.h"
 
 @interface EverSeriesMasterViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, EverLAViewControllerDelegate,
-															EverBasicPlanViewControllerDelegate, EverRiderViewControllerDelegate>{
+											EverBasicPlanViewControllerDelegate, EverRiderViewControllerDelegate,
+											EverSecondLAViewControllerDelegate, EverPayorViewControllerDelegate,
+											EverHLViewControllerDelegate>{
 	NSString *databasePath;
     sqlite3 *contactDB;
 	NSIndexPath *selectedPath;
@@ -27,11 +32,17 @@
 	EverLAViewController *_EverLAController;
 	BasicAccountViewController *_BasicAccount;
 	EverRiderViewController*_EverRider;
+	EverSecondLAViewController*_EverSecondLA;
+	EverPayorViewController*_EverPayor;
+												EverHLoadingViewController*_EverHLoad;
 }
 
 @property (nonatomic, retain) EverLAViewController *EverLAController;
 @property (nonatomic, retain) BasicAccountViewController *BasicAccount;
 @property (nonatomic, retain) EverRiderViewController *EverRider;
+@property (nonatomic, retain) EverSecondLAViewController *EverSecondLA;
+@property (nonatomic, retain) EverPayorViewController *EverPayor;
+@property (nonatomic, retain) EverHLoadingViewController *EverHLoad;
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *RightView;

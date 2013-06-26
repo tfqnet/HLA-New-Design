@@ -217,8 +217,6 @@
 @property(nonatomic , retain) NSMutableArray *LSmoker;
 @property(nonatomic , retain) NSMutableArray *LSex;
 @property(nonatomic , retain) NSMutableArray *LAge;
-@property(nonatomic , retain) NSMutableArray *LTempRidHL1K;
-@property(nonatomic , retain) NSMutableArray *LTempRidHLTerm;
 
 @property (retain, nonatomic) NSMutableArray *LTypeRiderCode;
 @property (retain, nonatomic) NSMutableArray *LTypeSumAssured;
@@ -236,8 +234,7 @@
 @property(nonatomic , retain) NSMutableArray *LTypeSmoker;
 @property(nonatomic , retain) NSMutableArray *LTypeSex;
 @property(nonatomic , retain) NSMutableArray *LTypeAge;
-@property(nonatomic , retain) NSMutableArray *LTypeTempRidHL1K;
-@property(nonatomic , retain) NSMutableArray *LTypeTempRidHLTerm;
+@property(nonatomic , retain) NSMutableArray *LTypePremium;
 
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;

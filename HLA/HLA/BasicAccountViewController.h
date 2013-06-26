@@ -26,6 +26,7 @@
     sqlite3 *contactDB;
     UITextField *activeField;
     UIPopoverController *_planPopover;
+	id temp;
     PlanList *_planList;
 	    BOOL useExist;
 	id <EverBasicPlanViewControllerDelegate> _delegate;
