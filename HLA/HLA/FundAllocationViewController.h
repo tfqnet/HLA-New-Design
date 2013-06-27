@@ -7,7 +7,55 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
 
-@interface FundAllocationViewController : UIViewController
+@class EverFundAllocation;
+@protocol EverFundDelegate
+
+@end
+
+
+@interface FundAllocationViewController : UIViewController<UITextFieldDelegate, UIScrollViewDelegate>{
+	NSString *databasePath;
+    sqlite3 *contactDB;
+	UITextField *activeField;
+	id <EverFundDelegate> _delegate;
+}
+
+@property (nonatomic,strong) id <EverFundDelegate> delegate;
+
+//--request
+@property (nonatomic, copy) NSString *SINo;
+//--
+@property (nonatomic,copy) NSString *get2023;
+@property (nonatomic,copy) NSString *get2025;
+@property (nonatomic,copy) NSString *get2028;
+@property (nonatomic,copy) NSString *get2030;
+@property (nonatomic,copy) NSString *get2035;
+@property (nonatomic,copy) NSString *getCashFund;
+@property (nonatomic,copy) NSString *getSecureFund;
+@property (nonatomic,copy) NSString *getExpiredCashFund;
+@property (nonatomic,copy) NSString *getExpiredSecureFund;
+@property (nonatomic,copy) NSString *getSustainAge;
+
+- (IBAction)ActionDone:(id)sender;
+@property (weak, nonatomic) IBOutlet UITextField *txt2023;
+@property (weak, nonatomic) IBOutlet UITextField *txt2025;
+@property (weak, nonatomic) IBOutlet UITextField *txt2028;
+
+@property (weak, nonatomic) IBOutlet UITextField *txt2030;
+@property (weak, nonatomic) IBOutlet UITextField *txt2035;
+@property (weak, nonatomic) IBOutlet UITextField *txtSecureFund;
+@property (weak, nonatomic) IBOutlet UITextField *txtCashFund;
+@property (weak, nonatomic) IBOutlet UITextField *txtExpireSecureFund;
+@property (weak, nonatomic) IBOutlet UITextField *txtExpireCashFund;
+@property (weak, nonatomic) IBOutlet UIButton *outletReset;
+- (IBAction)ActionReset:(id)sender;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *outletSustain;
+- (IBAction)ActionSustain:(id)sender;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *outletAge;
+- (IBAction)ActionAge:(id)sender;
+@property (weak, nonatomic) IBOutlet UITextField *txtAge;
+@property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 
 @end

@@ -7240,10 +7240,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3898" y="4436"/>
         </scene>
-        <!--View Controller-->
+        <!--Fund Allocation View Controller-->
         <scene sceneID="bNT-n5-0As">
             <objects>
-                <viewController id="TaC-xk-9in" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EverFund" id="TaC-xk-9in" customClass="FundAllocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zTh-CV-ski">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -7273,11 +7273,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <rect key="frame" x="33" y="71" width="339" height="44"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <segments>
-                                                    <segment title="Age 65" enabled="NO"/>
+                                                    <segment title="Age 65"/>
                                                     <segment title="Age 85"/>
                                                     <segment title="Age 100"/>
                                                     <segment title="Other"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="ActionAge:" destination="TaC-xk-9in" eventType="valueChanged" id="TKJ-Nh-ME4"/>
+                                                </connections>
                                             </segmentedControl>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" id="WBo-DV-xHb">
                                                 <rect key="frame" x="220" y="8" width="123" height="44"/>
@@ -7286,6 +7289,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                     <segment title="Yes"/>
                                                     <segment title="No"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="ActionSustain:" destination="TaC-xk-9in" eventType="valueChanged" id="umw-cP-YpA"/>
+                                                </connections>
                                             </segmentedControl>
                                         </subviews>
                                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
@@ -7348,6 +7354,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="ActionReset:" destination="TaC-xk-9in" eventType="touchUpInside" id="uWY-U8-e2V"/>
+                                        </connections>
                                     </button>
                                     <view contentMode="scaleToFill" id="dqS-yu-wWT">
                                         <rect key="frame" x="34" y="28" width="633" height="176"/>
@@ -7367,7 +7376,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="c00-th-rPe">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" minimumFontSize="17" id="c00-th-rPe">
                                                 <rect key="frame" x="182" y="70" width="97" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -7394,7 +7403,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="vjY-Qe-4jv">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" minimumFontSize="17" id="vjY-Qe-4jv">
                                                 <rect key="frame" x="182" y="37" width="97" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -7434,7 +7443,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="NME-wH-ZQn">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" minimumFontSize="17" id="NME-wH-ZQn">
                                                 <rect key="frame" x="496" y="37" width="97" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -7454,7 +7463,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="qv6-eb-TGu">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="roundedRect" minimumFontSize="17" id="qv6-eb-TGu">
                                                 <rect key="frame" x="496" y="69" width="97" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -7510,7 +7519,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem width="666" style="plain" systemItem="fixedSpace" id="Yei-GK-MBb"/>
-                                    <barButtonItem title="Done" style="done" id="vQ9-NI-VTE"/>
+                                    <barButtonItem title="Done" style="done" id="vQ9-NI-VTE">
+                                        <connections>
+                                            <action selector="ActionDone:" destination="TaC-xk-9in" id="4bc-Fu-hdM"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                                 <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
                             </toolbar>
@@ -7518,6 +7531,22 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <connections>
+                        <outlet property="myScrollView" destination="Bra-qm-PMu" id="ymC-EF-TGG"/>
+                        <outlet property="outletAge" destination="PyJ-Rg-NaF" id="k5H-dj-dxZ"/>
+                        <outlet property="outletReset" destination="Tme-RZ-cv0" id="QyR-O1-c2d"/>
+                        <outlet property="outletSustain" destination="WBo-DV-xHb" id="lLa-Hj-dYb"/>
+                        <outlet property="txt2023" destination="vjY-Qe-4jv" id="AMf-dc-A18"/>
+                        <outlet property="txt2025" destination="NME-wH-ZQn" id="ogJ-WR-T7q"/>
+                        <outlet property="txt2028" destination="c00-th-rPe" id="Hox-4g-k8x"/>
+                        <outlet property="txt2030" destination="qv6-eb-TGu" id="l10-FQ-7hU"/>
+                        <outlet property="txt2035" destination="ozr-IG-aE1" id="yUr-0m-xU2"/>
+                        <outlet property="txtAge" destination="cb0-mR-833" id="aJR-De-ehW"/>
+                        <outlet property="txtCashFund" destination="EuK-aF-Jsg" id="ZIu-pT-5hG"/>
+                        <outlet property="txtExpireCashFund" destination="ROE-QO-Xrg" id="3jf-Q2-mXi"/>
+                        <outlet property="txtExpireSecureFund" destination="d9n-1j-9zA" id="0lx-86-J18"/>
+                        <outlet property="txtSecureFund" destination="ErM-Tj-OZL" id="d6P-UM-AQV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hw5-zl-rvl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
