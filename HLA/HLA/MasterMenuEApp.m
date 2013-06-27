@@ -13,7 +13,11 @@
 @end
 
 @implementation MasterMenuEApp
+@synthesize SummaryVC = _SummaryVC;
 @synthesize PolicyVC = _PolicyVC;
+@synthesize NomineesVC = _NomineesVC;
+@synthesize HealthVC = _HealthVC;
+@synthesize AddQuestVC = _AddQuestVC;
 @synthesize myTableView,rightView,ListOfSubMenu;
 
 - (void)viewDidLoad
@@ -97,13 +101,41 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     selectedPath = indexPath;
-    if (indexPath.row == 2)     //policy details
+    
+    if (indexPath.row == 0)     //summary
     {
-//        self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PolicyView"];
+        self.SummaryVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryView"];
+        [self addChildViewController:self.SummaryVC];
+        [self.rightView addSubview:self.SummaryVC.view];
+    }
+    
+    else if (indexPath.row == 2)     //policy details
+    {
 //        _PolicyVC.delegate = self;
         self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PolicyNavi"];
         [self addChildViewController:self.PolicyVC];
         [self.rightView addSubview:self.PolicyVC.view];
+    }
+    
+    else if (indexPath.row == 3)     //nominees
+    {
+        self.NomineesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"NomineesView"];
+        [self addChildViewController:self.NomineesVC];
+        [self.rightView addSubview:self.NomineesVC.view];
+    }
+    
+    else if (indexPath.row == 4)     //health questions
+    {
+        self.HealthVC = [self.storyboard instantiateViewControllerWithIdentifier:@"HealthView"];
+        [self addChildViewController:self.HealthVC];
+        [self.rightView addSubview:self.HealthVC.view];
+    }
+    
+    else if (indexPath.row == 5)     //Additional questions
+    {
+        self.AddQuestVC = [self.storyboard instantiateViewControllerWithIdentifier:@"AddQuestView"];
+        [self addChildViewController:self.AddQuestVC];
+        [self.rightView addSubview:self.AddQuestVC.view];
     }
 }
 

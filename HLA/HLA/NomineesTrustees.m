@@ -13,15 +13,12 @@
 @end
 
 @implementation NomineesTrustees
-@synthesize btnNominees;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 	
-    btnNominees.highlighted = TRUE;
-    btnNominees.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
@@ -30,8 +27,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-    [self setBtnNominees:nil];
+- (void)viewDidUnload
+{
     [super viewDidUnload];
 }
 @end

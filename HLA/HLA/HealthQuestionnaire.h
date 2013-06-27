@@ -10,6 +10,4 @@
 
 @interface HealthQuestionnaire : UIViewController
 
-@property (strong, nonatomic) IBOutlet UIButton *btnHealth;
-
 @end

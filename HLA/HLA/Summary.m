@@ -13,17 +13,13 @@
 @end
 
 @implementation Summary
-@synthesize btnSummary;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-      checked = NO;
+    checked = NO;
      self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
   
-    
-	btnSummary.highlighted = TRUE;
-    btnSummary.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
@@ -32,9 +28,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
   
-    [self setBtnSummary:nil];
     [super viewDidUnload];
 }
 

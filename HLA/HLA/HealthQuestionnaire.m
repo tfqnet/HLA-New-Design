@@ -13,15 +13,12 @@
 @end
 
 @implementation HealthQuestionnaire
-@synthesize btnHealth;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
      self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 	
-    btnHealth.highlighted = TRUE;
-    btnHealth.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
@@ -30,8 +27,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-    [self setBtnHealth:nil];
+- (void)viewDidUnload
+{
     [super viewDidUnload];
 }
 @end

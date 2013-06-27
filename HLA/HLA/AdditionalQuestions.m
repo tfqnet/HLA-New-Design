@@ -13,23 +13,13 @@
 @end
 
 @implementation AdditionalQuestions
-@synthesize btnQuest;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
          self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-    btnQuest.highlighted = TRUE;
-    btnQuest.enabled = FALSE;
+    
 	// Do any additional setup after loading the view.
 }
 
@@ -39,8 +29,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-    [self setBtnQuest:nil];
+- (void)viewDidUnload
+{
     [super viewDidUnload];
 }
 @end

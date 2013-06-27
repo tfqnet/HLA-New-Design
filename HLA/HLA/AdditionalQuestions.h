@@ -10,5 +10,4 @@
 
 @interface AdditionalQuestions : UIViewController
 
-@property (strong, nonatomic) IBOutlet UIButton *btnQuest;
 @end
