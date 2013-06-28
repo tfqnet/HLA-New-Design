@@ -260,6 +260,7 @@
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
+		EFD44A9C177D2072002456F5 /* MasterMenuCFF.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD44A9B177D2072002456F5 /* MasterMenuCFF.m */; };
 		EFEB79F2175D994F004FF3CE /* MainClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79F1175D994F004FF3CE /* MainClient.m */; };
 		EFEB7A05175D9FA4004FF3CE /* ClientTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */; };
 		EFEB7A06175D9FA4004FF3CE /* ClientTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB7A01175D9FA3004FF3CE /* ClientTabBarButton.m */; };
@@ -640,6 +641,8 @@
 		EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLAHandler.m; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
+		EFD44A9A177D2072002456F5 /* MasterMenuCFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterMenuCFF.h; sourceTree = "<group>"; };
+		EFD44A9B177D2072002456F5 /* MasterMenuCFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterMenuCFF.m; sourceTree = "<group>"; };
 		EFEB79F0175D994F004FF3CE /* MainClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainClient.h; sourceTree = "<group>"; };
 		EFEB79F1175D994F004FF3CE /* MainClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainClient.m; sourceTree = "<group>"; };
 		EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTabBarController.m; sourceTree = "<group>"; };
@@ -1342,6 +1345,8 @@
 			children = (
 				EFEB7A521766F239004FF3CE /* MainCustomer.h */,
 				EFEB7A531766F239004FF3CE /* MainCustomer.m */,
+				EFD44A9A177D2072002456F5 /* MasterMenuCFF.h */,
+				EFD44A9B177D2072002456F5 /* MasterMenuCFF.m */,
 				EF5B611D173C9ED700751157 /* CustomerProfile.h */,
 				EF5B611E173C9ED800751157 /* CustomerProfile.m */,
 				42C9E413176B0CC500B7EFF8 /* DisclosureStatus.h */,
@@ -1723,6 +1728,7 @@
 				C4E1D5FB1779D76D002BDE51 /* EverPayorViewController.m in Sources */,
 				C4E1D5FE1779D77E002BDE51 /* FundAllocationViewController.m in Sources */,
 				C4E1D6011779D796002BDE51 /* EverHLoadingViewController.m in Sources */,
+				EFD44A9C177D2072002456F5 /* MasterMenuCFF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

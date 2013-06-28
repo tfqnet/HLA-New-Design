@@ -10,6 +10,7 @@
 #import "CarouselViewController.h"
 #import "CustomerProfile.h"
 #import "Logout.h"
+#import "MasterMenuCFF.h"
 
 @interface MainCustomer () {
     NSArray* viewControllers;
@@ -28,6 +29,7 @@
     self.delegate = self;
 	
     NSMutableArray* controllersToAdd = [[NSMutableArray alloc] init];
+    UIStoryboard *newStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
     
     CarouselViewController* carouselPage = [self.storyboard instantiateViewControllerWithIdentifier:@"carouselView"];
     carouselPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Home" image:[UIImage imageNamed:@"btn_home.png"] tag: 0];
@@ -37,6 +39,11 @@
     CustomerProfile *CFFListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"customerProfile"];
     CFFListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:CFFListingPage];
+    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    
+    MasterMenuCFF *masterCFF = [newStoryboard instantiateViewControllerWithIdentifier:@"MenuCFFView"];
+    masterCFF.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New CFF" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
+    [controllersToAdd addObject:masterCFF];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
     Logout* LogoutPage = [self.storyboard instantiateViewControllerWithIdentifier:@"Logout"];
@@ -59,7 +66,7 @@
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);
     }
     
-    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, CFFListingPage = Nil, LogoutPage = Nil;
+    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, CFFListingPage = Nil, LogoutPage = Nil, newStoryboard = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
