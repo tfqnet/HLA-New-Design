@@ -13,8 +13,8 @@
 		423E8BB717700EF900E60C20 /* NomineesTrustees.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB617700EF900E60C20 /* NomineesTrustees.m */; };
 		423E8BBA17700F1700E60C20 /* HealthQuestionnaire.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */; };
 		423E8BBD17700FF200E60C20 /* Declaration.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BBC17700FF200E60C20 /* Declaration.m */; };
-		42500B601740D66D00AEEDE3 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */; };
-		42500B621740D67A00AEEDE3 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42500B611740D67A00AEEDE3 /* hladb.sqlite */; };
+		42570A1A177D40FA006BA43D /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42570A19177D40FA006BA43D /* HLA_Rates.sqlite */; };
+		42570A1C177D4107006BA43D /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42570A1B177D4107006BA43D /* hladb.sqlite */; };
 		42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867E99175F2D93001CE661 /* IDTypeViewController.m */; };
 		42867E9D175F2E0C001CE661 /* IDType.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867E9C175F2E0C001CE661 /* IDType.plist */; };
 		42867EAF175F75BD001CE661 /* Title.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867EAE175F75BD001CE661 /* Title.plist */; };
@@ -292,8 +292,8 @@
 		423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestionnaire.m; sourceTree = "<group>"; };
 		423E8BBB17700FF200E60C20 /* Declaration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Declaration.h; sourceTree = "<group>"; };
 		423E8BBC17700FF200E60C20 /* Declaration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declaration.m; sourceTree = "<group>"; };
-		42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
-		42500B611740D67A00AEEDE3 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		42570A19177D40FA006BA43D /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
+		42570A1B177D4107006BA43D /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		42867E98175F2D93001CE661 /* IDTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDTypeViewController.h; sourceTree = "<group>"; };
 		42867E99175F2D93001CE661 /* IDTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDTypeViewController.m; sourceTree = "<group>"; };
 		42867E9C175F2E0C001CE661 /* IDType.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = IDType.plist; sourceTree = "<group>"; };
@@ -1169,8 +1169,8 @@
 				C4E643811724F175001DF8F8 /* Rates.json */,
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
-				42500B5F1740D66D00AEEDE3 /* HLA_Rates.sqlite */,
-				42500B611740D67A00AEEDE3 /* hladb.sqlite */,
+				42570A19177D40FA006BA43D /* HLA_Rates.sqlite */,
+				42570A1B177D4107006BA43D /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1587,8 +1587,6 @@
 				C4E643801724E821001DF8F8 /* PDS in Resources */,
 				C4E643821724F175001DF8F8 /* Rates.json in Resources */,
 				EF5B611C173C96A000751157 /* Default-Landscape~ipad.png in Resources */,
-				42500B601740D66D00AEEDE3 /* HLA_Rates.sqlite in Resources */,
-				42500B621740D67A00AEEDE3 /* hladb.sqlite in Resources */,
 				C4CA65A41745DD06002AB907 /* Brochure_Cashpromise_ENGMAND.pdf in Resources */,
 				C4CA65A51745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf in Resources */,
 				42867E9D175F2E0C001CE661 /* IDType.plist in Resources */,
@@ -1600,6 +1598,8 @@
 				42F8590C1772DAA7003907CD /* tickCheckBox.png in Resources */,
 				42F8590F1772E4EF003907CD /* add.png in Resources */,
 				42F859101772E4EF003907CD /* delete.png in Resources */,
+				42570A1A177D40FA006BA43D /* HLA_Rates.sqlite in Resources */,
+				42570A1C177D4107006BA43D /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1823,7 +1823,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1839,7 +1839,7 @@
 				);
 				PRODUCT_NAME = "iMobile Planner";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -1849,8 +1849,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1865,8 +1865,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
