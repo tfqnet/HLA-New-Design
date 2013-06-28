@@ -10,6 +10,4 @@
 
 @interface Declaration : UIViewController
 
-@property (strong, nonatomic) IBOutlet UIButton *btnDeclare;
-
 @end

@@ -18,6 +18,7 @@
 @synthesize NomineesVC = _NomineesVC;
 @synthesize HealthVC = _HealthVC;
 @synthesize AddQuestVC = _AddQuestVC;
+@synthesize DeclareVC = _DeclareVC;
 @synthesize myTableView,rightView,ListOfSubMenu;
 
 - (void)viewDidLoad
@@ -136,6 +137,13 @@
         self.AddQuestVC = [self.storyboard instantiateViewControllerWithIdentifier:@"AddQuestView"];
         [self addChildViewController:self.AddQuestVC];
         [self.rightView addSubview:self.AddQuestVC.view];
+    }
+    
+    else if (indexPath.row == 6)     //Declaration
+    {
+        self.DeclareVC = [self.storyboard instantiateViewControllerWithIdentifier:@"DeclareView"];
+        [self addChildViewController:self.DeclareVC];
+        [self.rightView addSubview:self.DeclareVC.view];
     }
 }
 

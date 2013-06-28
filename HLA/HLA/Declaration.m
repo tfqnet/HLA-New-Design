@@ -13,15 +13,11 @@
 @end
 
 @implementation Declaration
-@synthesize btnDeclare;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
      self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-	
-    btnDeclare.highlighted = TRUE;
-    btnDeclare.enabled = FALSE;
 }
 
 - (void)didReceiveMemoryWarning
