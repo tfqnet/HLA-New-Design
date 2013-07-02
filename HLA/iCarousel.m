@@ -133,7 +133,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 - (void)setUp
 {
     _type = iCarouselTypeLinear;
-    _perspective = -1.0f/500.0f;
+    _perspective = -1.0f/750.0f;
     _decelerationRate = 0.95f;
     _scrollEnabled = YES;
     _bounces = YES;

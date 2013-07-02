@@ -37,6 +37,12 @@
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Disclose of Intermediary Status", @"Customer's Choice", @"Customer's Personal Data", @"Potential Area for Discussion", @"Preference", @"Financial Analysis", @"Record of Advice", @"Declaration and Acknowledgement", @"Confirmation of Advice Given to", nil ];
     myTableView.rowHeight = 54;
     [myTableView reloadData];
+    
+    self.CustomerDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CustDetailView"];
+    [self addChildViewController:self.CustomerDataVC];
+    [self.RightView addSubview:self.CustomerDataVC.view];
+    selectedPath = [NSIndexPath indexPathForRow:2 inSection:0];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
 }
 
 

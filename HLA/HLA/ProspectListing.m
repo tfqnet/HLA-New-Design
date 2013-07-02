@@ -52,7 +52,7 @@
     label.font = [UIFont boldSystemFontOfSize:20];
     label.textAlignment = UITextAlignmentCenter;
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
-    label.text = @"Client Listing";
+    label.text = @"Client Profile Listing";
     self.navigationItem.titleView = label;
     
 //    searchBar.delegate = (id)self;
@@ -442,7 +442,7 @@
     */
     
     [self.navigationController pushViewController:_EditProspect animated:YES];
-    _EditProspect.navigationItem.title = @"Edit Prospect Profile";
+    _EditProspect.navigationItem.title = @"Edit Client Profile";
     _EditProspect.navigationItem.rightBarButtonItem = _EditProspect.outletDone;
     pp = Nil, zzz = Nil;
 
@@ -460,7 +460,7 @@
     }
     
     [self.navigationController pushViewController:_ProspectViewController animated:YES];
-    _ProspectViewController.navigationItem.title = @"Client Profile";
+    _ProspectViewController.navigationItem.title = @"Add Client Profile";
     _ProspectViewController.navigationItem.rightBarButtonItem = _ProspectViewController.outletDone;
     
 }

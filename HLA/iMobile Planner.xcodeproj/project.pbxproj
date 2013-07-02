@@ -254,6 +254,7 @@
 		EF1ADDEA178285B700996388 /* CustomerPartner.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDE9178285B700996388 /* CustomerPartner.m */; };
 		EF1ADDED1782A73C00996388 /* CustomerPartnerII.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDEC1782A73A00996388 /* CustomerPartnerII.m */; };
 		EF1ADDF01782AE3A00996388 /* CustomerChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDEF1782AE3700996388 /* CustomerChildren.m */; };
+		EF1ADDF21782D20100996388 /* homeScreenBrochure2.png in Resources */ = {isa = PBXBuildFile; fileRef = EF1ADDF11782D1FF00996388 /* homeScreenBrochure2.png */; };
 		EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
@@ -644,6 +645,7 @@
 		EF1ADDEC1782A73A00996388 /* CustomerPartnerII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerPartnerII.m; sourceTree = "<group>"; };
 		EF1ADDEE1782AE3600996388 /* CustomerChildren.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerChildren.h; sourceTree = "<group>"; };
 		EF1ADDEF1782AE3700996388 /* CustomerChildren.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerChildren.m; sourceTree = "<group>"; };
+		EF1ADDF11782D1FF00996388 /* homeScreenBrochure2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeScreenBrochure2.png; sourceTree = "<group>"; };
 		EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pdfData.plist; sourceTree = "<group>"; };
 		EF28C317161BE224009585CC /* SIMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMenuViewController.h; path = ../SIMenuViewController.h; sourceTree = "<group>"; };
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
@@ -915,6 +917,7 @@
 			isa = PBXGroup;
 			children = (
 				EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */,
+				EF1ADDF11782D1FF00996388 /* homeScreenBrochure2.png */,
 				C4E7C0C2172FC9CD00038FA9 /* AFNetworking */,
 				C4E6437F1724E821001DF8F8 /* PDS */,
 				C4E6437A171BE656001DF8F8 /* Reachability */,
@@ -1655,6 +1658,7 @@
 				42F859101772E4EF003907CD /* delete.png in Resources */,
 				42570A1A177D40FA006BA43D /* HLA_Rates.sqlite in Resources */,
 				42570A1C177D4107006BA43D /* hladb.sqlite in Resources */,
+				EF1ADDF21782D20100996388 /* homeScreenBrochure2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -37,6 +37,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(Next:)];
     
     ArrRider = [[NSMutableArray alloc] initWithObjects:@"C+",@"CCTR",@"CIR",@"CIWP",@"CPA",@"HMM", nil];
+    
+    self.myTableView.hidden = TRUE;
 }
 
 - (void)viewWillAppear:(BOOL)animated

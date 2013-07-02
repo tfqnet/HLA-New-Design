@@ -214,7 +214,7 @@ const int numberOfModule = 7;
         //[button setTitle:[NSString stringWithFormat:@"Prospect Listing", index] forState:UIControlStateNormal];
         //NSString *filename = [NSString stringWithFormat:@"btn_prospect_home"];
         //UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:filename ofType:@"PNG"]];
-        [button setBackgroundImage:[UIImage imageNamed:@"20130108Prospect.png"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"homeScreenBrochure2.png"] forState:UIControlStateNormal];
 				button.tag = 0;
     }
     else if (index % numberOfModule == 2) {

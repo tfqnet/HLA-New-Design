@@ -35,7 +35,7 @@
     label.font = [UIFont boldSystemFontOfSize:20];
     label.textAlignment = UITextAlignmentCenter;
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
-    label.text = @"e-Application";
+    label.text = @"e-Application Listing";
     self.navigationItem.titleView = label;
     
 //    CGRect frame1=CGRectMake(0,240, 204, 50);
@@ -127,7 +127,7 @@
     }
     
     [self.navigationController pushViewController:_eAppsVC animated:YES];
-    _eAppsVC.navigationItem.title = @"eApp Listing";
+    _eAppsVC.navigationItem.title = @"Sales Illustration Listing";
 //    _eAppsVC.navigationItem.rightBarButtonItem = _eAppsVC.outletDone;
 }
 

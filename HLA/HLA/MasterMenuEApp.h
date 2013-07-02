@@ -13,6 +13,7 @@
 #import "HealthQuestionnaire.h"
 #import "AdditionalQuestions.h"
 #import "Declaration.h"
+#import "CustomerPersonalData.h"
 
 @interface MasterMenuEApp : UIViewController {
     NSIndexPath *selectedPath;
@@ -23,6 +24,7 @@
     HealthQuestionnaire *_HealthVC;
     AdditionalQuestions *_AddQuestVC;
     Declaration *_DeclareVC;
+    CustomerPersonalData *_CustomerDataVC;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
@@ -35,5 +37,6 @@
 @property (nonatomic, retain) HealthQuestionnaire *HealthVC;
 @property (nonatomic, retain) AdditionalQuestions *AddQuestVC;
 @property (nonatomic, retain) Declaration *DeclareVC;
+@property (nonatomic, retain) CustomerPersonalData *CustomerDataVC;
 
 @end

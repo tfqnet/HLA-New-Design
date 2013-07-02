@@ -29,6 +29,14 @@
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Summary", @"Personal Details", @"Policy Details", @"Nominees/Trustees", @"Health Questions", @"Additional Questions",@"Declaration", nil ];
     myTableView.rowHeight = 44;
     [myTableView reloadData];
+    
+    self.SummaryVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryView"];
+    [self addChildViewController:self.SummaryVC];
+    [self.rightView addSubview:self.SummaryVC.view];
+    selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
+    
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -108,6 +116,12 @@
         self.SummaryVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryView"];
         [self addChildViewController:self.SummaryVC];
         [self.rightView addSubview:self.SummaryVC.view];
+    }
+    
+    else if (indexPath.row == 1) {
+        self.CustomerDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CustDetailView"];
+        [self addChildViewController:self.CustomerDataVC];
+        [self.rightView addSubview:self.CustomerDataVC.view];
     }
     
     else if (indexPath.row == 2)     //policy details
