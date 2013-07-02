@@ -13,15 +13,33 @@
 @end
 
 @implementation CustomerPersonalData
-@synthesize btnCusData;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 	
-    btnCusData.highlighted = TRUE;
-    btnCusData.enabled = FALSE;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.view.frame = CGRectMake(0, 0, 788, 1004);
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -30,8 +48,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-    [self setBtnCusData:nil];
+- (void)viewDidUnload
+{
     [super viewDidUnload];
 }
 @end

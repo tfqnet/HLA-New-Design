@@ -14,7 +14,7 @@
 
 @implementation DisclosureStatus
 @synthesize checkButton;
-@synthesize checkButton1,btnDisclose;
+@synthesize checkButton1;
 
 - (void)viewDidLoad
 {
@@ -22,10 +22,27 @@
     checked = NO;
 
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-    self.navigationItem.title = @"Disclosure";
-    
-    btnDisclose.highlighted = TRUE;
-    btnDisclose.enabled = FALSE;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.view.frame = CGRectMake(0, 0, 788, 1004);
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -34,12 +51,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     [self setCheckButton:nil];
     [self setCheckButton1:nil];
-    [self setBtnDisclose:nil];
     [super viewDidUnload];
 }
+
 - (IBAction)checkboxButton:(id)sender {
     if (!checked) {
         [checkButton setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];

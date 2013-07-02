@@ -1,23 +1,23 @@
 //
-//  Preference.m
+//  PotentialArea.m
 //  iMobile Planner
 //
-//  Created by Erza on 6/20/13.
+//  Created by shawal sapuan on 7/1/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "Preference.h"
+#import "PotentialArea.h"
 
-@interface Preference ()
+@interface PotentialArea ()
 
 @end
 
-@implementation Preference
+@implementation PotentialArea
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
+	self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated

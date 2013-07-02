@@ -16,8 +16,13 @@
 @synthesize DisclosureVC = _DisclosureVC;
 @synthesize CustomerVC = _CustomerVC;
 @synthesize CustomerDataVC = _CustomerDataVC;
+@synthesize PotentialVC = _PotentialVC;
 @synthesize PreferenceVC = _PreferenceVC;
 @synthesize FinancialVC = _FinancialVC;
+@synthesize RetirementVC = _RetirementVC;
+@synthesize RecordVC = _RecordVC;
+@synthesize DeclareCFFVC = _DeclareCFFVC;
+@synthesize ConfirmCFFVC = _ConfirmCFFVC;
 @synthesize ListOfSubMenu,myTableView,RightView;
 
 - (void)viewDidLoad
@@ -27,7 +32,7 @@
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Disclose of Intermediary Status", @"Customer's Choice", @"Customer's Personal Data", @"Potential Area for Discussion", @"Preference", @"Financial Analysis", @"Record of Advice", @"Declaration and Acknowledgement", @"Confirmation of Advice Given to", nil ];
-    myTableView.rowHeight = 44;
+    myTableView.rowHeight = 57;
     [myTableView reloadData];
 }
 
@@ -56,6 +61,7 @@
     cell.detailTextLabel.text = @"";
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:18];
+    cell.textLabel.numberOfLines = 2;
     cell.textLabel.textAlignment = UITextAlignmentLeft;
     
     return cell;
@@ -89,6 +95,13 @@
         [self.RightView addSubview:self.CustomerDataVC.view];
     }
     
+    else if (indexPath.row == 3)     //potential area
+    {
+        self.PotentialVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PotentialView"];
+        [self addChildViewController:self.PotentialVC];
+        [self.RightView addSubview:self.PotentialVC.view];
+    }
+    
     else if (indexPath.row == 4)     //preference
     {
         self.PreferenceVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PreferenceView"];
@@ -99,9 +112,40 @@
     else if (indexPath.row == 5)     //financial analysis
     {
         self.FinancialVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FinancialView"];
+        _FinancialVC.delegate = self;
         [self addChildViewController:self.FinancialVC];
         [self.RightView addSubview:self.FinancialVC.view];
     }
+    
+    else if (indexPath.row == 6)     //record
+    {
+        self.RecordVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RecordView"];
+        [self addChildViewController:self.RecordVC];
+        [self.RightView addSubview:self.RecordVC.view];
+    }
+    
+    else if (indexPath.row == 7)     //declare
+    {
+        self.DeclareCFFVC = [self.storyboard instantiateViewControllerWithIdentifier:@"DeclareCFFView"];
+        [self addChildViewController:self.DeclareCFFVC];
+        [self.RightView addSubview:self.DeclareCFFVC.view];
+    }
+    
+    else if (indexPath.row == 8)     //declare
+    {
+        self.ConfirmCFFVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ConfirmCFFView"];
+        [self addChildViewController:self.ConfirmCFFVC];
+        [self.RightView addSubview:self.ConfirmCFFVC.view];
+    }
+}
+
+#pragma mark - delegate action
+
+-(void)swipeToRetirement
+{
+    self.RetirementVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RetirementView"];
+    [self addChildViewController:self.RetirementVC];
+    [self.RightView addSubview:self.RetirementVC.view];
 }
 
 - (void)didReceiveMemoryWarning

@@ -19,7 +19,5 @@
 @property (strong, nonatomic) IBOutlet UIButton *checkButton4;
 - (IBAction)checkboxButton4:(id)sender;
 
-@property (strong, nonatomic) IBOutlet UIButton *btnCusChoice;
-
 
 @end

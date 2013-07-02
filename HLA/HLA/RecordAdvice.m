@@ -1,20 +1,18 @@
 //
-//  FinancialAnalysis.m
+//  RecordAdvice.m
 //  iMobile Planner
 //
-//  Created by Erza on 6/18/13.
+//  Created by shawal sapuan on 7/1/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "FinancialAnalysis.h"
-#import "Retirement.h"
+#import "RecordAdvice.h"
 
-@interface FinancialAnalysis ()
+@interface RecordAdvice ()
 
 @end
 
-@implementation FinancialAnalysis
-@synthesize delegate = _delegate;
+@implementation RecordAdvice
 
 - (void)viewDidLoad
 {
@@ -49,19 +47,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
-
-- (IBAction)swipeNext:(id)sender
-{
-    
-    [_delegate swipeToRetirement];
-    
-//    Retirement *RetirementPage = [self.storyboard instantiateViewControllerWithIdentifier:@"RetirementView"];
-//    RetirementPage.modalPresentationStyle = UIModalPresentationPageSheet;
-//    RetirementPage.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//    [self presentViewController:RetirementPage animated:YES completion:Nil];
-}
 @end

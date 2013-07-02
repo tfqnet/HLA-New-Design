@@ -15,7 +15,7 @@
 @implementation CustomerChoice
 @synthesize checkButton2;
 @synthesize checkButton3;
-@synthesize checkButton4,btnCusChoice;
+@synthesize checkButton4;
 
 - (void)viewDidLoad
 {
@@ -23,9 +23,27 @@
     checked = NO;
     
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
-    
-    btnCusChoice.highlighted = TRUE;
-    btnCusChoice.enabled = FALSE;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.view.frame = CGRectMake(0, 0, 788, 1004);
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -34,11 +52,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     [self setCheckButton2:nil];
     [self setCheckButton3:nil];
     [self setCheckButton4:nil];
-    [self setBtnCusChoice:nil];
     [super viewDidUnload];
 }
 - (IBAction)checkboxButton2:(id)sender {

@@ -243,6 +243,11 @@
 		EF05985C161A9428004A9095 /* RiderListTbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF05985A161A9428004A9095 /* RiderListTbViewController.m */; };
 		EF1343BD165C7CD600BF69B3 /* RiderDeducTb.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1343BC165C7CD600BF69B3 /* RiderDeducTb.m */; };
 		EF1343C1165C7CFD00BF69B3 /* RiderPlanTb.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */; };
+		EF1ADDD217812AED00996388 /* PotentialArea.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDD117812AED00996388 /* PotentialArea.m */; };
+		EF1ADDD51781372D00996388 /* Retirement.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDD41781372D00996388 /* Retirement.m */; };
+		EF1ADDD817815F7300996388 /* RecordAdvice.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDD717815F7300996388 /* RecordAdvice.m */; };
+		EF1ADDDB1781632E00996388 /* Declare.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDDA1781632E00996388 /* Declare.m */; };
+		EF1ADDDE1781689000996388 /* ConfirmationCFF.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDDD1781689000996388 /* ConfirmationCFF.m */; };
 		EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
@@ -611,6 +616,16 @@
 		EF1343BC165C7CD600BF69B3 /* RiderDeducTb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderDeducTb.m; sourceTree = "<group>"; };
 		EF1343BF165C7CFD00BF69B3 /* RiderPlanTb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiderPlanTb.h; sourceTree = "<group>"; };
 		EF1343C0165C7CFD00BF69B3 /* RiderPlanTb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiderPlanTb.m; sourceTree = "<group>"; };
+		EF1ADDD017812AED00996388 /* PotentialArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PotentialArea.h; sourceTree = "<group>"; };
+		EF1ADDD117812AED00996388 /* PotentialArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PotentialArea.m; sourceTree = "<group>"; };
+		EF1ADDD31781372D00996388 /* Retirement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Retirement.h; sourceTree = "<group>"; };
+		EF1ADDD41781372D00996388 /* Retirement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Retirement.m; sourceTree = "<group>"; };
+		EF1ADDD617815F7200996388 /* RecordAdvice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordAdvice.h; sourceTree = "<group>"; };
+		EF1ADDD717815F7300996388 /* RecordAdvice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordAdvice.m; sourceTree = "<group>"; };
+		EF1ADDD91781632E00996388 /* Declare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Declare.h; sourceTree = "<group>"; };
+		EF1ADDDA1781632E00996388 /* Declare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declare.m; sourceTree = "<group>"; };
+		EF1ADDDC1781688F00996388 /* ConfirmationCFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmationCFF.h; sourceTree = "<group>"; };
+		EF1ADDDD1781689000996388 /* ConfirmationCFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmationCFF.m; sourceTree = "<group>"; };
 		EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pdfData.plist; sourceTree = "<group>"; };
 		EF28C317161BE224009585CC /* SIMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMenuViewController.h; path = ../SIMenuViewController.h; sourceTree = "<group>"; };
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
@@ -1355,10 +1370,20 @@
 				42C9E423176B826200B7EFF8 /* CustomerChoice.m */,
 				423E8BAB176FFEF400E60C20 /* CustomerPersonalData.h */,
 				423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */,
-				423E8BAF176FFF2800E60C20 /* FinancialAnalysis.h */,
-				423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */,
+				EF1ADDD017812AED00996388 /* PotentialArea.h */,
+				EF1ADDD117812AED00996388 /* PotentialArea.m */,
 				42FB604B1772EF6000943E1F /* Preference.h */,
 				42FB604C1772EF6000943E1F /* Preference.m */,
+				423E8BAF176FFF2800E60C20 /* FinancialAnalysis.h */,
+				423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */,
+				EF1ADDD31781372D00996388 /* Retirement.h */,
+				EF1ADDD41781372D00996388 /* Retirement.m */,
+				EF1ADDD617815F7200996388 /* RecordAdvice.h */,
+				EF1ADDD717815F7300996388 /* RecordAdvice.m */,
+				EF1ADDD91781632E00996388 /* Declare.h */,
+				EF1ADDDA1781632E00996388 /* Declare.m */,
+				EF1ADDDC1781688F00996388 /* ConfirmationCFF.h */,
+				EF1ADDDD1781689000996388 /* ConfirmationCFF.m */,
 			);
 			name = CFF;
 			sourceTree = "<group>";
@@ -1729,6 +1754,11 @@
 				C4E1D5FE1779D77E002BDE51 /* FundAllocationViewController.m in Sources */,
 				C4E1D6011779D796002BDE51 /* EverHLoadingViewController.m in Sources */,
 				EFD44A9C177D2072002456F5 /* MasterMenuCFF.m in Sources */,
+				EF1ADDD217812AED00996388 /* PotentialArea.m in Sources */,
+				EF1ADDD51781372D00996388 /* Retirement.m in Sources */,
+				EF1ADDD817815F7300996388 /* RecordAdvice.m in Sources */,
+				EF1ADDDB1781632E00996388 /* Declare.m in Sources */,
+				EF1ADDDE1781689000996388 /* ConfirmationCFF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1823,7 +1853,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1839,7 +1869,7 @@
 				);
 				PRODUCT_NAME = "iMobile Planner";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -1849,8 +1879,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1865,8 +1895,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;

@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FinancialAnalysis : UIViewController
+@class FinancialAnalysis;
+@protocol FinancialAnalysisDelegate
+-(void)swipeToRetirement;
+@end
 
-@property (strong, nonatomic) IBOutlet UIButton *btnFinancial;
+@interface FinancialAnalysis : UIViewController {
+    id <FinancialAnalysisDelegate> _delegate;
+}
+
+- (IBAction)swipeNext:(id)sender;
+
+@property (nonatomic,strong) id <FinancialAnalysisDelegate> delegate;
 
 @end
