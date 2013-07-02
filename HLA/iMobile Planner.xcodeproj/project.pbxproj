@@ -248,6 +248,12 @@
 		EF1ADDD817815F7300996388 /* RecordAdvice.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDD717815F7300996388 /* RecordAdvice.m */; };
 		EF1ADDDB1781632E00996388 /* Declare.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDDA1781632E00996388 /* Declare.m */; };
 		EF1ADDDE1781689000996388 /* ConfirmationCFF.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDDD1781689000996388 /* ConfirmationCFF.m */; };
+		EF1ADDE117826CCC00996388 /* Education.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDE017826CCC00996388 /* Education.m */; };
+		EF1ADDE417826F2700996388 /* SavingCFF.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDE317826F2700996388 /* SavingCFF.m */; };
+		EF1ADDE71782771200996388 /* RecordAdviceII.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDE61782771100996388 /* RecordAdviceII.m */; };
+		EF1ADDEA178285B700996388 /* CustomerPartner.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDE9178285B700996388 /* CustomerPartner.m */; };
+		EF1ADDED1782A73C00996388 /* CustomerPartnerII.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDEC1782A73A00996388 /* CustomerPartnerII.m */; };
+		EF1ADDF01782AE3A00996388 /* CustomerChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDEF1782AE3700996388 /* CustomerChildren.m */; };
 		EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
@@ -626,6 +632,18 @@
 		EF1ADDDA1781632E00996388 /* Declare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declare.m; sourceTree = "<group>"; };
 		EF1ADDDC1781688F00996388 /* ConfirmationCFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmationCFF.h; sourceTree = "<group>"; };
 		EF1ADDDD1781689000996388 /* ConfirmationCFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmationCFF.m; sourceTree = "<group>"; };
+		EF1ADDDF17826CCC00996388 /* Education.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Education.h; sourceTree = "<group>"; };
+		EF1ADDE017826CCC00996388 /* Education.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Education.m; sourceTree = "<group>"; };
+		EF1ADDE217826F2700996388 /* SavingCFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SavingCFF.h; sourceTree = "<group>"; };
+		EF1ADDE317826F2700996388 /* SavingCFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SavingCFF.m; sourceTree = "<group>"; };
+		EF1ADDE51782771100996388 /* RecordAdviceII.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordAdviceII.h; sourceTree = "<group>"; };
+		EF1ADDE61782771100996388 /* RecordAdviceII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordAdviceII.m; sourceTree = "<group>"; };
+		EF1ADDE8178285B600996388 /* CustomerPartner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerPartner.h; sourceTree = "<group>"; };
+		EF1ADDE9178285B700996388 /* CustomerPartner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerPartner.m; sourceTree = "<group>"; };
+		EF1ADDEB1782A73600996388 /* CustomerPartnerII.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerPartnerII.h; sourceTree = "<group>"; };
+		EF1ADDEC1782A73A00996388 /* CustomerPartnerII.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerPartnerII.m; sourceTree = "<group>"; };
+		EF1ADDEE1782AE3600996388 /* CustomerChildren.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerChildren.h; sourceTree = "<group>"; };
+		EF1ADDEF1782AE3700996388 /* CustomerChildren.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerChildren.m; sourceTree = "<group>"; };
 		EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pdfData.plist; sourceTree = "<group>"; };
 		EF28C317161BE224009585CC /* SIMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMenuViewController.h; path = ../SIMenuViewController.h; sourceTree = "<group>"; };
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
@@ -1370,6 +1388,12 @@
 				42C9E423176B826200B7EFF8 /* CustomerChoice.m */,
 				423E8BAB176FFEF400E60C20 /* CustomerPersonalData.h */,
 				423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */,
+				EF1ADDE8178285B600996388 /* CustomerPartner.h */,
+				EF1ADDE9178285B700996388 /* CustomerPartner.m */,
+				EF1ADDEB1782A73600996388 /* CustomerPartnerII.h */,
+				EF1ADDEC1782A73A00996388 /* CustomerPartnerII.m */,
+				EF1ADDEE1782AE3600996388 /* CustomerChildren.h */,
+				EF1ADDEF1782AE3700996388 /* CustomerChildren.m */,
 				EF1ADDD017812AED00996388 /* PotentialArea.h */,
 				EF1ADDD117812AED00996388 /* PotentialArea.m */,
 				42FB604B1772EF6000943E1F /* Preference.h */,
@@ -1378,8 +1402,14 @@
 				423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */,
 				EF1ADDD31781372D00996388 /* Retirement.h */,
 				EF1ADDD41781372D00996388 /* Retirement.m */,
+				EF1ADDDF17826CCC00996388 /* Education.h */,
+				EF1ADDE017826CCC00996388 /* Education.m */,
+				EF1ADDE217826F2700996388 /* SavingCFF.h */,
+				EF1ADDE317826F2700996388 /* SavingCFF.m */,
 				EF1ADDD617815F7200996388 /* RecordAdvice.h */,
 				EF1ADDD717815F7300996388 /* RecordAdvice.m */,
+				EF1ADDE51782771100996388 /* RecordAdviceII.h */,
+				EF1ADDE61782771100996388 /* RecordAdviceII.m */,
 				EF1ADDD91781632E00996388 /* Declare.h */,
 				EF1ADDDA1781632E00996388 /* Declare.m */,
 				EF1ADDDC1781688F00996388 /* ConfirmationCFF.h */,
@@ -1759,6 +1789,12 @@
 				EF1ADDD817815F7300996388 /* RecordAdvice.m in Sources */,
 				EF1ADDDB1781632E00996388 /* Declare.m in Sources */,
 				EF1ADDDE1781689000996388 /* ConfirmationCFF.m in Sources */,
+				EF1ADDE117826CCC00996388 /* Education.m in Sources */,
+				EF1ADDE417826F2700996388 /* SavingCFF.m in Sources */,
+				EF1ADDE71782771200996388 /* RecordAdviceII.m in Sources */,
+				EF1ADDEA178285B700996388 /* CustomerPartner.m in Sources */,
+				EF1ADDED1782A73C00996388 /* CustomerPartnerII.m in Sources */,
+				EF1ADDF01782AE3A00996388 /* CustomerChildren.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Retirement : UIViewController
+@class Retirement;
+@protocol RetirementDelegate
+-(void)swipeToEducation;
+@end
+
+@interface Retirement : UIViewController {
+    id <RetirementDelegate> _delegate;
+}
+
+@property (nonatomic,strong) id <RetirementDelegate> delegate;
+- (IBAction)swipeNext:(id)sender;
 
 @end

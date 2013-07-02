@@ -1,19 +1,18 @@
 //
-//  RecordAdvice.m
+//  CustomerChildren.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 7/1/13.
+//  Created by shawal sapuan on 7/2/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "RecordAdvice.h"
+#import "CustomerChildren.h"
 
-@interface RecordAdvice ()
+@interface CustomerChildren ()
 
 @end
 
-@implementation RecordAdvice
-@synthesize delegate = _delegate;
+@implementation CustomerChildren
 
 - (void)viewDidLoad
 {
@@ -23,7 +22,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.view.frame = CGRectMake(0, 0, 788, 1004);
     [super viewWillAppear:animated];
 }
 
@@ -48,8 +46,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)SwipeNext:(id)sender
+- (IBAction)donePressed:(id)sender
 {
-    [_delegate swipeToRecordAdviceII];
+    [self dismissModalViewControllerAnimated:YES];
 }
 @end

@@ -14,11 +14,14 @@
 #import "Preference.h"
 #import "FinancialAnalysis.h"
 #import "Retirement.h"
+#import "Education.h"
+#import "SavingCFF.h"
 #import "RecordAdvice.h"
+#import "RecordAdviceII.h"
 #import "Declare.h"
 #import "ConfirmationCFF.h"
 
-@interface MasterMenuCFF : UIViewController <FinancialAnalysisDelegate> {
+@interface MasterMenuCFF : UIViewController <FinancialAnalysisDelegate,RetirementDelegate,EducationDelegate,RecordDelegate> {
     NSIndexPath *selectedPath;
     NSIndexPath *previousPath;
     DisclosureStatus *_DisclosureVC;
@@ -28,7 +31,10 @@
     Preference *_PreferenceVC;
     FinancialAnalysis *_FinancialVC;
     Retirement *_RetirementVC;
+    Education *_EducationVC;
+    SavingCFF *_SavingVC;
     RecordAdvice *_RecordVC;
+    RecordAdviceII *_RecordIIVC;
     Declare *_DeclareCFFVC;
     ConfirmationCFF *_ConfirmCFFVC;
 }
@@ -44,7 +50,10 @@
 @property (nonatomic, retain) Preference *PreferenceVC;
 @property (nonatomic, retain) FinancialAnalysis *FinancialVC;
 @property (nonatomic, retain) Retirement *RetirementVC;
+@property (nonatomic, retain) Education *EducationVC;
+@property (nonatomic, retain) SavingCFF *SavingVC;
 @property (nonatomic, retain) RecordAdvice *RecordVC;
+@property (nonatomic, retain) RecordAdviceII *RecordIIVC;
 @property (nonatomic, retain) Declare *DeclareCFFVC;
 @property (nonatomic, retain) ConfirmationCFF *ConfirmCFFVC;
 

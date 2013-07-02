@@ -34,7 +34,7 @@
     label.text = @"Policy Details";
     self.navigationItem.titleView = label;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(Next:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(Next:)];
     
     ArrRider = [[NSMutableArray alloc] initWithObjects:@"C+",@"CCTR",@"CIR",@"CIWP",@"CPA",@"HMM", nil];
 }

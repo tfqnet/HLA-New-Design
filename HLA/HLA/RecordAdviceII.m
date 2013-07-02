@@ -1,19 +1,18 @@
 //
-//  RecordAdvice.m
+//  RecordAdviceII.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 7/1/13.
+//  Created by shawal sapuan on 7/2/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "RecordAdvice.h"
+#import "RecordAdviceII.h"
 
-@interface RecordAdvice ()
+@interface RecordAdviceII ()
 
 @end
 
-@implementation RecordAdvice
-@synthesize delegate = _delegate;
+@implementation RecordAdviceII
 
 - (void)viewDidLoad
 {
@@ -48,8 +47,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)SwipeNext:(id)sender
-{
-    [_delegate swipeToRecordAdviceII];
-}
 @end

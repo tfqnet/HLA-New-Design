@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RecordAdvice : UIViewController
+@class RecordAdvice;
+@protocol RecordDelegate
+-(void)swipeToRecordAdviceII;
+@end
+
+@interface RecordAdvice : UIViewController {
+    id <RecordDelegate> _delegate;
+}
+
+@property (nonatomic, strong) id <RecordDelegate> delegate;
+- (IBAction)SwipeNext:(id)sender;
 
 @end

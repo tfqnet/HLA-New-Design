@@ -1,18 +1,18 @@
 //
-//  RecordAdvice.m
+//  Education.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 7/1/13.
+//  Created by shawal sapuan on 7/2/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "RecordAdvice.h"
+#import "Education.h"
 
-@interface RecordAdvice ()
+@interface Education ()
 
 @end
 
-@implementation RecordAdvice
+@implementation Education
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad
@@ -45,11 +45,10 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)SwipeNext:(id)sender
+- (IBAction)swipeNext:(id)sender
 {
-    [_delegate swipeToRecordAdviceII];
+    [_delegate swipeToSavings];
 }
 @end

@@ -20,7 +20,10 @@
 @synthesize PreferenceVC = _PreferenceVC;
 @synthesize FinancialVC = _FinancialVC;
 @synthesize RetirementVC = _RetirementVC;
+@synthesize EducationVC = _EducationVC;
+@synthesize SavingVC = _SavingVC;
 @synthesize RecordVC = _RecordVC;
+@synthesize RecordIIVC = _RecordIIVC;
 @synthesize DeclareCFFVC = _DeclareCFFVC;
 @synthesize ConfirmCFFVC = _ConfirmCFFVC;
 @synthesize ListOfSubMenu,myTableView,RightView;
@@ -32,7 +35,7 @@
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
     ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Disclose of Intermediary Status", @"Customer's Choice", @"Customer's Personal Data", @"Potential Area for Discussion", @"Preference", @"Financial Analysis", @"Record of Advice", @"Declaration and Acknowledgement", @"Confirmation of Advice Given to", nil ];
-    myTableView.rowHeight = 57;
+    myTableView.rowHeight = 54;
     [myTableView reloadData];
 }
 
@@ -120,6 +123,7 @@
     else if (indexPath.row == 6)     //record
     {
         self.RecordVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RecordView"];
+        _RecordVC.delegate = self;
         [self addChildViewController:self.RecordVC];
         [self.RightView addSubview:self.RecordVC.view];
     }
@@ -144,9 +148,35 @@
 -(void)swipeToRetirement
 {
     self.RetirementVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RetirementView"];
+    _RetirementVC.delegate = self;
     [self addChildViewController:self.RetirementVC];
     [self.RightView addSubview:self.RetirementVC.view];
 }
+
+-(void)swipeToEducation
+{
+    self.EducationVC = [self.storyboard instantiateViewControllerWithIdentifier:@"EducationView"];
+    _EducationVC.delegate = self;
+    [self addChildViewController:self.EducationVC];
+    [self.RightView addSubview:self.EducationVC.view];
+}
+
+-(void)swipeToSavings
+{
+    self.SavingVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SavingView"];
+    [self addChildViewController:self.SavingVC];
+    [self.RightView addSubview:self.SavingVC.view];
+}
+
+-(void)swipeToRecordAdviceII
+{
+    self.RecordIIVC = [self.storyboard instantiateViewControllerWithIdentifier:@"RecordIIView"];
+    [self addChildViewController:self.RecordIIVC];
+    [self.RightView addSubview:self.RecordIIVC.view];
+}
+
+
+#pragma mark - memory
 
 - (void)didReceiveMemoryWarning
 {

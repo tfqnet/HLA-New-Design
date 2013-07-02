@@ -1,19 +1,19 @@
 //
-//  RecordAdvice.m
+//  CustomerPartner.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 7/1/13.
+//  Created by shawal sapuan on 7/2/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "RecordAdvice.h"
+#import "CustomerPartner.h"
 
-@interface RecordAdvice ()
+@interface CustomerPartner ()
 
 @end
 
-@implementation RecordAdvice
-@synthesize delegate = _delegate;
+@implementation CustomerPartner
+@synthesize parnerIIVC = _parnerIIVC;
 
 - (void)viewDidLoad
 {
@@ -23,7 +23,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.view.frame = CGRectMake(0, 0, 788, 1004);
     [super viewWillAppear:animated];
 }
 
@@ -45,11 +44,15 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)SwipeNext:(id)sender
+- (IBAction)goNext:(id)sender
 {
-    [_delegate swipeToRecordAdviceII];
+    self.parnerIIVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PartnerIIView"];
+    self.parnerIIVC.modalPresentationStyle = UIModalPresentationPageSheet;
+    self.parnerIIVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:self.parnerIIVC animated:NO];
+    self.parnerIIVC.view.superview.frame = CGRectMake(0, 50, 748, 974);
 }
+
 @end

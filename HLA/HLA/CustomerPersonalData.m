@@ -7,6 +7,8 @@
 //
 
 #import "CustomerPersonalData.h"
+#import "CustomerPartner.h"
+#import "CustomerChildren.h"
 
 @interface CustomerPersonalData ()
 
@@ -51,5 +53,24 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+}
+
+- (IBAction)addParner:(id)sender
+{
+    CustomerPartner *partner = [self.storyboard instantiateViewControllerWithIdentifier:@"PartnerView"];
+    partner.modalPresentationStyle = UIModalPresentationPageSheet;
+    partner.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:partner animated:NO];
+//    partner.view.superview.frame = CGRectMake(50, 0, 970, 748);
+    partner.view.superview.frame = CGRectMake(0, 50, 748, 974);
+}
+
+- (IBAction)addChildren:(id)sender
+{
+    CustomerChildren *partnerChild = [self.storyboard instantiateViewControllerWithIdentifier:@"ChildrenView"];
+    partnerChild.modalPresentationStyle = UIModalPresentationPageSheet;
+    partnerChild.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:partnerChild animated:NO];
+    partnerChild.view.superview.frame = CGRectMake(0, 50, 748, 974);
 }
 @end

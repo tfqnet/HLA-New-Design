@@ -11,4 +11,7 @@
 @interface CustomerPersonalData : UIViewController
 
 
+- (IBAction)addParner:(id)sender;
+- (IBAction)addChildren:(id)sender;
+
 @end
