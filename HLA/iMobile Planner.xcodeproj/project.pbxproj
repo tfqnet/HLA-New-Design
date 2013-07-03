@@ -13,8 +13,8 @@
 		423E8BB717700EF900E60C20 /* NomineesTrustees.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB617700EF900E60C20 /* NomineesTrustees.m */; };
 		423E8BBA17700F1700E60C20 /* HealthQuestionnaire.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */; };
 		423E8BBD17700FF200E60C20 /* Declaration.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BBC17700FF200E60C20 /* Declaration.m */; };
-		42570A1A177D40FA006BA43D /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42570A19177D40FA006BA43D /* HLA_Rates.sqlite */; };
-		42570A1C177D4107006BA43D /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 42570A1B177D4107006BA43D /* hladb.sqlite */; };
+		424334B51783D46F0008F504 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 424334B41783D46F0008F504 /* HLA_Rates.sqlite */; };
+		424334B71783D4790008F504 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 424334B61783D4790008F504 /* hladb.sqlite */; };
 		42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867E99175F2D93001CE661 /* IDTypeViewController.m */; };
 		42867E9D175F2E0C001CE661 /* IDType.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867E9C175F2E0C001CE661 /* IDType.plist */; };
 		42867EAF175F75BD001CE661 /* Title.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867EAE175F75BD001CE661 /* Title.plist */; };
@@ -304,8 +304,8 @@
 		423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestionnaire.m; sourceTree = "<group>"; };
 		423E8BBB17700FF200E60C20 /* Declaration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Declaration.h; sourceTree = "<group>"; };
 		423E8BBC17700FF200E60C20 /* Declaration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declaration.m; sourceTree = "<group>"; };
-		42570A19177D40FA006BA43D /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
-		42570A1B177D4107006BA43D /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		424334B41783D46F0008F504 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
+		424334B61783D4790008F504 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		42867E98175F2D93001CE661 /* IDTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDTypeViewController.h; sourceTree = "<group>"; };
 		42867E99175F2D93001CE661 /* IDTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDTypeViewController.m; sourceTree = "<group>"; };
 		42867E9C175F2E0C001CE661 /* IDType.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = IDType.plist; sourceTree = "<group>"; };
@@ -1205,8 +1205,8 @@
 				C4E643811724F175001DF8F8 /* Rates.json */,
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
-				42570A19177D40FA006BA43D /* HLA_Rates.sqlite */,
-				42570A1B177D4107006BA43D /* hladb.sqlite */,
+				424334B41783D46F0008F504 /* HLA_Rates.sqlite */,
+				424334B61783D4790008F504 /* hladb.sqlite */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -1656,9 +1656,9 @@
 				42F8590C1772DAA7003907CD /* tickCheckBox.png in Resources */,
 				42F8590F1772E4EF003907CD /* add.png in Resources */,
 				42F859101772E4EF003907CD /* delete.png in Resources */,
-				42570A1A177D40FA006BA43D /* HLA_Rates.sqlite in Resources */,
-				42570A1C177D4107006BA43D /* hladb.sqlite in Resources */,
 				EF1ADDF21782D20100996388 /* homeScreenBrochure2.png in Resources */,
+				424334B51783D46F0008F504 /* HLA_Rates.sqlite in Resources */,
+				424334B71783D4790008F504 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
