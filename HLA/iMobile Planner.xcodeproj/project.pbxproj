@@ -15,10 +15,13 @@
 		423E8BBD17700FF200E60C20 /* Declaration.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BBC17700FF200E60C20 /* Declaration.m */; };
 		424334B51783D46F0008F504 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 424334B41783D46F0008F504 /* HLA_Rates.sqlite */; };
 		424334B71783D4790008F504 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 424334B61783D4790008F504 /* hladb.sqlite */; };
+		424334BA17854E490008F504 /* Trustees.m in Sources */ = {isa = PBXBuildFile; fileRef = 424334B917854E490008F504 /* Trustees.m */; };
 		42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867E99175F2D93001CE661 /* IDTypeViewController.m */; };
 		42867E9D175F2E0C001CE661 /* IDType.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867E9C175F2E0C001CE661 /* IDType.plist */; };
 		42867EAF175F75BD001CE661 /* Title.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867EAE175F75BD001CE661 /* Title.plist */; };
 		42867EB3175F75E6001CE661 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867EB2175F75E6001CE661 /* TitleViewController.m */; };
+		42BB1E2A17855B9E00C2A763 /* HealthQuestionnaire2.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BB1E2917855B9E00C2A763 /* HealthQuestionnaire2.m */; };
+		42BB1E2D17855BC000C2A763 /* HealthQuestionnaire3.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BB1E2C17855BC000C2A763 /* HealthQuestionnaire3.m */; };
 		42C9E415176B0CC500B7EFF8 /* DisclosureStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */; };
 		42C9E424176B826200B7EFF8 /* CustomerChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E423176B826200B7EFF8 /* CustomerChoice.m */; };
 		42F8590B1772DAA7003907CD /* emptyCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F859091772DAA7003907CD /* emptyCheckBox.png */; };
@@ -308,12 +311,18 @@
 		423E8BBC17700FF200E60C20 /* Declaration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declaration.m; sourceTree = "<group>"; };
 		424334B41783D46F0008F504 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		424334B61783D4790008F504 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		424334B817854E490008F504 /* Trustees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trustees.h; sourceTree = "<group>"; };
+		424334B917854E490008F504 /* Trustees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trustees.m; sourceTree = "<group>"; };
 		42867E98175F2D93001CE661 /* IDTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDTypeViewController.h; sourceTree = "<group>"; };
 		42867E99175F2D93001CE661 /* IDTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDTypeViewController.m; sourceTree = "<group>"; };
 		42867E9C175F2E0C001CE661 /* IDType.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = IDType.plist; sourceTree = "<group>"; };
 		42867EAE175F75BD001CE661 /* Title.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Title.plist; sourceTree = "<group>"; };
 		42867EB1175F75E6001CE661 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
 		42867EB2175F75E6001CE661 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
+		42BB1E2817855B9E00C2A763 /* HealthQuestionnaire2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestionnaire2.h; sourceTree = "<group>"; };
+		42BB1E2917855B9E00C2A763 /* HealthQuestionnaire2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestionnaire2.m; sourceTree = "<group>"; };
+		42BB1E2B17855BC000C2A763 /* HealthQuestionnaire3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestionnaire3.h; sourceTree = "<group>"; };
+		42BB1E2C17855BC000C2A763 /* HealthQuestionnaire3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestionnaire3.m; sourceTree = "<group>"; };
 		42C9E413176B0CC500B7EFF8 /* DisclosureStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureStatus.h; sourceTree = "<group>"; };
 		42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureStatus.m; sourceTree = "<group>"; };
 		42C9E422176B826200B7EFF8 /* CustomerChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerChoice.h; sourceTree = "<group>"; };
@@ -1374,8 +1383,14 @@
 				423E8BB617700EF900E60C20 /* NomineesTrustees.m */,
 				EF9C47A0178525A20093289C /* Nominees.h */,
 				EF9C47A1178525A20093289C /* Nominees.m */,
+				424334B817854E490008F504 /* Trustees.h */,
+				424334B917854E490008F504 /* Trustees.m */,
 				423E8BB817700F1700E60C20 /* HealthQuestionnaire.h */,
 				423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */,
+				42BB1E2817855B9E00C2A763 /* HealthQuestionnaire2.h */,
+				42BB1E2917855B9E00C2A763 /* HealthQuestionnaire2.m */,
+				42BB1E2B17855BC000C2A763 /* HealthQuestionnaire3.h */,
+				42BB1E2C17855BC000C2A763 /* HealthQuestionnaire3.m */,
 				423E8BBB17700FF200E60C20 /* Declaration.h */,
 				423E8BBC17700FF200E60C20 /* Declaration.m */,
 				EF97FFAD1773F9C800C95844 /* PersonalDetails.h */,
@@ -1811,6 +1826,9 @@
 				EF1ADDF01782AE3A00996388 /* CustomerChildren.m in Sources */,
 				EF1ADDF51784066C00996388 /* eAppPersonalDetails.m in Sources */,
 				EF9C47A2178525A20093289C /* Nominees.m in Sources */,
+				424334BA17854E490008F504 /* Trustees.m in Sources */,
+				42BB1E2A17855B9E00C2A763 /* HealthQuestionnaire2.m in Sources */,
+				42BB1E2D17855BC000C2A763 /* HealthQuestionnaire3.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

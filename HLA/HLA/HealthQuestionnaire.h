@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HealthQuestionnaire : UIViewController
+@protocol HealthQuestionnaireDelegate
+-(void)swipeToHQ2;
+@end
+
+@interface HealthQuestionnaire : UIViewController{
+    id <HealthQuestionnaireDelegate> _delegate;
+}
+- (IBAction)swipeNext:(id)sender;
+
+@property (nonatomic,strong) id <HealthQuestionnaireDelegate> delegate;
 
 @end

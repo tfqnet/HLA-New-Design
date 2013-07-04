@@ -15,8 +15,10 @@
 #import "Declaration.h"
 #import "CustomerPersonalData.h"
 #import "eAppPersonalDetails.h"
+#import "HealthQuestionnaire2.h"
+#import "HealthQuestionnaire3.h"
 
-@interface MasterMenuEApp : UIViewController {
+@interface MasterMenuEApp : UIViewController <HealthQuestionnaireDelegate, HealthQuestionnaire2Delegate>  {
     NSIndexPath *selectedPath;
     NSIndexPath *previousPath;
     Summary *_SummaryVC;
@@ -27,6 +29,8 @@
     Declaration *_DeclareVC;
     CustomerPersonalData *_CustomerDataVC;
      eAppPersonalDetails *_eAppPersonalDataVC;
+    HealthQuestionnaire2 *_HealthVC2;
+    HealthQuestionnaire3 *_HealthVC3;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
@@ -41,5 +45,8 @@
 @property (nonatomic, retain) Declaration *DeclareVC;
 @property (nonatomic, retain) CustomerPersonalData *CustomerDataVC;
 @property (nonatomic, retain) eAppPersonalDetails *eAppPersonalDataVC;
+@property (nonatomic, retain) HealthQuestionnaire2 *HealthVC2;
+@property (nonatomic, retain) HealthQuestionnaire3 *HealthVC3;
+
 
 @end

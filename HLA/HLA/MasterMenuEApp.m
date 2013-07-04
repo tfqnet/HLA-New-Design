@@ -20,7 +20,10 @@
 @synthesize AddQuestVC = _AddQuestVC;
 @synthesize DeclareVC = _DeclareVC;
 @synthesize eAppPersonalDataVC = _eAppPersonalDataVC;
+@synthesize HealthVC2 = _HealthVC2;
+@synthesize HealthVC3 = _HealthVC3;
 @synthesize myTableView,rightView,ListOfSubMenu;
+
 
 - (void)viewDidLoad
 {
@@ -147,6 +150,7 @@
     else if (indexPath.row == 4)     //health questions
     {
         self.HealthVC = [self.storyboard instantiateViewControllerWithIdentifier:@"HealthView"];
+        _HealthVC.delegate = self;
         [self addChildViewController:self.HealthVC];
         [self.rightView addSubview:self.HealthVC.view];
     }
@@ -166,6 +170,20 @@
     }
 }
 
+-(void) swipeToHQ2{
+    self.HealthVC2 = [self.storyboard instantiateViewControllerWithIdentifier:@"HQ2"];
+    _HealthVC2.delegate = self;
+    [self addChildViewController:self.HealthVC2];
+    [self.rightView addSubview:self.HealthVC2.view];
+    
+}
+
+-(void) swipeToHQ3 {
+    self.HealthVC3 = [self.storyboard instantiateViewControllerWithIdentifier:@"HQ3"];
+    [self addChildViewController:self.HealthVC3];
+    [self.rightView addSubview:self.HealthVC3.view];
+    
+}
 
 #pragma mark - memory managemnet
 

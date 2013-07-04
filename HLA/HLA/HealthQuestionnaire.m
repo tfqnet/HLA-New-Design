@@ -13,6 +13,8 @@
 @end
 
 @implementation HealthQuestionnaire
+@synthesize delegate = _delegate;
+
 
 - (void)viewDidLoad
 {
@@ -30,5 +32,9 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+}
+- (IBAction)swipeNext:(id)sender {
+    [_delegate swipeToHQ2];
+    
 }
 @end

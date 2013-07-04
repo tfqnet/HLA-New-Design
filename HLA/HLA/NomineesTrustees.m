@@ -8,6 +8,7 @@
 
 #import "NomineesTrustees.h"
 #import "Nominees.h"
+#import "Trustees.h"
 
 @interface NomineesTrustees ()
 
@@ -43,6 +44,11 @@
 
 - (IBAction)addTrustee:(id)sender
 {
+    Trustees *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"TrusteeView"];
+    zzz.modalPresentationStyle = UIModalPresentationPageSheet;
+    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:zzz animated:NO];
+//    zzz.view.superview.frame = CGRectMake(0, 50, 748, 974);
     
 }
 @end
