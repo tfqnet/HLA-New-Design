@@ -255,6 +255,7 @@
 		EF1ADDED1782A73C00996388 /* CustomerPartnerII.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDEC1782A73A00996388 /* CustomerPartnerII.m */; };
 		EF1ADDF01782AE3A00996388 /* CustomerChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDEF1782AE3700996388 /* CustomerChildren.m */; };
 		EF1ADDF21782D20100996388 /* homeScreenBrochure2.png in Resources */ = {isa = PBXBuildFile; fileRef = EF1ADDF11782D1FF00996388 /* homeScreenBrochure2.png */; };
+		EF1ADDF51784066C00996388 /* eAppPersonalDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EF1ADDF41784066C00996388 /* eAppPersonalDetails.m */; };
 		EF1F6C7C16A7C1CC001EDC81 /* pdfData.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */; };
 		EF28C319161BE224009585CC /* SIMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF28C318161BE224009585CC /* SIMenuViewController.m */; };
 		EF33ACF0162D42B3006BB4C6 /* PlanList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF33ACEF162D42B3006BB4C6 /* PlanList.m */; };
@@ -268,6 +269,7 @@
 		EF906B2717729C0A00D5F3E3 /* NewStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF906B2617729C0900D5F3E3 /* NewStoryboard.storyboard */; };
 		EF97FFAF1773F9C800C95844 /* PersonalDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFAE1773F9C800C95844 /* PersonalDetails.m */; };
 		EF97FFB21773F9DD00C95844 /* AdditionalQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */; };
+		EF9C47A2178525A20093289C /* Nominees.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9C47A1178525A20093289C /* Nominees.m */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
@@ -646,6 +648,8 @@
 		EF1ADDEE1782AE3600996388 /* CustomerChildren.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerChildren.h; sourceTree = "<group>"; };
 		EF1ADDEF1782AE3700996388 /* CustomerChildren.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerChildren.m; sourceTree = "<group>"; };
 		EF1ADDF11782D1FF00996388 /* homeScreenBrochure2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeScreenBrochure2.png; sourceTree = "<group>"; };
+		EF1ADDF31784066C00996388 /* eAppPersonalDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eAppPersonalDetails.h; sourceTree = "<group>"; };
+		EF1ADDF41784066C00996388 /* eAppPersonalDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eAppPersonalDetails.m; sourceTree = "<group>"; };
 		EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = pdfData.plist; sourceTree = "<group>"; };
 		EF28C317161BE224009585CC /* SIMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMenuViewController.h; path = ../SIMenuViewController.h; sourceTree = "<group>"; };
 		EF28C318161BE224009585CC /* SIMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIMenuViewController.m; path = ../SIMenuViewController.m; sourceTree = "<group>"; };
@@ -669,6 +673,8 @@
 		EF97FFAE1773F9C800C95844 /* PersonalDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDetails.m; sourceTree = "<group>"; };
 		EF97FFB01773F9DD00C95844 /* AdditionalQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalQuestions.h; sourceTree = "<group>"; };
 		EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdditionalQuestions.m; sourceTree = "<group>"; };
+		EF9C47A0178525A20093289C /* Nominees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nominees.h; sourceTree = "<group>"; };
+		EF9C47A1178525A20093289C /* Nominees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nominees.m; sourceTree = "<group>"; };
 		EFABB36D16475A430069502B /* redBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redBtn.png; sourceTree = "<group>"; };
 		EFB3D5851685604400A7B517 /* PayorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayorHandler.h; sourceTree = "<group>"; };
 		EFB3D5861685604400A7B517 /* PayorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayorHandler.m; sourceTree = "<group>"; };
@@ -1360,10 +1366,14 @@
 				EF906B2417703EAE00D5F3E3 /* eAppsListing.m */,
 				423E8BB217700ECF00E60C20 /* Summary.h */,
 				423E8BB317700ED000E60C20 /* Summary.m */,
+				EF1ADDF31784066C00996388 /* eAppPersonalDetails.h */,
+				EF1ADDF41784066C00996388 /* eAppPersonalDetails.m */,
 				EF6A538B177943DA00D70960 /* PolicyDetails.h */,
 				EF6A538C177943DA00D70960 /* PolicyDetails.m */,
 				423E8BB517700EF900E60C20 /* NomineesTrustees.h */,
 				423E8BB617700EF900E60C20 /* NomineesTrustees.m */,
+				EF9C47A0178525A20093289C /* Nominees.h */,
+				EF9C47A1178525A20093289C /* Nominees.m */,
 				423E8BB817700F1700E60C20 /* HealthQuestionnaire.h */,
 				423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */,
 				423E8BBB17700FF200E60C20 /* Declaration.h */,
@@ -1799,6 +1809,8 @@
 				EF1ADDEA178285B700996388 /* CustomerPartner.m in Sources */,
 				EF1ADDED1782A73C00996388 /* CustomerPartnerII.m in Sources */,
 				EF1ADDF01782AE3A00996388 /* CustomerChildren.m in Sources */,
+				EF1ADDF51784066C00996388 /* eAppPersonalDetails.m in Sources */,
+				EF9C47A2178525A20093289C /* Nominees.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

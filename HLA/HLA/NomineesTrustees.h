@@ -10,4 +10,7 @@
 
 @interface NomineesTrustees : UIViewController
 
+- (IBAction)addNominees:(id)sender;
+- (IBAction)addTrustee:(id)sender;
+
 @end

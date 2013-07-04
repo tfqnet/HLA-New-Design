@@ -7,6 +7,7 @@
 //
 
 #import "NomineesTrustees.h"
+#import "Nominees.h"
 
 @interface NomineesTrustees ()
 
@@ -30,5 +31,18 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+}
+- (IBAction)addNominees:(id)sender
+{
+    Nominees *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"PopNomineesView"];
+    zzz.modalPresentationStyle = UIModalPresentationPageSheet;
+    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:zzz animated:NO];
+    zzz.view.superview.frame = CGRectMake(0, 50, 748, 974);
+}
+
+- (IBAction)addTrustee:(id)sender
+{
+    
 }
 @end

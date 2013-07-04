@@ -18,6 +18,7 @@
 {
     NSMutableArray *_OccupDesc;
     NSMutableArray *_OccupCode;
+    NSMutableArray *_OccupClass;
     NSString *databasePath;
     sqlite3 *contactDB;
     id<OccupationListDelegate> _delegate;
@@ -25,10 +26,12 @@
 
 @property (nonatomic, retain) NSMutableArray *OccupDesc;
 @property (nonatomic, retain) NSMutableArray *OccupCode;
+@property (nonatomic, retain) NSMutableArray *OccupClass;
 @property (nonatomic, strong) id<OccupationListDelegate> delegate;
 @property(retain) NSIndexPath* lastIndexPath;
 @property (strong, nonatomic) NSMutableArray* FilteredData;
 @property (strong, nonatomic) NSMutableArray* FilteredCode;
+@property (strong, nonatomic) NSMutableArray* FilteredClass;
 @property (nonatomic, assign) bool isFiltered;
 
 

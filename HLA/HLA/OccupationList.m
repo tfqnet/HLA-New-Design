@@ -16,8 +16,9 @@ NSString *SelectedString;
 @implementation OccupationList
 @synthesize OccupCode = _OccupCode;
 @synthesize OccupDesc = _OccupDesc;
+@synthesize OccupClass = _OccupClass;
 @synthesize isFiltered;
-@synthesize FilteredData, FilteredCode;
+@synthesize FilteredData, FilteredCode,FilteredClass;
 @synthesize lastIndexPath;
 @synthesize delegate = _delegate;
 
@@ -40,23 +41,26 @@ NSString *SelectedString;
     
     
     self.clearsSelectionOnViewWillAppear = NO;
-    self.contentSizeForViewInPopover = CGSizeMake(500.0, 400.0);
+    self.contentSizeForViewInPopover = CGSizeMake(700.0, 400.0);
     self.OccupDesc = [NSMutableArray array];
     self.OccupCode = [NSMutableArray array];
+    self.OccupClass = [NSMutableArray array];
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         //NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpCode, OccpDesc FROM Adm_Occp where status = 1"];
-		NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpCode, OccpDesc FROM Adm_Occp_Loading_Penta where status = 'A'"];
+		NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpCode, OccpDesc, Class FROM Adm_Occp_Loading_Penta where status = 'A'"];
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW){
                 NSString *OccpCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                 NSString *OccpDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                NSString *OccpClass = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                 
                 [_OccupDesc addObject:OccpDesc];
                 [_OccupCode addObject:OccpCode];
+                [_OccupClass addObject:OccpClass];
             }
         }
     
@@ -114,7 +118,14 @@ NSString *SelectedString;
     
     if (isFiltered == false) {
         NSString *OccuDesc = [_OccupDesc objectAtIndex:indexPath.row];
+        NSString *OccuClass = [_OccupClass objectAtIndex:indexPath.row];
         cell.textLabel.text = OccuDesc;
+        
+        UILabel *strClass = [[UILabel alloc] initWithFrame:CGRectMake(620.0, 18.0, 50.0, 13.0)];
+        [strClass setTextAlignment:UITextAlignmentRight];
+        strClass.font = [UIFont fontWithName:@"TreBuchet MS" size:14 ];
+        strClass.text = OccuClass;
+        [cell.contentView addSubview:strClass];
         
         if (OccuDesc == SelectedString) {
             cell.accessoryType= UITableViewCellAccessoryCheckmark;
@@ -128,6 +139,12 @@ NSString *SelectedString;
     else {
         
         cell.textLabel.text = [FilteredData objectAtIndex:indexPath.row];
+        
+        UILabel *strClass = [[UILabel alloc] initWithFrame:CGRectMake(620.0, 18.0, 50.0, 13.0)];
+        [strClass setTextAlignment:UITextAlignmentRight];
+        strClass.font = [UIFont fontWithName:@"TreBuchet MS" size:14 ];
+        strClass.text = [FilteredClass objectAtIndex:indexPath.row];
+        [cell.contentView addSubview:strClass];
         
         if ([FilteredData objectAtIndex:indexPath.row] == SelectedString) {
             cell.accessoryType= UITableViewCellAccessoryCheckmark;
@@ -155,6 +172,7 @@ NSString *SelectedString;
         isFiltered = true;
         FilteredData = [[NSMutableArray alloc] init ];
         FilteredCode = [[NSMutableArray alloc] init ];
+        FilteredClass = [[NSMutableArray alloc] init ];
         
         for (int a =0; a<_OccupDesc.count; a++ ) {
             NSRange Occu = [[_OccupDesc objectAtIndex:a ] rangeOfString:text options:NSCaseInsensitiveSearch];
@@ -162,6 +180,7 @@ NSString *SelectedString;
             if (Occu.location != NSNotFound) {
                 [FilteredData addObject:[_OccupDesc objectAtIndex:a ] ];
                 [FilteredCode addObject:[_OccupCode objectAtIndex:a]];
+                [FilteredClass addObject:[_OccupClass objectAtIndex:a]];
             }
         }
     }

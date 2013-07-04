@@ -19,6 +19,7 @@
 @synthesize HealthVC = _HealthVC;
 @synthesize AddQuestVC = _AddQuestVC;
 @synthesize DeclareVC = _DeclareVC;
+@synthesize eAppPersonalDataVC = _eAppPersonalDataVC;
 @synthesize myTableView,rightView,ListOfSubMenu;
 
 - (void)viewDidLoad
@@ -119,9 +120,13 @@
     }
     
     else if (indexPath.row == 1) {
-        self.CustomerDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CustDetailView"];
-        [self addChildViewController:self.CustomerDataVC];
-        [self.rightView addSubview:self.CustomerDataVC.view];
+//        self.CustomerDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CustDetailView"];
+//        [self addChildViewController:self.CustomerDataVC];
+//        [self.rightView addSubview:self.CustomerDataVC.view];
+        
+        self.eAppPersonalDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppPersonalDataView"];
+        [self addChildViewController:self.eAppPersonalDataVC];
+        [self.rightView addSubview:self.eAppPersonalDataVC.view];
     }
     
     else if (indexPath.row == 2)     //policy details
