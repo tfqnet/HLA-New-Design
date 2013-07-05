@@ -74,15 +74,6 @@
 
 bool PostcodeContinue = TRUE;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -191,56 +182,6 @@ bool PostcodeContinue = TRUE;
 }
 
 
-- (void)viewDidUnload
-{
-    [self setTxtPreferredName:nil];
-    [self setTxtFullName:nil];
-    [self setSegGender:nil];
-    [self setOutletDOB:nil];
-    [self setTxtHomeAddr1:nil];
-    [self setTxtHomeAddr2:nil];
-    [self setTxtHomeAddr3:nil];
-    [self setTxtHomePostCode:nil];
-    [self setTxtHomeTown:nil];
-    [self setTxtHomeState:nil];
-    [self setTxtHomeCountry:nil];
-    [self setTxtOfficeAddr1:nil];
-    [self setTxtOfficeAddr2:nil];
-    [self setTxtOfficeAddr3:nil];
-    [self setTxtOfficePostcode:nil];
-    [self setTxtOfficeTown:nil];
-    [self setTxtOfficeState:nil];
-    [self setTxtOfficeCountry:nil];
-    [self setTxtExactDuties:nil];
-    [self setOutletOccup:nil];
-
-    [self setTxtRemark:nil];
-    [self setMyScrollView:nil];
-    [self setTxtEmail:nil];
-    [self setTxtContact1:nil];
-    [self setOutletType1:nil];
-    [self setBtnCancel:nil];
-    [self setTxtContact2:nil];
-    [self setTxtContact3:nil];
-    [self setTxtContact4:nil];
-    [self setTxtContact5:nil];
-    [self setOutletType2:nil];
-    [self setOutletType3:nil];
-    [self setOutletType4:nil];
-    [self setOutletType5:nil];
-    [self setTxtPrefix1:nil];
-    [self setTxtPrefix2:nil];
-    [self setTxtPrefix3:nil];
-    [self setTxtPrefix4:nil];
-    [self setTxtPrefix5:nil];
-    [self setLblOfficeAddr:nil];
-    [self setLblPostCode:nil];
-    [self setOutletDone:nil];
-    [self setOutletTitle:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	if (interfaceOrientation==UIInterfaceOrientationLandscapeRight || interfaceOrientation == UIInterfaceOrientationLandscapeLeft)
@@ -249,18 +190,230 @@ bool PostcodeContinue = TRUE;
     return NO;
 }
 
-- (IBAction)ActionGender:(id)sender {
-    if ([segGender selectedSegmentIndex]==0) {
-        gender = @"M";
-    } 
+
+#pragma mark - keyboard
+
+-(void)keyboardDidShow:(NSNotificationCenter *)notification
+{
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748-350);
+    self.myScrollView.contentSize = CGSizeMake(1000, 748);
+    
+    CGRect textFieldRect = [activeField frame];
+    textFieldRect.origin.y += 15;
+    [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
+    //pickerToolbar.hidden = true;
+    //outletDobPicker.hidden = TRUE;
+    txtRemark.hidden = FALSE;
+}
+
+-(void)keyboardDidHide:(NSNotificationCenter *)notification
+{
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
+    //ContactTypePicker.hidden = true;
+    //outletContactType.hidden = true;
+    
+}
+
+-(void)textFieldDidChange:(id) sender
+{
+    BOOL gotRow = false;
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    txtHomePostCode.text = [txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    if ([txtHomePostCode.text isEqualToString:@""]) {
+        /*
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+         message:@"Home postcode is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+         alert.tag = 2001;
+         [alert show];*/
+        rrr = [[UIAlertView alloc] initWithTitle:@"Error"
+                                         message:@"Home postcode is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        rrr.tag = 2001;
+        [rrr show];
+        return;
+    }
+    
+    BOOL valid;
+    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
+    valid = [alphaNums isSupersetOfSet:inStringSet];
+    if (!valid) {
+        /*
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+         message:@"Home post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+         
+         
+         [alert show];
+         */
+        
+        rrr = [[UIAlertView alloc] initWithTitle:@"Error"
+                                         message:@"Home post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        rrr.tag = 2001;
+        [rrr show];
+        
+        
+        txtHomePostCode.text = @"";
+        txtHomeState.text = @"";
+        txtHomeTown.text = @"";
+        txtHomeCountry.text = @"";
+        SelectedStateCode = @"";
+        PostcodeContinue = FALSE;
+        
+    }
     else {
-        gender = @"F";
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+            NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtHomePostCode.text];
+            const char *query_stmt = [querySQL UTF8String];
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                
+                while (sqlite3_step(statement) == SQLITE_ROW){
+                    NSString *Town = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                    NSString *State = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                    NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    
+                    txtHomeState.text = State;
+                    txtHomeTown.text = Town;
+                    txtHomeCountry.text = @"MALAYSIA";
+                    SelectedStateCode = Statecode;
+                    gotRow = true;
+                    PostcodeContinue = TRUE;
+                    outletDone.enabled = TRUE;
+                }
+                sqlite3_finalize(statement);
+            }
+            
+            if (gotRow == false) {
+                /*
+                 UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Home Address"
+                 delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                 
+                 NoPostcode.tag = 2000;
+                 [NoPostcode show];
+                 */
+                
+                rrr = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Home Address"
+                                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                
+                rrr.tag = 2000;
+                [rrr show];
+                
+                txtHomePostCode.text = @"";
+                txtHomeState.text = @"";
+                txtHomeTown.text = @"";
+                txtHomeCountry.text = @"";
+                SelectedStateCode = @"";
+                
+                PostcodeContinue = FALSE;
+            }
+            
+            sqlite3_close(contactDB);
+        }
+        
     }
 }
 
--(void)EditTextFieldBegin:(id)sender{
-    outletDone.enabled = FALSE;
+-(void)OfficePostcodeDidChange:(id) sender
+{
     
+    BOOL gotRow = false;
+    const char *dbpath = [databasePath UTF8String];
+    sqlite3_stmt *statement;
+    
+    txtOfficePostcode.text = [txtOfficePostcode.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    if ([txtOfficePostcode.text isEqualToString:@""]) {
+        /*
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
+         delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+         alert.tag = 3001;
+         [alert show];*/
+        rrr = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
+                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        rrr.tag = 3001;
+        [rrr show];
+        return;
+    }
+    
+    BOOL valid;
+    NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+    NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtOfficePostcode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
+    valid = [alphaNums isSupersetOfSet:inStringSet];
+    if (!valid) {
+        /*
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+         message:@"Office post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+         
+         [alert show];
+         */
+        
+        rrr = [[UIAlertView alloc] initWithTitle:@"Error"
+                                         message:@"Office post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        rrr.tag = 3001;
+        [rrr show];
+        
+        txtOfficePostcode.text = @"";
+        txtOfficeState.text = @"";
+        txtOfficeTown.text = @"";
+        txtOfficeCountry.text = @"";
+        SelectedOfficeStateCode = @"";
+        PostcodeContinue = FALSE;
+    }
+    else {
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+            NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtOfficePostcode.text];
+            const char *query_stmt = [querySQL UTF8String];
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                while (sqlite3_step(statement) == SQLITE_ROW){
+                    NSString *OfficeTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                    NSString *OfficeState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                    NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    
+                    txtOfficeState.text = OfficeState;
+                    txtOfficeTown.text = OfficeTown;
+                    txtOfficeCountry.text = @"MALAYSIA";
+                    SelectedOfficeStateCode = Statecode;
+                    gotRow = true;
+                    PostcodeContinue = TRUE;
+                    outletDone.enabled = TRUE;
+                }
+                sqlite3_finalize(statement);
+                
+                if (gotRow == false) {
+                    /*UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
+                     delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                     
+                     NoPostcode.tag = 3000;
+                     [NoPostcode show];*/
+                    rrr = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
+                                                    delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                    
+                    rrr.tag = 3000;
+                    [rrr show];
+                    
+                    txtOfficePostcode.text = @"";
+                    txtOfficeState.text = @"";
+                    txtOfficeTown.text = @"";
+                    txtOfficeCountry.text = @"";
+                    SelectedOfficeStateCode = @"";
+                    
+                    PostcodeContinue = FALSE;
+                }
+                
+                sqlite3_close(contactDB);
+            }
+        }
+    }
+    
+    
+}
+
+-(void)EditTextFieldBegin:(id)sender {
+    outletDone.enabled = FALSE;
 }
 
 -(void)OfficeEditTextFieldBegin:(id)sender{
@@ -268,20 +421,25 @@ bool PostcodeContinue = TRUE;
     if ([self OptionalOccp] == FALSE) {
         outletDone.enabled = FALSE;
     }
-    
+}
+
+
+#pragma mark - action
+
+- (BOOL)disablesAutomaticKeyboardDismissal {
+    return NO;
+}
+
+- (IBAction)ActionGender:(id)sender {
+    if ([segGender selectedSegmentIndex]==0) {
+        gender = @"M";
+    }
+    else {
+        gender = @"F";
+    }
 }
 
 - (IBAction)btnDOB:(id)sender {
-    /*
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    outletDobPicker.hidden = NO;
-    pickerToolbar.hidden = NO;
-    [self.view endEditing:TRUE];
-    txtRemark.hidden = TRUE;
-    //ContactTypePicker.hidden = true;
-    outletContactType.hidden = true;
-     */
     
     [self resignFirstResponder];
     [self.view endEditing:YES];
@@ -310,6 +468,7 @@ bool PostcodeContinue = TRUE;
     dateString = Nil;
     
 }
+
 - (IBAction)btnOccup:(id)sender {
     if (_OccupationList == nil) {
         self.OccupationList = [[OccupationList alloc] initWithStyle:UITableViewStylePlain];
@@ -320,29 +479,6 @@ bool PostcodeContinue = TRUE;
     [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
-/*
-- (IBAction)btnDone:(id)sender {
-    
-    if (outletDobPicker.hidden == FALSE) { //DOB picker
-        pickerToolbar.hidden = YES;
-        outletDobPicker.hidden = YES;
-        txtRemark.hidden = FALSE;
-    }
-    else {
-        pickerToolbar.hidden = true;
-        
-        outletContactType.hidden = true;
-        txtRemark.hidden = FALSE;
-    }
-
-}
-*/
-
-- (BOOL)disablesAutomaticKeyboardDismissal {
-    return NO;
-}
-
- 
 - (IBAction)btnSave:(id)sender {
     [self.view endEditing:YES];
     [self resignFirstResponder];
@@ -410,17 +546,319 @@ PostcodeContinue = TRUE;
 
 }
 
-- (bool) Validation{
+-(BOOL) NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES; 
+    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
+}
+
+- (IBAction)btnContact1:(id)sender {
+    /*
+     //ContactTypePicker.hidden = false;
+     [self resignFirstResponder];
+     [self.view endEditing:TRUE];
+     
+     outletContactType.hidden = false;
+     outletDobPicker.hidden = true;
+     pickerToolbar.hidden = FALSE;
+     txtRemark.hidden = true;
+     ContactTypeTracker = @"1";
+     //if ([outletType1.titleLabel.text isEqualToString:@""]) {
+     [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
+     //}
+     */
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    
+    txtContact1.enabled = true;
+    ContactTypeTracker = @"1";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];
+    }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+    
+}
+
+- (IBAction)btnContact2:(id)sender {
+    /*outletContactType.hidden = false;
+     outletDobPicker.hidden = true;
+     pickerToolbar.hidden = FALSE;
+     txtRemark.hidden = true;
+     ContactTypeTracker = @"2";
+     [self resignFirstResponder];
+     [self.view endEditing:TRUE];
+     if ([outletType2.titleLabel.text isEqualToString:@""]) {
+     [outletType2 setTitle:@"Mobile" forState:UIControlStateNormal];
+     }*/
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    txtContact2.enabled = true;
+    ContactTypeTracker = @"2";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];
+    }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+}
+
+- (IBAction)btnContact3:(id)sender {
+    /*outletContactType.hidden = false;
+     outletDobPicker.hidden = true;
+     pickerToolbar.hidden = FALSE;
+     txtRemark.hidden = true;
+     ContactTypeTracker = @"3";
+     [self.view endEditing:TRUE];
+     [self resignFirstResponder];
+     if ([outletType3.titleLabel.text isEqualToString:@""]) {
+     [outletType3 setTitle:@"Mobile" forState:UIControlStateNormal];
+     }
+     */
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    txtContact3.enabled = true;
+    ContactTypeTracker = @"3";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];
+    }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+}
+
+- (IBAction)btnContact4:(id)sender {
+    /*outletContactType.hidden = false;
+     outletDobPicker.hidden = true;
+     pickerToolbar.hidden = FALSE;
+     txtRemark.hidden = true;
+     ContactTypeTracker = @"4";
+     [self.view endEditing:TRUE];
+     [self resignFirstResponder];
+     if ([outletType4.titleLabel.text isEqualToString:@""]) {
+     [outletType4 setTitle:@"Mobile" forState:UIControlStateNormal];
+     }*/
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    txtContact4.enabled = true;
+    ContactTypeTracker = @"4";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];
+    }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+}
+
+- (IBAction)btnContact5:(id)sender {
+    /*outletContactType.hidden = false;
+     outletDobPicker.hidden = true;
+     pickerToolbar.hidden = FALSE;
+     txtRemark.hidden = true;
+     ContactTypeTracker = @"5";
+     [self.view endEditing:TRUE];
+     [self resignFirstResponder];
+     if ([outletType5.titleLabel.text isEqualToString:@""]) {
+     [outletType5 setTitle:@"Mobile" forState:UIControlStateNormal];
+     }*/
+    [self resignFirstResponder];
+    [self.view endEditing:TRUE];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    txtContact5.enabled = true;
+    ContactTypeTracker = @"5";
+    if (_ContactTypeClass == nil) {
+        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
+        _ContactTypeClass.ContactTypeDelegate = self;
+        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];
+    }
+    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
+    
+    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
+}
+
+- (IBAction)btnTitle:(id)sender {
+    //NSLog(@"aa");
+    
+    if (_TitlePicker == nil) {
+        //Create the ColorPickerViewController.
+        _TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
+        
+        //Set this VC as the delegate.
+        _TitlePicker.delegate = self;
+    }
+    
+    if (_TitlePickerPopover == nil) {
+        //NSLog(@"aa");
+        //The color picker popover is not showing. Show it.
+        _TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
+        //[_IDTypePickerPopover presentPopoverFromRect:<#(CGRect)#> inView:<#(UIView *)#> permittedArrowDirections:<#(UIPopoverArrowDirection)#> animated:<#(BOOL)#>];
+        
+        
+        [_TitlePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        
+        
+        
+        //[_TitlePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+        //                             permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        //The color picker popover is showing. Hide it.
+        [_TitlePickerPopover dismissPopoverAnimated:YES];
+        _TitlePickerPopover = nil;
+    }
+    
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 1) {
+        if (_delegate != Nil) {
+            [_delegate FinishInsert ];
+        }
+        
+        [self resignFirstResponder];
+        [self.view endEditing:YES];
+        //[self dismissModalViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        if (buttonIndex == 0) {
+            if ( alertView.tag == 2000 || alertView.tag == 2001 ) {
+                [txtHomePostCode becomeFirstResponder];
+            }
+            else if ( alertView.tag == 3000 || alertView.tag == 3001) {
+                [txtOfficePostcode becomeFirstResponder];
+            }
+        }
+        
+    }
+
+}
+
+- (IBAction)ActionCancel:(id)sender {
+    if (_delegate != Nil) {
+        [_delegate FinishInsert ];
+    }
+    
+    _OccupationList = Nil;
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
+   /*
+    for (UIWindow* window in [UIApplication sharedApplication].windows) {
+        NSArray* subviews = window.subviews;
+        if ([subviews count] > 0) {
+            
+            BOOL alert = [[subviews objectAtIndex:0] isKindOfClass:[UIAlertView class]];
+            BOOL action = [[subviews objectAtIndex:0] isKindOfClass:[UIActionSheet class]];
+            
+            if (alert || action){
+                NSLog(@"dsadsa");
+            }
+                
+        }
+    }
+    */
+    outletDone.enabled = TRUE;
+    [rrr dismissWithClickedButtonIndex:0 animated:NO];
+    [self dismissModalViewControllerAnimated:YES ];
+}
+
+- (IBAction)IdType:(id)sender {
+    //NSLog(@"aa");
+    
+    if (_IDTypePicker == nil) {
+        //Create the ColorPickerViewController.
+        _IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
+        
+        //Set this VC as the delegate.
+        _IDTypePicker.delegate = self;
+    }
+    
+    if (_IDTypePickerPopover == nil) {
+        //NSLog(@"aa");
+        //The color picker popover is not showing. Show it.
+        _IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
+        //[_IDTypePickerPopover presentPopoverFromRect:<#(CGRect)#> inView:<#(UIView *)#> permittedArrowDirections:<#(UIPopoverArrowDirection)#> animated:<#(BOOL)#>];
+        
+        
+        [_IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        
+        
+        
+        //[_IDTypePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+        //                             permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    } else {
+        //The color picker popover is showing. Hide it.
+        [_IDTypePickerPopover dismissPopoverAnimated:YES];
+        _IDTypePickerPopover = nil;
+    }
+    
+}
+
+
+#pragma mark - validation
+
+- (bool) Validation
+{
     /*
      if (![txtNickName.text isEqualToString:@""]) {
      
      
-     } 
+     }
      else {
      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
      message:@"Preferred Name cannot be empty" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
      [alert show];
-     return false;    
+     return false;
      }
      */
     
@@ -452,7 +890,7 @@ PostcodeContinue = TRUE;
         }
         if (!valid) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe ('), alias(@),slash(/),dash(-) or dot(.)." 
+                                                            message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe ('), alias(@),slash(/),dash(-) or dot(.)."
                                                            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
             [txtPreferredName becomeFirstResponder];
             
@@ -558,13 +996,13 @@ PostcodeContinue = TRUE;
                     }
 					
 					
-                    BOOL valid; 
+                    BOOL valid;
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
                     NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact1.text];
                     NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix1.text];
                     
-                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid = [alphaNums isSupersetOfSet:inStringSet];
                     valid2 = [alphaNums isSupersetOfSet:inStringSet2];
                     if (!valid) {
                         
@@ -608,10 +1046,10 @@ PostcodeContinue = TRUE;
         //[self.view endEditing:TRUE];
         
         [alert show];
-        return FALSE; 
+        return FALSE;
     }
-        
- 
+    
+    
     if(outletType2.titleLabel.text != NULL) {
         if ([txtPrefix2.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -654,13 +1092,13 @@ PostcodeContinue = TRUE;
                         return false;
                     }
 					
-                    BOOL valid; 
+                    BOOL valid;
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
                     NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact2.text];
                     NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix2.text];
                     
-                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid = [alphaNums isSupersetOfSet:inStringSet];
                     valid2 = [alphaNums isSupersetOfSet:inStringSet2];
                     if (!valid) {
                         
@@ -759,13 +1197,13 @@ PostcodeContinue = TRUE;
                         return false;
                     }
 					
-                    BOOL valid; 
+                    BOOL valid;
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
                     NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact3.text];
                     NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix3.text];
                     
-                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid = [alphaNums isSupersetOfSet:inStringSet];
                     valid2 = [alphaNums isSupersetOfSet:inStringSet2];
                     if (!valid) {
                         
@@ -863,13 +1301,13 @@ PostcodeContinue = TRUE;
                         return false;
                     }
 					
-                    BOOL valid; 
+                    BOOL valid;
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
                     NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact4.text];
                     NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix4.text];
                     
-                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid = [alphaNums isSupersetOfSet:inStringSet];
                     valid2 = [alphaNums isSupersetOfSet:inStringSet2];
                     if (!valid) {
                         
@@ -924,7 +1362,7 @@ PostcodeContinue = TRUE;
             return FALSE;
         }
     }
- 
+    
     if(outletType5.titleLabel.text != NULL) {
         if ([txtPrefix5.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -967,13 +1405,13 @@ PostcodeContinue = TRUE;
                         return false;
                     }
                     
-                    BOOL valid; 
+                    BOOL valid;
                     BOOL valid2;
                     NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
                     NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtContact5.text];
                     NSCharacterSet *inStringSet2 = [NSCharacterSet characterSetWithCharactersInString:txtPrefix5.text];
                     
-                    valid = [alphaNums isSupersetOfSet:inStringSet]; 
+                    valid = [alphaNums isSupersetOfSet:inStringSet];
                     valid2 = [alphaNums isSupersetOfSet:inStringSet2];
                     if (!valid) {
                         
@@ -1030,16 +1468,16 @@ PostcodeContinue = TRUE;
     }
     
     /*
-    if([[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Email address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [txtEmail becomeFirstResponder];
-        //[self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
-    */
+     if([[txtEmail.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+     message:@"Email address is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+     [txtEmail becomeFirstResponder];
+     //[self.view endEditing:TRUE];
+     
+     [alert show];
+     return false;
+     }
+     */
     if(OccupCodeSelected == NULL){
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -1090,7 +1528,7 @@ PostcodeContinue = TRUE;
                 return false;
             }
         }
-    
+        
     }
     else {
         return FALSE;
@@ -1118,29 +1556,29 @@ PostcodeContinue = TRUE;
     
     if (PostcodeContinue == TRUE) {
         /*
-        if([txtOfficePostcode.text isEqualToString:@""]){
-            if ([self OptionalOccp] == FALSE) {
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-                
-                [txtOfficePostcode becomeFirstResponder];
-                //[self.view endEditing:TRUE];
-                [alert show];
-                return false;   
-            }
-            else {
-               
-            }
-            
-        }
+         if([txtOfficePostcode.text isEqualToString:@""]){
+         if ([self OptionalOccp] == FALSE) {
+         
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+         message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+         
+         [txtOfficePostcode becomeFirstResponder];
+         //[self.view endEditing:TRUE];
+         [alert show];
+         return false;
+         }
+         else {
+         
+         }
+         
+         }
          */
         if(![[txtOfficeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
             if([txtOfficePostcode.text isEqualToString:@""]){
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                                                message:@"Office Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
                 [txtOfficePostcode becomeFirstResponder];
-            
+                
                 [alert show];
                 return false;
             }
@@ -1155,15 +1593,8 @@ PostcodeContinue = TRUE;
     return true;
 }
 
--(BOOL) NSStringIsValidEmail:(NSString *)checkString
-{
-    BOOL stricterFilter = YES; 
-    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
-    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
-    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
-    return [emailTest evaluateWithObject:checkString];
-}
+
+#pragma mark - db handling
 
 -(void) GetLastID{
     
@@ -1177,7 +1608,7 @@ PostcodeContinue = TRUE;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select indexno  from prospect_profile order by \"indexNo\" desc limit 1"];
         const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
-        if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK) 
+        if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement2) == SQLITE_ROW)
             {
@@ -1185,7 +1616,7 @@ PostcodeContinue = TRUE;
                 sqlite3_finalize(statement2);
                 
             }
-                
+            
         }
     }
     
@@ -1195,7 +1626,7 @@ PostcodeContinue = TRUE;
             case 0:
                 
                 if ([outletType1.titleLabel.text isEqualToString:@"Mobile"]) {
-                    contactCode = @"CONT008";    
+                    contactCode = @"CONT008";
                 }
                 else if ([outletType1.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
@@ -1209,12 +1640,12 @@ PostcodeContinue = TRUE;
                 else {
                     contactCode = @"";
                 }
-                                
+                
                 break;
-            
+                
             case 1:
                 if ([outletType2.titleLabel.text isEqualToString: @"Mobile"]) {
-                    contactCode = @"CONT008";    
+                    contactCode = @"CONT008";
                 }
                 else if ([outletType2.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
@@ -1229,10 +1660,10 @@ PostcodeContinue = TRUE;
                     contactCode = @"";
                 }
                 break;
-            
+                
             case 2:
                 if ([outletType3.titleLabel.text isEqualToString: @"Mobile"]) {
-                    contactCode = @"CONT008";    
+                    contactCode = @"CONT008";
                 }
                 else if ([outletType3.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
@@ -1247,10 +1678,10 @@ PostcodeContinue = TRUE;
                     contactCode = @"";
                 }
                 break;
-            
+                
             case 3:
                 if ([outletType4.titleLabel.text isEqualToString: @"Mobile"]) {
-                    contactCode = @"CONT008";    
+                    contactCode = @"CONT008";
                 }
                 else if ([outletType4.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
@@ -1265,10 +1696,10 @@ PostcodeContinue = TRUE;
                     contactCode = @"";
                 }
                 break;
-            
+                
             case 4:
                 if ([outletType5.titleLabel.text isEqualToString: @"Mobile"]) {
-                    contactCode = @"CONT008";    
+                    contactCode = @"CONT008";
                 }
                 else if ([outletType5.titleLabel.text isEqualToString: @"Home"]) {
                     contactCode = @"CONT006";
@@ -1290,69 +1721,69 @@ PostcodeContinue = TRUE;
         
         if (![contactCode isEqualToString:@""]) {
             /*
-            NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select last_insert_rowid() from prospect_profile"];
-            const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
-            if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK) 
-            {
-                if (sqlite3_step(statement2) == SQLITE_ROW)
-                {
-                    lastID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
-                    
-                    sqlite3_finalize(statement2);
-                    NSString *insertContactSQL = [NSString stringWithFormat:
-                                                  @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
-                                                  " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
-                    const char *insert_contactStmt = [insertContactSQL UTF8String];
-                    if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
-                        if (sqlite3_step(statement3) == SQLITE_DONE){
-                            sqlite3_finalize(statement3);
-                            //UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                            //[SuccessAlert show];
-                            
-                        }
-                        else {
-                            NSLog(@"Error - 4");
-                        }
-                    }
-                    else {
-                        NSLog(@"Error - 3");
-                    }
-                }
-                else {
-                    NSLog(@"Error - 2 ");
-                }
-                sqlite3_close(contactDB);
-            }
-            else {
-                
-                NSLog(@"Error get last ID statement");
-            }
+             NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select last_insert_rowid() from prospect_profile"];
+             const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
+             if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK)
+             {
+             if (sqlite3_step(statement2) == SQLITE_ROW)
+             {
+             lastID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+             
+             sqlite3_finalize(statement2);
+             NSString *insertContactSQL = [NSString stringWithFormat:
+             @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\") "
+             " VALUES (\"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N"];
+             const char *insert_contactStmt = [insertContactSQL UTF8String];
+             if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
+             if (sqlite3_step(statement3) == SQLITE_DONE){
+             sqlite3_finalize(statement3);
+             //UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile" message:@"Saved Successfully" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+             //[SuccessAlert show];
+             
+             }
+             else {
+             NSLog(@"Error - 4");
+             }
+             }
+             else {
+             NSLog(@"Error - 3");
+             }
+             }
+             else {
+             NSLog(@"Error - 2 ");
+             }
+             sqlite3_close(contactDB);
+             }
+             else {
+             
+             NSLog(@"Error get last ID statement");
+             }
              */
             NSString *insertContactSQL = @"";
             if (a==0) {
-                 insertContactSQL = [NSString stringWithFormat:
-                                              @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
-                                              " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N", txtPrefix1.text];
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact1.text, @"N", txtPrefix1.text];
             }
             else if (a==1) {
                 insertContactSQL = [NSString stringWithFormat:
                                     @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N", txtPrefix2.text];   
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact2.text, @"N", txtPrefix2.text];
             }
             else if (a==2) {
                 insertContactSQL = [NSString stringWithFormat:
                                     @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N", txtPrefix3.text];   
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact3.text, @"N", txtPrefix3.text];
             }
             else if (a==3) {
                 insertContactSQL = [NSString stringWithFormat:
                                     @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N", txtPrefix4.text];   
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N", txtPrefix4.text];
             }
             else if (a==4) {
                 insertContactSQL = [NSString stringWithFormat:
                                     @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
-                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N", txtPrefix5.text];   
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact5.text, @"N", txtPrefix5.text];
             }
             
             const char *insert_contactStmt = [insertContactSQL UTF8String];
@@ -1372,9 +1803,9 @@ PostcodeContinue = TRUE;
             }
             
             insert_contactStmt = Nil, insertContactSQL = Nil;
-
+            
         }
-         
+        
     }
     
     UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile"
@@ -1387,59 +1818,6 @@ PostcodeContinue = TRUE;
     lastID = Nil;
     contactCode = Nil;
     dbpath = Nil;
-    
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == 1) {
-        if (_delegate != Nil) {
-            [_delegate FinishInsert ];
-        }
-        
-        [self resignFirstResponder];
-        [self.view endEditing:YES];
-        //[self dismissModalViewControllerAnimated:YES];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else {
-        if (buttonIndex == 0) {
-            if ( alertView.tag == 2000 || alertView.tag == 2001 ) {
-                [txtHomePostCode becomeFirstResponder];
-            }
-            else if ( alertView.tag == 3000 || alertView.tag == 3001) {
-                [txtOfficePostcode becomeFirstResponder];
-            }
-        }
-        
-    }
-
-}
-
-- (void)OccupCodeSelected:(NSString *)OccupCode{
-   
-    OccupCodeSelected = OccupCode;
-   /*
-    if ([self OptionalOccp] == TRUE) {
-        lblOfficeAddr.text = @"Office Address";
-        lblPostCode.text = @"Postcode";
-    }
-    else {
-        lblOfficeAddr.text = @"Office Address*";
-        lblPostCode.text = @"Postcode*";
-    }
-    */
-    
-}
-
-- (void)OccupDescSelected:(NSString *)color {
-    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", color]forState:UIControlStateNormal];
-    [self.OccupationListPopover dismissPopoverAnimated:YES];
-    
-    [self.view endEditing:YES];
-    [self resignFirstResponder];
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
     
 }
 
@@ -1472,446 +1850,103 @@ PostcodeContinue = TRUE;
         sqlite3_close(contactDB);
     }
     /*
-    if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"] 
-        || [OccupCodeSelected isEqualToString:@"OCC01109"] || [OccupCodeSelected isEqualToString:@"OCC01179"]
-        || [OccupCodeSelected isEqualToString:@"OCC01865"] || [OccupCodeSelected isEqualToString:@"OCC02229"]
-        || [OccupCodeSelected isEqualToString:@"OCC00570"] || [OccupCodeSelected isEqualToString:@"OCC01596"]
-        || [OccupCodeSelected isEqualToString:@"OCC02147"] || [OccupCodeSelected isEqualToString:@"OCC02148"]
-        || [OccupCodeSelected isEqualToString:@"OCC02149"] || [OccupCodeSelected isEqualToString:@"OCC02321"]) {
-        return TRUE;    
-    }
-    else {
-        return FALSE;
-    }
+     if ([OccupCodeSelected isEqualToString:@"OCC02317"] || [OccupCodeSelected isEqualToString:@"OCC02229"]
+     || [OccupCodeSelected isEqualToString:@"OCC01109"] || [OccupCodeSelected isEqualToString:@"OCC01179"]
+     || [OccupCodeSelected isEqualToString:@"OCC01865"] || [OccupCodeSelected isEqualToString:@"OCC02229"]
+     || [OccupCodeSelected isEqualToString:@"OCC00570"] || [OccupCodeSelected isEqualToString:@"OCC01596"]
+     || [OccupCodeSelected isEqualToString:@"OCC02147"] || [OccupCodeSelected isEqualToString:@"OCC02148"]
+     || [OccupCodeSelected isEqualToString:@"OCC02149"] || [OccupCodeSelected isEqualToString:@"OCC02321"]) {
+     return TRUE;
+     }
+     else {
+     return FALSE;
+     }
      */
     return valid;
     
 }
 
 
-- (IBAction)ActionCancel:(id)sender {
-    if (_delegate != Nil) {
-        [_delegate FinishInsert ];
-    }
-    
-    _OccupationList = Nil;
-    
+#pragma mark - delegate
+
+-(void)CloseWindow
+{
     [self resignFirstResponder];
     [self.view endEditing:YES];
+    [_SIDatePopover dismissPopoverAnimated:YES];
+}
+
+-(void)selectedTitle:(NSString *)selectedTitle
+{
+    //NSLog(@"%@",selectedTitle);
+    [_outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
     
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
-   /*
-    for (UIWindow* window in [UIApplication sharedApplication].windows) {
-        NSArray* subviews = window.subviews;
-        if ([subviews count] > 0) {
-            
-            BOOL alert = [[subviews objectAtIndex:0] isKindOfClass:[UIAlertView class]];
-            BOOL action = [[subviews objectAtIndex:0] isKindOfClass:[UIActionSheet class]];
-            
-            if (alert || action){
-                NSLog(@"dsadsa");
-            }
-                
-        }
+    if (_TitlePickerPopover) {
+        [_TitlePickerPopover dismissPopoverAnimated:YES];
+        _TitlePickerPopover = nil;
     }
-    */
-    outletDone.enabled = TRUE;
-    [rrr dismissWithClickedButtonIndex:0 animated:NO];
-    [self dismissModalViewControllerAnimated:YES ];
 }
 
--(void)keyboardDidShow:(NSNotificationCenter *)notification
-{
-    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748-350);
-    self.myScrollView.contentSize = CGSizeMake(1000, 748);
+-(void)DateSelected:(NSString *)strDate :(NSString *)dbDate{
+    [outletDOB setTitle:strDate forState:UIControlStateNormal ];
     
-    CGRect textFieldRect = [activeField frame];
-    textFieldRect.origin.y += 15;
-    [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
-    //pickerToolbar.hidden = true;
-    //outletDobPicker.hidden = TRUE;
-    txtRemark.hidden = FALSE;
-}
-
--(void)keyboardDidHide:(NSNotificationCenter *)notification
-{
-    self.myScrollView.frame = CGRectMake(0, 20, 1000, 748);
-    //ContactTypePicker.hidden = true;
-    //outletContactType.hidden = true;
+    NSDateFormatter* df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy-MM-dd"];
+    NSDate *d = [NSDate date];
+    NSDate* d2 = [df dateFromString:dbDate];
     
-}
-
--(void)textFieldDidChange:(id) sender
-{
-    BOOL gotRow = false;
-    const char *dbpath = [databasePath UTF8String];
-    sqlite3_stmt *statement;
-    
-    txtHomePostCode.text = [txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    if ([txtHomePostCode.text isEqualToString:@""]) {
-        /*
+    if ([d compare:d2] == NSOrderedAscending) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Home postcode is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        alert.tag = 2001;
-        [alert show];*/
-        rrr = [[UIAlertView alloc] initWithTitle:@"Error"
-                    message:@"Home postcode is required" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        rrr.tag = 2001;
-        [rrr show];
-        return;
+                                                        message:@"Entered date cannot be greater than today." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+        [alert show];
+        [outletDOB setTitle:@"" forState:UIControlStateNormal ];
+        alert = Nil;
     }
     
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            /*
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Home post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            
-            [alert show];
-            */
-            
-            rrr = [[UIAlertView alloc] initWithTitle:@"Error"
-                    message:@"Home post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            rrr.tag = 2001;
-            [rrr show];
-            
-            
-            txtHomePostCode.text = @"";
-            txtHomeState.text = @"";
-            txtHomeTown.text = @"";
-            txtHomeCountry.text = @"";
-            SelectedStateCode = @"";
-            PostcodeContinue = FALSE;
-            
-        }
-        else {
-            if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-                NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtHomePostCode.text];
-                const char *query_stmt = [querySQL UTF8String];
-                if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
-                {
-                    
-                    while (sqlite3_step(statement) == SQLITE_ROW){
-                        NSString *Town = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                        NSString *State = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                        NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)]; 
-                        
-                        txtHomeState.text = State;
-                        txtHomeTown.text = Town;
-                        txtHomeCountry.text = @"MALAYSIA";
-                        SelectedStateCode = Statecode;
-                        gotRow = true;
-                         PostcodeContinue = TRUE;
-                        outletDone.enabled = TRUE;
-                    }
-                    sqlite3_finalize(statement);
-                }
-                
-                if (gotRow == false) {
-                    /*
-                    UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Home Address"
-                                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                    
-                    NoPostcode.tag = 2000;
-                    [NoPostcode show];
-                    */
-                    
-                    rrr = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for Home Address"
-                                delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                    
-                    rrr.tag = 2000;
-                    [rrr show];
-                    
-                    txtHomePostCode.text = @"";
-                    txtHomeState.text = @"";
-                    txtHomeTown.text = @"";
-                    txtHomeCountry.text = @"";
-                    SelectedStateCode = @"";
-                    
-                     PostcodeContinue = FALSE;
-                }
-                
-                sqlite3_close(contactDB);
-            }
-            
-        }
+    df = Nil, d = Nil, d2 = Nil;
 }
 
--(void)OfficePostcodeDidChange:(id) sender
+-(void)selectedIDType:(NSString *)selectedIDType
 {
+    //NSLog(@"%@",selectedIDType);
+    [_IDType setTitle:selectedIDType forState:UIControlStateNormal];
     
-    BOOL gotRow = false;
-    const char *dbpath = [databasePath UTF8String];
-    sqlite3_stmt *statement;
-    
-    txtOfficePostcode.text = [txtOfficePostcode.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    if ([txtOfficePostcode.text isEqualToString:@""]) {
-        /*
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
-                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        alert.tag = 3001;
-        [alert show];*/
-        rrr = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Office postcode is required"
-                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        rrr.tag = 3001;
-        [rrr show];
-        return;
+    if (_IDTypePickerPopover) {
+        [_IDTypePickerPopover dismissPopoverAnimated:YES];
+        _IDTypePickerPopover = nil;
     }
-    
-        BOOL valid;
-        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
-        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:[txtOfficePostcode.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
-        valid = [alphaNums isSupersetOfSet:inStringSet]; 
-        if (!valid) {
-            /*
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Office post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            [alert show];
-             */
-            
-            rrr = [[UIAlertView alloc] initWithTitle:@"Error"
-                        message:@"Office post code must be in numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            rrr.tag = 3001;
-            [rrr show];
-            
-            txtOfficePostcode.text = @"";
-            txtOfficeState.text = @"";
-            txtOfficeTown.text = @"";
-            txtOfficeCountry.text = @"";
-            SelectedOfficeStateCode = @"";
-             PostcodeContinue = FALSE;
-        }
-        else {
-            if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-                NSString *querySQL = [NSString stringWithFormat:@"SELECT \"Town\", \"Statedesc\", b.Statecode FROM adm_postcode as A, eproposal_state as B where trim(a.Statecode) = b.statecode and Postcode = %@ ", txtOfficePostcode.text];
-                const char *query_stmt = [querySQL UTF8String];
-                if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
-                {
-                    while (sqlite3_step(statement) == SQLITE_ROW){
-                        NSString *OfficeTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                        NSString *OfficeState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-                        NSString *Statecode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
-                        
-                        txtOfficeState.text = OfficeState;
-                        txtOfficeTown.text = OfficeTown;
-                        txtOfficeCountry.text = @"MALAYSIA";
-                        SelectedOfficeStateCode = Statecode;
-                        gotRow = true;
-                         PostcodeContinue = TRUE;
-                        outletDone.enabled = TRUE;
-                    }
-                    sqlite3_finalize(statement);
-                    
-                    if (gotRow == false) {
-                        /*UIAlertView *NoPostcode = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
-                                                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                        
-                        NoPostcode.tag = 3000;
-                        [NoPostcode show];*/
-                        rrr = [[UIAlertView alloc] initWithTitle:@"Error" message:@"No postcode found for office"
-                                                                            delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-                        
-                        rrr.tag = 3000;
-                        [rrr show];
-                        
-                        txtOfficePostcode.text = @"";
-                        txtOfficeState.text = @"";
-                        txtOfficeTown.text = @"";
-                        txtOfficeCountry.text = @"";
-                        SelectedOfficeStateCode = @"";
-   
-                         PostcodeContinue = FALSE;
-                    }
-                    
-                    sqlite3_close(contactDB);
-                }
-            }
-        }
-    
-     
 }
 
-
-
-- (IBAction)btnContact1:(id)sender {
+- (void)OccupCodeSelected:(NSString *)OccupCode{
+    
+    OccupCodeSelected = OccupCode;
     /*
-    //ContactTypePicker.hidden = false;
-    [self resignFirstResponder];
-    [self.view endEditing:TRUE];
-    
-    outletContactType.hidden = false;
-    outletDobPicker.hidden = true;
-    pickerToolbar.hidden = FALSE;
-    txtRemark.hidden = true;
-    ContactTypeTracker = @"1";
-    //if ([outletType1.titleLabel.text isEqualToString:@""]) {
-        [outletType1 setTitle:@"Mobile" forState:UIControlStateNormal];
-    //}
-    */
-    
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    
-    txtContact1.enabled = true;
-    ContactTypeTracker = @"1";
-    if (_ContactTypeClass == nil) {
-        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
-        _ContactTypeClass.ContactTypeDelegate = self;
-        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
-    }
-    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    
-    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    
-    
-}
-
-
-
-- (IBAction)btnContact2:(id)sender {
-    /*outletContactType.hidden = false;
-    outletDobPicker.hidden = true;
-    pickerToolbar.hidden = FALSE;
-    txtRemark.hidden = true;
-    ContactTypeTracker = @"2";
-    [self resignFirstResponder];
-    [self.view endEditing:TRUE];
-    if ([outletType2.titleLabel.text isEqualToString:@""]) {
-        [outletType2 setTitle:@"Mobile" forState:UIControlStateNormal];
-    }*/
-    [self resignFirstResponder];
-    [self.view endEditing:TRUE];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    txtContact2.enabled = true;
-    ContactTypeTracker = @"2";
-    if (_ContactTypeClass == nil) {
-        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
-        _ContactTypeClass.ContactTypeDelegate = self;
-        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
-    }
-    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    
-    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    
-}
-
-- (IBAction)btnContact3:(id)sender {
-    /*outletContactType.hidden = false;
-    outletDobPicker.hidden = true;
-    pickerToolbar.hidden = FALSE;
-    txtRemark.hidden = true;
-    ContactTypeTracker = @"3";
-    [self.view endEditing:TRUE];
-    [self resignFirstResponder];
-    if ([outletType3.titleLabel.text isEqualToString:@""]) {
-        [outletType3 setTitle:@"Mobile" forState:UIControlStateNormal];
-    }
+     if ([self OptionalOccp] == TRUE) {
+     lblOfficeAddr.text = @"Office Address";
+     lblPostCode.text = @"Postcode";
+     }
+     else {
+     lblOfficeAddr.text = @"Office Address*";
+     lblPostCode.text = @"Postcode*";
+     }
      */
-    [self resignFirstResponder];
-    [self.view endEditing:TRUE];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    txtContact3.enabled = true;
-    ContactTypeTracker = @"3";
-    if (_ContactTypeClass == nil) {
-        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
-        _ContactTypeClass.ContactTypeDelegate = self;
-        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
-    }
-    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    
-    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
 
-- (IBAction)btnContact4:(id)sender {
-    /*outletContactType.hidden = false;
-    outletDobPicker.hidden = true;
-    pickerToolbar.hidden = FALSE;
-    txtRemark.hidden = true;
-    ContactTypeTracker = @"4";
-    [self.view endEditing:TRUE];
-    [self resignFirstResponder];
-    if ([outletType4.titleLabel.text isEqualToString:@""]) {
-        [outletType4 setTitle:@"Mobile" forState:UIControlStateNormal];
-    }*/
-    [self resignFirstResponder];
-    [self.view endEditing:TRUE];
+- (void)OccupDescSelected:(NSString *)color {
+    [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", color]forState:UIControlStateNormal];
+    [self.OccupationListPopover dismissPopoverAnimated:YES];
     
+    [self.view endEditing:YES];
+    [self resignFirstResponder];
     Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    txtContact4.enabled = true;
-    ContactTypeTracker = @"4";
-    if (_ContactTypeClass == nil) {
-        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
-        _ContactTypeClass.ContactTypeDelegate = self;
-        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
-    }
-    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    
-    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    
-}
-
-- (IBAction)btnContact5:(id)sender {
-    /*outletContactType.hidden = false;
-    outletDobPicker.hidden = true;
-    pickerToolbar.hidden = FALSE;
-    txtRemark.hidden = true;
-    ContactTypeTracker = @"5";
-    [self.view endEditing:TRUE];
-    [self resignFirstResponder];
-    if ([outletType5.titleLabel.text isEqualToString:@""]) {
-        [outletType5 setTitle:@"Mobile" forState:UIControlStateNormal];
-    }*/
-    [self resignFirstResponder];
-    [self.view endEditing:TRUE];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    txtContact5.enabled = true;
-    ContactTypeTracker = @"5";
-    if (_ContactTypeClass == nil) {
-        self.ContactTypeClass = [[ContactTypeClass alloc] initWithStyle:UITableViewStylePlain];
-        _ContactTypeClass.ContactTypeDelegate = self;
-        self.ContactTypePopover = [[UIPopoverController alloc] initWithContentViewController:_ContactTypeClass];               
-    }
-    [self.ContactTypePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    
-    [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
 
 -(void)ContactTypeSelected:(NSString *)ContactTypeString{
-
+    
     if ([ContactTypeTracker isEqualToString:@"1" ]) {
         [outletType1 setTitle:ContactTypeString forState:UIControlStateNormal ];
         [self.ContactTypePopover dismissPopoverAnimated:YES];
@@ -1934,114 +1969,57 @@ PostcodeContinue = TRUE;
     }
 }
 
--(void)DateSelected:(NSString *)strDate :(NSString *)dbDate{
-    [outletDOB setTitle:strDate forState:UIControlStateNormal ];
-    
-    NSDateFormatter* df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"yyyy-MM-dd"];
-    NSDate *d = [NSDate date];
-    NSDate* d2 = [df dateFromString:dbDate];
-    
-    if ([d compare:d2] == NSOrderedAscending) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                    message:@"Entered date cannot be greater than today." delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
-        [alert show];
-        [outletDOB setTitle:@"" forState:UIControlStateNormal ];
-        alert = Nil;
-    }
-    
-    df = Nil, d = Nil, d2 = Nil;
-}
 
--(void)CloseWindow{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    [_SIDatePopover dismissPopoverAnimated:YES];
-}
--(void)selectedIDType:(NSString *)selectedIDType
+#pragma mark - memory management
+
+- (void)viewDidUnload
 {
-    //NSLog(@"%@",selectedIDType);
-    [_IDType setTitle:selectedIDType forState:UIControlStateNormal];
+    [self setTxtPreferredName:nil];
+    [self setTxtFullName:nil];
+    [self setSegGender:nil];
+    [self setOutletDOB:nil];
+    [self setTxtHomeAddr1:nil];
+    [self setTxtHomeAddr2:nil];
+    [self setTxtHomeAddr3:nil];
+    [self setTxtHomePostCode:nil];
+    [self setTxtHomeTown:nil];
+    [self setTxtHomeState:nil];
+    [self setTxtHomeCountry:nil];
+    [self setTxtOfficeAddr1:nil];
+    [self setTxtOfficeAddr2:nil];
+    [self setTxtOfficeAddr3:nil];
+    [self setTxtOfficePostcode:nil];
+    [self setTxtOfficeTown:nil];
+    [self setTxtOfficeState:nil];
+    [self setTxtOfficeCountry:nil];
+    [self setTxtExactDuties:nil];
+    [self setOutletOccup:nil];
     
-    if (_IDTypePickerPopover) {
-        [_IDTypePickerPopover dismissPopoverAnimated:YES];
-        _IDTypePickerPopover = nil;
-    }
+    [self setTxtRemark:nil];
+    [self setMyScrollView:nil];
+    [self setTxtEmail:nil];
+    [self setTxtContact1:nil];
+    [self setOutletType1:nil];
+    [self setBtnCancel:nil];
+    [self setTxtContact2:nil];
+    [self setTxtContact3:nil];
+    [self setTxtContact4:nil];
+    [self setTxtContact5:nil];
+    [self setOutletType2:nil];
+    [self setOutletType3:nil];
+    [self setOutletType4:nil];
+    [self setOutletType5:nil];
+    [self setTxtPrefix1:nil];
+    [self setTxtPrefix2:nil];
+    [self setTxtPrefix3:nil];
+    [self setTxtPrefix4:nil];
+    [self setTxtPrefix5:nil];
+    [self setLblOfficeAddr:nil];
+    [self setLblPostCode:nil];
+    [self setOutletDone:nil];
+    [self setOutletTitle:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
 }
 
-- (IBAction)IdType:(id)sender {
-    //NSLog(@"aa");
-    
-    if (_IDTypePicker == nil) {
-        //Create the ColorPickerViewController.
-        _IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
-        
-        //Set this VC as the delegate.
-        _IDTypePicker.delegate = self;
-    }
-    
-    if (_IDTypePickerPopover == nil) {
-        //NSLog(@"aa");
-        //The color picker popover is not showing. Show it.
-        _IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
-        //[_IDTypePickerPopover presentPopoverFromRect:<#(CGRect)#> inView:<#(UIView *)#> permittedArrowDirections:<#(UIPopoverArrowDirection)#> animated:<#(BOOL)#>];
-        
-        
-        [_IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-        
-        
-        
-        //[_IDTypePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
-        //                             permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    } else {
-        //The color picker popover is showing. Hide it.
-        [_IDTypePickerPopover dismissPopoverAnimated:YES];
-        _IDTypePickerPopover = nil;
-    }
-    
-}
-
--(void)selectedTitle:(NSString *)selectedTitle
-{
-    //NSLog(@"%@",selectedTitle);
-    [_outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
-    
-    if (_TitlePickerPopover) {
-        [_TitlePickerPopover dismissPopoverAnimated:YES];
-        _TitlePickerPopover = nil;
-    }
-}
-
-- (IBAction)btnTitle:(id)sender {
-    //NSLog(@"aa");
-    
-    if (_TitlePicker == nil) {
-        //Create the ColorPickerViewController.
-        _TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
-        
-        //Set this VC as the delegate.
-        _TitlePicker.delegate = self;
-    }
-    
-    if (_TitlePickerPopover == nil) {
-        //NSLog(@"aa");
-        //The color picker popover is not showing. Show it.
-        _TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
-        //[_IDTypePickerPopover presentPopoverFromRect:<#(CGRect)#> inView:<#(UIView *)#> permittedArrowDirections:<#(UIPopoverArrowDirection)#> animated:<#(BOOL)#>];
-        
-        
-        [_TitlePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-        
-        
-        
-        //[_TitlePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
-        //                             permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    } else {
-        //The color picker popover is showing. Hide it.
-        [_TitlePickerPopover dismissPopoverAnimated:YES];
-        _TitlePickerPopover = nil;
-    }
-    
-
-}
 @end

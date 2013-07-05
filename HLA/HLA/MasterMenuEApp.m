@@ -122,11 +122,8 @@
         [self.rightView addSubview:self.SummaryVC.view];
     }
     
-    else if (indexPath.row == 1) {
-//        self.CustomerDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CustDetailView"];
-//        [self addChildViewController:self.CustomerDataVC];
-//        [self.rightView addSubview:self.CustomerDataVC.view];
-        
+    else if (indexPath.row == 1)
+    {
         self.eAppPersonalDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppPersonalDataView"];
         [self addChildViewController:self.eAppPersonalDataVC];
         [self.rightView addSubview:self.eAppPersonalDataVC.view];
@@ -134,8 +131,7 @@
     
     else if (indexPath.row == 2)     //policy details
     {
-//        _PolicyVC.delegate = self;
-        self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PolicyNavi"];
+        self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"mainPolicyView"];
         [self addChildViewController:self.PolicyVC];
         [self.rightView addSubview:self.PolicyVC.view];
     }
