@@ -95,7 +95,11 @@
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
                 ProspectID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                NickName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                
+//                NickName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                const char *name = (const char*)sqlite3_column_text(statement, 1);
+                NickName = name == NULL ? nil : [[NSString alloc] initWithUTF8String:name];
+                
                 ProspectName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                 ProspectDOB = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
                 ProspectGender = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
@@ -117,11 +121,6 @@
                 ProspectOccupationCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 20)];
                 ExactDuties = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 21)];
                 ProspectRemark = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 22)];
-                
-                //NSString *ProspectContactType = @"2";
-                //NSString *ProspectContactNo = @"0128765462";
-                
-                // NSLog(@"%@", ProspectRemark);
                 
                 [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName 
                                                                   AndProspecGender:ProspectGender AndResidenceAddress1:ResidenceAddress1
@@ -461,7 +460,7 @@
     
     [self.navigationController pushViewController:_ProspectViewController animated:YES];
     _ProspectViewController.navigationItem.title = @"Add Client Profile";
-    _ProspectViewController.navigationItem.rightBarButtonItem = _ProspectViewController.outletDone;
+//    _ProspectViewController.navigationItem.rightBarButtonItem = _ProspectViewController.outletDone;
     
 }
 
@@ -483,7 +482,11 @@
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
             NSString *ProspectID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-            NSString *NickName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+            
+//            NSString *NickName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+            const char *name = (const char*)sqlite3_column_text(statement, 1);
+            NSString *NickName = name == NULL ? nil : [[NSString alloc] initWithUTF8String:name];
+            
             NSString *ProspectName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
             NSString *ProspectDOB = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
             NSString *ProspectGender = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];

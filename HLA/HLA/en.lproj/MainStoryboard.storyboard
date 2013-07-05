@@ -2008,18 +2008,18 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ZVI-Kd-2Sr">
-                                <rect key="frame" x="0.0" y="44" width="1024" height="704"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="748"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Date of Birth*" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Sp0-1h-SsQ">
-                                        <rect key="frame" x="29" y="140" width="99" height="27"/>
+                                        <rect key="frame" x="29" y="184" width="99" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="SN2-h0-oDE">
-                                        <rect key="frame" x="193" y="136" width="252" height="32"/>
+                                        <rect key="frame" x="193" y="180" width="252" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <state key="normal">
@@ -2034,61 +2034,61 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Email*" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="U6t-8w-CAq">
-                                        <rect key="frame" x="509" y="622" width="85" height="22"/>
+                                        <rect key="frame" x="509" y="666" width="85" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ixM-Az-bbp">
-                                        <rect key="frame" x="584" y="617" width="368" height="31"/>
+                                        <rect key="frame" x="584" y="661" width="368" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Remarks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="kUP-An-0Kv">
-                                        <rect key="frame" x="30" y="622" width="77" height="21"/>
+                                        <rect key="frame" x="30" y="666" width="77" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Occupation*" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="4GS-ie-Czw">
-                                        <rect key="frame" x="509" y="119" width="115" height="22"/>
+                                        <rect key="frame" x="509" y="163" width="115" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Town" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Rin-0P-3yd">
-                                        <rect key="frame" x="246" y="510" width="61" height="28"/>
+                                        <rect key="frame" x="246" y="554" width="61" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Smoker?*" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Ypw-UB-nJj">
-                                        <rect key="frame" x="509" y="76" width="94" height="28"/>
+                                        <rect key="frame" x="509" y="120" width="94" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="l4g-OI-t3T">
-                                        <rect key="frame" x="107" y="589" width="335" height="88"/>
+                                        <rect key="frame" x="107" y="633" width="335" height="88"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="oZu-WK-Zi4">
-                                        <rect key="frame" x="192" y="102" width="254" height="31"/>
+                                        <rect key="frame" x="192" y="146" width="254" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" id="NR2-0R-GoO">
-                                        <rect key="frame" x="691" y="17" width="259" height="44"/>
+                                        <rect key="frame" x="691" y="61" width="259" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Male"/>
@@ -2099,73 +2099,73 @@
                                         </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Full Name *" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="z5L-Cm-NUw">
-                                        <rect key="frame" x="29" y="104" width="143" height="28"/>
+                                        <rect key="frame" x="29" y="148" width="143" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Gender *" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="ZhO-fg-X7j">
-                                        <rect key="frame" x="511" y="31" width="96" height="22"/>
+                                        <rect key="frame" x="511" y="75" width="96" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Office Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="EaE-kK-rui">
-                                        <rect key="frame" x="509" y="258" width="143" height="28"/>
+                                        <rect key="frame" x="509" y="302" width="143" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="h6O-Qv-YDg">
-                                        <rect key="frame" x="509" y="282" width="441" height="31"/>
+                                        <rect key="frame" x="509" y="326" width="441" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Postcode" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="aR6-Qn-3Sv">
-                                        <rect key="frame" x="509" y="393" width="67" height="28"/>
+                                        <rect key="frame" x="509" y="437" width="67" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="iEW-Nt-Nmb">
-                                        <rect key="frame" x="584" y="392" width="149" height="31"/>
+                                        <rect key="frame" x="584" y="436" width="149" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Town" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="HSz-cs-R2h">
-                                        <rect key="frame" x="741" y="394" width="61" height="28"/>
+                                        <rect key="frame" x="741" y="438" width="61" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="ra5-HA-k2L">
-                                        <rect key="frame" x="806" y="392" width="144" height="31"/>
+                                        <rect key="frame" x="806" y="436" width="144" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="State" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="KaC-6p-IKj">
-                                        <rect key="frame" x="509" y="426" width="67" height="28"/>
+                                        <rect key="frame" x="509" y="470" width="67" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="H0v-cg-KQB">
-                                        <rect key="frame" x="584" y="428" width="149" height="31"/>
+                                        <rect key="frame" x="584" y="472" width="149" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Y1m-4g-sHD">
-                                        <rect key="frame" x="691" y="119" width="259" height="29"/>
+                                        <rect key="frame" x="691" y="163" width="259" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <state key="normal">
@@ -2180,97 +2180,78 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="AKI-Qu-fHv">
-                                        <rect key="frame" x="509" y="319" width="441" height="31"/>
+                                        <rect key="frame" x="509" y="363" width="441" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="FYq-4K-wea">
-                                        <rect key="frame" x="509" y="356" width="441" height="31"/>
+                                        <rect key="frame" x="509" y="400" width="441" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Annual Income" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="kp3-Un-sLg">
-                                        <rect key="frame" x="509" y="193" width="114" height="21"/>
+                                        <rect key="frame" x="509" y="237" width="114" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Type of Bussiness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="AFx-eD-0p7">
-                                        <rect key="frame" x="509" y="229" width="140" height="21"/>
+                                        <rect key="frame" x="509" y="273" width="140" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Ku6-t1-MXs">
-                                        <rect key="frame" x="691" y="188" width="259" height="31"/>
+                                        <rect key="frame" x="691" y="232" width="259" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Cvd-CI-qHp">
-                                        <rect key="frame" x="691" y="224" width="259" height="31"/>
+                                        <rect key="frame" x="691" y="268" width="259" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Exact Duties*" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="WeW-Q7-xpO">
-                                        <rect key="frame" x="511" y="158" width="109" height="22"/>
+                                        <rect key="frame" x="511" y="202" width="109" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="lUk-Km-lg1">
-                                        <rect key="frame" x="691" y="153" width="259" height="31"/>
+                                        <rect key="frame" x="691" y="197" width="259" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <navigationBar contentMode="scaleToFill" id="GuO-tI-Awh">
-                                        <rect key="frame" x="23" y="-46" width="969" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="tintColor" red="0.76470595600000002" green="0.83137261870000001" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                        <items>
-                                            <navigationItem id="ZeS-tg-YOz">
-                                                <barButtonItem key="leftBarButtonItem" title="Cancel" id="Ocw-r0-gta">
-                                                    <connections>
-                                                        <action selector="ActionCancel:" destination="w1f-cC-g0i" id="bPt-lT-z2C"/>
-                                                    </connections>
-                                                </barButtonItem>
-                                                <barButtonItem key="rightBarButtonItem" title="Done" id="CBf-MC-Qgc">
-                                                    <connections>
-                                                        <action selector="btnSave:" destination="w1f-cC-g0i" id="FNY-tE-R18"/>
-                                                    </connections>
-                                                </barButtonItem>
-                                            </navigationItem>
-                                        </items>
-                                    </navigationBar>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="ewT-bi-UIN">
-                                        <rect key="frame" x="29" y="32" width="48" height="21"/>
+                                        <rect key="frame" x="29" y="76" width="48" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="C05-3D-Xws">
-                                        <rect key="frame" x="192" y="32" width="253" height="31"/>
+                                        <rect key="frame" x="192" y="76" width="253" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="a2z-Rb-NWY">
-                                        <rect key="frame" x="29" y="71" width="42" height="21"/>
+                                        <rect key="frame" x="29" y="115" width="42" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="TH2-ZR-Yda">
-                                        <rect key="frame" x="192" y="67" width="253" height="31"/>
+                                        <rect key="frame" x="192" y="111" width="253" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <state key="normal">
@@ -2285,7 +2266,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nph-7H-N73">
-                                        <rect key="frame" x="192" y="175" width="254" height="28"/>
+                                        <rect key="frame" x="192" y="219" width="254" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <state key="normal">
@@ -2300,252 +2281,279 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WdB-QH-Qtg">
-                                        <rect key="frame" x="29" y="175" width="137" height="21"/>
+                                        <rect key="frame" x="29" y="219" width="137" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Identification No" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wy9-T3-jvs">
-                                        <rect key="frame" x="30" y="210" width="122" height="21"/>
+                                        <rect key="frame" x="30" y="254" width="122" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="KM3-DX-eFy">
-                                        <rect key="frame" x="193" y="210" width="253" height="30"/>
+                                        <rect key="frame" x="193" y="254" width="253" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Home Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="LiX-3V-4lN">
-                                        <rect key="frame" x="30" y="375" width="142" height="28"/>
+                                        <rect key="frame" x="30" y="419" width="142" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="fCj-q6-eVN">
-                                        <rect key="frame" x="30" y="404" width="415" height="31"/>
+                                        <rect key="frame" x="30" y="448" width="415" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Postcode" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="gXL-JI-PWR">
-                                        <rect key="frame" x="30" y="510" width="77" height="28"/>
+                                        <rect key="frame" x="30" y="554" width="77" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="auC-CL-oTP">
-                                        <rect key="frame" x="107" y="510" width="129" height="31"/>
+                                        <rect key="frame" x="107" y="554" width="129" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="H7q-Xv-6eo">
-                                        <rect key="frame" x="312" y="512" width="133" height="31"/>
+                                        <rect key="frame" x="312" y="556" width="133" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="State" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="C6N-WV-2Fx">
-                                        <rect key="frame" x="30" y="549" width="81" height="28"/>
+                                        <rect key="frame" x="30" y="593" width="81" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="89d-pL-xCs">
-                                        <rect key="frame" x="107" y="546" width="129" height="31"/>
+                                        <rect key="frame" x="107" y="590" width="129" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="lgN-lT-e62">
-                                        <rect key="frame" x="30" y="438" width="415" height="31"/>
+                                        <rect key="frame" x="30" y="482" width="415" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="bmL-T8-RnT">
-                                        <rect key="frame" x="30" y="473" width="415" height="31"/>
+                                        <rect key="frame" x="30" y="517" width="415" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" id="K2V-e9-Q25">
-                                        <rect key="frame" x="691" y="68" width="259" height="44"/>
+                                        <rect key="frame" x="691" y="112" width="259" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Yes"/>
                                             <segment title="No"/>
                                         </segments>
+                                        <connections>
+                                            <action selector="ActionSmoker:" destination="w1f-cC-g0i" eventType="valueChanged" id="9hc-lY-Jwn"/>
+                                        </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Other Identification No" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" id="z66-3w-kpS">
-                                        <rect key="frame" x="30" y="289" width="161" height="41"/>
+                                        <rect key="frame" x="30" y="333" width="161" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Rcx-db-0wP">
-                                        <rect key="frame" x="193" y="294" width="254" height="31"/>
+                                        <rect key="frame" x="193" y="338" width="254" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Other Identification Type" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" id="BnW-ff-Ifk">
-                                        <rect key="frame" x="30" y="239" width="161" height="42"/>
+                                        <rect key="frame" x="30" y="283" width="161" height="42"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="mm2-dS-hKo">
-                                        <rect key="frame" x="193" y="244" width="254" height="31"/>
+                                        <rect key="frame" x="193" y="288" width="254" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Country" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="GCo-Sp-gJT">
-                                        <rect key="frame" x="741" y="430" width="61" height="28"/>
+                                        <rect key="frame" x="741" y="474" width="61" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="Rdi-qd-OMD">
-                                        <rect key="frame" x="806" y="428" width="144" height="31"/>
+                                        <rect key="frame" x="806" y="472" width="144" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Country" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="AsW-Ge-4lk">
-                                        <rect key="frame" x="246" y="549" width="61" height="28"/>
+                                        <rect key="frame" x="246" y="593" width="61" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" id="i5K-7y-OXI">
-                                        <rect key="frame" x="312" y="547" width="133" height="31"/>
+                                        <rect key="frame" x="312" y="591" width="133" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Fax" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="W7r-Xc-ZM8">
-                                        <rect key="frame" x="511" y="579" width="32" height="28"/>
+                                        <rect key="frame" x="511" y="623" width="32" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="i52-Mh-RjY">
-                                        <rect key="frame" x="682" y="581" width="270" height="31"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="i52-Mh-RjY">
+                                        <rect key="frame" x="682" y="625" width="270" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="KLq-0C-n76"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Prefix" textAlignment="center" minimumFontSize="17" id="7nI-96-1wv">
-                                        <rect key="frame" x="584" y="581" width="58" height="31"/>
+                                        <rect key="frame" x="584" y="625" width="58" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="eCr-Qf-iIb"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="kb8-VI-bbz">
-                                        <rect key="frame" x="656" y="581" width="18" height="21"/>
+                                        <rect key="frame" x="656" y="625" width="18" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Office" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="x8b-cJ-qWQ">
-                                        <rect key="frame" x="511" y="542" width="58" height="28"/>
+                                        <rect key="frame" x="511" y="586" width="58" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="5Wm-xo-PhE">
-                                        <rect key="frame" x="682" y="544" width="272" height="31"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="5Wm-xo-PhE">
+                                        <rect key="frame" x="682" y="588" width="272" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="40x-Is-5wb"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Prefix" textAlignment="center" minimumFontSize="17" id="QY7-tr-pVI">
-                                        <rect key="frame" x="584" y="544" width="58" height="31"/>
+                                        <rect key="frame" x="584" y="588" width="58" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="B3b-Ai-DLP"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="soI-YO-Zgo">
-                                        <rect key="frame" x="656" y="544" width="18" height="21"/>
+                                        <rect key="frame" x="656" y="588" width="18" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Mobile" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="h48-rq-eN6">
-                                        <rect key="frame" x="511" y="506" width="58" height="28"/>
+                                        <rect key="frame" x="511" y="550" width="58" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="pVm-wM-okA">
-                                        <rect key="frame" x="682" y="508" width="272" height="31"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="pVm-wM-okA">
+                                        <rect key="frame" x="682" y="552" width="272" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="gXr-SD-uTI"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Prefix" textAlignment="center" minimumFontSize="17" id="oSO-BN-hDZ">
-                                        <rect key="frame" x="584" y="508" width="58" height="31"/>
+                                        <rect key="frame" x="584" y="552" width="58" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="n1I-Pi-6OJ"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="52D-sa-Gzx">
-                                        <rect key="frame" x="656" y="508" width="18" height="21"/>
+                                        <rect key="frame" x="656" y="552" width="18" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Home" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="0fX-HE-XSd">
-                                        <rect key="frame" x="511" y="469" width="53" height="28"/>
+                                        <rect key="frame" x="511" y="513" width="53" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="BwK-TM-WlA">
-                                        <rect key="frame" x="682" y="471" width="272" height="31"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="number" minimumFontSize="17" id="BwK-TM-WlA">
+                                        <rect key="frame" x="682" y="515" width="272" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="ElN-Ew-UOp"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Prefix" textAlignment="center" minimumFontSize="17" id="7p0-kx-hbZ">
-                                        <rect key="frame" x="584" y="471" width="58" height="31"/>
+                                        <rect key="frame" x="584" y="515" width="58" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="w1f-cC-g0i" id="mM4-gw-dIo"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Uov-pZ-50b">
-                                        <rect key="frame" x="656" y="471" width="18" height="21"/>
+                                        <rect key="frame" x="656" y="515" width="18" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="emptyCheckBox.png" id="sKW-tk-7QU">
-                                        <rect key="frame" x="288" y="374" width="30" height="28"/>
+                                        <rect key="frame" x="288" y="418" width="30" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Foreign Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lSe-dZ-aCi">
-                                        <rect key="frame" x="321" y="378" width="125" height="21"/>
+                                        <rect key="frame" x="321" y="422" width="125" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -2560,30 +2568,39 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="IDType" destination="nph-7H-N73" id="uwm-q6-rpt"/>
-                        <outlet property="btnCancel" destination="Ocw-r0-gta" id="Ado-SG-LwP"/>
                         <outlet property="lblOfficeAddr" destination="EaE-kK-rui" id="asU-wM-BcY"/>
                         <outlet property="lblPostCode" destination="aR6-Qn-3Sv" id="Qjc-hw-8Rm"/>
                         <outlet property="myScrollView" destination="ZVI-Kd-2Sr" id="mvI-Vs-Sr0"/>
                         <outlet property="outletDOB" destination="SN2-h0-oDE" id="z9p-iq-efQ"/>
-                        <outlet property="outletDone" destination="CBf-MC-Qgc" id="aPR-9e-R1c"/>
                         <outlet property="outletOccup" destination="Y1m-4g-sHD" id="dor-4U-ylg"/>
                         <outlet property="outletTitle" destination="TH2-ZR-Yda" id="zG2-VQ-81o"/>
                         <outlet property="segGender" destination="NR2-0R-GoO" id="YeL-FI-JOq"/>
+                        <outlet property="segSmoker" destination="K2V-e9-Q25" id="llG-bu-N55"/>
+                        <outlet property="txtContact1" destination="BwK-TM-WlA" id="7uM-Co-yDw"/>
+                        <outlet property="txtContact2" destination="pVm-wM-okA" id="Gbf-DH-Aoe"/>
+                        <outlet property="txtContact3" destination="5Wm-xo-PhE" id="YBg-39-ke1"/>
+                        <outlet property="txtContact4" destination="i52-Mh-RjY" id="Rf9-BJ-tgl"/>
                         <outlet property="txtEmail" destination="ixM-Az-bbp" id="86F-rz-xKs"/>
                         <outlet property="txtExactDuties" destination="lUk-Km-lg1" id="J6i-XG-tgK"/>
                         <outlet property="txtFullName" destination="oZu-WK-Zi4" id="lWl-Wp-VVn"/>
                         <outlet property="txtHomeAddr1" destination="fCj-q6-eVN" id="ccR-3O-WvJ"/>
                         <outlet property="txtHomeAddr2" destination="lgN-lT-e62" id="T1l-h7-cA0"/>
                         <outlet property="txtHomeAddr3" destination="bmL-T8-RnT" id="SDW-JF-4Ju"/>
+                        <outlet property="txtHomeCountry" destination="i5K-7y-OXI" id="a9e-vR-WKt"/>
                         <outlet property="txtHomePostCode" destination="auC-CL-oTP" id="XoN-eI-FVX"/>
                         <outlet property="txtHomeState" destination="89d-pL-xCs" id="NId-V9-OzX"/>
                         <outlet property="txtHomeTown" destination="H7q-Xv-6eo" id="CX6-Xf-I3i"/>
                         <outlet property="txtOfficeAddr1" destination="h6O-Qv-YDg" id="VQe-es-xqE"/>
                         <outlet property="txtOfficeAddr2" destination="AKI-Qu-fHv" id="SdO-lB-MaV"/>
                         <outlet property="txtOfficeAddr3" destination="FYq-4K-wea" id="alt-uN-adV"/>
+                        <outlet property="txtOfficeCountry" destination="Rdi-qd-OMD" id="tBz-pg-lmS"/>
                         <outlet property="txtOfficePostcode" destination="iEW-Nt-Nmb" id="uDW-Kx-sbU"/>
                         <outlet property="txtOfficeState" destination="H0v-cg-KQB" id="0Vs-id-Ssh"/>
                         <outlet property="txtOfficeTown" destination="ra5-HA-k2L" id="GEI-BB-oVC"/>
+                        <outlet property="txtPrefix1" destination="7p0-kx-hbZ" id="ngC-rH-eZz"/>
+                        <outlet property="txtPrefix2" destination="oSO-BN-hDZ" id="u24-nh-063"/>
+                        <outlet property="txtPrefix3" destination="QY7-tr-pVI" id="GF8-bB-No5"/>
+                        <outlet property="txtPrefix4" destination="7nI-96-1wv" id="51Y-fl-pm6"/>
                         <outlet property="txtRemark" destination="l4g-OI-t3T" id="Zp7-JJ-wqJ"/>
                     </connections>
                 </viewController>
@@ -8344,38 +8361,25 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <class className="ProspectViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ProspectViewController.h"/>
             <relationships>
-                <relationship kind="action" name="ActionCancel:"/>
                 <relationship kind="action" name="ActionGender:"/>
+                <relationship kind="action" name="ActionSmoker:"/>
                 <relationship kind="action" name="IdType:"/>
-                <relationship kind="action" name="btnContact1:"/>
-                <relationship kind="action" name="btnContact2:"/>
-                <relationship kind="action" name="btnContact3:"/>
-                <relationship kind="action" name="btnContact4:"/>
-                <relationship kind="action" name="btnContact5:"/>
                 <relationship kind="action" name="btnDOB:"/>
                 <relationship kind="action" name="btnOccup:"/>
-                <relationship kind="action" name="btnSave:"/>
                 <relationship kind="action" name="btnTitle:"/>
                 <relationship kind="outlet" name="IDType" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="btnCancel" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="lblOfficeAddr" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="lblPostCode" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="myScrollView" candidateClass="UIScrollView"/>
                 <relationship kind="outlet" name="outletDOB" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletDone" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="outletOccup" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="outletTitle" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType1" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType2" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType3" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType4" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="outletType5" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="segGender" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="segSmoker" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="txtContact1" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtContact2" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtContact3" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtContact4" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtContact5" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtEmail" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtExactDuties" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtFullName" candidateClass="UITextField"/>
@@ -8393,12 +8397,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <relationship kind="outlet" name="txtOfficePostcode" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtOfficeState" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtOfficeTown" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtPreferredName" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtPrefix1" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtPrefix2" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtPrefix3" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtPrefix4" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="txtPrefix5" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="txtRemark" candidateClass="UITextView"/>
             </relationships>
         </class>

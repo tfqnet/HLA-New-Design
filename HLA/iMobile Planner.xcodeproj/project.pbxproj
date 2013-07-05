@@ -563,8 +563,8 @@
 		C4EF087116496A5A000444BA /* pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pages.h; sourceTree = "<group>"; };
 		C4EF087216496A5A000444BA /* pages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pages.m; sourceTree = "<group>"; };
 		C4EF74F61704481400434B02 /* iMPLogo_Curve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iMPLogo_Curve.png; sourceTree = "<group>"; };
-		C4F08D59161DA491008BCC1A /* ContactTypeClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTypeClass.h; sourceTree = "<group>"; };
-		C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTypeClass.m; sourceTree = "<group>"; };
+		C4F08D59161DA491008BCC1A /* ContactTypeClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ContactTypeClass.h; path = ../ContactTypeClass.h; sourceTree = "<group>"; };
+		C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ContactTypeClass.m; path = ../ContactTypeClass.m; sourceTree = "<group>"; };
 		C4F08D5E161DBDBB008BCC1A /* SIDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDate.h; sourceTree = "<group>"; };
 		C4F08D5F161DBDBB008BCC1A /* SIDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIDate.m; sourceTree = "<group>"; };
 		C4F45DEF165B38A20035CAA9 /* PasswordTips.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordTips.h; sourceTree = "<group>"; };
@@ -941,8 +941,6 @@
 				C4E1B9361713FE9500D7F83B /* HTMLtoPDF */,
 				C4E1B9461714091000D7F83B /* SI */,
 				C4660EE71625995600BA4AFE /* iCarousel */,
-				C4F08D59161DA491008BCC1A /* ContactTypeClass.h */,
-				C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */,
 				C4EB491A161537B100C7FC8C /* Database */,
 				C4E9D1BF1612C6A500016053 /* Images */,
 				C4E9D1B11612C65000016053 /* FSVerticalTabBarController */,
@@ -1171,6 +1169,8 @@
 				C4EA9BF21619460500D51FE9 /* ProspectProfile.m */,
 				C4EA9BF41619630E00D51FE9 /* EditProspect.h */,
 				C4EA9BF51619630E00D51FE9 /* EditProspect.m */,
+				C4F08D59161DA491008BCC1A /* ContactTypeClass.h */,
+				C4F08D5A161DA491008BCC1A /* ContactTypeClass.m */,
 			);
 			name = Prospect;
 			sourceTree = "<group>";

@@ -35,7 +35,6 @@
 @synthesize txtContact4;
 @synthesize txtContact5;
 @synthesize txtRemark;
-
 @synthesize txtHomeAddr1;
 @synthesize txtHomeAddr2;
 @synthesize txtHomeAddr3;
@@ -51,7 +50,6 @@
 @synthesize txtOfficeState;
 @synthesize txtOfficeCountry;
 @synthesize txtExactDuties;
-@synthesize txtPreferredName;
 @synthesize txtrFullName;
 @synthesize segGender;
 @synthesize outletDOB;
@@ -70,15 +68,6 @@
 @synthesize IDTypePicker = _IDTypePicker;
 
 bool IsContinue = TRUE;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -105,7 +94,6 @@ bool IsContinue = TRUE;
     [txtOfficeAddr2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     
     [txtOfficeAddr3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
-    [txtPreferredName addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtrFullName addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtOfiiceAddr1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtPrefix1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
@@ -128,7 +116,6 @@ bool IsContinue = TRUE;
     [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [txtOfficePostCode addTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     txtRemark.delegate = self;
-    
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     txtHomeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
@@ -190,60 +177,10 @@ bool IsContinue = TRUE;
      
 }
 */
+
 - (void)textViewDidBeginEditing:(UITextView *)textView{
     strChanges = @"Yes";
 
-}
-
-- (void)viewDidUnload
-{
-    [self setTxtPreferredName:nil];
-    [self setTxtrFullName:nil];
-    [self setSegGender:nil];
-    [self setOutletDOB:nil];
-    [self setOutletType1:nil];
-    [self setTxtContact1:nil];
-    [self setTxtEmail:nil];
-    [self setTxtHomeAddr1:nil];
-    [self setTxtHomeAddr2:nil];
-    [self setTxtHomeAddr3:nil];
-    [self setTxtHomePostCode:nil];
-    [self setTxtHomeTown:nil];
-    [self setTxtHomeState:nil];
-    [self setTxtHomeCountry:nil];
-    [self setTxtOfiiceAddr1:nil];
-    [self setTxtOfficeAddr2:nil];
-    [self setTxtOfficeAddr3:nil];
-    [self setTxtOfficePostCode:nil];
-    [self setTxtOfficeTown:nil];
-    [self setTxtOfficeState:nil];
-    [self setTxtOfficeCountry:nil];
-    [self setTxtExactDuties:nil];
-    [self setTxtRemark:nil];
-
-    [self setMyScrollView:nil];
-    [self setOutletOccup:nil];
-    [self setTxtContact1:nil];
-    [self setTxtContact1:nil];
-    [self setOutletDelete:nil];
-    [self setOutletType2:nil];
-    [self setOutletType3:nil];
-    [self setOutletType4:nil];
-    [self setOutletType5:nil];
-    [self setTxtContact2:nil];
-    [self setTxtContact3:nil];
-    [self setTxtContact4:nil];
-    [self setTxtContact5:nil];
-    [self setTxtPrefix1:nil];
-    [self setTxtPrefix2:nil];
-    [self setTxtPrefix3:nil];
-    [self setTxtPrefix4:nil];
-    [self setTxtPrefix5:nil];
-    [self setLblOfficeAddr:nil];
-    [self setLblPostCode:nil];
-    [self setOutletDone:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -258,8 +195,7 @@ bool IsContinue = TRUE;
 - (void)viewWillAppear:(BOOL)animated
 {
     strChanges = @"No";
-    
-    txtPreferredName.text = pp.NickName;
+
     txtrFullName.text = pp.ProspectName;
     txtHomeAddr1.text = pp.ResidenceAddress1;
     txtHomeCountry.text = pp.ResidenceAddressCountry;
@@ -462,7 +398,8 @@ bool IsContinue = TRUE;
     [super viewWillAppear:animated];
 }
 
--(void) PopulateOccupCode{
+-(void) PopulateOccupCode
+{
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     
@@ -499,7 +436,8 @@ bool IsContinue = TRUE;
      */
 }
 
--(void) PopulateState{
+-(void) PopulateState
+{
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
@@ -519,9 +457,8 @@ bool IsContinue = TRUE;
     }
 }
 
-
--(void) PopulateOfficeState{
-    
+-(void) PopulateOfficeState
+{    
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
@@ -570,7 +507,6 @@ bool IsContinue = TRUE;
 -(void)EditTextFieldBegin:(id)sender{
     
     outletDone.enabled = FALSE;
-    
 }
 
 -(void)OfficeEditTextFieldBegin:(id)sender{
@@ -578,10 +514,10 @@ bool IsContinue = TRUE;
     if ([self OptionalOccp:OccupCodeSelected] == FALSE) {
         outletDone.enabled = FALSE;
     }
-    
 }
 
-- (IBAction)btnDOB:(id)sender {
+- (IBAction)btnDOB:(id)sender
+{
     /*
     DobPicker.hidden = NO;
     pickerToolbar.hidden = NO;
@@ -612,8 +548,8 @@ bool IsContinue = TRUE;
     
 }
 
-- (IBAction)btnContactType1:(id)sender {
-    
+- (IBAction)btnContactType1:(id)sender
+{    
     [self resignFirstResponder];
     [self.view endEditing:TRUE];
     
@@ -633,7 +569,9 @@ bool IsContinue = TRUE;
     [self.ContactTypePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
-- (IBAction)btnOccup:(id)sender {
+
+- (IBAction)btnOccup:(id)sender
+{
     if (_OccupationList == nil) {
         self.OccupationList = [[OccupationList alloc] initWithStyle:UITableViewStylePlain];
         _OccupationList.delegate = self;
@@ -643,6 +581,7 @@ bool IsContinue = TRUE;
     [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 
 }
+
 /*
 - (IBAction)btnDone:(id)sender {
     if (DobPicker.hidden == FALSE) { //DOB picker
@@ -660,7 +599,9 @@ bool IsContinue = TRUE;
 
 }
  */
-- (IBAction)ActionGender:(id)sender {
+
+- (IBAction)ActionGender:(id)sender
+{
     if ([segGender selectedSegmentIndex]==0) {
         gender = @"M";
     } 
@@ -669,7 +610,8 @@ bool IsContinue = TRUE;
     }    
 }
 
-- (IBAction)btnDelete:(id)sender {
+- (IBAction)btnDelete:(id)sender
+{
     UIAlertView *alert = [[UIAlertView alloc] 
                           initWithTitle: NSLocalizedString(@"Delete prospect",nil)
                           message: NSLocalizedString(@"Are you sure you want to delete this prospect profile?",nil)
@@ -691,45 +633,9 @@ bool IsContinue = TRUE;
     [self.outletDOB setTitle:msg forState:UIControlStateNormal];
 }
 */
-- (bool) Validation{
-    
-    if([[txtPreferredName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Preferred Name is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [txtPreferredName becomeFirstResponder];
-        //[self.view endEditing:TRUE];
-        
-        [alert show];
-        return false;
-    }
-    else {
-        BOOL valid;
-        NSString *strToBeTest = [txtPreferredName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] ;
-        
-        for (int i=0; i<strToBeTest.length; i++) {
-            int str1=(int)[strToBeTest characterAtIndex:i];
-            
-            if((str1 >96 && str1 <123)  || (str1 >64 && str1 <91) || str1 == 39 || str1 == 64 || str1 == 47 || str1 == 45 || str1 == 46){
-                valid = TRUE;
-                
-            }else {
-                valid = FALSE;
-                break;
-            }
-        }
-        if (!valid) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe ('), alias(@),slash(/),dash(-) or dot(.)." 
-                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-            
-            [txtPreferredName becomeFirstResponder];
-            //[self.view endEditing:TRUE];
-            
-            [alert show];
-            return false;
-        }
-    }
-    
+
+- (bool) Validation
+{    
     if([[txtrFullName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                     message:@"Full Name is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1821,18 +1727,17 @@ bool IsContinue = TRUE;
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
-            txtPreferredName.text = [txtPreferredName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             txtrFullName.text = [txtrFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             NSString *insertSQL = [NSString stringWithFormat:
-                                   @"update prospect_profile set \"PreferredName\" = \"%@\" ,\"ProspectName\" = \"%@\", \"ProspectDOB\" = \"%@\", "
+                                   @"update prospect_profile set \"ProspectName\" = \"%@\", \"ProspectDOB\" = \"%@\", "
                                    "\"ProspectGender\" = \"%@\", \"ResidenceAddress1\" = \"%@\", \"ResidenceAddress2\" = \"%@\", \"ResidenceAddress3\" = \"%@\", "
                                    "\"ResidenceAddressTown\" = \"%@\",\"ResidenceAddressState\" = \"%@\",\"ResidenceAddressPostCode\" = \"%@\", "
                                    "\"ResidenceAddressCountry\"= \"%@\", \"OfficeAddress1\"= \"%@\", \"OfficeAddress2\"= \"%@\", \"OfficeAddress3\"= \"%@\", "
                                    "\"OfficeAddressTown\"= \"%@\",\"OfficeAddressState\"= \"%@\",\"OfficeAddressPostCode\"= \"%@\", "
                                    "\"OfficeAddressCountry\"= \"%@\", \"ProspectEmail\"= \"%@\",\"ProspectOccupationCode\"= \"%@\", \"ExactDuties\"= \"%@\", \"ProspectRemark\"= \"%@\","
                                    "\"DateModified\"= %@,\"ModifiedBy\"= \"%@\" where indexNo = \"%@\" "
-                                   "", txtPreferredName.text, txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, 
+                                   "", txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, 
                                    txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfiiceAddr1.text, 
                                    txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, 
                                    txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"datetime(\"now\", \"+8 hour\")", @"1", pp.ProspectID];
@@ -1860,15 +1765,10 @@ bool IsContinue = TRUE;
             NSLog(@"Error Open");
         }
         
-        
-        //[self dismissModalViewControllerAnimated:NO];
         [self.navigationController popViewControllerAnimated:YES];
     }
     
 }
-
-
-
 
 -(void)EditTextFieldDidChange:(id) sender
 {
@@ -2390,7 +2290,8 @@ bool IsContinue = TRUE;
     return NO;
 }
 
-- (IBAction)btnCancel:(id)sender {
+- (IBAction)btnCancel:(id)sender
+{
     
     [self resignFirstResponder];
     [self.view endEditing:YES];
@@ -2418,6 +2319,7 @@ bool IsContinue = TRUE;
     }
     
 }
+
 -(void)selectedIDType:(NSString *)selectedIDType
 {
     //NSLog(@"%@",selectedIDType);
@@ -2459,6 +2361,55 @@ bool IsContinue = TRUE;
         _IDTypePickerPopover = nil;
     }
     
+}
+
+- (void)viewDidUnload
+{
+    [self setTxtrFullName:nil];
+    [self setSegGender:nil];
+    [self setOutletDOB:nil];
+    [self setOutletType1:nil];
+    [self setTxtContact1:nil];
+    [self setTxtEmail:nil];
+    [self setTxtHomeAddr1:nil];
+    [self setTxtHomeAddr2:nil];
+    [self setTxtHomeAddr3:nil];
+    [self setTxtHomePostCode:nil];
+    [self setTxtHomeTown:nil];
+    [self setTxtHomeState:nil];
+    [self setTxtHomeCountry:nil];
+    [self setTxtOfiiceAddr1:nil];
+    [self setTxtOfficeAddr2:nil];
+    [self setTxtOfficeAddr3:nil];
+    [self setTxtOfficePostCode:nil];
+    [self setTxtOfficeTown:nil];
+    [self setTxtOfficeState:nil];
+    [self setTxtOfficeCountry:nil];
+    [self setTxtExactDuties:nil];
+    [self setTxtRemark:nil];
+    [self setMyScrollView:nil];
+    [self setOutletOccup:nil];
+    [self setTxtContact1:nil];
+    [self setTxtContact1:nil];
+    [self setOutletDelete:nil];
+    [self setOutletType2:nil];
+    [self setOutletType3:nil];
+    [self setOutletType4:nil];
+    [self setOutletType5:nil];
+    [self setTxtContact2:nil];
+    [self setTxtContact3:nil];
+    [self setTxtContact4:nil];
+    [self setTxtContact5:nil];
+    [self setTxtPrefix1:nil];
+    [self setTxtPrefix2:nil];
+    [self setTxtPrefix3:nil];
+    [self setTxtPrefix4:nil];
+    [self setTxtPrefix5:nil];
+    [self setLblOfficeAddr:nil];
+    [self setLblPostCode:nil];
+    [self setOutletDone:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
 }
 
 @end
