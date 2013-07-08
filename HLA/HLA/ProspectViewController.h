@@ -53,7 +53,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *outletTitle;
 @property (weak, nonatomic) IBOutlet UITextField *txtFullName;
 @property (weak, nonatomic) IBOutlet UIButton *outletDOB;
-@property (weak, nonatomic) IBOutlet UIButton *IDType;
 @property (strong, nonatomic) IBOutlet UIButton *OtherIDType;
 @property (strong, nonatomic) IBOutlet UITextField *txtOtherIDType;
 @property (strong, nonatomic) IBOutlet UITextField *txtIDType;
@@ -68,7 +67,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segGender;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segSmoker;
 @property (weak, nonatomic) IBOutlet UIButton *outletOccup;
-@property (weak, nonatomic) IBOutlet UITextField *txtExactDuties;
+@property (strong, nonatomic) IBOutlet UITextView *txtExactDuties;
 @property (strong, nonatomic) IBOutlet UITextField *txtAnnIncome;
 @property (strong, nonatomic) IBOutlet UITextField *txtBussinessType;
 @property (weak, nonatomic) IBOutlet UILabel *lblOfficeAddr;
@@ -89,11 +88,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtContact3;
 @property (weak, nonatomic) IBOutlet UITextField *txtContact4;
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
+@property (strong, nonatomic) IBOutlet UITextField *txtClass;
+
 
 - (IBAction)btnGroup:(id)sender;
 - (IBAction)btnTitle:(id)sender;
 - (IBAction)btnDOB:(id)sender;
-- (IBAction)IdType:(id)sender;
 - (IBAction)btnOtherIDType:(id)sender;
 - (IBAction)ActionGender:(id)sender;
 - (IBAction)ActionSmoker:(id)sender;
@@ -106,7 +106,6 @@
 @property (nonatomic, copy) NSString *SelectedOfficeStateCode;
 @property (strong, nonatomic) NSArray* ContactType;
 @property (nonatomic, copy) NSString *ContactTypeTracker;
-@property (nonatomic, assign,readwrite) int idTypeTracking;
 @property (nonatomic, copy) NSString *ClientSmoker;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;

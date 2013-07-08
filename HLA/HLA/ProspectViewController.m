@@ -45,8 +45,8 @@
 @synthesize txtOfficeTown;
 @synthesize txtOfficeState;
 @synthesize txtOfficeCountry;
-@synthesize txtExactDuties,txtBussinessType,txtAnnIncome;
-@synthesize outletOccup,idTypeTracking,IDType,ClientSmoker;
+@synthesize txtExactDuties,txtBussinessType,txtAnnIncome,txtClass;
+@synthesize outletOccup,ClientSmoker;
 @synthesize myScrollView,outletGroup,OtherIDType,txtIDType,txtOtherIDType;
 @synthesize txtFullName, ContactTypeTracker,segSmoker,outletTitle;
 @synthesize segGender, ContactType, DOB, gender, SelectedStateCode, SelectedOfficeStateCode, OccupCodeSelected;
@@ -476,9 +476,9 @@ bool PostcodeContinue = TRUE;
             txtFullName.text = [txtFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             NSString *insertSQL = [NSString stringWithFormat:
-            @"INSERT INTO prospect_profile(\"ProspectName\", \"ProspectDOB\", \"ProspectGender\", \"ResidenceAddress1\", \"ResidenceAddress2\", \"ResidenceAddress3\", \"ResidenceAddressTown\", \"ResidenceAddressState\",\"ResidenceAddressPostCode\", \"ResidenceAddressCountry\", \"OfficeAddress1\", \"OfficeAddress2\", \"OfficeAddress3\",\"OfficeAddressTown\", \"OfficeAddressState\", \"OfficeAddressPostCode\", \"OfficeAddressCountry\", \"ProspectEmail\",\"ProspectOccupationCode\", \"ExactDuties\", \"ProspectRemark\", \"DateCreated\", \"CreatedBy\", \"DateModified\",\"ModifiedBy\", \"ProspectGroup\", \"ProspectTitle\", \"IDType\", \"IDTypeNo\", \"OtherIDType\", \"OtherIDTypeNo\", \"Smoker\", \"AnnualIncome\", \"BussinessType\") "
-                "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", %@, \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostcode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text,
-                                   @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text, IDType.titleLabel.text , txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text];
+            @"INSERT INTO prospect_profile(\"ProspectName\", \"ProspectDOB\", \"ProspectGender\", \"ResidenceAddress1\", \"ResidenceAddress2\", \"ResidenceAddress3\", \"ResidenceAddressTown\", \"ResidenceAddressState\",\"ResidenceAddressPostCode\", \"ResidenceAddressCountry\", \"OfficeAddress1\", \"OfficeAddress2\", \"OfficeAddress3\",\"OfficeAddressTown\", \"OfficeAddressState\", \"OfficeAddressPostCode\", \"OfficeAddressCountry\", \"ProspectEmail\",\"ProspectOccupationCode\", \"ExactDuties\", \"ProspectRemark\", \"DateCreated\", \"CreatedBy\", \"DateModified\",\"ModifiedBy\", \"ProspectGroup\", \"ProspectTitle\", \"IDTypeNo\", \"OtherIDType\", \"OtherIDTypeNo\", \"Smoker\", \"AnnualIncome\", \"BussinessType\") "
+                "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", %@, \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostcode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text,
+                                   @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text , txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text];
             
             const char *insert_stmt = [insertSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL) == SQLITE_OK) {
@@ -576,29 +576,6 @@ PostcodeContinue = TRUE;
 
 }
 
-- (IBAction)IdType:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    idTypeTracking = 1;
-    if (_IDTypePicker == nil) {
-        
-        self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
-        _IDTypePicker.delegate = self;
-        self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
-    }
-    
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.IDTypePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-}
-
 - (IBAction)btnOtherIDType:(id)sender
 {
     [self resignFirstResponder];
@@ -608,7 +585,6 @@ PostcodeContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    idTypeTracking = 2;
     if (_IDTypePicker == nil) {
         
         self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -1302,15 +1278,9 @@ PostcodeContinue = TRUE;
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
+    [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType]forState:UIControlStateNormal];
+    [self.IDTypePickerPopover dismissPopoverAnimated:YES];
     
-    if (idTypeTracking == 1) {
-        [IDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType]forState:UIControlStateNormal];
-        [self.IDTypePickerPopover dismissPopoverAnimated:YES];
-    }
-    else if (idTypeTracking == 2) {
-        [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType]forState:UIControlStateNormal];
-        [self.IDTypePickerPopover dismissPopoverAnimated:YES];
-    }
 }
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
@@ -1376,6 +1346,8 @@ PostcodeContinue = TRUE;
     [self setTxtIDType:nil];
     [self setTxtAnnIncome:nil];
     [self setTxtBussinessType:nil];
+    [self setTxtExactDuties:nil];
+    [self setTxtClass:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

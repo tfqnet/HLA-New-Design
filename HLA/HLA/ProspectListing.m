@@ -479,12 +479,14 @@
 
 - (IBAction)btnAddNew:(id)sender
 {
-    
+    /*
     if (_ProspectViewController == Nil) {
         self.ProspectViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
         _ProspectViewController.delegate = self;
-    }
+    }*/
     
+    self.ProspectViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Prospect"];
+    _ProspectViewController.delegate = self;
     [self.navigationController pushViewController:_ProspectViewController animated:YES];
     _ProspectViewController.navigationItem.title = @"Add Client Profile";
 //    _ProspectViewController.navigationItem.rightBarButtonItem = _ProspectViewController.outletDone;

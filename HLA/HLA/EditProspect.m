@@ -23,7 +23,7 @@
 @synthesize txtPrefix2;
 @synthesize txtPrefix3;
 @synthesize txtPrefix4;
-@synthesize outletDelete;
+@synthesize outletDelete,txtClass;
 @synthesize txtContact2;
 @synthesize txtContact3;
 @synthesize txtContact4;
@@ -42,7 +42,7 @@
 @synthesize txtOfficeTown;
 @synthesize txtOfficeState;
 @synthesize txtOfficeCountry;
-@synthesize txtExactDuties,idTypeTracking,IDType;
+@synthesize txtExactDuties;
 @synthesize txtrFullName,segSmoker,txtBussinessType,txtAnnIncome;
 @synthesize segGender,txtIDType,txtOtherIDType,OccupCodeSelected;
 @synthesize outletDOB,outletGroup,outletTitle,OtherIDType;
@@ -82,7 +82,6 @@ bool IsContinue = TRUE;
     
     [txtOfficePostCode addTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtEmail addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
-    [txtExactDuties addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtHomeAddr1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtHomeAddr2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtHomeAddr3 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
@@ -103,6 +102,7 @@ bool IsContinue = TRUE;
     [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [txtOfficePostCode addTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     txtRemark.delegate = self;
+    txtExactDuties.delegate = self;
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     txtHomeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
@@ -208,14 +208,13 @@ bool IsContinue = TRUE;
     [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectGroup]forState:UIControlStateNormal];
     [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectTitle]forState:UIControlStateNormal];
     [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectDOB]forState:UIControlStateNormal];
-    [IDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.IDType]forState:UIControlStateNormal];
     
     if (![pp.OtherIDType isEqualToString:@"(null)"]) {
         [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.OtherIDType]forState:UIControlStateNormal];
         txtOtherIDType.text = pp.OtherIDTypeNo;
     }
     else {
-        [self.OtherIDType setTitle:@"- Please Select -" forState:UIControlStateNormal];
+        [self.OtherIDType setTitle:@"- Select -" forState:UIControlStateNormal];
         txtOtherIDType.text = @"";
     }
     
@@ -787,30 +786,6 @@ bool IsContinue = TRUE;
     }
 }
 
-- (IBAction)IdType:(id)sender
-{
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    
-    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-    [activeInstance performSelector:@selector(dismissKeyboard)];
-    
-    idTypeTracking = 1;
-    if (_IDTypePicker == nil) {
-        
-        self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
-        _IDTypePicker.delegate = self;
-        self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
-    }
-    
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.IDTypePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-    
-}
-
 - (IBAction)btnOtherIDType:(id)sender
 {
     [self resignFirstResponder];
@@ -820,7 +795,6 @@ bool IsContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    idTypeTracking = 2;
     if (_IDTypePicker == nil) {
         
         self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -1218,8 +1192,8 @@ bool IsContinue = TRUE;
             txtrFullName.text = [txtrFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             NSString *insertSQL = [NSString stringWithFormat:
-                @"update prospect_profile set \"ProspectName\"=\"%@\", \"ProspectDOB\"=\"%@\", \"ProspectGender\"=\"%@\", \"ResidenceAddress1\"=\"%@\", \"ResidenceAddress2\"=\"%@\", \"ResidenceAddress3\"=\"%@\", \"ResidenceAddressTown\"=\"%@\", \"ResidenceAddressState\"=\"%@\", \"ResidenceAddressPostCode\"=\"%@\", \"ResidenceAddressCountry\"=\"%@\", \"OfficeAddress1\"=\"%@\", \"OfficeAddress2\"=\"%@\", \"OfficeAddress3\"=\"%@\", \"OfficeAddressTown\"=\"%@\",\"OfficeAddressState\"=\"%@\", \"OfficeAddressPostCode\"=\"%@\", \"OfficeAddressCountry\"=\"%@\", \"ProspectEmail\"= \"%@\", \"ProspectOccupationCode\"=\"%@\", \"ExactDuties\"=\"%@\", \"ProspectRemark\"=\"%@\", \"DateModified\"=%@,\"ModifiedBy\"=\"%@\", \"ProspectGroup\"=\"%@\", \"ProspectTitle\"=\"%@\", \"IDType\"=\"%@\", \"IDTypeNo\"=\"%@\", \"OtherIDType\"=\"%@\", \"OtherIDTypeNo\"=\"%@\", \"Smoker\"=\"%@\", \"AnnualIncome\"=\"%@\", \"BussinessType\"=\"%@\"  where indexNo = \"%@\" "
-                    "", txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"datetime(\"now\", \"+8 hour\")", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text, IDType.titleLabel.text, txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text, pp.ProspectID];
+                @"update prospect_profile set \"ProspectName\"=\"%@\", \"ProspectDOB\"=\"%@\", \"ProspectGender\"=\"%@\", \"ResidenceAddress1\"=\"%@\", \"ResidenceAddress2\"=\"%@\", \"ResidenceAddress3\"=\"%@\", \"ResidenceAddressTown\"=\"%@\", \"ResidenceAddressState\"=\"%@\", \"ResidenceAddressPostCode\"=\"%@\", \"ResidenceAddressCountry\"=\"%@\", \"OfficeAddress1\"=\"%@\", \"OfficeAddress2\"=\"%@\", \"OfficeAddress3\"=\"%@\", \"OfficeAddressTown\"=\"%@\",\"OfficeAddressState\"=\"%@\", \"OfficeAddressPostCode\"=\"%@\", \"OfficeAddressCountry\"=\"%@\", \"ProspectEmail\"= \"%@\", \"ProspectOccupationCode\"=\"%@\", \"ExactDuties\"=\"%@\", \"ProspectRemark\"=\"%@\", \"DateModified\"=%@,\"ModifiedBy\"=\"%@\", \"ProspectGroup\"=\"%@\", \"ProspectTitle\"=\"%@\", \"IDTypeNo\"=\"%@\", \"OtherIDType\"=\"%@\", \"OtherIDTypeNo\"=\"%@\", \"Smoker\"=\"%@\", \"AnnualIncome\"=\"%@\", \"BussinessType\"=\"%@\"  where indexNo = \"%@\" "
+                    "", txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"datetime(\"now\", \"+8 hour\")", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text, txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text, pp.ProspectID];
             
             
             const char *Update_stmt = [insertSQL UTF8String];
@@ -1787,14 +1761,8 @@ bool IsContinue = TRUE;
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
-    if (idTypeTracking == 1) {
-        [IDType setTitle:selectedIDType forState:UIControlStateNormal];
-        [self.IDTypePickerPopover dismissPopoverAnimated:YES];
-    }
-    else if (idTypeTracking == 2) {
-        [OtherIDType setTitle:selectedIDType forState:UIControlStateNormal];
-        [self.IDTypePickerPopover dismissPopoverAnimated:YES];
-    }
+    [OtherIDType setTitle:selectedIDType forState:UIControlStateNormal];
+    [self.IDTypePickerPopover dismissPopoverAnimated:YES];
 }
 
 - (void)OccupCodeSelected:(NSString *)OccupCode
@@ -1933,6 +1901,8 @@ bool IsContinue = TRUE;
     [self setTxtAnnIncome:nil];
     [self setTxtBussinessType:nil];
     [self setPp:nil];
+    [self setTxtExactDuties:nil];
+    [self setTxtClass:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
