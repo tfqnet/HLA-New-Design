@@ -53,7 +53,6 @@
 @synthesize myScrollView,ClientSmoker;
 @synthesize outletOccup;
 @synthesize delegate = _delegate;
-@synthesize ContactTypePopover = _ContactTypePopover;
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
 @synthesize IDTypePicker = _IDTypePicker;
@@ -206,12 +205,21 @@ bool IsContinue = TRUE;
 {
     strChanges = @"No";
     
-    [self.outletGroup setTitle:pp.ProspectGroup forState:UIControlStateNormal];
-    [self.outletTitle setTitle:pp.ProspectTitle forState:UIControlStateNormal];
-    [self.IDType setTitle:pp.IDType forState:UIControlStateNormal];
-    [self.OtherIDType setTitle:pp.OtherIDType forState:UIControlStateNormal];
+    [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectGroup]forState:UIControlStateNormal];
+    [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectTitle]forState:UIControlStateNormal];
+    [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectDOB]forState:UIControlStateNormal];
+    [IDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.IDType]forState:UIControlStateNormal];
+    
+    if (![pp.OtherIDType isEqualToString:@"(null)"]) {
+        [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.OtherIDType]forState:UIControlStateNormal];
+        txtOtherIDType.text = pp.OtherIDTypeNo;
+    }
+    else {
+        [self.OtherIDType setTitle:@"- Please Select -" forState:UIControlStateNormal];
+        txtOtherIDType.text = @"";
+    }
+    
     txtIDType.text = pp.IDTypeNo;
-    txtOtherIDType.text = pp.OtherIDTypeNo;
     txtrFullName.text = pp.ProspectName;
     txtHomeAddr1.text = pp.ResidenceAddress1;
     txtHomeCountry.text = pp.ResidenceAddressCountry;
@@ -228,8 +236,20 @@ bool IsContinue = TRUE;
     txtOfficeAddr2.text = pp.OfficeAddress2;
     txtOfficeAddr3.text = pp.OfficeAddress3;
     txtExactDuties.text = pp.ExactDuties;
-    txtAnnIncome.text = pp.AnnualIncome;
-    txtBussinessType.text = pp.BussinessType;
+    
+    if (![pp.AnnualIncome isEqualToString:@"(null)"]) {
+        txtAnnIncome.text = pp.AnnualIncome;
+    }
+    else {
+        txtAnnIncome.text = @"";
+    }
+    
+    if (![pp.BussinessType isEqualToString:@"(null)"]) {
+        txtBussinessType.text = pp.BussinessType;
+    }
+    else {
+        txtBussinessType.text = @"";
+    }
     
     if ([pp.Smoker isEqualToString:@"Y"]) {
         ClientSmoker = @"Y";
@@ -351,8 +371,12 @@ bool IsContinue = TRUE;
             }
             sqlite3_finalize(statement);
             [self PopulateOccupCode];
-            [self PopulateState];
             
+            txtHomeState.text = @"";
+            if (![[txtHomePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"" ]) {
+                
+                [self PopulateState];
+            }
             
             if (![[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"" ]) {
                 
@@ -371,8 +395,6 @@ bool IsContinue = TRUE;
     
 	dbpath = Nil;
 	statement = Nil;
-    
-    [self.outletDOB setTitle:pp.ProspectDOB forState:UIControlStateNormal];
     
     [super viewWillAppear:animated];
 }
@@ -425,24 +447,24 @@ bool IsContinue = TRUE;
         self.GroupPopover = [[UIPopoverController alloc] initWithContentViewController:_GroupList];
     }
     
-    [self.GroupPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.GroupPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)btnTitle:(id)sender
 {
     if (_TitlePicker == nil) {
-        _TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
+        self.TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
         _TitlePicker.delegate = self;
+        self.TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
     }
     
-    if (_TitlePickerPopover == nil) {
-        _TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
-        [_TitlePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-    }
-    else {
-        [_TitlePickerPopover dismissPopoverAnimated:YES];
-        _TitlePickerPopover = nil;
-    }
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.TitlePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 - (IBAction)btnDOB:(id)sender
@@ -473,7 +495,10 @@ bool IsContinue = TRUE;
     }
     
     [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.SIDatePopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
 
@@ -485,7 +510,10 @@ bool IsContinue = TRUE;
         self.OccupationListPopover = [[UIPopoverController alloc] initWithContentViewController:_OccupationList];
     }
     
-    [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.OccupationListPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
 }
 
@@ -776,7 +804,10 @@ bool IsContinue = TRUE;
         self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
     }
     
-    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.IDTypePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
     
 }
 
@@ -797,7 +828,10 @@ bool IsContinue = TRUE;
         self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
     }
     
-    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.IDTypePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 -(void)detectChanges:(id) sender
@@ -1007,6 +1041,8 @@ bool IsContinue = TRUE;
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *querySQL = [NSString stringWithFormat:@"SELECT StateDesc FROM eProposal_state where status = \"A\" and StateCode = \"%@\"", pp.ResidenceAddressState];
+        
+        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1746,11 +1782,7 @@ bool IsContinue = TRUE;
 -(void)selectedTitle:(NSString *)selectedTitle
 {
     [outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
-    
-    if (_TitlePickerPopover) {
-        [_TitlePickerPopover dismissPopoverAnimated:YES];
-        _TitlePickerPopover = nil;
-    }
+    [self.TitlePickerPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedIDType:(NSString *)selectedIDType
@@ -1900,6 +1932,7 @@ bool IsContinue = TRUE;
     [self setSegSmoker:nil];
     [self setTxtAnnIncome:nil];
     [self setTxtBussinessType:nil];
+    [self setPp:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

@@ -23,17 +23,15 @@
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
-    OccupationList *_OccupationList;
-    UIPopoverController *_OccupationListPopover;
-    UIPopoverController *_ContactTypePopover;
-    SIDate *_SIDate;
-    UIPopoverController *_SIDatePopover;
-    id<EditProspectDelegate> _delegate;
-    TitleViewController *_TitlePicker;
     GroupClass *_GroupList;
-    UIPopoverController *_TitlePickerPopover;
+    TitleViewController *_TitlePicker;
+    SIDate *_SIDate;
+    OccupationList *_OccupationList;
     UIPopoverController *_GroupPopover;
-    
+    UIPopoverController *_TitlePickerPopover;
+    UIPopoverController *_SIDatePopover;
+    UIPopoverController *_OccupationListPopover;
+    id<EditProspectDelegate> _delegate;
     UIAlertView *rrr;
 }
 
@@ -44,7 +42,6 @@
 @property (nonatomic, strong) UIPopoverController *IDTypePickerPopover;
 @property (nonatomic, retain) OccupationList *OccupationList;
 @property (nonatomic, retain) UIPopoverController *OccupationListPopover;
-@property (nonatomic, retain) UIPopoverController *ContactTypePopover;
 @property (nonatomic, retain) SIDate *SIDate;
 @property (nonatomic, retain) UIPopoverController *SIDatePopover;
 @property (nonatomic, strong) TitleViewController *TitlePicker;

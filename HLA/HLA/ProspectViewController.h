@@ -25,10 +25,12 @@
     OccupationList *_OccupationList;
     SIDate *_SIDate;
     GroupClass *_GroupList;
+    TitleViewController *_TitlePicker;
     UIPopoverController *_OccupationListPopover;
     UIPopoverController *_ContactTypePopover;
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_GroupPopover;
+    UIPopoverController *_TitlePickerPopover;
     id<ProspectViewControllerDelegate> _delegate;
 
     UIAlertView *rrr;

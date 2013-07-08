@@ -57,6 +57,7 @@
 @synthesize delegate = _delegate;
 @synthesize IDTypePicker = _IDTypePicker;
 @synthesize TitlePicker = _TitlePicker;
+@synthesize TitlePickerPopover = _TitlePickerPopover;
 
 bool PostcodeContinue = TRUE;
 
@@ -430,7 +431,10 @@ bool PostcodeContinue = TRUE;
      }
     
     [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.SIDatePopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
     
     dateFormatter = Nil;
     dateString = Nil;
@@ -445,7 +449,10 @@ bool PostcodeContinue = TRUE;
         self.OccupationListPopover = [[UIPopoverController alloc] initWithContentViewController:_OccupationList];               
     }
     
-    [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.OccupationListPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (void)btnSave:(id)sender
@@ -508,16 +515,6 @@ PostcodeContinue = TRUE;
 
 }
 
--(BOOL) NSStringIsValidEmail:(NSString *)checkString
-{
-    BOOL stricterFilter = YES; 
-    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
-    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
-    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
-    return [emailTest evaluateWithObject:checkString];
-}
-
 - (IBAction)btnGroup:(id)sender
 {
     [self resignFirstResponder];
@@ -534,7 +531,10 @@ PostcodeContinue = TRUE;
         self.GroupPopover = [[UIPopoverController alloc] initWithContentViewController:_GroupList];
     }
     
-    [self.GroupPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.GroupPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)btnTitle:(id)sender
@@ -542,17 +542,13 @@ PostcodeContinue = TRUE;
     if (_TitlePicker == nil) {
         _TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
         _TitlePicker.delegate = self;
+        self.TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
     }
     
-    if (_TitlePickerPopover == nil) {
-        
-        _TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
-        [_TitlePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-        
-    } else {
-        [_TitlePickerPopover dismissPopoverAnimated:YES];
-        _TitlePickerPopover = nil;
-    }
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.TitlePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -597,7 +593,10 @@ PostcodeContinue = TRUE;
         self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
     }
     
-    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.IDTypePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 - (IBAction)btnOtherIDType:(id)sender
@@ -617,7 +616,10 @@ PostcodeContinue = TRUE;
         self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
     }
     
-    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.IDTypePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 
@@ -1093,6 +1095,16 @@ PostcodeContinue = TRUE;
     return true;
 }
 
+-(BOOL) NSStringIsValidEmail:(NSString *)checkString
+{
+    BOOL stricterFilter = YES;
+    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:checkString];
+}
+
 
 #pragma mark - db handling
 
@@ -1251,18 +1263,14 @@ PostcodeContinue = TRUE;
 
 -(void)selectedGroup:(NSString *)aaGroup
 {
-    [outletGroup setTitle:aaGroup forState:UIControlStateNormal];
+    [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",aaGroup]forState:UIControlStateNormal];
     [self.GroupPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedTitle:(NSString *)selectedTitle
 {
-    [outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
-    
-    if (_TitlePickerPopover) {
-        [_TitlePickerPopover dismissPopoverAnimated:YES];
-        _TitlePickerPopover = nil;
-    }
+    [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedTitle]forState:UIControlStateNormal];
+    [self.TitlePickerPopover dismissPopoverAnimated:YES];
 }
 
 -(void)CloseWindow
@@ -1274,7 +1282,7 @@ PostcodeContinue = TRUE;
 
 -(void)DateSelected:(NSString *)strDate :(NSString *)dbDate
 {
-    [outletDOB setTitle:strDate forState:UIControlStateNormal ];
+    [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",strDate]forState:UIControlStateNormal];
     
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyy-MM-dd"];
@@ -1296,11 +1304,11 @@ PostcodeContinue = TRUE;
 {
     
     if (idTypeTracking == 1) {
-        [IDType setTitle:selectedIDType forState:UIControlStateNormal];
+        [IDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType]forState:UIControlStateNormal];
         [self.IDTypePickerPopover dismissPopoverAnimated:YES];
     }
     else if (idTypeTracking == 2) {
-        [OtherIDType setTitle:selectedIDType forState:UIControlStateNormal];
+        [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType]forState:UIControlStateNormal];
         [self.IDTypePickerPopover dismissPopoverAnimated:YES];
     }
 }
