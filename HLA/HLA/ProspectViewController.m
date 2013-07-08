@@ -46,9 +46,9 @@
 @synthesize txtOfficeState;
 @synthesize txtOfficeCountry;
 @synthesize txtExactDuties;
-@synthesize outletOccup;
-@synthesize myScrollView;
-@synthesize txtFullName, ContactTypeTracker,segSmoker;
+@synthesize outletOccup,idTypeTracking,IDType,ClientSmoker;
+@synthesize myScrollView,outletGroup,OtherIDType,txtIDType,txtOtherIDType;
+@synthesize txtFullName, ContactTypeTracker,segSmoker,outletTitle;
 @synthesize segGender, ContactType, DOB, gender, SelectedStateCode, SelectedOfficeStateCode, OccupCodeSelected;
 @synthesize OccupationList = _OccupationList;
 @synthesize OccupationListPopover = _OccupationListPopover;
@@ -89,7 +89,7 @@ bool PostcodeContinue = TRUE;
     //ContactType = [[NSArray alloc] init];
     //ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
     
-    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnSave:)];
     
     CustomColor = Nil;
@@ -398,12 +398,11 @@ bool PostcodeContinue = TRUE;
 
 - (IBAction)ActionSmoker:(id)sender
 {
-    NSString *smoker = nil;
     if ([segSmoker selectedSegmentIndex]==0) {
-        smoker = @"Y";
+        ClientSmoker = @"Y";
     }
     else {
-        smoker = @"N";
+        ClientSmoker = @"N";
     }
 }
 
@@ -470,15 +469,9 @@ bool PostcodeContinue = TRUE;
             txtFullName.text = [txtFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             
             NSString *insertSQL = [NSString stringWithFormat:
-                                   @"INSERT INTO prospect_profile(\"ProspectName\", \"ProspectDOB\", "
-                                   "\"ProspectGender\", \"ResidenceAddress1\", \"ResidenceAddress2\", \"ResidenceAddress3\",\"ResidenceAddressTown\",\"ResidenceAddressState\",\"ResidenceAddressPostCode\", "
-                                   "\"ResidenceAddressCountry\", \"OfficeAddress1\",\"OfficeAddress2\",\"OfficeAddress3\",\"OfficeAddressTown\",\"OfficeAddressState\",\"OfficeAddressPostCode\", "
-                                   "\"OfficeAddressCountry\", \"ProspectEmail\",\"ProspectOccupationCode\", \"ExactDuties\",\"ProspectRemark\",\"DateCreated\","
-                                   "\"CreatedBy\",\"DateModified\",\"ModifiedBy\") "
-                                   "VALUES (\"%@\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\", \"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",%@,\"%@\",\"%@\",\"%@\")", txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, 
-                                   txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text,
-                                   SelectedOfficeStateCode, txtOfficePostcode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, 
-                                   @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1"];
+            @"INSERT INTO prospect_profile(\"ProspectName\", \"ProspectDOB\", \"ProspectGender\", \"ResidenceAddress1\", \"ResidenceAddress2\", \"ResidenceAddress3\", \"ResidenceAddressTown\", \"ResidenceAddressState\",\"ResidenceAddressPostCode\", \"ResidenceAddressCountry\", \"OfficeAddress1\", \"OfficeAddress2\", \"OfficeAddress3\",\"OfficeAddressTown\", \"OfficeAddressState\", \"OfficeAddressPostCode\", \"OfficeAddressCountry\", \"ProspectEmail\",\"ProspectOccupationCode\", \"ExactDuties\", \"ProspectRemark\", \"DateCreated\", \"CreatedBy\", \"DateModified\",\"ModifiedBy\", \"ProspectGroup\", \"ProspectTitle\", \"IDType\", \"IDTypeNo\", \"OtherIDType\", \"OtherIDTypeNo\", \"Smoker\") "
+                "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", %@, \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostcode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text,
+                                   @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text, IDType.titleLabel.text , txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker];
             
             const char *insert_stmt = [insertSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL) == SQLITE_OK) {
@@ -525,9 +518,27 @@ PostcodeContinue = TRUE;
     return [emailTest evaluateWithObject:checkString];
 }
 
+- (IBAction)btnGroup:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (_GroupList == nil) {
+        
+        self.GroupList = [[GroupClass alloc] initWithStyle:UITableViewStylePlain];
+        _GroupList.delegate = self;
+        self.GroupPopover = [[UIPopoverController alloc] initWithContentViewController:_GroupList];
+    }
+    
+    [self.GroupPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
 - (IBAction)btnTitle:(id)sender
 {
-    
     if (_TitlePicker == nil) {
         _TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
         _TitlePicker.delegate = self;
@@ -542,8 +553,6 @@ PostcodeContinue = TRUE;
         [_TitlePickerPopover dismissPopoverAnimated:YES];
         _TitlePickerPopover = nil;
     }
-    
-    
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -573,23 +582,42 @@ PostcodeContinue = TRUE;
 
 - (IBAction)IdType:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
     
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    idTypeTracking = 1;
     if (_IDTypePicker == nil) {
-        _IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
-        _IDTypePicker.delegate = self;
-    }
-    
-    if (_IDTypePickerPopover == nil)
-    {
-        _IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
-        [_IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
         
-    }
-    else {
-        [_IDTypePickerPopover dismissPopoverAnimated:YES];
-        _IDTypePickerPopover = nil;
+        self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
+        _IDTypePicker.delegate = self;
+        self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
     }
     
+    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+}
+
+- (IBAction)btnOtherIDType:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    idTypeTracking = 2;
+    if (_IDTypePicker == nil) {
+        
+        self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
+        _IDTypePicker.delegate = self;
+        self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
+    }
+    
+    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 
@@ -1221,17 +1249,15 @@ PostcodeContinue = TRUE;
 
 #pragma mark - delegate
 
--(void)CloseWindow
+-(void)selectedGroup:(NSString *)aaGroup
 {
-    [self resignFirstResponder];
-    [self.view endEditing:YES];
-    [_SIDatePopover dismissPopoverAnimated:YES];
+    [outletGroup setTitle:aaGroup forState:UIControlStateNormal];
+    [self.GroupPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedTitle:(NSString *)selectedTitle
 {
-    //NSLog(@"%@",selectedTitle);
-    [_outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
+    [outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
     
     if (_TitlePickerPopover) {
         [_TitlePickerPopover dismissPopoverAnimated:YES];
@@ -1239,7 +1265,15 @@ PostcodeContinue = TRUE;
     }
 }
 
--(void)DateSelected:(NSString *)strDate :(NSString *)dbDate{
+-(void)CloseWindow
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    [_SIDatePopover dismissPopoverAnimated:YES];
+}
+
+-(void)DateSelected:(NSString *)strDate :(NSString *)dbDate
+{
     [outletDOB setTitle:strDate forState:UIControlStateNormal ];
     
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
@@ -1260,28 +1294,20 @@ PostcodeContinue = TRUE;
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
-    //NSLog(@"%@",selectedIDType);
-    [_IDType setTitle:selectedIDType forState:UIControlStateNormal];
     
-    if (_IDTypePickerPopover) {
-        [_IDTypePickerPopover dismissPopoverAnimated:YES];
-        _IDTypePickerPopover = nil;
+    if (idTypeTracking == 1) {
+        [IDType setTitle:selectedIDType forState:UIControlStateNormal];
+        [self.IDTypePickerPopover dismissPopoverAnimated:YES];
+    }
+    else if (idTypeTracking == 2) {
+        [OtherIDType setTitle:selectedIDType forState:UIControlStateNormal];
+        [self.IDTypePickerPopover dismissPopoverAnimated:YES];
     }
 }
 
 - (void)OccupCodeSelected:(NSString *)OccupCode{
     
     OccupCodeSelected = OccupCode;
-    /*
-     if ([self OptionalOccp] == TRUE) {
-     lblOfficeAddr.text = @"Office Address";
-     lblPostCode.text = @"Postcode";
-     }
-     else {
-     lblOfficeAddr.text = @"Office Address*";
-     lblPostCode.text = @"Postcode*";
-     }
-     */
     
 }
 
@@ -1336,6 +1362,10 @@ PostcodeContinue = TRUE;
     [self setLblPostCode:nil];
     [self setOutletTitle:nil];
     [self setSegSmoker:nil];
+    [self setOutletGroup:nil];
+    [self setOtherIDType:nil];
+    [self setTxtOtherIDType:nil];
+    [self setTxtIDType:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

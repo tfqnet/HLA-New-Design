@@ -125,6 +125,14 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
 	[SIUtilities UPDATETrad_Sys_Medical_Comb:databasePath];
 	[SIUtilities updateTable:@"Trad_Sys_Basic_LSD" set:@"FromSA" value:@"600" where:@"ToSA" equal:@"1199.99" dbpath:databasePath];
 	[SIUtilities InstallUpdate:databasePath];
+    
+    [SIUtilities addColumnTable:@"prospect_profile" column:@"ProspectGroup" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"prospect_profile" column:@"ProspectTitle" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"prospect_profile" column:@"IDType" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"prospect_profile" column:@"IDTypeNo" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"prospect_profile" column:@"OtherIDType" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"prospect_profile" column:@"OtherIDTypeNo" type:@"VARCHAR" dbpath:databasePath];
+    [SIUtilities addColumnTable:@"prospect_profile" column:@"Smoker" type:@"VARCHAR" dbpath:databasePath];
 	
     return YES;
 }

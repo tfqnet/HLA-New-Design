@@ -13,7 +13,9 @@
 -(void)selectedTitle:(NSString *)selectedTitle;
 @end
 
-@interface TitleViewController : UITableViewController
+@interface TitleViewController : UITableViewController{
+    NSMutableArray *_Title;
+}
 @property (nonatomic, strong) NSMutableArray *Title;
 @property (nonatomic, weak) id<TitleDelegate> delegate;
 @end

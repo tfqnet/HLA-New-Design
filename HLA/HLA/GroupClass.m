@@ -1,39 +1,41 @@
 //
-//  TitleViewController.m
+//  GroupClass.m
 //  iMobile Planner
 //
-//  Created by Erza on 6/5/13.
+//  Created by shawal sapuan on 7/7/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "TitleViewController.h"
+#import "GroupClass.h"
 
-@interface TitleViewController ()
+@interface GroupClass ()
 
 @end
 
-@implementation TitleViewController
-@synthesize Title = _Title;
+@implementation GroupClass
+@synthesize group = _group;
+@synthesize delegate = _delegate;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-
-        NSString *file = [[NSBundle mainBundle] pathForResource:@"Title" ofType:@"plist"];
-        NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:file];
         
-        _Title = [dict objectForKey:@"Title"];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsPath = [paths objectAtIndex:0];
+        NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"dataGroup.plist"];
+        _group = [NSMutableArray arrayWithContentsOfFile:plistPath];
+        
         self.clearsSelectionOnViewWillAppear = NO;
-
-        NSInteger rowsCount = [_Title count];
+        
+        NSInteger rowsCount = [_group count];
         NSInteger singleRowHeight = [self.tableView.delegate tableView:self.tableView
                                                heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         NSInteger totalRowsHeight = rowsCount * singleRowHeight;
         
         
         CGFloat largestLabelWidth = 0;
-        for (NSString *Title in _Title) {
+        for (NSString *Title in _group) {
             CGSize labelSize = [Title sizeWithFont:[UIFont boldSystemFontOfSize:20.0f]];
             if (labelSize.width > largestLabelWidth) {
                 largestLabelWidth = labelSize.width;
@@ -50,7 +52,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,19 +60,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return [_Title count];
+    return [_group count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -84,29 +82,19 @@
         
     }
     
-    
-    // Configure the cell...
-    cell.textLabel.text = [_Title objectAtIndex:indexPath.row];
-    
+    cell.textLabel.text = [_group objectAtIndex:indexPath.row];
     return cell;
 }
+
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    NSString *selectedTitle = [_Title objectAtIndex:indexPath.row];
-    
-    
-    
-    //Notify the delegate if it exists.
+    NSString *selectedGroup = [_group objectAtIndex:indexPath.row];
     if (_delegate != nil) {
-        [_delegate selectedTitle:selectedTitle];
+        [_delegate selectedGroup:selectedGroup];
     }
-    
-    
-    
 }
-
 
 @end

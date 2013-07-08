@@ -28,6 +28,7 @@
 @synthesize ProspectID;
 @synthesize ResidenceAddressState;
 @synthesize OfficeAddressState;
+@synthesize ProspectGroup,ProspectTitle,IDTypeNo,IDType,OtherIDTypeNo,OtherIDType,Smoker;
 
 -(id) initWithName:(NSString*) TheNickName AndProspectID:(NSString*)TheProspectID AndProspectName:(NSString*)TheProspectName 
   AndProspecGender:(NSString*)TheProspectGender AndResidenceAddress1:(NSString*)TheResidenceAddress1
@@ -40,7 +41,7 @@ AndOfficeAddressTown:(NSString*)TheOfficeAddressTown AndOfficeAddressState:(NSSt
 AndOfficeAddressPostCode:(NSString*)TheOfficeAddressPostCode
 AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSString*)TheProspectEmail
  AndProspectRemark:(NSString*)TheProspectRemark AndProspectOccupationCode:(NSString*)TheProspectOccupationCode
-    AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties;
+    AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString *)TheGroup AndTitle:(NSString *)TheTitle AndIDType:(NSString *)TheIDType AndIDTypeNo:(NSString *)TheIDTypeNo AndOtherIDType:(NSString *)TheOtherIDType AndOtherIDTypeNo:(NSString *)TheOtherIDTypeNo AndSmoker:(NSString *)TheSmoker
 
 {
     self = [super init];
@@ -69,6 +70,13 @@ AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSS
         self.ResidenceAddressState = TheResidenceAddressState;
         self.OfficeAddressState = TheOfficeAddressState;
         self.ExactDuties = TheExactDuties;
+        self.ProspectGroup = TheGroup;
+        self.ProspectTitle = TheTitle;
+        self.IDType = TheIDType;
+        self.IDTypeNo = TheIDTypeNo;
+        self.OtherIDType = TheOtherIDType;
+        self.OtherIDTypeNo = TheOtherIDTypeNo;
+        self.Smoker = TheSmoker;
     }
     return self;
 }
