@@ -183,7 +183,7 @@ static sqlite3 *contactDB = nil;
 	}
 	
 	
-	
+	//[self InstallVersion1dot3:path];
 	if (![AppsVersion isEqualToString:CurrenVersion]) {
 		
 		[self InstallVersion1dot3:path];
@@ -209,7 +209,11 @@ static sqlite3 *contactDB = nil;
 	FMDatabase *database = [FMDatabase databaseWithPath:path];
     [database open];
 	
-	NSString *query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Details (\"SINO\" VARCHAR, \"PlanCode\" VARCHAR, \"CovTypeCode\" INTEGER, \"ATPrem\" "
+	NSString *query = [NSString stringWithFormat:@"INSERT INTO Trad_sys_profile ('PlanCode', 'planname' ) VALUES('UV', 'HLA Ever Life')"];
+    [database executeUpdate:query];
+	
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Details (\"SINO\" VARCHAR, \"PlanCode\" VARCHAR, \"CovTypeCode\" INTEGER, \"ATPrem\" "
 					   "DOUBLE, \"BasicSA\" DOUBLE, \"CovPeriod\" INTEGER, \"OccpCode\" VARCHAR, \"OccLoading\" DOUBLE, \"CPA\" INTEGER, "
 					   "\"PA\" INTEGER, \"HLoading\" DOUBLE, \"HloadingTerm\" INTEGER, \"HloadingPct\" VARCHAR, \"HloadingPctTerm\" VARCHAR "
 					   ", \"MedicalReq\" VARCHAR, \"ComDate\" VARCHAR, \"HLGES\" VARCHAR, \"ATU\" VARCHAR, \"BUMPMode\" VARCHAR "
@@ -219,7 +223,7 @@ static sqlite3 *contactDB = nil;
 					   ", \"VU2030To\" VARCHAR, \"VU2035\" VARCHAR, \"VU2035To\" VARCHAR, \"VUCash\" VARCHAR, \"VUCashTo\" VARCHAR"
 					   ", \"ReinvestYI\" VARCHAR, \"FullyPaidUp6Year\" VARCHAR, \"FullyPaidUp10Year\" VARCHAR, \"ReduceBSA\" VARCHAR"
 					   ", \"SpecialVersion\" VARCHAR, \"VURet\" VARCHAR, \"VURetTo\" VARCHAR, \"VURetOpt\" VARCHAR, \"VURetToOpt\" VARCHAR"
-					   ", \"VUCashOpt\" VARCHAR, \"VUCashToOpt\" VARCHAR, \"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR, )"];
+					   ", \"VUCashOpt\" VARCHAR, \"VUCashToOpt\" VARCHAR, \"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
 
     [database executeUpdate:query];
 	
@@ -273,7 +277,11 @@ static sqlite3 *contactDB = nil;
 			 "\"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
     [database executeUpdate:query];
 
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_RegWithdrawal('SINO' VARCHAR, 'FromAge' VARCHAR, 'ToAge' INTEGER, "
+			 "'YearInt' INTEGER, 'Amount' VARCHAR )"];
+    [database executeUpdate:query];
 	
+	//
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000,0 , 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
@@ -490,6 +498,14 @@ static sqlite3 *contactDB = nil;
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"HMM\", \"HLA Major Medi\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"LCWP\", \"Living CAre Waiver of Premium Rider\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1K\", \"Health Loading (Per 1KSA)\", \"LCWP\", \"Living Care Waiver of Premium Rider\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"SUMA\", \"Sum Assured\", \"LSR\", \"LifeShield Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
@@ -529,6 +545,14 @@ static sqlite3 *contactDB = nil;
     [database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"PA\", \"Personal Accident Rider\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"RITM\", \"Rider Term\", \"PR\", \"Waiver of Premium Rider\", \"TF\", "
+			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+    [database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HL1K\", \"Health Loading (Per 1KSA)\", \"PR\", \"Waiver of Premium Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	

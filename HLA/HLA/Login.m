@@ -296,10 +296,13 @@ NSString *ProceedStatus = @"";
 		
 	}
 	*/
+
+	
 	
     success = [fileManager fileExistsAtPath:databasePath];
     //if (success) return;
     if (!success) {
+		
         NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"hladb.sqlite"];
         success = [fileManager copyItemAtPath:defaultDBPath toPath:databasePath error:&error];
         if (!success) {
@@ -442,6 +445,7 @@ NSString *ProceedStatus = @"";
 							  "B.AgentPortalPassword, B.AgentCode FROM User_Profile A, Agent_Profile B WHERE A.AgentLoginID = B.AgentLoginID AND "
 							  "A.AgentLoginID=\"%@\" and A.AgentPassword=\"%@\"",
 							  txtUsername.text,txtPassword.text];
+
 
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)

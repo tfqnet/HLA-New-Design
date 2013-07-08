@@ -54,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *label2;
 @property (weak, nonatomic) IBOutlet UILabel *labelComm;
 @property (weak, nonatomic) IBOutlet UILabel *labelFor;
+- (IBAction)ActionPayment:(id)sender;
 
 //--request from previous
 @property (nonatomic, assign,readwrite) int requestAge;

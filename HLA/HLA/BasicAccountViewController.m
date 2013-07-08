@@ -92,7 +92,6 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 			NSLog(@"view selected field");
 			[self getExistingBasic];
 			
-			
 			if ([getPlanCode isEqualToString:@"UV"]) {
                 [self.outletBasic setTitle:@"HLA EverLife" forState:UIControlStateNormal];
                 temp = outletBasic.titleLabel.text;
@@ -124,6 +123,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     }
 	
 	[txtBasicPremium addTarget:self action:@selector(BasicPremiumDidChanged) forControlEvents:UIControlEventAllEditingEvents];
+	getBumpMode= @"A";
 	
 	Label1.hidden = YES;
 	label2.hidden = YES;
@@ -481,13 +481,14 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     {
         NSString *insertSQL = [NSString stringWithFormat:
 							   @"INSERT INTO UL_Details (SINo,  PlanCode, CovTypeCode, ATPrem, BasicSA, CovPeriod, OccpCode, "
-							   "BumpMode, DateCreated, CreatedBy, DateModified, ModifiedBy) VALUES "
-							   "(\"%@\", \"UV\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", "
+							   "BumpMode, VU2023, VU2025,VU2028,VU2030,VU2035,VURet,VUCash,VURetOpt,VUCashOpt, PolicySustainYear, "
+							   "DateCreated, CreatedBy, DateModified, ModifiedBy) VALUES "
+							   "(\"%@\", \"UV\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", '0', '0', "
+							   "'0','0','40','40','20','0','0','0', "
 							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA') ",
 							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode,
 							   [self getBumpMode]];
 		
-        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -521,6 +522,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
         }
         sqlite3_close(contactDB);
     }
+	
 }
 
 
@@ -989,5 +991,107 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 
 
 
+}
+
+
+
+
+
+
+- (IBAction)ActionPayment:(id)sender {
+	double tempBasicPrem = [txtBasicPremium.text doubleValue ];
+	double tempBasicSA = [txtBasicSA.text doubleValue ];
+	double tempPremiumPayable = [txtPremiumPayable.text doubleValue ];
+	
+	if (segPremium.selectedSegmentIndex == 0) {
+		if (![txtBasicPremium.text isEqualToString:@""]) {
+			
+			if ([getBumpMode isEqualToString:@"S"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem /Semi   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA /Semi   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable /Semi   ];
+			}
+			else if ([getBumpMode isEqualToString:@"Q"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem /quarterly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA /quarterly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable /quarterly   ];
+			}
+			else if ([getBumpMode isEqualToString:@"M"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem/Monthly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA/Monthly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable/Monthly   ];
+			}
+		
+		}
+		getBumpMode	= @"A";
+	}
+	else if (segPremium.selectedSegmentIndex == 1) {
+		if (![txtBasicPremium.text isEqualToString:@""]) {
+			if ([getBumpMode isEqualToString:@"A"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem * Semi   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA * Semi   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable * Semi   ];
+			}
+			else if ([getBumpMode isEqualToString:@"Q"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", (tempBasicPrem/quarterly) * Semi   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", (tempBasicSA/quarterly) * Semi   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", (tempPremiumPayable/quarterly) * Semi   ];
+			}
+			else if ([getBumpMode isEqualToString:@"M"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", (tempBasicPrem /Monthly) * Semi   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", (tempBasicSA /Monthly) * Semi   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", (tempPremiumPayable /Monthly) * Semi   ];
+			}
+			
+		}
+		getBumpMode= @"S";
+	
+	}
+	else if (segPremium.selectedSegmentIndex == 2) {
+		if (![txtBasicPremium.text isEqualToString:@""]) {
+			if ([getBumpMode isEqualToString:@"A"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem * quarterly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA * quarterly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable * quarterly   ];
+			}
+			else if ([getBumpMode isEqualToString:@"S"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", (tempBasicPrem/Semi) * quarterly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", (tempBasicSA/Semi) * quarterly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", (tempPremiumPayable/Semi) * quarterly   ];
+				
+			}
+			else if ([getBumpMode isEqualToString:@"M"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", (tempBasicPrem /Monthly) * quarterly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", (tempBasicSA /Monthly) * quarterly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", (tempPremiumPayable /Monthly) * quarterly   ];
+			}
+			
+		}
+		getBumpMode = @"Q";
+		
+	}
+	else if (segPremium.selectedSegmentIndex == 3) {
+		if (![txtBasicPremium.text isEqualToString:@""]) {
+			if ([getBumpMode isEqualToString:@"A"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem * Monthly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA * Monthly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable * Monthly   ];
+			}
+			else if ([getBumpMode isEqualToString:@"S"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", (tempBasicPrem /Semi) * Monthly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", (tempBasicSA /Semi) * Monthly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", (tempPremiumPayable /Semi) * Monthly   ];
+				
+			}
+			else if ([getBumpMode isEqualToString:@"Q"]) {
+				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", (tempBasicPrem /quarterly) * Monthly   ];
+				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", (tempBasicSA /quarterly) * Monthly   ];
+				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", (tempPremiumPayable /quarterly) * Monthly   ];
+			}
+			
+		}
+		getBumpMode = @"M";
+		
+	}
 }
 @end

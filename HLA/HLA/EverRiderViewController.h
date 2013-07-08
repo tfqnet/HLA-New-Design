@@ -19,7 +19,8 @@
 -(void) BasicSARevised:(NSString *)aabasicSA;
 @end
 
-@interface EverRiderViewController : UIViewController<RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,RiderDeducTbDelegate,RiderPlanTbDelegate>{
+@interface EverRiderViewController : UIViewController<RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,
+						UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,RiderDeducTbDelegate,RiderPlanTbDelegate>{
 	NSString *databasePath;
     NSString *RatesDatabasePath;
     sqlite3 *contactDB;
@@ -139,6 +140,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblTable9;
 @property (weak, nonatomic) IBOutlet UILabel *lblMax;
 @property (weak, nonatomic) IBOutlet UILabel *lblMin;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *outletReinvest;
+- (IBAction)ActonReinvest:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
 @property (weak, nonatomic) IBOutlet UIButton *outletEdit;
@@ -217,6 +220,8 @@
 @property(nonatomic , retain) NSMutableArray *LSmoker;
 @property(nonatomic , retain) NSMutableArray *LSex;
 @property(nonatomic , retain) NSMutableArray *LAge;
+@property(nonatomic , retain) NSMutableArray *LPremium;
+@property(nonatomic , retain) NSMutableArray *LReinvest;
 
 @property (retain, nonatomic) NSMutableArray *LTypeRiderCode;
 @property (retain, nonatomic) NSMutableArray *LTypeSumAssured;
@@ -235,6 +240,7 @@
 @property(nonatomic , retain) NSMutableArray *LTypeSex;
 @property(nonatomic , retain) NSMutableArray *LTypeAge;
 @property(nonatomic , retain) NSMutableArray *LTypePremium;
+@property(nonatomic , retain) NSMutableArray *LTypeReinvest;
 
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;

@@ -26,6 +26,7 @@
 @synthesize EverPayor = _EverPayor;
 @synthesize EverHLoad = _EverHLoad;
 @synthesize EverFund = _EverFund;
+@synthesize EverSpecial = _EverSpecial;
 @synthesize ListOfSubMenu, getAge,getCommDate,getIdPay,getIdProf,getLAIndexNo,getOccpClass;
 @synthesize getOccpCode,getSex,getSmoker, Name2ndLA,NameLA,NamePayor, get2ndLAAge,get2ndLADOB,get2ndLAIndexNo;
 @synthesize get2ndLAOccp,get2ndLASex,get2ndLASmoker,getbasicHL,getBasicPlan,getbasicSA,getbasicHLPct;
@@ -443,6 +444,29 @@ id EverRiderCount;
 		}
 	}
 	else if (indexPath.row == 7){ //Special Options
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+            [alert show];
+            alert = Nil;
+			
+		}
+		else if (getAge > 100 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+		}
+		else{
+			
+			self.EverSpecial = [self.storyboard instantiateViewControllerWithIdentifier:@"EverSpecial"];
+            _EverSpecial.delegate = self;
+            
+			self.EverSpecial.SINo = getSINo;
+            [self addChildViewController:self.EverSpecial];
+            [self.RightView addSubview:self.EverSpecial.view];
+			previousPath = selectedPath;
+			blocked = NO;
+		}
 		
 	}
 	else if (indexPath.row == 8){ //Fund Maturity Options

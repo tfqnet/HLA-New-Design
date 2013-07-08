@@ -50,13 +50,22 @@
 	txtExpireSecureFund.delegate = self;
 	txtAge.tag = 1;
 	myScrollView.delegate = self;
-	txtAge.enabled = NO;
-	txtAge.backgroundColor = [UIColor lightGrayColor];
-	outletAge.enabled = FALSE;
-	txtExpireCashFund.enabled = FALSE;
-	txtExpireSecureFund.enabled = FALSE;
-	txtExpireCashFund.backgroundColor = [UIColor lightGrayColor];
-	txtExpireSecureFund.backgroundColor = [UIColor lightGrayColor];
+
+	
+	if (SINo) {
+		[self getExisting];
+		[self toggle];
+	}
+	else{
+		txtAge.enabled = NO;
+		txtAge.backgroundColor = [UIColor lightGrayColor];
+		outletAge.enabled = FALSE;
+		txtExpireCashFund.enabled = FALSE;
+		txtExpireSecureFund.enabled = FALSE;
+		txtExpireCashFund.backgroundColor = [UIColor lightGrayColor];
+		txtExpireSecureFund.backgroundColor = [UIColor lightGrayColor];
+	}
+
 
 }
 
@@ -147,7 +156,7 @@
 								  txt2023.text, txt2025.text, txt2028.text, txt2030.text, txt2035.text, txtCashFund.text,
 								  txtSecureFund.text, txtExpireCashFund.text, txtExpireSecureFund.text, [self ReturnSustainAge], SINo ];
 			
-			NSLog(@"%@", querySQL);
+			//NSLog(@"%@", querySQL);
 			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
 			{
 				if (sqlite3_step(statement) == SQLITE_ROW)
@@ -162,6 +171,122 @@
 		}
 	}
 	
+}
+
+-(void)getExisting{
+	sqlite3_stmt *statement;
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+	{
+		NSString *querySQL = [NSString stringWithFormat: @"Select VU2023, VU2025, VU2028, "
+							  "VU2030, VU2035, VUCash, VURET, VUCashOpt, VURetOpt, "
+							  "PolicySustainYear FROM UL_Details where sino = '%@' ", SINo ];
+		
+		//NSLog(@"%@", querySQL);
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+		{
+			if (sqlite3_step(statement) == SQLITE_ROW)
+			{
+					
+				txt2023.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+				txt2025.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+				txt2028.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
+				txt2030.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
+				txt2035.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
+				txtCashFund.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)];
+				txtSecureFund.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
+				txtExpireCashFund.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
+				txtExpireSecureFund.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+				getSustainAge = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)];
+
+			} else {
+				//NSLog(@"error check tbl_Adm_TrnTypeNo");
+			}
+			sqlite3_finalize(statement);
+		}
+		sqlite3_close(contactDB);
+	}
+}
+
+-(void)toggle{
+	if ([txtExpireCashFund.text isEqualToString:@"0"] && [txtExpireSecureFund.text isEqualToString:@"0"] ) {
+		txt2023.enabled = true;
+		txt2025.enabled = TRUE;
+		txt2025.enabled = TRUE;
+		txt2030.enabled = TRUE;
+		txt2035.enabled = TRUE;
+		txtCashFund.enabled = TRUE;
+		txtSecureFund.enabled = TRUE;
+		txtExpireCashFund.enabled = false;
+		txtExpireSecureFund.enabled = false;
+		txt2023.backgroundColor = [UIColor whiteColor];
+		txt2025.backgroundColor = [UIColor whiteColor];
+		txt2028.backgroundColor = [UIColor whiteColor];
+		txt2030.backgroundColor = [UIColor whiteColor];
+		txt2035.backgroundColor = [UIColor whiteColor];
+		txtCashFund.backgroundColor = [UIColor whiteColor];
+		txtSecureFund.backgroundColor = [UIColor whiteColor];
+		txtExpireCashFund.backgroundColor = [UIColor lightGrayColor];
+		txtExpireSecureFund.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		txt2023.enabled = FALSE;
+		txt2025.enabled = FALSE;
+		txt2025.enabled = FALSE;
+		txt2030.enabled = FALSE;
+		txt2035.enabled = FALSE;
+		txtCashFund.enabled = FALSE;
+		txtSecureFund.enabled = FALSE;
+		txtExpireCashFund.enabled = TRUE;
+		txtExpireSecureFund.enabled = TRUE;
+		txt2023.backgroundColor = [UIColor lightGrayColor];
+		txt2025.backgroundColor = [UIColor lightGrayColor];
+		txt2028.backgroundColor = [UIColor lightGrayColor];
+		txt2030.backgroundColor = [UIColor lightGrayColor];
+		txt2035.backgroundColor = [UIColor lightGrayColor];
+		txtCashFund.backgroundColor = [UIColor lightGrayColor];
+		txtSecureFund.backgroundColor = [UIColor lightGrayColor];
+		txtExpireCashFund.backgroundColor = [UIColor whiteColor];
+		txtExpireSecureFund.backgroundColor = [UIColor whiteColor];
+	}
+	
+
+	if (![getSustainAge isEqualToString:@"0"]) {
+
+		if ([getSustainAge isEqualToString:@"65"]) {
+			outletSustain.selectedSegmentIndex = 0;
+			outletAge.selectedSegmentIndex = 0;
+			txtAge.enabled = FALSE;
+			txtAge.text = @"";
+			txtAge.backgroundColor = [UIColor lightGrayColor];
+		}
+		else if ([getSustainAge isEqualToString:@"85"]) {
+			outletSustain.selectedSegmentIndex = 0;
+			outletAge.selectedSegmentIndex = 1;
+			txtAge.enabled = FALSE;
+			txtAge.text = @"";
+			txtAge.backgroundColor = [UIColor lightGrayColor];
+		}
+		else if ([getSustainAge isEqualToString:@"100"]) {
+			outletSustain.selectedSegmentIndex = 0;
+			outletAge.selectedSegmentIndex = 2;
+			txtAge.enabled = FALSE;
+			txtAge.text = @"";
+			txtAge.backgroundColor = [UIColor lightGrayColor];
+		}
+		else{
+			outletSustain.selectedSegmentIndex = 0;
+			outletAge.selectedSegmentIndex = 3;
+			txtAge.enabled = TRUE;
+			txtAge.backgroundColor = [UIColor whiteColor];
+			txtAge.text = getSustainAge;
+		}
+	}
+	else{
+		outletSustain.selectedSegmentIndex = 1;
+		outletAge.enabled = FALSE;
+		txtAge.enabled = FALSE;
+		txtAge.backgroundColor = [UIColor lightGrayColor];
+	}
 }
 
 -(BOOL)Validation{
@@ -339,17 +464,37 @@
 	txt2035.text = @"40";
 	txtCashFund.text = @"40";
 	txtSecureFund.text = @"20";
-	
 	txtExpireCashFund.text = @"0";
 	txtExpireSecureFund.text = @"0";
+	
+	txt2023.enabled = true;
+	txt2025.enabled = TRUE;
+	txt2025.enabled = TRUE;
+	txt2030.enabled = TRUE;
+	txt2035.enabled = TRUE;
+	txtCashFund.enabled = TRUE;
+	txtSecureFund.enabled = TRUE;
+	txtExpireCashFund.enabled = false;
+	txtExpireSecureFund.enabled = false;
+	txt2023.backgroundColor = [UIColor whiteColor];
+	txt2025.backgroundColor = [UIColor whiteColor];
+	txt2028.backgroundColor = [UIColor whiteColor];
+	txt2030.backgroundColor = [UIColor whiteColor];
+	txt2035.backgroundColor = [UIColor whiteColor];
+	txtCashFund.backgroundColor = [UIColor whiteColor];
+	txtSecureFund.backgroundColor = [UIColor whiteColor];
+	txtExpireCashFund.backgroundColor = [UIColor lightGrayColor];
+	txtExpireSecureFund.backgroundColor = [UIColor lightGrayColor];
 }
 - (IBAction)ActionSustain:(id)sender {
 	if (outletSustain.selectedSegmentIndex == 0) {
-		outletAge.enabled = YES;
+		outletAge.enabled = TRUE;
 	}
 	else{
 		outletAge.enabled = NO;
 		outletAge.selectedSegmentIndex = -1;
+		txtAge.text = @"";
+		txtAge.backgroundColor = [UIColor lightGrayColor];
 	}
 
 }

@@ -307,11 +307,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/ProspectListing.m"
-         timestampString = "385291837.329242"
+         timestampString = "394094401.320293"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "332"
-         endingLineNumber = "332"
+         startingLineNumber = "344"
+         endingLineNumber = "344"
          landmarkName = "@implementation ProspectListing"
          landmarkType = "3">
       </FileBreakpoint>
