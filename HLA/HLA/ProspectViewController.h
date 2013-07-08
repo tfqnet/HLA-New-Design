@@ -18,7 +18,7 @@
 - (void)FinishInsert;
 @end
 
-@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate>{
+@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate, UITextFieldDelegate,UITextViewDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -67,6 +67,8 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segSmoker;
 @property (weak, nonatomic) IBOutlet UIButton *outletOccup;
 @property (weak, nonatomic) IBOutlet UITextField *txtExactDuties;
+@property (strong, nonatomic) IBOutlet UITextField *txtAnnIncome;
+@property (strong, nonatomic) IBOutlet UITextField *txtBussinessType;
 @property (weak, nonatomic) IBOutlet UILabel *lblOfficeAddr;
 @property (weak, nonatomic) IBOutlet UILabel *lblPostCode;
 @property (weak, nonatomic) IBOutlet UITextField *txtOfficeAddr1;
@@ -104,7 +106,6 @@
 @property (nonatomic, copy) NSString *ContactTypeTracker;
 @property (nonatomic, assign,readwrite) int idTypeTracking;
 @property (nonatomic, copy) NSString *ClientSmoker;
-
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification;

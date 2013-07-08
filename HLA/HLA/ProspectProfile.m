@@ -41,7 +41,7 @@ AndOfficeAddressTown:(NSString*)TheOfficeAddressTown AndOfficeAddressState:(NSSt
 AndOfficeAddressPostCode:(NSString*)TheOfficeAddressPostCode
 AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSString*)TheProspectEmail
  AndProspectRemark:(NSString*)TheProspectRemark AndProspectOccupationCode:(NSString*)TheProspectOccupationCode
-    AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString *)TheGroup AndTitle:(NSString *)TheTitle AndIDType:(NSString *)TheIDType AndIDTypeNo:(NSString *)TheIDTypeNo AndOtherIDType:(NSString *)TheOtherIDType AndOtherIDTypeNo:(NSString *)TheOtherIDTypeNo AndSmoker:(NSString *)TheSmoker
+    AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString *)TheGroup AndTitle:(NSString *)TheTitle AndIDType:(NSString *)TheIDType AndIDTypeNo:(NSString *)TheIDTypeNo AndOtherIDType:(NSString *)TheOtherIDType AndOtherIDTypeNo:(NSString *)TheOtherIDTypeNo AndSmoker:(NSString *)TheSmoker AndAnnIncome:(NSString *)TheIncome AndBussType:(NSString *)TheBussType
 
 {
     self = [super init];
@@ -77,6 +77,8 @@ AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSS
         self.OtherIDType = TheOtherIDType;
         self.OtherIDTypeNo = TheOtherIDTypeNo;
         self.Smoker = TheSmoker;
+        self.AnnualIncome = TheIncome;
+        self.BussinessType = TheBussType;
     }
     return self;
 }

@@ -92,6 +92,8 @@
     NSString *OtherIDType = @"";
     NSString *OtherIDTypeNo = @"";
     NSString *Smoker = @"";
+    NSString *AnnIncome = @"";
+    NSString *BussinessType = @"";
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
@@ -149,6 +151,12 @@
                 const char *smok = (const char*)sqlite3_column_text(statement, 33);
                 Smoker = smok == NULL ? nil : [[NSString alloc] initWithUTF8String:smok];
                 
+                const char *ann = (const char*)sqlite3_column_text(statement, 34);
+                AnnIncome = ann == NULL ? nil : [[NSString alloc] initWithUTF8String:ann];
+                
+                const char *buss = (const char*)sqlite3_column_text(statement, 35);
+                BussinessType = buss == NULL ? nil : [[NSString alloc] initWithUTF8String:buss];
+                
                 [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName 
                                                                   AndProspecGender:ProspectGender AndResidenceAddress1:ResidenceAddress1
                                                               AndResidenceAddress2:ResidenceAddress2 AndResidenceAddress3:ResidenceAddress3  
@@ -157,7 +165,7 @@
                                                                  AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown 
                                                              AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode
                                                            AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark 
-                                                         AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker ]];
+                                                         AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
                 
             }
             sqlite3_finalize(statement);
@@ -547,6 +555,12 @@
                 
             const char *smok = (const char*)sqlite3_column_text(statement, 33);
             NSString *Smoker = smok == NULL ? nil : [[NSString alloc] initWithUTF8String:smok];
+                
+            const char *ann = (const char*)sqlite3_column_text(statement, 34);
+            NSString *AnnIncome = ann == NULL ? nil : [[NSString alloc] initWithUTF8String:ann];
+                
+            const char *buss = (const char*)sqlite3_column_text(statement, 35);
+            NSString *BussinessType = buss == NULL ? nil : [[NSString alloc] initWithUTF8String:buss];
             
             //NSString *ProspectContactType = @"2";
             //NSString *ProspectContactNo = @"0128765462";
@@ -560,7 +574,7 @@
                                                              AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown 
                                                          AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode
                                                        AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark 
-                                                     AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker ]];
+                                                     AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
                 
                 ProspectID = Nil;
                 NickName = Nil;
@@ -683,6 +697,12 @@
                     const char *smok = (const char*)sqlite3_column_text(statement, 33);
                     NSString *Smoker = smok == NULL ? nil : [[NSString alloc] initWithUTF8String:smok];
                     
+                    const char *ann = (const char*)sqlite3_column_text(statement, 34);
+                    NSString *AnnIncome = ann == NULL ? nil : [[NSString alloc] initWithUTF8String:ann];
+                    
+                    const char *buss = (const char*)sqlite3_column_text(statement, 35);
+                    NSString *BussinessType = buss == NULL ? nil : [[NSString alloc] initWithUTF8String:buss];
+                    
                     [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName
                                                                       AndProspecGender:ProspectGender AndResidenceAddress1:ResidenceAddress1
                                                                   AndResidenceAddress2:ResidenceAddress2 AndResidenceAddress3:ResidenceAddress3
@@ -691,7 +711,7 @@
                                                                      AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown
                                                                  AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode
                                                                AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark
-                                                             AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDType AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker]];
+                                                             AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDType AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
                     
                     ProspectID = Nil;
                     NickName = Nil;

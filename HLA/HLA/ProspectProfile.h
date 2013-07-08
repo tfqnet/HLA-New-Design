@@ -40,6 +40,8 @@
 @property (nonatomic, retain) NSString* OtherIDType;
 @property (nonatomic, retain) NSString* OtherIDTypeNo;
 @property (nonatomic, retain) NSString* Smoker;
+@property (nonatomic, retain) NSString* AnnualIncome;
+@property (nonatomic, retain) NSString* BussinessType;
 
 -(id) initWithName:(NSString*) TheNickName AndProspectID:(NSString*)TheProspectID AndProspectName:(NSString*)TheProspectName 
   AndProspecGender:(NSString*)TheProspectGender AndResidenceAddress1:(NSString*)TheResidenceAddress1
@@ -52,6 +54,6 @@ AndOfficeAddressTown:(NSString*)TheOfficeAddressTown AndOfficeAddressState:(NSSt
 AndOfficeAddressPostCode:(NSString*)TheOfficeAddressPostCode
 AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSString*)TheProspectEmail
  AndProspectRemark:(NSString*)TheProspectRemark AndProspectOccupationCode:(NSString*)TheProspectOccupationCode
-AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString*)TheGroup AndTitle:(NSString*)TheTitle AndIDType:(NSString*)TheIDType AndIDTypeNo:(NSString*)TheIDTypeNo AndOtherIDType:(NSString*)TheOtherIDType AndOtherIDTypeNo:(NSString*)TheOtherIDTypeNo AndSmoker:(NSString*)TheSmoker;
+AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString*)TheGroup AndTitle:(NSString*)TheTitle AndIDType:(NSString*)TheIDType AndIDTypeNo:(NSString*)TheIDTypeNo AndOtherIDType:(NSString*)TheOtherIDType AndOtherIDTypeNo:(NSString*)TheOtherIDTypeNo AndSmoker:(NSString*)TheSmoker AndAnnIncome:(NSString*)TheIncome AndBussType:(NSString*)TheBussType;
 
 @end
