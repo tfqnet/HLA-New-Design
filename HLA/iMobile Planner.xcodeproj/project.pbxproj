@@ -57,6 +57,7 @@
 		C4660EEA1625997D00BA4AFE /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660EE91625997D00BA4AFE /* iCarousel.m */; };
 		C4660EED16259AD700BA4AFE /* CarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4660EEC16259AD600BA4AFE /* CarouselViewController.m */; };
 		C47F40E3178B9B930023D9EF /* EverSpecialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C47F40E2178B9B930023D9EF /* EverSpecialViewController.m */; };
+		C47F40E6178BA5230023D9EF /* EverFundMaturityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C47F40E5178BA5230023D9EF /* EverFundMaturityViewController.m */; };
 		C486D9C7163E5319009F8F21 /* btn_exit.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9BF163E5319009F8F21 /* btn_exit.png */; };
 		C486D9C9163E5319009F8F21 /* btn_newSI_off.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9C1163E5319009F8F21 /* btn_newSI_off.png */; };
 		C486D9CA163E5319009F8F21 /* btn_newSI_on.png in Resources */ = {isa = PBXBuildFile; fileRef = C486D9C2163E5319009F8F21 /* btn_newSI_on.png */; };
@@ -369,6 +370,8 @@
 		C4660EEC16259AD600BA4AFE /* CarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarouselViewController.m; sourceTree = "<group>"; };
 		C47F40E1178B9B930023D9EF /* EverSpecialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverSpecialViewController.h; sourceTree = "<group>"; };
 		C47F40E2178B9B930023D9EF /* EverSpecialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverSpecialViewController.m; sourceTree = "<group>"; };
+		C47F40E4178BA5230023D9EF /* EverFundMaturityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverFundMaturityViewController.h; sourceTree = "<group>"; };
+		C47F40E5178BA5230023D9EF /* EverFundMaturityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverFundMaturityViewController.m; sourceTree = "<group>"; };
 		C486D9BF163E5319009F8F21 /* btn_exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_exit.png; sourceTree = "<group>"; };
 		C486D9C1163E5319009F8F21 /* btn_newSI_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_newSI_off.png; sourceTree = "<group>"; };
 		C486D9C2163E5319009F8F21 /* btn_newSI_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_newSI_on.png; sourceTree = "<group>"; };
@@ -1131,6 +1134,8 @@
 				C4E1D6001779D796002BDE51 /* EverHLoadingViewController.m */,
 				C47F40E1178B9B930023D9EF /* EverSpecialViewController.h */,
 				C47F40E2178B9B930023D9EF /* EverSpecialViewController.m */,
+				C47F40E4178BA5230023D9EF /* EverFundMaturityViewController.h */,
+				C47F40E5178BA5230023D9EF /* EverFundMaturityViewController.m */,
 			);
 			name = EverSeries;
 			sourceTree = "<group>";
@@ -1841,6 +1846,7 @@
 				42BB1E2D17855BC000C2A763 /* HealthQuestionnaire3.m in Sources */,
 				EF90AFF817891C6300FEC129 /* GroupClass.m in Sources */,
 				C47F40E3178B9B930023D9EF /* EverSpecialViewController.m in Sources */,
+				C47F40E6178BA5230023D9EF /* EverFundMaturityViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

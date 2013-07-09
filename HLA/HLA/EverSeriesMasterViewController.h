@@ -15,12 +15,13 @@
 #import "EverPayorViewController.h"
 #import "EverHLoadingViewController.h"
 #import "FundAllocationViewController.h"
-#import "SpecialOptViewController.h"
+#import "EverSpecialViewController.h"
+#import "EverFundMaturityViewController.h"
 
 @interface EverSeriesMasterViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, EverLAViewControllerDelegate,
 											EverBasicPlanViewControllerDelegate, EverRiderViewControllerDelegate,
 											EverSecondLAViewControllerDelegate, EverPayorViewControllerDelegate,
-											EverHLViewControllerDelegate, EverFundDelegate, EverSpecial>{
+											EverHLViewControllerDelegate, EverFundDelegate, EverSpecial, EverFundMaturity>{
 	NSString *databasePath;
     sqlite3 *contactDB;
 	NSIndexPath *selectedPath;
@@ -37,8 +38,9 @@
 	EverSecondLAViewController*_EverSecondLA;
 	EverPayorViewController*_EverPayor;
 	EverHLoadingViewController*_EverHLoad;
-												FundAllocationViewController*_EverFund;
-												SpecialOptViewController*_EverSpecial;
+	FundAllocationViewController*_EverFund;
+	EverSpecialViewController*_EverSpecial;
+	EverFundMaturityViewController*_EverFundMaturity;
 }
 
 @property (nonatomic, retain) EverLAViewController *EverLAController;
@@ -48,7 +50,8 @@
 @property (nonatomic, retain) EverPayorViewController *EverPayor;
 @property (nonatomic, retain) EverHLoadingViewController *EverHLoad;
 @property (nonatomic, retain) FundAllocationViewController *EverFund;
-@property (nonatomic, retain) SpecialOptViewController *EverSpecial;
+@property (nonatomic, retain) EverSpecialViewController *EverSpecial;
+@property (nonatomic, retain) EverFundMaturityViewController *EverFundMaturity;
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *RightView;

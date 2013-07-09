@@ -17,6 +17,7 @@
 @implementation EverSpecialViewController
 @synthesize SINo,txtAmount,txtInterval,txtReduceAt,txtReduceTo,txtStartFrom,txtStartTo;
 @synthesize outletReduce,outletWithdrawal;
+@synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
