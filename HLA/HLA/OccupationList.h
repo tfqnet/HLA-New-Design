@@ -13,7 +13,9 @@
 @protocol OccupationListDelegate
 - (void)OccupDescSelected:(NSString *) OccupDesc;
 - (void)OccupCodeSelected:(NSString *) OccupCode;
+- (void)OccupClassSelected:(NSString *) OccupClass;
 @end
+
 @interface OccupationList : UITableViewController<UISearchBarDelegate, UISearchDisplayDelegate>
 {
     NSMutableArray *_OccupDesc;

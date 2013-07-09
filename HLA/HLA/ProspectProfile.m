@@ -28,7 +28,7 @@
 @synthesize ProspectID;
 @synthesize ResidenceAddressState;
 @synthesize OfficeAddressState;
-@synthesize ProspectGroup,ProspectTitle,IDTypeNo,IDType,OtherIDTypeNo,OtherIDType,Smoker;
+@synthesize ProspectGroup,ProspectTitle,IDTypeNo,OtherIDTypeNo,OtherIDType,Smoker;
 
 -(id) initWithName:(NSString*) TheNickName AndProspectID:(NSString*)TheProspectID AndProspectName:(NSString*)TheProspectName 
   AndProspecGender:(NSString*)TheProspectGender AndResidenceAddress1:(NSString*)TheResidenceAddress1
@@ -41,7 +41,7 @@ AndOfficeAddressTown:(NSString*)TheOfficeAddressTown AndOfficeAddressState:(NSSt
 AndOfficeAddressPostCode:(NSString*)TheOfficeAddressPostCode
 AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSString*)TheProspectEmail
  AndProspectRemark:(NSString*)TheProspectRemark AndProspectOccupationCode:(NSString*)TheProspectOccupationCode
-    AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString *)TheGroup AndTitle:(NSString *)TheTitle AndIDType:(NSString *)TheIDType AndIDTypeNo:(NSString *)TheIDTypeNo AndOtherIDType:(NSString *)TheOtherIDType AndOtherIDTypeNo:(NSString *)TheOtherIDTypeNo AndSmoker:(NSString *)TheSmoker AndAnnIncome:(NSString *)TheIncome AndBussType:(NSString *)TheBussType
+    AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString *)TheGroup AndTitle:(NSString *)TheTitle AndIDTypeNo:(NSString *)TheIDTypeNo AndOtherIDType:(NSString *)TheOtherIDType AndOtherIDTypeNo:(NSString *)TheOtherIDTypeNo AndSmoker:(NSString *)TheSmoker AndAnnIncome:(NSString *)TheIncome AndBussType:(NSString *)TheBussType
 
 {
     self = [super init];
@@ -72,7 +72,6 @@ AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSS
         self.ExactDuties = TheExactDuties;
         self.ProspectGroup = TheGroup;
         self.ProspectTitle = TheTitle;
-        self.IDType = TheIDType;
         self.IDTypeNo = TheIDTypeNo;
         self.OtherIDType = TheOtherIDType;
         self.OtherIDTypeNo = TheOtherIDTypeNo;

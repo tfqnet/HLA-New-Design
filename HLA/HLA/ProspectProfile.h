@@ -35,7 +35,6 @@
 @property (nonatomic, retain) NSString* ExactDuties;
 @property (nonatomic, retain) NSString* ProspectGroup;
 @property (nonatomic, retain) NSString* ProspectTitle;
-@property (nonatomic, retain) NSString* IDType;
 @property (nonatomic, retain) NSString* IDTypeNo;
 @property (nonatomic, retain) NSString* OtherIDType;
 @property (nonatomic, retain) NSString* OtherIDTypeNo;
@@ -54,6 +53,6 @@ AndOfficeAddressTown:(NSString*)TheOfficeAddressTown AndOfficeAddressState:(NSSt
 AndOfficeAddressPostCode:(NSString*)TheOfficeAddressPostCode
 AndOfficeAddressCountry:(NSString*)TheOfficeAddressCountry AndProspectEmail:(NSString*)TheProspectEmail
  AndProspectRemark:(NSString*)TheProspectRemark AndProspectOccupationCode:(NSString*)TheProspectOccupationCode
-AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString*)TheGroup AndTitle:(NSString*)TheTitle AndIDType:(NSString*)TheIDType AndIDTypeNo:(NSString*)TheIDTypeNo AndOtherIDType:(NSString*)TheOtherIDType AndOtherIDTypeNo:(NSString*)TheOtherIDTypeNo AndSmoker:(NSString*)TheSmoker AndAnnIncome:(NSString*)TheIncome AndBussType:(NSString*)TheBussType;
+AndProspectDOB:(NSString*)TheProspectDOB AndExactDuties:(NSString*)TheExactDuties AndGroup:(NSString*)TheGroup AndTitle:(NSString*)TheTitle AndIDTypeNo:(NSString*)TheIDTypeNo AndOtherIDType:(NSString*)TheOtherIDType AndOtherIDTypeNo:(NSString*)TheOtherIDTypeNo AndSmoker:(NSString*)TheSmoker AndAnnIncome:(NSString*)TheIncome AndBussType:(NSString*)TheBussType;
 
 @end

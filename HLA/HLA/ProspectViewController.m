@@ -87,10 +87,8 @@ bool PostcodeContinue = TRUE;
     txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
-    //ContactType = [[NSArray alloc] init];
-    //ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
+    txtClass.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     
-//    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnSave:)];
     
     CustomColor = Nil;
@@ -1299,6 +1297,11 @@ PostcodeContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
+}
+
+-(void)OccupClassSelected:(NSString *)OccupClass
+{
+    txtClass.text = OccupClass;
 }
 
 

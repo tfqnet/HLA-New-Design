@@ -8,6 +8,7 @@
 
 #import "CustomerProfile.h"
 #import "ColorHexCode.h"
+#import "MainCustomer.h"
 
 @interface CustomerProfile ()
 
@@ -61,10 +62,10 @@
     NSMutableArray *arrIdType = [[NSMutableArray alloc] initWithObjects:@"New Identification Number",@"New Identification Number",@"New Identification Number",@"New Identification Number",@"New Identification Number", nil];
     [clientData addObject:arrIdType];
     
-    NSMutableArray *arrIdNo = [[NSMutableArray alloc] initWithObjects:@"880101117865",@"880101117865",@"880101117885",@"650101117865",@"750101117865", nil];
+    NSMutableArray *arrIdNo = [[NSMutableArray alloc] initWithObjects:@"790602234565",@"880101117865",@"880101117885",@"650101117865",@"750101117865", nil];
     [clientData addObject:arrIdNo];
     
-    NSMutableArray *arrName = [[NSMutableArray alloc] initWithObjects:@"Johny",@"Adam",@"Samm",@"Ali",@"Jack", nil];
+    NSMutableArray *arrName = [[NSMutableArray alloc] initWithObjects:@"Meng Cheong",@"Adam",@"Sam",@"Ali",@"Jack", nil];
     [clientData addObject:arrName];
     
     NSMutableArray *arrDate = [[NSMutableArray alloc]initWithObjects:@"22/05/2013",@"30/05/2013",@"13/09/2013",@"30/01/2013",@"15/06/2013", nil];
@@ -197,6 +198,14 @@
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MainCustomer *main = [self.storyboard instantiateViewControllerWithIdentifier:@"mainCFF"];
+    main.IndexTab = 2;
+    [self presentViewController:main animated:NO completion:nil];
+    main = Nil;
 }
 
 

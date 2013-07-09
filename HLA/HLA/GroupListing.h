@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
 
 @interface GroupListing : UIViewController <UITableViewDelegate,UITableViewDataSource> {
     NSMutableArray *ItemToBeDeleted;
     NSMutableArray *indexPaths;
+    NSString *databasePath;
+    sqlite3 *contactDB;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
@@ -27,6 +30,7 @@
 - (IBAction)deletePressed:(id)sender;
 
 @property (strong, nonatomic) NSMutableArray *itemInArray;
+@property (strong, nonatomic) NSMutableArray *arrCountGroup;
 @property (strong, nonatomic) NSMutableArray* FilteredTableData;
 @property (nonatomic, assign) bool isFiltered;
 

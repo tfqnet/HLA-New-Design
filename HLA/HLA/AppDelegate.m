@@ -128,7 +128,7 @@ NSString * const NSURLIsExcludedFromBackupKey =@"NSURLIsExcludedFromBackupKey";
     
     [SIUtilities addColumnTable:@"prospect_profile" column:@"ProspectGroup" type:@"VARCHAR" dbpath:databasePath];
     [SIUtilities addColumnTable:@"prospect_profile" column:@"ProspectTitle" type:@"VARCHAR" dbpath:databasePath];
-    [SIUtilities addColumnTable:@"prospect_profile" column:@"IDType" type:@"VARCHAR" dbpath:databasePath];
+//    [SIUtilities addColumnTable:@"prospect_profile" column:@"IDType" type:@"VARCHAR" dbpath:databasePath];
     [SIUtilities addColumnTable:@"prospect_profile" column:@"IDTypeNo" type:@"VARCHAR" dbpath:databasePath];
     [SIUtilities addColumnTable:@"prospect_profile" column:@"OtherIDType" type:@"VARCHAR" dbpath:databasePath];
     [SIUtilities addColumnTable:@"prospect_profile" column:@"OtherIDTypeNo" type:@"VARCHAR" dbpath:databasePath];

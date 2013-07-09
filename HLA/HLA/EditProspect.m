@@ -46,7 +46,7 @@
 @synthesize txtrFullName,segSmoker,txtBussinessType,txtAnnIncome;
 @synthesize segGender,txtIDType,txtOtherIDType,OccupCodeSelected;
 @synthesize outletDOB,outletGroup,outletTitle,OtherIDType;
-@synthesize txtContact1, gender, ContactType, ContactTypeTracker;
+@synthesize txtContact1, gender;
 @synthesize txtEmail, pp, DOB, SelectedStateCode,SelectedOfficeStateCode;
 @synthesize OccupationList = _OccupationList;
 @synthesize OccupationListPopover = _OccupationListPopover;
@@ -111,6 +111,7 @@ bool IsContinue = TRUE;
     txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    txtClass.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     
     [outletDelete setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f]
                             forState:UIControlStateNormal];
@@ -118,56 +119,9 @@ bool IsContinue = TRUE;
     outletDelete.titleLabel.shadowColor = [UIColor lightGrayColor];
     outletDelete.titleLabel.shadowOffset = CGSizeMake(0, -1);
     
-    ContactType = [[NSArray alloc] initWithObjects:@"Mobile", @"Home", @"Fax", @"Office", nil];
-//    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnSave:)];
     
 }
-
-/*
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)picker;
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
-    
-    return [ContactType count];
-}
-
-- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [ContactType objectAtIndex:row];
-    
-}
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    
-    NSString *zzz = [ContactType objectAtIndex:row];
-    
-        
-     if ([ContactTypeTracker isEqualToString: @"2"]) {
-     txtContact2.enabled = true;
-     [outletType2 setTitle:zzz forState:UIControlStateNormal];   
-     
-     }
-     else if ([ContactTypeTracker isEqualToString: @"1"]) {
-     txtContact1.enabled = true;
-     [outletType1 setTitle:zzz forState:UIControlStateNormal]; 
-     
-     }
-     else if ([ContactTypeTracker isEqualToString: @"3"]) {
-     [outletType3 setTitle:zzz forState:UIControlStateNormal]; 
-     
-     }
-     else if ([ContactTypeTracker isEqualToString: @"4"]) {
-     [outletType4 setTitle:zzz forState:UIControlStateNormal]; 
-     }
-     else if ([ContactTypeTracker isEqualToString: @"5"]) {
-     [outletType5 setTitle:zzz forState:UIControlStateNormal]; 
-     }
-     
-}
-*/
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
     strChanges = @"Yes";
@@ -468,15 +422,6 @@ bool IsContinue = TRUE;
 
 - (IBAction)btnDOB:(id)sender
 {
-    /*
-     DobPicker.hidden = NO;
-     pickerToolbar.hidden = NO;
-     [self.view endEditing:TRUE];
-     txtRemark.hidden = TRUE;
-     ContactTypePicker.hidden = true;
-     outletDelete.hidden = true;
-     */
-    
     [self resignFirstResponder];
     [self.view endEditing:YES];
     
@@ -978,17 +923,17 @@ bool IsContinue = TRUE;
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         
-        //NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc FROM Adm_Occp where status = 1 and OccpCode = \"%@\"", pp.ProspectOccupationCode];
-        NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc FROM Adm_Occp_Loading_Penta where OccpCode = \"%@\"", pp.ProspectOccupationCode];
-        //const char *query_stmt = [querySQL UTF8String];
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT OccpDesc, Class FROM Adm_Occp_Loading_Penta where OccpCode = \"%@\"", pp.ProspectOccupationCode];
+        
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while (sqlite3_step(statement) == SQLITE_ROW){
                 NSString *OccpDesc = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                //txtOccup.text = OccpDesc;
+                NSString *OccpClass = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+                
                 OccupCodeSelected = pp.ProspectOccupationCode;
-                //[outletOccup setTitle:OccpDesc forState:UIControlStateNormal];
                 [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", OccpDesc]forState:UIControlStateNormal];
+                txtClass.text = OccpClass;
                 
             }
             sqlite3_finalize(statement);
@@ -1016,7 +961,7 @@ bool IsContinue = TRUE;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
         NSString *querySQL = [NSString stringWithFormat:@"SELECT StateDesc FROM eProposal_state where status = \"A\" and StateCode = \"%@\"", pp.ResidenceAddressState];
         
-        NSLog(@"%@",querySQL);
+//        NSLog(@"%@",querySQL);
         const char *query_stmt = [querySQL UTF8String];
         if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
         {
@@ -1786,6 +1731,11 @@ bool IsContinue = TRUE;
     [self.view endEditing:TRUE];
     [self.OccupationListPopover dismissPopoverAnimated:YES];
     
+}
+
+-(void)OccupClassSelected:(NSString *)OccupClass
+{
+    txtClass.text = OccupClass;
 }
 
 -(BOOL)OptionalOccp:(NSString *)OccupationCode

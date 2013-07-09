@@ -107,8 +107,6 @@
 @property (nonatomic, copy) NSString *SelectedStateCode;
 @property (nonatomic, copy) NSString *SelectedOfficeStateCode;
 @property (nonatomic, copy) NSString *strChanges;
-@property (strong, nonatomic) NSArray* ContactType;
-@property (nonatomic, copy) NSString *ContactTypeTracker;
 @property (nonatomic, copy) NSString *ClientSmoker;
 
 -(void)keyboardDidShow:(NSNotificationCenter *)notification;

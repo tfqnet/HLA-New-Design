@@ -22,11 +22,14 @@
 
 @implementation ProspectListing
 @synthesize ProspectTableData, FilteredProspectTableData, isFiltered;
+@synthesize txtIDTypeNo,btnGroup,IDType;
 @synthesize EditProspect = _EditProspect;
 @synthesize ProspectViewController = _ProspectViewController;
 @synthesize idNoLabel,idTypeLabel,clientNameLabel,editBtn,deleteBtn,nametxt;
 @synthesize IDTypePicker = _IDTypePicker;
-
+@synthesize IDTypePickerPopover = _IDTypePickerPopover;
+@synthesize GroupList = _GroupList;
+@synthesize GroupPopover = _GroupPopover;
 
 - (void)viewDidLoad
 {
@@ -87,7 +90,6 @@
     NSString *ProspectRemark = @"";
     NSString *ProspectGroup = @"";
     NSString *ProspectTitle = @"";
-    NSString *IDType = @"";
     NSString *IDTypeNo = @"";
     NSString *OtherIDType = @"";
     NSString *OtherIDTypeNo = @"";
@@ -136,25 +138,22 @@
                 const char *Title = (const char*)sqlite3_column_text(statement, 28);
                 ProspectTitle = Title == NULL ? nil : [[NSString alloc] initWithUTF8String:Title];
                 
-                const char *type = (const char*)sqlite3_column_text(statement, 29);
-                IDType = type == NULL ? nil : [[NSString alloc] initWithUTF8String:type];
-                
-                const char *typeNo = (const char*)sqlite3_column_text(statement, 30);
+                const char *typeNo = (const char*)sqlite3_column_text(statement, 29);
                 IDTypeNo = typeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:typeNo];
                 
-                const char *OtherType = (const char*)sqlite3_column_text(statement, 31);
+                const char *OtherType = (const char*)sqlite3_column_text(statement, 30);
                 OtherIDType = OtherType == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherType];
                 
-                const char *OtherTypeNo = (const char*)sqlite3_column_text(statement, 32);
+                const char *OtherTypeNo = (const char*)sqlite3_column_text(statement, 31);
                 OtherIDTypeNo = OtherTypeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherTypeNo];
                 
-                const char *smok = (const char*)sqlite3_column_text(statement, 33);
+                const char *smok = (const char*)sqlite3_column_text(statement, 32);
                 Smoker = smok == NULL ? nil : [[NSString alloc] initWithUTF8String:smok];
                 
-                const char *ann = (const char*)sqlite3_column_text(statement, 34);
+                const char *ann = (const char*)sqlite3_column_text(statement, 33);
                 AnnIncome = ann == NULL ? nil : [[NSString alloc] initWithUTF8String:ann];
                 
-                const char *buss = (const char*)sqlite3_column_text(statement, 35);
+                const char *buss = (const char*)sqlite3_column_text(statement, 34);
                 BussinessType = buss == NULL ? nil : [[NSString alloc] initWithUTF8String:buss];
                 
                 [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName 
@@ -165,7 +164,7 @@
                                                                  AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown 
                                                              AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode
                                                            AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark 
-                                                         AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
+                                                         AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
                 
             }
             sqlite3_finalize(statement);
@@ -199,7 +198,7 @@
     ProspectOccupationCode = Nil;
     ExactDuties = Nil;
     ProspectRemark = Nil;
-    ProspectTitle = Nil, ProspectGroup = Nil, IDType = Nil, IDTypeNo = Nil, OtherIDType = Nil, OtherIDTypeNo = Nil, Smoker = Nil;
+    ProspectTitle = Nil, ProspectGroup = Nil, IDTypeNo = Nil, OtherIDType = Nil, OtherIDTypeNo = Nil, Smoker = Nil;
     
     self.myTableView.rowHeight = 50;
     self.myTableView.backgroundColor = [UIColor clearColor];
@@ -276,19 +275,6 @@
     if (cell == nil)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
-    /*
-    ProspectProfile* pp;
-    if(isFiltered)
-        pp = [FilteredProspectTableData objectAtIndex:indexPath.row];
-    else
-        
-        pp = [ProspectTableData objectAtIndex:indexPath.row]; 
-     
-    cell.textLabel.text = pp.ProspectName;
-    cell.detailTextLabel.text = pp.NickName;
-    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
-     */
-    
     [[cell.contentView viewWithTag:2001] removeFromSuperview ];
     [[cell.contentView viewWithTag:2002] removeFromSuperview ];
     [[cell.contentView viewWithTag:2003] removeFromSuperview ];
@@ -299,7 +285,7 @@
     CGRect frame=CGRectMake(0,0, 200, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
-    label1.text= @"IC Number";
+    label1.text= @"New Identification Number";
     label1.textAlignment = UITextAlignmentCenter;
     label1.tag = 2001;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -308,7 +294,7 @@
     CGRect frame2=CGRectMake(200,0, 200, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
-    label2.text= @"8877665544";
+    label2.text= pp.IDTypeNo;
     label2.textAlignment = UITextAlignmentCenter;
     label2.tag = 2002;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -489,8 +475,6 @@
     _ProspectViewController.delegate = self;
     [self.navigationController pushViewController:_ProspectViewController animated:YES];
     _ProspectViewController.navigationItem.title = @"Add Client Profile";
-//    _ProspectViewController.navigationItem.rightBarButtonItem = _ProspectViewController.outletDone;
-    
 }
 
 -(void) ReloadTableData
@@ -543,25 +527,22 @@
             const char *Title = (const char*)sqlite3_column_text(statement, 28);
             NSString *ProspectTitle = Title == NULL ? nil : [[NSString alloc] initWithUTF8String:Title];
                 
-            const char *type = (const char*)sqlite3_column_text(statement, 29);
-            NSString *IDType = type == NULL ? nil : [[NSString alloc] initWithUTF8String:type];
-                
-            const char *typeNo = (const char*)sqlite3_column_text(statement, 30);
+            const char *typeNo = (const char*)sqlite3_column_text(statement, 29);
             NSString *IDTypeNo = typeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:typeNo];
                 
-            const char *OtherType = (const char*)sqlite3_column_text(statement, 31);
+            const char *OtherType = (const char*)sqlite3_column_text(statement, 30);
             NSString *OtherIDType = OtherType == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherType];
                 
-            const char *OtherTypeNo = (const char*)sqlite3_column_text(statement, 32);
+            const char *OtherTypeNo = (const char*)sqlite3_column_text(statement, 31);
             NSString *OtherIDTypeNo = OtherTypeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherTypeNo];
                 
-            const char *smok = (const char*)sqlite3_column_text(statement, 33);
+            const char *smok = (const char*)sqlite3_column_text(statement, 32);
             NSString *Smoker = smok == NULL ? nil : [[NSString alloc] initWithUTF8String:smok];
                 
-            const char *ann = (const char*)sqlite3_column_text(statement, 34);
+            const char *ann = (const char*)sqlite3_column_text(statement, 33);
             NSString *AnnIncome = ann == NULL ? nil : [[NSString alloc] initWithUTF8String:ann];
                 
-            const char *buss = (const char*)sqlite3_column_text(statement, 35);
+            const char *buss = (const char*)sqlite3_column_text(statement, 34);
             NSString *BussinessType = buss == NULL ? nil : [[NSString alloc] initWithUTF8String:buss];
             
             //NSString *ProspectContactType = @"2";
@@ -576,7 +557,7 @@
                                                              AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown 
                                                          AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode
                                                        AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark 
-                                                     AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
+                                                     AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
                 
                 ProspectID = Nil;
                 NickName = Nil;
@@ -601,7 +582,7 @@
                 ProspectOccupationCode = Nil;
                 ExactDuties = Nil;
                 ProspectRemark = Nil;
-                ProspectTitle = Nil, ProspectGroup = Nil, IDType = Nil, IDTypeNo = Nil, OtherIDType = Nil, OtherIDTypeNo = Nil, Smoker = Nil;
+                ProspectTitle = Nil, ProspectGroup = Nil, IDTypeNo = Nil, OtherIDType = Nil, OtherIDTypeNo = Nil, Smoker = Nil;
             }
             sqlite3_finalize(statement);
         
@@ -638,122 +619,127 @@
 {
     [self resignFirstResponder];
     [self.view endEditing:YES];
+    NSString *querySQL = Nil;
     
-    if(nametxt.text.length != 0)
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        sqlite3_stmt *statement;
-        if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-        {
-            NSString *querySQL = [NSString stringWithFormat:@"SELECT * FROM prospect_profile WHERE ProspectName like \"%%%@%%\" order by ProspectName ASC",nametxt.text];
+        querySQL = @"SELECT * FROM prospect_profile";
             
-            if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-            {
-                ProspectTableData = [[NSMutableArray alloc] init];
-                while (sqlite3_step(statement) == SQLITE_ROW)
-                {
-                    NSString *ProspectID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                    
-                    const char *name = (const char*)sqlite3_column_text(statement, 1);
-                    NSString *NickName = name == NULL ? nil : [[NSString alloc] initWithUTF8String:name];
-                    
-                    NSString *ProspectName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
-                    NSString *ProspectDOB = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
-                    NSString *ProspectGender = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
-                    NSString *ResidenceAddress1 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
-                    NSString *ResidenceAddress2 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
-                    NSString *ResidenceAddress3 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 7)];
-                    NSString *ResidenceAddressTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 8)];
-                    NSString *ResidenceAddressState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 9)];
-                    NSString *ResidenceAddressPostCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 10)];
-                    NSString *ResidenceAddressCountry = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 11)];
-                    NSString *OfficeAddress1 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 12)];
-                    NSString *OfficeAddress2 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 13)];
-                    NSString *OfficeAddress3 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 14)];
-                    NSString *OfficeAddressTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 15)];
-                    NSString *OfficeAddressState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 16)];
-                    NSString *OfficeAddressPostCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 17)];
-                    NSString *OfficeAddressCountry = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 18)];
-                    NSString *ProspectEmail = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 19)];
-                    NSString *ProspectOccupationCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 20)];
-                    NSString *ExactDuties = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 21)];
-                    NSString *ProspectRemark = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 22)];
-                    
-                    const char *Group = (const char*)sqlite3_column_text(statement, 27);
-                    NSString *ProspectGroup = Group == NULL ? nil : [[NSString alloc] initWithUTF8String:Group];
-                    
-                    const char *Title = (const char*)sqlite3_column_text(statement, 28);
-                    NSString *ProspectTitle = Title == NULL ? nil : [[NSString alloc] initWithUTF8String:Title];
-                    
-                    const char *type = (const char*)sqlite3_column_text(statement, 29);
-                    NSString *IDType = type == NULL ? nil : [[NSString alloc] initWithUTF8String:type];
-                    
-                    const char *typeNo = (const char*)sqlite3_column_text(statement, 30);
-                    NSString *IDTypeNo = typeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:typeNo];
-                    
-                    const char *OtherType = (const char*)sqlite3_column_text(statement, 31);
-                    NSString *OtherIDType = OtherType == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherType];
-                    
-                    const char *OtherTypeNo = (const char*)sqlite3_column_text(statement, 32);
-                    NSString *OtherIDTypeNo = OtherTypeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherTypeNo];
-                    
-                    const char *smok = (const char*)sqlite3_column_text(statement, 33);
-                    NSString *Smoker = smok == NULL ? nil : [[NSString alloc] initWithUTF8String:smok];
-                    
-                    const char *ann = (const char*)sqlite3_column_text(statement, 34);
-                    NSString *AnnIncome = ann == NULL ? nil : [[NSString alloc] initWithUTF8String:ann];
-                    
-                    const char *buss = (const char*)sqlite3_column_text(statement, 35);
-                    NSString *BussinessType = buss == NULL ? nil : [[NSString alloc] initWithUTF8String:buss];
-                    
-                    [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName
-                                                                      AndProspecGender:ProspectGender AndResidenceAddress1:ResidenceAddress1
-                                                                  AndResidenceAddress2:ResidenceAddress2 AndResidenceAddress3:ResidenceAddress3
-                                                               AndResidenceAddressTown:ResidenceAddressTown AndResidenceAddressState:ResidenceAddressState
-                                                           AndResidenceAddressPostCode:ResidenceAddressPostCode AndResidenceAddressCountry:ResidenceAddressCountry
-                                                                     AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown
-                                                                 AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode
-                                                               AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark
-                                                             AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDType:IDType AndIDTypeNo:IDType AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
-                    
-                    ProspectID = Nil;
-                    NickName = Nil;
-                    ProspectName = Nil ;
-                    ProspectDOB = Nil  ;
-                    ProspectGender = Nil;
-                    ResidenceAddress1 = Nil;
-                    ResidenceAddress2 = Nil;
-                    ResidenceAddress3 = Nil;
-                    ResidenceAddressTown = Nil;
-                    ResidenceAddressState = Nil;
-                    ResidenceAddressPostCode = Nil;
-                    ResidenceAddressCountry = Nil;
-                    OfficeAddress1 = Nil;
-                    OfficeAddress2 = Nil;
-                    OfficeAddress3 = Nil;
-                    OfficeAddressTown = Nil;
-                    OfficeAddressState = Nil;
-                    OfficeAddressPostCode = Nil;
-                    OfficeAddressCountry = Nil;
-                    ProspectEmail = Nil;
-                    ProspectOccupationCode = Nil;
-                    ExactDuties = Nil;
-                    ProspectRemark = Nil;
-                    ProspectTitle = Nil, ProspectGroup = Nil, IDType = Nil, IDTypeNo = Nil, OtherIDType = Nil, OtherIDTypeNo = Nil, Smoker = Nil;
-                }
-                sqlite3_finalize(statement);
-                
-            }
-            sqlite3_close(contactDB);
-            querySQL = Nil;
+        if (![nametxt.text isEqualToString:@""]) {
+            querySQL = [querySQL stringByAppendingFormat:@" WHERE ProspectName like \"%%%@%%\" order by ProspectName ASC", nametxt.text ];
         }
-        [self.myTableView reloadData];
-        statement = Nil;
+        else if (![IDType.titleLabel.text isEqualToString:@""]) {
+            querySQL = [querySQL stringByAppendingFormat:@" WHERE OtherIDType like \"%%%@%%\" order by ProspectName ASC", IDType.titleLabel.text ];
+        }
+        else if (![txtIDTypeNo.text isEqualToString:@""]) {
+            querySQL = [querySQL stringByAppendingFormat:@" WHERE IDTypeNo like \"%%%@%%\" order by ProspectName ASC", txtIDTypeNo.text ];
+        }
+        else if (![btnGroup.titleLabel.text isEqualToString:@""]) {
+            querySQL = [querySQL stringByAppendingFormat:@" WHERE ProspectGroup like \"%%%@%%\" order by ProspectName ASC", btnGroup.titleLabel.text ];
+        }
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            ProspectTableData = [[NSMutableArray alloc] init];
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NSString *ProspectID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                    
+                const char *name = (const char*)sqlite3_column_text(statement, 1);
+                NSString *NickName = name == NULL ? nil : [[NSString alloc] initWithUTF8String:name];
+                    
+                NSString *ProspectName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                NSString *ProspectDOB = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)];
+                NSString *ProspectGender = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)];
+                NSString *ResidenceAddress1 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)];
+                NSString *ResidenceAddress2 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)];
+                NSString *ResidenceAddress3 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 7)];
+                NSString *ResidenceAddressTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 8)];
+                NSString *ResidenceAddressState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 9)];
+                NSString *ResidenceAddressPostCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 10)];
+                NSString *ResidenceAddressCountry = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 11)];
+                NSString *OfficeAddress1 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 12)];
+                NSString *OfficeAddress2 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 13)];
+                NSString *OfficeAddress3 = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 14)];
+                NSString *OfficeAddressTown = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 15)];
+                NSString *OfficeAddressState = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 16)];
+                NSString *OfficeAddressPostCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 17)];
+                NSString *OfficeAddressCountry = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 18)];
+                NSString *ProspectEmail = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 19)];
+                NSString *ProspectOccupationCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 20)];
+                NSString *ExactDuties = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 21)];
+                NSString *ProspectRemark = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 22)];
+                    
+                const char *Group = (const char*)sqlite3_column_text(statement, 27);
+                NSString *ProspectGroup = Group == NULL ? nil : [[NSString alloc] initWithUTF8String:Group];
+                    
+                const char *Title = (const char*)sqlite3_column_text(statement, 28);
+                NSString *ProspectTitle = Title == NULL ? nil : [[NSString alloc] initWithUTF8String:Title];
+                    
+                const char *typeNo = (const char*)sqlite3_column_text(statement, 29);
+                NSString *IDTypeNo = typeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:typeNo];
+                    
+                const char *OtherType = (const char*)sqlite3_column_text(statement, 30);
+                NSString *OtherIDType = OtherType == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherType];
+                    
+                const char *OtherTypeNo = (const char*)sqlite3_column_text(statement, 31);
+                NSString *OtherIDTypeNo = OtherTypeNo == NULL ? nil : [[NSString alloc] initWithUTF8String:OtherTypeNo];
+                    
+                const char *smok = (const char*)sqlite3_column_text(statement, 32);
+                NSString *Smoker = smok == NULL ? nil : [[NSString alloc] initWithUTF8String:smok];
+                    
+                const char *ann = (const char*)sqlite3_column_text(statement, 33);
+                NSString *AnnIncome = ann == NULL ? nil : [[NSString alloc] initWithUTF8String:ann];
+                    
+                const char *buss = (const char*)sqlite3_column_text(statement, 34);
+                NSString *BussinessType = buss == NULL ? nil : [[NSString alloc] initWithUTF8String:buss];
+                    
+                [ProspectTableData addObject:[[ProspectProfile alloc] initWithName:NickName AndProspectID:ProspectID AndProspectName:ProspectName AndProspecGender:ProspectGender AndResidenceAddress1:ResidenceAddress1 AndResidenceAddress2:ResidenceAddress2 AndResidenceAddress3:ResidenceAddress3 AndResidenceAddressTown:ResidenceAddressTown AndResidenceAddressState:ResidenceAddressState AndResidenceAddressPostCode:ResidenceAddressPostCode AndResidenceAddressCountry:ResidenceAddressCountry AndOfficeAddress1:OfficeAddress1 AndOfficeAddress2:OfficeAddress2 AndOfficeAddress3:OfficeAddress3 AndOfficeAddressTown:OfficeAddressTown AndOfficeAddressState:OfficeAddressState AndOfficeAddressPostCode:OfficeAddressPostCode AndOfficeAddressCountry:OfficeAddressCountry AndProspectEmail:ProspectEmail AndProspectRemark:ProspectRemark AndProspectOccupationCode:ProspectOccupationCode AndProspectDOB:ProspectDOB AndExactDuties:ExactDuties AndGroup:ProspectGroup AndTitle:ProspectTitle AndIDTypeNo:IDTypeNo AndOtherIDType:OtherIDType AndOtherIDTypeNo:OtherIDTypeNo AndSmoker:Smoker AndAnnIncome:AnnIncome AndBussType:BussinessType]];
+                
+                ProspectID = Nil;
+                NickName = Nil;
+                ProspectName = Nil ;
+                ProspectDOB = Nil  ;
+                ProspectGender = Nil;
+                ResidenceAddress1 = Nil;
+                ResidenceAddress2 = Nil;
+                ResidenceAddress3 = Nil;
+                ResidenceAddressTown = Nil;
+                ResidenceAddressState = Nil;
+                ResidenceAddressPostCode = Nil;
+                ResidenceAddressCountry = Nil;
+                OfficeAddress1 = Nil;
+                OfficeAddress2 = Nil;
+                OfficeAddress3 = Nil;
+                OfficeAddressTown = Nil;
+                OfficeAddressState = Nil;
+                OfficeAddressPostCode = Nil;
+                OfficeAddressCountry = Nil;
+                ProspectEmail = Nil;
+                ProspectOccupationCode = Nil;
+                ExactDuties = Nil;
+                ProspectRemark = Nil, querySQL = Nil;
+                ProspectTitle = Nil, ProspectGroup = Nil, IDTypeNo = Nil, OtherIDType = Nil, OtherIDTypeNo = Nil, Smoker = Nil;
+            }
+            sqlite3_finalize(statement);
+                
+        }
+        sqlite3_close(contactDB);
+        querySQL = Nil;
     }
+    [self.myTableView reloadData];
+    statement = Nil;
 }
 
 - (IBAction)resetPressed:(id)sender
 {
     nametxt.text = @"";
+    [IDType setTitle:@"" forState:UIControlStateNormal];
+    IDType.titleLabel.text = @"";
+    txtIDTypeNo.text = @"";
+    [btnGroup setTitle:@"" forState:UIControlStateNormal];
+    btnGroup.titleLabel.text = @"";
     [self ReloadTableData];
 }
 
@@ -867,37 +853,26 @@
     }
 }
 
+- (IBAction)ActionGroup:(id)sender
+{
+    if (_GroupList == nil) {
+        self.GroupList = [[GroupClass alloc] initWithStyle:UITableViewStylePlain];
+        _GroupList.delegate = self;
+        self.GroupPopover = [[UIPopoverController alloc] initWithContentViewController:_GroupList];
+    }
+    
+    [self.GroupPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+}
+
 - (IBAction)IdType:(id)sender
 {
-    //NSLog(@"aa");
-    
     if (_IDTypePicker == nil) {
-        //Create the ColorPickerViewController.
-        _IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
-        
-        //Set this VC as the delegate.
+        self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
         _IDTypePicker.delegate = self;
+        self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
     }
     
-    if (_IDTypePickerPopover == nil) {
-        //NSLog(@"aa");
-        //The color picker popover is not showing. Show it.
-        _IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
-        //[_IDTypePickerPopover presentPopoverFromRect:<#(CGRect)#> inView:<#(UIView *)#> permittedArrowDirections:<#(UIPopoverArrowDirection)#> animated:<#(BOOL)#>];
-        
-        
-        [_IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-        
-        
-        
-        //[_IDTypePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
-        //                             permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    } else {
-        //The color picker popover is showing. Hide it.
-        [_IDTypePickerPopover dismissPopoverAnimated:YES];
-        _IDTypePickerPopover = nil;
-    }
-    
+    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 #pragma mark - memory management
@@ -913,6 +888,8 @@
     [self setDeleteBtn:nil];
     [self setNametxt:nil];
     [self setIDType:nil];
+    [self setBtnGroup:nil];
+    [self setTxtIDTypeNo:nil];
     [super viewDidUnload];
     FilteredProspectTableData = Nil;
     ProspectTableData = Nil;
@@ -927,13 +904,14 @@
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
-    //NSLog(@"%@",selectedIDType);
-    [_IDType setTitle:selectedIDType forState:UIControlStateNormal];
-    
-    if (_IDTypePickerPopover) {
-        [_IDTypePickerPopover dismissPopoverAnimated:YES];
-        _IDTypePickerPopover = nil;
-    }
+    [IDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType] forState:UIControlStateNormal];
+    [self.IDTypePickerPopover dismissPopoverAnimated:YES];
+}
+
+-(void)selectedGroup:(NSString *)aaGroup
+{
+    [btnGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",aaGroup]forState:UIControlStateNormal];
+    [self.GroupPopover dismissPopoverAnimated:YES];
 }
 
 

@@ -15,16 +15,22 @@
 
 @implementation GroupListing
 @synthesize itemInArray,memberLabel,groupLabel,txtName,deleteBtn,editBtn,FilteredTableData,isFiltered;
+@synthesize arrCountGroup;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     self.myTableView.backgroundColor = [UIColor clearColor];
     self.myTableView.separatorColor = [UIColor clearColor];
     ItemToBeDeleted = [[NSMutableArray alloc] init];
     indexPaths = [[NSMutableArray alloc] init];
     FilteredTableData = [[NSMutableArray alloc] init];
+    arrCountGroup = [[NSMutableArray alloc] init];
     
     deleteBtn.hidden = TRUE;
     deleteBtn.enabled = FALSE;
@@ -74,6 +80,22 @@
     [dialog show];
 }
 
+-(void)refreshData
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"dataGroup.plist"];
+	
+	itemInArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
+    arrCountGroup = [[NSMutableArray alloc] init];
+    
+    for (NSString *arr in itemInArray) {
+        [self CalculateMember:arr];
+    }
+    
+	[self.myTableView reloadData];
+}
+
 - (IBAction)search:(id)sender
 {
     NSString *txt = txtName.text;
@@ -93,6 +115,12 @@
                 [FilteredTableData addObject:zzz];
             }
         }
+        
+        arrCountGroup = [[NSMutableArray alloc] init];
+        for (NSString *arr in FilteredTableData) {
+            [self CalculateMember:arr];
+        }
+        
         [self.myTableView reloadData];
     }
     
@@ -214,15 +242,27 @@
     }
 }
 
--(void)refreshData
+-(void)CalculateMember:(NSString *)theGroup
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsPath = [paths objectAtIndex:0];
-    NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"dataGroup.plist"];
-	
-	itemInArray = [NSMutableArray arrayWithContentsOfFile:plistPath];
-	
-	[self.myTableView reloadData];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"select count(*) from prospect_profile where ProspectGroup=\" %@\" ", theGroup];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                NSString *str = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+                [arrCountGroup addObject:str];
+                
+            } else {
+                
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
 }
 
 
@@ -276,7 +316,7 @@
     CGRect frame2=CGRectMake(640,0, 384, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
-    label2.text= @"7";
+    label2.text= [arrCountGroup objectAtIndex:indexPath.row];
     label2.textAlignment = UITextAlignmentCenter;
     label2.tag = 2002;
     [cell.contentView addSubview:label2];
@@ -374,6 +414,8 @@
     [self setTxtName:nil];
     [self setEditBtn:nil];
     [self setDeleteBtn:nil];
+    [self setArrCountGroup:Nil];
+    [self setItemInArray:nil];
     [super viewDidUnload];
 }
 

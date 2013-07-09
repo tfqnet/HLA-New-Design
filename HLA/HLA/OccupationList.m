@@ -163,7 +163,8 @@ NSString *SelectedString;
 
 }
 
--(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text{ 
+-(void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)text
+{
     if (text.length == 0) {
         isFiltered = false;
         
@@ -188,44 +189,6 @@ NSString *SelectedString;
     [self.tableView reloadData];
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
@@ -243,17 +206,11 @@ NSString *SelectedString;
             NSString *occupCode = [_OccupCode objectAtIndex:indexPath.row];
             [_delegate OccupCodeSelected:occupCode];
             
-            //UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
-            
-            /*
-             NSArray *visibleCells = [tableView visibleCells];
-             for (UITableViewCell *cell in visibleCells) {
-             //   [cell setAccessoryType:UITableViewCellAccessoryNone];
-             }
-             */    
+            NSString *occupClass = [_OccupClass objectAtIndex:indexPath.row];
+            [_delegate OccupClassSelected:occupClass];
             
             SelectedString = [_OccupDesc objectAtIndex:indexPath.row ];
-            //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
         } 
         else {
             [self resignFirstResponder];
@@ -264,11 +221,13 @@ NSString *SelectedString;
             
             NSString *occupCode = [FilteredCode objectAtIndex:indexPath.row];
             [_delegate OccupCodeSelected:occupCode];
+            
+            NSString *occupClass = [FilteredClass objectAtIndex:indexPath.row];
+            [_delegate OccupClassSelected:occupClass];
+            
             SelectedString = [FilteredData objectAtIndex:indexPath.row];
             
         }
-        
-        
     }
     
     [tableView reloadData];
