@@ -8,19 +8,25 @@
 
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
+#import "PopOverFundViewController.h"
 
 @class EverFundMaturity;
 @protocol EverFundMaturity
 
 @end
 
-@interface EverFundMaturityViewController : UIViewController<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>{
+@interface EverFundMaturityViewController : UIViewController<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource,
+											FundListDelegate>{
 	NSString *databasePath;
 	sqlite3 *contactDB;
  	UITextField *activeField;
+	UIPopoverController *_FundPopover;
+	PopOverFundViewController *_FundList;
  	id <EverFundMaturity> _delegate;
 }
 
+@property (nonatomic, retain) PopOverFundViewController *FundList;
+@property (nonatomic, retain) UIPopoverController *FundPopover;
 @property (nonatomic,strong) id <EverFundMaturity> delegate;
 
 - (IBAction)ACtionDone:(id)sender;

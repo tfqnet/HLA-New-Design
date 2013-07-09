@@ -28,6 +28,8 @@
 
 }
 
+@property (nonatomic, copy) NSString *TradOrEver;
+
 @property (nonatomic, retain) siListingSortBy *SortBy;
 @property (nonatomic, retain) UIPopoverController *Popover;
 @property (nonatomic, retain) SIDate *SIDate;

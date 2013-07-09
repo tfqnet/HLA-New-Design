@@ -77,7 +77,8 @@
     */
      
     SIListing* SIListingPage = [self.storyboard instantiateViewControllerWithIdentifier:@"SIListing"];
-    SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
+	SIListingPage.tradOrEver = tradOrEver;
+	SIListingPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"SI Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
     [controllersToAdd addObject:SIListingPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     

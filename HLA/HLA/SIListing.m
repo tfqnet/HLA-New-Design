@@ -34,7 +34,7 @@
 @synthesize txtSINO,CustomerCode;
 @synthesize txtLAName, SINO,FilteredBasicSA,FilteredDateCreated,FilteredName;
 @synthesize FilteredSINO,FilteredPlanName,FilteredSIStatus,SIStatus,FilteredCustomerCode;
-@synthesize BasicSA,Name,PlanName, DateCreated;
+@synthesize BasicSA,Name,PlanName, DateCreated, TradOrEver;
 @synthesize SortBy = _SortBy;
 @synthesize Popover = _Popover;
 @synthesize SIDate = _SIDate;
@@ -206,16 +206,24 @@ int DateOption;
     const char *dbpath = [databasePath UTF8String];
     
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+
+		NSString *SIListingSQL;
+		if ([TradOrEver isEqualToString:@"TRAD"]) {
+			
+			SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
+			 " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
+			 " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" "];
+			 
+			 
+		}
+		else{
+			SIListingSQL = [NSString stringWithFormat:@"select A.Sino, B.DateCreated, name, planname, basicSA, 'Not Created', A.CustCode "
+							" from UL_lapayor as A, UL_details as B, clt_profile as C, trad_sys_profile as D "
+							" where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Seq = 1 AND A.ptypeCode = \"LA\" "];
+			
+		}
 		
-        NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, createdAT, name, planname, basicSA, 'Not Created', A.CustCode "
-                                  " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
-                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" "];
-		 
-		/*
-		NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, B.DateCreated, name, planname, basicSA, 'Not Created', A.CustCode "
-                                  " from UL_lapayor as A, UL_details as B, clt_profile as C, trad_sys_profile as D "
-                                  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Seq = 1 AND A.ptypeCode = \"LA\" "];
-        */
+		
         if (![txtSINO.text isEqualToString:@""]) {
             SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
             
@@ -288,8 +296,13 @@ int DateOption;
         }
         
         if ([Sorting isEqualToString:@""]) {
-            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by createdAt Desc" ];
-			//SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by B.DateCreated Desc" ];
+			
+			if ([TradOrEver isEqualToString:@"TRAD"]) {
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by createdAt Desc" ];
+			}
+			else{
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by B.DateCreated Desc" ];
+			}
             
         }
         else {
@@ -708,8 +721,9 @@ int DateOption;
         //main.modalPresentationStyle = UIModalPresentationPageSheet;
 //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		
-		main.tradOrEver = @"TRAD";
+		//main.tradOrEver = @"TRAD";
 		//main.tradOrEver = @"EVER";
+		main.tradOrEver = TradOrEver;
         main.IndexTab = MenuOption.NewSIIndex ;
         main.requestSINo = [SINO objectAtIndex:indexPath.row];
         

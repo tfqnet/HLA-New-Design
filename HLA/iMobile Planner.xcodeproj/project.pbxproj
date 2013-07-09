@@ -96,6 +96,7 @@
 		C4C501F916A64C6300096156 /* Brochure_PremierLife.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4C501EE16A64C6300096156 /* Brochure_PremierLife.pdf */; };
 		C4C5020116A64E1F00096156 /* eBrochureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C5020016A64E1F00096156 /* eBrochureViewController.m */; };
 		C4C5020416A652B000096156 /* eBrochureListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C5020316A652B000096156 /* eBrochureListingViewController.m */; };
+		C4C6C0A6178BB0F50006B00D /* PopOverFundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C6C0A5178BB0F50006B00D /* PopOverFundViewController.m */; };
 		C4CA65A41745DD06002AB907 /* Brochure_Cashpromise_ENGMAND.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4CA65A21745DD05002AB907 /* Brochure_Cashpromise_ENGMAND.pdf */; };
 		C4CA65A51745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4CA65A31745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf */; };
 		C4E1B92A1713F97600D7F83B /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1B9291713F97600D7F83B /* BrowserViewController.m */; };
@@ -413,6 +414,8 @@
 		C4C5020016A64E1F00096156 /* eBrochureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eBrochureViewController.m; sourceTree = "<group>"; };
 		C4C5020216A652B000096156 /* eBrochureListingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eBrochureListingViewController.h; sourceTree = "<group>"; };
 		C4C5020316A652B000096156 /* eBrochureListingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eBrochureListingViewController.m; sourceTree = "<group>"; };
+		C4C6C0A4178BB0F50006B00D /* PopOverFundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopOverFundViewController.h; sourceTree = "<group>"; };
+		C4C6C0A5178BB0F50006B00D /* PopOverFundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopOverFundViewController.m; sourceTree = "<group>"; };
 		C4CA65A21745DD05002AB907 /* Brochure_Cashpromise_ENGMAND.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_Cashpromise_ENGMAND.pdf; sourceTree = "<group>"; };
 		C4CA65A31745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_Cashpromise_ENGBM.pdf; sourceTree = "<group>"; };
 		C4E1B9281713F97600D7F83B /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
@@ -1136,6 +1139,8 @@
 				C47F40E2178B9B930023D9EF /* EverSpecialViewController.m */,
 				C47F40E4178BA5230023D9EF /* EverFundMaturityViewController.h */,
 				C47F40E5178BA5230023D9EF /* EverFundMaturityViewController.m */,
+				C4C6C0A4178BB0F50006B00D /* PopOverFundViewController.h */,
+				C4C6C0A5178BB0F50006B00D /* PopOverFundViewController.m */,
 			);
 			name = EverSeries;
 			sourceTree = "<group>";
@@ -1847,6 +1852,7 @@
 				EF90AFF817891C6300FEC129 /* GroupClass.m in Sources */,
 				C47F40E3178B9B930023D9EF /* EverSpecialViewController.m in Sources */,
 				C47F40E6178BA5230023D9EF /* EverFundMaturityViewController.m in Sources */,
+				C4C6C0A6178BB0F50006B00D /* PopOverFundViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1940,8 +1946,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1956,8 +1962,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -1967,8 +1973,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1983,8 +1989,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;

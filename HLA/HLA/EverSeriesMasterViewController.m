@@ -205,7 +205,7 @@ id EverRiderCount;
 	
 	cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:17];
+    cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:16];
     cell.textLabel.textAlignment = UITextAlignmentLeft;
 	
 	return  cell;

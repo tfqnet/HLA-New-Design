@@ -421,11 +421,11 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:@"UPDATE UL_Details SET CovPeriod=\"%@\", BasicSA=\"%@\", "
-							  "AtPrem = \"%@\", BumpMode = \"%@\", UpdatedAt=%@ "
+							  "AtPrem = \"%@\", BumpMode = \"%@\", DateModified=%@ "
 							  " WHERE SINo=\"%@\"", txtPolicyTerm.text, txtBasicSA.text, txtBasicPremium.text,
 							  [self getBumpMode], @"datetime(\"now\", \"+8 hour\")", SINo];
         
-        NSLog(@"%@",querySQL);
+        //NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_DONE)

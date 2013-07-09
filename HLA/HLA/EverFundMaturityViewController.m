@@ -7,6 +7,7 @@
 //
 
 #import "EverFundMaturityViewController.h"
+#import "PopOverFundViewController.h"
 
 @interface EverFundMaturityViewController ()
 
@@ -15,6 +16,8 @@
 @implementation EverFundMaturityViewController
 @synthesize outletDelete,outletFund,outletOptions, outletTableLabel;
 @synthesize txt2025,txt2028,txt2030,txt2035,txtCashFund,txtPercentageReinvest,txtSecureFund, myTableView;
+@synthesize FundList = _FundList;
+@synthesize FundPopover = _FundPopover;
 @synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -53,8 +56,9 @@
 	[outletOptions setTitleTextAttributes:attributes
 							   forState:UIControlStateNormal];
 	
-
-	
+	txtPercentageReinvest.enabled = FALSE;
+	txtPercentageReinvest.backgroundColor = [UIColor lightGrayColor];
+	outletOptions.enabled =FALSE;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -102,7 +106,41 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)Fundlisting:(PopOverFundViewController *)inController andDesc:(NSString *)aaDesc{
+	
+	[outletFund setTitle:aaDesc forState:UIControlStateNormal];
+	[self.FundPopover dismissPopoverAnimated:YES];
+	
+	if (outletOptions.selectedSegmentIndex != 1) {
+		[self toggleFund];
+	}
+	else{
+		txt2025.text = @"0";
+		txt2028.text = @"0";
+		txt2030.text = @"0";
+		txt2035.text = @"0";
+		txtCashFund.text = @"0";
+		txtSecureFund.text = @"0";
+		txt2025.enabled = FALSE;
+		txt2028.enabled = FALSE;
+		txt2030.enabled = FALSE;
+		txt2035.enabled = FALSE;
+		txtCashFund.enabled = FALSE;
+		txtSecureFund.enabled = FALSE;
+		txt2025.backgroundColor = [UIColor lightGrayColor];
+		txt2028.backgroundColor = [UIColor lightGrayColor];
+		txt2030.backgroundColor = [UIColor lightGrayColor];
+		txt2035.backgroundColor = [UIColor lightGrayColor];
+		txtCashFund.backgroundColor = [UIColor lightGrayColor];
+		txtSecureFund.backgroundColor = [UIColor lightGrayColor];
+	}
+	
+	outletOptions.enabled = TRUE;
+}
+
 - (IBAction)ACtionDone:(id)sender {
+	myTableView.hidden = FALSE;
+	outletTableLabel.hidden = FALSE;
 }
 - (void)viewDidUnload {
 	[self setOutletFund:nil];
@@ -120,10 +158,8 @@
 	[self setOutletTableLabel:nil];
 	[super viewDidUnload];
 }
-- (IBAction)ActionOptions:(id)sender {
-}
 
-- (IBAction)ACtionFund:(id)sender {
+- (IBAction)ActionOptions:(id)sender {
 	if (outletOptions.selectedSegmentIndex == 2) {
 		txtPercentageReinvest.enabled = TRUE;
 		txtPercentageReinvest.backgroundColor = [UIColor whiteColor];
@@ -133,5 +169,137 @@
 		txtPercentageReinvest.backgroundColor = [UIColor lightGrayColor];
 		txtPercentageReinvest.text = @"0";
 	}
+	
+	if (outletOptions.selectedSegmentIndex == 1) {
+		txt2025.text = @"0";
+		txt2028.text = @"0";
+		txt2030.text = @"0";
+		txt2035.text = @"0";
+		txtCashFund.text = @"0";
+		txtSecureFund.text = @"0";
+		txt2025.enabled = FALSE;
+		txt2028.enabled = FALSE;
+		txt2030.enabled = FALSE;
+		txt2035.enabled = FALSE;
+		txtCashFund.enabled = FALSE;
+		txtSecureFund.enabled = FALSE;
+		txt2025.backgroundColor = [UIColor lightGrayColor];
+		txt2028.backgroundColor = [UIColor lightGrayColor];
+		txt2030.backgroundColor = [UIColor lightGrayColor];
+		txt2035.backgroundColor = [UIColor lightGrayColor];
+		txtCashFund.backgroundColor = [UIColor lightGrayColor];
+		txtSecureFund.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		[self toggleFund];
+	}
+}
+
+-(void)toggleFund{
+	
+	if ([outletFund.titleLabel.text isEqualToString:@"HLA EverGreen 2035"]) {
+		txt2025.text = @"0";
+		txt2028.text = @"0";
+		txt2030.text = @"0";
+		txt2035.text = @"0";
+		txt2025.enabled = FALSE;
+		txt2028.enabled = FALSE;
+		txt2030.enabled = FALSE;
+		txt2035.enabled = FALSE;
+		txtCashFund.enabled = TRUE;
+		txtSecureFund.enabled = TRUE;
+	}
+	else if ([outletFund.titleLabel.text isEqualToString:@"HLA EverGreen 2030"]) {
+		txt2025.text = @"0";
+		txt2028.text = @"0";
+		txt2030.text = @"0";
+		txt2035.text = @"0";
+		txt2025.enabled = FALSE;
+		txt2028.enabled = FALSE;
+		txt2030.enabled = FALSE;
+		txt2035.enabled = TRUE;
+		txtCashFund.enabled = TRUE;
+		txtSecureFund.enabled = TRUE;
+	}
+	else if ([outletFund.titleLabel.text isEqualToString:@"HLA EverGreen 2028"]) {
+		txt2025.text = @"0";
+		txt2028.text = @"0";
+		txt2030.text = @"0";
+		txt2035.text = @"0";
+		txt2025.enabled = FALSE;
+		txt2028.enabled = FALSE;
+		txt2030.enabled = TRUE;
+		txt2035.enabled = TRUE;
+		txtCashFund.enabled = TRUE;
+		txtSecureFund.enabled = TRUE;
+	}
+	else if ([outletFund.titleLabel.text isEqualToString:@"HLA EverGreen 2025"]) {
+		txt2025.text = @"0";
+		txt2028.text = @"0";
+		txt2030.text = @"0";
+		txt2035.text = @"0";
+		txt2025.enabled = FALSE;
+		txt2028.enabled = TRUE;
+		txt2030.enabled = TRUE;
+		txt2035.enabled = TRUE;
+		txtCashFund.enabled = TRUE;
+		txtSecureFund.enabled = TRUE;
+	}
+	
+	
+	if (txt2025.enabled == FALSE) {
+		txt2025.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		txt2025.backgroundColor = [UIColor whiteColor];
+	}
+	
+	if (txt2028.enabled == FALSE) {
+		txt2028.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		txt2028.backgroundColor = [UIColor whiteColor];
+	}
+	
+	if (txt2030.enabled == FALSE) {
+		txt2030.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		txt2030.backgroundColor = [UIColor whiteColor];
+	}
+	
+	if (txt2035.enabled == FALSE) {
+		txt2035.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		txt2035.backgroundColor = [UIColor whiteColor];
+	}
+	
+	if (txtCashFund.enabled == FALSE) {
+		txtCashFund.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		txtCashFund.backgroundColor = [UIColor whiteColor];
+	}
+	
+	if (txtSecureFund.enabled == FALSE) {
+		txtSecureFund.backgroundColor = [UIColor lightGrayColor];
+	}
+	else{
+		txtSecureFund.backgroundColor = [UIColor whiteColor];
+	}
+}
+
+- (IBAction)ACtionFund:(id)sender {
+	if(_FundList == nil){
+        
+		self.FundList = [[PopOverFundViewController alloc] init];
+        _FundList.delegate = self;
+        self.FundPopover = [[UIPopoverController alloc] initWithContentViewController:_FundList];
+	}
+    [self.FundPopover setPopoverContentSize:CGSizeMake(350.0f, 300.0f)];
+    [self.FundPopover presentPopoverFromRect:[sender frame] inView:self.view
+					 permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	
 }
 @end
