@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11E53" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="Gn2-qc-1Vc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -6421,10 +6421,10 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="4739" y="4449"/>
         </scene>
-        <!--View Controller-->
+        <!--Ever Special View Controller-->
         <scene sceneID="Xpx-LL-RJy">
             <objects>
-                <viewController id="fn6-K2-TZE" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EverSpecial" id="fn6-K2-TZE" customClass="EverSpecialViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Fme-G8-aO5">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -6447,6 +6447,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <segment title="Yes"/>
                                             <segment title="No"/>
                                         </segments>
+                                        <connections>
+                                            <action selector="ActionReduce:" destination="fn6-K2-TZE" eventType="valueChanged" id="p0i-uy-LaK"/>
+                                        </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="To convert to Reduced Paid up plan at" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2e5-9I-oJd">
                                         <rect key="frame" x="25" y="79" width="311" height="21"/>
@@ -6502,6 +6505,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <segment title="Yes"/>
                                             <segment title="No"/>
                                         </segments>
+                                        <connections>
+                                            <action selector="ActionWithdrawal:" destination="fn6-K2-TZE" eventType="valueChanged" id="yM1-WO-fM8"/>
+                                        </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Starting from (Policy Year) :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0KS-QQ-Kwl">
                                         <rect key="frame" x="28" y="64" width="203" height="21"/>
@@ -6572,7 +6578,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <barButtonItem width="666" style="plain" systemItem="fixedSpace" id="vdt-wi-M6X"/>
                                     <barButtonItem title="Done" style="done" id="2rB-H6-phU">
                                         <connections>
-                                            <action selector="ActionDone:" destination="TaC-xk-9in" id="Y5B-WM-fxx"/>
+                                            <action selector="ActionDone:" destination="fn6-K2-TZE" id="rYV-jC-pzI"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -6589,6 +6595,16 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <connections>
+                        <outlet property="outletReduce" destination="6fC-OB-aTu" id="7ke-bt-AgR"/>
+                        <outlet property="outletWithdrawal" destination="8qs-Sx-awD" id="V2R-Gk-yB5"/>
+                        <outlet property="txtAmount" destination="ScN-Pw-cLb" id="s1u-m7-gmt"/>
+                        <outlet property="txtInterval" destination="Glm-3e-Ej7" id="gXc-2u-h4J"/>
+                        <outlet property="txtReduceAt" destination="C7w-vx-Co9" id="33d-6C-LYw"/>
+                        <outlet property="txtReduceTo" destination="lxy-Vh-fTx" id="eUz-mu-hUx"/>
+                        <outlet property="txtStartFrom" destination="ULu-az-92O" id="2ta-VD-QDN"/>
+                        <outlet property="txtStartTo" destination="afT-Ji-N4V" id="wa1-xO-RQ6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zBO-wG-Y4O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

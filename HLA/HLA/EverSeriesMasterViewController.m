@@ -445,7 +445,8 @@ id EverRiderCount;
 	}
 	else if (indexPath.row == 7){ //Special Options
 		if ([getOccpCode isEqualToString:@"OCC01975"]) {
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
             [alert show];
             alert = Nil;
 			
