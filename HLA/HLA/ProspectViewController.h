@@ -32,8 +32,9 @@
     UIPopoverController *_GroupPopover;
     UIPopoverController *_TitlePickerPopover;
     id<ProspectViewControllerDelegate> _delegate;
-
     UIAlertView *rrr;
+    BOOL checked;
+    BOOL checked2;
 }
 
 @property (nonatomic, strong) id<ProspectViewControllerDelegate> delegate;
@@ -89,7 +90,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtContact4;
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (strong, nonatomic) IBOutlet UITextField *txtClass;
-
+@property (strong, nonatomic) IBOutlet UIButton *btnForeignHome;
+@property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
 
 - (IBAction)btnGroup:(id)sender;
 - (IBAction)btnTitle:(id)sender;
@@ -98,6 +100,8 @@
 - (IBAction)ActionGender:(id)sender;
 - (IBAction)ActionSmoker:(id)sender;
 - (IBAction)btnOccup:(id)sender;
+- (IBAction)isForeign:(id)sender;
+
 
 @property (nonatomic, copy) NSString *gender;
 @property (nonatomic, copy) NSString *DOB;

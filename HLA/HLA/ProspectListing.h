@@ -49,6 +49,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *idTypeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *idNoLabel;
 @property (strong, nonatomic) IBOutlet UILabel *clientNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *groupLabel;
 
 - (IBAction)ActionGroup:(id)sender;
 - (IBAction)IdType:(id)sender;

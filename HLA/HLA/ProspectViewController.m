@@ -44,7 +44,7 @@
 @synthesize txtOfficePostcode;
 @synthesize txtOfficeTown;
 @synthesize txtOfficeState;
-@synthesize txtOfficeCountry;
+@synthesize txtOfficeCountry,btnForeignHome,btnForeignOffice;
 @synthesize txtExactDuties,txtBussinessType,txtAnnIncome,txtClass;
 @synthesize outletOccup,ClientSmoker;
 @synthesize myScrollView,outletGroup,OtherIDType,txtIDType,txtOtherIDType;
@@ -90,6 +90,8 @@ bool PostcodeContinue = TRUE;
     txtClass.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnSave:)];
+    checked = NO;
+    checked2 = NO;
     
     CustomColor = Nil;
     
@@ -419,7 +421,8 @@ bool PostcodeContinue = TRUE;
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
     
-    [outletDOB setTitle:dateString forState:UIControlStateNormal];
+    outletDOB.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", dateString] forState:UIControlStateNormal];
     
     if (_SIDate == Nil) {
          
@@ -451,6 +454,37 @@ bool PostcodeContinue = TRUE;
     int y = butt.origin.y - 44;
     butt.origin.y = y;
     [self.OccupationListPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (IBAction)isForeign:(id)sender
+{
+    UIButton *btnPressed = (UIButton*)sender;
+    
+    if (btnPressed.tag == 0) {
+        
+        if (checked) {
+            [btnForeignHome setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
+            checked = NO;
+        }
+        else {
+            [btnForeignHome setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
+            checked = YES;
+        }
+        
+    }
+    
+    else if (btnPressed.tag == 1) {
+        
+        if (checked2) {
+            [btnForeignOffice setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
+            checked2 = NO;
+        }
+        else {
+            [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
+            checked2 = YES;
+        }
+        
+    }
 }
 
 - (void)btnSave:(id)sender
@@ -1237,12 +1271,14 @@ PostcodeContinue = TRUE;
 
 -(void)selectedGroup:(NSString *)aaGroup
 {
+    outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",aaGroup]forState:UIControlStateNormal];
     [self.GroupPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedTitle:(NSString *)selectedTitle
 {
+    outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedTitle]forState:UIControlStateNormal];
     [self.TitlePickerPopover dismissPopoverAnimated:YES];
 }
@@ -1256,6 +1292,7 @@ PostcodeContinue = TRUE;
 
 -(void)DateSelected:(NSString *)strDate :(NSString *)dbDate
 {
+    outletDOB.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",strDate]forState:UIControlStateNormal];
     
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
@@ -1276,6 +1313,7 @@ PostcodeContinue = TRUE;
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
+    OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType]forState:UIControlStateNormal];
     [self.IDTypePickerPopover dismissPopoverAnimated:YES];
     
@@ -1287,7 +1325,9 @@ PostcodeContinue = TRUE;
     
 }
 
-- (void)OccupDescSelected:(NSString *)color {
+- (void)OccupDescSelected:(NSString *)color
+{
+    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", color]forState:UIControlStateNormal];
     [self.OccupationListPopover dismissPopoverAnimated:YES];
     
@@ -1351,6 +1391,8 @@ PostcodeContinue = TRUE;
     [self setTxtBussinessType:nil];
     [self setTxtExactDuties:nil];
     [self setTxtClass:nil];
+    [self setBtnForeignHome:nil];
+    [self setBtnForeignOffice:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

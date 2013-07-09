@@ -33,6 +33,8 @@
     UIPopoverController *_OccupationListPopover;
     id<EditProspectDelegate> _delegate;
     UIAlertView *rrr;
+    BOOL checked;
+    BOOL checked2;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
@@ -91,7 +93,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtEmail;
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
 @property (strong, nonatomic) IBOutlet UITextField *txtClass;
+@property (strong, nonatomic) IBOutlet UIButton *btnForeignHome;
+@property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
 
+- (IBAction)isForeign:(id)sender;
 - (IBAction)btnGroup:(id)sender;
 - (IBAction)btnTitle:(id)sender;
 - (IBAction)btnDOB:(id)sender;

@@ -22,7 +22,7 @@
 
 @implementation ProspectListing
 @synthesize ProspectTableData, FilteredProspectTableData, isFiltered;
-@synthesize txtIDTypeNo,btnGroup,IDType;
+@synthesize txtIDTypeNo,btnGroup,IDType,groupLabel;
 @synthesize EditProspect = _EditProspect;
 @synthesize ProspectViewController = _ProspectViewController;
 @synthesize idNoLabel,idTypeLabel,clientNameLabel,editBtn,deleteBtn,nametxt;
@@ -220,11 +220,17 @@
     idNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame3=CGRectMake(400,233, 624, 50);
+    CGRect frame3=CGRectMake(400,233, 350, 50);
     clientNameLabel.frame = frame3;
-    clientNameLabel.textAlignment = UITextAlignmentCenter;
+    clientNameLabel.textAlignment = UITextAlignmentLeft;
     clientNameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     clientNameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    CGRect frame4=CGRectMake(750,233, 274, 50);
+    groupLabel.frame = frame4;
+    groupLabel.textAlignment = UITextAlignmentLeft;
+    groupLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    groupLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     CustomColor = Nil;
 }
@@ -278,6 +284,7 @@
     [[cell.contentView viewWithTag:2001] removeFromSuperview ];
     [[cell.contentView viewWithTag:2002] removeFromSuperview ];
     [[cell.contentView viewWithTag:2003] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2004] removeFromSuperview ];
     
     ProspectProfile *pp = [ProspectTableData objectAtIndex:indexPath.row];
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
@@ -300,32 +307,45 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(400,0, 600, 50);
+    CGRect frame3=CGRectMake(400,0, 350, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
     label3.text= pp.ProspectName;
-    label3.textAlignment = UITextAlignmentCenter;
+    label3.textAlignment = UITextAlignmentLeft;
     label3.tag = 2003;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
+    
+    CGRect frame4=CGRectMake(750,0, 274, 50);
+    UILabel *label4=[[UILabel alloc]init];
+    label4.frame=frame4;
+    label4.text= pp.ProspectGroup;
+    label4.textAlignment = UITextAlignmentLeft;
+    label4.tag = 2004;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label4];
     
     if (indexPath.row % 2 == 0) {
         label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     else {
         label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label2.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -890,6 +910,7 @@
     [self setIDType:nil];
     [self setBtnGroup:nil];
     [self setTxtIDTypeNo:nil];
+    [self setGroupLabel:nil];
     [super viewDidUnload];
     FilteredProspectTableData = Nil;
     ProspectTableData = Nil;
@@ -904,12 +925,14 @@
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
+    IDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [IDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType] forState:UIControlStateNormal];
     [self.IDTypePickerPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedGroup:(NSString *)aaGroup
 {
+    btnGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [btnGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",aaGroup]forState:UIControlStateNormal];
     [self.GroupPopover dismissPopoverAnimated:YES];
 }

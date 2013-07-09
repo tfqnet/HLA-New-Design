@@ -51,7 +51,7 @@
 @synthesize OccupationList = _OccupationList;
 @synthesize OccupationListPopover = _OccupationListPopover;
 @synthesize myScrollView,ClientSmoker;
-@synthesize outletOccup;
+@synthesize outletOccup,btnForeignHome,btnForeignOffice;
 @synthesize delegate = _delegate;
 @synthesize SIDate = _SIDate;
 @synthesize SIDatePopover = _SIDatePopover;
@@ -121,6 +121,13 @@ bool IsContinue = TRUE;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnSave:)];
     
+    outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    outletDOB.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    checked = NO;
+    checked2 = NO;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
@@ -383,6 +390,37 @@ bool IsContinue = TRUE;
 
 
 #pragma mark - action
+
+- (IBAction)isForeign:(id)sender
+{
+    UIButton *btnPressed = (UIButton*)sender;
+    
+    if (btnPressed.tag == 0) {
+        
+        if (checked) {
+            [btnForeignHome setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
+            checked = NO;
+        }
+        else {
+            [btnForeignHome setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
+            checked = YES;
+        }
+
+    }
+    
+    else if (btnPressed.tag == 1) {
+        
+        if (checked2) {
+            [btnForeignOffice setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
+            checked2 = NO;
+        }
+        else {
+            [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
+            checked2 = YES;
+        }
+        
+    }
+}
 
 - (IBAction)btnGroup:(id)sender
 {
@@ -1694,19 +1732,22 @@ bool IsContinue = TRUE;
 
 -(void)selectedGroup:(NSString *)aaGroup
 {
-    [outletGroup setTitle:aaGroup forState:UIControlStateNormal];
+    outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", aaGroup] forState:UIControlStateNormal];
     [self.GroupPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedTitle:(NSString *)selectedTitle
 {
-    [outletTitle setTitle:selectedTitle forState:UIControlStateNormal];
+    outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", selectedTitle] forState:UIControlStateNormal];
     [self.TitlePickerPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
-    [OtherIDType setTitle:selectedIDType forState:UIControlStateNormal];
+    OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", selectedIDType] forState:UIControlStateNormal];
     [self.IDTypePickerPopover dismissPopoverAnimated:YES];
 }
 
@@ -1725,6 +1766,7 @@ bool IsContinue = TRUE;
 
 - (void)OccupDescSelected:(NSString *)color
 {
+    outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletOccup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", color] forState:UIControlStateNormal];
     
     [self resignFirstResponder];
@@ -1783,7 +1825,8 @@ bool IsContinue = TRUE;
         
     }
     else{
-        [outletDOB setTitle:strDate forState:UIControlStateNormal ];
+        outletDOB.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", strDate] forState:UIControlStateNormal];
     }
 }
 
@@ -1853,6 +1896,8 @@ bool IsContinue = TRUE;
     [self setPp:nil];
     [self setTxtExactDuties:nil];
     [self setTxtClass:nil];
+    [self setBtnForeignHome:nil];
+    [self setBtnForeignOffice:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
