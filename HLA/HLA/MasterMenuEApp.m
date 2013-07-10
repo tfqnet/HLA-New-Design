@@ -34,12 +34,14 @@
     myTableView.rowHeight = 44;
     [myTableView reloadData];
     
-    self.SummaryVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryView"];
+    UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
+    self.SummaryVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"SummaryScreen"];
     [self addChildViewController:self.SummaryVC];
     [self.rightView addSubview:self.SummaryVC.view];
     selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
     
+    nextStoryboard = nil;
     
 }
 
@@ -114,38 +116,39 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     selectedPath = indexPath;
+    UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
     
     if (indexPath.row == 0)     //summary
     {
-        self.SummaryVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SummaryView"];
+        self.SummaryVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"SummaryScreen"];
         [self addChildViewController:self.SummaryVC];
         [self.rightView addSubview:self.SummaryVC.view];
     }
     
     else if (indexPath.row == 1)
     {
-        self.eAppPersonalDataVC = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppPersonalDataView"];
+        self.eAppPersonalDataVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppDataScreen"];
         [self addChildViewController:self.eAppPersonalDataVC];
         [self.rightView addSubview:self.eAppPersonalDataVC.view];
     }
     
     else if (indexPath.row == 2)     //policy details
     {
-        self.PolicyVC = [self.storyboard instantiateViewControllerWithIdentifier:@"mainPolicyView"];
+        self.PolicyVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"MainPolicyScreen"];
         [self addChildViewController:self.PolicyVC];
         [self.rightView addSubview:self.PolicyVC.view];
     }
     
     else if (indexPath.row == 3)     //nominees
     {
-        self.NomineesVC = [self.storyboard instantiateViewControllerWithIdentifier:@"NomineesView"];
+        self.NomineesVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"MainNomineesScreen"];
         [self addChildViewController:self.NomineesVC];
         [self.rightView addSubview:self.NomineesVC.view];
     }
     
     else if (indexPath.row == 4)     //health questions
     {
-        self.HealthVC = [self.storyboard instantiateViewControllerWithIdentifier:@"HealthView"];
+        self.HealthVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"HealthQuestScreen"];
         _HealthVC.delegate = self;
         [self addChildViewController:self.HealthVC];
         [self.rightView addSubview:self.HealthVC.view];
@@ -153,17 +156,18 @@
     
     else if (indexPath.row == 5)     //Additional questions
     {
-        self.AddQuestVC = [self.storyboard instantiateViewControllerWithIdentifier:@"AddQuestView"];
+        self.AddQuestVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"AddQuestScreen"];
         [self addChildViewController:self.AddQuestVC];
         [self.rightView addSubview:self.AddQuestVC.view];
     }
     
     else if (indexPath.row == 6)     //Declaration
     {
-        self.DeclareVC = [self.storyboard instantiateViewControllerWithIdentifier:@"DeclareView"];
+        self.DeclareVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"DeclareEAppScreen"];
         [self addChildViewController:self.DeclareVC];
         [self.rightView addSubview:self.DeclareVC.view];
     }
+    nextStoryboard = nil;
 }
 
 -(void) swipeToHQ2{

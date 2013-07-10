@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NomineesTrustees : UIViewController
+@interface NomineesTrustees : UITableViewController
 
 - (IBAction)addNominees:(id)sender;
 - (IBAction)addTrustee:(id)sender;

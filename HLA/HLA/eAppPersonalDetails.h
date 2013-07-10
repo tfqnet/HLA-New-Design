@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface eAppPersonalDetails : UIViewController
+@interface eAppPersonalDetails : UITableViewController
 
 @end

@@ -1,13 +1,13 @@
 //
-//  Summary.h
+//  HealthQuestions.h
 //  iMobile Planner
 //
-//  Created by Erza on 6/18/13.
+//  Created by shawal sapuan on 7/10/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface Summary : UITableViewController
+@interface HealthQuestions : UITableViewController
 
 @end

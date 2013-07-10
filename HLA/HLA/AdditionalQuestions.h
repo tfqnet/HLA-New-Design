@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AdditionalQuestions : UIViewController
+@interface AdditionalQuestions : UITableViewController
 
 @end

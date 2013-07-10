@@ -8,13 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PolicyDetails : UIViewController <UITextFieldDelegate> {
-    UITextField *activeField;
-}
-
-@property (strong, nonatomic) IBOutlet UITableView *myTableView;
-
-@property (retain, nonatomic) NSMutableArray *ArrRider;
-
+@interface PolicyDetails : UITableViewController
 
 @end

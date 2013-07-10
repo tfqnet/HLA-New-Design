@@ -276,6 +276,9 @@
 		EF90AFF817891C6300FEC129 /* GroupClass.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90AFF717891C6300FEC129 /* GroupClass.m */; };
 		EF90B0BA178C133A00FEC129 /* cb_glossy_off.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0B8178C133A00FEC129 /* cb_glossy_off.png */; };
 		EF90B0BB178C133A00FEC129 /* cb_glossy_on.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0B9178C133A00FEC129 /* cb_glossy_on.png */; };
+		EF90B0BD178CEFA000FEC129 /* LynnStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0BC178CEFA000FEC129 /* LynnStoryboard.storyboard */; };
+		EF90B0C0178CFABC00FEC129 /* HealthQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */; };
+		EF90B0C2178D076500FEC129 /* disclosure_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0C1178D076500FEC129 /* disclosure_indicator.png */; };
 		EF97FFAF1773F9C800C95844 /* PersonalDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFAE1773F9C800C95844 /* PersonalDetails.m */; };
 		EF97FFB21773F9DD00C95844 /* AdditionalQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */; };
 		EF9C47A2178525A20093289C /* Nominees.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9C47A1178525A20093289C /* Nominees.m */; };
@@ -694,6 +697,10 @@
 		EF90AFF717891C6300FEC129 /* GroupClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupClass.m; sourceTree = "<group>"; };
 		EF90B0B8178C133A00FEC129 /* cb_glossy_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb_glossy_off.png; sourceTree = "<group>"; };
 		EF90B0B9178C133A00FEC129 /* cb_glossy_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb_glossy_on.png; sourceTree = "<group>"; };
+		EF90B0BC178CEFA000FEC129 /* LynnStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LynnStoryboard.storyboard; sourceTree = "<group>"; };
+		EF90B0BE178CFABA00FEC129 /* HealthQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestions.h; sourceTree = "<group>"; };
+		EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestions.m; sourceTree = "<group>"; };
+		EF90B0C1178D076500FEC129 /* disclosure_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure_indicator.png; sourceTree = "<group>"; };
 		EF97FFAD1773F9C800C95844 /* PersonalDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDetails.h; sourceTree = "<group>"; };
 		EF97FFAE1773F9C800C95844 /* PersonalDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDetails.m; sourceTree = "<group>"; };
 		EF97FFB01773F9DD00C95844 /* AdditionalQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalQuestions.h; sourceTree = "<group>"; };
@@ -1023,6 +1030,7 @@
 				C4E9D1A41612C64900016053 /* AppDelegate.m */,
 				EF5B61281740B70C00751157 /* SIUtilities.h */,
 				EF5B61291740B70C00751157 /* SIUtilities.m */,
+				EF90B0BC178CEFA000FEC129 /* LynnStoryboard.storyboard */,
 				C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */,
 				EF906B2617729C0900D5F3E3 /* NewStoryboard.storyboard */,
 				C4E9D1A91612C64900016053 /* ViewController.h */,
@@ -1077,6 +1085,7 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EF90B0C1178D076500FEC129 /* disclosure_indicator.png */,
 				EF90B0B8178C133A00FEC129 /* cb_glossy_off.png */,
 				EF90B0B9178C133A00FEC129 /* cb_glossy_on.png */,
 				EFEB7A501766E8CC004FF3CE /* homeScreenEApp.png */,
@@ -1411,18 +1420,20 @@
 				EF9C47A1178525A20093289C /* Nominees.m */,
 				424334B817854E490008F504 /* Trustees.h */,
 				424334B917854E490008F504 /* Trustees.m */,
+				EF90B0BE178CFABA00FEC129 /* HealthQuestions.h */,
+				EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */,
 				423E8BB817700F1700E60C20 /* HealthQuestionnaire.h */,
 				423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */,
 				42BB1E2817855B9E00C2A763 /* HealthQuestionnaire2.h */,
 				42BB1E2917855B9E00C2A763 /* HealthQuestionnaire2.m */,
 				42BB1E2B17855BC000C2A763 /* HealthQuestionnaire3.h */,
 				42BB1E2C17855BC000C2A763 /* HealthQuestionnaire3.m */,
+				EF97FFB01773F9DD00C95844 /* AdditionalQuestions.h */,
+				EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */,
 				423E8BBB17700FF200E60C20 /* Declaration.h */,
 				423E8BBC17700FF200E60C20 /* Declaration.m */,
 				EF97FFAD1773F9C800C95844 /* PersonalDetails.h */,
 				EF97FFAE1773F9C800C95844 /* PersonalDetails.m */,
-				EF97FFB01773F9DD00C95844 /* AdditionalQuestions.h */,
-				EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */,
 			);
 			name = eApp;
 			sourceTree = "<group>";
@@ -1712,6 +1723,8 @@
 				424334B71783D4790008F504 /* hladb.sqlite in Resources */,
 				EF90B0BA178C133A00FEC129 /* cb_glossy_off.png in Resources */,
 				EF90B0BB178C133A00FEC129 /* cb_glossy_on.png in Resources */,
+				EF90B0BD178CEFA000FEC129 /* LynnStoryboard.storyboard in Resources */,
+				EF90B0C2178D076500FEC129 /* disclosure_indicator.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1861,6 +1874,7 @@
 				C47F40E3178B9B930023D9EF /* EverSpecialViewController.m in Sources */,
 				C47F40E6178BA5230023D9EF /* EverFundMaturityViewController.m in Sources */,
 				C4C6C0A6178BB0F50006B00D /* PopOverFundViewController.m in Sources */,
+				EF90B0C0178CFABC00FEC129 /* HealthQuestions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

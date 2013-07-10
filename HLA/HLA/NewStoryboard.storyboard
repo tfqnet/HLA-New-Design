@@ -248,10 +248,10 @@
             </objects>
             <point key="canvasLocation" x="1104" y="4982"/>
         </scene>
-        <!--Summary-->
+        <!--View Controller-->
         <scene sceneID="Lnk-UW-UkE">
             <objects>
-                <viewController storyboardIdentifier="SummaryView" id="DOK-5t-wth" customClass="Summary" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SummaryView" id="DOK-5t-wth" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zyn-PM-DEh">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -560,10 +560,10 @@
             </objects>
             <point key="canvasLocation" x="1125" y="5913"/>
         </scene>
-        <!--Nominees Trustees-->
+        <!--View Controller-->
         <scene sceneID="AU9-C2-lgy">
             <objects>
-                <viewController storyboardIdentifier="NomineesView" id="wAj-OI-uR3" customClass="NomineesTrustees" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NomineesView" id="wAj-OI-uR3" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V0h-CZ-C2e">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1329,10 +1329,10 @@
             </objects>
             <point key="canvasLocation" x="3933" y="7067"/>
         </scene>
-        <!--Additional Questions-->
+        <!--View Controller-->
         <scene sceneID="bP5-sZ-ImL">
             <objects>
-                <viewController storyboardIdentifier="AddQuestView" id="JpO-q5-fgN" customClass="AdditionalQuestions" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddQuestView" id="JpO-q5-fgN" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="x0m-VE-7Qi">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1605,10 +1605,10 @@
             </objects>
             <point key="canvasLocation" x="6523" y="7067"/>
         </scene>
-        <!--Declaration-->
+        <!--View Controller-->
         <scene sceneID="dDp-8Q-fM5">
             <objects>
-                <viewController storyboardIdentifier="DeclareView" id="JjK-kE-iab" customClass="Declaration" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DeclareView" id="JjK-kE-iab" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Arq-3z-5zc">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1852,10 +1852,10 @@
             </objects>
             <point key="canvasLocation" x="2202" y="4982"/>
         </scene>
-        <!--Policy Details - Policy Details-->
+        <!--View Controller - Policy Details-->
         <scene sceneID="hc4-fY-aLW">
             <objects>
-                <viewController storyboardIdentifier="mainPolicyView" id="Hj0-yN-gVB" customClass="PolicyDetails" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mainPolicyView" id="Hj0-yN-gVB" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dVr-6N-pTc">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -8324,7 +8324,6 @@ HLA.I receive </string>
                                     <constraint firstItem="Xzb-79-rJp" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="642" id="7WH-2z-4HQ"/>
                                     <constraint firstItem="A8v-EZ-gwf" firstAttribute="leading" secondItem="nEV-IK-msK" secondAttribute="leading" type="default" id="8SK-WT-4um"/>
                                     <constraint firstItem="SzM-0A-k0t" firstAttribute="leading" secondItem="3aj-Gt-MNV" secondAttribute="leading" type="default" id="9bV-0n-4Sl"/>
-                                    <constraint firstItem="cBv-Am-5q9" firstAttribute="bottom" secondItem="9LR-Jo-eEt" secondAttribute="bottom" type="default" id="9cc-eI-pSX"/>
                                     <constraint firstItem="Y0F-7T-4UC" firstAttribute="centerX" secondItem="dck-j9-C48" secondAttribute="centerX" type="default" id="9jg-T0-Rqd"/>
                                     <constraint firstItem="6vH-ea-ffA" firstAttribute="leading" secondItem="sxF-a5-F6u" secondAttribute="leading" type="default" id="A3n-88-OFU"/>
                                     <constraint firstItem="K7D-aS-Bhc" firstAttribute="leading" secondItem="KUG-iW-DSd" secondAttribute="leading" type="default" id="ARV-u7-g6i"/>
@@ -8345,6 +8344,7 @@ HLA.I receive </string>
                                     <constraint firstItem="FG9-lC-Ffa" firstAttribute="trailing" secondItem="hSA-pD-aht" secondAttribute="trailing" type="default" id="G9X-f7-fbF"/>
                                     <constraint firstItem="mrA-F0-8xU" firstAttribute="baseline" secondItem="N0N-tK-JJm" secondAttribute="baseline" type="default" id="GCF-45-F0h"/>
                                     <constraint firstItem="06h-UI-ndB" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="719" id="GYK-2Y-Ci3"/>
+                                    <constraint firstItem="coz-9M-iOt" firstAttribute="top" secondItem="6zS-Ub-eCG" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="H30-mA-6E3"/>
                                     <constraint firstItem="Qj0-1s-Xvj" firstAttribute="trailing" secondItem="6oY-e7-LI9" secondAttribute="trailing" type="default" id="H7I-pl-Wfb"/>
                                     <constraint firstItem="keh-4d-J4b" firstAttribute="leading" secondItem="Bvh-Lz-AiT" secondAttribute="leading" type="default" id="HJ3-sW-iDf"/>
                                     <constraint firstItem="Y0F-7T-4UC" firstAttribute="trailing" secondItem="dck-j9-C48" secondAttribute="trailing" type="default" id="HV9-KR-c3A"/>
@@ -8354,8 +8354,10 @@ HLA.I receive </string>
                                     <constraint firstItem="mlO-uz-ybV" firstAttribute="top" secondItem="Lo6-bV-80C" secondAttribute="top" type="default" id="Its-Jc-frY"/>
                                     <constraint firstItem="6zS-Ub-eCG" firstAttribute="leading" secondItem="coz-9M-iOt" secondAttribute="leading" type="default" id="JiP-Ub-4IL"/>
                                     <constraint firstItem="y0b-Jp-dgV" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="754" id="K6F-Op-TJV"/>
+                                    <constraint firstItem="6zS-Ub-eCG" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="173" id="K78-x2-3a1"/>
                                     <constraint firstItem="cBv-Am-5q9" firstAttribute="leading" secondItem="dck-j9-C48" secondAttribute="leading" constant="587" id="L6z-P0-oPX"/>
                                     <constraint firstItem="RcC-2T-uBe" firstAttribute="baseline" secondItem="sxH-aj-2aM" secondAttribute="baseline" type="default" id="LMZ-5E-vQb"/>
+                                    <constraint firstItem="cBv-Am-5q9" firstAttribute="bottom" secondItem="yRZ-K7-OkL" secondAttribute="bottom" type="default" id="OQB-PB-GX7"/>
                                     <constraint firstItem="KUG-iW-DSd" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="581" id="Osy-TA-UAi"/>
                                     <constraint firstItem="jtv-qZ-MM1" firstAttribute="centerX" secondItem="Xzb-79-rJp" secondAttribute="centerX" type="default" id="P21-Us-Rmc"/>
                                     <constraint firstItem="SzM-0A-k0t" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="388" id="P8A-nI-gmz"/>
@@ -8366,7 +8368,7 @@ HLA.I receive </string>
                                     <constraint firstItem="DS1-5D-7I9" firstAttribute="leading" secondItem="Lo6-bV-80C" secondAttribute="leading" type="default" id="S5V-SQ-BI1"/>
                                     <constraint firstItem="N0N-tK-JJm" firstAttribute="trailing" secondItem="LOo-zy-G7N" secondAttribute="trailing" type="default" id="SYf-SD-0FQ"/>
                                     <constraint firstItem="y0b-Jp-dgV" firstAttribute="leading" secondItem="3To-j6-smC" secondAttribute="leading" type="default" id="SdG-kJ-do2"/>
-                                    <constraint firstItem="6zS-Ub-eCG" firstAttribute="bottom" secondItem="GHa-rE-GNJ" secondAttribute="bottom" type="default" id="TdO-GK-giY"/>
+                                    <constraint firstItem="9LR-Jo-eEt" firstAttribute="bottom" secondItem="yRZ-K7-OkL" secondAttribute="bottom" type="default" id="SsC-0Y-LjI"/>
                                     <constraint firstItem="dhd-d7-hM6" firstAttribute="leading" secondItem="pZc-va-b1c" secondAttribute="leading" type="default" id="UKL-w4-2un"/>
                                     <constraint firstItem="6oY-e7-LI9" firstAttribute="centerY" secondItem="3aj-Gt-MNV" secondAttribute="centerY" type="default" id="Umu-F4-azr"/>
                                     <constraint firstItem="FG9-lC-Ffa" firstAttribute="trailing" secondItem="Bvh-Lz-AiT" secondAttribute="trailing" type="default" id="VRW-xx-HKe"/>
@@ -8381,10 +8383,12 @@ HLA.I receive </string>
                                     <constraint firstItem="sVz-dd-fFG" firstAttribute="leading" secondItem="yPV-hh-XD7" secondAttribute="leading" type="default" id="YW2-gt-lgm"/>
                                     <constraint firstItem="keh-4d-J4b" firstAttribute="trailing" secondItem="Nkq-XU-s2m" secondAttribute="trailing" type="default" id="YtX-Rp-iz5"/>
                                     <constraint firstItem="sxF-a5-F6u" firstAttribute="trailing" secondItem="GHa-rE-GNJ" secondAttribute="trailing" type="default" id="ZHK-sS-92y"/>
+                                    <constraint firstItem="NUh-fV-RMZ" firstAttribute="bottom" secondItem="GHa-rE-GNJ" secondAttribute="bottom" type="default" id="aoo-uJ-R6W"/>
                                     <constraint firstItem="yRZ-K7-OkL" firstAttribute="baseline" secondItem="cBv-Am-5q9" secondAttribute="baseline" type="default" id="atd-vn-8xU"/>
                                     <constraint firstItem="ZqE-GH-qsA" firstAttribute="leading" secondItem="Xzb-79-rJp" secondAttribute="leading" type="default" id="b82-zF-vKi"/>
                                     <constraint firstItem="AVF-9F-mDl" firstAttribute="top" secondItem="hSA-pD-aht" secondAttribute="top" type="default" id="c6A-bT-8Ec"/>
                                     <constraint firstItem="aKS-nZ-I4b" firstAttribute="leading" secondItem="yll-oc-MfT" secondAttribute="leading" type="default" id="dmj-PH-Kw8"/>
+                                    <constraint firstItem="cBv-Am-5q9" firstAttribute="top" secondItem="yRZ-K7-OkL" secondAttribute="top" type="default" id="dmo-hZ-T2y"/>
                                     <constraint firstItem="sxF-a5-F6u" firstAttribute="top" secondItem="6vH-ea-ffA" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="eM1-xv-wki"/>
                                     <constraint firstItem="coz-9M-iOt" firstAttribute="trailing" secondItem="6zS-Ub-eCG" secondAttribute="trailing" type="default" id="es0-js-V9S"/>
                                     <constraint firstItem="Xzb-79-rJp" firstAttribute="leading" secondItem="dck-j9-C48" secondAttribute="leading" constant="37" id="esv-C6-EqO"/>
@@ -8397,7 +8401,6 @@ HLA.I receive </string>
                                     <constraint firstItem="Hkh-cy-FtX" firstAttribute="leading" secondItem="GHa-rE-GNJ" secondAttribute="leading" type="default" id="gpm-Un-lZr"/>
                                     <constraint firstItem="I9E-bP-VhA" firstAttribute="trailing" secondItem="KUG-iW-DSd" secondAttribute="trailing" type="default" id="h37-xc-XxR"/>
                                     <constraint firstItem="keh-4d-J4b" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="407" id="hUv-PB-Af4"/>
-                                    <constraint firstItem="coz-9M-iOt" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="224" id="hxw-pi-Ni7"/>
                                     <constraint firstItem="I9E-bP-VhA" firstAttribute="leading" secondItem="KUG-iW-DSd" secondAttribute="leading" type="default" id="i2h-sN-10B"/>
                                     <constraint firstItem="cBv-Am-5q9" firstAttribute="leading" secondItem="WRe-Nj-LVH" secondAttribute="leading" type="default" id="i9o-Yt-zgl"/>
                                     <constraint firstItem="NUh-fV-RMZ" firstAttribute="centerY" secondItem="jtv-qZ-MM1" secondAttribute="centerY" type="default" id="kF1-Fg-mVi"/>
@@ -8420,6 +8423,7 @@ HLA.I receive </string>
                                     <constraint firstItem="DS1-5D-7I9" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" constant="390" id="rhi-Ux-k5t"/>
                                     <constraint firstItem="Hkh-cy-FtX" firstAttribute="leading" secondItem="dck-j9-C48" secondAttribute="leading" constant="423" id="sD6-05-hjI"/>
                                     <constraint firstItem="Y0F-7T-4UC" firstAttribute="top" secondItem="dck-j9-C48" secondAttribute="top" type="default" id="sTJ-8A-rUy"/>
+                                    <constraint firstItem="Hkh-cy-FtX" firstAttribute="centerY" secondItem="cBv-Am-5q9" secondAttribute="centerY" type="default" id="tTQ-Yb-45K"/>
                                     <constraint firstItem="sxF-a5-F6u" firstAttribute="leading" secondItem="pZc-va-b1c" secondAttribute="leading" type="default" id="ukm-FG-SNt"/>
                                     <constraint firstItem="9LR-Jo-eEt" firstAttribute="leading" secondItem="yll-oc-MfT" secondAttribute="leading" type="default" id="uxe-xZ-GFO"/>
                                     <constraint firstItem="3To-j6-smC" firstAttribute="top" secondItem="ZqE-GH-qsA" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="v3P-cX-YOp"/>
@@ -8437,7 +8441,6 @@ HLA.I receive </string>
                                     <constraint firstItem="Wsb-HJ-fut" firstAttribute="bottom" secondItem="DS1-5D-7I9" secondAttribute="bottom" type="default" id="ykt-RT-XcP"/>
                                     <constraint firstItem="yRZ-K7-OkL" firstAttribute="leading" secondItem="NUh-fV-RMZ" secondAttribute="leading" type="default" id="yn7-by-eC8"/>
                                     <constraint firstItem="Nkq-XU-s2m" firstAttribute="leading" secondItem="keh-4d-J4b" secondAttribute="leading" type="default" id="zA7-ml-ChX"/>
-                                    <constraint firstItem="Hkh-cy-FtX" firstAttribute="top" secondItem="yRZ-K7-OkL" secondAttribute="top" type="default" id="ziw-DO-ggC"/>
                                 </constraints>
                             </scrollView>
                         </subviews>
@@ -9899,10 +9902,10 @@ HLA.I receive </string>
             </objects>
             <point key="canvasLocation" x="5638" y="7067"/>
         </scene>
-        <!--E App Personal Details-->
+        <!--View Controller-->
         <scene sceneID="oTO-cu-dTf">
             <objects>
-                <viewController storyboardIdentifier="eAppPersonalDataView" id="hPR-7S-eiO" customClass="eAppPersonalDetails" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="eAppPersonalDataView" id="hPR-7S-eiO" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fff-SN-eCm">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
