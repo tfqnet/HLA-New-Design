@@ -65,6 +65,9 @@
 - (IBAction)ActionRefresh:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *txtCommDate;
 - (IBAction)ActionDone:(id)sender;
+- (IBAction)ActionMaritalStatus:(id)sender;
+- (IBAction)ActionSmoker:(id)sender;
+
 
 
 //--request
@@ -75,6 +78,7 @@
 @property (nonatomic,strong) id requestCommDate;
 @property (nonatomic,strong) id requestSex;
 @property (nonatomic,strong) id requestSmoker;
+@property (nonatomic,strong) id requestMaritalStatus;
 
 @property (nonatomic, copy) NSString *getSINo;
 //--
@@ -125,6 +129,7 @@
 
 //declare for store in DB
 @property (nonatomic, copy) NSString *sex;
+@property (nonatomic, copy) NSString *MaritalStatus;
 @property (nonatomic, copy) NSString *smoker;
 @property (nonatomic, copy) NSString *DOB;
 @property (nonatomic, copy) NSString *commDate;

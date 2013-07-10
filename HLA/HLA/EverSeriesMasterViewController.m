@@ -338,6 +338,7 @@ id EverRiderCount;
             _EverFund.delegate = self;
             
 			self.EverFund.SINo = getSINo;
+			self.EverFund.getAge = getAge;
             [self addChildViewController:self.EverFund];
             [self.RightView addSubview:self.EverFund.view];
 				previousPath = selectedPath;

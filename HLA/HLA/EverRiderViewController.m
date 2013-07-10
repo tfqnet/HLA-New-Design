@@ -1704,8 +1704,11 @@
 			maxRiderSA = 0;
 		}
 		else{
-			maxRiderSA = maxRiderTerm;
+			maxRiderSA = maxSATerm;
 		}
+	}
+	else if([riderCode isEqualToString:@"MR"]){
+		maxRiderSA = maxSATerm;
 	}
 	
 	//    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);

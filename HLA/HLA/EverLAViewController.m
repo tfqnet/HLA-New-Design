@@ -17,7 +17,7 @@
 @end
 
 @implementation EverLAViewController
-@synthesize txtName, segGender, segSmoker,segStatus;
+@synthesize txtName, segGender, segSmoker,segStatus, MaritalStatus, requestMaritalStatus;
 @synthesize txtALB, txtCommDate, txtDOB;
 @synthesize txtOccpLoad;
 @synthesize txtCPA;
@@ -292,6 +292,21 @@
     }
     NSLog(@"smoker:%@",smoker);
     
+	MaritalStatus = [self.requestMaritalStatus description];
+	if ([MaritalStatus isEqualToString:@"S"]) {
+		segStatus.selectedSegmentIndex = 0;
+    }
+	else if ([MaritalStatus isEqualToString:@"M"]) {
+		segStatus.selectedSegmentIndex = 1;
+    }
+	else if ([MaritalStatus isEqualToString:@"D"]) {
+		segStatus.selectedSegmentIndex = 2;
+    }
+	else{
+		segStatus.selectedSegmentIndex = 3;
+	}
+    NSLog(@"Marital Status:%@",MaritalStatus);
+	
     occuCode = OccpCodePP;
     [self getOccLoadExist];
     [btnOccpDesc setTitle:occuDesc forState:UIControlStateNormal];
@@ -355,6 +370,19 @@
 			segSmoker.selectedSegmentIndex = 1;
         }
         NSLog(@"smoker:%@",smoker);
+		
+		if ([MaritalStatus isEqualToString:@"S"]) {
+			segStatus.selectedSegmentIndex = 0;
+		}
+		else if ([MaritalStatus isEqualToString:@"M"]) {
+			segStatus.selectedSegmentIndex = 1;
+		}
+		else if ([MaritalStatus isEqualToString:@"D"]) {
+			segStatus.selectedSegmentIndex = 2;
+		}
+		else{
+			segStatus.selectedSegmentIndex = 3;
+		}
         
         [self getOccLoadExist];
         [btnOccpDesc setTitle:occuDesc forState:UIControlStateNormal];
@@ -394,6 +422,19 @@
         }
         NSLog(@"smoker:%@",smoker);
         
+		if ([MaritalStatus isEqualToString:@"S"]) {
+			segStatus.selectedSegmentIndex = 0;
+		}
+		else if ([MaritalStatus isEqualToString:@"M"]) {
+			segStatus.selectedSegmentIndex = 1;
+		}
+		else if ([MaritalStatus isEqualToString:@"D"]) {
+			segStatus.selectedSegmentIndex = 2;
+		}
+		else{
+			segStatus.selectedSegmentIndex = 3;
+		}
+		
         DOB = DOBPP;
         [self calculateAge];
 		
@@ -505,8 +546,8 @@
         }
         
         NSString *insertSQL2 = [NSString stringWithFormat:@"INSERT INTO Clt_Profile (Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, "
-								"DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", "
-								"\"%@\", \"hla\", \"%d\")",txtName.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
+								"DateCreated, CreatedBy,indexNo, MaritalStatusCode) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", "
+								"\"%@\", \"hla\", \"%d\", '%@')",txtName.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo, MaritalStatus];
 
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -546,8 +587,8 @@
         NSString *querySQL = [NSString stringWithFormat:
 							  @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", "
 							  "ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", "
-							  "DateCreated = \"%@\"  WHERE id=\"%d\"",
-                              txtName.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,idProfile];
+							  "DateCreated = \"%@\", MaritalStatusCode = '%@'  WHERE id=\"%d\"",
+                              txtName.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,MaritalStatus, idProfile];
 		//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -646,8 +687,8 @@
         NSString *querySQL = [NSString stringWithFormat:
                               @"UPDATE Clt_Profile SET Name=\"%@\", Smoker=\"%@\", Sex=\"%@\", DOB=\"%@\", ALB=\"%d\", "
 							  "ANB=\"%d\", OccpCode=\"%@\", DateModified=\"%@\", ModifiedBy=\"hla\",indexNo=\"%d\", "
-							  "DateCreated = \"%@\"  WHERE id=\"%d\"",
-                              txtName.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate,lastIdProfile];
+							  "DateCreated = \"%@\", maritalStatusCode = '%@'  WHERE id=\"%d\"",
+                              txtName.text,smoker,sex,DOB,age,ANB,occuCode,currentdate,IndexNo, commDate, MaritalStatus, lastIdProfile];
 		//        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -682,9 +723,9 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
 							  @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, "
-							  "b.id, b.IndexNo, a.rowid FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
+							  "b.id, b.IndexNo, a.rowid, b.MaritalStatusCode FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
 							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Seq=1",getSINo];
-        
+
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -701,6 +742,8 @@
                 idProfile = sqlite3_column_int(statement, 9);
                 IndexNo = sqlite3_column_int(statement, 10);
                 idPayor = sqlite3_column_int(statement, 11);
+				const char *getMS = (const char*)sqlite3_column_text(statement, 12);
+				MaritalStatus = getMS == NULL ? nil : [[NSString alloc] initWithUTF8String:getMS];
                 NSLog(@"age:%d, indexNo:%d, idPayor:%d, idProfile:%d",age,IndexNo,idPayor,idProfile);
 				
             } else {
@@ -727,9 +770,9 @@
     {
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT a.SINo, b.id FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
-							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
+							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Seq=1",getSINo];
         
-		//        NSLog(@"%@",querySQL);
+		       // NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -1363,7 +1406,10 @@
         self.prospectPopover = [[UIPopoverController alloc] initWithContentViewController:_ProspectList];
     }
     
-    [self.prospectPopover presentPopoverFromRect:[sender frame] inView:self.view
+	CGRect ww = [sender frame];
+	ww.origin.y = [sender frame].origin.y + 50;
+	
+    [self.prospectPopover presentPopoverFromRect:ww inView:self.view
 						permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 }
 - (IBAction)ActionRefresh:(id)sender {
@@ -1430,5 +1476,29 @@
         [alert show];
     }
 	
+}
+
+- (IBAction)ActionMaritalStatus:(id)sender {
+	if ([segStatus selectedSegmentIndex]==0) {
+		MaritalStatus = @"S";
+    }
+    else if (segStatus.selectedSegmentIndex == 1){
+		MaritalStatus = @"M";
+    }
+	else if (segStatus.selectedSegmentIndex == 2){
+		MaritalStatus = @"D";
+    }
+	else if (segStatus.selectedSegmentIndex == 3){
+		MaritalStatus = @"W";
+    }
+}
+
+- (IBAction)ActionSmoker:(id)sender {
+	if ([segSmoker selectedSegmentIndex]==0) {
+        smoker = @"Y";
+    }
+    else if (segSmoker.selectedSegmentIndex == 1){
+        smoker = @"N";
+    }
 }
 @end

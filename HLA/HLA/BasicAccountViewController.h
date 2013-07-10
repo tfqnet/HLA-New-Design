@@ -132,5 +132,8 @@
 @property (nonatomic,copy) NSString *getBumpMode;
 @property (nonatomic,assign,readwrite) double getBasicPrem;
 @property (nonatomic,strong) NSString *getPlanCode;
+@property (nonatomic,strong) NSString *getCommFrom;
+@property (nonatomic,strong) NSString *getFor;
+@property (nonatomic,strong) NSString *getRTUP;
 
 @end

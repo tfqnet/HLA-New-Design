@@ -26,6 +26,7 @@
 
 //--request
 @property (nonatomic, copy) NSString *SINo;
+@property (nonatomic, assign,readwrite) int getAge;
 //--
 @property (nonatomic,copy) NSString *get2023;
 @property (nonatomic,copy) NSString *get2025;

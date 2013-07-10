@@ -251,7 +251,7 @@ static sqlite3 *contactDB = nil;
     [database executeUpdate:query];
 
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TPExcess (\"SINO\" VARCHAR, \"FromYear\" INTEGER, \"YearInt\" INTEGER, \"Amount\" "
-			 "DOUBLE, \"ForYear\" INTEGER,) "];
+			 "DOUBLE, \"ForYear\" INTEGER) "];
     [database executeUpdate:query];
 
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TPIncrease (\"SINO\" VARCHAR, \"FromYear\" INTEGER, \"YearInt\" INTEGER, \"Amount\" "

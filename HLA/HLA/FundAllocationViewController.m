@@ -16,7 +16,7 @@
 @synthesize txt2023,txt2025,txt2028,txt2030,txt2035,txtAge,txtCashFund,txtExpireCashFund,txtExpireSecureFund;
 @synthesize txtSecureFund, outletAge, outletReset,outletSustain, myScrollView;
 @synthesize SINo,get2023,get2025,get2028,get2030,get2035,getCashFund,getExpiredCashFund,getExpiredSecureFund;
-@synthesize getSecureFund, getSustainAge;
+@synthesize getSecureFund, getSustainAge, getAge;
 @synthesize delegate = _delegate;
 
 
@@ -145,23 +145,6 @@
 }
 
 
-- (IBAction)ActionDone:(id)sender {
-	
-	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-	[activeInstance performSelector:@selector(dismissKeyboard)];
-	
-	if ([self Validation]  == TRUE) {
-			
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
-			[alert setTag:1001];
-			[alert show];
-
-		
-	}
-	
-}
 
 
 -(void)InsertandUpdate{
@@ -327,6 +310,13 @@
 		[txtCashFund becomeFirstResponder ];
 		return FALSE;
 	}
+	else if([txtAge.text intValue ] < getAge + 10 ){
+		UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:[NSString stringWithFormat:@"Minimum Policy Sustainability (Age) is %d ", getAge + 10] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[failAlert show];
+		[txtAge becomeFirstResponder ];
+		return FALSE;
+	}
 	else if ([txtSecureFund.text isEqualToString:@"0"] && [txtExpireCashFund.text isEqualToString:@"0"] &&
 			 [txtExpireSecureFund.text isEqualToString:@"0"] ) {
 		NSString *msg;
@@ -478,6 +468,23 @@
 }
 
 #pragma mark - Button action
+
+- (IBAction)ActionDone:(id)sender {
+	
+	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+	[activeInstance performSelector:@selector(dismissKeyboard)];
+	
+	if ([self Validation]  == TRUE) {
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+		[alert setTag:1001];
+		[alert show];
+	}
+	
+}
+
 
 - (IBAction)ActionReset:(id)sender {
 	txt2023.text = @"0";

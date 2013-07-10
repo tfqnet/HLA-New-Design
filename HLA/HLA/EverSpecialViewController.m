@@ -110,11 +110,11 @@
 						 			{
 							 				ReduceExist = TRUE;
 							 				txtReduceAt.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
-							 				txtReduceTo.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+							 				//txtReduceTo.text = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
+										txtReduceTo.text = [NSString stringWithFormat:@"%.0f", sqlite3_column_double(statement, 1)];
 							 				
 							 			} else {
 								 				ReduceExist = FALSE;
-								 				//NSLog(@"error check tbl_Adm_TrnTypeNo");
 								 			}
 					 			sqlite3_finalize(statement);
 					 		}
@@ -170,17 +170,17 @@
 		 	}
 	
 	 	if (outletWithdrawal.selectedSegmentIndex == 0) {
-		 		if ([txtStartFrom.text isEqualToString:@""] )
+		 		if ([txtStartFrom.text isEqualToString:@"" ] ||  [txtStartFrom.text isEqualToString:@"0"]  )
 			 		{
 				 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-													  																message:@"First Regular Withdrawal policy year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+															message:@"First Regular Withdrawal policy year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 				 			[failAlert show];
 				 			[txtStartFrom becomeFirstResponder];
 				 			return FALSE;
 				 		}
-		 		if ([txtStartTo.text isEqualToString:@""]){
+		 		if ([txtStartTo.text isEqualToString:@""] || [txtStartTo.text isEqualToString:@"0"]){
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-												   																message:@"Last regular Withdrawal policy year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+										message:@"Last regular Withdrawal policy year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			 			[failAlert show];
 			 			[txtStartTo becomeFirstResponder];
 			 			return FALSE;
@@ -195,15 +195,15 @@
 			 		}
 		
 		
-		 		if([txtInterval.text isEqualToString:@""]){
+		 		if([txtInterval.text isEqualToString:@""] || [txtInterval.text isEqualToString:@"0"]){
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-												  																message:@"Interval (Years) for Regular Withdrawal is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+													message:@"Interval (Years) for Regular Withdrawal is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			 			[failAlert show];
 			 			[txtInterval becomeFirstResponder];
 			 			return FALSE;
 			 		}
 		
-		 		if([txtAmount.text isEqualToString:@""]){
+		 		if([txtAmount.text isEqualToString:@""] || [txtAmount.text isEqualToString:@"0"]){
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 												   																message:@"Amount for Regular Withdrawal is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			 			[failAlert show];
