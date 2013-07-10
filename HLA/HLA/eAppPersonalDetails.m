@@ -7,6 +7,7 @@
 //
 
 #import "eAppPersonalDetails.h"
+#import "ColorHexCode.h"
 
 @interface eAppPersonalDetails ()
 
@@ -17,6 +18,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
+    
+    CGRect frame = CGRectMake(0, 0, 400, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+    label.font = [UIFont boldSystemFontOfSize:20];
+    label.textAlignment = UITextAlignmentCenter;
+    label.textColor = [CustomColor colorWithHexString:@"234A7D"];
+    label.text = @"Personal Details";
+    self.navigationItem.titleView = label;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnNext:)];
 
 }
 
@@ -41,6 +57,11 @@
 	[super viewDidDisappear:animated];
 }
 
+- (void)btnNext:(id)sender
+{
+    
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

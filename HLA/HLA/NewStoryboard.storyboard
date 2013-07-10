@@ -1054,10 +1054,10 @@
             </objects>
             <point key="canvasLocation" x="1125" y="7067"/>
         </scene>
-        <!--Health Questionnaire-->
+        <!--View Controller-->
         <scene sceneID="YBY-jm-Wvw">
             <objects>
-                <viewController storyboardIdentifier="HealthView" id="7d2-Qg-Hh1" customClass="HealthQuestionnaire" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HealthView" id="7d2-Qg-Hh1" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NQg-gm-zcV">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -4832,7 +4832,6 @@ HLA.I receive </string>
                             <constraint firstItem="EBX-qD-ejU" firstAttribute="leading" secondItem="7Jr-gl-TYz" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="JBj-TM-6Fe"/>
                             <constraint firstItem="XV8-MC-JqF" firstAttribute="top" secondItem="GuI-ft-VYb" secondAttribute="top" constant="299" id="KKU-Zr-8zR"/>
                             <constraint firstItem="DWF-Bx-YWh" firstAttribute="leading" secondItem="W6y-zE-s15" secondAttribute="leading" type="default" id="KNx-ui-8W9"/>
-                            <constraint firstItem="YBT-hv-iI1" firstAttribute="top" secondItem="wFZ-CF-3Q1" secondAttribute="top" type="default" id="Kmk-AC-GX3"/>
                             <constraint firstItem="M98-i9-AIa" firstAttribute="top" secondItem="EGt-yp-nG6" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="Knd-Z6-MN0"/>
                             <constraint firstItem="wFZ-CF-3Q1" firstAttribute="top" secondItem="h0z-1g-d21" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="Lch-IQ-XfJ"/>
                             <constraint firstItem="qgd-oc-bMl" firstAttribute="leading" secondItem="Y01-uN-6zh" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="O2C-LK-Z5K"/>
@@ -4840,7 +4839,6 @@ HLA.I receive </string>
                             <constraint firstItem="32x-Un-hZx" firstAttribute="top" secondItem="GuI-ft-VYb" secondAttribute="top" constant="491" id="PjV-UE-C6u"/>
                             <constraint firstItem="EGt-yp-nG6" firstAttribute="trailing" secondItem="M98-i9-AIa" secondAttribute="trailing" type="default" id="Pmw-h9-MdV"/>
                             <constraint firstItem="h0z-1g-d21" firstAttribute="trailing" secondItem="M98-i9-AIa" secondAttribute="trailing" type="default" id="Qcn-qd-IUn"/>
-                            <constraint firstItem="YBT-hv-iI1" firstAttribute="top" secondItem="uWz-BQ-27G" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="UTj-Rf-6Ju"/>
                             <constraint firstItem="7Jr-gl-TYz" firstAttribute="top" secondItem="rqh-dm-ehD" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="Wbo-7h-5gQ"/>
                             <constraint firstItem="wv4-Ps-uie" firstAttribute="top" secondItem="GuI-ft-VYb" secondAttribute="top" type="default" id="XyN-uV-ukx"/>
                             <constraint firstItem="XV8-MC-JqF" firstAttribute="leading" secondItem="vts-ep-vlA" secondAttribute="leading" type="default" id="YSz-is-qzs"/>
@@ -7033,10 +7031,10 @@ HLA.I receive </string>
             </objects>
             <point key="canvasLocation" x="5377" y="9515"/>
         </scene>
-        <!--Health Questionnaire2-->
+        <!--View Controller-->
         <scene sceneID="rra-Of-WXi">
             <objects>
-                <viewController storyboardIdentifier="HQ2" id="TM1-DQ-ZQg" customClass="HealthQuestionnaire2" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HQ2" id="TM1-DQ-ZQg" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yGh-n2-ZrW">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -9185,10 +9183,10 @@ HLA.I receive </string>
             </objects>
             <point key="canvasLocation" x="7099" y="5918"/>
         </scene>
-        <!--Nominees-->
+        <!--View Controller-->
         <scene sceneID="hIr-x9-4dT">
             <objects>
-                <viewController storyboardIdentifier="PopNomineesView" id="GxF-nQ-os1" customClass="Nominees" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PopNomineesView" id="GxF-nQ-os1" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rG0-gY-zcI">
                         <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -9591,10 +9589,10 @@ HLA.I receive </string>
             </objects>
             <point key="canvasLocation" x="1968" y="7067"/>
         </scene>
-        <!--Health Questionnaire3-->
+        <!--View Controller-->
         <scene sceneID="Rlr-aS-ORd">
             <objects>
-                <viewController storyboardIdentifier="HQ3" id="CBy-gv-llz" customClass="HealthQuestionnaire3" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HQ3" id="CBy-gv-llz" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JfS-vy-R3y">
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -10474,10 +10472,10 @@ HLA.I receive </string>
             </objects>
             <point key="canvasLocation" x="1968" y="5913"/>
         </scene>
-        <!--Trustees-->
+        <!--View Controller-->
         <scene sceneID="fwZ-4t-aya">
             <objects>
-                <viewController storyboardIdentifier="TrusteeView" id="QT7-dm-b67" customClass="Trustees" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TrusteeView" id="QT7-dm-b67" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="arv-0E-Reu">
                         <rect key="frame" x="0.0" y="20" width="768" height="748"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
