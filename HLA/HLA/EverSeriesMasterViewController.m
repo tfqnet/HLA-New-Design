@@ -488,8 +488,8 @@ id EverRiderCount;
 		else{
 			self.EverFundMaturity = [self.storyboard instantiateViewControllerWithIdentifier:@"EverFundMaturity"];
             _EverFundMaturity.delegate = self;
-            
-			//self.EverFundMaturity.SINo = getSINo;
+			
+			self.EverFundMaturity.SINo = getSINo;
             [self addChildViewController:self.EverFundMaturity];
             [self.RightView addSubview:self.EverFundMaturity.view];
 			previousPath = selectedPath;

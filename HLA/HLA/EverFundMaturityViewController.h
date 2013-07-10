@@ -29,6 +29,11 @@
 @property (nonatomic, retain) UIPopoverController *FundPopover;
 @property (nonatomic,strong) id <EverFundMaturity> delegate;
 
+//--request
+@property (nonatomic, copy) NSString *SINo;
+//--
+
+
 - (IBAction)ACtionDone:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletFund;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *outletOptions;
@@ -46,4 +51,14 @@
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *outletTableLabel;
 
+@property (retain, nonatomic) NSMutableArray *aMaturityFund;
+@property (retain, nonatomic) NSMutableArray *aFundOption;
+@property (retain, nonatomic) NSMutableArray *aPercent;
+@property (retain, nonatomic) NSMutableArray *a2023;
+@property (retain, nonatomic) NSMutableArray *a2025;
+@property (retain, nonatomic) NSMutableArray *a2028;
+@property (retain, nonatomic) NSMutableArray *a2030;
+@property (retain, nonatomic) NSMutableArray *a2035;
+@property (retain, nonatomic) NSMutableArray *aCashFund;
+@property (retain, nonatomic) NSMutableArray *aSecureFund;
 @end

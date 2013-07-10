@@ -131,6 +131,12 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 	txtBasicPremium.delegate = self;
 	txtBasicSA.delegate = self;
 	txtBasicSA.tag = 1;
+	txtCommFrom.tag = 2;
+	txtFor.tag = 2;
+	txtCommFrom.delegate = self;
+	txtFor.delegate = self;
+	txtRTUP.tag = 3;
+	txtRTUP.delegate = self;
 	_planList = nil;
 }
 
@@ -258,7 +264,15 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 			label2.text = @"Max: Subject to underwriting";
             
             break;
-            
+			
+		case 2:
+			labelComm.text = [NSString stringWithFormat:@"Min: %d Max: %d", 1, 100- ageClient - 1];
+			labelFor.text = [NSString stringWithFormat:@"Min: %d Max: %d", 1, 100- ageClient];
+			
+            break;
+		case 3:
+			Label1.hidden = TRUE;
+			label2.hidden = TRUE;
         default:
             
             break;
@@ -268,17 +282,45 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 }
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-	if (textField.tag == 0) {
-		
-	}
+
 	return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
 	
+	if ([string length ] == 0) {
+		return  YES;
+	}
 	
-	
-	return YES;
+	if (textField.tag == 0 || textField.tag == 3) {
+		
+		NSRange rangeofDot = [textField.text rangeOfString:@"."];
+		if (rangeofDot.location != NSNotFound ) {
+			NSString *substring = [textField.text substringFromIndex:rangeofDot.location ];
+			
+			if ([string isEqualToString:@"."]) {
+				return NO;
+			}
+			
+			if (substring.length > 2 )
+			{
+				return NO;
+			}
+		}
+		
+		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+			return NO;
+		}
+	}
+	else{
+		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+			return NO;
+		}
+	}
+    
+	return  YES;
 }
 
 -(void)BasicPremiumDidChanged{
@@ -324,7 +366,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 	
 	txtPolicyTerm.text = [NSString stringWithFormat:@"%d", getPolicyTerm];
 	txtBasicSA.text = [NSString stringWithFormat:@"%.f", getSumAssured ];
-	txtBasicPremium.text = [NSString stringWithFormat:@"%.f", getBasicPrem ];
+	txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", getBasicPrem ];
 	
 	txtPremiumPayable.text = txtBasicPremium.text;
 	
@@ -584,7 +626,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
     
     int runningNoCust = CustLastNo + 1;
     NSString *fooCust = [NSString stringWithFormat:@"%04d", runningNoCust];
-    
+		
     PYCustCode = [[NSString alloc] initWithFormat:@"CL%@-%@",currentdate,fooCust];
     
     sqlite3_stmt *statement;
@@ -607,7 +649,9 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
         
         int ANB =PayorAge + 1;
         NSString *insertSQL2 = [NSString stringWithFormat:
-                                @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")", PYCustCode, NamePP, PayorSmoker, PayorSex, PayorDOB, PayorAge, ANB, PayorOccpCode, dateStr,PayorIndexNo];
+                                @"INSERT INTO Clt_Profile (CustCode, Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, "
+								"CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")",
+								PYCustCode, NamePP, PayorSmoker, PayorSex, PayorDOB, PayorAge, ANB, PayorOccpCode, dateStr,PayorIndexNo];
 		
 		//        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <sqlite3.h>
 
 @class PopOverFundViewController;
 @protocol FundListDelegate
@@ -14,7 +15,9 @@
 @end
 
 @interface PopOverFundViewController : UITableViewController{
-	    id <FundListDelegate> delegate;
+	NSString *databasePath;
+	sqlite3 *contactDB;
+	id <FundListDelegate> delegate;
 }
 
 @property (retain, nonatomic) NSMutableArray *ListOfFund;
@@ -22,4 +25,5 @@
 
 @property (readonly) NSString *selectedDesc;
 
+-(id)initWithString:(NSString *)sino;
 @end

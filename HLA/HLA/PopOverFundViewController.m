@@ -16,6 +16,53 @@
 @synthesize delegate;
 @synthesize ListOfFund;
 
+-(id)initWithString:(NSString *)sino {
+	
+	NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *docsDir = [dirPaths objectAtIndex:0];
+	databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+	ListOfFund = [[NSMutableArray alloc] init ];
+	
+	sqlite3_stmt *statement;
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+	{
+		NSString *querySQL = [NSString stringWithFormat: @"Select vu2023, vu2025, vu2028, vu2030, vu2035 "
+							  "FROM UL_Details where sino = '%@' ", sino ];
+		
+		//NSLog(@"%@", querySQL);
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+		{
+			if (sqlite3_step(statement) == SQLITE_ROW)
+			{
+				
+				if (![[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] isEqualToString:@"0"]) {
+					[ListOfFund addObject:@"HLA EverGreen 2023"];
+				}
+				
+				if (![[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)] isEqualToString:@"0"]) {
+					[ListOfFund addObject:@"HLA EverGreen 2025"];
+				}
+				
+				if (![[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)] isEqualToString:@"0"]) {
+					[ListOfFund addObject:@"HLA EverGreen 2028"];
+				}
+
+				if (![[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)] isEqualToString:@"0"]) {
+					[ListOfFund addObject:@"HLA EverGreen 2030"];
+				}
+				
+				if (![[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)] isEqualToString:@"0"]) {
+					[ListOfFund addObject:@"HLA EverGreen 2035"];
+				}
+				
+			}
+			sqlite3_finalize(statement);
+		}
+		sqlite3_close(contactDB);
+	}
+	return  self;
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -28,7 +75,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	ListOfFund = [[NSMutableArray alloc] initWithObjects:@"HLA EverGreen 2028", @"HLA EverGreen 2035", nil ];
+	
+	
+	//ListOfFund = [[NSMutableArray alloc] initWithObjects:@"HLA EverGreen 2028", @"HLA EverGreen 2035", nil ];
 }
 
 - (void)didReceiveMemoryWarning
