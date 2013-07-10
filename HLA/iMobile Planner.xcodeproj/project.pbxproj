@@ -276,7 +276,7 @@
 		EF90B0BB178C133A00FEC129 /* tickCheckBox.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0B9178C133A00FEC129 /* tickCheckBox.png */; };
 		EF90B0BD178CEFA000FEC129 /* LynnStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0BC178CEFA000FEC129 /* LynnStoryboard.storyboard */; };
 		EF90B0C0178CFABC00FEC129 /* HealthQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */; };
-		EF90B0C2178D076500FEC129 /* disclosure_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0C1178D076500FEC129 /* disclosure_indicator.png */; };
+		EF90B0C6178D38BF00FEC129 /* disclosure_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */; };
 		EF97FFAF1773F9C800C95844 /* PersonalDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFAE1773F9C800C95844 /* PersonalDetails.m */; };
 		EF97FFB21773F9DD00C95844 /* AdditionalQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */; };
 		EF9C47A2178525A20093289C /* Nominees.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9C47A1178525A20093289C /* Nominees.m */; };
@@ -696,7 +696,7 @@
 		EF90B0BC178CEFA000FEC129 /* LynnStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LynnStoryboard.storyboard; sourceTree = "<group>"; };
 		EF90B0BE178CFABA00FEC129 /* HealthQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestions.h; sourceTree = "<group>"; };
 		EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestions.m; sourceTree = "<group>"; };
-		EF90B0C1178D076500FEC129 /* disclosure_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure_indicator.png; sourceTree = "<group>"; };
+		EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure_indicator.png; sourceTree = "<group>"; };
 		EF97FFAD1773F9C800C95844 /* PersonalDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDetails.h; sourceTree = "<group>"; };
 		EF97FFAE1773F9C800C95844 /* PersonalDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDetails.m; sourceTree = "<group>"; };
 		EF97FFB01773F9DD00C95844 /* AdditionalQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalQuestions.h; sourceTree = "<group>"; };
@@ -1081,7 +1081,7 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				EF90B0C1178D076500FEC129 /* disclosure_indicator.png */,
+				EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */,
 				EF90B0B8178C133A00FEC129 /* emptyCheckBox.png */,
 				EF90B0B9178C133A00FEC129 /* tickCheckBox.png */,
 				EFEB7A501766E8CC004FF3CE /* homeScreenEApp.png */,
@@ -1714,9 +1714,9 @@
 				EF90B0BA178C133A00FEC129 /* emptyCheckBox.png in Resources */,
 				EF90B0BB178C133A00FEC129 /* tickCheckBox.png in Resources */,
 				EF90B0BD178CEFA000FEC129 /* LynnStoryboard.storyboard in Resources */,
-				EF90B0C2178D076500FEC129 /* disclosure_indicator.png in Resources */,
 				427CF9D3178D1958004452BC /* HLA_Rates.sqlite in Resources */,
 				427CF9D4178D1958004452BC /* hladb.sqlite in Resources */,
+				EF90B0C6178D38BF00FEC129 /* disclosure_indicator.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1960,8 +1960,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1976,8 +1976,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -1987,8 +1987,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -2003,8 +2003,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;

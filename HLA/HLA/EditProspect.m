@@ -398,27 +398,25 @@ bool IsContinue = TRUE;
     if (btnPressed.tag == 0) {
         
         if (checked) {
-            [btnForeignHome setImage: [UIImage imageNamed:@"cb_glossy_off.png"] forState:UIControlStateNormal];
+            [btnForeignHome setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
             checked = NO;
         }
         else {
-            [btnForeignHome setImage: [UIImage imageNamed:@"cb_glossy_on.png"] forState:UIControlStateNormal];
+            [btnForeignHome setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
             checked = YES;
         }
-
     }
     
     else if (btnPressed.tag == 1) {
         
         if (checked2) {
-            [btnForeignOffice setImage: [UIImage imageNamed:@"cb_glossy_off.png"] forState:UIControlStateNormal];
+            [btnForeignOffice setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
             checked2 = NO;
         }
         else {
-            [btnForeignOffice setImage: [UIImage imageNamed:@"cb_glossy_on.png"] forState:UIControlStateNormal];
+            [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
             checked2 = YES;
         }
-        
     }
 }
 

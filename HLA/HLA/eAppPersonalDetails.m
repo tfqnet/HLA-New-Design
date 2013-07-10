@@ -32,7 +32,7 @@
     label.text = @"Personal Details";
     self.navigationItem.titleView = label;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnNext:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(btnEdit:)];
 
 }
 
@@ -57,11 +57,12 @@
 	[super viewDidDisappear:animated];
 }
 
-- (void)btnNext:(id)sender
+- (void)btnEdit:(id)sender
 {
     
     
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

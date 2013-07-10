@@ -5037,7 +5037,7 @@
                                                         <constraint firstAttribute="height" constant="43" id="x42-nX-Sb5"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Button" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5073,12 +5073,11 @@
                                             <constraint firstItem="YNl-Mp-qxi" firstAttribute="baseline" secondItem="zgA-4S-0PV" secondAttribute="baseline" type="default" id="Boh-Td-LM1"/>
                                             <constraint firstItem="YNl-Mp-qxi" firstAttribute="leading" secondItem="XZa-hF-4um" secondAttribute="leading" constant="65" id="CkN-RU-Sfq"/>
                                             <constraint firstItem="zgA-4S-0PV" firstAttribute="baseline" secondItem="JSc-R6-qyC" secondAttribute="baseline" type="default" id="LNr-QH-YOE"/>
-                                            <constraint firstItem="JSc-R6-qyC" firstAttribute="centerY" secondItem="56R-QU-IjR" secondAttribute="centerY" type="default" id="M6h-W2-Kb6"/>
                                             <constraint firstItem="56R-QU-IjR" firstAttribute="baseline" secondItem="zgA-4S-0PV" secondAttribute="baseline" type="default" id="Oij-cn-tZH"/>
                                             <constraint firstItem="zgq-FJ-WK3" firstAttribute="top" secondItem="XZa-hF-4um" secondAttribute="top" constant="6" id="TZD-2f-Kvg"/>
                                             <constraint firstItem="YNl-Mp-qxi" firstAttribute="top" secondItem="zgA-4S-0PV" secondAttribute="top" type="default" id="WCr-vd-Kkm"/>
                                             <constraint firstItem="56R-QU-IjR" firstAttribute="top" secondItem="zgA-4S-0PV" secondAttribute="top" type="default" id="eAc-h8-DNa"/>
-                                            <constraint firstItem="JSc-R6-qyC" firstAttribute="leading" secondItem="XZa-hF-4um" secondAttribute="leading" constant="340" id="hMH-Bu-c5c"/>
+                                            <constraint firstItem="JSc-R6-qyC" firstAttribute="leading" secondItem="zgA-4S-0PV" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="fWq-aq-kO1"/>
                                             <constraint firstAttribute="trailing" secondItem="zgq-FJ-WK3" secondAttribute="trailing" constant="65" id="hle-Gk-uVh"/>
                                         </constraints>
                                     </tableViewCell>
@@ -5223,7 +5222,7 @@
                                                         <constraint firstAttribute="width" constant="46" id="oRO-Xl-9d8"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Dropdown List" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5320,7 +5319,7 @@
                                                         <constraint firstAttribute="width" constant="42" id="Xgc-2B-89B"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Dropdown List" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5371,6 +5370,7 @@
                                             <constraint firstItem="hBo-Bm-UXP" firstAttribute="baseline" secondItem="yHF-RP-7ax" secondAttribute="baseline" type="default" id="Ntq-Vx-s3O"/>
                                             <constraint firstItem="Cr1-Fx-gL1" firstAttribute="top" secondItem="hpN-Yk-Qoe" secondAttribute="top" constant="30" id="QN2-43-Xi4"/>
                                             <constraint firstItem="7VD-3q-ubq" firstAttribute="top" secondItem="hpN-Yk-Qoe" secondAttribute="top" constant="8" id="Vhg-vu-nP5"/>
+                                            <constraint firstAttribute="bottom" secondItem="yHF-RP-7ax" secondAttribute="bottom" constant="1" id="Za0-XB-ajO"/>
                                             <constraint firstAttribute="trailing" secondItem="hBo-Bm-UXP" secondAttribute="trailing" constant="124" id="dod-YD-LJj"/>
                                             <constraint firstItem="hBo-Bm-UXP" firstAttribute="top" secondItem="Cr1-Fx-gL1" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="elq-VT-Nef"/>
                                             <constraint firstItem="Rfy-f2-3CZ" firstAttribute="leading" secondItem="hpN-Yk-Qoe" secondAttribute="leading" constant="65" id="kI0-eY-Nkc"/>
@@ -5912,9 +5912,10 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wW9-0Z-cU5">
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="39" id="ABk-TE-xMF"/>
+                                                        <constraint firstAttribute="height" constant="40" id="gva-Hd-WmJ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Select" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5936,7 +5937,7 @@
                                                         <constraint firstAttribute="height" constant="39" id="S1V-Oy-NvR"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Select" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -5972,9 +5973,11 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
+                                            <constraint firstItem="wW9-0Z-cU5" firstAttribute="leading" secondItem="x85-yg-JfL" secondAttribute="leading" constant="337" id="08D-du-Gee"/>
                                             <constraint firstItem="9S5-hl-2dJ" firstAttribute="leading" secondItem="IpM-aD-BKj" secondAttribute="leading" type="default" id="19O-iX-zw6"/>
                                             <constraint firstItem="9S5-hl-2dJ" firstAttribute="baseline" secondItem="PqI-ZH-cwy" secondAttribute="baseline" type="default" id="4JV-2B-R7i"/>
                                             <constraint firstAttribute="trailing" secondItem="o9s-LH-uDW" secondAttribute="trailing" constant="210" id="5SH-84-7CQ"/>
+                                            <constraint firstItem="wW9-0Z-cU5" firstAttribute="leading" secondItem="PqI-ZH-cwy" secondAttribute="leading" type="default" id="6oy-aV-MBU"/>
                                             <constraint firstItem="hjD-XE-fyq" firstAttribute="top" secondItem="x85-yg-JfL" secondAttribute="top" constant="7" id="6qS-8E-q9p"/>
                                             <constraint firstItem="9S5-hl-2dJ" firstAttribute="trailing" secondItem="IpM-aD-BKj" secondAttribute="trailing" type="default" id="7Pa-4w-Hnh"/>
                                             <constraint firstItem="PqI-ZH-cwy" firstAttribute="trailing" secondItem="wW9-0Z-cU5" secondAttribute="trailing" type="default" id="83R-iP-z5C"/>
@@ -5984,19 +5987,17 @@
                                             <constraint firstItem="wW9-0Z-cU5" firstAttribute="top" secondItem="x85-yg-JfL" secondAttribute="top" constant="27" id="EVk-PO-kGs"/>
                                             <constraint firstItem="hjD-XE-fyq" firstAttribute="leading" secondItem="x85-yg-JfL" secondAttribute="leading" constant="65" id="FeX-Zx-c4F"/>
                                             <constraint firstAttribute="trailing" secondItem="AYs-WL-H0X" secondAttribute="trailing" constant="65" id="IBi-cF-hHY"/>
-                                            <constraint firstItem="wW9-0Z-cU5" firstAttribute="baseline" secondItem="IpM-aD-BKj" secondAttribute="baseline" type="default" id="IjM-A0-WiS"/>
-                                            <constraint firstItem="o9s-LH-uDW" firstAttribute="top" secondItem="x85-yg-JfL" secondAttribute="top" constant="16" id="Rvm-kw-YBe"/>
+                                            <constraint firstItem="o9s-LH-uDW" firstAttribute="centerY" secondItem="AYs-WL-H0X" secondAttribute="centerY" type="default" id="TsX-wv-ceB"/>
+                                            <constraint firstItem="wW9-0Z-cU5" firstAttribute="baseline" secondItem="o9s-LH-uDW" secondAttribute="baseline" type="default" id="UKE-Yv-uhN"/>
                                             <constraint firstItem="9S5-hl-2dJ" firstAttribute="top" secondItem="nSm-mF-iG8" secondAttribute="top" type="default" id="VwH-CX-b7u"/>
                                             <constraint firstItem="9S5-hl-2dJ" firstAttribute="baseline" secondItem="nSm-mF-iG8" secondAttribute="baseline" type="default" id="WP2-Vi-xMy"/>
-                                            <constraint firstItem="AYs-WL-H0X" firstAttribute="top" secondItem="o9s-LH-uDW" secondAttribute="top" type="default" id="a02-r2-axf"/>
-                                            <constraint firstItem="PqI-ZH-cwy" firstAttribute="centerX" secondItem="wW9-0Z-cU5" secondAttribute="centerX" type="default" id="chU-Wm-OcE"/>
+                                            <constraint firstItem="AYs-WL-H0X" firstAttribute="top" secondItem="x85-yg-JfL" secondAttribute="top" constant="15" id="Zj2-xm-ZUf"/>
+                                            <constraint firstItem="o9s-LH-uDW" firstAttribute="centerY" secondItem="IpM-aD-BKj" secondAttribute="centerY" type="default" id="foG-Zf-xJc"/>
+                                            <constraint firstItem="IpM-aD-BKj" firstAttribute="baseline" secondItem="AYs-WL-H0X" secondAttribute="baseline" type="default" id="g5B-9u-UFE"/>
                                             <constraint firstItem="Pub-ka-Mya" firstAttribute="leading" secondItem="o9s-LH-uDW" secondAttribute="leading" type="default" id="gov-ow-suY"/>
                                             <constraint firstItem="nSm-mF-iG8" firstAttribute="leading" secondItem="RA3-9S-hRy" secondAttribute="leading" type="default" id="hAK-Vz-bZp"/>
                                             <constraint firstItem="LrX-m0-Q1Y" firstAttribute="trailing" secondItem="AYs-WL-H0X" secondAttribute="trailing" type="default" id="ikC-Pb-fF2"/>
                                             <constraint firstItem="AYs-WL-H0X" firstAttribute="leading" secondItem="LrX-m0-Q1Y" secondAttribute="leading" type="default" id="iyf-kU-oc5"/>
-                                            <constraint firstItem="AYs-WL-H0X" firstAttribute="baseline" secondItem="wW9-0Z-cU5" secondAttribute="baseline" type="default" id="kBl-67-7ao"/>
-                                            <constraint firstItem="PqI-ZH-cwy" firstAttribute="leading" secondItem="x85-yg-JfL" secondAttribute="leading" constant="337" id="oSh-Tr-dYB"/>
-                                            <constraint firstItem="o9s-LH-uDW" firstAttribute="centerY" secondItem="IpM-aD-BKj" secondAttribute="centerY" type="default" id="pZ8-5F-aXp"/>
                                             <constraint firstItem="IpM-aD-BKj" firstAttribute="baseline" secondItem="RA3-9S-hRy" secondAttribute="baseline" type="default" id="rUY-92-6fg"/>
                                             <constraint firstItem="IpM-aD-BKj" firstAttribute="top" secondItem="RA3-9S-hRy" secondAttribute="top" type="default" id="rgp-st-fBL"/>
                                             <constraint firstAttribute="bottom" secondItem="Pub-ka-Mya" secondAttribute="bottom" constant="18" id="uyf-97-i4r"/>
@@ -6026,7 +6027,7 @@
                                                         <constraint firstAttribute="height" constant="33" id="lfX-mn-2af"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Select" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -6087,7 +6088,7 @@
                                                         <constraint firstAttribute="height" constant="35" id="hpq-Bn-lux"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Select" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -6100,7 +6101,7 @@
                                                         <constraint firstAttribute="height" constant="35" id="UC3-zN-Byz"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Select" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -6135,7 +6136,7 @@
                                                         <constraint firstAttribute="height" constant="32" id="r9c-ay-l0v"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Select" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -6192,7 +6193,7 @@
                                                         <constraint firstAttribute="width" constant="43" id="cEQ-cQ-YaC"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Select" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -6326,6 +6327,7 @@
                                             <constraint firstItem="9x6-vt-q8Z" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="20" type="default" id="3d2-92-1fN"/>
                                             <constraint firstItem="tYB-Ur-bpI" firstAttribute="leading" secondItem="HUE-bH-DJm" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="3fi-4g-mUQ"/>
                                             <constraint firstItem="tYB-Ur-bpI" firstAttribute="leading" secondItem="ky8-TF-0HF" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="4fo-xy-mXZ"/>
+                                            <constraint firstItem="6J5-El-uI2" firstAttribute="baseline" secondItem="l0z-pc-xyb" secondAttribute="baseline" type="default" id="4sf-w9-bbR"/>
                                             <constraint firstItem="3wK-1N-BbQ" firstAttribute="leading" secondItem="XzD-4c-czz" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="5S5-rB-BGH"/>
                                             <constraint firstItem="WrK-1F-UcE" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="2429" id="6dl-As-vP3"/>
                                             <constraint firstItem="TPy-1a-eHm" firstAttribute="top" secondItem="coX-Hf-inR" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="7au-uj-y48"/>
@@ -6338,10 +6340,10 @@
                                             <constraint firstItem="dPu-SQ-zbB" firstAttribute="leading" secondItem="MOj-ON-vwp" secondAttribute="leading" type="default" id="BqG-w2-aC0"/>
                                             <constraint firstItem="MOj-ON-vwp" firstAttribute="centerY" secondItem="iur-bj-z7f" secondAttribute="centerY" type="default" id="BxE-e0-xGw"/>
                                             <constraint firstItem="neJ-Q4-bcf" firstAttribute="leading" secondItem="TPy-1a-eHm" secondAttribute="leading" type="default" id="D0q-xz-RgN"/>
+                                            <constraint firstItem="6J5-El-uI2" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="33" id="EBa-t9-fsa"/>
                                             <constraint firstItem="pZP-3K-oBK" firstAttribute="leading" secondItem="HUE-bH-DJm" secondAttribute="leading" type="default" id="EnN-BL-0PB"/>
                                             <constraint firstItem="zG8-3u-F48" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="53" id="Ew4-9r-wva"/>
                                             <constraint firstItem="Rub-2b-csT" firstAttribute="top" secondItem="pnT-fZ-pGE" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="F6I-HO-rdY"/>
-                                            <constraint firstItem="l0z-pc-xyb" firstAttribute="centerY" secondItem="6J5-El-uI2" secondAttribute="centerY" type="default" id="FBX-2T-bYd"/>
                                             <constraint firstItem="gH1-Qn-veL" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="107" id="Fqu-M4-oD9"/>
                                             <constraint firstItem="44q-sD-fRx" firstAttribute="leading" secondItem="3wK-1N-BbQ" secondAttribute="leading" type="default" id="G4b-tN-zKr"/>
                                             <constraint firstItem="zG8-3u-F48" firstAttribute="leading" secondItem="9x6-vt-q8Z" secondAttribute="leading" type="default" id="Gqc-pW-Mm2"/>
@@ -6364,7 +6366,6 @@
                                             <constraint firstAttribute="bottom" secondItem="x3T-kc-vNM" secondAttribute="bottom" constant="17" id="R2Y-p2-OBc"/>
                                             <constraint firstItem="psa-0v-NJh" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="80" id="Sbx-W8-piw"/>
                                             <constraint firstItem="3Lp-fX-6ny" firstAttribute="baseline" secondItem="iYE-o1-1dZ" secondAttribute="baseline" type="default" id="Sd5-ZQ-kcz"/>
-                                            <constraint firstItem="Rub-2b-csT" firstAttribute="baseline" secondItem="6J5-El-uI2" secondAttribute="baseline" type="default" id="TW1-tJ-iKc"/>
                                             <constraint firstItem="dPu-SQ-zbB" firstAttribute="baseline" secondItem="ky8-TF-0HF" secondAttribute="baseline" type="default" id="UUW-Q5-wfC"/>
                                             <constraint firstItem="Rub-2b-csT" firstAttribute="leading" secondItem="I1V-Tl-j9g" secondAttribute="leading" constant="208" id="Uph-7I-svM"/>
                                             <constraint firstItem="cWI-qQ-KY0" firstAttribute="leading" secondItem="x3T-kc-vNM" secondAttribute="leading" type="default" id="VcH-4x-0BN"/>
@@ -6387,7 +6388,6 @@
                                             <constraint firstItem="pnT-fZ-pGE" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="9" id="kLL-9S-I58"/>
                                             <constraint firstItem="K7F-Wm-MIo" firstAttribute="centerY" secondItem="x3T-kc-vNM" secondAttribute="centerY" type="default" id="lOe-GD-LER"/>
                                             <constraint firstItem="YUA-ad-JGx" firstAttribute="bottom" secondItem="44q-sD-fRx" secondAttribute="bottom" type="default" id="m4A-an-Adr"/>
-                                            <constraint firstItem="HUE-bH-DJm" firstAttribute="baseline" secondItem="3wK-1N-BbQ" secondAttribute="baseline" type="default" id="m9y-sk-W8R"/>
                                             <constraint firstAttribute="bottom" secondItem="XzD-4c-czz" secondAttribute="bottom" constant="86" id="mBj-4C-KAP"/>
                                             <constraint firstItem="zG8-3u-F48" firstAttribute="trailing" secondItem="9x6-vt-q8Z" secondAttribute="trailing" type="default" id="obF-Mp-vEd"/>
                                             <constraint firstItem="x3T-kc-vNM" firstAttribute="trailing" secondItem="cWI-qQ-KY0" secondAttribute="trailing" type="default" id="ou3-5V-cG9"/>
@@ -6708,7 +6708,7 @@
                                                         <constraint firstAttribute="height" constant="24" id="LCg-ee-Uvn"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Button" image="emptyCheckBox.png">
+                                                    <state key="normal" image="emptyCheckBox.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -6722,7 +6722,7 @@
                                                         <constraint firstAttribute="width" constant="27" id="OkB-yX-t6F"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Button" image="emptyCheckBox.png">
+                                                    <state key="normal" image="emptyCheckBox.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -9104,7 +9104,7 @@
                                                         <constraint firstAttribute="height" constant="41" id="TbE-pu-ej0"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Button" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -9128,10 +9128,11 @@
                                             <constraint firstItem="ToZ-QQ-88U" firstAttribute="leading" secondItem="eZL-DM-lm3" secondAttribute="leading" constant="200" id="5x8-OZ-Bur"/>
                                             <constraint firstAttribute="trailing" secondItem="n9v-DP-CvX" secondAttribute="trailing" constant="52" id="Af4-dV-7O0"/>
                                             <constraint firstItem="6bh-hS-txu" firstAttribute="top" secondItem="ToZ-QQ-88U" secondAttribute="top" type="default" id="IK0-D5-IR3"/>
-                                            <constraint firstItem="ToZ-QQ-88U" firstAttribute="centerY" secondItem="eZL-DM-lm3" secondAttribute="centerY" type="default" id="Tfz-tb-sYO"/>
+                                            <constraint firstItem="n9v-DP-CvX" firstAttribute="centerY" secondItem="eZL-DM-lm3" secondAttribute="centerY" type="default" id="PKo-v9-M8W"/>
                                             <constraint firstItem="s1d-WZ-axW" firstAttribute="baseline" secondItem="n9v-DP-CvX" secondAttribute="baseline" type="default" id="gaJ-OC-JFq"/>
                                             <constraint firstItem="ToZ-QQ-88U" firstAttribute="baseline" secondItem="6bh-hS-txu" secondAttribute="baseline" type="default" id="s3O-zX-Bwi"/>
                                             <constraint firstItem="s1d-WZ-axW" firstAttribute="leading" secondItem="ToZ-QQ-88U" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="sVl-7C-VyR"/>
+                                            <constraint firstItem="n9v-DP-CvX" firstAttribute="centerY" secondItem="s1d-WZ-axW" secondAttribute="centerY" type="default" id="wWj-Rk-LU2"/>
                                             <constraint firstItem="6bh-hS-txu" firstAttribute="leading" secondItem="eZL-DM-lm3" secondAttribute="leading" constant="65" id="zYW-fm-vd8"/>
                                         </constraints>
                                     </tableViewCell>
@@ -11000,8 +11001,11 @@
                                                     <state key="highlighted">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="isAgree:" destination="sWt-ad-q12" eventType="touchUpInside" id="GcV-av-7Ll"/>
+                                                    </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4mp-xA-eQf">
+                                                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4mp-xA-eQf">
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="27" id="kiz-Uh-Q1P"/>
                                                     </constraints>
@@ -11013,6 +11017,9 @@
                                                     <state key="highlighted">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="isAgree:" destination="sWt-ad-q12" eventType="touchUpInside" id="Ucx-0f-xvH"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="agree" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyh-zf-MPn">
                                                     <constraints>
@@ -11070,6 +11077,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="X7s-Cp-E3X"/>
+                    <connections>
+                        <outlet property="btnAgree" destination="QXl-YR-9xq" id="PgH-O8-opt"/>
+                        <outlet property="btnDisagree" destination="4mp-xA-eQf" id="TVh-x3-zfQ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xlk-uT-KlC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -11564,7 +11575,7 @@
                                                         <constraint firstAttribute="height" constant="43" id="aMO-pD-DvB"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Button" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -11592,7 +11603,6 @@
                                             <constraint firstItem="yei-n8-lMG" firstAttribute="baseline" secondItem="rnG-VR-goR" secondAttribute="baseline" type="default" id="Jb2-po-MAh"/>
                                             <constraint firstItem="rnG-VR-goR" firstAttribute="centerY" secondItem="acE-Uh-mYk" secondAttribute="centerY" type="default" id="JcU-3p-3rA"/>
                                             <constraint firstItem="rnG-VR-goR" firstAttribute="leading" secondItem="acE-Uh-mYk" secondAttribute="leading" constant="328" id="jCh-vW-oZN"/>
-                                            <constraint firstItem="rnG-VR-goR" firstAttribute="centerY" secondItem="yei-n8-lMG" secondAttribute="centerY" type="default" id="onc-yp-CA3"/>
                                             <constraint firstItem="yei-n8-lMG" firstAttribute="top" secondItem="pw7-FO-hlD" secondAttribute="top" type="default" id="qe7-E7-EEb"/>
                                             <constraint firstItem="pw7-FO-hlD" firstAttribute="leading" secondItem="acE-Uh-mYk" secondAttribute="leading" constant="65" id="reo-Fa-n8Y"/>
                                         </constraints>
@@ -11732,7 +11742,7 @@
                                                         <constraint firstAttribute="height" constant="44" id="qdx-yS-wYa"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Dropdown List" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -11946,7 +11956,7 @@
                                                         <constraint firstAttribute="width" constant="42" id="lb8-E5-Qfo"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Dropdown List" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -12840,7 +12850,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="disclosure_indicator.png" width="50" height="50"/>
+        <image name="disclosure_indicator.png" width="8" height="13"/>
         <image name="emptyCheckBox.png" width="44" height="43"/>
     </resources>
     <classes>
@@ -12860,6 +12870,11 @@
         </class>
         <class className="Declaration" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/Declaration.h"/>
+            <relationships>
+                <relationship kind="action" name="isAgree:"/>
+                <relationship kind="outlet" name="btnAgree" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="btnDisagree" candidateClass="UIButton"/>
+            </relationships>
         </class>
         <class className="HealthQuestions" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HealthQuestions.h"/>

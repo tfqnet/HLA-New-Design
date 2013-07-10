@@ -18,7 +18,7 @@
 #import "HealthQuestionnaire2.h"
 #import "HealthQuestionnaire3.h"
 
-@interface MasterMenuEApp : UIViewController <HealthQuestionnaireDelegate, HealthQuestionnaire2Delegate>  {
+@interface MasterMenuEApp : UIViewController <HealthQuestionnaireDelegate, HealthQuestionnaire2Delegate,SummaryDelegate>  {
     NSIndexPath *selectedPath;
     NSIndexPath *previousPath;
     Summary *_SummaryVC;

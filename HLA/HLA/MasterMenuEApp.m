@@ -39,7 +39,7 @@
     [self addChildViewController:self.SummaryVC];
     [self.rightView addSubview:self.SummaryVC.view];
     selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     
     nextStoryboard = nil;
     
@@ -121,6 +121,7 @@
     if (indexPath.row == 0)     //summary
     {
         self.SummaryVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"SummaryScreen"];
+        _SummaryVC.delegate = self;
         [self addChildViewController:self.SummaryVC];
         [self.rightView addSubview:self.SummaryVC.view];
     }
@@ -170,6 +171,74 @@
     nextStoryboard = nil;
 }
 
+-(void)selectedMenu:(NSString *)menu
+{
+    NSLog(@"receive menu %@",menu);
+    UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
+    
+    if ([menu isEqualToString:@"1"]) {
+        
+        NSLog(@"1");
+        self.eAppPersonalDataVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppDataScreen"];
+        [self addChildViewController:self.eAppPersonalDataVC];
+        [self.rightView addSubview:self.eAppPersonalDataVC.view];
+        
+        selectedPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    
+    if ([menu isEqualToString:@"2"]) {
+        
+        self.PolicyVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"MainPolicyScreen"];
+        [self addChildViewController:self.PolicyVC];
+        [self.rightView addSubview:self.PolicyVC.view];
+        
+        selectedPath = [NSIndexPath indexPathForRow:2 inSection:0];
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    
+    if ([menu isEqualToString:@"3"]) {
+        
+        self.NomineesVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"MainNomineesScreen"];
+        [self addChildViewController:self.NomineesVC];
+        [self.rightView addSubview:self.NomineesVC.view];
+        
+        selectedPath = [NSIndexPath indexPathForRow:3 inSection:0];
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    
+    if ([menu isEqualToString:@"4"]) {
+        
+        self.HealthVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"HealthQuestScreen"];
+        _HealthVC.delegate = self;
+        [self addChildViewController:self.HealthVC];
+        [self.rightView addSubview:self.HealthVC.view];
+        
+        selectedPath = [NSIndexPath indexPathForRow:4 inSection:0];
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    
+    if ([menu isEqualToString:@"5"]) {
+        
+        self.AddQuestVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"AddQuestScreen"];
+        [self addChildViewController:self.AddQuestVC];
+        [self.rightView addSubview:self.AddQuestVC.view];
+        
+        selectedPath = [NSIndexPath indexPathForRow:5 inSection:0];
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    
+    if ([menu isEqualToString:@"6"]) {
+        
+        self.DeclareVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"DeclareEAppScreen"];
+        [self addChildViewController:self.DeclareVC];
+        [self.rightView addSubview:self.DeclareVC.view];
+        
+        selectedPath = [NSIndexPath indexPathForRow:6 inSection:0];
+        [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+}
+
 -(void) swipeToHQ2{
     self.HealthVC2 = [self.storyboard instantiateViewControllerWithIdentifier:@"HQ2"];
     _HealthVC2.delegate = self;
@@ -184,6 +253,8 @@
     [self.rightView addSubview:self.HealthVC3.view];
     
 }
+
+
 
 #pragma mark - memory managemnet
 

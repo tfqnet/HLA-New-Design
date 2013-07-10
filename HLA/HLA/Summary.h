@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Summary : UITableViewController
+@protocol SummaryDelegate
+-(void)selectedMenu:(NSString*)menu;
+@end
+
+@interface Summary : UITableViewController {
+    id <SummaryDelegate> _delegate;
+}
+
+@property (nonatomic,strong) id <SummaryDelegate> delegate;
 
 @end

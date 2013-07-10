@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Declaration : UITableViewController
+@interface Declaration : UITableViewController {
+    BOOL agreed;
+    BOOL disagreed;
+}
+
+@property (strong, nonatomic) IBOutlet UIButton *btnAgree;
+@property (strong, nonatomic) IBOutlet UIButton *btnDisagree;
+
+- (IBAction)isAgree:(id)sender;
 
 @end

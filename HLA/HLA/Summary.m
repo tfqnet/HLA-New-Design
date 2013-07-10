@@ -14,6 +14,7 @@
 @end
 
 @implementation Summary
+@synthesize delegate = _delegate;
 
 - (void)viewDidLoad
 {
@@ -31,6 +32,35 @@
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
     label.text = @"Summary";
     self.navigationItem.titleView = label;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    NSLog(@"click sec:%d path:%d",indexPath.section, indexPath.row);
+    
+    if (indexPath.section == 0) {
+        
+        if (indexPath.row == 0) {
+            NSString *aa = @"1";
+            [_delegate selectedMenu:aa];
+            NSLog(@"go sub1");
+        }
+        if (indexPath.row == 1) {
+            [_delegate selectedMenu:@"2"];
+        }
+        if (indexPath.row == 2) {
+            [_delegate selectedMenu:@"3"];
+        }
+        if (indexPath.row == 4) {
+            [_delegate selectedMenu:@"4"];
+        }
+        if (indexPath.row == 5) {
+            [_delegate selectedMenu:@"5"];
+        }
+        if (indexPath.row == 6) {
+            [_delegate selectedMenu:@"6"];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning

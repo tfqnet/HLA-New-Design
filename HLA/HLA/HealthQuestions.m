@@ -7,6 +7,7 @@
 //
 
 #import "HealthQuestions.h"
+#import "ColorHexCode.h"
 
 @interface HealthQuestions ()
 
@@ -14,24 +15,31 @@
 
 @implementation HealthQuestions
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
+    
+    CGRect frame = CGRectMake(0, 0, 400, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+    label.font = [UIFont boldSystemFontOfSize:20];
+    label.textAlignment = UITextAlignmentCenter;
+    label.textColor = [CustomColor colorWithHexString:@"234A7D"];
+    label.text = @"Health Questions";
+    self.navigationItem.titleView = label;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnDone:)];
+    
+}
+
+- (void)btnDone:(id)sender
+{
+    
+    
 }
 
 - (void)didReceiveMemoryWarning

@@ -10818,8 +10818,8 @@ HLA.I receive </string>
         </scene>
     </scenes>
     <resources>
-        <image name="emptyCheckBox.png" width="206" height="206"/>
-        <image name="tickCheckBox.png" width="206" height="206"/>
+        <image name="emptyCheckBox.png" width="44" height="43"/>
+        <image name="tickCheckBox.png" width="44" height="43"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
