@@ -7,31 +7,37 @@
 //
 
 #import "PersonalDetails.h"
+#import "ColorHexCode.h"
 
 @interface PersonalDetails ()
 
 @end
 
 @implementation PersonalDetails
-@synthesize btnPersonalDetails;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-         self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     
-    btnPersonalDetails.highlighted = TRUE;
-    btnPersonalDetails.enabled = FALSE;
-	// Do any additional setup after loading the view.
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
+    
+    CGRect frame = CGRectMake(0, 0, 400, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+    label.font = [UIFont boldSystemFontOfSize:20];
+    label.textAlignment = UITextAlignmentCenter;
+    label.textColor = [CustomColor colorWithHexString:@"234A7D"];
+    label.text = @"Personal Details";
+    self.navigationItem.titleView = label;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnDone:)];
+}
+
+- (void)btnDone:(id)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,8 +46,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-    [self setBtnPersonalDetails:nil];
+- (void)viewDidUnload
+{
     [super viewDidUnload];
 }
 @end

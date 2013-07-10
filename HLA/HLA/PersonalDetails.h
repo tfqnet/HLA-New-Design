@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface PersonalDetails : UIViewController
-@property (strong, nonatomic) IBOutlet UIButton *btnPersonalDetails;
 
 @end

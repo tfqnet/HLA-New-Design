@@ -7,6 +7,7 @@
 //
 
 #import "eAppPersonalDetails.h"
+#import "PersonalDetails.h"
 #import "ColorHexCode.h"
 
 @interface eAppPersonalDetails ()
@@ -32,7 +33,7 @@
     label.text = @"Personal Details";
     self.navigationItem.titleView = label;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(btnEdit:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnDone:)];
 
 }
 
@@ -57,10 +58,13 @@
 	[super viewDidDisappear:animated];
 }
 
-- (void)btnEdit:(id)sender
+- (void)btnDone:(id)sender
 {
-    
-    
+//    PersonalDetails *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"subDataScreen"];
+//    zzz.modalPresentationStyle = UIModalPresentationPageSheet;
+//    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//    [self presentModalViewController:zzz animated:NO];
+//    zzz.view.superview.frame = CGRectMake(0, 50, 748, 974);
 }
 
 - (void)didReceiveMemoryWarning

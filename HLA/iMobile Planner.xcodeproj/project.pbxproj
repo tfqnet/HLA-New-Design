@@ -1406,6 +1406,8 @@
 				423E8BB317700ED000E60C20 /* Summary.m */,
 				EF1ADDF31784066C00996388 /* eAppPersonalDetails.h */,
 				EF1ADDF41784066C00996388 /* eAppPersonalDetails.m */,
+				EF97FFAD1773F9C800C95844 /* PersonalDetails.h */,
+				EF97FFAE1773F9C800C95844 /* PersonalDetails.m */,
 				EF6A538B177943DA00D70960 /* PolicyDetails.h */,
 				EF6A538C177943DA00D70960 /* PolicyDetails.m */,
 				423E8BB517700EF900E60C20 /* NomineesTrustees.h */,
@@ -1426,8 +1428,6 @@
 				EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */,
 				423E8BBB17700FF200E60C20 /* Declaration.h */,
 				423E8BBC17700FF200E60C20 /* Declaration.m */,
-				EF97FFAD1773F9C800C95844 /* PersonalDetails.h */,
-				EF97FFAE1773F9C800C95844 /* PersonalDetails.m */,
 			);
 			name = eApp;
 			sourceTree = "<group>";
