@@ -1031,18 +1031,9 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 		[alert setTag:1003];
 		[alert show];
 	}
-
-
-
-
 }
 
-
-
-
-
-
-- (IBAction)ActionPayment:(id)sender {
+- (IBAction)ActionPremium:(id)sender {
 	double tempBasicPrem = [txtBasicPremium.text doubleValue ];
 	double tempBasicSA = [txtBasicSA.text doubleValue ];
 	double tempPremiumPayable = [txtPremiumPayable.text doubleValue ];
@@ -1065,7 +1056,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 				txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA/Monthly   ];
 				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable/Monthly   ];
 			}
-		
+			
 		}
 		getBumpMode	= @"A";
 	}
@@ -1089,7 +1080,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 			
 		}
 		getBumpMode= @"S";
-	
+		
 	}
 	else if (segPremium.selectedSegmentIndex == 2) {
 		if (![txtBasicPremium.text isEqualToString:@""]) {
@@ -1137,5 +1128,7 @@ const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
 		getBumpMode = @"M";
 		
 	}
+
+	
 }
 @end

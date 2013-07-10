@@ -146,31 +146,49 @@
 
 
 - (IBAction)ActionDone:(id)sender {
+	
+	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+	[activeInstance performSelector:@selector(dismissKeyboard)];
+	
 	if ([self Validation]  == TRUE) {
-		sqlite3_stmt *statement;
-		if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-		{
-			NSString *querySQL = [NSString stringWithFormat: @"UPDATE UL_DETAILS SET VU2023 = '%@', VU2025 = '%@', VU2028 = '%@', "
-								  "VU2030 = '%@', VU2035 = '%@', VUCash = '%@', VURET = '%@', VUCashOpt='%@', VURetOpt='%@', "
-								  "PolicySustainYear ='%@' where sino = '%@' ",
-								  txt2023.text, txt2025.text, txt2028.text, txt2030.text, txt2035.text, txtCashFund.text,
-								  txtSecureFund.text, txtExpireCashFund.text, txtExpireSecureFund.text, [self ReturnSustainAge], SINo ];
 			
-			//NSLog(@"%@", querySQL);
-			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-			{
-				if (sqlite3_step(statement) == SQLITE_ROW)
-				{
-					
-				} else {
-					//NSLog(@"error check tbl_Adm_TrnTypeNo");
-				}
-				sqlite3_finalize(statement);
-			}
-			sqlite3_close(contactDB);
-		}
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			[alert setTag:1001];
+			[alert show];
+
+		
 	}
 	
+}
+
+
+-(void)InsertandUpdate{
+	
+	 sqlite3_stmt *statement;
+	 if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+	 {
+		 NSString *querySQL = [NSString stringWithFormat: @"UPDATE UL_DETAILS SET VU2023 = '%@', VU2025 = '%@', VU2028 = '%@', "
+							   "VU2030 = '%@', VU2035 = '%@', VUCash = '%@', VURET = '%@', VUCashOpt='%@', VURetOpt='%@', "
+							   "PolicySustainYear ='%@' where sino = '%@' ",
+							   txt2023.text, txt2025.text, txt2028.text, txt2030.text, txt2035.text, txtCashFund.text,
+							   txtSecureFund.text, txtExpireCashFund.text, txtExpireSecureFund.text, [self ReturnSustainAge], SINo ];
+	 
+		 //NSLog(@"%@", querySQL);
+		 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+		 {
+			 if (sqlite3_step(statement) == SQLITE_ROW)
+			 {
+	 
+			 } else {
+				 //NSLog(@"error check tbl_Adm_TrnTypeNo");
+			 }
+			 sqlite3_finalize(statement);
+		 }
+		 sqlite3_close(contactDB);
+	 }
+	 
 }
 
 -(void)getExisting{
@@ -428,7 +446,12 @@
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-	if (alertView.tag == 1) {
+	
+	if (alertView.tag == 1001 && buttonIndex == 0) {
+		
+		[self InsertandUpdate];
+	}
+	else if (alertView.tag == 1) {
 		txt2023.enabled = NO;
 				txt2025.enabled = NO;
 				txt2028.enabled = NO;
