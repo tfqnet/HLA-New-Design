@@ -5551,7 +5551,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Basic Plan &amp; Rider" id="j3t-3I-9RE">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="62" id="59U-oA-Ay2">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="62" id="59U-oA-Ay2">
                                         <rect key="frame" x="0.0" y="98" width="768" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5589,7 +5589,7 @@
                                             <constraint firstItem="t20-NV-Yhu" firstAttribute="centerY" secondItem="ezs-Hu-FDb" secondAttribute="centerY" type="default" id="ttc-b2-IBS"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Bhy-h9-MxO">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Bhy-h9-MxO">
                                         <rect key="frame" x="0.0" y="161" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5624,7 +5624,7 @@
                                             <constraint firstItem="ZRH-OF-gOO" firstAttribute="leading" secondItem="Bhy-h9-MxO" secondAttribute="leading" constant="65" id="yIl-da-S6E"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="AMl-5c-UB1">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="AMl-5c-UB1">
                                         <rect key="frame" x="0.0" y="205" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5659,7 +5659,7 @@
                                             <constraint firstItem="bKl-QY-rPg" firstAttribute="leading" secondItem="AMl-5c-UB1" secondAttribute="leading" constant="65" id="pJy-4e-MjT"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="TSP-R4-SJj">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="TSP-R4-SJj">
                                         <rect key="frame" x="0.0" y="249" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5692,7 +5692,7 @@
                                             <constraint firstItem="E5h-5G-Hyd" firstAttribute="centerY" secondItem="TSP-R4-SJj" secondAttribute="centerY" type="default" id="bdl-AS-A9M"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="JT7-av-gWk">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="JT7-av-gWk">
                                         <rect key="frame" x="0.0" y="293" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5725,7 +5725,7 @@
                                             <constraint firstItem="dyj-zu-ipn" firstAttribute="leading" secondItem="JT7-av-gWk" secondAttribute="leading" constant="212" id="jLi-G1-mpx"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="X5a-BX-UYU">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="X5a-BX-UYU">
                                         <rect key="frame" x="0.0" y="337" width="768" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5762,7 +5762,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Regular Top-Up Option (For unit-linked product only)" id="41a-Uw-9AX">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="43" id="sNS-sb-kkS">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="43" id="sNS-sb-kkS">
                                         <rect key="frame" x="0.0" y="426" width="768" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5795,7 +5795,7 @@
                                             <constraint firstItem="JRs-Y9-MeD" firstAttribute="top" secondItem="sNS-sb-kkS" secondAttribute="top" constant="8" id="xuL-yN-IAx"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="hhR-nR-X13">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="hhR-nR-X13">
                                         <rect key="frame" x="0.0" y="470" width="768" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5832,7 +5832,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="          Type                   Rider Name          Term     Sum Assured       Modal Premium" id="nMF-ip-f6o">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="92" id="BtF-oW-sJV">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="92" id="BtF-oW-sJV">
                                         <rect key="frame" x="0.0" y="559" width="768" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -5858,7 +5858,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Payment" id="5Du-Vd-KgS">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="132" id="x85-yg-JfL">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="132" id="x85-yg-JfL">
                                         <rect key="frame" x="0.0" y="697" width="768" height="133"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6005,7 +6005,7 @@
                                             <constraint firstItem="IpM-aD-BKj" firstAttribute="leading" secondItem="x85-yg-JfL" secondAttribute="leading" constant="205" id="zeh-e9-ept"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="357" id="I1V-Tl-j9g">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="357" id="I1V-Tl-j9g">
                                         <rect key="frame" x="0.0" y="830" width="768" height="358"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6023,7 +6023,6 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6J5-El-uI2">
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="VPa-jb-xtX"/>
                                                         <constraint firstAttribute="height" constant="33" id="lfX-mn-2af"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -6085,6 +6084,7 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="76s-gF-adv">
                                                     <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="dzL-JL-XJf"/>
                                                         <constraint firstAttribute="height" constant="35" id="hpq-Bn-lux"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -6367,6 +6367,7 @@
                                             <constraint firstItem="psa-0v-NJh" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="80" id="Sbx-W8-piw"/>
                                             <constraint firstItem="3Lp-fX-6ny" firstAttribute="baseline" secondItem="iYE-o1-1dZ" secondAttribute="baseline" type="default" id="Sd5-ZQ-kcz"/>
                                             <constraint firstItem="dPu-SQ-zbB" firstAttribute="baseline" secondItem="ky8-TF-0HF" secondAttribute="baseline" type="default" id="UUW-Q5-wfC"/>
+                                            <constraint firstItem="76s-gF-adv" firstAttribute="trailing" secondItem="6J5-El-uI2" secondAttribute="trailing" type="default" id="UeK-LL-9xf"/>
                                             <constraint firstItem="Rub-2b-csT" firstAttribute="leading" secondItem="I1V-Tl-j9g" secondAttribute="leading" constant="208" id="Uph-7I-svM"/>
                                             <constraint firstItem="cWI-qQ-KY0" firstAttribute="leading" secondItem="x3T-kc-vNM" secondAttribute="leading" type="default" id="VcH-4x-0BN"/>
                                             <constraint firstItem="bCE-Fb-SAR" firstAttribute="leading" secondItem="coX-Hf-inR" secondAttribute="leading" type="default" id="VuM-MY-Xdy"/>
@@ -6377,9 +6378,7 @@
                                             <constraint firstItem="syw-RA-S4e" firstAttribute="trailing" secondItem="6J5-El-uI2" secondAttribute="trailing" type="default" id="eKn-ed-EbS"/>
                                             <constraint firstItem="34q-yO-pTS" firstAttribute="centerY" secondItem="neJ-Q4-bcf" secondAttribute="centerY" type="default" id="ejw-z7-rx1"/>
                                             <constraint firstAttribute="bottom" secondItem="cWI-qQ-KY0" secondAttribute="bottom" constant="64" id="fV9-EE-t4h"/>
-                                            <constraint firstItem="76s-gF-adv" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="109" id="ffE-tE-7FZ"/>
                                             <constraint firstItem="coX-Hf-inR" firstAttribute="leading" secondItem="TPy-1a-eHm" secondAttribute="leading" type="default" id="gkO-Fe-isc"/>
-                                            <constraint firstItem="76s-gF-adv" firstAttribute="trailing" secondItem="syw-RA-S4e" secondAttribute="trailing" type="default" id="h9C-O1-InQ"/>
                                             <constraint firstItem="WrK-1F-UcE" firstAttribute="leading" secondItem="I1V-Tl-j9g" secondAttribute="leading" constant="45" id="hgR-vI-8RT"/>
                                             <constraint firstItem="MOj-ON-vwp" firstAttribute="trailing" secondItem="dPu-SQ-zbB" secondAttribute="trailing" type="default" id="hjq-J0-CaS"/>
                                             <constraint firstItem="neJ-Q4-bcf" firstAttribute="leading" secondItem="iur-bj-z7f" secondAttribute="leading" type="default" id="i5y-fu-k9J"/>
@@ -6404,6 +6403,7 @@
                                             <constraint firstAttribute="trailing" secondItem="44q-sD-fRx" secondAttribute="trailing" constant="57" id="zFI-t7-dk6"/>
                                             <constraint firstItem="76s-gF-adv" firstAttribute="baseline" secondItem="gH1-Qn-veL" secondAttribute="baseline" type="default" id="zVy-xj-EdN"/>
                                             <constraint firstItem="HUE-bH-DJm" firstAttribute="centerY" secondItem="tYB-Ur-bpI" secondAttribute="centerY" type="default" id="zix-Xc-bS3"/>
+                                            <constraint firstItem="76s-gF-adv" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" type="default" id="zsn-Ki-0ZK"/>
                                             <constraint firstItem="neJ-Q4-bcf" firstAttribute="top" secondItem="I1V-Tl-j9g" secondAttribute="top" constant="126" id="zyy-fi-I0e"/>
                                         </constraints>
                                     </tableViewCell>
@@ -6411,7 +6411,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Fully/ Reduce Paid Up" id="bWZ-Mm-vc0">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="67" id="qB4-0s-JgR">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="67" id="qB4-0s-JgR">
                                         <rect key="frame" x="0.0" y="1232" width="768" height="68"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6466,7 +6466,7 @@
                                             <constraint firstAttribute="trailing" secondItem="o0d-Ep-KDR" secondAttribute="trailing" constant="59" id="vdH-lF-gUu"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="67" id="RWN-jY-WMV">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="67" id="RWN-jY-WMV">
                                         <rect key="frame" x="0.0" y="1300" width="768" height="68"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6527,7 +6527,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="For Shared Case from Same Direct Unit" id="xQR-4t-Hf0">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="47" id="yc4-Vk-JDa">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="47" id="yc4-Vk-JDa">
                                         <rect key="frame" x="0.0" y="1412" width="768" height="48"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6595,7 +6595,7 @@
                                             <constraint firstItem="twk-pE-x52" firstAttribute="baseline" secondItem="FEt-4m-uWI" secondAttribute="baseline" type="default" id="zEk-TL-fhx"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="47" id="LNZ-Za-HTu">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="47" id="LNZ-Za-HTu">
                                         <rect key="frame" x="0.0" y="1460" width="768" height="48"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6637,7 +6637,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="For Venture and Perfect Series Only" id="bAt-zQ-0Nt">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="185" id="1wa-1q-vNc">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="185" id="1wa-1q-vNc">
                                         <rect key="frame" x="0.0" y="1596" width="768" height="186"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6669,7 +6669,7 @@
                                             <constraint firstItem="Kic-mQ-Ksz" firstAttribute="top" secondItem="RVs-gT-TdA" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="gSr-3H-XgH"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="103" id="h3k-Cb-Cke">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="103" id="h3k-Cb-Cke">
                                         <rect key="frame" x="0.0" y="1782" width="768" height="103"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6749,7 +6749,7 @@
                                             <constraint firstItem="gkB-Of-aVX" firstAttribute="bottom" secondItem="xCg-pB-W8x" secondAttribute="bottom" type="default" id="xcp-u2-VF0"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="162" id="1CF-K3-UhO">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="162" id="1CF-K3-UhO">
                                         <rect key="frame" x="0.0" y="1885" width="768" height="163"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6858,7 +6858,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="For Perfect Series Only" id="jn7-K7-MNE">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="101" id="KQI-0Z-z7N">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="101" id="KQI-0Z-z7N">
                                         <rect key="frame" x="0.0" y="2092" width="768" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6988,7 +6988,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ZzD-gT-HNr" secondAttribute="bottom" constant="7" id="xXj-Ni-YUE"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="68" id="K0I-j3-j0R">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="68" id="K0I-j3-j0R">
                                         <rect key="frame" x="0.0" y="2194" width="768" height="69"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7038,7 +7038,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="For Ever Series Only" id="62G-YX-XVL">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="155" id="qDt-q6-YCq">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="155" id="qDt-q6-YCq">
                                         <rect key="frame" x="0.0" y="2307" width="768" height="157"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7113,7 +7113,7 @@
                         <sections>
                             <tableViewSection headerTitle="Part 4 : Existing Life Policies" id="xzI-KI-FdP">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="59" id="jYX-3V-V9V">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="59" id="jYX-3V-V9V">
                                         <rect key="frame" x="0.0" y="54" width="768" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7135,7 +7135,7 @@
                                                         <constraint firstAttribute="height" constant="44" id="v67-DD-cPX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Dropdown" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -7165,7 +7165,7 @@
                                             <constraint firstItem="dx9-Ro-u9Y" firstAttribute="centerY" secondItem="jYX-3V-V9V" secondAttribute="centerY" type="default" id="miD-to-ZjF"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="321" id="nLk-tS-Wlz">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="321" id="nLk-tS-Wlz">
                                         <rect key="frame" x="0.0" y="114" width="768" height="321"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7300,7 +7300,7 @@
                                             <constraint firstItem="H0g-3c-jtI" firstAttribute="top" secondItem="iXl-Jf-19V" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="zDZ-Dt-1vR"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="675" id="jjP-Rb-fE3">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="675" id="jjP-Rb-fE3">
                                         <rect key="frame" x="0.0" y="435" width="768" height="675"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7481,7 +7481,7 @@
                                             <constraint firstItem="fno-6Y-BMn" firstAttribute="trailing" secondItem="kO8-7Z-toj" secondAttribute="trailing" type="default" id="yjy-W8-pTD"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="217" id="Mqs-tQ-B7u">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="217" id="Mqs-tQ-B7u">
                                         <rect key="frame" x="0.0" y="1110" width="768" height="217"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7759,7 +7759,7 @@
                                             <constraint firstItem="fog-jI-SKM" firstAttribute="centerY" secondItem="kdo-Pf-eUt" secondAttribute="centerY" type="default" id="zOh-OO-2Sf"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="93" id="5UI-PF-7oO">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="93" id="5UI-PF-7oO">
                                         <rect key="frame" x="0.0" y="1327" width="768" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7854,7 +7854,7 @@
                         <sections>
                             <tableViewSection id="95O-0m-WvT">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="54" id="qJb-0q-31C">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="54" id="qJb-0q-31C">
                                         <rect key="frame" x="0.0" y="30" width="540" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7876,7 +7876,7 @@
                                                         <constraint firstAttribute="height" constant="44" id="kmc-0z-oPL"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Button" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -7906,7 +7906,7 @@
                                             <constraint firstItem="CO2-9G-waB" firstAttribute="baseline" secondItem="5qu-sa-KL8" secondAttribute="baseline" type="default" id="u4N-dX-6In"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="wiH-8T-4OU">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="wiH-8T-4OU">
                                         <rect key="frame" x="0.0" y="85" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7939,7 +7939,7 @@
                                             <constraint firstItem="WKr-2p-nH5" firstAttribute="centerY" secondItem="wiH-8T-4OU" secondAttribute="centerY" type="default" id="ep8-b0-wtn"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="nD9-Ky-atS">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="nD9-Ky-atS">
                                         <rect key="frame" x="0.0" y="129" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -7972,7 +7972,7 @@
                                             <constraint firstItem="NIZ-mt-ose" firstAttribute="leading" secondItem="nD9-Ky-atS" secondAttribute="leading" constant="252" id="sdT-r3-q5n"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="hvz-uA-8wm">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="hvz-uA-8wm">
                                         <rect key="frame" x="0.0" y="173" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8006,7 +8006,7 @@
                                             <constraint firstItem="MbS-Z6-N05" firstAttribute="centerY" secondItem="UcK-gB-Qeu" secondAttribute="centerY" type="default" id="tL9-jX-kFp"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZRP-UU-OkY">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZRP-UU-OkY">
                                         <rect key="frame" x="0.0" y="217" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8040,7 +8040,7 @@
                                             <constraint firstItem="ULL-5v-Z36" firstAttribute="leading" secondItem="ZRP-UU-OkY" secondAttribute="leading" constant="251" id="sut-1f-ezw"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="DhC-YT-KM0">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="DhC-YT-KM0">
                                         <rect key="frame" x="0.0" y="261" width="540" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8115,7 +8115,7 @@
                         <sections>
                             <tableViewSection headerTitle="Section A : Nomination of Nominees" id="yW9-01-nBQ">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="124" id="ODa-aR-Jge">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="124" id="ODa-aR-Jge">
                                         <rect key="frame" x="0.0" y="54" width="768" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8167,7 +8167,7 @@
                                             <constraint firstAttribute="bottom" secondItem="h9b-mh-fnX" secondAttribute="bottom" constant="44" id="tGP-Y1-cja"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="61" id="SbJ-IC-xmj">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="61" id="SbJ-IC-xmj">
                                         <rect key="frame" x="0.0" y="179" width="768" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8192,7 +8192,7 @@
                                             <constraint firstItem="YV1-Af-yzS" firstAttribute="top" secondItem="SbJ-IC-xmj" secondAttribute="top" constant="7" id="x7l-mW-Zuc"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="106" id="hHb-7G-234">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="106" id="hHb-7G-234">
                                         <rect key="frame" x="0.0" y="240" width="768" height="106"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8217,7 +8217,7 @@
                                             <constraint firstItem="qgk-co-uDD" firstAttribute="leading" secondItem="hHb-7G-234" secondAttribute="leading" constant="61" id="d8J-hM-aWJ"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="289" id="y5p-JV-Fua">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="289" id="y5p-JV-Fua">
                                         <rect key="frame" x="0.0" y="346" width="768" height="290"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8363,7 +8363,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Section B: Appointment of Trustee(s)" id="y85-mO-lQY">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="337" id="Q2g-jU-pxq">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="337" id="Q2g-jU-pxq">
                                         <rect key="frame" x="0.0" y="680" width="768" height="339"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8506,7 +8506,7 @@
                         <sections>
                             <tableViewSection headerTitle="Nominee Details" id="4dE-48-SWD">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="J8F-uX-Ehp">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="J8F-uX-Ehp">
                                         <rect key="frame" x="0.0" y="54" width="540" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8537,7 +8537,7 @@
                                             <constraint firstItem="9sB-eo-AMp" firstAttribute="centerY" secondItem="J8F-uX-Ehp" secondAttribute="centerY" type="default" id="pEB-kx-hc2"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="fGo-0G-lXT">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="fGo-0G-lXT">
                                         <rect key="frame" x="0.0" y="99" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8567,7 +8567,7 @@
                                                         <constraint firstAttribute="width" constant="40" id="kwJ-xR-T4W"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Dropdown List" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -8582,13 +8582,14 @@
                                             <constraint firstAttribute="trailing" secondItem="iFe-qj-UIw" secondAttribute="trailing" constant="45" id="2iP-yb-y1o"/>
                                             <constraint firstItem="cSV-4G-Ltp" firstAttribute="leading" secondItem="fGo-0G-lXT" secondAttribute="leading" constant="185" id="Cei-ch-sg0"/>
                                             <constraint firstItem="cSV-4G-Ltp" firstAttribute="top" secondItem="DkP-39-S2E" secondAttribute="top" type="default" id="FPT-WE-Pt5"/>
+                                            <constraint firstItem="iFe-qj-UIw" firstAttribute="top" secondItem="fGo-0G-lXT" secondAttribute="top" constant="7" id="JCI-zx-Tml"/>
                                             <constraint firstItem="cSV-4G-Ltp" firstAttribute="centerY" secondItem="fGo-0G-lXT" secondAttribute="centerY" type="default" id="djg-B3-AEC"/>
                                             <constraint firstItem="cSV-4G-Ltp" firstAttribute="baseline" secondItem="DkP-39-S2E" secondAttribute="baseline" type="default" id="mSg-qE-OnX"/>
                                             <constraint firstItem="DkP-39-S2E" firstAttribute="leading" secondItem="fGo-0G-lXT" secondAttribute="leading" constant="51" id="nNz-YE-0RB"/>
                                             <constraint firstItem="cSV-4G-Ltp" firstAttribute="baseline" secondItem="iFe-qj-UIw" secondAttribute="baseline" type="default" id="swa-hT-Shu"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="uR5-jT-Hdn">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="uR5-jT-Hdn">
                                         <rect key="frame" x="0.0" y="143" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8621,7 +8622,7 @@
                                             <constraint firstItem="Hjn-GW-HDe" firstAttribute="centerY" secondItem="uR5-jT-Hdn" secondAttribute="centerY" type="default" id="hvf-1S-Wdf"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="HNm-qU-zli">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="HNm-qU-zli">
                                         <rect key="frame" x="0.0" y="187" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8655,7 +8656,7 @@
                                             <constraint firstItem="FNz-Rk-HRz" firstAttribute="leading" secondItem="HNm-qU-zli" secondAttribute="leading" constant="51" id="zPn-ei-tfW"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="4QF-ND-ioz">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="4QF-ND-ioz">
                                         <rect key="frame" x="0.0" y="231" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8686,7 +8687,7 @@
                                                         <constraint firstAttribute="width" constant="40" id="Ga8-nP-vUX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <state key="normal" title="Dropdown List" image="disclosure_indicator.png">
+                                                    <state key="normal" image="disclosure_indicator.png">
                                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -8706,7 +8707,7 @@
                                             <constraint firstItem="N1B-P0-OvB" firstAttribute="centerY" secondItem="liC-a2-GDc" secondAttribute="centerY" type="default" id="qFO-GV-MHh"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rru-O7-4XJ">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rru-O7-4XJ">
                                         <rect key="frame" x="0.0" y="275" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8741,7 +8742,7 @@
                                             <constraint firstItem="Sf3-uS-MdN" firstAttribute="top" secondItem="rru-O7-4XJ" secondAttribute="top" constant="6" id="u85-O0-qaG"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="PwG-fn-vwT">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="PwG-fn-vwT">
                                         <rect key="frame" x="0.0" y="319" width="540" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8782,7 +8783,7 @@
                                             <constraint firstItem="s1m-yX-Kmx" firstAttribute="centerY" secondItem="PwG-fn-vwT" secondAttribute="centerY" type="default" id="w96-YG-gTC"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="62" id="n1g-ES-WpD">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="62" id="n1g-ES-WpD">
                                         <rect key="frame" x="0.0" y="363" width="540" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8818,7 +8819,7 @@
                                             <constraint firstItem="2AE-hN-mzx" firstAttribute="top" secondItem="n1g-ES-WpD" secondAttribute="top" constant="20" type="default" id="ixO-oY-jPl"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="a8M-W2-2mm">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="a8M-W2-2mm">
                                         <rect key="frame" x="0.0" y="425" width="540" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8852,7 +8853,7 @@
                                             <constraint firstItem="uSm-ba-Zip" firstAttribute="leading" secondItem="a8M-W2-2mm" secondAttribute="leading" constant="175" id="gDC-9u-vWf"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="97" id="Sbq-Ri-OCe">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="97" id="Sbq-Ri-OCe">
                                         <rect key="frame" x="0.0" y="475" width="540" height="97"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -8899,7 +8900,7 @@
                                             <constraint firstItem="Ory-Q2-28I" firstAttribute="top" secondItem="Sbq-Ri-OCe" secondAttribute="top" constant="44" id="x26-Dt-B15"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="247" id="hzM-3R-3Lm">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="247" id="hzM-3R-3Lm">
                                         <rect key="frame" x="0.0" y="572" width="540" height="248"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -11790,7 +11791,7 @@
                                             <constraint firstItem="8f7-c0-Zfi" firstAttribute="baseline" secondItem="7ey-oE-YoE" secondAttribute="baseline" type="default" id="y5H-th-FOe"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="54" id="0o7-XR-Cfw">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="54" id="0o7-XR-Cfw">
                                         <rect key="frame" x="0.0" y="404" width="768" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -11849,7 +11850,7 @@
                                             <constraint firstItem="h0g-mU-2mH" firstAttribute="baseline" secondItem="ho0-eE-rmc" secondAttribute="baseline" type="default" id="fJa-96-nEu"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="63" id="soA-IB-As3">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="63" id="soA-IB-As3">
                                         <rect key="frame" x="0.0" y="458" width="768" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -11911,7 +11912,7 @@
                                             <constraint firstItem="71p-DI-ITe" firstAttribute="baseline" secondItem="EN7-ZP-yQA" secondAttribute="baseline" type="default" id="mvS-h8-JZ7"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="122" id="8JR-gM-2E6">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="122" id="8JR-gM-2E6">
                                         <rect key="frame" x="0.0" y="521" width="768" height="122"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -11992,7 +11993,7 @@
                                             <constraint firstAttribute="trailing" secondItem="3xn-AX-CcF" secondAttribute="trailing" constant="66" id="vYj-Zh-keE"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="140" id="27p-ON-rbf">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="140" id="27p-ON-rbf">
                                         <rect key="frame" x="0.0" y="643" width="768" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -12091,7 +12092,7 @@
                                             <constraint firstItem="2cl-Pd-ThP" firstAttribute="leading" secondItem="Qfj-6C-dVg" secondAttribute="leading" type="default" id="tof-9T-g28"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="63" id="5bB-Im-8nb">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="63" id="5bB-Im-8nb">
                                         <rect key="frame" x="0.0" y="783" width="768" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -12146,7 +12147,7 @@
                                             <constraint firstItem="aN2-fG-etO" firstAttribute="top" secondItem="5bB-Im-8nb" secondAttribute="top" constant="20" type="default" id="yF0-hj-aJt"/>
                                         </constraints>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="426" id="v4R-GA-60q">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="426" id="v4R-GA-60q">
                                         <rect key="frame" x="0.0" y="846" width="768" height="427"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -12631,7 +12632,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Parent/ Guardian Consent" id="0Ry-yv-Xbv">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="134" id="bqG-co-kMp">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="134" id="bqG-co-kMp">
                                         <rect key="frame" x="0.0" y="1317" width="768" height="136"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
