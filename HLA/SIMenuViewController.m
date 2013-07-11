@@ -19,6 +19,7 @@
 #import "PDSViewController.h"
 #import "CashPromiseViewController.h"
 #import "AppDelegate.h"
+#import "MaineApp.h"
 
 @interface SIMenuViewController ()
 
@@ -1815,12 +1816,19 @@ id RiderCount;
     
     else if (indexPath.row == 8)    //proposal
     {
+        /*
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Under progress!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
-        alert = Nil;
+        alert = Nil;*/
         
-//        previousPath = selectedPath;
-        blocked = YES;
+        previousPath = selectedPath;
+        blocked = NO;
+        
+        UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
+        MaineApp *main = [secondStoryboard instantiateViewControllerWithIdentifier:@"maineApp"];
+        main.IndexTab = 2;
+        [self presentViewController:main animated:NO completion:nil];
+        main = Nil, secondStoryboard = nil;
     }
     
     else if (indexPath.row == 10) {   //English PDS
