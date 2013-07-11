@@ -1208,8 +1208,8 @@ PostcodeContinue = TRUE;
         
     }
     
-    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Prospect Profile"
-                                                           message:@"A new prospect record successfully inserted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView *SuccessAlert = [[UIAlertView alloc] initWithTitle:@"Client Profile"
+                                                           message:@"A new client record successfully inserted." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
     SuccessAlert.tag = 1;
     [SuccessAlert show];
     

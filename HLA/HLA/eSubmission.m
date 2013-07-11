@@ -15,10 +15,12 @@
 
 @implementation eSubmission
 @synthesize idNoLabel,idTypeLabel,nameLabel,policyNoLabel,statusLabel,myTableView,btnDate;
-@synthesize clientData,dateLabel;
+@synthesize clientData,dateLabel,btnIDType,btnStatus;
 @synthesize eAppsVC = _eAppsVC;
 @synthesize statusPopover = _statusPopover;
 @synthesize statusVC = _statusVC;
+@synthesize IDTypePopover = _IDTypePopover;
+@synthesize IDTypeVC = _IDTypeVC;
 
 - (void)viewDidLoad
 {
@@ -102,7 +104,7 @@
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
     
-    [btnDate setTitle:dateString forState:UIControlStateNormal];
+    [btnDate setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", dateString] forState:UIControlStateNormal];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:Nil];
     
     if (_SIDate == Nil) {
@@ -130,12 +132,37 @@
 
 }
 
+- (IBAction)ActionIDType:(id)sender
+{
+    if (_IDTypeVC == nil) {
+        
+        self.IDTypeVC = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
+        _IDTypeVC.delegate = self;
+        self.IDTypePopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypeVC];
+    }
+    
+    [self.IDTypePopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (IBAction)ActionStatus:(id)sender
+{
+    if (_statusVC == Nil) {
+        
+        self.statusVC = [[eAppStatusList alloc] initWithStyle:UITableViewStylePlain];
+        _statusVC.delegate = self;
+        self.statusPopover = [[UIPopoverController alloc] initWithContentViewController:_statusVC];
+    }
+    
+    [self.statusPopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+}
+
 
 #pragma mark - delegate
 
 -(void)DateSelected:(NSString *)strDate :(NSString *)dbDate
 {
-    [btnDate setTitle:strDate forState:UIControlStateNormal ];
+    btnDate.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [btnDate setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", strDate] forState:UIControlStateNormal];
     
     NSDateFormatter* df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyy-MM-dd"];
@@ -158,6 +185,20 @@
     [self resignFirstResponder];
     [self.view endEditing:YES];
     [_SIDatePopover dismissPopoverAnimated:YES];
+}
+
+-(void)selectedStatus:(NSString *)theStatus
+{
+    btnStatus.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [btnStatus setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", theStatus] forState:UIControlStateNormal];
+    [self.statusPopover dismissPopoverAnimated:YES];
+}
+
+-(void)selectedIDType:(NSString *)selectedIDType
+{
+    btnIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [btnIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", selectedIDType] forState:UIControlStateNormal];
+    [self.IDTypePopover dismissPopoverAnimated:YES];
 }
 
 
@@ -290,6 +331,8 @@
     [self setMyTableView:nil];
     [self setBtnDate:nil];
     [self setDateLabel:nil];
+    [self setBtnIDType:nil];
+    [self setBtnStatus:nil];
     [super viewDidUnload];
 }
 @end
