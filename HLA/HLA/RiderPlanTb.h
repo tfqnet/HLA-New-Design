@@ -22,6 +22,7 @@
 }
 
 
+
 @property (nonatomic,strong) id <RiderPlanTbDelegate> delegate;
 @property (readonly) NSString *selectedItem;
 @property (readonly) NSString *selectedItemDesc;
@@ -32,6 +33,6 @@
 @property (nonatomic,strong) id requestOccpCat;
 @property (nonatomic, assign,readwrite) double requestSA;
 
--(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)valueSum andOccpCat:(NSString *)OccpCat;
+-(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)valueSum andOccpCat:(NSString *)OccpCat andTradOrEver:(NSString *)TradOrEver;
 
 @end

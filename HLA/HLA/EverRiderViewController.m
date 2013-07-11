@@ -117,6 +117,8 @@
 	txtSumAssured.delegate = self;
 	txtRRTUPTerm.delegate = self;
 	txtRRTUP.delegate =self;
+	txtHL.delegate = self;
+	txtHLTerm.delegate = self;
 	
 	txtRiderTerm.tag = 1;
 	txtPaymentTerm.tag = 2;
@@ -125,6 +127,8 @@
 	txtSumAssured.tag = 5;
 	txtRRTUPTerm.tag = 6;
 	txtRRTUP.tag =7;
+	txtHL.tag = 8;
+	txtHLTerm.tag = 9;
 	
 	ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
 	
@@ -318,6 +322,10 @@
 				lblMax.text = @"";
 				lblMin.text = @"";
 			}
+			else if ([riderCode isEqualToString:@"ACIR"]){
+				lblMax.numberOfLines = 2;
+				lblMax.text = [NSString stringWithFormat:@"Max SA: %.f(Subject to CI Benefit\nLimit per Life of RM1.5mil)",maxRiderSA];
+			}
 			else{
 				lblMax.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
 			}
@@ -333,17 +341,56 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+	/*
 	NSString *newString     = [textField.text stringByReplacingCharactersInRange:range withString:string];
     NSArray  *arrayOfString = [newString componentsSeparatedByString:@"."];
     if ([arrayOfString count] > 2 )
     {
         return NO;
     }
+    */
+	
+	if ([string length ] == 0) {
+		return  YES;
+	}
+	
+	if (textField.tag == 1 || textField.tag == 8 || textField.tag == 9) {
+		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+			return NO;
+		}
+	}
+	else{
+		if (ECAR55MonthlyIncome == TRUE || ECARYearlyIncome == TRUE) {
+			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+				return NO;
+			}
+			
+			NSRange rangeofDot = [textField.text rangeOfString:@"."];
+			if (rangeofDot.location != NSNotFound ) {
+				NSString *substring = [textField.text substringFromIndex:rangeofDot.location ];
+				
+				if ([string isEqualToString:@"."]) {
+					return NO;
+				}
+				
+				if (substring.length > 2 )
+				{
+					return NO;
+				}
+			}
+		}
+		else{
+			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+				return NO;
+			}
+		}
+	}
+	
+	
     
-    NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
-    if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
-        return NO;
-    }
 	return  YES;
 }
 
@@ -601,7 +648,6 @@
         //
         if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"SUMA"]]) {
             lbl5.text = [NSString stringWithFormat:@"%@ :",[FLabelDesc objectAtIndex:i]];
-            
             sumA = YES;
         }
 		else if([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"YINC"]]){
@@ -767,7 +813,7 @@
         txtPaymentTerm.hidden = YES;
         
         NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
-        self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat];
+        self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat andTradOrEver:@"EVER"];
         _planList.delegate = self;
         
         [self.outletRiderPlan setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
@@ -1525,6 +1571,8 @@
 -(void)RiderListController:(RiderListTbViewController *)inController didSelectCode:(NSString *)code desc:(NSString *)desc{
 	//reset value existing
 	Edit = TRUE;
+	lblMax.text = @"";
+	lblMin.text = @"";
 	
     if (riderCode != NULL) {
         [self clearField];
@@ -1694,7 +1742,7 @@
 		}
 	}
 	else if([riderCode isEqualToString:@"LSR"]){
-			maxRiderSA = -1;
+			maxRiderSA = 9999999990;
 	}
 	else if([riderCode isEqualToString:@"PA"]){
 		maxRiderSA = getBasicSA * 5;
@@ -1707,11 +1755,11 @@
 			maxRiderSA = maxSATerm;
 		}
 	}
-	else if([riderCode isEqualToString:@"MR"]){
+	else if([riderCode isEqualToString:@"MR"] ){
 		maxRiderSA = maxSATerm;
 	}
 	
-	//    NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
+	NSLog(@"maxSA(%@):%.f",riderCode,maxRiderSA);
 }
 
 #pragma mark - validate
@@ -2029,7 +2077,18 @@
 		}
 		
 	}
-	
+	else if ([riderCode isEqualToString:@"ECAR"] && [txtSumAssured.text intValue ] < minSATerm ){
+		NSString *msg = [NSString stringWithFormat:@"Yearly Income must be greater than or equal to %d", minSATerm ];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+	}
+	else if ([riderCode isEqualToString:@"ECAR55"] && [txtSumAssured.text intValue ] < minSATerm ){
+		NSString *msg = [NSString stringWithFormat:@"Monthly Income must be greater than or equal to %d", minSATerm ];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+	}
     else if (([riderCode isEqualToString:@"HMM"] ||
               [riderCode isEqualToString:@"MG_IV"] || [riderCode isEqualToString:@"HSP_II"]) && LRiderCode.count != 0) {
         NSLog(@"go RoomBoard!");
@@ -2209,8 +2268,12 @@
         _PTypeList.delegate = self;
         self.pTypePopOver = [[UIPopoverController alloc] initWithContentViewController:_PTypeList];
 	}
+	
+	CGRect aa = [sender frame];
+	aa.origin.y = [sender frame].origin.y + 30;
+	
     [self.pTypePopOver setPopoverContentSize:CGSizeMake(350.0f, 400.0f)];
-    [self.pTypePopOver presentPopoverFromRect:[sender frame] inView:self.view
+    [self.pTypePopOver presentPopoverFromRect:aa inView:self.view
 					 permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 - (IBAction)ActionRider:(id)sender {
@@ -2257,9 +2320,13 @@
 		
 		self.RiderListPopover = [[UIPopoverController alloc] initWithContentViewController:_RiderList];
         
+		CGRect aa = [sender frame];
+		aa.origin.y = [sender frame].origin.y + 30;
+		
         [self.RiderListPopover setPopoverContentSize:CGSizeMake(600.0f, 400.0f)];
-        [self.RiderListPopover presentPopoverFromRect:[sender frame] inView:self.view
+        [self.RiderListPopover presentPopoverFromRect:aa inView:self.view
 							 permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		
 	}
 }
 - (IBAction)ActionDeductible:(id)sender {
@@ -2410,9 +2477,24 @@
 {
     if ([txtSumAssured isFirstResponder] == TRUE) {
         
-            lblMin.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
+		lblMin.text = [NSString stringWithFormat:@"Min SA: %d",minSATerm];
+		
+		if ([riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"ECAR"] ||
+			[riderCode isEqualToString:@"ECAR55"] ) {
+			lblMax.text = [NSString stringWithFormat:@"Max SA: Subject to underwriting"];
+		}
+		else if ([riderCode isEqualToString:@"RRTUO"]){
+			lblMax.text = @"";
+			lblMin.text = @"";
+		}
+		else if ([riderCode isEqualToString:@"ACIR"]){
+			lblMax.numberOfLines = 2;
+			lblMax.text = [NSString stringWithFormat:@"Max SA: %.f(Subject to CI Benefit\nLimit per Life of RM1.5mil)",maxRiderSA];
+		}
+		else{
 			lblMax.text = [NSString stringWithFormat:@"Max SA: %.f",maxRiderSA];
-        
+		}
+		
     }
     else if ([txtRiderTerm isFirstResponder] == TRUE) {
 		lblMin.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
@@ -2574,7 +2656,6 @@ else {
 			NSLog(@"validate - 2nd sum");
 			[self validateSum];
 		}
-		
 		else {
 			NSLog(@"validate - 4th save");
 			[self validateSaver];
@@ -2597,7 +2678,7 @@ else {
 	NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
 	self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
 	//self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andoccpCat:OccpCat];
-	self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat];
+	self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat andTradOrEver:@"EVER"];
 	
     
     //}

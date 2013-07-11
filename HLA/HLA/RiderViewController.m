@@ -573,7 +573,7 @@ BOOL Edit = FALSE;
         
         NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
         //self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA];
-		self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat];
+		self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat andTradOrEver:@"TRAD"];
         _planList.delegate = self;
         
         [self.planBtn setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
@@ -2440,8 +2440,7 @@ BOOL Edit = FALSE;
         NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
         self.planList = [[RiderPlanTb alloc] initWithStyle:UITableViewStylePlain];
 		//self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andoccpCat:OccpCat];
-	self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat];
-		
+	self.planList = [[RiderPlanTb alloc] initWithString:planCondition andSumAss:strSA andOccpCat:OccpCat andTradOrEver:@"TRAD"];
     
     //}
         _planList.delegate = self;

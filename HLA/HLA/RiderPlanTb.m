@@ -18,7 +18,7 @@
 @synthesize delegate = _delegate;
 @synthesize requestSA,requestCondition,requestOccpCat;
 
--(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)valueSum andOccpCat:(NSString *)OccpCat
+-(id)initWithString:(NSString *)stringCode andSumAss:(NSString *)valueSum andOccpCat:(NSString *)OccpCat andTradOrEver:(NSString *)TradOrEver
 {
     self = [super init];
     if (self != nil) {
@@ -31,11 +31,22 @@
         [self getRiderCondition];
         NSLog(@"condition:%@, sumA:%.2f",self.requestCondition,self.requestSA);
         
-        if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"] &&
-			![OccpCat isEqualToString:@"UNEMP"]) {
-            [itemValue addObject:@"HMM1000"];
-            [itemDesc addObject:@"HMM_1000"];
-        }
+		if ([TradOrEver isEqualToString:@"TRAD"]) {
+			if (self.requestSA >= 25000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"] &&
+				![OccpCat isEqualToString:@"UNEMP"]) {
+				[itemValue addObject:@"HMM1000"];
+				[itemDesc addObject:@"HMM_1000"];
+			}
+
+		}
+		else{
+			if (self.requestSA >= 500000 && [self.requestCondition isEqualToString:@"PlanChoiceHMM"] &&
+				![OccpCat isEqualToString:@"UNEMP"]) {
+				[itemValue addObject:@"HMM1000"];
+				[itemDesc addObject:@"HMM_1000"];
+			}
+		}
+		
         
     }
     return self;

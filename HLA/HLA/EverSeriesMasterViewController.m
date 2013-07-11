@@ -465,6 +465,7 @@ id EverRiderCount;
             _EverSpecial.delegate = self;
             
 			self.EverSpecial.SINo = getSINo;
+			self.EverSpecial.getAge = getAge;
             [self addChildViewController:self.EverSpecial];
             [self.RightView addSubview:self.EverSpecial.view];
 			previousPath = selectedPath;

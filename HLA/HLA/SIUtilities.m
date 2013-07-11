@@ -282,7 +282,7 @@ static sqlite3 *contactDB = nil;
     [database executeUpdate:query];
 	
 	//
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000,0 , 100, \"UV\", \"LA\", 1 )"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000, 10, 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"CIRD\", 0, 30, 55, 65, 20000, 100000, 10 , 10, \"UV\", \"LA\", 1 )"];

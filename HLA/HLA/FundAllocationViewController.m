@@ -427,10 +427,10 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
 
-		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
-		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
-			return NO;
-		}
+	NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+	if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+		return NO;
+	}
 	
     return YES;
 }
@@ -443,19 +443,19 @@
 	}
 	else if (alertView.tag == 1) {
 		txt2023.enabled = NO;
-				txt2025.enabled = NO;
-				txt2028.enabled = NO;
-				txt2030.enabled = NO;
-				txt2035.enabled = NO;
-				txtCashFund.enabled = NO;
-				txtSecureFund.enabled = NO;
+		txt2025.enabled = NO;
+		txt2028.enabled = NO;
+		txt2030.enabled = NO;
+		txt2035.enabled = NO;
+		txtCashFund.enabled = NO;
+		txtSecureFund.enabled = NO;
 		txt2023.backgroundColor = [UIColor lightGrayColor];
-				txt2025.backgroundColor = [UIColor lightGrayColor];
-				txt2028.backgroundColor = [UIColor lightGrayColor];
-				txt2030.backgroundColor = [UIColor lightGrayColor];
-				txt2035.backgroundColor = [UIColor lightGrayColor];
-				txtCashFund.backgroundColor = [UIColor lightGrayColor];
-				txtSecureFund.backgroundColor = [UIColor lightGrayColor];
+		txt2025.backgroundColor = [UIColor lightGrayColor];
+		txt2028.backgroundColor = [UIColor lightGrayColor];
+		txt2030.backgroundColor = [UIColor lightGrayColor];
+		txt2035.backgroundColor = [UIColor lightGrayColor];
+		txtCashFund.backgroundColor = [UIColor lightGrayColor];
+		txtSecureFund.backgroundColor = [UIColor lightGrayColor];
 		
 		txtExpireCashFund.enabled = TRUE;
 		txtExpireSecureFund.enabled = TRUE;
@@ -492,8 +492,8 @@
 	txt2028.text = @"0";
 	txt2030.text = @"0";
 	txt2035.text = @"40";
-	txtCashFund.text = @"40";
-	txtSecureFund.text = @"20";
+	txtCashFund.text = @"20";
+	txtSecureFund.text = @"40";
 	txtExpireCashFund.text = @"0";
 	txtExpireSecureFund.text = @"0";
 	

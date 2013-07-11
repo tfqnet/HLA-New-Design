@@ -27,6 +27,7 @@
 
 //--request
 @property (nonatomic, copy) NSString *SINo;
+@property (nonatomic, assign,readwrite) int getAge;
 //--
 
 - (IBAction)ActionDone:(id)sender;

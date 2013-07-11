@@ -102,7 +102,13 @@ BOOL TPExcess;
 			[self toggleExistingField];
 			
 		}else {
-            NSLog(@"create new");
+			NSLog(@"create new");
+			//default plan
+			[outletBasic setTitle:@"HLA EverLife" forState:UIControlStateNormal];
+			txtPolicyTerm.text =  [NSString stringWithFormat:@"%d", (100 - requestAge)];
+			getPlanCode = @"UV";
+			// ---
+			
         }
 		
 	} else {
@@ -124,7 +130,6 @@ BOOL TPExcess;
     }
 	
 	[txtBasicPremium addTarget:self action:@selector(BasicPremiumDidChanged) forControlEvents:UIControlEventAllEditingEvents];
-	getBumpMode= @"A";
 	
 	Label1.hidden = YES;
 	label2.hidden = YES;
@@ -478,6 +483,7 @@ BOOL TPExcess;
             sqlite3_finalize(statement);
         }
 		
+		
 		querySQL = [NSString stringWithFormat:@"SELECT FromYear, YearInt, Amount, ForYear FROM UL_TPExcess WHERE SINo=\"%@\"",SINo];
 		
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -601,8 +607,8 @@ BOOL TPExcess;
 							   "(\"%@\", \"UV\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", '0', '0', "
 							   "'0','0','40','40','20','0','0','0', "
 							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA') ",
-							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode,
-							   [self getBumpMode]];
+							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode, [self ReturnBumpMode]];
+		
 		
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -857,19 +863,20 @@ BOOL TPExcess;
 }
 
 
--(NSString *)getBumpMode{
+-(NSString *)ReturnBumpMode{
 	
 	NSString *result;
+	
 	if (segPremium.selectedSegmentIndex == 0) {
 		result = @"A";
 	}
 	else if (segPremium.selectedSegmentIndex == 1){
 		result = @"S";
 	}
-	else if (segPremium.selectedSegmentIndex == 1){
+	else if (segPremium.selectedSegmentIndex == 2){
 		result = @"Q";
 	}
-	else if (segPremium.selectedSegmentIndex == 1){
+	else if (segPremium.selectedSegmentIndex == 3){
 		result = @"M";
 	}
 	
@@ -1234,7 +1241,7 @@ BOOL TPExcess;
 			}
 			
 		}
-		getBumpMode= @"S";
+		getBumpMode = @"S";
 		
 	}
 	else if (segPremium.selectedSegmentIndex == 2) {
@@ -1283,7 +1290,7 @@ BOOL TPExcess;
 		getBumpMode = @"M";
 		
 	}
-
+	txtTotalBAPremium.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ]];
 	
 }
 @end

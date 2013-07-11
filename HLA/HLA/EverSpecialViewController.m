@@ -16,7 +16,7 @@
 
 @implementation EverSpecialViewController
 @synthesize SINo,txtAmount,txtInterval,txtReduceAt,txtReduceTo,txtStartFrom,txtStartTo;
-@synthesize outletReduce,outletWithdrawal;
+@synthesize outletReduce,outletWithdrawal,getAge;
 @synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -164,10 +164,10 @@
 
  -(BOOL)Validation{
 	
-	 	if (outletReduce.selectedSegmentIndex == 1 && outletWithdrawal.selectedSegmentIndex == 1
-			 		&& WithdrawExist == FALSE && ReduceExist == FALSE)   {
-		 		return FALSE;
-		 	}
+	 	if (outletReduce.selectedSegmentIndex == 1 && outletWithdrawal.selectedSegmentIndex == 1 &&
+			WithdrawExist == FALSE && ReduceExist == FALSE)   {
+			return FALSE;
+		}
 	
 	 	if (outletWithdrawal.selectedSegmentIndex == 0) {
 		 		if ([txtStartFrom.text isEqualToString:@"" ] ||  [txtStartFrom.text isEqualToString:@"0"]  )
@@ -210,40 +210,56 @@
 			 			[txtAmount becomeFirstResponder];
 			 			return FALSE;
 			 		}
-		 	}
+			
+			if ([txtInterval.text intValue ] > 100 - getAge) {
+				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																message:[NSString stringWithFormat:@"Interval (Years) for Regular Withdrawal must be within (1-%d).", 100 - getAge]
+																delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[failAlert show];
+				[txtInterval becomeFirstResponder];
+				return FALSE;
+			}
+			
+		}
 	
 	 	if (outletReduce.selectedSegmentIndex == 0) {
-		 		if ([txtReduceAt.text isEqualToString:@""]) {
+			if ([txtReduceAt.text isEqualToString:@""]) {
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-												   																message:@"Reduce Paid Up Year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+										message:@"Reduce Paid Up Year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			 			[failAlert show];
 			 			[txtReduceAt becomeFirstResponder];
 			
 			 			return FALSE;
-			 		}
-		 		if ([txtReduceTo.text isEqualToString:@""]) {
-			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-												  															message:@"Reduce Basic Sum Assured is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-			 			[failAlert show];
-			 			[txtReduceTo becomeFirstResponder];
+			}
+			if ([txtReduceTo.text isEqualToString:@""]) {
+				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+											message:@"Reduce Basic Sum Assured is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[failAlert show];
+				[txtReduceTo becomeFirstResponder];
 			 			
-			 			return FALSE;
-			 		}
-		 
-		 	}
+				return FALSE;
+			}
+		}
 	 	
 	 	return TRUE;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
  {
+	 if (string.length == 0) {
+		 return  YES;
+	 }
 	
 	 	if (textField.tag != 1) {
-		 		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
-		 		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
-			 			return NO;
-			 		}
-		 	}
+			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+				return NO;
+			}
+			
+			if (textField.text.length > 1) {
+				return NO;
+			}
+		}
 	 	else{
 		 		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
 		 		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {

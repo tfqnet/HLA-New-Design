@@ -214,100 +214,172 @@ int DateOption;
 			 " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
 			 " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" "];
 			 
-			 
+			if (![txtSINO.text isEqualToString:@""]) {
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
+				
+			}
+			
+			if (![txtLAName.text isEqualToString:@""]) {
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND name like \"%%%@%%\"", txtLAName.text ];
+				
+			}
+			
+			if ( ![DBDateFrom isEqualToString:@""]) {
+				
+				//SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", DBDateFrom ];
+				
+			}
+			
+			if ( ![DBDateTo isEqualToString:@""] ) {
+				
+				//SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", DBDateTo ];
+				
+			}
+			
+			//NSLog(@"%@", SIListingSQL);
+			NSString *Sorting = [[NSString alloc] init ];
+			Sorting = @"";
+			
+			if (lblBasicSA.highlighted == TRUE) {
+				Sorting = @"basicSA";
+			}
+			
+			if (lblDateCreated.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @" createdAt";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",createdAt"];
+					
+				}
+			}
+			
+			if (lblName.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @"name";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",name"];
+					
+				}
+			}
+			
+			if (lblPlan.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @"planname";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",planname"];
+					
+				}
+			}
+			
+			if (lblSINO.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @"A.SINO";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",A.SINO"];
+				}
+			}
+			
+			if ([Sorting isEqualToString:@""]) {
+					SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by createdAt Desc" ];
+			}
+			else {
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
+			}
 		}
-		else{
+		else{ //for Ever
+			
 			SIListingSQL = [NSString stringWithFormat:@"select A.Sino, B.DateCreated, name, planname, basicSA, 'Not Created', A.CustCode "
 							" from UL_lapayor as A, UL_details as B, clt_profile as C, trad_sys_profile as D "
 							" where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Seq = 1 AND A.ptypeCode = \"LA\" "];
 			
+			if (![txtSINO.text isEqualToString:@""]) {
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
+				
+			}
+			
+			if (![txtLAName.text isEqualToString:@""]) {
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND name like \"%%%@%%\"", txtLAName.text ];
+				
+			}
+			
+			if ( ![DBDateFrom isEqualToString:@""]) {
+				
+				//SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND B.DateCreated > \"%@ 00:00:00\" ", DBDateFrom ];
+				
+			}
+			
+			if ( ![DBDateTo isEqualToString:@""] ) {
+				
+				//SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND B.DateCreated < \"%@ 23:59:59\" ", DBDateTo ];
+				
+			}
+			
+			//NSLog(@"%@", SIListingSQL);
+			NSString *Sorting = [[NSString alloc] init ];
+			Sorting = @"";
+			
+			if (lblBasicSA.highlighted == TRUE) {
+				Sorting = @"basicSA";
+			}
+			
+			if (lblDateCreated.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @" DateCreated";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",DateCreated"];
+					
+				}
+			}
+			
+			if (lblName.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @"name";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",name"];
+					
+				}
+			}
+			
+			if (lblPlan.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @"planname";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",planname"];
+					
+				}
+			}
+			
+			if (lblSINO.highlighted == TRUE) {
+				if ([Sorting isEqualToString:@""]) {
+					Sorting = @"A.SINO";
+				}
+				else {
+					Sorting = [Sorting stringByAppendingFormat:@",A.SINO"];
+				}
+			}
+			
+			if ([Sorting isEqualToString:@""]) {
+					SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by B.DateCreated Desc" ];
+			}
+			else {
+				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
+			}
+			
 		}
 		
 		
-        if (![txtSINO.text isEqualToString:@""]) {
-            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
-            
-        }
         
-        if (![txtLAName.text isEqualToString:@""]) {
-            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND name like \"%%%@%%\"", txtLAName.text ];
-            
-        }
-        
-        if ( ![DBDateFrom isEqualToString:@""]) {
-            
-            //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
-            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", DBDateFrom ];
-            
-        }
-        
-        if ( ![DBDateTo isEqualToString:@""] ) {
-            
-            //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
-            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", DBDateTo ];
-            
-        }
-        
-        //NSLog(@"%@", SIListingSQL);
-        NSString *Sorting = [[NSString alloc] init ];
-        Sorting = @"";
-        
-        if (lblBasicSA.highlighted == TRUE) {
-            Sorting = @"basicSA";
-        }
-        
-        if (lblDateCreated.highlighted == TRUE) {
-            if ([Sorting isEqualToString:@""]) {
-                Sorting = @" createdAt";
-            }
-            else {
-                Sorting = [Sorting stringByAppendingFormat:@",createdAt"];
-                
-            }
-        }
-        
-        if (lblName.highlighted == TRUE) {
-            if ([Sorting isEqualToString:@""]) {
-                Sorting = @"name";
-            }
-            else {
-                Sorting = [Sorting stringByAppendingFormat:@",name"];
-                
-            }
-        }
-        
-        if (lblPlan.highlighted == TRUE) {
-            if ([Sorting isEqualToString:@""]) {
-                Sorting = @"planname";
-            }
-            else {
-                Sorting = [Sorting stringByAppendingFormat:@",planname"];
-                
-            }
-        }
-        
-        if (lblSINO.highlighted == TRUE) {
-            if ([Sorting isEqualToString:@""]) {
-                Sorting = @"A.SINO";
-            }
-            else {
-                Sorting = [Sorting stringByAppendingFormat:@",A.SINO"];
-            }
-        }
-        
-        if ([Sorting isEqualToString:@""]) {
-			
-			if ([TradOrEver isEqualToString:@"TRAD"]) {
-				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by createdAt Desc" ];
-			}
-			else{
-				SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by B.DateCreated Desc" ];
-			}
-            
-        }
-        else {
-            SIListingSQL = [SIListingSQL stringByAppendingFormat:@" order by %@ %@ ", Sorting, OrderBy ];
-        }
         
 		//NSLog(@"%@", SIListingSQL);
         //const char *SelectSI = [SIListingSQL UTF8String];
@@ -353,7 +425,7 @@ int DateOption;
         sqlite3_close(contactDB);
         
         SIListingSQL = Nil;
-        Sorting = Nil;
+        //Sorting = Nil;
         
     }
     
@@ -862,9 +934,17 @@ int DateOption;
         const char *dbpath = [databasePath UTF8String];
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
-            NSString *SIListingSQL = [NSString stringWithFormat:@"select A.Sino, CreatedAT, name, planname, basicSA, 'Not Created', A.CustCode "
-                                      " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
-                                      " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" " ];        
+			NSString *SIListingSQL;
+			if ([TradOrEver isEqualToString:@"TRAD"]) {
+				SIListingSQL = [NSString stringWithFormat:@"select A.Sino, CreatedAT, name, planname, basicSA, 'Not Created', A.CustCode "
+										  " from trad_lapayor as A, trad_details as B, clt_profile as C, trad_sys_profile as D "
+										  " where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Sequence = 1 AND A.ptypeCode = \"LA\" " ];
+			}
+			else{
+				SIListingSQL = [NSString stringWithFormat:@"select A.Sino, B.DateCreated, name, planname, basicSA, 'Not Created', A.CustCode "
+								" from UL_lapayor as A, UL_details as B, clt_profile as C, trad_sys_profile as D "
+								" where A.sino = B.sino and A.CustCode = C.custcode and B.plancode = D.plancode AND A.Seq = 1 AND A.ptypeCode = \"LA\" " ];
+			}
             
             if (![txtSINO.text isEqualToString:@""]) {
                 SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND A.Sino like \"%%%@%%\"", txtSINO.text ];
@@ -877,20 +957,32 @@ int DateOption;
             }
             
             if ( ![DBDateFrom isEqualToString:@""]) {
-                                
+                
                 //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", outletDateFrom.titleLabel.text ];
-                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", DBDateFrom ];
+				if ([TradOrEver isEqualToString:@"TRAD"]) {
+						SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAT > \"%@ 00:00:00\" ", DBDateFrom ];
+				}
+				else{
+						SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND B.DateCreated > \"%@ 00:00:00\" ", DBDateFrom ];
+				}
                 
             }
             
             if ( ![DBDateTo isEqualToString:@""] ) {
                 
                 //SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", outletDateTo.titleLabel.text ];
-                SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", DBDateTo ];
+                
+				if ([TradOrEver isEqualToString:@"TRAD"]) {
+					SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND createdAt < \"%@ 23:59:59\" ", DBDateTo ];
+				}
+				else{
+					SIListingSQL = [SIListingSQL stringByAppendingFormat:@" AND B.DateCreated < \"%@ 23:59:59\" ", DBDateTo ];
+				}
                 
             }
             
             //NSLog(@"%@", SIListingSQL);
+			
             NSString *Sorting = [[NSString alloc] init ];
             Sorting = @"";
             
@@ -900,11 +992,21 @@ int DateOption;
             
             if (lblDateCreated.highlighted == TRUE) {
                 if ([Sorting isEqualToString:@""]) {
-                    Sorting = @" createdAt";
+					if ([TradOrEver isEqualToString:@"TRAD"]) {
+						Sorting = @" createdAt";
+					}
+					else{
+						Sorting = @" DateCreated";
+					}
+                
                 }
                 else {
-                    Sorting = [Sorting stringByAppendingFormat:@",createdAt"];
-                    
+					if ([TradOrEver isEqualToString:@"TRAD"]) {
+						Sorting = [Sorting stringByAppendingFormat:@",createdAt"];
+					}
+					else{
+						Sorting = [Sorting stringByAppendingFormat:@",DateCreated"];
+					}
                 }
             }
             
@@ -946,7 +1048,7 @@ int DateOption;
             }
             
             //NSLog(@"%@", SIListingSQL);
-            
+			
             const char *SelectSI = [SIListingSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, SelectSI, -1, &statement, NULL) == SQLITE_OK) {
                 
@@ -1136,13 +1238,26 @@ int DateOption;
                     
                     NSString *DeleteLAPayorSQL;
                     if (isFilter == false) {
-                        DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
-                                                      " trad_lapayor where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
-                        
+						if ([TradOrEver isEqualToString:@"TRAD"]) {
+							DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
+												" trad_lapayor where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+						}
+						else{
+							DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
+												" UL_lapayor where custcode = \"%@\" ", [CustomerCode objectAtIndex:value]];
+						}
+                    
                     }
                     else{
-                        DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
-                                            " trad_lapayor where custcode = \"%@\" ", [FilteredCustomerCode objectAtIndex:value]];
+						if ([TradOrEver isEqualToString:@"TRAD"]) {
+							DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
+												" trad_lapayor where custcode = \"%@\" ", [FilteredCustomerCode objectAtIndex:value]];
+						}
+						else{
+							DeleteLAPayorSQL = [NSString stringWithFormat:@"Delete from "
+												" UL_lapayor where custcode = \"%@\" ", [FilteredCustomerCode objectAtIndex:value]];
+						}
+                    
                     }
                         
                     if(sqlite3_prepare_v2(contactDB, [DeleteLAPayorSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1467,6 +1582,7 @@ int DateOption;
     //        main.modalPresentationStyle = UIModalPresentationFullScreen;
     //        main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     main.IndexTab = MenuOption.NewSIIndex;
+	main.tradOrEver = TradOrEver;
     [self presentViewController:main animated:NO completion:nil];
     
     MenuOption = Nil;
