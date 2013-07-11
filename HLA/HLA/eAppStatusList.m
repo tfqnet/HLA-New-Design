@@ -21,7 +21,7 @@
     self = [super initWithStyle:style];
     if (self) {
         
-        self.items = [[NSMutableArray alloc] initWithObjects:@"Created", @"Comfirm", @"Submitted", @"Received", @"Failed",nil];
+        self.items = [[NSMutableArray alloc] initWithObjects:@"Created", @"Confirm", @"Submitted", @"Received", @"Failed",nil];
         
         self.clearsSelectionOnViewWillAppear = NO;
         
