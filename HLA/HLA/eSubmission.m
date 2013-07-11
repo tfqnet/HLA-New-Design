@@ -15,8 +15,10 @@
 
 @implementation eSubmission
 @synthesize idNoLabel,idTypeLabel,nameLabel,policyNoLabel,statusLabel,myTableView,btnDate;
-@synthesize clientData;
+@synthesize clientData,dateLabel;
 @synthesize eAppsVC = _eAppsVC;
+@synthesize statusPopover = _statusPopover;
+@synthesize statusVC = _statusVC;
 
 - (void)viewDidLoad
 {
@@ -38,28 +40,21 @@
     label.text = @"e-Application Listing";
     self.navigationItem.titleView = label;
     
-//    CGRect frame1=CGRectMake(0,240, 204, 50);
-//    idTypeLabel.frame = frame1;
     idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-//    CGRect frame2=CGRectMake(204,240, 167, 50);
-//    idNoLabel.frame = frame2;
     idNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
 	
-//    CGRect frame3=CGRectMake(371,240, 181, 50);
-//    nameLabel.frame = frame3;
-    nameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
-    nameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
-    
-//    CGRect frame4=CGRectMake(552,240, 241, 50);
-//    policyNoLabel.frame = frame4;
     policyNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     policyNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-//    CGRect frame5=CGRectMake(793,240, 163, 50);
-//    policyNoLabel.frame = frame5;
+    nameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    nameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
+    dateLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+    dateLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    
     statusLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     statusLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
@@ -76,6 +71,9 @@
     
     NSMutableArray *arrName = [[NSMutableArray alloc] initWithObjects:@"Johny",@"Adam", nil];
     [clientData addObject:arrName];
+    
+    NSMutableArray *arrDate = [[NSMutableArray alloc] initWithObjects:@"2013-07-10",@"2013-07-11", nil];
+    [clientData addObject:arrDate];
     
     NSMutableArray *arrStatus = [[NSMutableArray alloc]initWithObjects:@"Incomplete",@"Completed", nil];
     [clientData addObject:arrStatus];
@@ -105,10 +103,11 @@
     NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
     
     [btnDate setTitle:dateString forState:UIControlStateNormal];
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:Nil];
     
     if (_SIDate == Nil) {
         
-        self.SIDate = [self.storyboard instantiateViewControllerWithIdentifier:@"SIDate"];
+        self.SIDate = [mainStoryboard instantiateViewControllerWithIdentifier:@"SIDate"];
         _SIDate.delegate = self;
         self.SIDatePopover = [[UIPopoverController alloc] initWithContentViewController:_SIDate];
     }
@@ -117,7 +116,7 @@
     [self.SIDatePopover presentPopoverFromRect:[sender frame ]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
     
     dateFormatter = Nil;
-    dateString = Nil;
+    dateString = Nil, mainStoryboard = nil;
 }
 
 - (IBAction)addNew:(id)sender
@@ -128,7 +127,7 @@
     
     [self.navigationController pushViewController:_eAppsVC animated:YES];
     _eAppsVC.navigationItem.title = @"Sales Illustration Listing";
-//    _eAppsVC.navigationItem.rightBarButtonItem = _eAppsVC.outletDone;
+
 }
 
 
@@ -189,6 +188,7 @@
     [[cell.contentView viewWithTag:2003] removeFromSuperview ];
     [[cell.contentView viewWithTag:2004] removeFromSuperview ];
     [[cell.contentView viewWithTag:2005] removeFromSuperview ];
+    [[cell.contentView viewWithTag:2006] removeFromSuperview ];
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
@@ -201,7 +201,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
     
-    CGRect frame2=CGRectMake(204,0, 167, 50);
+    CGRect frame2=CGRectMake(204,0, 119, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
     label2.text= [[clientData objectAtIndex:1]objectAtIndex:indexPath.row];
@@ -210,7 +210,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(371,0, 181, 50);
+    CGRect frame3=CGRectMake(323,0, 137, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
     label3.text= [[clientData objectAtIndex:2]objectAtIndex:indexPath.row];
@@ -219,7 +219,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
     
-    CGRect frame4=CGRectMake(552,0, 241, 50);
+    CGRect frame4=CGRectMake(460,0, 206, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     label4.text= [[clientData objectAtIndex:3]objectAtIndex:indexPath.row];
@@ -228,7 +228,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
     
-    CGRect frame5=CGRectMake(793,0, 163, 50);
+    CGRect frame5=CGRectMake(666,0, 157, 50);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text= [[clientData objectAtIndex:4]objectAtIndex:indexPath.row];
@@ -237,18 +237,29 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label5];
     
+    CGRect frame6=CGRectMake(823,0, 133, 50);
+    UILabel *label6=[[UILabel alloc]init];
+    label6.frame=frame6;
+    label6.text= [[clientData objectAtIndex:5]objectAtIndex:indexPath.row];
+    label6.textAlignment = UITextAlignmentCenter;
+    label6.tag = 2006;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+    [cell.contentView addSubview:label6];
+    
     if (indexPath.row % 2 == 0) {
         label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label2.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label3.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label4.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         label5.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+        label6.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     else {
         label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
@@ -256,12 +267,14 @@
         label3.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label4.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label5.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+        label6.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label3.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         label5.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
+        label6.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     
     return cell;
@@ -276,6 +289,7 @@
     [self setStatusLabel:nil];
     [self setMyTableView:nil];
     [self setBtnDate:nil];
+    [self setDateLabel:nil];
     [super viewDidUnload];
 }
 @end

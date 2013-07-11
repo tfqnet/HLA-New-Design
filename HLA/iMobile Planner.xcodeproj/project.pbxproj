@@ -277,6 +277,7 @@
 		EF90B0BD178CEFA000FEC129 /* LynnStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0BC178CEFA000FEC129 /* LynnStoryboard.storyboard */; };
 		EF90B0C0178CFABC00FEC129 /* HealthQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */; };
 		EF90B0C6178D38BF00FEC129 /* disclosure_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */; };
+		EF90B0C9178E56A800FEC129 /* eAppStatusList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0C8178E56A700FEC129 /* eAppStatusList.m */; };
 		EF97FFAF1773F9C800C95844 /* PersonalDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFAE1773F9C800C95844 /* PersonalDetails.m */; };
 		EF97FFB21773F9DD00C95844 /* AdditionalQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */; };
 		EF9C47A2178525A20093289C /* Nominees.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9C47A1178525A20093289C /* Nominees.m */; };
@@ -697,6 +698,8 @@
 		EF90B0BE178CFABA00FEC129 /* HealthQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestions.h; sourceTree = "<group>"; };
 		EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestions.m; sourceTree = "<group>"; };
 		EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure_indicator.png; sourceTree = "<group>"; };
+		EF90B0C7178E56A700FEC129 /* eAppStatusList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eAppStatusList.h; sourceTree = "<group>"; };
+		EF90B0C8178E56A700FEC129 /* eAppStatusList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eAppStatusList.m; sourceTree = "<group>"; };
 		EF97FFAD1773F9C800C95844 /* PersonalDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDetails.h; sourceTree = "<group>"; };
 		EF97FFAE1773F9C800C95844 /* PersonalDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDetails.m; sourceTree = "<group>"; };
 		EF97FFB01773F9DD00C95844 /* AdditionalQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalQuestions.h; sourceTree = "<group>"; };
@@ -1185,6 +1188,8 @@
 				42867EB2175F75E6001CE661 /* TitleViewController.m */,
 				EF90AFF617891C6300FEC129 /* GroupClass.h */,
 				EF90AFF717891C6300FEC129 /* GroupClass.m */,
+				EF90B0C7178E56A700FEC129 /* eAppStatusList.h */,
+				EF90B0C8178E56A700FEC129 /* eAppStatusList.m */,
 			);
 			name = PopOver;
 			sourceTree = "<group>";
@@ -1867,6 +1872,7 @@
 				C47F40E6178BA5230023D9EF /* EverFundMaturityViewController.m in Sources */,
 				C4C6C0A6178BB0F50006B00D /* PopOverFundViewController.m in Sources */,
 				EF90B0C0178CFABC00FEC129 /* HealthQuestions.m in Sources */,
+				EF90B0C9178E56A800FEC129 /* eAppStatusList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
