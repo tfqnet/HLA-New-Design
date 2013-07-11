@@ -278,7 +278,9 @@
 		EF90B0C0178CFABC00FEC129 /* HealthQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0BF178CFABB00FEC129 /* HealthQuestions.m */; };
 		EF90B0C6178D38BF00FEC129 /* disclosure_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */; };
 		EF90B0C9178E56A800FEC129 /* eAppStatusList.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0C8178E56A700FEC129 /* eAppStatusList.m */; };
-		EF97FFAF1773F9C800C95844 /* PersonalDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFAE1773F9C800C95844 /* PersonalDetails.m */; };
+		EF90B0CC178E6F2200FEC129 /* SubDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0CB178E6F2000FEC129 /* SubDetails.m */; };
+		EF90B0CE178E7EBC00FEC129 /* Relationship.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF90B0CD178E7EBC00FEC129 /* Relationship.plist */; };
+		EF90B0D1178E7F1800FEC129 /* Relationship.m in Sources */ = {isa = PBXBuildFile; fileRef = EF90B0D0178E7F1800FEC129 /* Relationship.m */; };
 		EF97FFB21773F9DD00C95844 /* AdditionalQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */; };
 		EF9C47A2178525A20093289C /* Nominees.m in Sources */ = {isa = PBXBuildFile; fileRef = EF9C47A1178525A20093289C /* Nominees.m */; };
 		EFABB36E16475A430069502B /* redBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = EFABB36D16475A430069502B /* redBtn.png */; };
@@ -700,8 +702,11 @@
 		EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure_indicator.png; sourceTree = "<group>"; };
 		EF90B0C7178E56A700FEC129 /* eAppStatusList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eAppStatusList.h; sourceTree = "<group>"; };
 		EF90B0C8178E56A700FEC129 /* eAppStatusList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eAppStatusList.m; sourceTree = "<group>"; };
-		EF97FFAD1773F9C800C95844 /* PersonalDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDetails.h; sourceTree = "<group>"; };
-		EF97FFAE1773F9C800C95844 /* PersonalDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDetails.m; sourceTree = "<group>"; };
+		EF90B0CA178E6F2000FEC129 /* SubDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubDetails.h; sourceTree = "<group>"; };
+		EF90B0CB178E6F2000FEC129 /* SubDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubDetails.m; sourceTree = "<group>"; };
+		EF90B0CD178E7EBC00FEC129 /* Relationship.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Relationship.plist; sourceTree = "<group>"; };
+		EF90B0CF178E7F1800FEC129 /* Relationship.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Relationship.h; sourceTree = "<group>"; };
+		EF90B0D0178E7F1800FEC129 /* Relationship.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Relationship.m; sourceTree = "<group>"; };
 		EF97FFB01773F9DD00C95844 /* AdditionalQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdditionalQuestions.h; sourceTree = "<group>"; };
 		EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdditionalQuestions.m; sourceTree = "<group>"; };
 		EF9C47A0178525A20093289C /* Nominees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nominees.h; sourceTree = "<group>"; };
@@ -1053,6 +1058,7 @@
 		C4E9D19B1612C64900016053 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EF90B0CD178E7EBC00FEC129 /* Relationship.plist */,
 				42867EAE175F75BD001CE661 /* Title.plist */,
 				42867E9C175F2E0C001CE661 /* IDType.plist */,
 				EF1F6C7B16A7C1CC001EDC81 /* pdfData.plist */,
@@ -1190,6 +1196,8 @@
 				EF90AFF717891C6300FEC129 /* GroupClass.m */,
 				EF90B0C7178E56A700FEC129 /* eAppStatusList.h */,
 				EF90B0C8178E56A700FEC129 /* eAppStatusList.m */,
+				EF90B0CF178E7F1800FEC129 /* Relationship.h */,
+				EF90B0D0178E7F1800FEC129 /* Relationship.m */,
 			);
 			name = PopOver;
 			sourceTree = "<group>";
@@ -1411,8 +1419,8 @@
 				423E8BB317700ED000E60C20 /* Summary.m */,
 				EF1ADDF31784066C00996388 /* eAppPersonalDetails.h */,
 				EF1ADDF41784066C00996388 /* eAppPersonalDetails.m */,
-				EF97FFAD1773F9C800C95844 /* PersonalDetails.h */,
-				EF97FFAE1773F9C800C95844 /* PersonalDetails.m */,
+				EF90B0CA178E6F2000FEC129 /* SubDetails.h */,
+				EF90B0CB178E6F2000FEC129 /* SubDetails.m */,
 				EF6A538B177943DA00D70960 /* PolicyDetails.h */,
 				EF6A538C177943DA00D70960 /* PolicyDetails.m */,
 				423E8BB517700EF900E60C20 /* NomineesTrustees.h */,
@@ -1722,6 +1730,7 @@
 				427CF9D3178D1958004452BC /* HLA_Rates.sqlite in Resources */,
 				427CF9D4178D1958004452BC /* hladb.sqlite in Resources */,
 				EF90B0C6178D38BF00FEC129 /* disclosure_indicator.png in Resources */,
+				EF90B0CE178E7EBC00FEC129 /* Relationship.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1842,7 +1851,6 @@
 				423E8BBD17700FF200E60C20 /* Declaration.m in Sources */,
 				EF906B2517703EAE00D5F3E3 /* eAppsListing.m in Sources */,
 				42FB604D1772EF6000943E1F /* Preference.m in Sources */,
-				EF97FFAF1773F9C800C95844 /* PersonalDetails.m in Sources */,
 				EF97FFB21773F9DD00C95844 /* AdditionalQuestions.m in Sources */,
 				EF6A538A177930DA00D70960 /* MasterMenuEApp.m in Sources */,
 				EF6A538D177943DA00D70960 /* PolicyDetails.m in Sources */,
@@ -1873,6 +1881,8 @@
 				C4C6C0A6178BB0F50006B00D /* PopOverFundViewController.m in Sources */,
 				EF90B0C0178CFABC00FEC129 /* HealthQuestions.m in Sources */,
 				EF90B0C9178E56A800FEC129 /* eAppStatusList.m in Sources */,
+				EF90B0CC178E6F2200FEC129 /* SubDetails.m in Sources */,
+				EF90B0D1178E7F1800FEC129 /* Relationship.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -77,7 +77,7 @@
     NSMutableArray *arrDate = [[NSMutableArray alloc] initWithObjects:@"2013-07-10",@"2013-07-11", nil];
     [clientData addObject:arrDate];
     
-    NSMutableArray *arrStatus = [[NSMutableArray alloc]initWithObjects:@"Incomplete",@"Completed", nil];
+    NSMutableArray *arrStatus = [[NSMutableArray alloc]initWithObjects:@"Created",@"Submitted", nil];
     [clientData addObject:arrStatus];
     
     CustomColor = nil, arrIdType=nil, arrIdNo=nil, arrName=nil, arrPolicy=nil, arrStatus=nil;

@@ -30,7 +30,7 @@
     label.font = [UIFont boldSystemFontOfSize:20];
     label.textAlignment = UITextAlignmentCenter;
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
-    label.text = @"Summary";
+    label.text = @"e-Application";
     self.navigationItem.titleView = label;
 }
 

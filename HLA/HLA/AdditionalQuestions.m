@@ -30,7 +30,7 @@
     label.font = [UIFont boldSystemFontOfSize:20];
     label.textAlignment = UITextAlignmentCenter;
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
-    label.text = @"Additional Questions";
+    label.text = @"e-Application";
     self.navigationItem.titleView = label;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnDone:)];
