@@ -33,7 +33,7 @@
 @synthesize get2ndLAOccp,get2ndLASex,get2ndLASmoker,getbasicHL,getBasicPlan,getbasicSA,getbasicHLPct;
 @synthesize getPayAge,getPayDOB,getPayOccp,getPayorIndexNo,getPaySex,getPaySmoker,getPlanCode;
 @synthesize getSINo,getTerm, payorCustCode, payorSINo, requestSINo2, CustCode2, clientID2;
-@synthesize getOccpCPA;
+@synthesize getOccpCPA, getBumpMode;
 id EverRiderCount;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -213,6 +213,9 @@ id EverRiderCount;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 	
+	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+	[activeInstance performSelector:@selector(dismissKeyboard)];
 	
 	selectedPath = indexPath;
 	if (indexPath.row == 0) {
@@ -387,7 +390,8 @@ id EverRiderCount;
 				self.EverRider.requestSex = getSex;
 				self.EverRider.requestOccpCode = getOccpCode;
 				self.EverRider.requestOccpClass = getOccpClass;
-				
+
+				self.EverRider.requestBumpMode = getBumpMode;
 				self.EverRider.requestSINo = getSINo;
 				self.EverRider.requestPlanCode = getPlanCode;
 				self.EverRider.requestCoverTerm = getTerm;
@@ -466,6 +470,7 @@ id EverRiderCount;
             
 			self.EverSpecial.SINo = getSINo;
 			self.EverSpecial.getAge = getAge;
+			self.EverSpecial.getBasicSA = getbasicSA;
             [self addChildViewController:self.EverSpecial];
             [self.RightView addSubview:self.EverSpecial.view];
 			previousPath = selectedPath;
@@ -1068,7 +1073,8 @@ id EverRiderCount;
 //from LA and Basic
 -(void)BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered
 	andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicHLTerm:(int)aaBasicHLTerm
-	andBasicHLPct:(NSString *)aaBasicHLPct andBasicHLPctTerm:(int)aaBasicHLPctTerm andPlanCode:(NSString *)aaPlanCode{
+	andBasicHLPct:(NSString *)aaBasicHLPct andBasicHLPctTerm:(int)aaBasicHLPctTerm andPlanCode:(NSString *)aaPlanCode
+	andBumpMode:(NSString *)aaBumpMode{
 	
 	NSLog(@"::receive Ever basicSINo:%@, PlanCode:%@",aaSINo,aaPlanCode);
     getSINo = aaSINo;
@@ -1077,6 +1083,7 @@ id EverRiderCount;
     getbasicHL = aaBasicHL;
     getbasicHLPct = aaBasicHLPct;
     getPlanCode = aaPlanCode;
+	getBumpMode = aaBumpMode;
     
     if (getbasicSA.length != 0)
     {

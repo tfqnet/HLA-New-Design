@@ -78,6 +78,7 @@
 @property (nonatomic, strong) id request2ndSmoker;
 @property (nonatomic, strong) id requestPayorSmoker;
 @property (nonatomic, strong) id requestOccpCPA;
+@property (nonatomic, strong) id requestBumpMode;
 
 @property (nonatomic,strong) NSString *getSINo;
 @property (nonatomic,strong) NSString *getPlanCode;
@@ -158,6 +159,7 @@
 @property (nonatomic,copy) NSString *pTypeOccp;
 @property (nonatomic,copy) NSString *riderCode;
 @property (nonatomic,copy) NSString *riderDesc;
+@property (nonatomic,copy) NSString *pTypeSex;
 
 //setup form field
 @property(nonatomic , retain) NSMutableArray *FLabelCode;

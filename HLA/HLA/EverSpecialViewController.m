@@ -16,7 +16,7 @@
 
 @implementation EverSpecialViewController
 @synthesize SINo,txtAmount,txtInterval,txtReduceAt,txtReduceTo,txtStartFrom,txtStartTo;
-@synthesize outletReduce,outletWithdrawal,getAge;
+@synthesize outletReduce,outletWithdrawal,getAge, lblReduceAt, lblReduceTo, getBasicSA;
 @synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,6 +45,8 @@
 	txtReduceTo.delegate = self;
 	
 	txtAmount.tag = 1;
+	txtReduceAt.tag = 5;
+	txtReduceTo.tag = 6;
 	[self getExisting];
 	[self toggle];
 }
@@ -70,6 +72,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 -(void)getExisting{
 	 	sqlite3_stmt *statement;
@@ -120,6 +124,34 @@
 					 		}
 					sqlite3_close(contactDB);
 		}
+}
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+	
+	if (textField.tag == 5) {
+		lblReduceAt.text = [NSString stringWithFormat:@"Min:3 Max:%d", 70 - getAge ];
+		//lblReduceTo.text = [NSString stringWithFormat:@"Min:%.0f Max:%@", [getBasicSA doubleValue ] , getBasicSA];
+	}
+	else if(textField.tag == 6)
+	{
+		if ([txtReduceAt.text isEqualToString:@""]) {
+			lblReduceTo.text = [NSString stringWithFormat:@"Min:%.0f Max:%@", [getBasicSA doubleValue ] , getBasicSA];
+		}
+		else{
+			if ([txtReduceAt.text intValue ] > 19) {
+				lblReduceTo.text = [NSString stringWithFormat:@"Min:%.0f Max:%@", [getBasicSA doubleValue ] , getBasicSA];
+			}
+			else if ([txtReduceAt.text intValue ] <  3 ){
+				lblReduceTo.text = [NSString stringWithFormat:@"Min:%.0f Max:%@", [getBasicSA doubleValue ] , getBasicSA];
+			}
+			else{
+				lblReduceTo.text = [NSString stringWithFormat:@"Min:%.0f Max:%@",
+									[getBasicSA doubleValue ] * (0.05 * ([txtReduceAt.text intValue ] -3)  + 0.15) , getBasicSA];
+			}
+		}
+	}
+		
+	return YES;
 }
 
 -(void)toggle{
@@ -231,14 +263,92 @@
 			
 			 			return FALSE;
 			}
-			if ([txtReduceTo.text isEqualToString:@""]) {
+			
+			
+			if ([txtReduceAt.text intValue ] < 3  ) {
 				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-											message:@"Reduce Basic Sum Assured is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+																	message: [NSString stringWithFormat:@"Reduce Paid Up Year is invalid"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 				[failAlert show];
-				[txtReduceTo becomeFirstResponder];
-			 			
+				[txtReduceAt becomeFirstResponder];
+				
 				return FALSE;
 			}
+			
+			if ([txtReduceAt.text intValue ] >  70 - getAge  ) {
+				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																	message: [NSString stringWithFormat:@"Reduce Paid Up Year is invalid"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[failAlert show];
+				[txtReduceAt becomeFirstResponder];
+				
+				return FALSE;
+			}
+			
+			//for reduce to
+			if ([txtReduceTo.text isEqualToString:@""]) {
+				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																	message:@"Reduce Basic Sum Assured is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[failAlert show];
+				[txtReduceTo becomeFirstResponder];
+				
+				return FALSE;
+			}
+			
+			if ([txtReduceTo.text intValue] > [getBasicSA intValue]) {
+				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																	message:[NSString stringWithFormat:@"Reduce Basic Sum Assured cannot be more than %@.", getBasicSA] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[failAlert show];
+				[txtReduceTo becomeFirstResponder];
+				
+				return FALSE;
+			}
+			
+			if ([txtReduceAt.text intValue ] < 3 || [txtReduceAt.text intValue ] > 19 ) {
+				
+				if ([txtReduceTo.text intValue ] < [getBasicSA intValue ])  {
+					UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																		message: [NSString stringWithFormat:@"Reduce Basic Sum Assured cannot be less than %@.", getBasicSA  ] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+					[failAlert show];
+					[txtReduceTo becomeFirstResponder];
+					return FALSE;
+					
+				}
+				
+				if ([txtReduceTo.text intValue ] > [getBasicSA intValue ])  {
+					UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																		message: [NSString stringWithFormat:@"Reduce Basic Sum Assured cannot be more than %@.", getBasicSA  ] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+					[failAlert show];
+					[txtReduceTo becomeFirstResponder];
+					return FALSE;
+					
+				}
+
+				return TRUE;
+			}
+			
+			if ([txtReduceAt.text intValue ] > 2 && [txtReduceTo.text doubleValue ] <  [getBasicSA doubleValue ] * (0.05 * ([txtReduceAt.text intValue ] -3)  + 0.15)) {
+				double aa = [getBasicSA doubleValue ] * (0.05 * ([txtReduceAt.text intValue ] -3)  + 0.15);
+				
+				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																	message: [NSString stringWithFormat:@"Reduce Basic Sum Assured cannot be less than %.0f.", aa] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[failAlert show];
+				[txtReduceTo becomeFirstResponder];
+				
+				return FALSE;
+			}
+
+			if ([txtReduceAt.text intValue ] <  20 && [txtReduceTo.text doubleValue ] <  [getBasicSA doubleValue ] * (0.05 * ([txtReduceAt.text intValue ] -3)  + 0.15)) {
+				double aa = [getBasicSA doubleValue ] * (0.05 * ([txtReduceAt.text intValue ] -3)  + 0.15);
+				
+				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																	message: [NSString stringWithFormat:@"Reduce Basic Sum Assured cannot be less than %.0f.", aa] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[failAlert show];
+				[txtReduceTo becomeFirstResponder];
+				
+				return FALSE;
+			}
+			
+			
+
 		}
 	 	
 	 	return TRUE;
@@ -250,7 +360,19 @@
 		 return  YES;
 	 }
 	
-	 	if (textField.tag != 1) {
+	 	if (textField.tag == 1) {
+			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+				return NO;
+			}
+		}
+		else if (textField.tag == 6){
+			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
+			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+				return NO;
+			}
+		}
+	 	else{
 			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
 			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
 				return NO;
@@ -259,13 +381,8 @@
 			if (textField.text.length > 1) {
 				return NO;
 			}
+
 		}
-	 	else{
-		 		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
-		 		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
-			 			return NO;
-			 		}
-		 	}
 	
 	
 	     return YES;
@@ -410,6 +527,10 @@
 	[self setOutletReduce:nil];
 	[self setTxtReduceAt:nil];
 	[self setTxtReduceTo:nil];
+	[self setLblReduceAt:nil];
+	[self setLblReduceTo:nil];
+	[self setLblReduceAt:nil];
+	[self setLblReduceTo:nil];
 	[super viewDidUnload];
 }
 - (IBAction)ActionWithdrawal:(id)sender {
@@ -442,12 +563,14 @@
 }
 - (IBAction)ActionReduce:(id)sender {
 	if (outletReduce.selectedSegmentIndex == 0) {
-		 		txtReduceAt.enabled = TRUE;
-		 		txtReduceTo.enabled = TRUE;
-				txtReduceAt.backgroundColor = [UIColor whiteColor];
-		 		txtReduceTo.backgroundColor = [UIColor whiteColor];
-		 	}
-	 	else{
+		
+
+		txtReduceAt.enabled = TRUE;
+		txtReduceTo.enabled = TRUE;
+		txtReduceAt.backgroundColor = [UIColor whiteColor];
+		txtReduceTo.backgroundColor = [UIColor whiteColor];
+	}
+	else{
 		 		txtReduceAt.text = @"";
 		 		txtReduceTo.text = @"";
 		 		txtReduceAt.enabled = FALSE;
@@ -455,6 +578,6 @@
 		 		txtReduceAt.backgroundColor = [UIColor lightGrayColor];
 		 		txtReduceTo.backgroundColor = [UIColor lightGrayColor];
 		 
-		 	}
+	}
 }
 @end

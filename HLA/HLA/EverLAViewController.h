@@ -20,7 +20,9 @@
 		andSmoker:(NSString *)aaSmoker andOccpCPA:(NSString *)aaOccpCPA  ;
 -(void) BasicSI:(NSString *)aaSINo andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andCovered:(int)aaCovered
 		andBasicSA:(NSString *)aaBasicSA andBasicHL:(NSString *)aaBasicHL andBasicHLTerm:(int)aaBasicHLTerm
-		andBasicHLPct:(NSString *)aaBasicHLPct andBasicHLPctTerm:(int)aaBasicHLPctTerm andPlanCode:(NSString *)aaPlanCode;
+		andBasicHLPct:(NSString *)aaBasicHLPct andBasicHLPctTerm:(int)aaBasicHLPctTerm andPlanCode:(NSString *)aaPlanCode
+		andBumpMode:(NSString *)aaBumpMode;
+
 -(void)RiderAdded;
 -(void)secondLADelete;
 -(void)PayorDeleted;

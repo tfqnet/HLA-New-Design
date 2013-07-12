@@ -28,6 +28,7 @@
 //--request
 @property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, assign,readwrite) int getAge;
+@property (nonatomic, copy) NSString *getBasicSA;
 //--
 
 - (IBAction)ActionDone:(id)sender;
@@ -41,5 +42,7 @@
 - (IBAction)ActionReduce:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *txtReduceAt;
 @property (weak, nonatomic) IBOutlet UITextField *txtReduceTo;
+@property (weak, nonatomic) IBOutlet UILabel *lblReduceAt;
+@property (weak, nonatomic) IBOutlet UILabel *lblReduceTo;
 
 @end

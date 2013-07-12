@@ -581,6 +581,13 @@ BOOL exist;
 			[alert show];
 			return  FALSE;
 		}
+		
+		if ([txtPercentageReinvest.text intValue ] == 0) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Percentage ReInvest must be greater than 0" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			return  FALSE;
+		}
 	}
 	
 	if (outletOptions.selectedSegmentIndex != 1) {

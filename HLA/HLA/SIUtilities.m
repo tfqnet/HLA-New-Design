@@ -209,6 +209,14 @@ static sqlite3 *contactDB = nil;
 	FMDatabase *database = [FMDatabase databaseWithPath:path];
     [database open];
 	
+	
+	NSString *query;
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TPExcess (\"SINO\" VARCHAR, \"FromYear\" INTEGER, \"YearInt\" INTEGER, \"Amount\" "
+			 "DOUBLE, \"ForYear\" INTEGER) "];
+    [database executeUpdate:query];
+	
+	
+	/*
 	NSString *query = [NSString stringWithFormat:@"INSERT INTO Trad_sys_profile ('PlanCode', 'planname' ) VALUES('UV', 'HLA Ever Life')"];
     [database executeUpdate:query];
 	
@@ -600,7 +608,7 @@ static sqlite3 *contactDB = nil;
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"WI\", \"Acc. Weekly Indemnity Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
-	
+	*/
 	[database close];
 }
 

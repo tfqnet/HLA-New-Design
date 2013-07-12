@@ -14,7 +14,7 @@
 
 @implementation RiderPTypeTbViewController
 @synthesize ptype,seqNo,desc,requestSINo,selectedCode,selectedDesc,selectedSeqNo,SINoPlan,age,Occp;
-@synthesize selectedAge,selectedOccp, TradOrEver;
+@synthesize selectedAge,selectedOccp, TradOrEver, sex;
 @synthesize delegate = _delegate;
 
 -(id)initWithString:(NSString *)stringCode str:(NSString *)getTradOrEver {
@@ -60,22 +60,22 @@
     desc = [[NSMutableArray alloc] init];
     age = [[NSMutableArray alloc] init];
     Occp = [[NSMutableArray alloc] init];
+	sex = [[NSMutableArray alloc] init];
     const char *dbpath = [databasePath UTF8String];
     sqlite3_stmt *statement;
     if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
     {
-				
 		
 		NSString *querySQL;
 		if ([TradOrEver isEqualToString:@"TRAD"]) {
 			querySQL = [NSString stringWithFormat:
-								  @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode "
+								  @"SELECT a.PTypeCode,a.Sequence,b.PTypeDesc,c.ALB,c.OccpCode, c.Sex "
 								  "FROM Trad_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Sequence=b.Seq "
 								  "LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
 		}
 		else{
 			querySQL = [NSString stringWithFormat:
-						@"SELECT a.PTypeCode,a.Seq,b.PTypeDesc,c.ALB,c.OccpCode "
+						@"SELECT a.PTypeCode,a.Seq,b.PTypeDesc,c.ALB,c.OccpCode, c.Sex "
 						"FROM UL_LAPayor a LEFT JOIN Adm_PersonType b ON a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq "
 						"LEFT JOIN Clt_Profile c ON a.CustCode=c.CustCode WHERE a.SINo=\"%@\"",SINoPlan];
 		}
@@ -90,6 +90,7 @@
                 [desc addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)]];
                 [age addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)]];
                 [Occp addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)]];
+				[sex addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)]];
             }
             sqlite3_finalize(statement);
         }
@@ -140,7 +141,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     selectedIndex = indexPath.row;
-    [_delegate PTypeController:self didSelectCode:self.selectedCode seqNo:self.selectedSeqNo desc:self.selectedDesc andAge:self.selectedAge andOccp:self.selectedOccp];
+    [_delegate PTypeController:self didSelectCode:self.selectedCode
+						 seqNo:self.selectedSeqNo desc:self.selectedDesc andAge:self.selectedAge andOccp:self.selectedOccp
+						andSex:self.selectedSex];
     [tableView reloadData];
 }
 
@@ -168,6 +171,12 @@
 {
     return [Occp objectAtIndex:selectedIndex];
 }
+
+-(NSString *)selectedSex
+{
+    return [sex objectAtIndex:selectedIndex];
+}
+
 
 #pragma mark - Memory Management
 

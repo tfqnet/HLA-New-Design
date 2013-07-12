@@ -37,7 +37,7 @@
 @synthesize FCondition,FFieldName,FInputCode,FLabelCode,FLabelDesc,FRidName,FTbName;
 @synthesize txtGYIFrom,txtHL,txtHLTerm,txtOccpLoad,txtPaymentTerm,txtReinvestment,txtRiderPremium,txtRiderTerm;
 @synthesize txtRRTUP,txtRRTUPTerm,txtSumAssured, expAge, existRidCode, lblMax, lblMin, LPremium, outletReinvest;
-@synthesize LReinvest, LTypeReinvest;
+@synthesize LReinvest, LTypeReinvest, requestBumpMode, age, pTypeSex;
 @synthesize delegate = _delegate;
 @synthesize RiderList = _RiderList;
 @synthesize RiderListPopover = _RiderListPopover;
@@ -1402,7 +1402,8 @@
     [self.planPopover dismissPopoverAnimated:YES];
 }
 
--(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq desc:(NSString *)desc andAge:(NSString *)aage andOccp:(NSString *)aaOccp{
+-(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq
+				  desc:(NSString *)desc andAge:(NSString *)aage andOccp:(NSString *)aaOccp andSex:(NSString *)aaSex{
 	if (riderCode != NULL) {
         [self.outletRider setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
         riderCode = [[NSString alloc] init];
@@ -1420,12 +1421,13 @@
     PTypeSeq = [seq intValue];
     pTypeAge = [aage intValue];
     pTypeOccp = [[NSString alloc] initWithFormat:@"%@",aaOccp];
+	pTypeSex = [[NSString alloc] initWithFormat:@"%@",aaSex];
     
     [self getCPAClassType];
     
     [self.outletPersonType setTitle:pTypeDesc forState:UIControlStateNormal];
     [self.pTypePopOver dismissPopoverAnimated:YES];
-    NSLog(@"RIDERVC pType:%@, seq:%d, desc:%@",pTypeCode,PTypeSeq,pTypeDesc);
+    NSLog(@"RIDERVC pType:%@, seq:%d, desc:%@ sex:%@",pTypeCode,PTypeSeq,pTypeDesc, pTypeSex);
     [self getListingRiderByType];
     [myTableView reloadData];
 }
@@ -2122,7 +2124,8 @@
     }
 
     inputSA = [txtSumAssured.text doubleValue];
-    		   
+	[self calculateCurrentRiderPrem];
+	
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
@@ -2153,17 +2156,163 @@
     }
 	
     if (secondLARidCode.length != 0) {
-        
-        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        //[alert setTag:1004];
-        //[alert show];
+       
     }
     
     [self getListingRiderByType];
     [self getListingRider];
+	
+	if (inputSA > maxRiderSA) {
+        NSLog(@"will delete %@",riderCode);
+        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Rider Sum Assured must be less than or equal to %.f",maxRiderSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [alert setTag:1002];
+        [alert show];
+    }
+    else {
+		/*
+        [self calculateRiderPrem];
+		[self calculateWaiver];
+        [self calculateMedRiderPrem];
+        
+        if (medRiderPrem != 0) {
+            [self MHIGuideLines];
+        }
+		 */
+    }
     
    
 }
+
+-(void)calculateCurrentRiderPrem{
+	sqlite3_stmt *statement;
+	if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK){
+		
+		int ridTerm = [txtRiderTerm.text intValue];
+		age = pTypeAge;
+		sex = pTypeSex;
+		
+		if ([riderCode isEqualToString:@"DCA"]||[riderCode isEqualToString:@"DHI"]||[riderCode isEqualToString:@"MR"]||
+			[riderCode isEqualToString:@"PA"] || [riderCode isEqualToString:@"TPDMLA"]||[riderCode isEqualToString:@"WI"])
+        {
+            [self getRiderRateSexClassAge:riderCode Sex:sex Class:getOccpClass Age:age];
+        }
+        else if ([riderCode isEqualToString:@"ACIR"]) {
+            [self getRiderRateSexTermAgeSmoker:riderCode Sex:sex Term:ridTerm Age:age Smoker:getSmoker];
+        }
+        else if ([riderCode isEqualToString:@"CIWP"]||[riderCode isEqualToString:@"LCWP"] || [riderCode isEqualToString:@"PR"] ||
+				 [riderCode isEqualToString:@"TPDWP"] ) {
+            [self getRiderRateSexPremTermAge:riderCode Sex:sex Prem:txtPaymentTerm.text Term:ridTerm Age:age];
+        }
+        else if ([riderCode isEqualToString:@"HMM"]) {
+            [self getRiderRateTypeSexClassAgeDed:riderCode Type:outletRiderPlan.titleLabel.text
+											 Sex:sex Class:getOccpClass Age:age Deduc:outletDeductible.titleLabel.text];
+        }
+        else if ([riderCode isEqualToString:@"MG_IV"]) {
+            [self getRiderRateTypeAgeSexClass:riderCode Type:outletRiderPlan.titleLabel.text Sex:sex Class:getOccpClass Age:age];
+        }
+        else if ([riderCode isEqualToString:@"LSR"]) {
+            [self getRiderRateSexAge:riderCode Sex:sex Age:age];
+        }
+        else { //for ECAR
+            [self getRiderRatePremTermAge:riderCode Prem:txtPaymentTerm.text Term:ridTerm Age:age];
+        }
+		
+		double ridSA = [txtSumAssured.text doubleValue];
+        double riderHLoad = 0;
+        double riderHLoadPct = 0;
+        
+        if ([txtHL.text doubleValue] > 0) {
+            riderHLoad = [txtHL.text doubleValue];
+        }
+        
+        //NSLog(@"~riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f, TempHL:%.3f",riderCode,riderRate,ridSA,riderHLoad, riderTempHLoad);
+		
+		double annFac;
+        double halfFac;
+        double quarterFac;
+        double monthFac;
+		
+
+            annFac = 1;
+            halfFac = 2;
+            quarterFac = 4;
+            monthFac = 0.0833333;
+		
+		//calculate occupationLoading
+        [self getOccLoadRider];
+        NSLog(@"occpLoadRate(%@):%d",riderCode,occLoadRider);
+		
+		double annualRider = 0;
+        double halfYearRider = 0;
+        double quarterRider = 0;
+        double monthlyRider = 0;
+		
+		if ([riderCode isEqualToString:@"ACIR"]){
+			
+		}
+		
+	}
+}
+
+-(void)getOccLoadRider
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+							  @"SELECT OccLoading_TL FROM Adm_Occp_Loading_Penta WHERE OccpCode=\"%@\"",pTypeOccp];
+		
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                occLoadRider =  sqlite3_column_int(statement, 0);
+                
+            } else {
+                NSLog(@"error access getOccLoadRider");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+
+-(void)getRiderRateSexClassAge:(NSString *)aaplan Sex:(NSString *)aaSex Class:(int)aaClass Age:(int)aaAge{
+	
+}
+
+-(void)getRiderRateSexTermAgeSmoker:(NSString *)aaplan Sex:(NSString *)aaSex Term:(int)aaTerm
+							   Age:(int)aaAge Smoker:(NSString *)aaSmoker{
+	
+}
+
+-(void)getRiderRateSexPremTermAge:(NSString *)aaplan Sex:(NSString *)aaSex Prem:(NSString *)aaPrem
+								Term:(int)aaTerm Age:(int)aaAge{
+	
+}
+
+-(void)getRiderRateTypeSexClassAgeDed:(NSString *)aaplan Type:(NSString *)aaType Sex:(NSString *)aaSex
+							 Class:(int)aaClass Age:(int)aaAge Deduc:(NSString *)aaDeduc{
+	
+}
+
+-(void)getRiderRateTypeAgeSexClass:(NSString *)aaplan Type:(NSString *)aaType Sex:(NSString *)aaSex
+								Class:(int)aaClass Age:(int)aaAge{
+	
+}
+
+-(void)getRiderRateSexAge:(NSString *)aaplan Sex:(NSString *)aaSex Age:(int)aaAge{
+	
+}
+
+-(void)getRiderRatePremTermAge:(NSString *)aaplan Prem:(NSString *)aaPrem Term:(int)aaTerm Age:(int)aaAge{
+	
+}
+
 
 -(NSString *)ReturnReinvest{
 	NSString *returnvalue;

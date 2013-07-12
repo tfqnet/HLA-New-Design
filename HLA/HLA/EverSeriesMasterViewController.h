@@ -71,6 +71,7 @@
 @property (nonatomic, retain) NSString *getSmoker;
 @property (nonatomic, retain) NSString *getOccpCode;
 @property (nonatomic, retain) NSString *getCommDate;
+@property (nonatomic, retain) NSString *getBumpMode;
 @property (nonatomic ,assign ,readwrite) int getIdProf;
 @property (nonatomic ,assign ,readwrite) int getIdPay;
 @property (nonatomic ,assign ,readwrite) int getLAIndexNo;

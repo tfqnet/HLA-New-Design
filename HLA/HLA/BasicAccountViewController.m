@@ -103,16 +103,17 @@ BOOL TPExcess;
 			
 		}else {
 			NSLog(@"create new");
-			//default plan
-			[outletBasic setTitle:@"HLA EverLife" forState:UIControlStateNormal];
-			txtPolicyTerm.text =  [NSString stringWithFormat:@"%d", (100 - requestAge)];
-			getPlanCode = @"UV";
-			// ---
+			
 			
         }
 		
 	} else {
         NSLog(@"SINo not exist!");
+		//default plan
+		[outletBasic setTitle:@"HLA EverLife" forState:UIControlStateNormal];
+		txtPolicyTerm.text =  [NSString stringWithFormat:@"%d", (100 - requestAge)];
+		getPlanCode = @"UV";
+		// ---
     }
 
 	if (PayorIndexNo != 0) {
@@ -138,7 +139,7 @@ BOOL TPExcess;
 	txtBasicSA.delegate = self;
 	txtBasicSA.tag = 1;
 	txtCommFrom.tag = 2;
-	txtFor.tag = 2;
+	txtFor.tag = 4;
 	txtCommFrom.delegate = self;
 	txtFor.delegate = self;
 	txtRTUP.tag = 3;
@@ -223,14 +224,17 @@ BOOL TPExcess;
 			[self DisplayBasicSACondtion];
             break;
 			
-		case 2:
+		case 2: //txtCommFrom
 			labelComm.text = [NSString stringWithFormat:@"Min: %d Max: %d", 1, 100- ageClient - 1];
 			labelFor.text = [NSString stringWithFormat:@"Min: %d Max: %d", 1, 100- ageClient];
-			
             break;
-		case 3:
+		case 3: //RTUP
 			Label1.hidden = TRUE;
 			label2.hidden = TRUE;
+		case 4:
+			labelFor.text = [NSString stringWithFormat:@"Min: %d Max: %d", 1,
+							 [txtPolicyTerm.text intValue ] - [txtCommFrom.text intValue] ];
+            break;
         default:
             
             break;
@@ -292,7 +296,16 @@ BOOL TPExcess;
 		SAFac = 15;
 	}
 	
-	minSA = SAFac * [txtBasicPremium.text doubleValue ];
+	if (segPremium.selectedSegmentIndex == 1) {
+		minSA = SAFac * [txtBasicPremium.text doubleValue ] / Semi;
+	}
+	else if (segPremium.selectedSegmentIndex == 2){
+		minSA = SAFac * [txtBasicPremium.text doubleValue ] / quarterly;
+	}
+	else if (segPremium.selectedSegmentIndex == 3){
+		minSA = SAFac * [txtBasicPremium.text doubleValue ] / Monthly;
+	}
+	
 	Label1.text = [ NSString stringWithFormat:@"Min: %.0f", minSA];
 	label2.text = @"Max: Subject to underwriting";
 }
@@ -413,7 +426,7 @@ BOOL TPExcess;
 	
 	[_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover
 			andBasicSA:txtBasicSA.text andBasicHL:getHL andBasicHLTerm:getHLTerm
-		 andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode];
+		 andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode andBumpMode:[self ReturnBumpMode]];
 	
 }
 
@@ -555,7 +568,8 @@ BOOL TPExcess;
                 //[self getPlanCodePenta];
                 
 				[_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:txtBasicSA.text
-					andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode];
+					andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm
+					   andPlanCode:getPlanCode andBumpMode:[self ReturnBumpMode]];
 				
 				
             }
@@ -630,7 +644,7 @@ BOOL TPExcess;
 				
 				[_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:txtBasicSA.text
 						andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm
-						andPlanCode:getPlanCode];
+						andPlanCode:getPlanCode andBumpMode:[self ReturnBumpMode]];
 
 		
                 AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
@@ -1154,6 +1168,22 @@ BOOL TPExcess;
         
     }
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
+			 [[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"]){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up Premium Commnencement Year is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtCommFrom becomeFirstResponder ];
+	}
+	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
+			 [[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"] ){
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"The number of year for Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtFor becomeFirstResponder ];
+	}
+
+	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 [[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:[NSString stringWithFormat:@"Regular Top Up Premium Commnencement Year is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1167,6 +1197,19 @@ BOOL TPExcess;
 															message:[NSString stringWithFormat:@"The number of year for Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 			[alert show];
 			[txtFor becomeFirstResponder ];
+	}
+	else if ([txtCommFrom.text intValue ] > 100 - ageClient - 1){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up must commence before %dth policy anniversary.", 100-ageClient-1] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtCommFrom becomeFirstResponder ];
+	}
+	else if ([txtFor.text intValue ] > [txtPolicyTerm.text intValue] - [txtCommFrom.text intValue ]){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up years must be less than or equal to %d year(s).", [txtPolicyTerm.text intValue] - [txtCommFrom.text intValue ]]
+													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtFor becomeFirstResponder ];
 	}
 	/*
 	else if (rangeofDotSA.location != NSNotFound) {

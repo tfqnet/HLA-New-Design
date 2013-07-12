@@ -49,8 +49,9 @@
 	txtExpireCashFund.delegate = self;
 	txtExpireSecureFund.delegate = self;
 	txtAge.tag = 1;
+	txtAge.delegate = self;
 	myScrollView.delegate = self;
-
+	txtAge.enabled = FALSE;
 	
 	if (SINo) {
 		[self getExisting];
@@ -310,7 +311,7 @@
 		[txtCashFund becomeFirstResponder ];
 		return FALSE;
 	}
-	else if([txtAge.text intValue ] < getAge + 10 ){
+	else if(outletSustain.selectedSegmentIndex == 0 && [txtAge.text intValue ] < getAge + 10 ){
 		UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:[NSString stringWithFormat:@"Minimum Policy Sustainability (Age) is %d ", getAge + 10] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[failAlert show];
@@ -426,7 +427,14 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+	if (string.length == 0) {
+		return  YES;
+	}
 
+	if (textField.text.length > 2) {
+		return NO;
+	}
+	
 	NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
 	if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
 		return NO;
@@ -523,6 +531,7 @@
 	else{
 		outletAge.enabled = NO;
 		outletAge.selectedSegmentIndex = -1;
+		txtAge.enabled = FALSE;
 		txtAge.text = @"";
 		txtAge.backgroundColor = [UIColor lightGrayColor];
 	}

@@ -1275,7 +1275,7 @@ BOOL Edit = FALSE;
         if ([RidCode isEqualToString:@"HB"]) {
             annFac = 1;
             halfFac = 0.55;
-            quarterFac = 0.3;
+            quarterFac = 0.3;		
             monthFac = 0.1;
         }
         else {
@@ -5556,7 +5556,8 @@ BOOL Edit = FALSE;
 
 #pragma mark - Delegate
 
--(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq desc:(NSString *)desc andAge:(NSString *)aage andOccp:(NSString *)aaOccp
+-(void)PTypeController:(RiderPTypeTbViewController *)inController didSelectCode:(NSString *)code seqNo:(NSString *)seq
+				  desc:(NSString *)desc andAge:(NSString *)aage andOccp:(NSString *)aaOccp andSex:(NSString *)aaSex
 {
     if (riderCode != NULL) {
         [self.btnAddRider setTitle:[NSString stringWithFormat:@""] forState:UIControlStateNormal];
@@ -5575,7 +5576,7 @@ BOOL Edit = FALSE;
     PTypeSeq = [seq intValue];
     pTypeAge = [aage intValue];
     pTypeOccp = [[NSString alloc] initWithFormat:@"%@",aaOccp];
-    
+	
     [self getCPAClassType];
     
     [self.btnPType setTitle:pTypeDesc forState:UIControlStateNormal];

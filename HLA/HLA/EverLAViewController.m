@@ -229,7 +229,7 @@
     sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
 	
 	[_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL
-		andBasicHLTerm:getHLTerm andBasicHLPct:getHL andBasicHLPctTerm:getHLTerm andPlanCode:planChoose];
+		andBasicHLTerm:getHLTerm andBasicHLPct:getHL andBasicHLPctTerm:getHLTerm andPlanCode:planChoose andBumpMode:@"A"];
 
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.SICompleted = YES;
