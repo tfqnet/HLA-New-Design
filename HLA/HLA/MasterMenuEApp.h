@@ -17,6 +17,7 @@
 #import "eAppPersonalDetails.h"
 #import "HealthQuestionnaire2.h"
 #import "HealthQuestionnaire3.h"
+#import "ExistingLifePolicies.h"
 
 @interface MasterMenuEApp : UIViewController <HealthQuestionnaireDelegate, HealthQuestionnaire2Delegate,SummaryDelegate>  {
     NSIndexPath *selectedPath;
@@ -31,6 +32,7 @@
      eAppPersonalDetails *_eAppPersonalDataVC;
     HealthQuestionnaire2 *_HealthVC2;
     HealthQuestionnaire3 *_HealthVC3;
+    ExistingLifePolicies *_part4;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
@@ -47,6 +49,7 @@
 @property (nonatomic, retain) eAppPersonalDetails *eAppPersonalDataVC;
 @property (nonatomic, retain) HealthQuestionnaire2 *HealthVC2;
 @property (nonatomic, retain) HealthQuestionnaire3 *HealthVC3;
+@property (nonatomic, retain) ExistingLifePolicies *part4;
 
 
 @end

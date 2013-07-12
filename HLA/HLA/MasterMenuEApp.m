@@ -22,6 +22,7 @@
 @synthesize eAppPersonalDataVC = _eAppPersonalDataVC;
 @synthesize HealthVC2 = _HealthVC2;
 @synthesize HealthVC3 = _HealthVC3;
+@synthesize part4 = _part4;
 @synthesize myTableView,rightView,ListOfSubMenu;
 
 
@@ -30,7 +31,7 @@
     [super viewDidLoad];
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
-    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Summary", @"Personal Details", @"Policy Details", @"Nominees/Trustees", @"Health Questions", @"Additional Questions",@"Declaration", nil ];
+    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Summary", @"Personal Details", @"Policy Details", @"Existing Life Policies", @"Nominees/Trustees", @"Health Questions", @"Additional Questions",@"Declaration", nil ];
     myTableView.rowHeight = 44;
     [myTableView reloadData];
     
@@ -140,14 +141,21 @@
         [self.rightView addSubview:self.PolicyVC.view];
     }
     
-    else if (indexPath.row == 3)     //nominees
+    else if (indexPath.row == 3)     //Declaration
+    {
+        self.part4 = [nextStoryboard instantiateViewControllerWithIdentifier:@"Part4Existing"];
+        [self addChildViewController:self.part4];
+        [self.rightView addSubview:self.part4.view];
+    }
+    
+    else if (indexPath.row == 4)     //nominees
     {
         self.NomineesVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"MainNomineesScreen"];
         [self addChildViewController:self.NomineesVC];
         [self.rightView addSubview:self.NomineesVC.view];
     }
     
-    else if (indexPath.row == 4)     //health questions
+    else if (indexPath.row == 5)     //health questions
     {
         self.HealthVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"HealthQuestScreen"];
         _HealthVC.delegate = self;
@@ -155,19 +163,20 @@
         [self.rightView addSubview:self.HealthVC.view];
     }
     
-    else if (indexPath.row == 5)     //Additional questions
+    else if (indexPath.row == 6)     //Additional questions
     {
         self.AddQuestVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"AddQuestScreen"];
         [self addChildViewController:self.AddQuestVC];
         [self.rightView addSubview:self.AddQuestVC.view];
     }
     
-    else if (indexPath.row == 6)     //Declaration
+    else if (indexPath.row == 7)     //Declaration
     {
         self.DeclareVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"DeclareEAppScreen"];
         [self addChildViewController:self.DeclareVC];
         [self.rightView addSubview:self.DeclareVC.view];
     }
+
     nextStoryboard = nil;
 }
 
