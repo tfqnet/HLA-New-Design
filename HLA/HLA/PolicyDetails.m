@@ -8,6 +8,7 @@
 
 #import "PolicyDetails.h"
 #import "ColorHexCode.h"
+#import "ExistingLifePolicies.h"
 
 @interface PolicyDetails ()
 
@@ -19,6 +20,8 @@
 @synthesize SIDate = _SIDate;
 @synthesize IDTypePopover = _IDTypePopover;
 @synthesize IDTypeVC = _IDTypeVC;
+@synthesize part3;
+
 
 - (void)viewDidLoad
 {
@@ -105,7 +108,15 @@
     [self.IDTypePopover presentPopoverFromRect:[sender bounds] inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
+- (IBAction)ActionPart3:(id)sender {
+    if (part3.selectedSegmentIndex == 1) {
+        ExistingLifePolicies *aaa = [self.storyboard instantiateViewControllerWithIdentifier:@"Part4Existing"];
+        aaa.modalPresentationStyle = UIModalPresentationPageSheet;
+        aaa.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentModalViewController:aaa animated:NO];
+}
 
+}
 #pragma mark - delegate
 
 -(void)DateSelected:(NSString *)strDate :(NSString *)dbDate
@@ -137,6 +148,7 @@
 - (void)viewDidUnload
 {
     [self setDOBLbl:nil];
+    [self setPart3:nil];
     [super viewDidUnload];
 }
 @end

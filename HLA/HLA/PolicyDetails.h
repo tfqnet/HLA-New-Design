@@ -23,8 +23,10 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *DOBLbl;
 @property (strong, nonatomic) IBOutlet UILabel *OtherIDLbl;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *part3;
 
 - (IBAction)ActionDOB:(id)sender;
 - (IBAction)ActionOtherID:(id)sender;
+- (IBAction)ActionPart3:(id)sender;
 
 @end
