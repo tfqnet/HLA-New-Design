@@ -15,6 +15,8 @@
 #import "AppDelegate.h"
 #import "SIMenuViewController.h"
 #import "MainScreen.h"
+#import "ColorHexCode.h"
+#import "MaineApp.h"
 
 @interface NewLAViewController ()
 
@@ -28,9 +30,9 @@
 @synthesize LAAgeField;
 @synthesize LAOccLoadingField;
 @synthesize LACPAField;
-@synthesize LAPAField;
-@synthesize btnCommDate;
-@synthesize statusLabel;
+@synthesize LAPAField,btnToEAPP,OutletSpace;
+@synthesize btnCommDate,btnEnabled,btnProspect;
+@synthesize statusLabel,EAPPorSI;
 @synthesize sex,smoker,age,ANB,DOB,jobDesc,SINo,CustCode;
 @synthesize occDesc,occCode,occLoading,payorSINo,occCPA_PA;
 @synthesize popOverController,requestSINo,clientName,occuCode,occuDesc,CustCode2,payorCustCode;
@@ -159,8 +161,18 @@ id dobtemp;
 		ggg = Nil;
 		iii = Nil;
 	}
+    
+    btnToEAPP.width = 0.01;
+    OutletSpace.width = 666;
+    if ([[self.EAPPorSI description] isEqualToString:@"eAPP"]) {
 
-	 
+        btnProspect.hidden = YES;
+        btnEnabled.hidden = YES;
+        btnToEAPP.width = 0;
+        OutletSpace.width = 611;
+        
+    }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -439,6 +451,16 @@ id dobtemp;
 }
 
 #pragma mark - Action
+
+- (IBAction)ActionEAPP:(id)sender
+{
+    UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
+    MaineApp *main = [secondStoryboard instantiateViewControllerWithIdentifier:@"maineApp"];
+    main.IndexTab = 2;
+    [self presentViewController:main animated:NO completion:nil];
+    main = Nil, secondStoryboard = nil;
+}
+
 - (IBAction)sexSegmentPressed:(id)sender
 {
     if ([sexSegment selectedSegmentIndex]==0) {
@@ -1853,7 +1875,15 @@ id dobtemp;
     [self setHeaderTitle:nil];
     [self setBtnDOB:nil];
     [self setBtnOccp:nil];
+    [self setBtnProspect:nil];
+    [self setBtnEnabled:nil];
+    [self setBtnEnabled:nil];
+    [self setBtnProspect:nil];
+    [self setBtnToEAPP:nil];
+    [self setOutletSpace:nil];
     [super viewDidUnload];
 }
+
+
 
 @end

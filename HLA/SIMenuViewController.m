@@ -20,6 +20,7 @@
 #import "CashPromiseViewController.h"
 #import "AppDelegate.h"
 #import "MaineApp.h"
+#import "ColorHexCode.h"
 
 @interface SIMenuViewController ()
 
@@ -27,7 +28,7 @@
 
 @implementation SIMenuViewController
 @synthesize myTableView, SIshowQuotation;
-@synthesize RightView;
+@synthesize RightView,EAPPorSI;
 @synthesize ListOfSubMenu,SelectedRow;
 @synthesize menuBH,menuPH,menuLa2ndH,getCommDate;
 @synthesize getAge,getSINo,getOccpCode,getbasicSA;
@@ -126,8 +127,6 @@ id RiderCount;
     [self.view addSubview:RightView];
     self.myTableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ios-linen.png"]];
     
-//    ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Rider", @"Premium", nil ];
-//    SelectedRow = [[NSMutableArray alloc] initWithObjects:@"4", @"5", nil ];
      ListOfSubMenu = [[NSMutableArray alloc] initWithObjects:@"Life Assured", @"   2nd Life Assured", @"   Payor", @"Basic Plan", @"Health Loading", nil ];
     
     PlanEmpty = YES;
@@ -138,16 +137,46 @@ id RiderCount;
     myTableView.rowHeight = 44;
     [myTableView reloadData];
     
+    ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
+    if ([[self.EAPPorSI description] isEqualToString:@"eAPP"]) {
+        
+        
+        CGRect frame = CGRectMake(0, 0, 220, 30);
+        UILabel *label = [[UILabel alloc] initWithFrame:frame];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+        label.font = [UIFont boldSystemFontOfSize:20];
+        label.textAlignment = UITextAlignmentCenter;
+        label.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+        label.text = @"e-Application";
+        [self.view addSubview:label];
+        
+        CGRect frame2 = CGRectMake(0, 30, 220, 30);
+        UILabel *label2 = [[UILabel alloc] initWithFrame:frame2];
+        label2.backgroundColor = [UIColor clearColor];
+        label2.font = [UIFont fontWithName:@"TreBuchet MS" size:14];
+//        label2.font = [UIFont boldSystemFontOfSize:16];
+        label2.textAlignment = UITextAlignmentCenter;
+        label2.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+        label2.text = [self.requestSINo description];
+        [self.view addSubview:label2];
+        
+        label = nil, label2 = nil;
+    }
+    CustomColor = nil;
+    
+    
     if (_LAController == nil) {
         self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
         _LAController.delegate = self;
     }
     self.LAController.requestSINo = [self.requestSINo description];
+    self.LAController.EAPPorSI = [self.EAPPorSI description];
     [self addChildViewController:self.LAController];
     [self.RightView addSubview:self.LAController.view];
     blocked = NO;
     selectedPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -197,7 +226,13 @@ id RiderCount;
 	 */
 	self.view.autoresizesSubviews = NO;
 	
-    self.myTableView.frame = CGRectMake(0, 0, 220, 748);
+    if ([[self.EAPPorSI description] isEqualToString:@"eAPP"]) {
+        self.myTableView.frame = CGRectMake(0, 60, 220, 748);
+    }
+    else {
+        self.myTableView.frame = CGRectMake(0, 0, 220, 748);
+    }
+    
     [self hideSeparatorLine];
     self.RightView.frame = CGRectMake(223, 0, 801, 748);
 }
@@ -1155,6 +1190,7 @@ id RiderCount;
             self.LAController = [self.storyboard instantiateViewControllerWithIdentifier:@"LAView"];
             _LAController.delegate = self;
             self.LAController.requestSINo = getSINo;
+            self.LAController.EAPPorSI = [self.EAPPorSI description];
             [self addChildViewController:self.LAController];
             [self.RightView addSubview:self.LAController.view];
         }

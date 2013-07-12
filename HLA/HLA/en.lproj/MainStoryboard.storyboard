@@ -4338,7 +4338,12 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <items>
-                                    <barButtonItem width="666" style="plain" systemItem="fixedSpace" id="bs5-yR-etO"/>
+                                    <barButtonItem title="eApp" id="9h6-06-6eL">
+                                        <connections>
+                                            <action selector="ActionEAPP:" destination="deM-cN-3fE" id="zQw-do-ZrQ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="610" style="plain" systemItem="fixedSpace" id="bs5-yR-etO"/>
                                     <barButtonItem systemItem="done" id="l5R-Bh-6qv">
                                         <connections>
                                             <action selector="doSaveLA:" destination="deM-cN-3fE" id="mNq-k7-FFb"/>
@@ -4365,9 +4370,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <outlet property="LANameField" destination="j0P-LS-YLW" id="zXl-Ra-n8d"/>
                         <outlet property="LAOccLoadingField" destination="KWJ-so-GLu" id="wwT-aq-oBZ"/>
                         <outlet property="LAPAField" destination="qX1-ON-JF6" id="gYf-jw-nFw"/>
+                        <outlet property="OutletSpace" destination="bs5-yR-etO" id="WhW-o5-rpK"/>
                         <outlet property="btnCommDate" destination="2JU-81-zNB" id="Twc-Lc-QDa"/>
                         <outlet property="btnDOB" destination="gEp-0t-h2b" id="vYz-ga-f7u"/>
+                        <outlet property="btnEnabled" destination="9CF-h7-qnZ" id="pzT-S2-M29"/>
                         <outlet property="btnOccp" destination="VAZ-rc-SDC" id="is1-Sh-VuO"/>
+                        <outlet property="btnProspect" destination="Hbf-0E-g4d" id="pin-bC-mju"/>
+                        <outlet property="btnToEAPP" destination="9h6-06-6eL" id="Fn4-2k-iP3"/>
                         <outlet property="headerTitle" destination="Zdz-0l-1wR" id="vb3-1L-Fo5"/>
                         <outlet property="myScrollView" destination="A1g-vR-es4" id="h0d-Jo-ghr"/>
                         <outlet property="myToolBar" destination="kNN-4f-rhB" id="jmR-UD-dDj"/>

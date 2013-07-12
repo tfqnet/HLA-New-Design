@@ -239,6 +239,7 @@
     main.tradOrEver = @"TRAD";
     main.IndexTab = MenuOption.NewSIIndex ;
     main.requestSINo = [SINO objectAtIndex:indexPath.row];
+    main.EAPPorSI = @"eAPP";
     
     [self presentViewController:main animated:NO completion:nil];
     

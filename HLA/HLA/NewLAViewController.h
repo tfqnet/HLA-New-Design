@@ -61,6 +61,7 @@
 @property (nonatomic,strong) id requestCommDate;
 @property (nonatomic,strong) id requestSex;
 @property (nonatomic,strong) id requestSmoker;
+@property (nonatomic,strong) id EAPPorSI;
 
 @property (nonatomic, copy) NSString *getSINo;
 //--
@@ -88,6 +89,12 @@
 @property (strong, nonatomic) IBOutlet UILabel *headerTitle;
 @property (strong, nonatomic) IBOutlet UIButton *btnDOB;
 @property (strong, nonatomic) IBOutlet UIButton *btnOccp;
+@property (strong, nonatomic) IBOutlet UIButton *btnProspect;
+@property (strong, nonatomic) IBOutlet UIButton *btnEnabled;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *btnToEAPP;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *OutletSpace;
+
+- (IBAction)ActionEAPP:(id)sender;
 
 @property (nonatomic, copy) NSString *SINo;
 @property (nonatomic, copy) NSString *CustCode;

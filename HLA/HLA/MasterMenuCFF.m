@@ -42,7 +42,7 @@
     [self addChildViewController:self.CustomerDataVC];
     [self.RightView addSubview:self.CustomerDataVC.view];
     selectedPath = [NSIndexPath indexPathForRow:2 inSection:0];
-    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewRowAnimationNone];
+    [self.myTableView selectRowAtIndexPath:selectedPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 

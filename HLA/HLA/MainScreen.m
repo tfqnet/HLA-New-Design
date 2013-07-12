@@ -27,7 +27,7 @@
 
 @implementation MainScreen
 @synthesize indexNo, showQuotation;
-@synthesize userRequest;
+@synthesize userRequest,EAPPorSI;
 @synthesize IndexTab,mainBH,mainPH,mainLa2ndH, tradOrEver;;
 
 
@@ -92,8 +92,10 @@
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
 */
 	if ([tradOrEver isEqualToString:@"TRAD"]) {
+        
 		menuSIPage.requestSINo = [self.requestSINo description];
 		menuSIPage.SIshowQuotation = showQuotation;
+        menuSIPage.EAPPorSI = [self.EAPPorSI description];
 		menuSIPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New SI" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
 		[controllersToAdd addObject:menuSIPage];
 				viewControllers = [NSArray arrayWithArray:controllersToAdd];
