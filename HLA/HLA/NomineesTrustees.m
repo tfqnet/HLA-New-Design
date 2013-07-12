@@ -57,17 +57,17 @@
     [super viewDidUnload];
 }
 - (IBAction)addNominees:(id)sender
-{
-    Nominees *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"PopNomineesView"];
+{  
+    Nominees *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"NomineeScreen"];
     zzz.modalPresentationStyle = UIModalPresentationPageSheet;
     zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:zzz animated:NO];
-    zzz.view.superview.frame = CGRectMake(0, 50, 748, 974);
+//    zzz.view.superview.frame = CGRectMake(0, 50, 748, 974);
 }
 
 - (IBAction)addTrustee:(id)sender
 {
-    Trustees *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"TrusteeView"];
+    Trustees *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"TrusteeScreen"];
     zzz.modalPresentationStyle = UIModalPresentationPageSheet;
     zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:zzz animated:NO];

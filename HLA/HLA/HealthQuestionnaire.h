@@ -12,7 +12,7 @@
 -(void)swipeToHQ2;
 @end
 
-@interface HealthQuestionnaire : UIViewController{
+@interface HealthQuestionnaire : UITableViewController{
     id <HealthQuestionnaireDelegate> _delegate;
 }
 - (IBAction)swipeNext:(id)sender;

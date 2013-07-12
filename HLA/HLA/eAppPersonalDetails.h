@@ -21,6 +21,7 @@
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_TitlePickerPopover;
     UIPopoverController *_RelationshipPopover;
+    BOOL checked;
 }
 
 @property (nonatomic, strong) IDTypeViewController *IDTypeVC;
@@ -36,6 +37,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *OtherIDLbl;
 @property (strong, nonatomic) IBOutlet UILabel *DOBLbl;
 @property (strong, nonatomic) IBOutlet UILabel *RelationshipLbl;
+@property (strong, nonatomic) IBOutlet UIButton *checkAddress;
+@property (strong, nonatomic) IBOutlet UIButton *checkForeign;
 
 - (IBAction)btnLA1:(id)sender;
 - (IBAction)btnLA2:(id)sender;
@@ -43,6 +46,8 @@
 - (IBAction)ActionOtherID:(id)sender;
 - (IBAction)ActionDOB:(id)sender;
 - (IBAction)ActionRelationship:(id)sender;
+- (IBAction)checkAdd:(id)sender;
+- (IBAction)ActionForeign:(id)sender;
 
 
 @end

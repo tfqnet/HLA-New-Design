@@ -42,8 +42,7 @@
 
 - (void)btnDone:(id)sender
 {
-    
-    
+         
 }
 
 - (IBAction)isAllNo:(id)sender
@@ -86,6 +85,37 @@
         segQ14A.selectedSegmentIndex = 1;
         segQ14B.selectedSegmentIndex = 1;
         segQ15.selectedSegmentIndex = 1;
+    }
+}
+
+
+- (IBAction)btnQ1bPress:(id)sender {
+    if (segQ1B.selectedSegmentIndex == 0) {
+       HealthQuestions *aaa = [self.storyboard instantiateViewControllerWithIdentifier:@"HQ1"];
+        aaa.modalPresentationStyle = UIModalPresentationPageSheet;
+        aaa.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentModalViewController:aaa animated:NO];
+        //aaa.view.superview.frame = CGRectMake(0, 50, 748, 974);
+    }
+}
+
+- (IBAction)btnQ2Press:(id)sender {
+    if (segQ2.selectedSegmentIndex == 0) {
+        HealthQuestions *aaa = [self.storyboard instantiateViewControllerWithIdentifier:@"HQ2"];
+        aaa.modalPresentationStyle = UIModalPresentationPageSheet;
+        aaa.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentModalViewController:aaa animated:NO];
+    
+    }
+}
+
+- (IBAction)btnQ3Press:(id)sender {
+    if (segQ3.selectedSegmentIndex == 0) {
+        HealthQuestions *aaa = [self.storyboard instantiateViewControllerWithIdentifier:@"HQ3"];
+        aaa.modalPresentationStyle = UIModalPresentationPageSheet;
+        aaa.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentModalViewController:aaa animated:NO];
+        
     }
 }
 

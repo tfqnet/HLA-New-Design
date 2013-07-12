@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface Nominees : UIViewController
+@interface Nominees : UITableViewController
 
 - (IBAction)donePressed:(id)sender;
 

@@ -20,6 +20,7 @@
 		42867E9D175F2E0C001CE661 /* IDType.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867E9C175F2E0C001CE661 /* IDType.plist */; };
 		42867EAF175F75BD001CE661 /* Title.plist in Resources */ = {isa = PBXBuildFile; fileRef = 42867EAE175F75BD001CE661 /* Title.plist */; };
 		42867EB3175F75E6001CE661 /* TitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867EB2175F75E6001CE661 /* TitleViewController.m */; };
+		42B62CAB178FA5F400F573FA /* ExistingLifePolicies.m in Sources */ = {isa = PBXBuildFile; fileRef = 42B62CAA178FA5F400F573FA /* ExistingLifePolicies.m */; };
 		42BB1E2A17855B9E00C2A763 /* HealthQuestionnaire2.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BB1E2917855B9E00C2A763 /* HealthQuestionnaire2.m */; };
 		42BB1E2D17855BC000C2A763 /* HealthQuestionnaire3.m in Sources */ = {isa = PBXBuildFile; fileRef = 42BB1E2C17855BC000C2A763 /* HealthQuestionnaire3.m */; };
 		42C9E415176B0CC500B7EFF8 /* DisclosureStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 42C9E414176B0CC500B7EFF8 /* DisclosureStatus.m */; };
@@ -329,6 +330,8 @@
 		42867EAE175F75BD001CE661 /* Title.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Title.plist; sourceTree = "<group>"; };
 		42867EB1175F75E6001CE661 /* TitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleViewController.h; sourceTree = "<group>"; };
 		42867EB2175F75E6001CE661 /* TitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleViewController.m; sourceTree = "<group>"; };
+		42B62CA9178FA5F400F573FA /* ExistingLifePolicies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExistingLifePolicies.h; sourceTree = "<group>"; };
+		42B62CAA178FA5F400F573FA /* ExistingLifePolicies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExistingLifePolicies.m; sourceTree = "<group>"; };
 		42BB1E2817855B9E00C2A763 /* HealthQuestionnaire2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestionnaire2.h; sourceTree = "<group>"; };
 		42BB1E2917855B9E00C2A763 /* HealthQuestionnaire2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HealthQuestionnaire2.m; sourceTree = "<group>"; };
 		42BB1E2B17855BC000C2A763 /* HealthQuestionnaire3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HealthQuestionnaire3.h; sourceTree = "<group>"; };
@@ -1441,6 +1444,8 @@
 				EF97FFB11773F9DD00C95844 /* AdditionalQuestions.m */,
 				423E8BBB17700FF200E60C20 /* Declaration.h */,
 				423E8BBC17700FF200E60C20 /* Declaration.m */,
+				42B62CA9178FA5F400F573FA /* ExistingLifePolicies.h */,
+				42B62CAA178FA5F400F573FA /* ExistingLifePolicies.m */,
 			);
 			name = eApp;
 			sourceTree = "<group>";
@@ -1883,6 +1888,7 @@
 				EF90B0C9178E56A800FEC129 /* eAppStatusList.m in Sources */,
 				EF90B0CC178E6F2200FEC129 /* SubDetails.m in Sources */,
 				EF90B0D1178E7F1800FEC129 /* Relationship.m in Sources */,
+				42B62CAB178FA5F400F573FA /* ExistingLifePolicies.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1976,8 +1982,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1992,8 +1998,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -2003,8 +2009,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -2019,8 +2025,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;

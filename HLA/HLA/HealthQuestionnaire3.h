@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HealthQuestionnaire3 : UIViewController
+@interface HealthQuestionnaire3 : UITableViewController
 
 @end

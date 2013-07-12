@@ -24,11 +24,15 @@
 @synthesize TitlePickerPopover = _TitlePickerPopover;
 @synthesize RelationshipVC = _RelationshipVC;
 @synthesize RelationshipPopover = _RelationshipPopover;
+@synthesize checkAddress;
+@synthesize checkForeign;
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    checked = NO;
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     self.navigationController.navigationBar.tintColor = [CustomColor colorWithHexString:@"A9BCF5"];
     
@@ -150,6 +154,28 @@
     [self.RelationshipPopover presentPopoverFromRect:[sender bounds] inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
+- (IBAction)checkAdd:(id)sender {
+    if (!checked) {
+        [checkAddress setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
+        checked = YES;
+    }
+    else if (checked) {
+        [checkAddress setImage:[UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
+        checked = NO;
+    }
+}
+
+- (IBAction)ActionForeign:(id)sender {
+    if (!checked) {
+        [checkForeign setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
+        checked = YES;
+    }
+    else if (checked) {
+        [checkForeign setImage:[UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
+        checked = NO;
+    }
+}
+
 
 #pragma mark - delegate
 
@@ -198,6 +224,8 @@
     [self setOtherIDLbl:nil];
     [self setDOBLbl:nil];
     [self setRelationshipLbl:nil];
+    [self setCheckAddress:nil];
+    [self setCheckForeign:nil];
     [super viewDidUnload];
 }
 @end

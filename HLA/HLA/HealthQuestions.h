@@ -44,5 +44,10 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segQ15;
 
 - (IBAction)isAllNo:(id)sender;
+- (IBAction)btnQ2Press:(id)sender;
+- (IBAction)btnQ3Press:(id)sender;
+
+
+
 
 @end
