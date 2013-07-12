@@ -1906,7 +1906,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rtv-WO-Y5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2202" y="4982"/>
+            <point key="canvasLocation" x="3332" y="4982"/>
         </scene>
         <!--View Controller - Policy Details-->
         <scene sceneID="hc4-fY-aLW">
@@ -8030,7 +8030,7 @@ HLA.I receive </string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qeG-8U-Maz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3501" y="4920"/>
+            <point key="canvasLocation" x="4475" y="4920"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Xl5-Gg-j0M">
@@ -10877,6 +10877,25 @@ HLA.I receive </string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qLd-Ze-3Vb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3079" y="7067"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="2v4-jY-sFx">
+            <objects>
+                <navigationController storyboardIdentifier="eAppList2" id="Pzx-Aj-WBb" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wmM-Zl-w2y">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="g0f-MW-ElV" kind="relationship" relationship="rootViewController" id="oPg-5b-Gbw"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x1X-bP-XUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2202" y="4982"/>
         </scene>
     </scenes>
     <resources>

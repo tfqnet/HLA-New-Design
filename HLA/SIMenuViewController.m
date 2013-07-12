@@ -163,11 +163,11 @@ id RiderCount;
         
         CGRect frame3 = CGRectMake(0, 588, 220, 50);
         UILabel *label3 = [[UILabel alloc] initWithFrame:frame3];
-        label3.backgroundColor = [UIColor clearColor];
         label3.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
         label3.font = [UIFont boldSystemFontOfSize:20];
         label3.textAlignment = UITextAlignmentCenter;
         label3.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+        label3.backgroundColor = [CustomColor colorWithHexString:@"A9BCF5"];
         label3.text = @"Policy Owner";
         label3.userInteractionEnabled = YES;
         [self.view addSubview:label3];
@@ -350,11 +350,6 @@ id RiderCount;
 
 - (void)btnPolicyOwner:(id)sender
 {
-    /*
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Under progress!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-    [alert show];
-    alert = Nil;*/
-    
     UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
     SubDetails *zzz = [secondStoryboard instantiateViewControllerWithIdentifier:@"subDataScreen"];
     zzz.modalPresentationStyle = UIModalPresentationPageSheet;

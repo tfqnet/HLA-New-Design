@@ -288,6 +288,7 @@
 		EFB3D5871685604400A7B517 /* PayorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D5861685604400A7B517 /* PayorHandler.m */; };
 		EFB3D58B1686AE2200A7B517 /* SecondLAHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */; };
 		EFB9389E161C3CB800B97101 /* BasicPlanHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */; };
+		EFBECF38178FE22500C3D177 /* eAppMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBECF37178FE22500C3D177 /* eAppMenu.m */; };
 		EFD44A9C177D2072002456F5 /* MasterMenuCFF.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD44A9B177D2072002456F5 /* MasterMenuCFF.m */; };
 		EFEB79F2175D994F004FF3CE /* MainClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79F1175D994F004FF3CE /* MainClient.m */; };
 		EFEB7A05175D9FA4004FF3CE /* ClientTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */; };
@@ -721,6 +722,8 @@
 		EFB3D58A1686AE2200A7B517 /* SecondLAHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondLAHandler.m; sourceTree = "<group>"; };
 		EFB9389C161C3CB800B97101 /* BasicPlanHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BasicPlanHandler.h; path = ../BasicPlanHandler.h; sourceTree = "<group>"; };
 		EFB9389D161C3CB800B97101 /* BasicPlanHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BasicPlanHandler.m; path = ../BasicPlanHandler.m; sourceTree = "<group>"; };
+		EFBECF36178FE22500C3D177 /* eAppMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eAppMenu.h; sourceTree = "<group>"; };
+		EFBECF37178FE22500C3D177 /* eAppMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eAppMenu.m; sourceTree = "<group>"; };
 		EFD44A9A177D2072002456F5 /* MasterMenuCFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterMenuCFF.h; sourceTree = "<group>"; };
 		EFD44A9B177D2072002456F5 /* MasterMenuCFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterMenuCFF.m; sourceTree = "<group>"; };
 		EFEB79F0175D994F004FF3CE /* MainClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainClient.h; sourceTree = "<group>"; };
@@ -1416,6 +1419,8 @@
 				EF6A5389177930DA00D70960 /* MasterMenuEApp.m */,
 				EF5B6117173B577C00751157 /* eSubmission.h */,
 				EF5B6118173B577C00751157 /* eSubmission.m */,
+				EFBECF36178FE22500C3D177 /* eAppMenu.h */,
+				EFBECF37178FE22500C3D177 /* eAppMenu.m */,
 				EF906B2317703EAE00D5F3E3 /* eAppsListing.h */,
 				EF906B2417703EAE00D5F3E3 /* eAppsListing.m */,
 				423E8BB217700ECF00E60C20 /* Summary.h */,
@@ -1889,6 +1894,7 @@
 				EF90B0CC178E6F2200FEC129 /* SubDetails.m in Sources */,
 				EF90B0D1178E7F1800FEC129 /* Relationship.m in Sources */,
 				42B62CAB178FA5F400F573FA /* ExistingLifePolicies.m in Sources */,
+				EFBECF38178FE22500C3D177 /* eAppMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1982,8 +1988,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -1998,8 +2004,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				PROVISIONING_PROFILE = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -2009,8 +2015,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Roslinda Rosli (BRZFBGT4K6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -2025,8 +2031,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A867E473-C48F-4612-B3E5-DD2F10FC4AA4";
+				PROVISIONING_PROFILE = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E197E1E5-D7A3-43AC-9137-9BB19081021E";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;

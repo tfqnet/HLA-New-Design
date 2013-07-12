@@ -21,6 +21,7 @@
 @synthesize statusVC = _statusVC;
 @synthesize IDTypePopover = _IDTypePopover;
 @synthesize IDTypeVC = _IDTypeVC;
+@synthesize eAppMenu = _eAppMenu;
 
 - (void)viewDidLoad
 {
@@ -123,13 +124,15 @@
 
 - (IBAction)addNew:(id)sender
 {
-    if (_eAppsVC == Nil) {
-        self.eAppsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppList"];
-    }
+    UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
+    self.eAppMenu = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen2"];
+//    self.eAppMenu.modalPresentationStyle = UIModalPresentationPageSheet;
+//    self.eAppMenu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.navigationController pushViewController:self.eAppMenu animated:YES];
+//    [self presentModalViewController:self.eAppMenu animated:NO];
+//    self.eAppMenu.view.superview.frame = CGRectMake(0, 50, 748, 974);
     
-    [self.navigationController pushViewController:_eAppsVC animated:YES];
-    _eAppsVC.navigationItem.title = @"Sales Illustration Listing";
-
+    nextStoryboard = nil;
 }
 
 - (IBAction)ActionIDType:(id)sender

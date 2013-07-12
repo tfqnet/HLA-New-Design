@@ -457,6 +457,7 @@ id dobtemp;
     UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
     MaineApp *main = [secondStoryboard instantiateViewControllerWithIdentifier:@"maineApp"];
     main.IndexTab = 1;
+    main.getMenu = @"YES";
     [self presentViewController:main animated:NO completion:nil];
     main = Nil, secondStoryboard = nil;
 }

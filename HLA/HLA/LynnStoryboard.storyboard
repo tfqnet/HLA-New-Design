@@ -1255,7 +1255,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7g-A6-1A4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-16352" y="-1703"/>
+            <point key="canvasLocation" x="-14404" y="-1703"/>
         </scene>
         <!--Table Check Box-->
         <scene sceneID="hAz-8v-hGy">
@@ -5789,7 +5789,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fd9-4w-P1g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-14308" y="-1703"/>
+            <point key="canvasLocation" x="-12360" y="-1703"/>
         </scene>
         <!--Policy Details - eApplication-->
         <scene sceneID="yvL-Ta-Jna">
@@ -7624,7 +7624,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u1X-7k-pTj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10362" y="-1740"/>
+            <point key="canvasLocation" x="-8414" y="-1740"/>
         </scene>
         <!--Existing Life Policies-->
         <scene sceneID="fEj-5B-6cr">
@@ -8355,7 +8355,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BFz-yI-Qgp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8500" y="-1685"/>
+            <point key="canvasLocation" x="-6552" y="-1685"/>
         </scene>
         <!--Table View Controller - Existing Policies-->
         <scene sceneID="LkL-gE-jnz">
@@ -8603,7 +8603,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O22-ou-i1E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6914" y="-1431"/>
+            <point key="canvasLocation" x="-4966" y="-1431"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="27b-bK-fy0">
@@ -8619,7 +8619,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAI-mo-cfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7526" y="-1439"/>
+            <point key="canvasLocation" x="-5578" y="-1439"/>
         </scene>
         <!--Nominees Trustees-->
         <scene sceneID="hli-fr-DLp">
@@ -13240,6 +13240,7 @@
                                             <constraint firstItem="rxd-l9-qPM" firstAttribute="centerY" secondItem="muC-th-Yf2" secondAttribute="centerY" type="default" id="nD1-6q-GJ0"/>
                                             <constraint firstItem="IuK-8t-gSx" firstAttribute="leading" secondItem="v4R-GA-60q" secondAttribute="leading" constant="232" id="nKh-hW-rhl"/>
                                             <constraint firstAttribute="bottom" secondItem="rxd-l9-qPM" secondAttribute="bottom" constant="31" id="nhI-5Z-WM4"/>
+                                            <constraint firstItem="4H5-sh-G2C" firstAttribute="centerY" secondItem="HyC-B3-tQb" secondAttribute="centerY" type="default" id="o0F-xZ-5VJ"/>
                                             <constraint firstItem="ePO-cH-UMo" firstAttribute="bottom" secondItem="4H5-sh-G2C" secondAttribute="bottom" type="default" id="oDH-ju-Igq"/>
                                             <constraint firstItem="t7W-fS-0zW" firstAttribute="top" secondItem="Fj9-2c-TOb" secondAttribute="top" type="default" id="oW6-1c-CS8"/>
                                             <constraint firstItem="rUY-sC-UQq" firstAttribute="baseline" secondItem="IuK-8t-gSx" secondAttribute="baseline" type="default" id="p1Q-jw-eN0"/>
@@ -13259,6 +13260,7 @@
                                             <constraint firstItem="H5b-9H-wYA" firstAttribute="top" secondItem="v4R-GA-60q" secondAttribute="top" constant="201" id="tVh-mC-P6U"/>
                                             <constraint firstItem="c5R-eb-eVj" firstAttribute="leading" secondItem="muC-th-Yf2" secondAttribute="leading" type="default" id="teP-NH-Aez"/>
                                             <constraint firstAttribute="bottom" secondItem="e5j-SX-OG6" secondAttribute="bottom" constant="186" id="tgl-n0-lwc"/>
+                                            <constraint firstItem="4H5-sh-G2C" firstAttribute="baseline" secondItem="ePO-cH-UMo" secondAttribute="baseline" type="default" id="tyF-ov-Syc"/>
                                             <constraint firstItem="H5b-9H-wYA" firstAttribute="baseline" secondItem="ZGf-AD-KNz" secondAttribute="baseline" type="default" id="u6z-nY-REf"/>
                                             <constraint firstItem="h4Y-dy-dPe" firstAttribute="bottom" secondItem="IuK-8t-gSx" secondAttribute="bottom" type="default" id="uax-xI-1PX"/>
                                             <constraint firstItem="clz-LX-hNy" firstAttribute="leading" secondItem="v4R-GA-60q" secondAttribute="leading" constant="99" id="wNv-2v-VDz"/>
@@ -13361,7 +13363,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ABp-O5-4ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-12384" y="-1703"/>
+            <point key="canvasLocation" x="-10436" y="-1703"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fNC-qa-Gab">
@@ -13451,7 +13453,152 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNu-71-9uW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11400" y="-1696"/>
+            <point key="canvasLocation" x="-9452" y="-1696"/>
+        </scene>
+        <!--E App Menu-->
+        <scene sceneID="g37-Oo-QN0">
+            <objects>
+                <tableViewController storyboardIdentifier="eAppMenuScreen2" id="7i8-CG-Syo" customClass="eAppMenu" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Bap-Bd-uR4">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection id="r0D-ox-gzQ">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ayl-Hd-6QX">
+                                        <rect key="frame" x="0.0" y="30" width="768" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="45" y="1" width="678" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select SI" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blc-0V-dVd">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="M0E-qJ-UCk"/>
+                                                        <constraint firstAttribute="width" constant="111" id="nFC-FP-e7j"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="blc-0V-dVd" firstAttribute="centerY" secondItem="ayl-Hd-6QX" secondAttribute="centerY" type="default" id="JL6-7z-4sf"/>
+                                            <constraint firstItem="blc-0V-dVd" firstAttribute="leading" secondItem="ayl-Hd-6QX" secondAttribute="leading" constant="65" id="USz-S9-OvQ"/>
+                                        </constraints>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="CEI-NV-2yq">
+                                        <rect key="frame" x="0.0" y="75" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="45" y="0.0" width="678" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select Policy Owner" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EgB-VG-dr7">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="168" id="9r8-av-qBr"/>
+                                                        <constraint firstAttribute="height" constant="21" id="ayM-FO-Z9R"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="EgB-VG-dr7" firstAttribute="leading" secondItem="CEI-NV-2yq" secondAttribute="leading" constant="65" id="jVV-hZ-vUA"/>
+                                            <constraint firstItem="EgB-VG-dr7" firstAttribute="top" secondItem="CEI-NV-2yq" secondAttribute="top" constant="11" id="n2y-g3-Lig"/>
+                                        </constraints>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="pOj-eH-2Ar">
+                                        <rect key="frame" x="0.0" y="119" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="45" y="0.0" width="678" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select eCFF" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hh2-n8-Iu3">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="95" id="RWV-Wn-wMQ"/>
+                                                        <constraint firstAttribute="height" constant="21" id="ac6-q4-qBP"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="hh2-n8-Iu3" firstAttribute="leading" secondItem="pOj-eH-2Ar" secondAttribute="leading" constant="65" id="ENg-CC-Fm0"/>
+                                            <constraint firstItem="hh2-n8-Iu3" firstAttribute="top" secondItem="pOj-eH-2Ar" secondAttribute="top" constant="11" id="ZeQ-db-1P7"/>
+                                        </constraints>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="akk-VC-Dii">
+                                        <rect key="frame" x="0.0" y="163" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="45" y="0.0" width="678" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="e-Application" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mPS-j0-ItS">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="i1x-XN-gfu"/>
+                                                        <constraint firstAttribute="width" constant="118" id="s7p-gU-rnl"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="mPS-j0-ItS" firstAttribute="leading" secondItem="akk-VC-Dii" secondAttribute="leading" constant="65" id="6tI-wm-ksG"/>
+                                            <constraint firstItem="mPS-j0-ItS" firstAttribute="top" secondItem="akk-VC-Dii" secondAttribute="top" constant="11" id="w2B-ri-NVW"/>
+                                        </constraints>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Qjh-L4-Ttx">
+                                        <rect key="frame" x="0.0" y="207" width="768" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="45" y="0.0" width="678" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="e-Signature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W9l-8x-gbT">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="99" id="OiQ-YK-Ad5"/>
+                                                        <constraint firstAttribute="height" constant="21" id="l8f-VF-2AP"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="W9l-8x-gbT" firstAttribute="leading" secondItem="Qjh-L4-Ttx" secondAttribute="leading" constant="65" id="eAT-0d-ToF"/>
+                                            <constraint firstItem="W9l-8x-gbT" firstAttribute="top" secondItem="Qjh-L4-Ttx" secondAttribute="top" constant="11" id="qa2-y1-3Pf"/>
+                                        </constraints>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="7i8-CG-Syo" id="8tJ-ad-LYa"/>
+                            <outlet property="delegate" destination="7i8-CG-Syo" id="dbu-qU-2hd"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="kIr-YQ-yT1"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f5r-xY-VuZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-16292" y="-1703"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="lw0-sH-MvY">
@@ -13469,7 +13616,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RHT-c5-mDJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-17326" y="-1703"/>
+            <point key="canvasLocation" x="-15378" y="-1703"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6Ui-OW-eMh">
@@ -13487,7 +13634,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4WR-k3-hZa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-15282" y="-1703"/>
+            <point key="canvasLocation" x="-13334" y="-1703"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="hJ9-i9-PSc">
@@ -13505,7 +13652,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ke5-iC-eA7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-13358" y="-1703"/>
+            <point key="canvasLocation" x="-11410" y="-1703"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="iPI-sd-wKq">
@@ -13523,7 +13670,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SmM-wN-gN6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9474" y="-1685"/>
+            <point key="canvasLocation" x="-7526" y="-1685"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="qWX-rH-FXq">
+            <objects>
+                <navigationController storyboardIdentifier="eAppMenuScreen" id="D6p-O6-gdP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="oqg-18-Jhs">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="7i8-CG-Syo" kind="relationship" relationship="rootViewController" id="UJq-Mp-A4w"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z3x-sN-dpR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-17266" y="-1703"/>
         </scene>
     </scenes>
     <resources>
@@ -13531,144 +13696,6 @@
         <image name="disclosure_indicator.png" width="8" height="13"/>
         <image name="emptyCheckBox.png" width="44" height="43"/>
     </resources>
-    <classes>
-        <class className="AdditionalQuestions" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/AdditionalQuestions.h"/>
-        </class>
-        <class className="CustomerChoice" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CustomerChoice.h"/>
-            <relationships>
-                <relationship kind="action" name="checkboxButton2:"/>
-                <relationship kind="action" name="checkboxButton3:"/>
-                <relationship kind="action" name="checkboxButton4:"/>
-                <relationship kind="outlet" name="checkButton2" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton3" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkButton4" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="Declaration" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/Declaration.h"/>
-            <relationships>
-                <relationship kind="action" name="isAgree:"/>
-                <relationship kind="outlet" name="btnAgree" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="btnDisagree" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="ExistingLifePolicies" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ExistingLifePolicies.h"/>
-        </class>
-        <class className="HealthQuestionnaire" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HealthQuestionnaire.h"/>
-            <relationships>
-                <relationship kind="action" name="swipeNext:"/>
-            </relationships>
-        </class>
-        <class className="HealthQuestionnaire2" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HealthQuestionnaire2.h"/>
-            <relationships>
-                <relationship kind="action" name="swipeNext2:"/>
-            </relationships>
-        </class>
-        <class className="HealthQuestionnaire3" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HealthQuestionnaire3.h"/>
-        </class>
-        <class className="HealthQuestions" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HealthQuestions.h"/>
-            <relationships>
-                <relationship kind="action" name="btnQ2Press:"/>
-                <relationship kind="action" name="btnQ3Press:"/>
-                <relationship kind="action" name="isAllNo:"/>
-                <relationship kind="outlet" name="btnCheck" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="segQ10" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ11" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ12" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ13" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ14A" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ14B" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ15" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ1B" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ2" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ3" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ4" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ5" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ6" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7A" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7B" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7C" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7D" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7E" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7F" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7G" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7H" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7I" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ7J" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ8A" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ8B" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ8C" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ8D" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ8E" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="segQ9" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
-        </class>
-        <class className="Nominees" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/Nominees.h"/>
-            <relationships>
-                <relationship kind="action" name="donePressed:"/>
-            </relationships>
-        </class>
-        <class className="NomineesTrustees" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NomineesTrustees.h"/>
-            <relationships>
-                <relationship kind="action" name="addNominees:"/>
-                <relationship kind="action" name="addTrustee:"/>
-            </relationships>
-        </class>
-        <class className="PolicyDetails" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/PolicyDetails.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionDOB:"/>
-                <relationship kind="action" name="ActionOtherID:"/>
-                <relationship kind="action" name="ActionPart3:"/>
-                <relationship kind="outlet" name="DOBLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="OtherIDLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="part3" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="SubDetails" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SubDetails.h"/>
-        </class>
-        <class className="Summary" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/Summary.h"/>
-        </class>
-        <class className="Trustees" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/Trustees.h"/>
-            <relationships>
-                <relationship kind="action" name="doneBtn:"/>
-            </relationships>
-        </class>
-        <class className="eAppPersonalDetails" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppPersonalDetails.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionDOB:"/>
-                <relationship kind="action" name="ActionForeign:"/>
-                <relationship kind="action" name="ActionOtherID:"/>
-                <relationship kind="action" name="ActionRelationship:"/>
-                <relationship kind="action" name="ActionTitle:"/>
-                <relationship kind="action" name="btnLA1:"/>
-                <relationship kind="action" name="btnLA2:"/>
-                <relationship kind="action" name="checkAdd:"/>
-                <relationship kind="outlet" name="DOBLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="OtherIDLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="RelationshipLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="checkAddress" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkForeign" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="titleLbl" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

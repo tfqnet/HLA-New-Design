@@ -232,7 +232,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:Nil];
     MainScreen *main = [mainStoryboard instantiateViewControllerWithIdentifier:@"Main"];

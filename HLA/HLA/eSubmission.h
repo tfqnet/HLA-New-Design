@@ -11,12 +11,13 @@
 #import "eAppsListing.h"
 #import "eAppStatusList.h"
 #import "IDTypeViewController.h"
-
+#import "eAppMenu.h"
 
 @interface eSubmission : UIViewController <UITableViewDelegate,UITableViewDataSource,SIDateDelegate,eAppStatusListDelegate,IDTypeDelegate>{
     SIDate *_SIDate;
     eAppStatusList *_statusVC;
     IDTypeViewController *_IDTypeVC;
+    eAppMenu *_eAppMenu;
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_statusPopover;
     UIPopoverController *_IDTypePopover;
@@ -39,6 +40,7 @@
 @property (nonatomic, retain) SIDate *SIDate;
 @property (nonatomic, retain) eAppStatusList *statusVC;
 @property (nonatomic, strong) IDTypeViewController *IDTypeVC;
+@property (nonatomic, strong) eAppMenu *eAppMenu;
 @property (nonatomic, retain) UIPopoverController *IDTypePopover;
 @property (nonatomic, retain) UIPopoverController *SIDatePopover;
 @property (nonatomic, retain) UIPopoverController *statusPopover;

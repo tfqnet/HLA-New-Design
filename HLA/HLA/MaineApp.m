@@ -11,6 +11,7 @@
 #import "eSubmission.h"
 #import "Logout.h"
 #import "MasterMenuEApp.h"
+#import "eAppMenu.h"
 
 @interface MaineApp () {
     NSArray* viewControllers;
@@ -19,7 +20,7 @@
 @end
 
 @implementation MaineApp
-@synthesize IndexTab,indexNo;
+@synthesize IndexTab,indexNo,getMenu;
 
 - (void)viewDidLoad
 {
@@ -35,10 +36,26 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppsNavi"];
-    eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
-    [controllersToAdd addObject:eAppListing];
-    viewControllers = [NSArray arrayWithArray:controllersToAdd];
+    if ([[self.getMenu description] isEqualToString:@"YES"]) {
+        
+        UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
+        
+        eAppMenu *eApp = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen"];
+        eApp.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
+        [controllersToAdd addObject:eApp];
+        viewControllers = [NSArray arrayWithArray:controllersToAdd];
+        
+        nextStoryboard = nil, eApp = nil;
+    }
+    else {
+        eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppsNavi"];
+        eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
+        [controllersToAdd addObject:eAppListing];
+        viewControllers = [NSArray arrayWithArray:controllersToAdd];
+        
+        eAppListing = nil;
+    }
+    
     
     MasterMenuEApp *menuEApp = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppMaster"];
     menuEApp.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New eApp" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
@@ -65,7 +82,7 @@
         self.selectedViewController = ((UIViewController*)[viewControllers objectAtIndex:1]);
     }
     
-    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, eAppListing = Nil, LogoutPage = Nil, mainStoryboard = Nil;
+    colors = Nil, controllersToAdd = Nil, carouselPage = Nil, LogoutPage = Nil, mainStoryboard = Nil;
     
 }
 

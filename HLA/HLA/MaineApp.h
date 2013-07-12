@@ -13,5 +13,6 @@
 
 @property (nonatomic, assign,readwrite) int indexNo;
 @property (nonatomic, assign,readwrite) int IndexTab;
+@property (nonatomic,strong) id getMenu;
 
 @end
