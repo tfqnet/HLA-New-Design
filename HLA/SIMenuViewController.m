@@ -21,6 +21,7 @@
 #import "AppDelegate.h"
 #import "MaineApp.h"
 #import "ColorHexCode.h"
+#import "SubDetails.h"
 
 @interface SIMenuViewController ()
 
@@ -155,13 +156,26 @@ id RiderCount;
         UILabel *label2 = [[UILabel alloc] initWithFrame:frame2];
         label2.backgroundColor = [UIColor clearColor];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:14];
-//        label2.font = [UIFont boldSystemFontOfSize:16];
         label2.textAlignment = UITextAlignmentCenter;
         label2.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
         label2.text = [self.requestSINo description];
         [self.view addSubview:label2];
         
-        label = nil, label2 = nil;
+        CGRect frame3 = CGRectMake(0, 588, 220, 50);
+        UILabel *label3 = [[UILabel alloc] initWithFrame:frame3];
+        label3.backgroundColor = [UIColor clearColor];
+        label3.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
+        label3.font = [UIFont boldSystemFontOfSize:20];
+        label3.textAlignment = UITextAlignmentCenter;
+        label3.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
+        label3.text = @"Policy Owner";
+        label3.userInteractionEnabled = YES;
+        [self.view addSubview:label3];
+        
+        UITapGestureRecognizer *POGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnPolicyOwner:)];
+        [label3 addGestureRecognizer:POGesture];
+        
+        label = nil, label2 = nil, label3 = nil, POGesture = nil;
     }
     CustomColor = nil;
     
@@ -310,8 +324,7 @@ id RiderCount;
         [ListOfSubMenu addObject:@"Product Disclosure Sheet"];
         [ListOfSubMenu addObject:@"   English"];
         [ListOfSubMenu addObject:@"   Malay"];
-//        [SelectedRow removeObject:@"4"];
-//        [SelectedRow removeObject:@"5"];
+
         
         added = YES;
         
@@ -334,6 +347,22 @@ id RiderCount;
 
 
 #pragma mark - action
+
+- (void)btnPolicyOwner:(id)sender
+{
+    /*
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Under progress!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+    [alert show];
+    alert = Nil;*/
+    
+    UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
+    SubDetails *zzz = [secondStoryboard instantiateViewControllerWithIdentifier:@"subDataScreen"];
+    zzz.modalPresentationStyle = UIModalPresentationPageSheet;
+    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:zzz animated:NO];
+    
+    secondStoryboard = nil, zzz = nil;
+}
 
 -(void)select2ndLA
 {
