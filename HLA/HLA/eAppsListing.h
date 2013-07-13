@@ -22,6 +22,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *planLabel;
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
+- (IBAction)ActionClose:(id)sender;
+
+
 
 @property (retain, nonatomic) NSMutableArray *SINO;
 @property (retain, nonatomic) NSMutableArray *DateCreated;

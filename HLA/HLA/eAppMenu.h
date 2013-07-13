@@ -9,10 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "eAppsListing.h"
 
-@interface eAppMenu : UITableViewController {
+@interface eAppMenu : UIViewController {
     eAppsListing *_eAppsVC;
 }
 
+
+@property (strong, nonatomic) IBOutlet UITableView *myTableView;
+
 @property (nonatomic, retain) eAppsListing *eAppsVC;
+@property (nonatomic,strong) id getSI;
+
+@property (strong, nonatomic) NSMutableArray *items;
+
+- (IBAction)ActionClose:(id)sender;
+
+
 
 @end

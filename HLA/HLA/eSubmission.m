@@ -125,12 +125,11 @@
 - (IBAction)addNew:(id)sender
 {
     UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
-    self.eAppMenu = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen2"];
-//    self.eAppMenu.modalPresentationStyle = UIModalPresentationPageSheet;
-//    self.eAppMenu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.navigationController pushViewController:self.eAppMenu animated:YES];
-//    [self presentModalViewController:self.eAppMenu animated:NO];
-//    self.eAppMenu.view.superview.frame = CGRectMake(0, 50, 748, 974);
+    self.eAppMenu = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen"];
+    self.eAppMenu.modalPresentationStyle = UIModalPresentationFullScreen;
+    self.eAppMenu.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:self.eAppMenu animated:NO];
+//    [self.navigationController pushViewController:self.eAppMenu animated:YES];
     
     nextStoryboard = nil;
 }

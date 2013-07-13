@@ -10,6 +10,7 @@
 #import "ColorHexCode.h"
 #import "MainScreen.h"
 #import "AppDelegate.h"
+#import "SIMenuViewController.h"
 
 @interface eAppsListing ()
 
@@ -25,6 +26,7 @@
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg10.jpg"]];
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     self.myTableView.backgroundColor = [UIColor clearColor];
@@ -175,7 +177,7 @@
     label4.tag = 1004;
     [cell.contentView addSubview:label4];
         
-    CGRect frame5=CGRectMake(630,0, 190, 50);
+    CGRect frame5=CGRectMake(628,0, 219, 50);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text = [Name objectAtIndex:indexPath.row];
@@ -183,7 +185,7 @@
     label5.textAlignment = UITextAlignmentLeft;
     [cell.contentView addSubview:label5];
         
-    CGRect frame6=CGRectMake(820,0, 195, 50);
+    CGRect frame6=CGRectMake(847,0, 177, 50);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
     label6.text= [PlanName objectAtIndex:indexPath.row];
@@ -232,17 +234,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    /*
     AppDelegate *MenuOption= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:Nil];
     MainScreen *main = [mainStoryboard instantiateViewControllerWithIdentifier:@"Main"];
     main.tradOrEver = @"TRAD";
     main.IndexTab = MenuOption.NewSIIndex ;
     main.requestSINo = [SINO objectAtIndex:indexPath.row];
+    main.EAPPorSI = @"eAPP";*/
+    
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:Nil];
+    SIMenuViewController *main = [mainStoryboard instantiateViewControllerWithIdentifier:@"SIPageView"];
+    main.requestSINo = [SINO objectAtIndex:indexPath.row];
     main.EAPPorSI = @"eAPP";
+    main.modalPresentationStyle = UIModalPresentationFullScreen;
+    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
     [self presentViewController:main animated:NO completion:nil];
     
-    MenuOption = Nil, mainStoryboard = Nil, main = Nil;
+    mainStoryboard = Nil, main = Nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -260,5 +270,9 @@
     [self setPlanLabel:nil];
     [self setMyTableView:nil];
     [super viewDidUnload];
+}
+- (IBAction)ActionClose:(id)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 @end

@@ -160,7 +160,7 @@ id RiderCount;
         label2.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
         label2.text = [self.requestSINo description];
         [self.view addSubview:label2];
-        
+        /*
         CGRect frame3 = CGRectMake(0, 588, 220, 50);
         UILabel *label3 = [[UILabel alloc] initWithFrame:frame3];
         label3.font = [UIFont fontWithName:@"TreBuchet MS" size:20];
@@ -173,9 +173,9 @@ id RiderCount;
         [self.view addSubview:label3];
         
         UITapGestureRecognizer *POGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btnPolicyOwner:)];
-        [label3 addGestureRecognizer:POGesture];
+        [label3 addGestureRecognizer:POGesture]; */
         
-        label = nil, label2 = nil, label3 = nil, POGesture = nil;
+        label = nil, label2 = nil;
     }
     CustomColor = nil;
     
@@ -348,6 +348,7 @@ id RiderCount;
 
 #pragma mark - action
 
+/*
 - (void)btnPolicyOwner:(id)sender
 {
     UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
@@ -357,7 +358,7 @@ id RiderCount;
     [self presentModalViewController:zzz animated:NO];
     
     secondStoryboard = nil, zzz = nil;
-}
+}*/
 
 -(void)select2ndLA
 {

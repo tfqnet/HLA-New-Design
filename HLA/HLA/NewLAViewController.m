@@ -17,6 +17,7 @@
 #import "MainScreen.h"
 #import "ColorHexCode.h"
 #import "MaineApp.h"
+#import "eAppMenu.h"
 
 @interface NewLAViewController ()
 
@@ -169,7 +170,7 @@ id dobtemp;
         btnProspect.hidden = YES;
         btnEnabled.hidden = YES;
         btnToEAPP.width = 0;
-        OutletSpace.width = 611;
+        OutletSpace.width = 564;
         
     }
     
@@ -454,12 +455,21 @@ id dobtemp;
 
 - (IBAction)ActionEAPP:(id)sender
 {
+    /*
     UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
     MaineApp *main = [secondStoryboard instantiateViewControllerWithIdentifier:@"maineApp"];
     main.IndexTab = 1;
-    main.getMenu = @"YES";
+    main.getMenu = @"MENU";
+    main.getSI = getSINo;
     [self presentViewController:main animated:NO completion:nil];
-    main = Nil, secondStoryboard = nil;
+    main = Nil, secondStoryboard = nil; */
+    
+    UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
+    eAppMenu *zzz = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen"];
+    zzz.getSI = getSINo;
+    zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:zzz animated:NO];
 }
 
 - (IBAction)sexSegmentPressed:(id)sender

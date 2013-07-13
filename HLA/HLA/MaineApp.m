@@ -20,7 +20,7 @@
 @end
 
 @implementation MaineApp
-@synthesize IndexTab,indexNo,getMenu;
+@synthesize IndexTab,indexNo,getMenu,getSI;
 
 - (void)viewDidLoad
 {
@@ -36,32 +36,22 @@
     [controllersToAdd addObject:carouselPage];
     viewControllers = [NSArray arrayWithArray:controllersToAdd];
     
-    if ([[self.getMenu description] isEqualToString:@"YES"]) {
+    if ([[self.getMenu description] isEqualToString:@"eAPP"]) {
         
-        UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
-        
-        eAppMenu *eApp = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen"];
-        eApp.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
-        [controllersToAdd addObject:eApp];
+        MasterMenuEApp *menuEApp = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppMaster"];
+        menuEApp.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"eApp" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
+        [controllersToAdd addObject:menuEApp];
         viewControllers = [NSArray arrayWithArray:controllersToAdd];
-        
-        nextStoryboard = nil, eApp = nil;
     }
     else {
         eSubmission *eAppListing = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppsNavi"];
-        eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Listing" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
+        eAppListing.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"eApp" image:[UIImage imageNamed:@"btn_SIlisting_off.png"] tag: 0];
         [controllersToAdd addObject:eAppListing];
         viewControllers = [NSArray arrayWithArray:controllersToAdd];
         
         eAppListing = nil;
     }
-    
-    
-    MasterMenuEApp *menuEApp = [self.storyboard instantiateViewControllerWithIdentifier:@"eAppMaster"];
-    menuEApp.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"New eApp" image:[UIImage imageNamed:@"btn_newSI_off.png"] tag: 0];
-    [controllersToAdd addObject:menuEApp];
-    viewControllers = [NSArray arrayWithArray:controllersToAdd];
-    
+
     Logout* LogoutPage = [mainStoryboard instantiateViewControllerWithIdentifier:@"Logout"];
     LogoutPage.indexNo = self.indexNo;
     LogoutPage.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Logout" image:[UIImage imageNamed:@"btn_exit.png"] tag: 0];
