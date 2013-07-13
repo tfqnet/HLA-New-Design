@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface ExistingLifePolicies : UITableViewController
+@property (strong, nonatomic) IBOutlet UIButton *addExisting;
+- (IBAction)actionExisting:(id)sender;
+
 
 @end

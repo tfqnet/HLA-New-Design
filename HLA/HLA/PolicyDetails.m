@@ -141,7 +141,6 @@
 - (void)viewDidUnload
 {
     [self setDOBLbl:nil];
-    [self setPart3:nil];
     [super viewDidUnload];
 }
 @end

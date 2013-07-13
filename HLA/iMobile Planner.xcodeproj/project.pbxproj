@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4203861B1791AECD00EBB10E /* ExistingPolicies.m in Sources */ = {isa = PBXBuildFile; fileRef = 4203861A1791AECD00EBB10E /* ExistingPolicies.m */; };
 		423E8BAD176FFEF400E60C20 /* CustomerPersonalData.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */; };
 		423E8BB1176FFF2800E60C20 /* FinancialAnalysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB0176FFF2800E60C20 /* FinancialAnalysis.m */; };
 		423E8BB417700ED000E60C20 /* Summary.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB317700ED000E60C20 /* Summary.m */; };
@@ -313,6 +314,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		420386191791AECC00EBB10E /* ExistingPolicies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExistingPolicies.h; sourceTree = "<group>"; };
+		4203861A1791AECD00EBB10E /* ExistingPolicies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExistingPolicies.m; sourceTree = "<group>"; };
 		423E8BAB176FFEF400E60C20 /* CustomerPersonalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerPersonalData.h; sourceTree = "<group>"; };
 		423E8BAC176FFEF400E60C20 /* CustomerPersonalData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerPersonalData.m; sourceTree = "<group>"; };
 		423E8BAF176FFF2800E60C20 /* FinancialAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinancialAnalysis.h; sourceTree = "<group>"; };
@@ -1465,6 +1468,8 @@
 				423E8BBC17700FF200E60C20 /* Declaration.m */,
 				42B62CA9178FA5F400F573FA /* ExistingLifePolicies.h */,
 				42B62CAA178FA5F400F573FA /* ExistingLifePolicies.m */,
+				420386191791AECC00EBB10E /* ExistingPolicies.h */,
+				4203861A1791AECD00EBB10E /* ExistingPolicies.m */,
 			);
 			name = eApp;
 			sourceTree = "<group>";
@@ -1913,6 +1918,7 @@
 				42B62CAB178FA5F400F573FA /* ExistingLifePolicies.m in Sources */,
 				EFBECF38178FE22500C3D177 /* eAppMenu.m in Sources */,
 				EFBECF4017911B5200C3D177 /* SubDetailsData.m in Sources */,
+				4203861B1791AECD00EBB10E /* ExistingPolicies.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

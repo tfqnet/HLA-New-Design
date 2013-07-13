@@ -1,20 +1,29 @@
 //
-//  ExistingLifePolicies.m
+//  ExistingPolicies.m
 //  iMobile Planner
 //
-//  Created by Erza on 7/12/13.
+//  Created by Erza on 7/13/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "ExistingLifePolicies.h"
 #import "ExistingPolicies.h"
 #import "ColorHexCode.h"
+#import "ExistingLifePolicies.h"
 
-@interface ExistingLifePolicies ()
+@interface ExistingPolicies ()
 
 @end
 
-@implementation ExistingLifePolicies
+@implementation ExistingPolicies
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -39,7 +48,7 @@
 
 - (void)btnDone:(id)sender
 {
-    
+    [self dismissModalViewControllerAnimated:YES];
     
 }
 
@@ -50,15 +59,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
-    [self setAddExisting:nil];
-    [super viewDidUnload];
-}
-- (IBAction)actionExisting:(id)sender {
-    ExistingPolicies *zzz = [self.storyboard instantiateViewControllerWithIdentifier:@"ExistingScreen"];
-    zzz.modalPresentationStyle = UIModalPresentationPageSheet;
-    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:zzz animated:NO];
-
-}
 @end
