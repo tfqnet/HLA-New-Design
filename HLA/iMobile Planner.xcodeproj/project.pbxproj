@@ -14,6 +14,7 @@
 		423E8BBA17700F1700E60C20 /* HealthQuestionnaire.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BB917700F1700E60C20 /* HealthQuestionnaire.m */; };
 		423E8BBD17700FF200E60C20 /* Declaration.m in Sources */ = {isa = PBXBuildFile; fileRef = 423E8BBC17700FF200E60C20 /* Declaration.m */; };
 		424334BA17854E490008F504 /* Trustees.m in Sources */ = {isa = PBXBuildFile; fileRef = 424334B917854E490008F504 /* Trustees.m */; };
+		425C6A241790E430008CC049 /* LynnStoryboardData.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 425C6A231790E430008CC049 /* LynnStoryboardData.storyboard */; };
 		427CF9D3178D1958004452BC /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 427CF9D1178D1958004452BC /* HLA_Rates.sqlite */; };
 		427CF9D4178D1958004452BC /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 427CF9D2178D1958004452BC /* hladb.sqlite */; };
 		42867E9A175F2D93001CE661 /* IDTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 42867E99175F2D93001CE661 /* IDTypeViewController.m */; };
@@ -323,6 +324,7 @@
 		423E8BBC17700FF200E60C20 /* Declaration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declaration.m; sourceTree = "<group>"; };
 		424334B817854E490008F504 /* Trustees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trustees.h; sourceTree = "<group>"; };
 		424334B917854E490008F504 /* Trustees.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Trustees.m; sourceTree = "<group>"; };
+		425C6A231790E430008CC049 /* LynnStoryboardData.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LynnStoryboardData.storyboard; sourceTree = "<group>"; };
 		427CF9D1178D1958004452BC /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
 		427CF9D2178D1958004452BC /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		42867E98175F2D93001CE661 /* IDTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDTypeViewController.h; sourceTree = "<group>"; };
@@ -1040,6 +1042,7 @@
 				C4E9D1A41612C64900016053 /* AppDelegate.m */,
 				EF5B61281740B70C00751157 /* SIUtilities.h */,
 				EF5B61291740B70C00751157 /* SIUtilities.m */,
+				425C6A231790E430008CC049 /* LynnStoryboardData.storyboard */,
 				EF90B0BC178CEFA000FEC129 /* LynnStoryboard.storyboard */,
 				C4E9D1A61612C64900016053 /* MainStoryboard.storyboard */,
 				EF906B2617729C0900D5F3E3 /* NewStoryboard.storyboard */,
@@ -1741,6 +1744,7 @@
 				427CF9D4178D1958004452BC /* hladb.sqlite in Resources */,
 				EF90B0C6178D38BF00FEC129 /* disclosure_indicator.png in Resources */,
 				EF90B0CE178E7EBC00FEC129 /* Relationship.plist in Resources */,
+				425C6A241790E430008CC049 /* LynnStoryboardData.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
