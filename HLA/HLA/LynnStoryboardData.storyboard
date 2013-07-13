@@ -408,10 +408,10 @@
             </objects>
             <point key="canvasLocation" x="-14404" y="-1703"/>
         </scene>
-        <!--E App Personal Details-->
+        <!--Table View Controller-->
         <scene sceneID="czK-F5-sYP">
             <objects>
-                <tableViewController id="QOO-sz-rc5" customClass="eAppPersonalDetails" sceneMemberID="viewController">
+                <tableViewController id="QOO-sz-rc5" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ORv-i7-yy0">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -7422,10 +7422,10 @@
             </objects>
             <point key="canvasLocation" x="-12184" y="1010"/>
         </scene>
-        <!--Sub Details-->
+        <!--Sub Details Data-->
         <scene sceneID="VeJ-D0-Ee8">
             <objects>
-                <tableViewController id="anO-RH-z2t" customClass="SubDetails" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="" id="anO-RH-z2t" customClass="SubDetailsData" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Nxb-cN-W8x">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -8812,7 +8812,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ABp-O5-4ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10493" y="-1881"/>
+            <point key="canvasLocation" x="-10449" y="-1703"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fNC-qa-Gab">
@@ -9088,7 +9088,7 @@
         <!--Navigation Controller-->
         <scene sceneID="hJ9-i9-PSc">
             <objects>
-                <navigationController storyboardIdentifier="subDataScreen" id="cVv-cM-t2x" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="subDataScreen2" id="cVv-cM-t2x" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="19V-mI-sCu">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
@@ -9241,8 +9241,8 @@
                 <relationship kind="outlet" name="part3" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
-        <class className="SubDetails" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SubDetails.h"/>
+        <class className="SubDetailsData" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SubDetailsData.h"/>
         </class>
         <class className="Summary" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/Summary.h"/>
@@ -9258,25 +9258,6 @@
             <relationships>
                 <relationship kind="action" name="ActionClose:"/>
                 <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="eAppPersonalDetails" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppPersonalDetails.h"/>
-            <relationships>
-                <relationship kind="action" name="ActionDOB:"/>
-                <relationship kind="action" name="ActionForeign:"/>
-                <relationship kind="action" name="ActionOtherID:"/>
-                <relationship kind="action" name="ActionRelationship:"/>
-                <relationship kind="action" name="ActionTitle:"/>
-                <relationship kind="action" name="btnLA1:"/>
-                <relationship kind="action" name="btnLA2:"/>
-                <relationship kind="action" name="checkAdd:"/>
-                <relationship kind="outlet" name="DOBLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="OtherIDLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="RelationshipLbl" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="checkAddress" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="checkForeign" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="titleLbl" candidateClass="UILabel"/>
             </relationships>
         </class>
     </classes>

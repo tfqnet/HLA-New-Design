@@ -128,7 +128,7 @@
     self.eAppMenu = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen"];
     self.eAppMenu.modalPresentationStyle = UIModalPresentationFullScreen;
     self.eAppMenu.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:self.eAppMenu animated:NO];
+    [self presentModalViewController:self.eAppMenu animated:YES];
 //    [self.navigationController pushViewController:self.eAppMenu animated:YES];
     
     nextStoryboard = nil;

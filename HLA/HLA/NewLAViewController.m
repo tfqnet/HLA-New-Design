@@ -469,7 +469,7 @@ id dobtemp;
     zzz.getSI = getSINo;
     zzz.modalPresentationStyle = UIModalPresentationFullScreen;
     zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentModalViewController:zzz animated:NO];
+    [self presentModalViewController:zzz animated:YES];
 }
 
 - (IBAction)sexSegmentPressed:(id)sender

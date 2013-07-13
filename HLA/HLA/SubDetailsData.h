@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SubDetailsData : UITableViewController
+@protocol SubDetailsDataDelegate
+-(void)selectedPO:(NSString*)theStr;
+@end
+
+@interface SubDetailsData : UITableViewController {
+    id <SubDetailsDataDelegate> _delegate;
+}
+
+@property (nonatomic,strong) id <SubDetailsDataDelegate> delegate;
 
 @end

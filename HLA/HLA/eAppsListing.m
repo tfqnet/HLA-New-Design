@@ -250,7 +250,7 @@
     main.modalPresentationStyle = UIModalPresentationFullScreen;
     main.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     
-    [self presentViewController:main animated:NO completion:nil];
+    [self presentViewController:main animated:YES completion:nil];
     
     mainStoryboard = Nil, main = Nil;
 }
