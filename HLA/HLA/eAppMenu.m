@@ -56,16 +56,28 @@
     
     cell.textLabel.text = [items objectAtIndex:indexPath.row];
     
+    cell.detailTextLabel.text = @"";
+    UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconNotComplete.png"]];
+    imgIcon.frame = CGRectMake(885, 8, 30, 30);
+    [cell.contentView addSubview:imgIcon];
+    
     if (getSI) {
         if (indexPath.row==0) {
-            cell.detailTextLabel.text = [self.getSI description];
             
-            UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tickCheckBox.png"]];
+            cell.detailTextLabel.text = [self.getSI description];
+            UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconComplete.png"]];
+            imgIcon.frame = CGRectMake(885, 8, 30, 30);
+            [cell.contentView addSubview:imgIcon];
+        }
+        else {
+            cell.detailTextLabel.text = @"";
+            UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconNotComplete.png"]];
             imgIcon.frame = CGRectMake(885, 8, 30, 30);
             [cell.contentView addSubview:imgIcon];
         }
     }
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -80,7 +92,7 @@
         
         self.eAppsVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppList"];
         self.eAppsVC.modalPresentationStyle = UIModalPresentationFullScreen;
-        self.eAppsVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        self.eAppsVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentModalViewController:self.eAppsVC animated:NO];
 //        self.eAppsVC.view.superview.frame = CGRectMake(0, 50, 748, 974);
     }
@@ -114,6 +126,12 @@
 }
 - (IBAction)ActionClose:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
+    MaineApp *zzz= [secondStoryboard instantiateViewControllerWithIdentifier:@"maineApp"];
+    zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+    self.eAppsVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    zzz.IndexTab = 1;
+    [self presentViewController:zzz animated:NO completion:Nil];
+    zzz = Nil, secondStoryboard = nil;
 }
 @end
