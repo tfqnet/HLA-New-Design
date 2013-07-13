@@ -18,6 +18,7 @@
 
 @property (nonatomic, retain) eAppsListing *eAppsVC;
 @property (nonatomic,strong) id getSI;
+@property (nonatomic,strong) id getEAPP;
 
 @property (strong, nonatomic) NSMutableArray *items;
 

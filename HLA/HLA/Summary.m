@@ -8,6 +8,7 @@
 
 #import "Summary.h"
 #import "ColorHexCode.h"
+#import "eAppMenu.h"
 
 @interface Summary ()
 
@@ -32,6 +33,20 @@
     label.textColor = [CustomColor colorWithHexString:@"234A7D"];
     label.text = @"e-Application";
     self.navigationItem.titleView = label;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnDone:)];
+}
+
+- (void)btnDone:(id)sender
+{
+    UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
+    eAppMenu *main = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen"];
+    main.getEAPP = @"YES";
+    main.modalPresentationStyle = UIModalPresentationFullScreen;
+    main.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:main animated:NO];
+    
+    nextStoryboard = nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

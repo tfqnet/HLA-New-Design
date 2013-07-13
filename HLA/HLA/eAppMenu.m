@@ -10,13 +10,14 @@
 #import "ColorHexCode.h"
 #import "MaineApp.h"
 #import "SubDetails.h"
+#import "MasterMenuEApp.h"
 
 @interface eAppMenu ()
 
 @end
 
 @implementation eAppMenu
-@synthesize eAppsVC,getSI,items;
+@synthesize eAppsVC,getSI,items,getEAPP;
 
 
 - (void)viewDidLoad
@@ -56,28 +57,22 @@
     
     cell.textLabel.text = [items objectAtIndex:indexPath.row];
     
-    cell.detailTextLabel.text = @"";
-    UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconNotComplete.png"]];
-    imgIcon.frame = CGRectMake(885, 8, 30, 30);
-    [cell.contentView addSubview:imgIcon];
-    
-    if (getSI) {
-        if (indexPath.row==0) {
-            
-            cell.detailTextLabel.text = [self.getSI description];
-            UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconComplete.png"]];
-            imgIcon.frame = CGRectMake(885, 8, 30, 30);
-            [cell.contentView addSubview:imgIcon];
-        }
-        else {
-            cell.detailTextLabel.text = @"";
-            UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconNotComplete.png"]];
-            imgIcon.frame = CGRectMake(885, 8, 30, 30);
-            [cell.contentView addSubview:imgIcon];
-        }
+    if (getSI && indexPath.row == 0) {
+        
+        cell.detailTextLabel.text = [self.getSI description];
+        UIImageView *imgIcon2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconComplete.png"]];
+        imgIcon2.frame = CGRectMake(885, 8, 30, 30);
+        [cell.contentView addSubview:imgIcon2];
+        
+    }
+    else {
+        cell.detailTextLabel.text = @"";
+        UIImageView *imgIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconNotComplete.png"]];
+        imgIcon.frame = CGRectMake(885, 8, 30, 30);
+        [cell.contentView addSubview:imgIcon];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -102,7 +97,7 @@
         UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboard" bundle:Nil];
         SubDetails *zzz = [secondStoryboard instantiateViewControllerWithIdentifier:@"subDataScreen"];
         zzz.modalPresentationStyle = UIModalPresentationPageSheet;
-        zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        zzz.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentModalViewController:zzz animated:NO];
         
         secondStoryboard = nil, zzz = nil;
@@ -110,13 +105,23 @@
     
     else if (indexPath.row == 3) {
         
+        /*
         UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
         MaineApp *zzz= [secondStoryboard instantiateViewControllerWithIdentifier:@"maineApp"];
         zzz.modalPresentationStyle = UIModalPresentationFullScreen;
+        zzz.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         zzz.IndexTab = 1;
         zzz.getMenu = @"eAPP";
         [self presentViewController:zzz animated:NO completion:Nil];
-        zzz = Nil, secondStoryboard = nil;
+        zzz = Nil, secondStoryboard = nil; */
+        
+        UIStoryboard *Storyboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
+        MasterMenuEApp *main = [Storyboard instantiateViewControllerWithIdentifier:@"eAppMaster"];
+        main.modalPresentationStyle = UIModalPresentationFullScreen;
+        main.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self presentViewController:main animated:NO completion:nil];
+        
+        Storyboard = nil, main = nil;
     }
 }
 

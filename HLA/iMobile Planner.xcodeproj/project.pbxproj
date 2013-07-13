@@ -292,6 +292,7 @@
 		EFBECF38178FE22500C3D177 /* eAppMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBECF37178FE22500C3D177 /* eAppMenu.m */; };
 		EFBECF3B1791167E00C3D177 /* iconComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = EFBECF391791167E00C3D177 /* iconComplete.png */; };
 		EFBECF3C1791167E00C3D177 /* iconNotComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = EFBECF3A1791167E00C3D177 /* iconNotComplete.png */; };
+		EFBECF4017911B5200C3D177 /* SubDetailsData.m in Sources */ = {isa = PBXBuildFile; fileRef = EFBECF3F17911B5100C3D177 /* SubDetailsData.m */; };
 		EFD44A9C177D2072002456F5 /* MasterMenuCFF.m in Sources */ = {isa = PBXBuildFile; fileRef = EFD44A9B177D2072002456F5 /* MasterMenuCFF.m */; };
 		EFEB79F2175D994F004FF3CE /* MainClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79F1175D994F004FF3CE /* MainClient.m */; };
 		EFEB7A05175D9FA4004FF3CE /* ClientTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = EFEB79FF175D9FA3004FF3CE /* ClientTabBarController.m */; };
@@ -730,6 +731,8 @@
 		EFBECF37178FE22500C3D177 /* eAppMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eAppMenu.m; sourceTree = "<group>"; };
 		EFBECF391791167E00C3D177 /* iconComplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconComplete.png; sourceTree = "<group>"; };
 		EFBECF3A1791167E00C3D177 /* iconNotComplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconNotComplete.png; sourceTree = "<group>"; };
+		EFBECF3E17911B5100C3D177 /* SubDetailsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubDetailsData.h; sourceTree = "<group>"; };
+		EFBECF3F17911B5100C3D177 /* SubDetailsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubDetailsData.m; sourceTree = "<group>"; };
 		EFD44A9A177D2072002456F5 /* MasterMenuCFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterMenuCFF.h; sourceTree = "<group>"; };
 		EFD44A9B177D2072002456F5 /* MasterMenuCFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterMenuCFF.m; sourceTree = "<group>"; };
 		EFEB79F0175D994F004FF3CE /* MainClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainClient.h; sourceTree = "<group>"; };
@@ -1438,6 +1441,8 @@
 				EF1ADDF41784066C00996388 /* eAppPersonalDetails.m */,
 				EF90B0CA178E6F2000FEC129 /* SubDetails.h */,
 				EF90B0CB178E6F2000FEC129 /* SubDetails.m */,
+				EFBECF3E17911B5100C3D177 /* SubDetailsData.h */,
+				EFBECF3F17911B5100C3D177 /* SubDetailsData.m */,
 				EF6A538B177943DA00D70960 /* PolicyDetails.h */,
 				EF6A538C177943DA00D70960 /* PolicyDetails.m */,
 				423E8BB517700EF900E60C20 /* NomineesTrustees.h */,
@@ -1907,6 +1912,7 @@
 				EF90B0D1178E7F1800FEC129 /* Relationship.m in Sources */,
 				42B62CAB178FA5F400F573FA /* ExistingLifePolicies.m in Sources */,
 				EFBECF38178FE22500C3D177 /* eAppMenu.m in Sources */,
+				EFBECF4017911B5200C3D177 /* SubDetailsData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

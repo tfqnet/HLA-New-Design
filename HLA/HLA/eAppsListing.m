@@ -248,7 +248,7 @@
     main.requestSINo = [SINO objectAtIndex:indexPath.row];
     main.EAPPorSI = @"eAPP";
     main.modalPresentationStyle = UIModalPresentationFullScreen;
-    main.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    main.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     
     [self presentViewController:main animated:NO completion:nil];
     
