@@ -28,7 +28,7 @@
     items = [[NSMutableArray alloc] initWithObjects:@"Select SI", @"Select Policy Owner", @"Select eCFF",@"e-Application",@"e-Signature",nil];
     
     clickPO = NO;
-    NSLog(@"getEAPP:%@",[self.getEAPP description]);
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,7 +89,22 @@
     }
     else if (getEAPP) {
         
-        if (indexPath.row == 3) {
+        if (indexPath.row == 0) {
+            
+            cell.detailTextLabel.text = @"Selected SINo:SI20130712-0001";
+            UIImageView *imgIcon2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconComplete.png"]];
+            imgIcon2.frame = CGRectMake(885, 15, 16, 16);
+            [cell.contentView addSubview:imgIcon2];
+            
+        }
+        else if (indexPath.row == 1) {
+            
+            cell.detailTextLabel.text = @"";
+            UIImageView *imgIcon2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconComplete.png"]];
+            imgIcon2.frame = CGRectMake(885, 15, 16, 16);
+            [cell.contentView addSubview:imgIcon2];
+        }
+        else if (indexPath.row == 3) {
             cell.detailTextLabel.text = @"";
             UIImageView *imgIcon2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iconComplete.png"]];
             imgIcon2.frame = CGRectMake(885, 15, 16, 16);
@@ -113,8 +128,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    
-    
     return cell;
 }
 
@@ -123,21 +136,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0) {   //go SI listing
         
         UIStoryboard *nextStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
         self.eAppsVC = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppList"];
         self.eAppsVC.modalPresentationStyle = UIModalPresentationFullScreen;
         self.eAppsVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self presentModalViewController:self.eAppsVC animated:YES];
-//        self.eAppsVC.view.superview.frame = CGRectMake(0, 50, 748, 974);
     }
     
-    else if (indexPath.row == 1) {
+    else if (indexPath.row == 1) { //go policy owner
         
         UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"LynnStoryboardData" bundle:Nil];
         self.subPOVC = [secondStoryboard instantiateViewControllerWithIdentifier:@"subDataScreen2"];
         _subPOVC.delegate = self;
+        
         clickPO = YES;
         self.subPOVC.modalPresentationStyle = UIModalPresentationPageSheet;
         self.subPOVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -147,7 +160,11 @@
         secondStoryboard = nil;
     }
     
-    else if (indexPath.row == 3) {
+    else if (indexPath.row == 2) { //go ecff
+        
+    }
+    
+    else if (indexPath.row == 3) {  //go eapp
         
         /*
         UIStoryboard *secondStoryboard = [UIStoryboard storyboardWithName:@"NewStoryboard" bundle:Nil];
@@ -167,6 +184,10 @@
         
         Storyboard = nil, main = nil;
     }
+    
+    else if (indexPath.row == 4) {
+        
+    }
 }
 
 - (void)viewDidUnload
@@ -182,7 +203,7 @@
     zzz.modalPresentationStyle = UIModalPresentationFullScreen;
     self.eAppsVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     zzz.IndexTab = 1;
-    [self presentViewController:zzz animated:NO completion:Nil];
+    [self presentViewController:zzz animated:YES completion:Nil];
     zzz = Nil, secondStoryboard = nil;
 }
 

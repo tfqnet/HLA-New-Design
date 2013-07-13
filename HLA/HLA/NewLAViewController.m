@@ -468,7 +468,7 @@ id dobtemp;
     eAppMenu *zzz = [nextStoryboard instantiateViewControllerWithIdentifier:@"eAppMenuScreen"];
     zzz.getSI = getSINo;
     zzz.modalPresentationStyle = UIModalPresentationFullScreen;
-    zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    zzz.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:zzz animated:YES];
 }
 
