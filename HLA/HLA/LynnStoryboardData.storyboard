@@ -488,12 +488,12 @@
                                             <rect key="frame" x="45" y="1" width="678" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgA-4S-0PV">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Contigent Owner must attain age 18 years and above" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgA-4S-0PV">
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="183" id="HTr-0K-uXj"/>
+                                                        <constraint firstAttribute="width" constant="406" id="mDS-qT-tfa"/>
                                                         <constraint firstAttribute="height" constant="21" id="oHF-a5-cuM"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS-Italic" family="Trebuchet MS" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -501,8 +501,8 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="zgA-4S-0PV" firstAttribute="leading" secondItem="XZa-hF-4um" secondAttribute="leading" constant="159" id="fVY-Dh-DVy"/>
-                                            <constraint firstItem="zgA-4S-0PV" firstAttribute="centerY" secondItem="XZa-hF-4um" secondAttribute="centerY" type="default" id="qAT-6w-hLU"/>
+                                            <constraint firstItem="zgA-4S-0PV" firstAttribute="centerY" secondItem="XZa-hF-4um" secondAttribute="centerY" type="default" id="Es2-ho-DP7"/>
+                                            <constraint firstItem="zgA-4S-0PV" firstAttribute="leading" secondItem="XZa-hF-4um" secondAttribute="leading" constant="66" id="XJ8-KD-NDh"/>
                                         </constraints>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="56" id="hYi-No-VZW">
@@ -8601,7 +8601,6 @@
                                             <constraint firstItem="IuK-8t-gSx" firstAttribute="baseline" secondItem="h4Y-dy-dPe" secondAttribute="baseline" type="default" id="KrB-kI-Ytj"/>
                                             <constraint firstItem="ZGf-AD-KNz" firstAttribute="trailing" secondItem="bBz-Gr-8yU" secondAttribute="trailing" type="default" id="KrQ-iM-sHd"/>
                                             <constraint firstItem="H5b-9H-wYA" firstAttribute="leading" secondItem="Aeu-v9-YYk" secondAttribute="leading" type="default" id="L5c-xi-v4Q"/>
-                                            <constraint firstItem="UFr-1H-dHM" firstAttribute="top" secondItem="v4R-GA-60q" secondAttribute="top" constant="202" id="LBB-pj-KKC"/>
                                             <constraint firstItem="n2s-QE-dfs" firstAttribute="leading" secondItem="mKB-ub-D8g" secondAttribute="leading" type="default" id="LGU-8q-72l"/>
                                             <constraint firstItem="3xR-Er-HmA" firstAttribute="leading" secondItem="xdJ-Yd-Kjv" secondAttribute="trailing" constant="8" symbolic="YES" type="default" id="LO1-oc-QWV"/>
                                             <constraint firstItem="lBe-tO-muF" firstAttribute="top" secondItem="KFd-rw-BTg" secondAttribute="top" type="default" id="LRo-P1-IoE"/>
@@ -8813,7 +8812,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ABp-O5-4ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10429" y="-1741"/>
+            <point key="canvasLocation" x="-10493" y="-1881"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fNC-qa-Gab">
@@ -9254,8 +9253,12 @@
                 <relationship kind="action" name="doneBtn:"/>
             </relationships>
         </class>
-        <class className="eAppMenu" superclassName="UITableViewController">
+        <class className="eAppMenu" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppMenu.h"/>
+            <relationships>
+                <relationship kind="action" name="ActionClose:"/>
+                <relationship kind="outlet" name="myTableView" candidateClass="UITableView"/>
+            </relationships>
         </class>
         <class className="eAppPersonalDetails" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/eAppPersonalDetails.h"/>
