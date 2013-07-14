@@ -95,7 +95,7 @@
         aaa.modalPresentationStyle = UIModalPresentationPageSheet;
         aaa.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentModalViewController:aaa animated:NO];
-        //aaa.view.superview.frame = CGRectMake(0, 50, 748, 974);
+        aaa.view.superview.frame = CGRectMake(130, 370, 448, 504);
     }
 }
 
@@ -105,6 +105,7 @@
         aaa.modalPresentationStyle = UIModalPresentationPageSheet;
         aaa.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentModalViewController:aaa animated:NO];
+        aaa.view.superview.frame = CGRectMake(130, 370, 448, 504);
     
     }
 }
@@ -115,6 +116,7 @@
         aaa.modalPresentationStyle = UIModalPresentationPageSheet;
         aaa.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentModalViewController:aaa animated:NO];
+        aaa.view.superview.frame = CGRectMake(130, 370, 448, 504);
         
     }
 }

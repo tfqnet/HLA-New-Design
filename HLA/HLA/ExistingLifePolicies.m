@@ -59,6 +59,7 @@
     zzz.modalPresentationStyle = UIModalPresentationPageSheet;
     zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:zzz animated:NO];
+    zzz.view.superview.frame = CGRectMake(130, 370, 448, 534);
 
 }
 @end

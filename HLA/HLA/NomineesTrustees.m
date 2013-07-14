@@ -62,7 +62,7 @@
     zzz.modalPresentationStyle = UIModalPresentationPageSheet;
     zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:zzz animated:NO];
-//    zzz.view.superview.frame = CGRectMake(0, 50, 748, 974);
+    zzz.view.superview.frame = CGRectMake(0, 330, 748, 574);
 }
 
 - (IBAction)addTrustee:(id)sender
@@ -71,7 +71,7 @@
     zzz.modalPresentationStyle = UIModalPresentationPageSheet;
     zzz.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:zzz animated:NO];
-//    zzz.view.superview.frame = CGRectMake(0, 50, 748, 974);
+    zzz.view.superview.frame = CGRectMake(0, 330, 748, 574);
     
 }
 @end
