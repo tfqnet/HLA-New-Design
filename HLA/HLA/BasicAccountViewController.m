@@ -557,7 +557,7 @@ BOOL TPExcess;
         NSString *querySQL = [NSString stringWithFormat:@"UPDATE UL_Details SET CovPeriod=\"%@\", BasicSA=\"%@\", "
 							  "AtPrem = \"%@\", BumpMode = \"%@\", DateModified=%@ "
 							  " WHERE SINo=\"%@\"", txtPolicyTerm.text, txtBasicSA.text, txtBasicPremium.text,
-							  [self getBumpMode], @"datetime(\"now\", \"+8 hour\")", SINo];
+							  [self ReturnBumpMode], @"datetime(\"now\", \"+8 hour\")", SINo];
         
         //NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -571,6 +571,68 @@ BOOL TPExcess;
 					andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm
 					   andPlanCode:getPlanCode andBumpMode:[self ReturnBumpMode]];
 				
+            }
+            else {
+                NSLog(@"BasicPlan update Failed!");
+                
+                UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Fail in updating record." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                [failAlert show];
+            }
+            sqlite3_finalize(statement);
+        }
+		
+		if ([getBumpMode  isEqualToString:@"A"]) {
+			if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+				
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+				
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
+				
+			}
+			else{
+				sqlite3_close(contactDB);
+				return;
+			}
+		}
+		else if ([getBumpMode  isEqualToString:@"S"]) {
+			if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+				
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+				
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
+				
+			}
+			else{
+				sqlite3_close(contactDB);
+				return;
+			}
+			
+		}
+		else if ([getBumpMode  isEqualToString:@"Q"]) {
+			
+		}
+		else if ([getBumpMode  isEqualToString:@"M"]) {
+			
+		}
+		
+		querySQL = [NSString stringWithFormat:@"UPDATE UL_Rider_Details SET Premium=, DateModified=%@ "
+							  " WHERE SINo=\"%@\"", @"datetime(\"now\", \"+8 hour\")", SINo];
+        
+        //NSLog(@"%@",querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"BasicPlan update!");
+                //[self getPlanCodePenta];
+                
+				[_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:txtBasicSA.text
+						andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm
+					   andPlanCode:getPlanCode andBumpMode:[self ReturnBumpMode]];
 				
             }
             else {
@@ -671,7 +733,7 @@ BOOL TPExcess;
 	insertSQL = [NSString stringWithFormat:@"INSERT INTO UL_TPExcess (SINO, FromYear, YearInt, Amount, ForYear) VALUES ('%@', '%d','%@','%@','%d') "
 				 , getSINo, 1 + [txtCommFrom.text intValue], @"1", txtRTUP.text,  [txtFor.text intValue ] - 1];
 	
-	NSLog(@"%@", insertSQL);
+	//NSLog(@"%@", insertSQL);
 	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 		if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 			if (sqlite3_step(statement) == SQLITE_DONE){

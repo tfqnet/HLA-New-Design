@@ -98,6 +98,7 @@
 		C4C5020116A64E1F00096156 /* eBrochureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C5020016A64E1F00096156 /* eBrochureViewController.m */; };
 		C4C5020416A652B000096156 /* eBrochureListingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C5020316A652B000096156 /* eBrochureListingViewController.m */; };
 		C4C6C0A6178BB0F50006B00D /* PopOverFundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C6C0A5178BB0F50006B00D /* PopOverFundViewController.m */; };
+		C4C6C0A91793FA0A0006B00D /* UL_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4C6C0A81793FA0A0006B00D /* UL_Rates.sqlite */; };
 		C4CA65A41745DD06002AB907 /* Brochure_Cashpromise_ENGMAND.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4CA65A21745DD05002AB907 /* Brochure_Cashpromise_ENGMAND.pdf */; };
 		C4CA65A51745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4CA65A31745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf */; };
 		C4E1B92A1713F97600D7F83B /* BrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E1B9291713F97600D7F83B /* BrowserViewController.m */; };
@@ -432,6 +433,7 @@
 		C4C5020316A652B000096156 /* eBrochureListingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = eBrochureListingViewController.m; sourceTree = "<group>"; };
 		C4C6C0A4178BB0F50006B00D /* PopOverFundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopOverFundViewController.h; sourceTree = "<group>"; };
 		C4C6C0A5178BB0F50006B00D /* PopOverFundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopOverFundViewController.m; sourceTree = "<group>"; };
+		C4C6C0A81793FA0A0006B00D /* UL_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = UL_Rates.sqlite; sourceTree = "<group>"; };
 		C4CA65A21745DD05002AB907 /* Brochure_Cashpromise_ENGMAND.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_Cashpromise_ENGMAND.pdf; sourceTree = "<group>"; };
 		C4CA65A31745DD06002AB907 /* Brochure_Cashpromise_ENGBM.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Brochure_Cashpromise_ENGBM.pdf; sourceTree = "<group>"; };
 		C4E1B9281713F97600D7F83B /* BrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserViewController.h; sourceTree = "<group>"; };
@@ -1282,6 +1284,7 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				C4C6C0A81793FA0A0006B00D /* UL_Rates.sqlite */,
 				C4E643811724F175001DF8F8 /* Rates.json */,
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
@@ -1763,6 +1766,7 @@
 				425C6A241790E430008CC049 /* LynnStoryboardData.storyboard in Resources */,
 				EFBECF3B1791167E00C3D177 /* iconComplete.png in Resources */,
 				EFBECF3C1791167E00C3D177 /* iconNotComplete.png in Resources */,
+				C4C6C0A91793FA0A0006B00D /* UL_Rates.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

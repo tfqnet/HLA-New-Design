@@ -23,6 +23,7 @@
 						UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,RiderDeducTbDelegate,RiderPlanTbDelegate>{
 	NSString *databasePath;
     NSString *RatesDatabasePath;
+	NSString *UL_RatesDatabasePath;
     sqlite3 *contactDB;
     UIPopoverController *_pTypePopOver;
     UIPopoverController *_RiderListPopover;
@@ -87,6 +88,7 @@
 @property (nonatomic,strong) NSString *getOccpCode;
 @property (nonatomic, assign,readwrite) int getOccpClass;
 @property (nonatomic, assign,readwrite) int getTerm;
+@property (nonatomic,strong) NSString *getBUMPMode;
 @property (nonatomic, assign,readwrite) double getBasicSA;
 @property (nonatomic, assign,readwrite) double getBasicHL;
 @property (nonatomic, assign,readwrite) double getBasicHLPct;
@@ -94,6 +96,7 @@
 @property (nonatomic,strong) NSString *get2ndSmoker;
 @property (nonatomic,strong) NSString *getPayorSmoker;
 @property (nonatomic,strong) NSString *getOccpCPA;
+
 //
 - (IBAction)ActionPlan:(id)sender;
 

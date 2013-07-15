@@ -390,7 +390,7 @@ id EverRiderCount;
 				self.EverRider.requestSex = getSex;
 				self.EverRider.requestOccpCode = getOccpCode;
 				self.EverRider.requestOccpClass = getOccpClass;
-
+				
 				self.EverRider.requestBumpMode = getBumpMode;
 				self.EverRider.requestSINo = getSINo;
 				self.EverRider.requestPlanCode = getPlanCode;

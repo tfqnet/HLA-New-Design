@@ -19,6 +19,7 @@
 {
     NSString *databasePath;
     NSString *RatesDatabasePath;
+	NSString *UL_RatesDatabasePath;
 	    NSString *CommDatabasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
