@@ -324,7 +324,8 @@
 		txtPA.text = [NSString stringWithFormat:@"%d",occPA];
     }
     [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode
-			andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
+			andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA
+			andLADOB:DOB andLAOccLoading:occLoading];
     Inserted = YES;
 }
 
@@ -401,7 +402,8 @@
         }
         
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass
-					  andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
+					  andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA andLADOB:DOB
+					andLAOccLoading:occLoading];
     }
     else {
         
@@ -460,7 +462,8 @@
         }
 		
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode
-				andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
+				andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA
+				andLADOB:DOB andLAOccLoading:occLoading];
         
         if (age > 100) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -566,7 +569,8 @@
         }
 		
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode
-				andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA];
+				andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA
+				andLADOB:DOB andLAOccLoading:occLoading];
         Inserted = YES;
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         zzz.SICompleted = NO;
@@ -667,7 +671,9 @@
                 [failAlert show];
             }
             
-            //[_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+            [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass
+						  andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA andLADOB:DOB
+						andLAOccLoading:occLoading];
             
             sqlite3_finalize(statement);
         }
@@ -708,7 +714,9 @@
                 [failAlert show];
             }
             
-            //[_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
+            [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass
+						  andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker andOccpCPA:strPA_CPA andLADOB:DOB
+						andLAOccLoading:occLoading];
             
             sqlite3_finalize(statement);
         }

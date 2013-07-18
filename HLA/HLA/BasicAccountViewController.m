@@ -16,7 +16,16 @@
 @end
 
 const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
+const double PolicyFee = 5, IncreasePrem =0, CYFactor = 1, ExcessAllo = 0.95, RegularAllo =0.95;
+int YearDiff2023, YearDiff2025, YearDiff2028, YearDiff2030, YearDiff2035, CommMonth;
+int FundTermPrev2023, FundTerm2023, FundTermPrev2025, FundTerm2025,FundTermPrev2028, FundTerm2028;
+int FundTermPrev2030, FundTerm2030, FundTermPrev2035, FundTerm2035;
+int VU2023Factor,VU2025Factor,VU2028Factor,VU2030Factor,VU2035Factor,VUCashFactor,VURetFactor,VURetOptFactor,VUCashOptFactor;
+double VU2023Fac,VU2025Fac,VU2028Fac,VU2030Fac,VU2035Fac,VUCashFac,VURetFac,VURetOptFac,VUCashOptFac;
+double VUCash_FundAllo_Percen,VURet_FundAllo_Percen,VU2023_FundAllo_Percen,VU2025_FundAllo_Percen;
+double VU2028_FundAllo_Percen,VU2030_FundAllo_Percen, VU2035_FundAllo_Percen;
 BOOL TPExcess;
+NSString *OriginalBump;
 
 @implementation BasicAccountViewController
 @synthesize outletBasic, txtBasicPremium, txtBasicSA,txtBUMP,txtCommFrom,txtFor;
@@ -30,7 +39,9 @@ BOOL TPExcess;
 @synthesize secondLASex,secondLASmoker, minSA, minPremium, getPolicyTerm, getSINo, getSumAssured;
 @synthesize GenderPP, SIDate, SILastNo, CustDate, CustLastNo, LACustCode, PYCustCode, planChoose, OccpCodePP, NamePP;
 @synthesize DOBPP, IndexNo, termCover, secondLACustCode, getHL, getHLPct,getHLPctTerm,getHLTerm;
-@synthesize getBumpMode, getBasicPrem, getPlanCode, getCommFrom, getFor,getRTUP;
+@synthesize getBumpMode, getBasicPrem, getPlanCode, getCommFrom, getFor,getRTUP, requestSexLA, getSexLA;
+@synthesize requestSmokerLA, getSmokerLA, requestPlanCommDate, getPlanCommDate, requestDOB, getDOB;
+@synthesize requestOccLoading,getOccLoading;
 @synthesize delegate = _delegate;
 
 
@@ -53,6 +64,7 @@ BOOL TPExcess;
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
+	UL_databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"UL_Rates.sqlite"]];
     
 	self.planList = [[PlanList alloc] init];
     _planList.delegate = self;
@@ -65,28 +77,36 @@ BOOL TPExcess;
 	[segPremium setTitleTextAttributes:attributes
 							   forState:UIControlStateNormal];
 	
-	//request LA details
+	//request LA, second LA and Payor details
+	getSexLA = [self.requestSexLA description];
 	ageClient = requestAge;
 	OccpCode = [self.requestOccpCode description];
     OccpClass = requestOccpClass;
     idPay = requestIDPay;
     idProf = requestIDProf;
+	getPlanCommDate = [self.requestPlanCommDate description];
+	getSmokerLA = [self.requestSmokerLA description];
+	getDOB = [self.requestDOB description];
+	getOccLoading = [self.requestOccLoading description];
+	
     PayorIndexNo = requestIndexPay;
     PayorSmoker = [self.requestSmokerPay description];
     PayorSex = [self.requestSexPay description];
     PayorDOB = [self.requestDOBPay description];
     PayorAge = requestAgePay;
     PayorOccpCode = [self.requestOccpPay description];
+	
     secondLAIndexNo = requestIndex2ndLA;
     secondLASmoker = [self.requestSmoker2ndLA description];
     secondLASex = [self.requestSex2ndLA description];
     secondLADOB = [self.requestDOB2ndLA description];
     secondLAAge = requestAge2ndLA;
     secondLAOccpCode = [self.requestOccp2ndLA description];
+	
     SINo = [self.requestSINo description];
 	temp = outletBasic.titleLabel.text;
 	
-	    [self togglePlan];
+	[self togglePlan];
 	if (self.requestSINo) {
 		[self checkingExisting];
 		if (getSINo.length != 0) {
@@ -489,7 +509,7 @@ BOOL TPExcess;
                 getHLPctTerm = sqlite3_column_int(statement, 8);
 				getPlanCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)];
 				//                NSLog(@"basicPlan:%@",planChoose);
-                
+                OriginalBump = getBumpMode;
             } else {
                 NSLog(@"error access getExistingBasic");
             }
@@ -551,6 +571,7 @@ BOOL TPExcess;
 
 -(void)updateBasicPlan
 {
+	    //[self CalculateBUMP];
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -570,7 +591,7 @@ BOOL TPExcess;
 				[_delegate BasicSI:SINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover andBasicSA:txtBasicSA.text
 					andBasicHL:getHL andBasicHLTerm:getHLTerm andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm
 					   andPlanCode:getPlanCode andBumpMode:[self ReturnBumpMode]];
-				
+					
             }
             else {
                 NSLog(@"BasicPlan update Failed!");
@@ -581,30 +602,31 @@ BOOL TPExcess;
             sqlite3_finalize(statement);
         }
 		
-		if ([getBumpMode  isEqualToString:@"A"]) {
+		NSString *SQLaddin;
+		if ([OriginalBump  isEqualToString:@"A"]) {
 			if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
-				
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium * %f, 2)", Semi];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
-				
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium * %f, 2)", quarterly];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
-				
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium * %f, 2)", Monthly];
 			}
 			else{
 				sqlite3_close(contactDB);
 				return;
 			}
 		}
-		else if ([getBumpMode  isEqualToString:@"S"]) {
-			if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
-				
+		else if ([OriginalBump  isEqualToString:@"S"]) {
+			if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f, 2)", Semi];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
-				
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Semi, quarterly];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
-				
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Semi, Monthly];
 			}
 			else{
 				sqlite3_close(contactDB);
@@ -612,15 +634,39 @@ BOOL TPExcess;
 			}
 			
 		}
-		else if ([getBumpMode  isEqualToString:@"Q"]) {
+		else if ([OriginalBump  isEqualToString:@"Q"]) {
+			if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f, 2)", quarterly];
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", quarterly, Semi];
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", quarterly, Monthly];
+			}
+			else{
+				sqlite3_close(contactDB);
+				return;
+			}
 			
 		}
-		else if ([getBumpMode  isEqualToString:@"M"]) {
-			
+		else if ([OriginalBump  isEqualToString:@"M"]) {
+			if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f, 2)", Monthly];
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Monthly, Semi];
+			}
+			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Monthly, quarterly];
+			}
+			else{
+				sqlite3_close(contactDB);
+				return;
+			}
 		}
 		
-		querySQL = [NSString stringWithFormat:@"UPDATE UL_Rider_Details SET Premium=, DateModified=%@ "
-							  " WHERE SINo=\"%@\"", @"datetime(\"now\", \"+8 hour\")", SINo];
+		querySQL = [NSString stringWithFormat:@"UPDATE UL_Rider_Details SET %@ WHERE SINo=\"%@\"", SQLaddin, SINo];
         
         //NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -657,7 +703,7 @@ BOOL TPExcess;
 {
     [self getRunningSI];
     [self getRunningCustCode];
-    
+	
     //generate SINo || CustCode
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyyMMdd"];
@@ -724,6 +770,769 @@ BOOL TPExcess;
         sqlite3_close(contactDB);
     }
 	
+}
+
+-(double)CalculateBUMP{
+	double FirstBasicMort = [self ReturnBasicMort:ageClient];
+	double FirstSA = [txtBasicSA.text doubleValue ];
+	double SecondBasicMort = [self ReturnBasicMort:ageClient + 1];
+	double SecondSA = 0.00;
+	double ThirdBasicMort = [self ReturnBasicMort:ageClient + 2];
+	double BUMP1;
+	double BUMP2;
+	
+	//NSLog(@"%f, %f, %f", FirstBasicMort, SecondBasicMort, ThirdBasicMort);
+	
+
+	[self ReturnFundFactor]; // get factor for each fund
+	[self CalcYearDiff]; //get the yearDiff
+	double FirstBasicSA =  (FirstSA * ((FirstBasicMort * ([self GetMortDate ]) + SecondBasicMort * (12 - ([self GetMortDate])))/12 * (1 + [getHLPct intValue]/100 ) +
+							([getHL intValue] /1000) + ([getOccLoading doubleValue ]/1000)));
+
+	double SecondBasicSA =  (SecondSA * ((SecondBasicMort * ([self GetMortDate ]) + ThirdBasicMort * (12 - ([self GetMortDate])))/12 * (1 + [getHLPct intValue]/100 ) +
+									   ([getHL intValue] /1000) + ([getOccLoading doubleValue ]/1000)));
+	
+	NSString *strBumpMode = [self ReturnBumpMode];
+	BUMP1 = ([self ModeRate:strBumpMode] * ([self ReturnPremAllocation:1] * ([txtBasicPremium.text doubleValue ] * [self ReturnDivideMode] ) + (0.95 * ([self ReturnExcessPrem:1] + [txtGrayRTUP.text doubleValue ]))) -
+			 (((PolicyFee * 12) + FirstBasicSA + 0) * 12.5/12))/ [self ReturnDivideMode];
+	
+	BUMP2 = ([self ModeRate:strBumpMode] * ([self ReturnPremAllocation:2] * ([txtBasicPremium.text doubleValue ] * [self ReturnDivideMode] ) + (0.95 * ([self ReturnExcessPrem:2] + [txtGrayRTUP.text doubleValue ]))) -
+			 (((PolicyFee * 12) + SecondBasicSA + 0) * 12.5/12))/ [self ReturnDivideMode];
+	
+	if (BUMP1 > BUMP2) {
+		return [[NSString stringWithFormat:@"%.2f", BUMP1] doubleValue ];
+	}
+	else{
+		return [[NSString stringWithFormat:@"%.2f", BUMP2] doubleValue ];
+	}
+	
+}
+
+-(void)ReturnFundFactor{
+	sqlite3_stmt *statement;
+	NSString *querySQL;
+	
+	querySQL = [NSString stringWithFormat:@"Select VU2023,VU2025,VU2028,VU2030,VU2035,VUCash,VURet,VURetOpt, VUCashOpt From UL_Details "
+					" WHERE sino = '%@'", SINo];	
+	
+	//NSLog(@"%@", querySQL);
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2023Factor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] intValue];
+				VU2025Factor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)] intValue];
+				VU2028Factor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)] intValue];
+				VU2030Factor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)] intValue];
+				VU2035Factor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 4)] intValue];
+				VUCashFactor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 5)] intValue];
+				VURetFactor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)] intValue];
+				VURetOptFactor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)] intValue];
+				VUCashOptFactor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)] intValue];
+				
+			}
+			sqlite3_finalize(statement);
+		}
+		sqlite3_close(contactDB);
+	}
+}
+#pragma mark - Calculate Fund Surrender Value for Basic plan
+
+#pragma mark - Calculate Fund Factor
+
+#pragma mark - Calculate Yearly Fund Value
+
+
+
+-(double)ReturnVU2023Fac{
+	return VU2023Factor/100;
+}
+
+-(double)ReturnVU2025Fac :(int)aaPolicyYear {
+	double factor1 = VU2025Factor;
+	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = 0;
+	
+	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
+		return factor2/100;
+	}
+	else if (aaPolicyYear > FundTerm2025){
+		return factor3/100;
+	}
+	else{
+		return VU2025Factor/100;
+	}
+}
+
+-(double)ReturnVU2028Fac :(int)aaPolicyYear {
+	double factor1 = VU2028Factor;
+	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);;
+	double factor4 = 0;
+	
+	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
+		return factor2/100;
+	}
+	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028) {
+		return factor3/100;
+	}
+	else if (aaPolicyYear > FundTerm2028){
+		return factor4/100;
+	}
+	else{
+		return VU2028Factor/100;
+	}
+}
+
+-(double)ReturnVU2030Fac :(int)aaPolicyYear {
+	double factor1 = VU2030Factor;
+	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);;
+	double factor4 = factor3 + VU2025Factor * (factor3/[self FactorGroup:4]);;
+	double factor5 = 0;
+	
+	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
+		return factor2/100;
+	}
+	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028) {
+		return factor3/100;
+	}
+	else if (aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTerm2030) {
+		return factor4/100;
+	}
+	else if (aaPolicyYear > FundTerm2030){
+		return factor5/100;
+	}
+	else{
+		return VU2030Factor/100;
+	}
+}
+
+-(double)ReturnVU2035Fac :(int)aaPolicyYear {
+	double factor1 = VU2035Factor;
+	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);
+	double factor4 = factor3 + VU2025Factor * (factor3/[self FactorGroup:4]);
+	double factor5 = factor4 + VU2025Factor * (factor4/[self FactorGroup:5]);
+	double factor6 = 0;
+	
+	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
+		return factor2/100;
+	}
+	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028) {
+		return factor3/100;
+	}
+	else if (aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTerm2030) {
+		return factor4/100;
+	}
+	else if (aaPolicyYear >= FundTerm2030 && aaPolicyYear <= FundTerm2035) {
+		return factor5/100;
+	}
+	else if (aaPolicyYear > FundTerm2030){
+		return factor6/100;
+	}
+	else{
+		return VU2035Factor/100;
+	}
+}
+
+-(double)ReturnVUCashFac :(int)aaPolicyYear {
+	double factor2;
+	double factor3;
+	double factor4;
+	double factor5;
+	double factor6;
+	
+	if(VUCashOptFactor > 0 && [self FactorGroup:2] == 0){
+		factor2 = VUCashOptFactor;
+	}
+	else{
+		factor2 = VUCashFactor;
+	}
+
+	if(VUCashOptFactor > 0 && [self FactorGroup:3] == 0){
+		factor3 = VUCashOptFactor;
+	}
+	else{
+		factor3 = VUCashFactor;
+	}
+
+	if(VUCashOptFactor > 0 && [self FactorGroup:4] == 0){
+		factor4 = VUCashOptFactor;
+	}
+	else{
+		factor4 = VUCashFactor;
+	}
+
+	if(VUCashOptFactor > 0 && [self FactorGroup:5] == 0){
+		factor5 = VUCashOptFactor;
+	}
+	else{
+		factor5 = VUCashFactor;
+	}
+
+	if(VUCashOptFactor > 0 && [self FactorGroup:6] == 0){
+		factor6 = VUCashOptFactor;
+	}
+	else{
+		factor6 = VUCashFactor;
+	}
+
+	if(aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025){
+		return factor2/100;
+	}
+	else if(aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028){
+		return factor3/100;
+	}
+	else if(aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTerm2030){
+		return factor4/100;
+	}
+	else if(aaPolicyYear >= FundTerm2030 && aaPolicyYear <= FundTerm2035){
+		return factor5/100;
+	}
+	else if(aaPolicyYear > FundTerm2035){
+		return factor6/100;
+	}
+	else{
+		return VUCashFactor/100;
+	}
+}
+
+-(double)ReturnVURetFac :(int)aaPolicyYear {
+	double factor1;
+	double factor2;
+	double factor3;
+	double factor4;
+	double factor5;
+	double factor6;
+	
+	if (VURetFactor > 0) {
+		factor1 =VURetFactor;
+		factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
+		factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);
+		factor4 = factor3 + VU2028Factor * (factor3/[self FactorGroup:4]);
+		factor5 = factor4 + VU2030Factor * (factor4/[self FactorGroup:5]);
+		factor6 = factor5 + VU2035Factor * (factor5/[self FactorGroup:6]);
+	}
+	else if (VURetOptFactor > 0){
+		if ([self FactorGroup:2] == 0) {
+			factor2 = VURetOptFactor;
+		}
+		else{
+			factor2 = 0;
+		}
+			
+		if ([self FactorGroup:3] == 0) {
+			factor3 = VURetOptFactor;
+		}
+		else{
+			factor3 = 0;
+		}
+		
+		if ([self FactorGroup:4] == 0) {
+			factor4 = VURetOptFactor;
+		}
+		else{
+			factor4 = 0;
+		}
+		
+		if ([self FactorGroup:5] == 0) {
+			factor5 = VURetOptFactor;
+		}
+		else{
+			factor5 = 0;
+		}
+		
+		if ([self FactorGroup:6] == 0) {
+			factor6 = VURetOptFactor;
+		}
+		else{
+			factor6 = 0;
+		}
+	}
+	
+	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTermPrev2025) {
+		return factor2/100;
+	}
+	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTermPrev2028) {
+		return factor3/100;
+	}
+	else if (aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTermPrev2030) {
+		return factor4/100;
+	}
+	else if (aaPolicyYear >= FundTerm2030 && aaPolicyYear <= FundTermPrev2035) {
+		return factor5/100;
+	}
+	else if (aaPolicyYear > FundTerm2025) {
+		return factor6/100;
+	}
+	else{
+		return VURetFactor/100;
+	}
+}
+
+
+
+-(int)FactorGroup : (uint)aaGroup{
+	if (aaGroup == 1) {
+		return VU2023Factor + VU2025Factor + VU2028Factor + VU2030Factor + VU2035Factor + VURetFactor;
+	}
+	else if (aaGroup == 2) {
+		return VU2025Factor + VU2028Factor + VU2030Factor + VU2035Factor + VURetFactor;
+	}
+	else if (aaGroup == 3) {
+		return VU2028Factor + VU2030Factor + VU2035Factor + VURetFactor;
+	}
+	else if (aaGroup == 4) {
+		return VU2030Factor + VU2035Factor + VURetFactor;
+	}
+	else if (aaGroup == 5) {
+		return VU2035Factor + VURetFactor;
+	}
+	else {
+		return VURetFactor;
+	}
+}
+
+-(double)ReturnTotalBasicMortHigh :(int)aaAge{
+	return [txtBasicPremium.text doubleValue ] * (([self ReturnBasicMort:ageClient]/1000) * (1 + [getHLPct doubleValue ]/100) +
+												  [getHL doubleValue] + [getOccLoading doubleValue ])/12;
+}
+
+-(double)ReturnTotalBasicMortMedian :(int)aaAge{
+	return [txtBasicPremium.text doubleValue ] * (([self ReturnBasicMort:ageClient]/1000) * (1 + [getHLPct doubleValue ]/100) +
+												  [getHL doubleValue] + [getOccLoading doubleValue ])/12;
+}
+
+-(double)ReturnTotalBasicMortLow :(int)aaAge{
+	return [txtBasicPremium.text doubleValue ] * (([self ReturnBasicMort:ageClient]/1000) * (1 + [getHLPct doubleValue ]/100) +
+												  [getHL doubleValue] + [getOccLoading doubleValue ])/12;
+}
+
+-(double)ReturnVUCashHigh{
+	double VUCashHighS = pow((1 + [self ReturnVUCashInsHigh]), 1/12) - 1 ;
+	
+	return (pow((1 + VUCashHighS), 12) - 1)/(VUCashHighS / (1 + VUCashHighS));
+}
+
+-(double)ReturnVUCashMedian{
+	double VUCashMedianS = pow((1 + [self ReturnVUCashInsMedian]), 1/12) - 1 ;
+	
+	return (pow((1 + VUCashMedianS), 12) - 1)/(VUCashMedianS / (1 + VUCashMedianS));
+}
+
+-(double)ReturnVUCashLow{
+	double VUCashLowS = pow((1 + [self ReturnVUCashInsLow]), 1/12) - 1 ;
+	
+	return (pow((1 + VUCashLowS), 12) - 1)/(VUCashLowS / (1 + VUCashLowS));
+}
+
+-(double)ReturnVUCashInsHigh{
+	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+		return 0.0251;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+		return 0.0187861;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+		return 0.0156389;
+	}
+	else {
+		return 0.0135443;
+	}
+}
+
+-(double)ReturnVUCashInsMedian{
+	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+		return 0.0228;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+		return 0.0170679;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+		return 0.0142098;
+	}
+	else {
+		return 0.0123075;
+	}
+}
+
+-(double)ReturnVUCashInsLow{
+	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+		return 0.0205;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+		return 0.015349;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+		return 0.01278;
+	}
+	else {
+		return 0.0110697;
+	}
+}
+
+-(double)ReturnVURetInsHigh :(int)aaPolicyYear{
+	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+		if (aaPolicyYear <= 20) {
+			return 0.05808;
+		}
+		else{
+			return 0.03784;
+		}
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+		if (aaPolicyYear <= 20) {
+			return 0.0433551;
+		}
+		else{
+			return 0.0282922;
+		}
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+		if (aaPolicyYear <= 20) {
+			return 0.0360438;
+		}
+		else{
+			return 0.0235402;
+		}
+	}
+	else {
+		if (aaPolicyYear <= 20) {
+			return 0.0311887;
+		}
+		else{
+			return 0.0203804;
+		}
+	}
+}
+
+-(double)ReturnVURetInsMedian{
+	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+		return 0.03324;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+		return 0.0248621;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+		return 0.0206901;
+	}
+	else {
+		return 0.0179151;
+	}
+}
+
+-(double)ReturnVURetInsLow{
+	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+		return 0.02312;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+		return 0.017307;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+		return 0.0144087;
+	}
+	else {
+		return 0.0124796;
+	}
+}
+
+-(double)ReturnLoyaltyBonus :(int)aaPolicyYear{
+	if (aaPolicyYear == 7) {
+		return 0.04;
+	}
+	else if (aaPolicyYear == 8){
+		return 0.08;
+	}
+	else if (aaPolicyYear == 9){
+		return 0.12;
+	}
+	else if (aaPolicyYear == 10){
+		return 0.16;
+	}
+	else if (aaPolicyYear > 10){
+		return 0.2;
+	}
+	else{
+		return 0;
+	}
+}
+
+-(int)ReturnLoyaltyBonusFactor{
+	if (CommMonth == 1) {
+		return 1;
+	}
+	else{
+		return 0;
+	}
+}
+
+-(double)ReturnPremiumFactor{
+	if ([[self ReturnBumpMode] isEqualToString:@"A" ]) {
+		if (CommMonth == 1) {
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+	else if([[self ReturnBumpMode] isEqualToString:@"S" ]) {
+		if (CommMonth == 1 || CommMonth == 7 ) {
+			return 0.5;
+		}
+		else{
+			return 0;
+		}
+	}
+	else if([[self ReturnBumpMode] isEqualToString:@"Q" ]) {
+		if (CommMonth == 1 || CommMonth == 4 || CommMonth == 7 || CommMonth == 10 ) {
+			return 0.25;
+		}
+		else{
+			return 0;
+		}
+	}
+	else {
+		return 1/12;
+	}
+
+}
+
+-(void)CalcYearDiff{
+	NSDateFormatter* df = [[NSDateFormatter alloc] init];
+	[df setDateFormat:@"dd/MM/yyyy"];
+	NSDate* d = [df dateFromString:getPlanCommDate];
+	NSDate* d2 = [df dateFromString:@"26/12/2023"];
+	NSDate* d3 = [df dateFromString:@"26/12/2025"];
+	NSDate* d4 = [df dateFromString:@"26/12/2028"];
+	NSDate* d5 = [df dateFromString:@"26/12/2030"];
+	NSDate* d6 = [df dateFromString:@"26/12/2035"];
+	NSDate *fromDate;
+    NSDate *toDate2;
+	NSDate *toDate3;
+	NSDate *toDate4;
+	NSDate *toDate5;
+	NSDate *toDate6;
+	
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+	
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+				 interval:NULL forDate:d];
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate2
+				 interval:NULL forDate:d2];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate3
+				 interval:NULL forDate:d3];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate4
+				 interval:NULL forDate:d4];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate5
+				 interval:NULL forDate:d5];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate6
+				 interval:NULL forDate:d6];
+	
+    NSDateComponents *difference2 = [calendar components:NSDayCalendarUnit
+											   fromDate:fromDate toDate:toDate2 options:0];
+    NSDateComponents *difference3 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate3 options:0];
+    NSDateComponents *difference4 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate4 options:0];
+    NSDateComponents *difference5 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate5 options:0];
+    NSDateComponents *difference6 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate6 options:0];
+
+	
+	NSString *round2 = [NSString stringWithFormat:@"%.2f", [difference2 day]/365.25];
+	NSString *round3 = [NSString stringWithFormat:@"%.2f", [difference3 day]/365.25];
+	NSString *round4 = [NSString stringWithFormat:@"%.2f", [difference4 day]/365.25];
+	NSString *round5 = [NSString stringWithFormat:@"%.2f", [difference5 day]/365.25];
+	NSString *round6 = [NSString stringWithFormat:@"%.2f", [difference6 day]/365.25];
+	
+	YearDiff2023 = round([round2 doubleValue]);
+	YearDiff2025 = round([round3 doubleValue]);
+	YearDiff2028 = round([round4 doubleValue]);
+	YearDiff2030 = round([round5 doubleValue]);
+	YearDiff2035 = round([round6 doubleValue]);
+	
+	FundTermPrev2023 = YearDiff2023 - 1;
+	FundTerm2023 = YearDiff2023;
+	FundTermPrev2025 = YearDiff2025 - 1;
+	FundTerm2025 = YearDiff2025;
+	FundTermPrev2028 = YearDiff2028 - 1;
+	FundTerm2028 = YearDiff2028;
+	FundTermPrev2030 = YearDiff2030 - 1;
+	FundTerm2030 = YearDiff2030;
+	FundTermPrev2035 = YearDiff2035 - 1;
+	FundTerm2035 = YearDiff2035;
+	
+	NSDate* aa = [df dateFromString:getPlanCommDate];
+	NSDateComponents* components2 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+												fromDate:aa];
+	CommMonth = [components2 month];
+}
+
+-(double)ModeRate: (NSString *)MOP{
+	if ([MOP isEqualToString:@"A"]) {
+		return 0.85;
+	}
+	else if ([MOP isEqualToString:@"S"]){
+		return 0.9;
+	}
+	else if ([MOP isEqualToString:@"S"]){
+		return 0.9;
+	}
+	else{
+		return 0.95;
+	}
+}
+
+-(double)ReturnExcessPrem: (int)aaPolicyYear{
+	if ([txtRTUP.text isEqualToString:@""]) {
+		return 0;
+	}
+	else {
+		if (aaPolicyYear >= [txtCommFrom.text intValue ] && aaPolicyYear <= [txtCommFrom.text intValue] + [txtFor.text intValue] ) {
+			return [txtRTUP.text doubleValue ];
+		}
+		else{
+			return 0;
+		}
+	}
+}
+
+-(double)ReturnDivideMode{
+	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+		return 1;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+		return 2;
+	}
+	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+		return 4;
+	}
+	else{
+		return 12;
+	}
+}
+
+-(double)ReturnPremAllocation: (int)aaPolYear{
+	if (aaPolYear == 1) {
+		if ([txtBasicPremium.text doubleValue ] >= 12000 && [txtBasicPremium.text doubleValue ] < 24000 ) {
+			return 0.4 + 0.02;
+		}
+		else if ([txtBasicPremium.text doubleValue ] >= 24000){
+			return 0.4 + 0.04;
+		}
+		else{
+			return 0.4;
+		}
+	}
+	else if (aaPolYear == 2){
+		if ([txtBasicPremium.text doubleValue ] >= 12000 && [txtBasicPremium.text doubleValue ] < 24000 ) {
+			return 0.52 + 0.02;
+		}
+		else if ([txtBasicPremium.text doubleValue ] >= 24000){
+			return 0.52 + 0.04;
+		}
+		else{
+			return 0.52;
+		}
+		
+	}
+	else if (aaPolYear == 3){
+		return 0.785;
+	}
+	else if (aaPolYear == 4){
+		return 0.835;
+	}
+	else if (aaPolYear >=5 && aaPolYear < 7){
+		return 0.925;
+	}
+	else{
+		return 1;
+	}
+}
+
+-(double)ReturnBasicMort: (int)zzAge{
+	NSString *MortRate;
+	sqlite3_stmt *statement;
+	NSString *querySQL;
+	
+	querySQL = [NSString stringWithFormat:@"Select Rate From ES_Sys_Basic_Mort WHERE PlanCode = '%@' AND Sex = '%@' AND Age='%d' AND Smoker ='%@' "
+				 , getPlanCode, getSexLA, zzAge, getSmokerLA];
+	
+	//NSLog(@"%@", querySQL);
+	if (sqlite3_open([UL_databasePath UTF8String], &contactDB) == SQLITE_OK){
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				MortRate = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)];
+			}
+			sqlite3_finalize(statement);
+		}
+		sqlite3_close(contactDB);
+	}
+	
+	return [MortRate doubleValue];
+}
+
+-(int)GetMortDate{
+	if (![getPlanCommDate isEqualToString:@""] && ![getDOB isEqualToString:@""]  ) {
+		
+		NSDateFormatter* df = [[NSDateFormatter alloc] init];
+		[df setDateFormat:@"dd/MM/yyyy"];
+     	NSDate* d = [df dateFromString:getDOB];
+		NSDate* d2 = [df dateFromString:getPlanCommDate];
+		
+		NSCalendar* calendar = [NSCalendar currentCalendar];
+		NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+												   fromDate:d];
+		NSDateComponents* components2 = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+												   fromDate:d2];
+		
+		if ([components month] == [components2 month] && [components day] == [components2 day]) {
+			return 12;
+		}
+		else{
+			return 12 - [self monthsBetweenDate:d andDate:d2];
+		}
+	}
+	else{
+		return -1;
+	}
+}
+
+- (NSInteger)monthsBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
+{
+    NSDate *fromDate;
+    NSDate *toDate;
+	
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+	
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+				 interval:NULL forDate:fromDateTime];
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate
+				 interval:NULL forDate:toDateTime];
+	
+    NSDateComponents *difference = [calendar components:NSMonthCalendarUnit
+											   fromDate:fromDate toDate:toDate options:0];
+	
+    return [difference month];
+}
+
+- (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
+{
+    NSDate *fromDate;
+    NSDate *toDate;
+	
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+	
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+				 interval:NULL forDate:fromDateTime];
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate
+				 interval:NULL forDate:toDateTime];
+	
+    NSDateComponents *difference = [calendar components:NSDayCalendarUnit
+											   fromDate:fromDate toDate:toDate options:0];
+	
+    return [difference day];
 }
 
 -(void)InsertIntoTPExcess{

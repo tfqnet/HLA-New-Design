@@ -211,8 +211,11 @@ static sqlite3 *contactDB = nil;
 	
 	
 	NSString *query;
-	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TPExcess (\"SINO\" VARCHAR, \"FromYear\" INTEGER, \"YearInt\" INTEGER, \"Amount\" "
-			 "DOUBLE, \"ForYear\" INTEGER) "];
+	query = [NSString stringWithFormat:@"Update UL_Rider_Label set condition = 'PlanChoiceMGIV', ridercode = 'MG_IV' where labeldesc = 'Plan Choice' and ridercode = 'MGIV'  "];
+    [database executeUpdate:query];
+	
+
+	query = [NSString stringWithFormat:@"Update UL_Rider_Label set ridercode = 'MG_IV' where ridercode = 'MGIV'  "];
     [database executeUpdate:query];
 	
 	
@@ -523,11 +526,11 @@ static sqlite3 *contactDB = nil;
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PLCH\", \"Plan Choice\", \"MGIV\", \"MedGlobal IV Plus\", \"TF\", "
-			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"PLCH\", \"Plan Choice\", \"MG_IV\", \"MedGlobal IV Plus\", \"TF\", "
+			 "\"\", \"\", 'PlanChoiceMGIV',  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"MGIV\", \"MedGlobal IV Plus\", \"TF\", "
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"MG_IV\", \"MedGlobal IV Plus\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	

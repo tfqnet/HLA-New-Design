@@ -65,6 +65,7 @@
 
 //--from delegate
 @property (nonatomic ,assign ,readwrite) int getAge;
+@property (nonatomic, retain) NSString *getLADOB;
 @property (nonatomic ,assign ,readwrite) int getOccpClass;
 @property (nonatomic, retain) NSString *getOccpCPA;
 @property (nonatomic, retain) NSString *getSex;
@@ -97,6 +98,7 @@
 @property (nonatomic, retain) NSString *getbasicHLPct;
 @property (nonatomic, retain) NSString *getPlanCode;
 @property (nonatomic, retain) NSString *getBasicPlan;
+@property (nonatomic, retain) NSString *getOccLoading;
 
 
 //----

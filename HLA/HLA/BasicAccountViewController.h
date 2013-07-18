@@ -24,6 +24,7 @@
 
 @interface BasicAccountViewController : UIViewController<UITextFieldDelegate,PlanListDelegate>{
 	NSString *databasePath;
+	NSString *UL_databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
     UIPopoverController *_planPopover;
@@ -59,11 +60,17 @@
 
 
 //--request from previous
+@property (nonatomic,strong) id requestSexLA;
+@property (nonatomic,strong) id requestSmokerLA;
 @property (nonatomic, assign,readwrite) int requestAge;
 @property (nonatomic,strong) id requestOccpCode;
 @property (nonatomic, assign,readwrite) int requestOccpClass;
 @property (nonatomic,strong) id requestSINo;
 @property (nonatomic, assign,readwrite) int requestIDProf;
+@property (nonatomic,strong) id requestPlanCommDate;
+@property (nonatomic,strong) id requestDOB;
+@property (nonatomic,strong) id requestOccLoading;
+
 @property (nonatomic, assign,readwrite) int requestIDPay;
 @property (nonatomic, assign,readwrite) int requestIndexPay;
 @property (nonatomic,strong) id requestSmokerPay;
@@ -71,6 +78,7 @@
 @property (nonatomic,strong) id requestDOBPay;
 @property (nonatomic, assign,readwrite) int requestAgePay;
 @property (nonatomic,strong) id requestOccpPay;
+
 @property (nonatomic, assign,readwrite) int requestIndex2ndLA;
 @property (nonatomic,strong) id requestSmoker2ndLA;
 @property (nonatomic,strong) id requestSex2ndLA;
@@ -136,5 +144,9 @@
 @property (nonatomic,strong) NSString *getCommFrom;
 @property (nonatomic,strong) NSString *getFor;
 @property (nonatomic,strong) NSString *getRTUP;
-
+@property (nonatomic,strong) NSString *getSexLA;
+@property (nonatomic,strong) NSString *getSmokerLA;
+@property (nonatomic,strong) NSString *getPlanCommDate;
+@property (nonatomic,strong) NSString *getDOB;
+@property (nonatomic,strong) NSString *getOccLoading;
 @end

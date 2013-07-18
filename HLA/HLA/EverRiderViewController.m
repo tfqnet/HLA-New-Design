@@ -416,6 +416,7 @@ double CurrentRiderPrem;
         NSString *querySQL = [NSString stringWithFormat:@"SELECT LabelCode,LabelDesc,RiderName,InputCode,TableName,FieldName"
 							  ",Condition FROM UL_Rider_Label WHERE RiderCode=\"%@\"",riderCode];
 		
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             while(sqlite3_step(statement) == SQLITE_ROW)
@@ -822,6 +823,7 @@ double CurrentRiderPrem;
         
         [self.outletRiderPlan setTitle:_planList.selectedItemDesc forState:UIControlStateNormal];
         planOption = [[NSString alloc] initWithFormat:@"%@",_planList.selectedItemDesc];
+		 
 	}
 	else if (RRTUOPrem){
 		outletRiderPlan.enabled = NO;
@@ -2771,7 +2773,7 @@ double CurrentRiderPrem;
 			CurrentRiderPrem = annualRider;
 		}
 		else if([getBUMPMode isEqualToString:@"S"]){
-			CurrentRiderPrem = halfYearRider;
+				CurrentRiderPrem = halfYearRider;
 		}
 		else if([getBUMPMode isEqualToString:@"Q"]){
 			CurrentRiderPrem =quarterRider;

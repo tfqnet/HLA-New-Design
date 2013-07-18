@@ -100,7 +100,7 @@
 		
 			querySQL = [NSString stringWithFormat:@"select A.ridercode, A.riderdesc, b.minAge, b.Maxage FROM "
 						"UL_Rider_Profile A, UL_Rider_mtn  B where A.Ridercode = B.Ridercode AND B.Plancode = '%@' AND B.PTypeCode = '%@' "
-						"AND B.Seq = '%d' AND B.RiderCode != 'MG_IV' AND B.MinAge <= '%d' ANd B.MaxAge >= '%d'",
+						"AND B.Seq = '%d' AND B.MinAge <= '%d' AND B.MaxAge >= '%d'",
 						[self.requestPlan description], [self.requestPtype description], self.requestSeq, self.requestAge, self.requestAge];
         }
         

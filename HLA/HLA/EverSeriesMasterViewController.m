@@ -33,7 +33,7 @@
 @synthesize get2ndLAOccp,get2ndLASex,get2ndLASmoker,getbasicHL,getBasicPlan,getbasicSA,getbasicHLPct;
 @synthesize getPayAge,getPayDOB,getPayOccp,getPayorIndexNo,getPaySex,getPaySmoker,getPlanCode;
 @synthesize getSINo,getTerm, payorCustCode, payorSINo, requestSINo2, CustCode2, clientID2;
-@synthesize getOccpCPA, getBumpMode;
+@synthesize getOccpCPA, getBumpMode, getLADOB, getOccLoading;
 id EverRiderCount;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -540,12 +540,18 @@ id EverRiderCount;
             
             self.BasicAccount = [self.storyboard instantiateViewControllerWithIdentifier:@"EverBasic"];
             _BasicAccount.delegate = self;
-            
+
+			self.BasicAccount.requestPlanCommDate = getCommDate;
+			
             self.BasicAccount.requestAge = getAge;
             self.BasicAccount.requestOccpCode = getOccpCode;
             self.BasicAccount.requestOccpClass = getOccpClass;
             self.BasicAccount.requestIDPay = getIdPay;
             self.BasicAccount.requestIDProf = getIdProf;
+			self.BasicAccount.requestSexLA = getSex;
+			self.BasicAccount.requestSmokerLA = getSmoker;
+			self.BasicAccount.requestDOB = getLADOB;
+			self.BasicAccount.requestOccLoading = getOccLoading;
             
             self.BasicAccount.requestIndexPay = getPayorIndexNo;
             self.BasicAccount.requestSmokerPay = getPaySmoker;
@@ -590,6 +596,8 @@ id EverRiderCount;
             self.BasicAccount.requestOccpClass = getOccpClass;
             self.BasicAccount.requestIDPay = getIdPay;
             self.BasicAccount.requestIDProf = getIdProf;
+			self.BasicAccount.requestSexLA = getSex;
+			self.BasicAccount.requestSmokerLA = getSmoker;
             
             self.BasicAccount.requestIndexPay = getPayorIndexNo;
             self.BasicAccount.requestSmokerPay = getPaySmoker;
@@ -1047,8 +1055,9 @@ id EverRiderCount;
 #pragma mark - delegate
 // from LA
 -(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
-	andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
-	   andSmoker:(NSString *)aaSmoker andOccpCPA:(NSString *)aaOccpCPA{
+		andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
+		andSmoker:(NSString *)aaSmoker andOccpCPA:(NSString *)aaOccpCPA andLADOB:(NSString *)aaLADOB
+		andLAOccLoading:(NSString *)aaLAOccLoading{
 	getAge = aaAge;
     getSex = aaSex;
     getSmoker = aaSmoker;
@@ -1059,6 +1068,8 @@ id EverRiderCount;
     getIdProf = aaIdProfile;
     getLAIndexNo = aaIndexNo;
 	getOccpCPA = aaOccpCPA;
+	getLADOB = aaLADOB;
+	getOccLoading = aaLAOccLoading;
 	
 	[self getLAName];
 	[self.myTableView reloadData];
@@ -1160,7 +1171,9 @@ id EverRiderCount;
     saved = aaTrue;
 }
 
--(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate andSmoker:(NSString *)aaSmoker
+-(void)LAIDPayor:(int)aaIdPayor andIDProfile:(int)aaIdProfile andAge:(int)aaAge andOccpCode:(NSString *)aaOccpCode
+	andOccpClass:(int)aaOccpClass andSex:(NSString *)aaSex andIndexNo:(int)aaIndexNo andCommDate:(NSString *)aaCommDate
+	   andSmoker:(NSString *)aaSmoker
 {
     NSLog(@"::receive data LAIndex:%d, commDate:%@",aaIndexNo,aaCommDate);
     getAge = aaAge;
