@@ -836,10 +836,40 @@ NSString *OriginalBump;
 	}
 }
 #pragma mark - Calculate Fund Surrender Value for Basic plan
+-(double)VU2023ValueHigh :(int)aaPolicyYear{
+	if (aaPolicyYear > YearDiff2023) {
+		return 0;
+	}
+	else{
+		
+	}
+}
+
+-(double)VUCashValueHigh :(int)aaPolicyYear{
+	double VUCashPrevValueHigh = 0;
+
+	return ((( [txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear] ) + IncreasePrem) * VUCashFac * CYFactor +
+			[self ReturnRegTopUpPrem] * RegularAllo * VUCashFac * CYFactor +
+			[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VUCashFac * CYFactor) *
+			(1 + [self VUCashValueHigh:aaPolicyYear]) + VUCashPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear])) * (1 + [self ReturnVUCashInsHigh]) -
+			(PolicyFee + [self ReturnTotalBasicMortHigh:aaPolicyYear]) * [self ReturnVUCashHigh];
+}
+			
+-(double)ReturnRegTopUpPrem{
+	if (![txtGrayRTUP.text isEqualToString:@""]) {
+		return [txtGrayRTUP.text doubleValue ];
+	}
+	else{
+		return 0;
+	}
+}
 
 #pragma mark - Calculate Fund Factor
 
 #pragma mark - Calculate Yearly Fund Value
+-(void)FundValueOfTheYearVU2023Value{
+	
+}
 
 
 
