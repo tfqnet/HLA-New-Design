@@ -115,9 +115,7 @@ id EverRiderCount;
         
         PlanEmpty = YES;
         added = NO;
-		//        [SelectedRow addObject:@"4" ];
-		//        [SelectedRow addObject:@"5" ];
-        
+
         [self RemoveTab];
         [self clearDataLA];
         [self clearDataPayor];
@@ -504,12 +502,41 @@ id EverRiderCount;
 		}
 	}
 	else if (indexPath.row == 9){ //Quotation
-		
+		AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+		if (![zzz.EverMessage isEqualToString:@""]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			alert.tag = 1007;
+			[alert show];
+			zzz.EverMessage = @"";
+		}
+		else{
+			
+		}
 	}
 	else if (indexPath.row == 11){ //Eng PDS
+		AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+		if (![zzz.EverMessage isEqualToString:@""]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			alert.tag = 1007;
+			[alert show];
+			zzz.EverMessage = @"";
+		}
+		else{
+			
+		}
 		
 	}
 	else if (indexPath.row == 12){ //BM PDS
+		AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+		if (![zzz.EverMessage isEqualToString:@""]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+			alert.tag = 1007;
+			[alert show];
+			zzz.EverMessage = @"";
+		}
+		else{
+			
+		}
 		
 	}
 }
@@ -591,6 +618,8 @@ id EverRiderCount;
             self.BasicAccount = [self.storyboard instantiateViewControllerWithIdentifier:@"EverBasic"];
             _BasicAccount.delegate = self;
             
+			self.BasicAccount.requestPlanCommDate = getCommDate;
+			
             self.BasicAccount.requestAge = getAge;
             self.BasicAccount.requestOccpCode = getOccpCode;
             self.BasicAccount.requestOccpClass = getOccpClass;
@@ -598,6 +627,8 @@ id EverRiderCount;
             self.BasicAccount.requestIDProf = getIdProf;
 			self.BasicAccount.requestSexLA = getSex;
 			self.BasicAccount.requestSmokerLA = getSmoker;
+			self.BasicAccount.requestDOB = getLADOB;
+			self.BasicAccount.requestOccLoading = getOccLoading;
             
             self.BasicAccount.requestIndexPay = getPayorIndexNo;
             self.BasicAccount.requestSmokerPay = getPaySmoker;
@@ -715,7 +746,11 @@ id EverRiderCount;
 {
     if (PlanEmpty && added)
     {
+		[ListOfSubMenu removeObject:@"Fund Allocation and Others"];
         [ListOfSubMenu removeObject:@"Rider"];
+		[ListOfSubMenu removeObject:@"Health Loading"];
+		[ListOfSubMenu removeObject:@"Special Options"];
+		[ListOfSubMenu removeObject:@"Fund Maturity Options"];
         
     }
     else if (!PlanEmpty && !added) {
@@ -988,6 +1023,12 @@ id EverRiderCount;
 
 
 -(void)RemoveTab{
+
+	[ListOfSubMenu removeObject:@"Fund Allocation and Others"];
+	[ListOfSubMenu removeObject:@"Rider"];
+	[ListOfSubMenu removeObject:@"Health Loading"];
+	[ListOfSubMenu removeObject:@"Special Options"];
+	[ListOfSubMenu removeObject:@"Fund Maturity Options"];
     [ListOfSubMenu removeObject:@"Quotation"];
     [ListOfSubMenu removeObject:@"Proposal"];
     [ListOfSubMenu removeObject:@"Product Disclosure Sheet"];

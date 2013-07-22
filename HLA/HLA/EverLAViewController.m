@@ -65,11 +65,47 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
 	
 	getSINo = [self.requestSINo description];
+	//[btnOccpDesc setBackgroundColor:[UIColor lightGrayColor]];
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	zzz.EverMessage = @"";
 	
 	if (getSINo.length != 0) {
 		[self checkingExisting];
         [self checkingExistingSI];
 	
+		if (![commDate isEqualToString:@""]) {
+			NSDateFormatter* df = [[NSDateFormatter alloc] init];
+			[df setDateFormat:@"dd/MM/yyyy"];
+			NSDate* d2 = [[NSDate date] dateByAddingTimeInterval:8 *60 * 60 ];;
+			NSDate* d = [df dateFromString:commDate];
+			NSDate *fromDate;
+			NSDate *toDate;
+			
+			NSCalendar *calendar = [NSCalendar currentCalendar];
+			[calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+						 interval:NULL forDate:d];
+			[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate
+						 interval:NULL forDate:d2];
+			
+			NSDateComponents *difference = [calendar components:NSDayCalendarUnit
+													   fromDate:fromDate toDate:toDate options:0];
+			
+			
+			if ([difference day ] > 0) {
+				
+				zzz.EverMessage = @"Please note that the commencement date of this sales illustration is earlier than today’s date. "
+				"You may want to update the commencement date as sustainability, premium payable and projected values may change due "
+				"to different commencement date. Please note the commencement date in this sales illustration is not the commencement "
+				"date for the policy as backdating is not allowed in Investment-Linked Plan. Kindly be reminded that the SI created "
+				"earlier than 30 days prior to submission date is not allowed for submission";
+			}
+			else{
+				zzz.EverMessage = @"";
+			}
+			df = Nil;
+			d2 = Nil, d= Nil, fromDate=Nil,toDate=Nil,calendar = Nil, difference = Nil;
+		}
+		
 		if (basicSINo.length != 0) {
             [self getExistingBasic];
             [self getTerm];
@@ -79,6 +115,9 @@
 		if (SINo.length != 0) {
             [self getProspectData];
             [self getSavedField];
+			txtDOB.text = DOB;
+			
+			
             NSLog(@"will use existing data");
         }
 		if(age < 17){
@@ -96,9 +135,6 @@
 
 	
 	[self checking2ndLA];
-	
-	
-	
 	
 	
 	
@@ -734,6 +770,7 @@
 							  "b.id, b.IndexNo, a.rowid, b.MaritalStatusCode FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
 							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Seq=1",getSINo];
 
+		NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -1298,6 +1335,7 @@
         [alert show];
     }
 	else {
+		
 		txtName.text = aaName;
 		sex = aaGender;
 		
@@ -1306,6 +1344,11 @@
         } else {
             segGender.selectedSegmentIndex = 1;
         }
+		
+		if(age < 16){
+			segSmoker.selectedSegmentIndex = 1;
+			segSmoker.enabled = FALSE;
+		}
 		
 		//[btnDOB setTitle:DOB forState:UIControlStateNormal];
 		txtDOB.text = DOB;

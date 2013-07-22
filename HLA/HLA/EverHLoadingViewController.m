@@ -7,6 +7,7 @@
 //
 
 #import "EverHLoadingViewController.h"
+#import "AppDelegate.h"
 
 @interface EverHLoadingViewController ()
 
@@ -192,7 +193,22 @@
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
+	}
+	else{
+		[self Validation];
+	}
+	
+    
+}
+
+-(void)Validation{
+	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
     NSRange rangeofDotHL = [txtHLoad.text rangeOfString:@"."];
@@ -311,6 +327,10 @@
     if (alertView.tag == 1001 && buttonIndex == 0) {
         
         [self updateHL];
+    }
+	else if (alertView.tag == 1007 && buttonIndex == 0) {
+        
+        [self Validation];
     }
 }
 

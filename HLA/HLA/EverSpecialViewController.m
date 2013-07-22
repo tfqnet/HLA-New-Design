@@ -501,22 +501,42 @@
 	     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
 	     [activeInstance performSelector:@selector(dismissKeyboard)];
 	
-	 	if([self Validation] == TRUE){
-		 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-													message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
-		         [alert setTag:1001];
-		         [alert show];
-		 		
-		 	}
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
+	}
+	else{
+		if([self Validation] == TRUE){
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			[alert setTag:1001];
+			[alert show];
+			
+		}
+	}
+	
+	 	
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
  {
-	     if (alertView.tag == 1001 && buttonIndex == 0) {
+	if (alertView.tag == 1001 && buttonIndex == 0) {
 		
-		         [self Insertandupdate];
-		     }
+		[self Insertandupdate];
+	}
+	else if (alertView.tag == 1007 && buttonIndex == 0) {
+		 if([self Validation] == TRUE){
+			 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															 message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			 [alert setTag:1001];
+			 [alert show];
+			 
+		 }
 	 }
+}
 
 - (void)viewDidUnload {
 	[self setOutletWithdrawal:nil];

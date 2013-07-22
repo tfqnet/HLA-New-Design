@@ -4314,7 +4314,6 @@ BOOL Edit = FALSE;
     }
 }
 
-
 #pragma mark - DB handling
 
 -(void)getBasicCSV

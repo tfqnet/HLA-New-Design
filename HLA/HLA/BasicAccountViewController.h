@@ -22,7 +22,7 @@
 @end
 
 
-@interface BasicAccountViewController : UIViewController<UITextFieldDelegate,PlanListDelegate>{
+@interface BasicAccountViewController : UIViewController<UITextFieldDelegate,PlanListDelegate, UIScrollViewDelegate>{
 	NSString *databasePath;
 	NSString *UL_databasePath;
     sqlite3 *contactDB;

@@ -23,6 +23,7 @@
 @property (nonatomic, assign,readwrite) int ExitIndex;
 @property (nonatomic,strong) id userRequest;
 @property (nonatomic,strong) id MhiMessage;
+@property (nonatomic,strong) id EverMessage;
 @property (nonatomic,assign,readwrite) BOOL SICompleted;
 @property (nonatomic,assign,readwrite) BOOL ExistPayor;
 

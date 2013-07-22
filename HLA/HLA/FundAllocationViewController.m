@@ -7,6 +7,7 @@
 //
 
 #import "FundAllocationViewController.h"
+#import "AppDelegate.h"
 
 @interface FundAllocationViewController ()
 
@@ -168,6 +169,60 @@
 			 } else {
 				 //NSLog(@"error check tbl_Adm_TrnTypeNo");
 			 }
+			 sqlite3_finalize(statement);
+		 }
+		 
+		 NSString *ToBeDeleted = @"";
+		 if ([txt2023.text isEqualToString:@"0"]) {
+			 ToBeDeleted = @"'HLA EverGreen 2023'";
+		 }
+		 
+		 if ([txt2025.text isEqualToString:@"0"]) {
+			 if ([ToBeDeleted isEqualToString:@""]) {
+				 ToBeDeleted = [ToBeDeleted stringByAppendingString:@"'HLA EverGreen 2025'"];
+			 }
+			 else{
+				ToBeDeleted =[ToBeDeleted stringByAppendingString:@",'HLA EverGreen 2025'"];
+			 }
+		 }
+		 
+		 if ([txt2028.text isEqualToString:@"0"]) {
+			 if ([ToBeDeleted isEqualToString:@""]) {
+								 ToBeDeleted = [ToBeDeleted stringByAppendingString:@"'HLA EverGreen 2028'"];
+			 }
+			 else{
+				 ToBeDeleted =				 [ToBeDeleted stringByAppendingString:@",'HLA EverGreen 2028'"];
+			 }
+		 }
+		 
+		 if ([txt2030.text isEqualToString:@"0"]) {
+			 if ([ToBeDeleted isEqualToString:@""]) {
+				 ToBeDeleted =				 [ToBeDeleted stringByAppendingString:@"'HLA EverGreen 2030'"];
+			 }
+			 else{
+				 ToBeDeleted =				 [ToBeDeleted stringByAppendingString:@",'HLA EverGreen 2030'"];
+			 }
+		 }
+		 
+		 if ([txt2035.text isEqualToString:@"0"]) {
+			 if ([ToBeDeleted isEqualToString:@""]) {
+				 ToBeDeleted =				 [ToBeDeleted stringByAppendingString:@"'HLA EverGreen 2035'"];
+			 }
+			 else{
+				 ToBeDeleted =				 [ToBeDeleted stringByAppendingString:@",'HLA EverGreen 2035'"];
+			 }
+		 }
+		 
+		 
+		 querySQL = [NSString stringWithFormat: @"DELETE FROM UL_Fund_Maturity_Option where sino = '%@' and fund IN (%@) ",  SINo, ToBeDeleted ];
+		 //NSLog(@"%@", querySQL);
+		 
+		 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+		 {
+			 if (sqlite3_step(statement) == SQLITE_DONE)
+			 {
+				 
+			 } 
 			 sqlite3_finalize(statement);
 		 }
 		 sqlite3_close(contactDB);
@@ -418,7 +473,7 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
 
 	if ([textField.text isEqualToString:@"0" ]) {
-		textField.text = @"";
+		//textField.text = @"";
 	}
 
 	activeField = textField;
@@ -472,6 +527,15 @@
 		txtExpireCashFund.text = @"20";
 		txtExpireSecureFund.text = @"80";
 	}
+	else if (alertView.tag == 1007){
+		if ([self Validation]  == TRUE) {
+			
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			[alert setTag:1001];
+			[alert show];
+		}
+	}
 	
 }
 
@@ -483,13 +547,24 @@
 	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
 	[activeInstance performSelector:@selector(dismissKeyboard)];
 	
-	if ([self Validation]  == TRUE) {
-		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-														message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
-		[alert setTag:1001];
-		[alert show];
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
 	}
+	else{
+		if ([self Validation]  == TRUE) {
+			
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			[alert setTag:1001];
+			[alert show];
+		}
+	}
+	
+	
 	
 }
 

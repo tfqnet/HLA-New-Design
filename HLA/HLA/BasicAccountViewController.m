@@ -21,9 +21,14 @@ int YearDiff2023, YearDiff2025, YearDiff2028, YearDiff2030, YearDiff2035, CommMo
 int FundTermPrev2023, FundTerm2023, FundTermPrev2025, FundTerm2025,FundTermPrev2028, FundTerm2028;
 int FundTermPrev2030, FundTerm2030, FundTermPrev2035, FundTerm2035;
 int VU2023Factor,VU2025Factor,VU2028Factor,VU2030Factor,VU2035Factor,VUCashFactor,VURetFactor,VURetOptFactor,VUCashOptFactor;
+int RegWithdrawalStartYear, RegWithdrawalEndYear, RegWithdrawalIntYear;
 double VU2023Fac,VU2025Fac,VU2028Fac,VU2030Fac,VU2035Fac,VUCashFac,VURetFac,VURetOptFac,VUCashOptFac;
 double VUCash_FundAllo_Percen,VURet_FundAllo_Percen,VU2023_FundAllo_Percen,VU2025_FundAllo_Percen;
-double VU2028_FundAllo_Percen,VU2030_FundAllo_Percen, VU2035_FundAllo_Percen;
+double VU2028_FundAllo_Percen,VU2030_FundAllo_Percen, VU2035_FundAllo_Percen, RegWithdrawalAmount;
+double VU2023InstHigh, VU2023InstMedian, VU2023InstLow,VU2025InstHigh, VU2025InstMedian, VU2025InstLow;
+double VU2028InstHigh, VU2028InstMedian, VU2028InstLow,VU2030InstHigh, VU2030InstMedian, VU2030InstLow;
+double VU2035InstHigh, VU2035InstMedian, VU2035InstLow, NegativeValueOfMaxCashFundHigh;
+double HSurrenderValue,MSurrenderValue,LSurrenderValue,HRiderSurrenderValue,MRiderSurrenderValue,LRiderSurrenderValue;
 BOOL TPExcess;
 NSString *OriginalBump;
 
@@ -164,6 +169,9 @@ NSString *OriginalBump;
 	txtFor.delegate = self;
 	txtRTUP.tag = 3;
 	txtRTUP.delegate = self;
+	txtBUMP.tag = 5;
+	txtBUMP.delegate = self;
+	myScrollView.delegate = self;
 	_planList = nil;
 }
 
@@ -213,6 +221,7 @@ NSString *OriginalBump;
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 10;
     [self.myScrollView scrollRectToVisible:textFieldRect animated:YES];
+	
 }
 
 -(void)keyboardDidHide:(NSNotificationCenter *)notification{
@@ -236,7 +245,6 @@ NSString *OriginalBump;
 	switch (textField.tag) {
         case 0: //basic premium
 			[self DisplayPremiumCondtion];
-			
 			break;
 			
         case 1:
@@ -315,7 +323,7 @@ NSString *OriginalBump;
 	else if (requestAge > 55){
 		SAFac = 15;
 	}
-	
+	/*
 	if (segPremium.selectedSegmentIndex == 1) {
 		minSA = SAFac * [txtBasicPremium.text doubleValue ] / Semi;
 	}
@@ -325,12 +333,31 @@ NSString *OriginalBump;
 	else if (segPremium.selectedSegmentIndex == 3){
 		minSA = SAFac * [txtBasicPremium.text doubleValue ] / Monthly;
 	}
+	else{
+		
+	}
+	*/
+	minSA = SAFac * [txtBasicPremium.text doubleValue ];
 	
 	Label1.text = [ NSString stringWithFormat:@"Min: %.0f", minSA];
 	label2.text = @"Max: Subject to underwriting";
 }
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+	
+	if (textField.tag == 0 || textField.tag == 1 ) {
+		if (![txtBasicPremium.text isEqualToString:@""] && ![txtBasicSA.text isEqualToString:@""] &&
+			![txtBasicPremium.text isEqualToString:@"0"] && ![txtBasicSA.text isEqualToString:@"0"]) {
+			txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+		}
+
+	}
+	else if (textField.tag == 2 || textField.tag == 4 || textField.tag == 3 ){
+		if (![txtRTUP.text isEqualToString:@""] && ![txtCommFrom.text isEqualToString:@""] && ![txtFor.text isEqualToString:@""] &&
+			![txtRTUP.text isEqualToString:@"0"] && ![txtCommFrom.text isEqualToString:@"0"] && ![txtFor.text isEqualToString:@"0"]) {
+				txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+		}
+	}
 
 	return YES;
 }
@@ -373,8 +400,10 @@ NSString *OriginalBump;
 }
 
 -(void)BasicPremiumDidChanged{
+	
 	txtTotalBAPremium.text = txtBasicPremium.text;
 	txtPremiumPayable.text = txtBasicPremium.text;
+	//
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -396,7 +425,10 @@ NSString *OriginalBump;
         [self checkingSave];
     }
     else if (alertView.tag==1004 && buttonIndex == 0) {
-		//        [self closeScreen];
+		[self DisplayBasicSACondtion];
+    }
+	else if (alertView.tag==1007 && buttonIndex == 0) {
+		[self Validation];
     }
 	
 }
@@ -571,7 +603,6 @@ NSString *OriginalBump;
 
 -(void)updateBasicPlan
 {
-	    //[self CalculateBUMP];
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -601,6 +632,7 @@ NSString *OriginalBump;
             }
             sqlite3_finalize(statement);
         }
+		
 		
 		NSString *SQLaddin;
 		if ([OriginalBump  isEqualToString:@"A"]) {
@@ -693,6 +725,7 @@ NSString *OriginalBump;
     }
     
     [self validateExistingRider];
+	
 }
 
 -(void)validateExistingRider{
@@ -773,37 +806,100 @@ NSString *OriginalBump;
 }
 
 -(double)CalculateBUMP{
-	double FirstBasicMort = [self ReturnBasicMort:ageClient];
+	double FirstBasicMort = [self ReturnBasicMort:ageClient]/1000;
 	double FirstSA = [txtBasicSA.text doubleValue ];
-	double SecondBasicMort = [self ReturnBasicMort:ageClient + 1];
-	double SecondSA = 0.00;
-	double ThirdBasicMort = [self ReturnBasicMort:ageClient + 2];
+	double SecondBasicMort = [self ReturnBasicMort:ageClient + 1]/1000;
+	double SecondSA = 0;
+	double ThirdBasicMort = [self ReturnBasicMort:ageClient + 2]/1000;
 	double BUMP1;
 	double BUMP2;
 	
 	//NSLog(@"%f, %f, %f", FirstBasicMort, SecondBasicMort, ThirdBasicMort);
 	
-
+	[self getExistingBasic];
+	[self CalcInst:@""];
+	[self GetRegWithdrawal];
 	[self ReturnFundFactor]; // get factor for each fund
 	[self CalcYearDiff]; //get the yearDiff
-	double FirstBasicSA =  (FirstSA * ((FirstBasicMort * ([self GetMortDate ]) + SecondBasicMort * (12 - ([self GetMortDate])))/12 * (1 + [getHLPct intValue]/100 ) +
-							([getHL intValue] /1000) + ([getOccLoading doubleValue ]/1000)));
+	//[self SurrenderValueHigh:2];
+	//SecondSA = [txtBasicSA.text doubleValue ] - HSurrenderValue;
+	
+	if ([getHL isEqualToString:@""]) {
+		getHL = @"0";
+	}
+	
+	if ([getHLPct isEqualToString:@""]) {
+		getHLPct= @"0";
+	}
+	
+	if ([getOccLoading isEqualToString:@"STD"]) {
+		getOccLoading = @"0";
+	}
 
-	double SecondBasicSA =  (SecondSA * ((SecondBasicMort * ([self GetMortDate ]) + ThirdBasicMort * (12 - ([self GetMortDate])))/12 * (1 + [getHLPct intValue]/100 ) +
-									   ([getHL intValue] /1000) + ([getOccLoading doubleValue ]/1000)));
-	
+	double MortDate = [self GetMortDate ];
 	NSString *strBumpMode = [self ReturnBumpMode];
-	BUMP1 = ([self ModeRate:strBumpMode] * ([self ReturnPremAllocation:1] * ([txtBasicPremium.text doubleValue ] * [self ReturnDivideMode] ) + (0.95 * ([self ReturnExcessPrem:1] + [txtGrayRTUP.text doubleValue ]))) -
-			 (((PolicyFee * 12) + FirstBasicSA + 0) * 12.5/12))/ [self ReturnDivideMode];
+	double ModeRate = [self ReturnModeRate:strBumpMode];
+	double divideMode = [self ReturnDivideMode];
 	
-	BUMP2 = ([self ModeRate:strBumpMode] * ([self ReturnPremAllocation:2] * ([txtBasicPremium.text doubleValue ] * [self ReturnDivideMode] ) + (0.95 * ([self ReturnExcessPrem:2] + [txtGrayRTUP.text doubleValue ]))) -
-			 (((PolicyFee * 12) + SecondBasicSA + 0) * 12.5/12))/ [self ReturnDivideMode];
+	double FirstBasicSA =  (FirstSA * ((FirstBasicMort * MortDate + SecondBasicMort * (12 - MortDate))/12 * (1 + [getHLPct intValue]/100.00 ) +
+							([getHL doubleValue] /1000.00) + ([getOccLoading doubleValue ]/1000.00)));
+
+	double SecondBasicSA =  (SecondSA * ((SecondBasicMort * MortDate + ThirdBasicMort * (12 - MortDate))/12 * (1 + [getHLPct intValue]/100.00 ) +
+									   ([getHL doubleValue] /1000.00) + ([getOccLoading doubleValue ]/1000.00)));
 	
+
+	
+	BUMP1 = (ModeRate * ([self ReturnPremAllocation:1] * ([txtBasicPremium.text doubleValue ] * divideMode) +
+				(0.95 * ([self ReturnExcessPrem:1] + [txtGrayRTUP.text doubleValue ]))) -
+			 (((PolicyFee * 12) + FirstBasicSA + 0) * 12.5/12))/divideMode;
+	
+	BUMP2 = (ModeRate * ([self ReturnPremAllocation:2] * ([txtBasicPremium.text doubleValue ] * divideMode) +
+				(0.95 * ([self ReturnExcessPrem:2] + [txtGrayRTUP.text doubleValue ]))) -
+			 (((PolicyFee * 12) + SecondBasicSA + 0) * 12.5/12))/divideMode;
+	
+	NSLog(@"bump1 = %.2f, bump2 = %.2f", BUMP1, BUMP2);
 	if (BUMP1 > BUMP2) {
-		return [[NSString stringWithFormat:@"%.2f", BUMP1] doubleValue ];
+		return [[NSString stringWithFormat:@"%.2f", BUMP2] doubleValue ];
 	}
 	else{
-		return [[NSString stringWithFormat:@"%.2f", BUMP2] doubleValue ];
+		return [[NSString stringWithFormat:@"%.2f", BUMP1] doubleValue ];
+	}
+	
+}
+
+-(void)SurrenderValueHigh :(int)aaPolicyYear{
+	if (aaPolicyYear == YearDiff2023 || aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2028 || aaPolicyYear == YearDiff2030 ||
+		aaPolicyYear == YearDiff2035) {
+		//month
+		HSurrenderValue = 0;
+		MSurrenderValue = 0;
+		LSurrenderValue = 0;
+		HRiderSurrenderValue = 0;
+		MRiderSurrenderValue = 0;
+		LRiderSurrenderValue = 0;
+		
+	} else {
+		//year
+		HSurrenderValue = [self ReturnHSurrenderValue:aaPolicyYear ];
+		MSurrenderValue = 0;
+		LSurrenderValue = 0;
+		HRiderSurrenderValue = 0;
+		MRiderSurrenderValue = 0;
+		LRiderSurrenderValue = 0;
+	}
+}
+
+-(double)ReturnHSurrenderValue :(int)aaPolicyYear{
+	//NSLog(@"%f", [self ReturnVUCashValueHigh:aaPolicyYear]);
+	
+	if ([self ReturnVUCashValueHigh:aaPolicyYear] == 1 && [self ReturnVU2023ValueHigh:aaPolicyYear] == 0 && [self ReturnVU2025ValueHigh:aaPolicyYear] == 0 &&
+		[self ReturnVU2028ValueHigh:aaPolicyYear] == 0 && [self ReturnVU2030ValueHigh:aaPolicyYear] == 0 && [self ReturnVU2035ValueHigh:aaPolicyYear] == 0 &&
+		[self ReturnVURetValueHigh:aaPolicyYear] == 0) {
+		return 0;
+	} else {
+		return [self ReturnVU2023ValueHigh:aaPolicyYear] + [self ReturnVU2025ValueHigh:aaPolicyYear] + [self ReturnVU2028ValueHigh:aaPolicyYear] +
+				[self ReturnVU2030ValueHigh:aaPolicyYear] + [self ReturnVU2035ValueHigh:aaPolicyYear] + [self ReturnVUCashValueHigh:aaPolicyYear] +
+				[self ReturnVURetValueHigh:aaPolicyYear];
 	}
 	
 }
@@ -828,32 +924,251 @@ NSString *OriginalBump;
 				VURetFactor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 6)] intValue];
 				VURetOptFactor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 7)] intValue];
 				VUCashOptFactor = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 8)] intValue];
-				
 			}
 			sqlite3_finalize(statement);
 		}
 		sqlite3_close(contactDB);
 	}
 }
+
+-(void)GetRegWithdrawal{
+	sqlite3_stmt *statement;
+	NSString *querySQL;
+	
+	querySQL = [NSString stringWithFormat:@"Select FromAge, ToAge, YearInt, Amount From UL_RegWithdrawal WHERE sino = '%@'", SINo];
+	
+	//NSLog(@"%@", querySQL);
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				RegWithdrawalStartYear = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] intValue];
+				RegWithdrawalEndYear = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)] intValue];
+				RegWithdrawalIntYear = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 2)] intValue];
+				RegWithdrawalAmount = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 3)] doubleValue];
+			}
+			else{
+				RegWithdrawalStartYear = 0;
+				RegWithdrawalEndYear = 0;
+				RegWithdrawalAmount = 0;
+			}
+			sqlite3_finalize(statement);
+		}
+		sqlite3_close(contactDB);
+	}
+}
+
+
+
 #pragma mark - Calculate Fund Surrender Value for Basic plan
--(double)VU2023ValueHigh :(int)aaPolicyYear{
+-(double)ReturnVU2023ValueHigh :(int)aaPolicyYear{
+	double VU2023PrevValuehigh = 0;
 	if (aaPolicyYear > YearDiff2023) {
 		return 0;
 	}
 	else{
+		//year calculation
+		if ([self ReturnVUCashValueHigh:aaPolicyYear] < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0 ) {
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2023Fac] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2023Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2023Factor * CYFactor) *
+					(1 + VU2023InstHigh) + VU2023PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2023InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (NegativeValueOfMaxCashFundHigh - 1) *
+					([self ReturnFundValueOfTheYearVU2023ValueHigh:aaPolicyYear]/[self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear]);
+
+		}
+		else{
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2023Fac] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2023Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2023Factor * CYFactor) *
+					(1 + VU2023InstHigh) + VU2023PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2023InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0);
+		}
 		
+		// below part to be edit later
 	}
 }
 
--(double)VUCashValueHigh :(int)aaPolicyYear{
-	double VUCashPrevValueHigh = 0;
-
-	return ((( [txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear] ) + IncreasePrem) * VUCashFac * CYFactor +
-			[self ReturnRegTopUpPrem] * RegularAllo * VUCashFac * CYFactor +
-			[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VUCashFac * CYFactor) *
-			(1 + [self VUCashValueHigh:aaPolicyYear]) + VUCashPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear])) * (1 + [self ReturnVUCashInsHigh]) -
-			(PolicyFee + [self ReturnTotalBasicMortHigh:aaPolicyYear]) * [self ReturnVUCashHigh];
+-(double)ReturnVU2025ValueHigh :(int)aaPolicyYear{
+	double VU2025PrevValuehigh = 0;
+	if (aaPolicyYear > YearDiff2025) {
+		return 0;
+	}
+	else{
+		if ([self ReturnVUCashValueHigh:aaPolicyYear] < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0 ) {
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2025Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2025Factor * CYFactor) *
+					(1 + VU2025InstHigh) + VU2025PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2025InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (NegativeValueOfMaxCashFundHigh - 1) *
+					([self ReturnFundValueOfTheYearVU2025ValueHigh:aaPolicyYear]/[self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear]);
+		}
+		else{
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2025Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2025Factor * CYFactor) *
+					(1 + VU2025InstHigh) + VU2025PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2025InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0);
+		}
+	}
+	
+	// below part to be edit later
 }
+
+-(double)ReturnVU2028ValueHigh :(int)aaPolicyYear{
+	double VU2028PrevValuehigh = 0;
+	if (aaPolicyYear > YearDiff2028) {
+		return 0;
+	}
+	else{
+		if ([self ReturnVUCashValueHigh:aaPolicyYear] < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0) {
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2028Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2028Factor * CYFactor) *
+					(1 + VU2028InstHigh) + VU2028PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2028InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (NegativeValueOfMaxCashFundHigh - 1) *
+					([self ReturnFundValueOfTheYearVU2028ValueHigh:aaPolicyYear]/[self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear]);
+		}
+		else{
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2028Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2028Factor * CYFactor) *
+					(1 + VU2028InstHigh) + VU2028PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2028InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0);
+		}
+	}
+	
+
+}
+
+-(double)ReturnVU2030ValueHigh :(int)aaPolicyYear{
+	double VU2030PrevValuehigh = 0;
+	if (aaPolicyYear > YearDiff2030) {
+		return 0;
+	}
+	else{
+		if ([self ReturnVUCashValueHigh:aaPolicyYear] < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0) {
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2030Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2030Factor * CYFactor) *
+					(1 + VU2030InstHigh) + VU2030PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2030InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (NegativeValueOfMaxCashFundHigh - 1) *
+					([self ReturnFundValueOfTheYearVU2030ValueHigh:aaPolicyYear]/[self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear]);
+		}
+		else{
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2030Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2030Factor * CYFactor) *
+					(1 + VU2030InstHigh) + VU2030PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2030InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0);
+		}
+	}
+	
+			// below part to be edit later
+}
+
+-(double)ReturnVU2035ValueHigh :(int)aaPolicyYear{
+	double VU2035PrevValuehigh = 0;
+	if (aaPolicyYear > YearDiff2035) {
+		return 0;
+	}
+	else{
+		if ([self ReturnVUCashValueHigh:aaPolicyYear] < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0 ) {
+			
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2035Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2035Factor * CYFactor) *
+					(1 + VU2035InstHigh) + VU2035PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2035InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (NegativeValueOfMaxCashFundHigh - 1) *
+					([self ReturnFundValueOfTheYearVU2035ValueHigh:aaPolicyYear]/[self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear]);
+		}
+		else{
+			return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear] * CYFactor +
+					[self ReturnRegTopUpPrem] * RegularAllo * VU2035Factor * CYFactor +
+					[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2035Factor * CYFactor) *
+					(1 + VU2035InstHigh) + VU2035PrevValuehigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVU2035InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0);
+		}
+
+	}
+}
+
+-(double)ReturnVUCashValueHigh :(int)aaPolicyYear{
+	double VUCashPrevValueHigh = 0;
+	double tempValue = 0.00;
+	/*
+	NSLog(@"%f", [self ReturnPremAllocation:aaPolicyYear] );
+	NSLog(@"%f", [self ReturnVUCashFac:aaPolicyYear] );
+	NSLog(@"%f", [self ReturnRegTopUpPrem] );
+	NSLog(@"%f", [self ReturnExcessPrem:aaPolicyYear]);
+	NSLog(@"%f", [self ReturnVUCashInsHigh:@""] );
+	NSLog(@"%f", [self ReturnLoyaltyBonus:aaPolicyYear] );
+	NSLog(@"%f", [self ReturnVUCashInsHigh:@"A"] );
+	NSLog(@"%f", [self ReturnTotalBasicMortHigh:aaPolicyYear] );
+	NSLog(@"%f", [self ReturnVUCashInsHigh:@""] );
+	NSLog(@"%f", [self ReturnVUCashHigh] );
+	NSLog(@"%f", [self ReturnRegWithdrawal:aaPolicyYear] );
+	*/
+	tempValue = ((( [txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear] ) + IncreasePrem) * [self ReturnVUCashFac:aaPolicyYear] * CYFactor +
+			[self ReturnRegTopUpPrem] * RegularAllo * [self ReturnVUCashFac:aaPolicyYear] * CYFactor +
+			[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * [self ReturnVUCashFac:aaPolicyYear] * CYFactor) *
+			(1 + [self ReturnVUCashInsHigh:@""]) + VUCashPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear])) * (1 + [self ReturnVUCashInsHigh:@"A"]) -
+			(PolicyFee + [self ReturnTotalBasicMortHigh:aaPolicyYear]) * [self ReturnVUCashHigh] -
+			([self ReturnRegWithdrawal:aaPolicyYear] * 1);
+	
+	if (tempValue < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0) {
+		NegativeValueOfMaxCashFundHigh = tempValue;
+		return tempValue;
+	} else {
+		NegativeValueOfMaxCashFundHigh = tempValue;
+		return tempValue + 0; // to be edit later
+	}
+	
+	
+}
+
+-(double)ReturnVURetValueHigh :(int)aaPolicyYear{
+
+	double VURetPrevValueHigh = 0;
+	
+	if ([self ReturnVUCashValueHigh:aaPolicyYear] < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0 ) {
+		return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear] * CYFactor +
+				[self ReturnRegTopUpPrem] * RegularAllo * VURetFactor * CYFactor +
+				[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VURetFactor * CYFactor) *
+				(1 + [self ReturnVURetInsHigh:aaPolicyYear]) + VURetPrevValueHigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVURetInsHigh:aaPolicyYear]) -
+				([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (NegativeValueOfMaxCashFundHigh - 1) *
+				([self ReturnFundValueOfTheYearVURetValueHigh:aaPolicyYear]/[self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear]);
+	}
+	else{
+		return ((([txtBasicPremium.text doubleValue ] * [self ReturnPremAllocation:aaPolicyYear]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear] * CYFactor +
+				[self ReturnRegTopUpPrem] * RegularAllo * VURetFactor * CYFactor +
+				[self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VURetFactor * CYFactor) *
+				(1 + [self ReturnVURetInsHigh:aaPolicyYear]) + VURetPrevValueHigh * (1 + [self ReturnLoyaltyBonus:aaPolicyYear]/100) * (1 + [self ReturnVURetInsHigh:aaPolicyYear]) -
+				([self ReturnRegWithdrawal:aaPolicyYear] * 0);
+		
+	}
+	
+}
+
+
+-(double)ReturnRegWithdrawal :(int)aaPolicyYear{
+	if (aaPolicyYear >= RegWithdrawalStartYear) {
+		if (aaPolicyYear <= RegWithdrawalEndYear) {
+			if ((aaPolicyYear - RegWithdrawalStartYear) % RegWithdrawalIntYear == 0) {
+				return RegWithdrawalAmount;
+			}
+			else{
+				return 0;
+			}
+		}
+		else{
+			return 0;
+		}
+	}
+	else{
+		return 0;
+	}
+}
+
 			
 -(double)ReturnRegTopUpPrem{
 	if (![txtGrayRTUP.text isEqualToString:@""]) {
@@ -867,101 +1182,151 @@ NSString *OriginalBump;
 #pragma mark - Calculate Fund Factor
 
 #pragma mark - Calculate Yearly Fund Value
--(void)FundValueOfTheYearVU2023Value{
-	
+
+-(double)ReturnFundValueOfTheYearValueTotalHigh: (int)aaPolicyYear{
+	return [self ReturnFundValueOfTheYearVU2023ValueHigh:aaPolicyYear] +
+		   [self ReturnFundValueOfTheYearVU2025ValueHigh:aaPolicyYear] +
+			[self ReturnFundValueOfTheYearVU2028ValueHigh:aaPolicyYear] +
+			[self ReturnFundValueOfTheYearVU2030ValueHigh:aaPolicyYear] +
+			[self ReturnFundValueOfTheYearVU2035ValueHigh:aaPolicyYear] +
+			[self ReturnFundValueOfTheYearVURetValueHigh:aaPolicyYear];
+}
+
+-(double)ReturnFundValueOfTheYearVU2023ValueHigh: (int)aaPolicyYear{
+	if (aaPolicyYear <= YearDiff2023) {
+		return [self ReturnVU2023ValueHigh:aaPolicyYear];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnFundValueOfTheYearVU2025ValueHigh: (int)aaPolicyYear{
+	if (aaPolicyYear <= YearDiff2025) {
+		return [self ReturnVU2025ValueHigh:aaPolicyYear];
+	} else {
+		return 0;
+	}
 }
 
 
+-(double)ReturnFundValueOfTheYearVU2028ValueHigh: (int)aaPolicyYear{
+	if (aaPolicyYear <= YearDiff2028) {
+		return [self ReturnVU2028ValueHigh:aaPolicyYear];
+	} else {
+		return 0;
+	}
+}
 
+-(double)ReturnFundValueOfTheYearVU2030ValueHigh: (int)aaPolicyYear{
+	if (aaPolicyYear <= YearDiff2030) {
+		return [self ReturnVU2030ValueHigh:aaPolicyYear];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnFundValueOfTheYearVU2035ValueHigh: (int)aaPolicyYear{
+	if (aaPolicyYear <= YearDiff2035) {
+		return [self ReturnVU2035ValueHigh:aaPolicyYear];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnFundValueOfTheYearVURetValueHigh: (int)aaPolicyYear{
+		return [self ReturnVURetValueHigh:aaPolicyYear];
+}
+
+#pragma mark - Others
 -(double)ReturnVU2023Fac{
-	return VU2023Factor/100;
+	return (double)VU2023Factor/100.00;
 }
 
 -(double)ReturnVU2025Fac :(int)aaPolicyYear {
-	double factor1 = VU2025Factor;
-	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
-	double factor3 = 0;
+	double factor1 = (double)VU2025Factor;
+	double factor2 = factor1 + (double)VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = 0.00;
 	
 	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
-		return factor2/100;
+		return factor2/100.00;
 	}
 	else if (aaPolicyYear > FundTerm2025){
-		return factor3/100;
+		return factor3/100.00;
 	}
 	else{
-		return VU2025Factor/100;
+		return (double)VU2025Factor/100.00;
 	}
 }
 
 -(double)ReturnVU2028Fac :(int)aaPolicyYear {
-	double factor1 = VU2028Factor;
-	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
-	double factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);;
-	double factor4 = 0;
+	double factor1 = (double)VU2028Factor;
+	double factor2 = factor1 + (double)VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = factor2 + (double)VU2025Factor * (factor2/[self FactorGroup:3]);;
+	double factor4 = 0.00;
 	
 	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
-		return factor2/100;
+		return factor2/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028) {
-		return factor3/100;
+		return factor3/100.00;
 	}
 	else if (aaPolicyYear > FundTerm2028){
-		return factor4/100;
+		return factor4/100.00;
 	}
 	else{
-		return VU2028Factor/100;
+		return (double)VU2028Factor/100.00;
 	}
 }
 
 -(double)ReturnVU2030Fac :(int)aaPolicyYear {
-	double factor1 = VU2030Factor;
-	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
-	double factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);;
-	double factor4 = factor3 + VU2025Factor * (factor3/[self FactorGroup:4]);;
-	double factor5 = 0;
+	double factor1 = (double)VU2030Factor;
+	double factor2 = factor1 + (double)VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = factor2 + (double)VU2025Factor * (factor2/[self FactorGroup:3]);;
+	double factor4 = factor3 + (double)VU2025Factor * (factor3/[self FactorGroup:4]);;
+	double factor5 = 0.00;
 	
 	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
-		return factor2/100;
+		return factor2/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028) {
-		return factor3/100;
+		return factor3/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTerm2030) {
-		return factor4/100;
+		return factor4/100.00;
 	}
 	else if (aaPolicyYear > FundTerm2030){
-		return factor5/100;
+		return factor5/100.00;
 	}
 	else{
-		return VU2030Factor/100;
+		return (double)VU2030Factor/100.00;
 	}
 }
 
 -(double)ReturnVU2035Fac :(int)aaPolicyYear {
-	double factor1 = VU2035Factor;
-	double factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
-	double factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);
-	double factor4 = factor3 + VU2025Factor * (factor3/[self FactorGroup:4]);
-	double factor5 = factor4 + VU2025Factor * (factor4/[self FactorGroup:5]);
-	double factor6 = 0;
+	double factor1 = (double)VU2035Factor;
+	double factor2 = factor1 + (double)VU2023Factor * (factor1/[self FactorGroup:2]);
+	double factor3 = factor2 + (double)VU2025Factor * (factor2/[self FactorGroup:3]);
+	double factor4 = factor3 + (double)VU2025Factor * (factor3/[self FactorGroup:4]);
+	double factor5 = factor4 + (double)VU2025Factor * (factor4/[self FactorGroup:5]);
+	double factor6 = 0.00;
 	
 	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025) {
-		return factor2/100;
+		return factor2/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028) {
-		return factor3/100;
+		return factor3/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTerm2030) {
-		return factor4/100;
+		return factor4/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2030 && aaPolicyYear <= FundTerm2035) {
-		return factor5/100;
+		return factor5/100.00;
 	}
 	else if (aaPolicyYear > FundTerm2030){
-		return factor6/100;
+		return factor6/100.00;
 	}
 	else{
-		return VU2035Factor/100;
+		return (double)VU2035Factor/100.00;
 	}
 }
 
@@ -973,57 +1338,57 @@ NSString *OriginalBump;
 	double factor6;
 	
 	if(VUCashOptFactor > 0 && [self FactorGroup:2] == 0){
-		factor2 = VUCashOptFactor;
+		factor2 = (double)VUCashOptFactor;
 	}
 	else{
-		factor2 = VUCashFactor;
+		factor2 = (double)VUCashFactor;
 	}
 
 	if(VUCashOptFactor > 0 && [self FactorGroup:3] == 0){
-		factor3 = VUCashOptFactor;
+		factor3 = (double)VUCashOptFactor;
 	}
 	else{
-		factor3 = VUCashFactor;
+		factor3 = (double)VUCashFactor;
 	}
 
 	if(VUCashOptFactor > 0 && [self FactorGroup:4] == 0){
-		factor4 = VUCashOptFactor;
+		factor4 = (double)VUCashOptFactor;
 	}
 	else{
-		factor4 = VUCashFactor;
+		factor4 = (double)VUCashFactor;
 	}
 
 	if(VUCashOptFactor > 0 && [self FactorGroup:5] == 0){
-		factor5 = VUCashOptFactor;
+		factor5 = (double)VUCashOptFactor;
 	}
 	else{
-		factor5 = VUCashFactor;
+		factor5 = (double)VUCashFactor;
 	}
 
 	if(VUCashOptFactor > 0 && [self FactorGroup:6] == 0){
-		factor6 = VUCashOptFactor;
+		factor6 = (double)VUCashOptFactor;
 	}
 	else{
-		factor6 = VUCashFactor;
+		factor6 = (double)VUCashFactor;
 	}
 
 	if(aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTerm2025){
-		return factor2/100;
+		return factor2/100.00;
 	}
 	else if(aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTerm2028){
-		return factor3/100;
+		return factor3/100.00;
 	}
 	else if(aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTerm2030){
-		return factor4/100;
+		return factor4/100.00;
 	}
 	else if(aaPolicyYear >= FundTerm2030 && aaPolicyYear <= FundTerm2035){
-		return factor5/100;
+		return factor5/100.00;
 	}
 	else if(aaPolicyYear > FundTerm2035){
-		return factor6/100;
+		return factor6/100.00;
 	}
 	else{
-		return VUCashFactor/100;
+		return (double)VUCashFactor/100.00;
 	}
 }
 
@@ -1036,73 +1401,73 @@ NSString *OriginalBump;
 	double factor6;
 	
 	if (VURetFactor > 0) {
-		factor1 =VURetFactor;
-		factor2 = factor1 + VU2023Factor * (factor1/[self FactorGroup:2]);
-		factor3 = factor2 + VU2025Factor * (factor2/[self FactorGroup:3]);
-		factor4 = factor3 + VU2028Factor * (factor3/[self FactorGroup:4]);
-		factor5 = factor4 + VU2030Factor * (factor4/[self FactorGroup:5]);
-		factor6 = factor5 + VU2035Factor * (factor5/[self FactorGroup:6]);
+		factor1 =(double)VURetFactor;
+		factor2 = factor1 + (double)VU2023Factor * (double)(factor1/[self FactorGroup:2]);
+		factor3 = factor2 + (double)VU2025Factor * (double)(factor2/[self FactorGroup:3]);
+		factor4 = factor3 + (double)VU2028Factor * (double)(factor3/[self FactorGroup:4]);
+		factor5 = factor4 + (double)VU2030Factor * (double)(factor4/[self FactorGroup:5]);
+		factor6 = factor5 + (double)VU2035Factor * (double)(factor5/[self FactorGroup:6]);
 	}
 	else if (VURetOptFactor > 0){
 		if ([self FactorGroup:2] == 0) {
-			factor2 = VURetOptFactor;
+			factor2 = (double)VURetOptFactor;
 		}
 		else{
-			factor2 = 0;
+			factor2 = 0.00;
 		}
 			
 		if ([self FactorGroup:3] == 0) {
-			factor3 = VURetOptFactor;
+			factor3 = (double)VURetOptFactor;
 		}
 		else{
-			factor3 = 0;
+			factor3 = 0.00;
 		}
 		
 		if ([self FactorGroup:4] == 0) {
-			factor4 = VURetOptFactor;
+			factor4 = (double)VURetOptFactor;
 		}
 		else{
-			factor4 = 0;
+			factor4 = 0.00;
 		}
 		
 		if ([self FactorGroup:5] == 0) {
-			factor5 = VURetOptFactor;
+			factor5 = (double)VURetOptFactor;
 		}
 		else{
-			factor5 = 0;
+			factor5 = 0.00;
 		}
 		
 		if ([self FactorGroup:6] == 0) {
-			factor6 = VURetOptFactor;
+			factor6 = (double)VURetOptFactor;
 		}
 		else{
-			factor6 = 0;
+			factor6 = 0.00;
 		}
 	}
 	
 	if (aaPolicyYear >= FundTerm2023 && aaPolicyYear <= FundTermPrev2025) {
-		return factor2/100;
+		return factor2/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2025 && aaPolicyYear <= FundTermPrev2028) {
-		return factor3/100;
+		return factor3/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2028 && aaPolicyYear <= FundTermPrev2030) {
-		return factor4/100;
+		return factor4/100.00;
 	}
 	else if (aaPolicyYear >= FundTerm2030 && aaPolicyYear <= FundTermPrev2035) {
-		return factor5/100;
+		return factor5/100.00;
 	}
 	else if (aaPolicyYear > FundTerm2025) {
-		return factor6/100;
+		return factor6/100.00;
 	}
 	else{
-		return VURetFactor/100;
+		return (double)VURetFactor/100.00;
 	}
 }
 
 
 
--(int)FactorGroup : (uint)aaGroup{
+-(double)FactorGroup : (uint)aaGroup{
 	if (aaGroup == 1) {
 		return VU2023Factor + VU2025Factor + VU2028Factor + VU2030Factor + VU2035Factor + VURetFactor;
 	}
@@ -1139,31 +1504,397 @@ NSString *OriginalBump;
 }
 
 -(double)ReturnVUCashHigh{
-	double VUCashHighS = pow((1 + [self ReturnVUCashInsHigh]), 1/12) - 1 ;
+	double VUCashHighS = pow((1.00 + [self ReturnVUCashInsHigh:@""]), 1.00/12.00) - 1.00 ;
 	
-	return (pow((1 + VUCashHighS), 12) - 1)/(VUCashHighS / (1 + VUCashHighS));
+	return (pow((1.00 + VUCashHighS), 12.00) - 1.00)/(VUCashHighS / (1.00 + VUCashHighS));
 }
 
 -(double)ReturnVUCashMedian{
-	double VUCashMedianS = pow((1 + [self ReturnVUCashInsMedian]), 1/12) - 1 ;
+	double VUCashMedianS = pow((1.00 + [self ReturnVUCashInsMedian:@""]), 1.00/12.00) - 1.00 ;
 	
-	return (pow((1 + VUCashMedianS), 12) - 1)/(VUCashMedianS / (1 + VUCashMedianS));
+	return (pow((1.00 + VUCashMedianS), 12.00) - 1.00)/(VUCashMedianS / (1.00 + VUCashMedianS));
 }
 
 -(double)ReturnVUCashLow{
-	double VUCashLowS = pow((1 + [self ReturnVUCashInsLow]), 1/12) - 1 ;
+	double VUCashLowS = pow((1.00 + [self ReturnVUCashInsLow:@""]), 1.00/12.00) - 1.00 ;
 	
-	return (pow((1 + VUCashLowS), 12) - 1)/(VUCashLowS / (1 + VUCashLowS));
+	return (pow((1.00 + VUCashLowS), 12) - 1)/(VUCashLowS / (1.00 + VUCashLowS));
 }
 
--(double)ReturnVUCashInsHigh{
-	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+-(double)ReturnVU2023InstHigh: (NSString *)aaMOP{
+	if ([aaMOP isEqualToString:@"A"]) {
+		return 0.0532298;
+	}
+}
+
+-(double)ReturnVU2025InstHigh: (NSString *)aaMOP{
+	if ([aaMOP isEqualToString:@"A"]) {
+		return 0.0588615;
+	}
+}
+
+-(double)ReturnVU2028InstHigh: (NSString *)aaMOP{
+	if ([aaMOP isEqualToString:@"A"]) {
+		return 0.0739896;
+	}
+}
+
+-(double)ReturnVU2030InstHigh: (NSString *)aaMOP{
+	if ([aaMOP isEqualToString:@"A"]) {
+		return 0.077761;
+	}
+}
+
+-(double)ReturnVU2035InstHigh: (NSString *)aaMOP{
+	if ([aaMOP isEqualToString:@"A"]) {
+		return 0.0817997;
+	}
+}
+
+-(void)CalcInst: (NSString *)aaMOP{
+	sqlite3_stmt *statement;
+	NSString *querySQL;
+	NSString *MOP;
+	
+	if ([aaMOP isEqualToString:@""]) {
+		MOP = [self ReturnBumpMode];
+	} else {
+		MOP = aaMOP;
+	}
+	
+	if (sqlite3_open([UL_databasePath UTF8String], &contactDB) == SQLITE_OK){
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+			  VU2023InstHigh = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2023InstMedian = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '13' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2023InstLow = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		//------------
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2025InstHigh = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+
+			if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+				if (sqlite3_step(statement) == SQLITE_ROW){
+					VU2025InstMedian = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+				}
+				sqlite3_finalize(statement);
+			}
+
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '15' AND Fund_Year = '1'"];
+		}
+		
+			if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+				if (sqlite3_step(statement) == SQLITE_ROW){
+					VU2025InstLow = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+				}
+				sqlite3_finalize(statement);
+			}
+		
+		//-----------
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2028InstHigh = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2028InstMedian = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '18' AND Fund_Year = '1'"];
+		}
+		
+
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2028InstLow = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		//--------
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2030InstHigh = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2030InstMedian = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '20' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2030InstLow = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		// ----------
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bull_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2035InstHigh = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Flat_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2035InstMedian = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		if ([MOP isEqualToString:@"A"]) {
+			querySQL = [NSString stringWithFormat:@"Select Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"S"]) {
+			querySQL = [NSString stringWithFormat:@"Select Half_Year_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else if ([MOP isEqualToString:@"Q"]) {
+			querySQL = [NSString stringWithFormat:@"Select Quarter_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		else {
+			querySQL = [NSString stringWithFormat:@"Select Month_Bear_Rate From ES_Sys_Fund_Growth_Rate WHERE Fund_Term = '25' AND Fund_Year = '1'"];
+		}
+		
+		if(sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+			if (sqlite3_step(statement) == SQLITE_ROW){
+				VU2035InstLow = [[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] doubleValue ];
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		sqlite3_close(contactDB);
+	}
+}
+
+-(double)ReturnVUCashInsHigh :(NSString *)aaMOP{
+	
+	NSString *MOP;
+	if ([aaMOP isEqualToString:@""]) {
+		MOP = [self ReturnBumpMode];
+	}
+	else{
+		MOP = aaMOP;
+	}
+	
+	if ([MOP isEqualToString:@"A"]) {
 		return 0.0251;
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+	else if ([MOP isEqualToString:@"S"]) {
 		return 0.0187861;
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+	else if ([MOP isEqualToString:@"Q"]) {
 		return 0.0156389;
 	}
 	else {
@@ -1171,14 +1902,22 @@ NSString *OriginalBump;
 	}
 }
 
--(double)ReturnVUCashInsMedian{
-	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+-(double)ReturnVUCashInsMedian :(NSString *)aaMOP{
+	NSString *MOP;
+	if ([aaMOP isEqualToString:@""]) {
+		MOP = [self ReturnBumpMode];
+	}
+	else{
+		MOP = aaMOP;
+	}
+	
+	if ([MOP isEqualToString:@"A"]) {
 		return 0.0228;
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+	else if ([MOP isEqualToString:@"S"]) {
 		return 0.0170679;
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+	else if ([MOP isEqualToString:@"Q"]) {
 		return 0.0142098;
 	}
 	else {
@@ -1186,14 +1925,22 @@ NSString *OriginalBump;
 	}
 }
 
--(double)ReturnVUCashInsLow{
-	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+-(double)ReturnVUCashInsLow :(NSString *)aaMOP{
+	NSString *MOP;
+	if ([aaMOP isEqualToString:@""]) {
+		MOP = [self ReturnBumpMode];
+	}
+	else{
+		MOP = aaMOP;
+	}
+	
+	if ([MOP isEqualToString:@"A"]) {
 		return 0.0205;
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+	else if ([MOP isEqualToString:@"S"]) {
 		return 0.015349;
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+	else if ([MOP isEqualToString:@"Q"]) {
 		return 0.01278;
 	}
 	else {
@@ -1202,7 +1949,9 @@ NSString *OriginalBump;
 }
 
 -(double)ReturnVURetInsHigh :(int)aaPolicyYear{
-	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
+	NSString *MOP = [self ReturnBumpMode];
+	
+	if ([MOP isEqualToString:@"A"]) {
 		if (aaPolicyYear <= 20) {
 			return 0.05808;
 		}
@@ -1210,7 +1959,7 @@ NSString *OriginalBump;
 			return 0.03784;
 		}
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
+	else if ([MOP isEqualToString:@"S"]) {
 		if (aaPolicyYear <= 20) {
 			return 0.0433551;
 		}
@@ -1218,7 +1967,7 @@ NSString *OriginalBump;
 			return 0.0282922;
 		}
 	}
-	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
+	else if ([MOP isEqualToString:@"Q"]) {
 		if (aaPolicyYear <= 20) {
 			return 0.0360438;
 		}
@@ -1297,7 +2046,9 @@ NSString *OriginalBump;
 }
 
 -(double)ReturnPremiumFactor{
-	if ([[self ReturnBumpMode] isEqualToString:@"A" ]) {
+	NSString *MOP = [self ReturnBumpMode];
+	
+	if ([MOP isEqualToString:@"A" ]) {
 		if (CommMonth == 1) {
 			return 1;
 		}
@@ -1305,7 +2056,7 @@ NSString *OriginalBump;
 			return 0;
 		}
 	}
-	else if([[self ReturnBumpMode] isEqualToString:@"S" ]) {
+	else if([MOP isEqualToString:@"S" ]) {
 		if (CommMonth == 1 || CommMonth == 7 ) {
 			return 0.5;
 		}
@@ -1313,7 +2064,7 @@ NSString *OriginalBump;
 			return 0;
 		}
 	}
-	else if([[self ReturnBumpMode] isEqualToString:@"Q" ]) {
+	else if([MOP isEqualToString:@"Q" ]) {
 		if (CommMonth == 1 || CommMonth == 4 || CommMonth == 7 || CommMonth == 10 ) {
 			return 0.25;
 		}
@@ -1376,12 +2127,14 @@ NSString *OriginalBump;
 	NSString *round5 = [NSString stringWithFormat:@"%.2f", [difference5 day]/365.25];
 	NSString *round6 = [NSString stringWithFormat:@"%.2f", [difference6 day]/365.25];
 	
+
+	
 	YearDiff2023 = round([round2 doubleValue]);
 	YearDiff2025 = round([round3 doubleValue]);
 	YearDiff2028 = round([round4 doubleValue]);
 	YearDiff2030 = round([round5 doubleValue]);
 	YearDiff2035 = round([round6 doubleValue]);
-	
+
 	FundTermPrev2023 = YearDiff2023 - 1;
 	FundTerm2023 = YearDiff2023;
 	FundTermPrev2025 = YearDiff2025 - 1;
@@ -1399,14 +2152,14 @@ NSString *OriginalBump;
 	CommMonth = [components2 month];
 }
 
--(double)ModeRate: (NSString *)MOP{
+-(double)ReturnModeRate: (NSString *)MOP{
 	if ([MOP isEqualToString:@"A"]) {
 		return 0.85;
 	}
 	else if ([MOP isEqualToString:@"S"]){
 		return 0.9;
 	}
-	else if ([MOP isEqualToString:@"S"]){
+	else if ([MOP isEqualToString:@"Q"]){
 		return 0.9;
 	}
 	else{
@@ -1504,6 +2257,8 @@ NSString *OriginalBump;
 }
 
 -(int)GetMortDate{
+	
+	
 	if (![getPlanCommDate isEqualToString:@""] && ![getDOB isEqualToString:@""]  ) {
 		
 		NSDateFormatter* df = [[NSDateFormatter alloc] init];
@@ -1521,7 +2276,7 @@ NSString *OriginalBump;
 			return 12;
 		}
 		else{
-			return 12 - [self monthsBetweenDate:d andDate:d2];
+			return 12 - ([self monthsBetweenDate:d andDate:d2])%12;
 		}
 	}
 	else{
@@ -1529,7 +2284,7 @@ NSString *OriginalBump;
 	}
 }
 
-- (NSInteger)monthsBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
+- (NSUInteger)monthsBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
 {
     NSDate *fromDate;
     NSDate *toDate;
@@ -1543,7 +2298,7 @@ NSString *OriginalBump;
 	
     NSDateComponents *difference = [calendar components:NSMonthCalendarUnit
 											   fromDate:fromDate toDate:toDate options:0];
-	
+
     return [difference month];
 }
 
@@ -2019,6 +2774,21 @@ NSString *OriginalBump;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
 	
+	
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
+	}
+	else{
+		[self Validation];
+	}
+}
+
+-(void)Validation{
+	
 	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
@@ -2031,7 +2801,7 @@ NSString *OriginalBump;
     }
 	else if (ageClient > 100) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-									message:[NSString stringWithFormat:@"Age Last Birthday must be less than or equal to 100 for this product."] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+														message:[NSString stringWithFormat:@"Age Last Birthday must be less than or equal to 100 for this product."] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
     }
     else if ([txtBasicPremium.text rangeOfCharacterFromSet:set].location != NSNotFound) {
@@ -2043,31 +2813,60 @@ NSString *OriginalBump;
     }
 	else if ([txtBasicSA.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-														message:@"Invalid input format. Basic Sum Assured must be numeric 0 to 9 only" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+														message:@"Invalid input format. Basic Sum Assured must be numeric 0 to 9 only" delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
 		txtBasicSA.text = @"";
         [txtBasicSA becomeFirstResponder];
     }
 	else if ([txtBasicSA.text isEqualToString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-														message:[NSString stringWithFormat:@"Basic Sum Assured is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+														message:[NSString stringWithFormat:@"Basic Sum Assured is required"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
 		[txtBasicSA becomeFirstResponder];
     }
     else if ([txtBasicPremium.text doubleValue] < minPremium) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-														message:[NSString stringWithFormat:@"Basic Annual Premium must be at least %.0f",minPremium] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+														message:[NSString stringWithFormat:@"Basic Annual Premium must be at least %.0f",minPremium] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtBasicPremium becomeFirstResponder];
     }
     else if ([txtBasicSA.text intValue] < minSA) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 														message:[NSString stringWithFormat:@"Basic Sum Assured must be greater or equal to %.0f", minSA] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
+		alert.tag = 1004;
+		[alert show];
 		[txtBasicSA becomeFirstResponder];
 		//txtBasicSA.text = [NSString stringWithFormat:@"%.0f", minSA];
         
     }
+	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
+			 ![[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtRTUP becomeFirstResponder ];
+	}
+	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"] &&
+			 ![[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtRTUP becomeFirstResponder ];
+	}
+	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
+			 ![[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtFor becomeFirstResponder ];
+	}
+	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"] &&
+			 ![[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtFor becomeFirstResponder ];
+	}
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 [[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"]){
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -2083,21 +2882,21 @@ NSString *OriginalBump;
 		[alert show];
 		[txtFor becomeFirstResponder ];
 	}
-
+	
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 [[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-															message:[NSString stringWithFormat:@"Regular Top Up Premium Commnencement Year is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-			[alert show];
-			[txtCommFrom becomeFirstResponder ];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"Regular Top Up Premium Commnencement Year is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtCommFrom becomeFirstResponder ];
 	}
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 [[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] ){
 		
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-															message:[NSString stringWithFormat:@"The number of year for Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-			[alert show];
-			[txtFor becomeFirstResponder ];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+														message:[NSString stringWithFormat:@"The number of year for Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		[alert show];
+		[txtFor becomeFirstResponder ];
 	}
 	else if ([txtCommFrom.text intValue ] > 100 - ageClient - 1){
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -2113,12 +2912,12 @@ NSString *OriginalBump;
 		[txtFor becomeFirstResponder ];
 	}
 	/*
-	else if (rangeofDotSA.location != NSNotFound) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-														message:[NSString stringWithFormat:@"Decimal place is not allow for Basic Sum Assured"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-		[txtBasicSA becomeFirstResponder];
-    }*/
+	 else if (rangeofDotSA.location != NSNotFound) {
+	 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+	 message:[NSString stringWithFormat:@"Decimal place is not allow for Basic Sum Assured"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+	 [alert show];
+	 [txtBasicSA becomeFirstResponder];
+	 }*/
 	else {
 		NSString *msg;
 		[self checkingExisting];
@@ -2132,6 +2931,7 @@ NSString *OriginalBump;
 		[alert setTag:1003];
 		[alert show];
 	}
+
 }
 
 - (IBAction)ActionPremium:(id)sender {
@@ -2235,6 +3035,7 @@ NSString *OriginalBump;
 		
 	}
 	txtTotalBAPremium.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ]];
+	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
 	
 }
 @end

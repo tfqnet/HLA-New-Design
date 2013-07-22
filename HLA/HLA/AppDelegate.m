@@ -11,7 +11,7 @@
 @implementation AppDelegate
 @synthesize indexNo;
 @synthesize userRequest, MhiMessage;
-@synthesize SICompleted,ExistPayor, HomeIndex, ProspectListingIndex, NewProspectIndex,NewSIIndex, SIListingIndex, ExitIndex;
+@synthesize SICompleted,ExistPayor, HomeIndex, ProspectListingIndex, NewProspectIndex,NewSIIndex, SIListingIndex, ExitIndex, EverMessage;
 
 @synthesize window = _window;
 

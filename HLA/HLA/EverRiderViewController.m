@@ -39,7 +39,8 @@ double CurrentRiderPrem;
 @synthesize FCondition,FFieldName,FInputCode,FLabelCode,FLabelDesc,FRidName,FTbName;
 @synthesize txtGYIFrom,txtHL,txtHLTerm,txtOccpLoad,txtPaymentTerm,txtReinvestment,txtRiderPremium,txtRiderTerm;
 @synthesize txtRRTUP,txtRRTUPTerm,txtSumAssured, expAge, existRidCode, lblMax, lblMin, LPremium, outletReinvest;
-@synthesize LReinvest, LTypeReinvest, requestBumpMode, age, pTypeSex, riderRate, getBUMPMode;
+@synthesize LReinvest, LTypeReinvest, requestBumpMode, age, pTypeSex, riderRate, getBUMPMode, arrCombNo, arrRBBenefit;
+@synthesize medRiderCode,medPlanCodeRider, medPlanOpt, CombNo, RBBenefit, AllCombNo, RBGroup, RBLimit;
 @synthesize delegate = _delegate;
 @synthesize RiderList = _RiderList;
 @synthesize RiderListPopover = _RiderListPopover;
@@ -791,6 +792,8 @@ double CurrentRiderPrem;
 		lbl4.textColor = [UIColor blackColor];
 		lbl4.numberOfLines = 2;
 		lbl4.text = @"GMI Start From (Age)";
+		txtRiderTerm.text = [NSString stringWithFormat:@"%d", getTerm] ;
+		txtPaymentTerm.text = [NSString stringWithFormat:@"%d",55 - getAge];
 		txtGYIFrom.text = @"55";
 		txtGYIFrom.enabled = NO;
 		txtGYIFrom.backgroundColor = [UIColor lightGrayColor];
@@ -798,6 +801,7 @@ double CurrentRiderPrem;
 	else if (ECARYearlyIncome){
 		lbl4.textColor = [UIColor blackColor];
 		lbl4.text = @"GYI Start From";
+		txtPaymentTerm.text = @"6";
 		txtGYIFrom.text = @"1";
 		txtGYIFrom.enabled = NO;
 		txtGYIFrom.backgroundColor = [UIColor lightGrayColor];
@@ -814,7 +818,7 @@ double CurrentRiderPrem;
 		outletRiderPlan.enabled = YES;
 		outletRiderPlan.hidden = NO;
         [self.outletRiderPlan setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        
+        txtRiderTerm.text = [NSString stringWithFormat:@"%d", getTerm];
         txtPaymentTerm.hidden = YES;
         
         NSString *strSA = [NSString stringWithFormat:@"%.2f",getBasicSA];
@@ -2115,10 +2119,481 @@ double CurrentRiderPrem;
     }
 }
 
-
-
 -(void)RoomBoard{
+	arrCombNo = [[NSMutableArray alloc] init];
+    arrRBBenefit = [[NSMutableArray alloc] init];
 	
+    [self checkingRider];
+    if (existRidCode.length == 0)       //validate as a new
+    {
+        //--1st stage only validate Major Medi/medGlobal
+        
+        for (NSUInteger i=0; i<LRiderCode.count; i++)
+        {
+            if (([[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"] && [riderCode isEqualToString:@"MG_II"]) ||
+                ([[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"] && [riderCode isEqualToString:@"MG_IV"]))
+            {
+                medRiderCode = [LRiderCode objectAtIndex:i];
+                medPlanOpt = [LPlanOpt objectAtIndex:i];
+                
+                [self getListCombNo];
+                NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                [arrCombNo addObject:tempCombNo];
+                
+                [self getListRBBenefit];
+                NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                [arrRBBenefit addObject:tempBenefit];
+                
+                NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                
+            } else {
+                continue;
+            }
+        }
+        
+        //--calculate existing benefit
+        double allBenefit = 0;
+        for (NSUInteger x=0; x<arrRBBenefit.count; x++) {
+            allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:x] doubleValue];
+        }
+        NSLog(@"total listBenefit:%.f",allBenefit);
+        
+        [self getCombNo];       //--get current CombNo
+        NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+        [arrCombNo addObject:tempCombNo];
+        
+        NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];     //--sort combNo
+        [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+        
+        NSString *newComb =[[NSString alloc] init];     //--combine all CombNo
+        for ( NSUInteger y=0; y<arrCombNo.count; y++) {
+            newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:y]];
+        }
+        AllCombNo = [newComb intValue];
+        NSLog(@"newComb:%@",newComb);
+        
+        [self getRBBenefit];        //--get selected RBBenefit and calculate all bnefit
+        allBenefit = allBenefit + RBBenefit;
+        NSLog(@"total allBenefit:%.f",allBenefit);
+        
+        //--get Limit,RBGroup
+        [self getRBLimit];
+        
+        //--end 1st stage validate
+        
+        if (allBenefit > RBLimit) {
+            if (RBGroup == 1) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                [self roomBoardDefaultPlanNew];
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                [self roomBoardDefaultPlanNew];
+            }
+        }
+        
+        //--2nd stage  validate combination of all MedGlobal, Major Medi and H&P
+        else {
+            
+            
+            arrCombNo = [[NSMutableArray alloc] init];
+            arrRBBenefit = [[NSMutableArray alloc] init];
+            
+            for (NSUInteger i=0; i<LRiderCode.count; i++)
+            {
+                if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
+                {
+                    medRiderCode = [LRiderCode objectAtIndex:i];
+                    medPlanOpt = [LPlanOpt objectAtIndex:i];
+                    
+                    [self getListCombNo];
+                    NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                    [arrCombNo addObject:tempCombNo];
+                    
+                    [self getListRBBenefit];
+                    NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                    [arrRBBenefit addObject:tempBenefit];
+                    
+                    NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                    
+                } else {
+                    continue;
+                }
+            }
+            
+            //--calculate existing benefit
+            double allBenefit = 0;
+            for (NSUInteger x=0; x<arrRBBenefit.count; x++) {
+                allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:x] doubleValue];
+            }
+            NSLog(@"total listBenefit:%.f",allBenefit);
+            
+            [self getCombNo];       //--get current CombNo
+            NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+            [arrCombNo addObject:tempCombNo];
+            
+            NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];     //--sort combNo
+            [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+            
+            NSString *newComb =[[NSString alloc] init];     //--combine all CombNo
+            for ( NSUInteger y=0; y<arrCombNo.count; y++) {
+                newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:y]];
+            }
+            AllCombNo = [newComb intValue];
+            NSLog(@"newComb:%@",newComb);
+            
+            [self getRBBenefit];        //--get selected RBBenefit and calculate all bnefit
+            allBenefit = allBenefit + RBBenefit;
+            NSLog(@"total allBenefit:%.f",allBenefit);
+            
+            //get Limit,RBGroup
+            [self getRBLimit];
+            
+            //--end 2nd stage validation
+            
+            if (allBenefit > RBLimit) {
+                if (RBGroup == 1) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    
+                    [self roomBoardDefaultPlanNew];
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    
+                    [self roomBoardDefaultPlanNew];
+                }
+            }
+            else {
+                NSLog(@"will continue save RB!");
+                [self saveRider];
+            }
+        }
+    }
+    
+    else      //validate as existing
+    {
+        //--1st stage only validate Major Medi/medGlobal
+        
+        BOOL medGlobalOnly = FALSE;
+        double allBenefit = 0;
+        for (NSUInteger i=0; i<LRiderCode.count; i++)
+        {
+            if ([[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"] || [[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"])
+            {
+                medRiderCode = [LRiderCode objectAtIndex:i];
+                medPlanOpt = [LPlanOpt objectAtIndex:i];
+                
+                [self getListCombNo];
+                NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                [arrCombNo addObject:tempCombNo];
+                
+                [self getListRBBenefit];
+                NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                [arrRBBenefit addObject:tempBenefit];
+                NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                
+            } else {
+                continue;
+            }
+        }
+        
+        for (NSUInteger m=0; m<LRiderCode.count; m++)
+        {
+            if ([[LRiderCode objectAtIndex:m] isEqualToString:riderCode] && ([riderCode isEqualToString:@"MG_II"]||
+																			 [riderCode isEqualToString:@"MG_IV"])) {
+                
+                medRiderCode = [LRiderCode objectAtIndex:m];
+                medPlanOpt = [LPlanOpt objectAtIndex:m];
+                [self getListRBBenefit];
+                medGlobalOnly = TRUE;
+                
+            } else {
+                continue;
+            }
+        }
+        
+        //total up all benefit
+        for (NSUInteger z=0; z<arrRBBenefit.count; z++) {
+            allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:z] doubleValue];
+        }
+        NSLog(@"currentBenefit:%.f",allBenefit);
+        
+        //minus benefit
+        if (medGlobalOnly) {
+            allBenefit = allBenefit - RBBenefit;
+            NSLog(@"benefit:%d, newBenefit:%.f",RBBenefit,allBenefit);
+        }
+        
+        //sort combNo
+        NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];
+        [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+        
+        //combine all CombNo
+        NSString *newComb =[[NSString alloc] init];
+        for ( NSUInteger h=0; h<arrCombNo.count; h++) {
+            newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:h]];
+        }
+        AllCombNo = [newComb intValue];
+        NSLog(@"newComb:%@",newComb);
+        
+        //get selected RBBenefit and calculate
+        if (medGlobalOnly) {
+            [self getRBBenefit];
+            allBenefit = allBenefit + RBBenefit;
+            NSLog(@"allBenefit:%.f",allBenefit);
+        }
+        
+        //get Limit,RBGroup
+        [self getRBLimit];
+        
+        //-- end 1st stage validate
+        
+        if (allBenefit > RBLimit) {
+            if (RBGroup == 1) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                [self roomBoardDefaultPlan];
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                [alert show];
+                [self roomBoardDefaultPlan];
+            }
+        }
+        
+        //--2nd stage validate combination of all MedGlobal, Major Medi and H&P
+        else {
+			
+            arrCombNo = [[NSMutableArray alloc] init];
+            arrRBBenefit = [[NSMutableArray alloc] init];
+            
+            double allBenefit = 0;
+            for (NSUInteger i=0; i<LRiderCode.count; i++)
+            {
+                if ([[LRiderCode objectAtIndex:i] isEqualToString:@"HMM"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"HSP_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_II"]||[[LRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"])
+                {
+                    medRiderCode = [LRiderCode objectAtIndex:i];
+                    medPlanOpt = [LPlanOpt objectAtIndex:i];
+                    
+                    [self getListCombNo];
+                    NSString *tempCombNo = [NSString stringWithFormat:@"%d",CombNo];
+                    [arrCombNo addObject:tempCombNo];
+                    
+                    [self getListRBBenefit];
+                    NSString *tempBenefit = [NSString stringWithFormat:@"%d",RBBenefit];
+                    [arrRBBenefit addObject:tempBenefit];
+                    NSLog(@"CombNo:%d, Benefit:%d Code:%@",CombNo,RBBenefit,[LRiderCode objectAtIndex:i]);
+                    
+                } else {
+                    continue;
+                }
+            }
+            
+            for (NSUInteger m=0; m<LRiderCode.count; m++)
+            {
+                if ([[LRiderCode objectAtIndex:m] isEqualToString:riderCode]) {
+                    
+                    medRiderCode = [LRiderCode objectAtIndex:m];
+                    medPlanOpt = [LPlanOpt objectAtIndex:m];
+                    [self getListRBBenefit];
+                    
+                } else {
+                    continue;
+                }
+            }
+            
+            //total up all benefit
+            for (NSUInteger z=0; z<arrRBBenefit.count; z++) {
+                allBenefit = allBenefit + [[arrRBBenefit objectAtIndex:z] doubleValue];
+            }
+            NSLog(@"currentBenefit:%.f",allBenefit);
+            
+            //minus benefit
+            allBenefit = allBenefit - RBBenefit;
+            NSLog(@"benefit:%d, newBenefit:%.f",RBBenefit,allBenefit);
+            
+            //sort combNo
+            NSSortDescriptor *aDesc = [[NSSortDescriptor alloc] initWithKey:@"" ascending:YES];
+            [arrCombNo sortUsingDescriptors:[NSArray arrayWithObjects:aDesc, nil]];
+            
+            //combine all CombNo
+            NSString *newComb =[[NSString alloc] init];
+            for ( NSUInteger h=0; h<arrCombNo.count; h++) {
+                newComb = [newComb stringByAppendingString:[arrCombNo objectAtIndex:h]];
+            }
+            AllCombNo = [newComb intValue];
+            NSLog(@"newComb:%@",newComb);
+            
+            //get selected RBBenefit and calculate
+            [self getRBBenefit];
+            allBenefit = allBenefit + RBBenefit;
+            NSLog(@"allBenefit:%.f",allBenefit);
+            
+            //get Limit,RBGroup
+            [self getRBLimit];
+            
+            if (allBenefit > RBLimit) {
+                if (RBGroup == 1) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [self roomBoardDefaultPlan];
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Traditional" message:[NSString stringWithFormat:@"Total Daily Room & Board Benefit for combination of all MedGLOBAL, HSP II and Major Medi rider(s) must be less than or equal to RM%d for 1st LA.",RBLimit] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [self roomBoardDefaultPlan];
+                }
+            } else {
+                NSLog(@"will update data");
+                [self updateRider];
+            }
+        }
+    }
+}
+
+-(void)getListCombNo
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT CombNo FROM Trad_Sys_Medical_MST WHERE RiderCode=\"%@\"",medRiderCode];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                CombNo =  sqlite3_column_int(statement, 0);
+				//                NSLog(@"listCombNo:%d",CombNo);
+            } else {
+                NSLog(@"error access getListCombNo");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getListRBBenefit
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT RBBenefit from Trad_Sys_Medical_Benefit WHERE RiderCode=\"%@\" AND PlanChoice=\"%@\"",medRiderCode,medPlanOpt];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                RBBenefit =  sqlite3_column_int(statement, 0);
+				//                NSLog(@"Benefit:%d",RBBenefit);
+                
+            } else {
+                NSLog(@"error access getListRBBenefit");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRBLimit
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:
+							  @"SELECT `Limit`, RBGroup from Trad_Sys_Medical_Comb WHERE OccpCode=\"%@\" AND Comb=\"%d\"",OccpCat,AllCombNo];
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                RBLimit =  sqlite3_column_int(statement, 0);
+                RBGroup =  sqlite3_column_int(statement, 1);
+                NSLog(@"Limit:%d, group:%d",RBLimit,RBGroup);
+                
+            } else {
+                NSLog(@"error access getRBLimit");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getRBBenefit
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT RBBenefit from Trad_Sys_Medical_Benefit WHERE RiderCode=\"%@\" AND PlanChoice=\"%@\"",riderCode,planOption];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                RBBenefit =  sqlite3_column_int(statement, 0);
+				//                NSLog(@"Benefit:%d",RBBenefit);
+                
+            } else {
+                NSLog(@"error access getRBBenefit");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)getCombNo
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat:@"SELECT CombNo FROM Trad_Sys_Medical_MST WHERE RiderCode=\"%@\"",riderCode];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                CombNo =  sqlite3_column_int(statement, 0);
+				//                NSLog(@"CombNo:%d",CombNo);
+            } else {
+                NSLog(@"error access getCombNo");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)roomBoardDefaultPlanNew
+{
+    if ([riderCode isEqualToString:@"HMM"]) {
+        planOption = @"HMM_150";
+        [self.outletRiderPlan setTitle:planOption forState:UIControlStateNormal];
+    }
+    else if ([riderCode isEqualToString:@"MG_IV"]) {
+        planOption = @"MGIVP_150";
+        [self.outletRiderPlan setTitle:planOption forState:UIControlStateNormal];
+    }
+}
+
+-(void)roomBoardDefaultPlan
+{
+    if ([riderCode isEqualToString:@"HMM"]) {
+		planOption = medPlanOpt;
+        [self.outletRiderPlan setTitle:planOption forState:UIControlStateNormal];
+    }
+    else if ([riderCode isEqualToString:@"MG_IV"]) {
+		//        planOption = @"MGIVP_150";
+        planOption = medPlanOpt;
+        [self.outletRiderPlan setTitle:planOption forState:UIControlStateNormal];
+    }
 }
 
 -(void)saveRider
@@ -2372,6 +2847,7 @@ double CurrentRiderPrem;
 			double _quar = 0.00;
 			double _month =0.00;
 			
+			
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/100 * annFac);
 				_half = (riderRate *ridSA /100 *halfFac);
@@ -2518,16 +2994,16 @@ double CurrentRiderPrem;
 			double _month =0.00;
 			
 			if (riderHLoad == 0) {
-				_ann = (riderRate * ridSA/100 / annFac);
-				_half = (riderRate *ridSA /100 / halfFac);
-				_quar = (riderRate *ridSA /100 / quarterFac);
-				_month = (riderRate *ridSA /100 * monthFac);
+				_ann = (riderRate * ridSA/100.00 / annFac);
+				_half = (riderRate *ridSA /100.00 / halfFac);
+				_quar = (riderRate *ridSA /100.00 / quarterFac);
+				_month = (riderRate *ridSA /100.00 * monthFac);
 			}
 			else{
-				_ann =  (ridSA * (riderRate * ((1 + riderHLoad /100)/100 ) + occLoadRider/1000 + 0/1000)) / annFac;
-				_half = (ridSA * (riderRate * ((1 + riderHLoad /100)/100 ) + occLoadRider/1000 + 0/1000)) / halfFac;
-				_quar = (ridSA * (riderRate * ((1 + riderHLoad /100)/100 ) + occLoadRider/1000 + 0/1000)) / quarterFac;
-				_month = (ridSA * (riderRate * ((1 + riderHLoad /100)/100 ) + occLoadRider/1000 + 0/1000)) * monthFac;
+				_ann =  (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) / annFac;
+				_half = (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) / halfFac;
+				_quar = (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) / quarterFac;
+				_month = (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) * monthFac;
 			}	
 			
 			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
@@ -2552,41 +3028,41 @@ double CurrentRiderPrem;
 			double _month =0.00;
 			
 			if (riderHLoad == 0) {
-				_ann = (riderRate * ridSA/1000 ) / annFac;
-				_half = (riderRate *ridSA /1000 ) / halfFac;
-				_quar = (riderRate *ridSA /1000 ) / quarterFac;
-				_month = (riderRate *ridSA /1000 ) * monthFac;
+				_ann = (riderRate * ridSA/1000 );
+				_half = (riderRate *ridSA /1000 );
+				_quar = (riderRate *ridSA /1000 );
+				_month = (riderRate *ridSA /1000 );
 			}
 			else{
-				_ann = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1) / annFac;
-				_half = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1) / halfFac;
-				_quar = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1) / quarterFac;
-				_month = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1) * monthFac;
+				_ann = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
+				_half = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
+				_quar = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
+				_month = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
 			}
 			
 			if (ridSA >= 450 && ridSA < 1200) {
-				_ann = _ann - (ridSA * (-330/1000));
+				_ann = _ann - (ridSA * (-330.00/1000.00));
 			}
 			else if (ridSA >= 1200 && ridSA < 2000) {
-				_ann = _ann - (ridSA * (0/1000));
+				_ann = _ann - (ridSA * (0/1000.00));
 			}
 			else if (ridSA >= 2000 && ridSA < 3000) {
-				_ann = _ann - (ridSA * (10/1000));
+				_ann = _ann - (ridSA * (10/1000.00));
 			}
 			else if (ridSA >= 3000 && ridSA < 4000) {
-							_ann = _ann - (ridSA * (30/1000));
+							_ann = _ann - (ridSA * (30/1000.00));
 			}
 			else if (ridSA >= 4000 && ridSA < 5000) {
-								_ann = _ann - (ridSA * (40/1000));
+								_ann = _ann - (ridSA * (40/1000.00));
 			}
 			else if (ridSA >= 5000 && ridSA < 7500) {
-								_ann = _ann - (ridSA * (50/1000));
+								_ann = _ann - (ridSA * (50/1000.00));
 			}
 			else if (ridSA >= 7500 && ridSA < 10000) {
-								_ann = _ann - (ridSA * (60/1000));
+								_ann = _ann - (ridSA * (60/1000.00));
 			}
 			else if (ridSA >= 10000) {
-								_ann = _ann - (ridSA * (70/1000));
+								_ann = _ann - (ridSA * (70/1000.00));
 			}
 			
 			_half = _ann/halfFac;
@@ -2615,41 +3091,41 @@ double CurrentRiderPrem;
 			double _month =0.00;
 			
 			if (riderHLoad == 0) {
-				_ann = (riderRate * ridSA/100 ) / annFac;
-				_half = (riderRate *ridSA /100 ) / halfFac;
-				_quar = (riderRate *ridSA /100 ) / quarterFac;
-				_month = (riderRate *ridSA /100 ) * monthFac;
+				_ann = (riderRate * ridSA/100.00 );
+				_half = (riderRate *ridSA /100.00 );
+				_quar = (riderRate *ridSA /100.00 );
+				_month = (riderRate *ridSA /100.00 );
 			}
 			else{
-				_ann = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1) / annFac;
-				_half = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1) / halfFac;
-				_quar = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1) / quarterFac;
-				_month = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1) * monthFac;
+				_ann = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
+				_half = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
+				_quar = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
+				_month = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
 			}
 			
 			if (ridSA >= 50 && ridSA < 100) {
-				_ann = _ann - (ridSA * (-140/100));
+				_ann = _ann - (ridSA * (-140.00/100.00));
 			}
 			else if (ridSA >= 100 && ridSA < 150) {
-				_ann = _ann - (ridSA * (0/100));
+				_ann = _ann - (ridSA * (0/100.00));
 			}
 			else if (ridSA >= 150 && ridSA < 200) {
-				_ann = _ann - (ridSA * (25/100));
+				_ann = _ann - (ridSA * (25/100.00));
 			}
 			else if (ridSA >= 200 && ridSA < 300) {
-				_ann = _ann - (ridSA * (40/100));
+				_ann = _ann - (ridSA * (40/100.00));
 			}
 			else if (ridSA >= 300 && ridSA < 400) {
-				_ann = _ann - (ridSA * (55/100));
+				_ann = _ann - (ridSA * (55/100.00));
 			}
 			else if (ridSA >= 400 && ridSA < 500) {
-				_ann = _ann - (ridSA * (65/100));
+				_ann = _ann - (ridSA * (65/100.00));
 			}
 			else if (ridSA >= 500 && ridSA < 1000) {
-				_ann = _ann - (ridSA * (70/100));
+				_ann = _ann - (ridSA * (70/100.00));
 			}
 			else if (ridSA >= 1000) {
-				_ann = _ann - (ridSA * (75/100));
+				_ann = _ann - (ridSA * (75/100.00));
 			}
 			
 			_half = _ann/halfFac;
@@ -2684,10 +3160,10 @@ double CurrentRiderPrem;
 				_month = riderRate * monthFac;
 			}
 			else{
-				_ann = (riderRate * (1 + riderHLoad/100)) / annFac;
-				_half = (riderRate * (1 + riderHLoad/100)) / halfFac;
-				_quar = (riderRate * (1 + riderHLoad/100)) / quarterFac;
-				_month = (riderRate * (1 + riderHLoad/100)) * monthFac;
+				_ann = (riderRate * (1 + riderHLoad/100.00)) / annFac;
+				_half = (riderRate * (1 + riderHLoad/100.00)) / halfFac;
+				_quar = (riderRate * (1 + riderHLoad/100.00)) / quarterFac;
+				_month = (riderRate * (1 + riderHLoad/100.00)) * monthFac;
 			}
 			
 			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
@@ -2712,41 +3188,41 @@ double CurrentRiderPrem;
 			double _month =0.00;
 			
 			if (riderHLoad == 0) {
-				_ann = (riderRate * ridSA/1000 / annFac);
-				_half = (riderRate *ridSA /1000 / halfFac);
-				_quar = (riderRate *ridSA /1000 / quarterFac);
-				_month = (riderRate *ridSA /1000 * monthFac);
+				_ann = (riderRate * ridSA/1000.00 );
+				_half = (riderRate *ridSA /1000.00 / halfFac);
+				_quar = (riderRate *ridSA /1000.00 / quarterFac);
+				_month = (riderRate *ridSA /1000.00 * monthFac);
 			}
 			else{
-				_ann = (ridSA/1000) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / annFac;
-				_half = (ridSA/1000) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / halfFac;
-				_quar = (ridSA/1000) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / quarterFac;
-				_month = (ridSA/1000) * (riderRate * 0.01 +  occLoadRider + riderHLoad) * monthFac;
+				_ann = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / annFac;
+				_half = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / halfFac;
+				_quar = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / quarterFac;
+				_month = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) * monthFac;
 			}
 			
 			if (ridSA >= 20000 && ridSA < 50000) {
-				_ann = _ann - (ridSA * (0/1000));
+				_ann = _ann - (ridSA * (0/1000.00));
 			}
 			else if (ridSA >= 50000 && ridSA < 100000) {
-				_ann = _ann - (ridSA * (3.2/1000));
+				_ann = _ann - (ridSA * (3.2/1000.00));
 			}
 			else if (ridSA >= 100000 && ridSA < 150000) {
-				_ann = _ann - (ridSA * (4/1000));
+				_ann = _ann - (ridSA * (4/1000.00));
 			}
 			else if (ridSA >= 150000 && ridSA < 200000) {
-				_ann = _ann - (ridSA * (4.5/1000));
+				_ann = _ann - (ridSA * (4.5/1000.00));
 			}
 			else if (ridSA >= 200000 && ridSA < 500000) {
-				_ann = _ann - (ridSA * (5/1000));
+				_ann = _ann - (ridSA * (5/1000.00));
 			}
 			else if (ridSA >= 500000 && ridSA < 750000) {
-				_ann = _ann - (ridSA * (5.15/1000));
+				_ann = _ann - (ridSA * (5.15/1000.00));
 			}
 			else if (ridSA >= 750000 && ridSA < 1500000) {
-				_ann = _ann - (ridSA * (5.25/1000));
+				_ann = _ann - (ridSA * (5.25/1000.00));
 			}
 			else if (ridSA >= 1500000) {
-				_ann = _ann - (ridSA * (5.3/1000));
+				_ann = _ann - (ridSA * (5.3/1000.00));
 			}
 			
 			_half = _ann/halfFac;
@@ -2814,10 +3290,11 @@ double CurrentRiderPrem;
     if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND sex=\"%@\" AND class = '%d' "
+							  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND sex=\"%@\" AND OccClass = '%d' "
 							  " AND FromAge = '%d'",
 							  aaplan, aaSex, aaClass, aaAge];
 		
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -2889,11 +3366,27 @@ double CurrentRiderPrem;
 	sqlite3_stmt *statement;
     if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND sex=\"%@\" AND class = '%d' "
-							  " AND FromAge = '%d' AND Type ='%@' AND deductible = '%@'",
-							  aaplan, aaSex, aaClass, aaAge, aaType, aaDeduc];
+		NSString *Type;
+		if ([aaType isEqualToString:@"HMM_150"]) {
+			Type = @"MM150";
+		}
+		else if ([aaType isEqualToString:@"HMM_200"]) {
+			Type = @"MM200";
+		}
+		else if ([aaType isEqualToString:@"HMM_300"]) {
+			Type = @"MM300";
+		}
+		else if ([aaType isEqualToString:@"HMM_400"]) {
+			Type = @"MM400";
+		}
 		
+		
+        NSString *querySQL = [NSString stringWithFormat:
+							  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND sex=\"%@\" AND OccClass = '%d' "
+							  " AND FromAge = '%d' AND Type ='%@' AND deductible = '%@'",
+							  aaplan, aaSex, aaClass, aaAge, Type, aaDeduc];
+		
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -2915,11 +3408,27 @@ double CurrentRiderPrem;
 	sqlite3_stmt *statement;
     if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND sex=\"%@\" AND class = '%d' "
-							  " AND FromAge = '%d' AND Type ='%@'",
-							  aaplan, aaSex, aaClass, aaAge, aaType];
 		
+		NSString *Type;
+		if ([aaType isEqualToString:@"MGIVP_150"]) {
+			Type = @"MGIV_150";
+		}
+		else if ([aaType isEqualToString:@"MGIVP_200"]) {
+			Type = @"MGIV_200";
+		}
+		else if ([aaType isEqualToString:@"MGIVP__300"]) {
+			Type = @"MGIV_300";
+		}
+		else if ([aaType isEqualToString:@"MGIVP_400"]) {
+			Type = @"MGIV_400";
+		}
+		
+        NSString *querySQL = [NSString stringWithFormat:
+							  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND sex=\"%@\" AND OccClass = '%d' "
+							  " AND FromAge = '%d' AND Type ='%@'",
+							  aaplan, aaSex, aaClass, aaAge, Type];
+		
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -2963,12 +3472,21 @@ double CurrentRiderPrem;
 -(void)getRiderRatePremTermAge:(NSString *)aaplan Prem:(NSString *)aaPrem Term:(int)aaTerm Age:(int)aaAge{
 	sqlite3_stmt *statement;
     if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
-    {
-        NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND term = '%d' "
-							  " AND FromAge = '%d' AND prempayopt ='%@'",
-							  aaplan, aaTerm, aaAge, aaPrem];
-		
+    {	NSString *querySQL;
+		if ([aaplan isEqualToString:@"ECAR"]) {
+			querySQL = [NSString stringWithFormat:
+								  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND term = '%d' "
+								  " AND FromAge < '%d' AND toAge > '%d' AND prempayopt ='%@'",
+								  aaplan, aaTerm, aaAge, aaAge, aaPrem];
+		}
+		else{
+			querySQL = [NSString stringWithFormat:
+						@"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND term = '%d' "
+						" AND FromAge = '%d' AND prempayopt ='%@'",
+						aaplan, aaTerm, aaAge, aaPrem];
+		}
+        
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -3007,16 +3525,17 @@ double CurrentRiderPrem;
 {
 	sqlite3_stmt *statement;
 	
+	[self ReturnCurrentRiderPrem];
     //sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
 								@"UPDATE UL_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", "
 								"Deductible=\"%@\", HLoading=\"%@\", HLoadingTerm=\"%d\", "
-								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
+								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%.2f' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
 								"PTypeCode=\"%@\" AND Seq=\"%d\"", txtRiderTerm.text, txtSumAssured.text, planOption,
 								deductible, inputHL1KSA, inputHL1KSATerm,inputHLPercentage,
-								inputHLPercentageTerm, [self ReturnReinvest], getSINo,
+								inputHLPercentageTerm, [self ReturnReinvest], CurrentRiderPrem, getSINo,
 								riderCode,pTypeCode, PTypeSeq];
 		
         if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -3290,6 +3809,10 @@ double CurrentRiderPrem;
     {
         [self displayedMinMax];
     }
+	else if (alertView.tag == 1007 && buttonIndex == 0)
+    {
+		[self Validation];
+    }
 }
 
 
@@ -3437,13 +3960,27 @@ else {
 }
 
 - (IBAction)ActionSave:(id)sender {
+	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+	[activeInstance performSelector:@selector(dismissKeyboard)];
+	
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
+	}
+	else{
+		[self Validation];
+	}
+	
+}
+
+-(void)Validation{
 	if (Edit == TRUE ) {
 		[self resignFirstResponder];
 		[self.view endEditing:YES];
-		
-		Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-		id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-		[activeInstance performSelector:@selector(dismissKeyboard)];
 		
 		[myTableView setEditing:FALSE];
 		[self.myTableView setEditing:NO animated:TRUE];
@@ -3464,7 +4001,7 @@ else {
 		
 		if (riderCode.length == 0 || outletRider.titleLabel.text.length == 0) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-									message:@"Please select a Rider." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+															message:@"Please select a Rider." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 			[alert show];
 		}
 		else if (term) {
@@ -3480,10 +4017,8 @@ else {
 			NSLog(@"validate - 4th save");
 			[self validateSaver];
 		}
-		 
+		
 	}
-	
-	
 }
 
 - (IBAction)ActionPlan:(id)sender {
