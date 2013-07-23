@@ -327,6 +327,7 @@ NSString *ProceedStatus = @"";
 		CommissionRatesPath= Nil;
 	}
 	/*
+	//[fileManager removeItemAtPath:UL_RatesDatabasePath error:Nil];
 	if([fileManager fileExistsAtPath:UL_RatesDatabasePath] == FALSE ){
 		
 		NSString *ULRatesPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"UL_Rates.sqlite"];
@@ -336,7 +337,7 @@ NSString *ProceedStatus = @"";
 		}
 		ULRatesPath= Nil;
 	}
-      */  
+    */
 	if([fileManager fileExistsAtPath:RatesDatabasePath] == FALSE ){
 		NSString *RatesDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"HLA_Rates.sqlite"];
 		success = [fileManager copyItemAtPath:RatesDBPath toPath:RatesDatabasePath error:&error];

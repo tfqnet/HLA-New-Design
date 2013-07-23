@@ -199,6 +199,7 @@ NSString *OriginalBump;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -606,9 +607,9 @@ NSString *OriginalBump;
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *querySQL = [NSString stringWithFormat:@"UPDATE UL_Details SET CovPeriod=\"%@\", BasicSA=\"%@\", "
+        NSString *querySQL = [NSString stringWithFormat:@"UPDATE UL_Details SET CovPeriod = '%@', CovPeriod=\"%@\", BasicSA=\"%@\", "
 							  "AtPrem = \"%@\", BumpMode = \"%@\", DateModified=%@ "
-							  " WHERE SINo=\"%@\"", txtPolicyTerm.text, txtBasicSA.text, txtBasicPremium.text,
+							  " WHERE SINo=\"%@\"", txtPolicyTerm.text, txtPolicyTerm.text, txtBasicSA.text, txtBasicPremium.text,
 							  [self ReturnBumpMode], @"datetime(\"now\", \"+8 hour\")", SINo];
         
         //NSLog(@"%@",querySQL);
@@ -816,7 +817,7 @@ NSString *OriginalBump;
 	
 	//NSLog(@"%f, %f, %f", FirstBasicMort, SecondBasicMort, ThirdBasicMort);
 	
-	[self getExistingBasic];
+	//[self getExistingBasic]; //disable as it will change getbumpmode
 	[self CalcInst:@""];
 	[self GetRegWithdrawal];
 	[self ReturnFundFactor]; // get factor for each fund
@@ -2951,6 +2952,7 @@ NSString *OriginalBump;
 				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem /Semi   ];
 				//txtBasicSA.text = [NSString stringWithFormat:@"%.2f", tempBasicSA /Semi   ];
 				txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", tempPremiumPayable /Semi   ];
+				
 			}
 			else if ([getBumpMode isEqualToString:@"Q"]) {
 				txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", tempBasicPrem /quarterly   ];
@@ -3034,6 +3036,7 @@ NSString *OriginalBump;
 		getBumpMode = @"M";
 		
 	}
+
 	txtTotalBAPremium.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ]];
 	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
 	

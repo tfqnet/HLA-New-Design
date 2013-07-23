@@ -145,7 +145,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblMax;
 @property (weak, nonatomic) IBOutlet UILabel *lblMin;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *outletReinvest;
-- (IBAction)ActonReinvest:(id)sender;
+- (IBAction)ActionReinvest:(id)sender;
+
+
 
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
 @property (weak, nonatomic) IBOutlet UIButton *outletEdit;
@@ -227,6 +229,7 @@
 @property(nonatomic , retain) NSMutableArray *LAge;
 @property(nonatomic , retain) NSMutableArray *LPremium;
 @property(nonatomic , retain) NSMutableArray *LReinvest;
+@property(nonatomic , retain) NSMutableArray *LPaymentTerm;
 
 @property (retain, nonatomic) NSMutableArray *LTypeRiderCode;
 @property (retain, nonatomic) NSMutableArray *LTypeSumAssured;
@@ -246,6 +249,7 @@
 @property(nonatomic , retain) NSMutableArray *LTypeAge;
 @property(nonatomic , retain) NSMutableArray *LTypePremium;
 @property(nonatomic , retain) NSMutableArray *LTypeReinvest;
+@property(nonatomic , retain) NSMutableArray *LTypePaymentTerm;
 
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;

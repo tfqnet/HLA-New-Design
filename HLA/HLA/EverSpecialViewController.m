@@ -165,7 +165,7 @@
 		 		txtInterval.backgroundColor = [UIColor whiteColor];
 		 		txtStartTo.backgroundColor = [UIColor whiteColor];
 		 		txtStartFrom.backgroundColor = [UIColor whiteColor];
-		 	}
+		}
 	 	else{
 		 		outletWithdrawal.selectedSegmentIndex = 1;
 		 		txtAmount.enabled = FALSE;
@@ -176,7 +176,7 @@
 		 		txtInterval.backgroundColor = [UIColor lightGrayColor];
 		 		txtStartTo.backgroundColor = [UIColor lightGrayColor];
 		 		txtStartFrom.backgroundColor = [UIColor lightGrayColor];
-		 	}
+		}
 	
 	 	if (![txtReduceAt.text isEqualToString:@""]) {
 		 		outletReduce.selectedSegmentIndex = 0;
@@ -184,15 +184,15 @@
 		 		txtReduceTo.enabled = TRUE;
 		 		txtReduceAt.backgroundColor = [UIColor whiteColor];
 		 		txtReduceTo.backgroundColor = [UIColor whiteColor];
-		 	}
+		}
 	 	else{
 		 		outletReduce.selectedSegmentIndex = 1;
 		 		txtReduceAt.enabled = FALSE;
 		 		txtReduceTo.enabled = FALSE;
 		 		txtReduceAt.backgroundColor = [UIColor lightGrayColor];
 		 		txtReduceTo.backgroundColor = [UIColor lightGrayColor];
-		 	}
-	}
+		}
+}
 
  -(BOOL)Validation{
 	
@@ -203,29 +203,28 @@
 	
 	 	if (outletWithdrawal.selectedSegmentIndex == 0) {
 		 		if ([txtStartFrom.text isEqualToString:@"" ] ||  [txtStartFrom.text isEqualToString:@"0"]  )
-			 		{
+				{
 				 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:@"First Regular Withdrawal policy year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 				 			[failAlert show];
 				 			[txtStartFrom becomeFirstResponder];
 				 			return FALSE;
-				 		}
+				}
 		 		if ([txtStartTo.text isEqualToString:@""] || [txtStartTo.text isEqualToString:@"0"]){
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 										message:@"Last regular Withdrawal policy year is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			 			[failAlert show];
 			 			[txtStartTo becomeFirstResponder];
 			 			return FALSE;
-			 		}
+				}
 		
 		 		if ([txtStartFrom.text intValue] > [txtStartTo.text intValue]){
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-												   																message:@"First Regular Withdrawal policy year must be less than the Last Regular Withdrawal policy year." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+															message:@"First Regular Withdrawal policy year must be less than the Last Regular Withdrawal policy year." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			 			[failAlert show];
 			 			[txtStartFrom becomeFirstResponder];
 			 			return FALSE;
-			 		}
-		
+				}
 		
 		 		if([txtInterval.text isEqualToString:@""] || [txtInterval.text isEqualToString:@"0"]){
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -233,7 +232,14 @@
 			 			[failAlert show];
 			 			[txtInterval becomeFirstResponder];
 			 			return FALSE;
-			 		}
+				}
+				if([txtInterval.text intValue] > ([txtStartTo.text intValue] - [txtStartFrom.text integerValue])  ){
+					UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+																	message:[NSString stringWithFormat:@"Interval (Years) for Regular Withdrawal cannot be more than %d.", [txtStartTo.text intValue] - [txtStartFrom.text integerValue]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+					[failAlert show];
+					[txtInterval becomeFirstResponder];
+					return FALSE;
+				}
 		
 		 		if([txtAmount.text isEqualToString:@""] || [txtAmount.text isEqualToString:@"0"]){
 			 			UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -241,16 +247,16 @@
 			 			[failAlert show];
 			 			[txtAmount becomeFirstResponder];
 			 			return FALSE;
-			 		}
+				}
 			
-			if ([txtInterval.text intValue ] > 100 - getAge) {
+				if ([txtInterval.text intValue ] > 100 - getAge) {
 				UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 																message:[NSString stringWithFormat:@"Interval (Years) for Regular Withdrawal must be within (1-%d).", 100 - getAge]
 																delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 				[failAlert show];
 				[txtInterval becomeFirstResponder];
 				return FALSE;
-			}
+				}
 			
 		}
 	
@@ -346,8 +352,6 @@
 				
 				return FALSE;
 			}
-			
-			
 
 		}
 	 	
@@ -355,24 +359,38 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
- {
+{
 	 if (string.length == 0) {
 		 return  YES;
 	 }
 	
-	 	if (textField.tag == 1) {
-			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
-			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+	if (textField.tag == 1) {
+		NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
+		if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
+			return NO;
+		}
+		
+		NSRange rangeofDot = [textField.text rangeOfString:@"."];
+		if (rangeofDot.location != NSNotFound ) {
+			NSString *substring = [textField.text substringFromIndex:rangeofDot.location ];
+			
+			if ([string isEqualToString:@"."]) {
+				return NO;
+			}
+			
+			if (substring.length > 2 )
+			{
 				return NO;
 			}
 		}
-		else if (textField.tag == 6){
+	}
+	else if (textField.tag == 6){
 			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
 			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
 				return NO;
 			}
-		}
-	 	else{
+	}
+	else{
 			NSCharacterSet *nonNumberSet = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
 			if ([string rangeOfCharacterFromSet:nonNumberSet].location != NSNotFound) {
 				return NO;
@@ -381,12 +399,10 @@
 			if (textField.text.length > 1) {
 				return NO;
 			}
-
-		}
+	}
 	
-	
-	     return YES;
-	 }
+	return YES;
+}
 
 
 -(void)Insertandupdate{
