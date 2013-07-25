@@ -70,6 +70,8 @@ NSString *gEverNameSecond = @"";
         }
     }
     
+	outletGender.enabled = FALSE;
+	
     NSLog(@"delegate:%@",_delegate);
 }
 

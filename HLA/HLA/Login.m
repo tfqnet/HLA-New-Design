@@ -326,8 +326,9 @@ NSString *ProceedStatus = @"";
 		}
 		CommissionRatesPath= Nil;
 	}
-	/*
+	
 	//[fileManager removeItemAtPath:UL_RatesDatabasePath error:Nil];
+	/*
 	if([fileManager fileExistsAtPath:UL_RatesDatabasePath] == FALSE ){
 		
 		NSString *ULRatesPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"UL_Rates.sqlite"];

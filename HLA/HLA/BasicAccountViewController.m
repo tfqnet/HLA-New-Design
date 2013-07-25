@@ -29,6 +29,7 @@ double VU2023InstHigh, VU2023InstMedian, VU2023InstLow,VU2025InstHigh, VU2025Ins
 double VU2028InstHigh, VU2028InstMedian, VU2028InstLow,VU2030InstHigh, VU2030InstMedian, VU2030InstLow;
 double VU2035InstHigh, VU2035InstMedian, VU2035InstLow, NegativeValueOfMaxCashFundHigh;
 double HSurrenderValue,MSurrenderValue,LSurrenderValue,HRiderSurrenderValue,MRiderSurrenderValue,LRiderSurrenderValue;
+double TotalRiderPremium;
 BOOL TPExcess;
 NSString *OriginalBump;
 
@@ -124,12 +125,11 @@ NSString *OriginalBump;
             }
 			
 			[self togglePlan];
+			[self CalcTotalRiderPrem];
 			[self toggleExistingField];
 			
 		}else {
 			NSLog(@"create new");
-			
-			
         }
 		
 	} else {
@@ -155,6 +155,7 @@ NSString *OriginalBump;
         NSLog(@"2ndLAAge:%d",secondLAAge);
     }
 	
+
 	[txtBasicPremium addTarget:self action:@selector(BasicPremiumDidChanged) forControlEvents:UIControlEventAllEditingEvents];
 	
 	Label1.hidden = YES;
@@ -324,7 +325,7 @@ NSString *OriginalBump;
 	else if (requestAge > 55){
 		SAFac = 15;
 	}
-	/*
+	
 	if (segPremium.selectedSegmentIndex == 1) {
 		minSA = SAFac * [txtBasicPremium.text doubleValue ] / Semi;
 	}
@@ -335,10 +336,10 @@ NSString *OriginalBump;
 		minSA = SAFac * [txtBasicPremium.text doubleValue ] / Monthly;
 	}
 	else{
-		
+		minSA = SAFac * [txtBasicPremium.text doubleValue ];
 	}
-	*/
-	minSA = SAFac * [txtBasicPremium.text doubleValue ];
+	
+	//minSA = SAFac * [txtBasicPremium.text doubleValue ];
 	
 	Label1.text = [ NSString stringWithFormat:@"Min: %.0f", minSA];
 	label2.text = @"Max: Subject to underwriting";
@@ -403,8 +404,9 @@ NSString *OriginalBump;
 -(void)BasicPremiumDidChanged{
 	
 	txtTotalBAPremium.text = txtBasicPremium.text;
-	txtPremiumPayable.text = txtBasicPremium.text;
+	//txtPremiumPayable.text = txtBasicPremium.text;
 	//
+	txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ] + TotalRiderPremium];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -475,11 +477,12 @@ NSString *OriginalBump;
 	}
 
 	txtTotalBAPremium.text = txtBasicPremium.text;
-	txtPremiumPayable.text = txtBasicPremium.text;
-	
+	//txtPremiumPayable.text = txtBasicPremium.text;
+	txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ] + TotalRiderPremium]
+	;
 	[_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover
 			andBasicSA:txtBasicSA.text andBasicHL:getHL andBasicHLTerm:getHLTerm
-		 andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode andBumpMode:[self ReturnBumpMode]];
+		 andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode andBumpMode:getBumpMode];
 	
 }
 
@@ -2687,6 +2690,31 @@ NSString *OriginalBump;
     }
 }
 
+-(void)CalcTotalRiderPrem{
+	
+	sqlite3_stmt *statement;
+	NSString *querySQL;
+	//double half = 0.5, quarter = 0.25, month = 0.0833333;
+	
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+	{
+		querySQL = [NSString stringWithFormat:
+					@"SELECT sum(premium) from ul_rider_details where sino = '%@' ",  getSINo];
+		
+		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+		{
+			if (sqlite3_step(statement) == SQLITE_ROW)
+			{
+				//txtRiderPremium.text =  [ NSString stringWithFormat:@"%.2f", sqlite3_column_double(statement, 0) ] ;
+				TotalRiderPremium =  sqlite3_column_double(statement, 0);
+			}
+			sqlite3_finalize(statement);
+		}
+		
+		sqlite3_close(contactDB);
+	}
+	
+}
 
 
 #pragma mark - memory management

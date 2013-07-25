@@ -127,6 +127,7 @@
 @property (nonatomic,copy) NSString *getHLPct;
 @property (nonatomic,assign,readwrite) int getHLPctTerm;
 @property (nonatomic,assign,readwrite) int getHLTerm;
+@property (nonatomic,copy) NSString *getBumpMode;
 @property (nonatomic, assign,readwrite) int termCover;
 @property (nonatomic,strong) NSString *planCode;
 

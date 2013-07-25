@@ -165,6 +165,18 @@ id EverRiderCount;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
 	
+	if (PlanEmpty) {
+        cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+    }
+    else {
+        if (indexPath.row == 5) {
+            cell.textLabel.text = [[ListOfSubMenu objectAtIndex:indexPath.row] stringByAppendingFormat:@"(%@)", EverRiderCount ];
+        }
+        else {
+            cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+        }
+    }
+	
 	//--detail text label
 	
     if (indexPath.row == 0) {
@@ -201,10 +213,14 @@ id EverRiderCount;
         cell.detailTextLabel.text = @"";
     }
 	
-	cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
+	//cell.textLabel.text = [ListOfSubMenu objectAtIndex:indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:16];
     cell.textLabel.textAlignment = UITextAlignmentLeft;
+	
+	cell.detailTextLabel.textColor = [UIColor whiteColor];
+    cell.detailTextLabel.font = [UIFont fontWithName:@"Trebuchet MS" size:12];
+    cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 	
 	return  cell;
 }
@@ -381,7 +397,6 @@ id EverRiderCount;
 				[alert show];
 			}
 			else {
-			
 				self.EverRider = [self.storyboard instantiateViewControllerWithIdentifier:@"EverRider"];
 				_EverRider.delegate = self;
 				self.EverRider.requestAge = getAge;
@@ -1136,7 +1151,7 @@ id EverRiderCount;
     getbasicHLPct = aaBasicHLPct;
     getPlanCode = aaPlanCode;
 	getBumpMode = aaBumpMode;
-    
+	
     if (getbasicSA.length != 0)
     {
         PlanEmpty = NO;

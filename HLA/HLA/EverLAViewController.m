@@ -28,7 +28,7 @@
 @synthesize popOverController,requestSINo,clientName,occuCode,occuDesc,CustCode2,payorCustCode;
 @synthesize commDate,occuClass,IndexNo;
 @synthesize NamePP,DOBPP,GenderPP,OccpCodePP,occPA,headerTitle;
-@synthesize getSINo,btnDOB, btnOccpDesc;
+@synthesize getSINo,btnDOB, btnOccpDesc, getBumpMode;
 @synthesize getHL,getHLTerm,getPolicyTerm,getSumAssured,getHLPct,getHLPctTerm;
 @synthesize termCover,planCode,arrExistRiderCode,arrExistPlanChoice,getPrem;
 @synthesize prospectPopover = _prospectPopover;
@@ -128,23 +128,13 @@
 		NSLog(@"SINo not exist!");
 	}
 	
-	if (requestIndexNo != 0) {
+	if (requestIndexNo != 0) { //user select LA but havent created the SI basic plan yet
         [self tempView];
     }
 	
 
 	
 	[self checking2ndLA];
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	if (CustCode2.length != 0) {
 		
@@ -265,7 +255,7 @@
     sumAss = [sumAss stringByReplacingOccurrencesOfString:@"," withString:@""];
 	
 	[_delegate BasicSI:getSINo andAge:age andOccpCode:occuCode andCovered:termCover andBasicSA:sumAss andBasicHL:getHL
-		andBasicHLTerm:getHLTerm andBasicHLPct:getHL andBasicHLPctTerm:getHLTerm andPlanCode:planChoose andBumpMode:@"A"];
+		andBasicHLTerm:getHLTerm andBasicHLPct:getHL andBasicHLPctTerm:getHLTerm andPlanCode:planChoose andBumpMode:getBumpMode];
 
     AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
     zzz.SICompleted = YES;
@@ -309,6 +299,7 @@
     commDate = [self.requestCommDate description];
     [self calculateAge];
     [btnDOB setTitle:DOBPP forState:UIControlStateNormal];
+	txtDOB.text = DOBPP;
 	txtALB.text = [[NSString alloc] initWithFormat:@"%d",age];
 	txtCommDate.text = commDate;
     
@@ -895,9 +886,10 @@
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-							  @"SELECT SINo, planCode, CovPeriod, BasicSA, ATPrem "
-							  "HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm FROM UL_Details "
+							  @"SELECT SINo, planCode, CovPeriod, BasicSA, ATPrem, "
+							  "HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, BumpMode FROM UL_Details "
 							  "WHERE SINo=\"%@\"",getSINo];
+		
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -913,6 +905,7 @@
                 const char *getTempHL2 = (const char*)sqlite3_column_text(statement, 7);
                 getHLPct = getTempHL2 == NULL ? nil : [[NSString alloc] initWithUTF8String:getTempHL2];
                 getHLPctTerm = sqlite3_column_int(statement, 8);
+				getBumpMode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)];
                 
             } else {
                 NSLog(@"error access UL_Details");
@@ -1380,6 +1373,8 @@
 	[self.prospectPopover dismissPopoverAnimated:YES];
 }
 
+
+
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
 	if (alertView.tag==1001 && buttonIndex == 0) {
         
@@ -1418,11 +1413,129 @@
             [alert show];
 			alert = Nil;
 		}
-		else {
+		else {  
+			//---------
+            sex = GenderPP;
+            DOB = DOBPP;
+            occuCode = OccpCodePP;
+            [self calculateAge];
+            [self getOccLoadExist];
+            
+			txtOccpLoad.text = [NSString stringWithFormat:@"%@",occLoading];
+            
+            
+            if (occCPA_PA == 0) {
+				txtCPA.text = @"D";
+            } else {
+				txtCPA.text = [NSString stringWithFormat:@"%d",occCPA_PA];
+            }
+            
+            if (occPA == 0) {
+				txtPA.text = @"D";
+            } else {
+				txtPA.text = [NSString stringWithFormat:@"%d",occPA];
+            }
+            //-------------------
+            
+            [self calculateAge];
+            if (AgeLess) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                [alert setTag:1005];
+                [alert show];
+            }
+            else {
+                [self checkExistRider];
+                if (AgeChanged) {
+                    
+                    if (arrExistRiderCode.count > 0) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider(s) has been deleted due to business rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+                        [alert setTag:1007];
+                        [alert show];
+                    }
+                    
+                    [self updateData];
+                }
+                
+                else if (JobChanged) {
+                    
+                    //--1)check rider base on occpClass
+                    [self getActualRider];
+                    NSLog(@"total exist:%d, total valid:%d",arrExistRiderCode.count,ridCode.count);
+                    
+                    BOOL dodelete = NO;
+                    for(int i = 0; i<arrExistRiderCode.count; i++)
+                    {
+                        if(![ridCode containsObject:[arrExistRiderCode objectAtIndex:i]])
+                        {
+                            NSLog(@"do delete %@",[arrExistRiderCode objectAtIndex:i]);
+                            [self deleteRider:[arrExistRiderCode objectAtIndex:i]];
+                            dodelete = YES;
+                        }
+                    }
+                    [self checkExistRider];
+                    
+                    //--2)check Occp not attach
+                    [self getOccpNotAttach];
+                    if (atcRidCode.count !=0) {
+                        
+                        for (int j=0; j<arrExistRiderCode.count; j++)
+                        {
+                            if ([[arrExistRiderCode objectAtIndex:j] isEqualToString:@"CPA"]) {
+                                NSLog(@"do delete %@",[arrExistRiderCode objectAtIndex:j]);
+                                [self deleteRider:[arrExistRiderCode objectAtIndex:j]];
+                                dodelete = YES;
+                            }
+                            
+                            if ([[arrExistRiderCode objectAtIndex:j] isEqualToString:@"HMM"] && [[arrExistPlanChoice objectAtIndex:j] isEqualToString:@"HMM_1000"]) {
+                                NSLog(@"do delete %@",[arrExistRiderCode objectAtIndex:j]);
+                                [self deleteRider:[arrExistRiderCode objectAtIndex:j]];
+                                dodelete = YES;
+                            }
+                        }
+                    }
+                    [self checkExistRider];
+                    
+                    if (dodelete) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                        [alert show];
+                    }
+                    
+                    [self updateData];
+                }
+                else {
+                    [self updateData];
+                }
+            }
+
 		}
 	}
 	else if (alertView.tag == 1007 && buttonIndex == 0) {
         [self deleteRider];
+    }
+}
+
+-(void)getOccpNotAttach
+{
+    atcRidCode = [[NSMutableArray alloc] init];
+    atcPlanChoice = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *querySQL = [NSString stringWithFormat: @"SELECT RiderCode,PlanChoice FROM Trad_Sys_Occp_NotAttach WHERE OccpCode=\"%@\"",occuCode];
+        
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                const char *zzRidCode = (const char *)sqlite3_column_text(statement, 0);
+                [atcRidCode addObject:zzRidCode == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzRidCode]];
+                
+                const char *zzPlan = (const char *)sqlite3_column_text(statement, 1);
+                [atcPlanChoice addObject:zzPlan == NULL ? @"" :[[NSString alloc] initWithUTF8String:zzPlan]];
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
     }
 }
 

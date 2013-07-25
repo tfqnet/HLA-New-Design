@@ -1824,6 +1824,9 @@ id dobtemp;
     [self.OccupationListPopover dismissPopoverAnimated:YES];
 }
 
+-(void)OccupClassSelected:(NSString *)OccupClass{
+	
+}
 
 #pragma mark - Memory management
 -(void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController

@@ -219,6 +219,7 @@ double CurrentRiderPrem;
     
     [self getListingRiderByType];
     [self getListingRider];
+	[self CalcTotalRiderPrem];
     //[self calculateBasicPremium];
     
     //[self calculateRiderPrem];
@@ -402,8 +403,6 @@ double CurrentRiderPrem;
 		}
 	}
 	
-	
-    
 	return  YES;
 }
 
@@ -411,8 +410,8 @@ double CurrentRiderPrem;
 	
 	if (textField.tag == 1) {
 		if ([riderCode isEqualToString:@"CIWP"] || [riderCode isEqualToString:@"ACIR"] || [riderCode isEqualToString:@"DCA"] ||
-			[riderCode isEqualToString:@"DHI"] || [riderCode isEqualToString:@"MR"] || [riderCode isEqualToString:@"PA"]||
-			[riderCode isEqualToString:@"WI"]) {
+			[riderCode isEqualToString:@"DHI"] ||  [riderCode isEqualToString:@"LCWP"]  || [riderCode isEqualToString:@"MR"] ||
+			[riderCode isEqualToString:@"PA"] || [riderCode isEqualToString:@"PR"] || [riderCode isEqualToString:@"TPDWP"] || [riderCode isEqualToString:@"WI"] ) {
 			if (![txtRiderTerm.text isEqualToString:@"" ]) {
 				txtPaymentTerm.text = txtRiderTerm.text;
 			}
@@ -792,6 +791,10 @@ double CurrentRiderPrem;
 		txtRiderTerm.enabled = NO;
 		txtRiderTerm.backgroundColor = [UIColor lightGrayColor];
     }
+	if ([riderCode isEqualToString:@"LSR"]) {
+		txtRiderTerm.text = [NSString stringWithFormat:@"%d", getTerm];
+	}
+
 	//-----------
 	if (sumA) {
 		lbl5.textColor = [UIColor blackColor];
@@ -879,6 +882,9 @@ double CurrentRiderPrem;
 		txtPaymentTerm.enabled = NO;
 		txtPaymentTerm.textColor = [UIColor darkGrayColor];
 		txtPaymentTerm.backgroundColor = [UIColor lightGrayColor];
+		if ([riderCode isEqualToString:@"LSR"]) {
+			txtPaymentTerm.text = [NSString stringWithFormat:@"%d", getTerm];
+		}
 	}
 	//-------------------------
 	if (deduc) {
@@ -1076,7 +1082,23 @@ double CurrentRiderPrem;
     CGRect frame3=CGRectMake(185,y, 90, 50); //sum assured
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
-    label3.text= [LTypeSumAssured objectAtIndex:indexPath.row];
+	
+	NSRange rangeofDot = [[LTypeSumAssured objectAtIndex:indexPath.row ] rangeOfString:@"."];
+	NSString *SumToDisplay = @"";
+	if (rangeofDot.location != NSNotFound) {
+		NSString *substring = [[LTypeSumAssured objectAtIndex:indexPath.row] substringFromIndex:rangeofDot.location ];
+		if (substring.length == 2 && [substring isEqualToString:@".0"]) {
+			SumToDisplay = [[LTypeSumAssured objectAtIndex:indexPath.row] substringToIndex:rangeofDot.location ];
+		}
+		else {
+			SumToDisplay = [LTypeSumAssured objectAtIndex:indexPath.row];
+		}
+	}
+	else {
+		SumToDisplay = [LTypeSumAssured objectAtIndex:indexPath.row];
+	}
+	
+    label3.text= SumToDisplay;
     label3.textAlignment = UITextAlignmentCenter;
     label3.tag = 2003;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -1099,40 +1121,45 @@ double CurrentRiderPrem;
     label5.tag = 2005;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label5];
-	
-	CGRect frame6=CGRectMake(400,y, 70, 50);
+	//------------
+	CGRect frame6=CGRectMake(400,y, 70, 50); //class 
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
-    if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"HMM" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"HSP_II"] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"MG_IV" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PA" ]) {
+	
+	if (occClass < 5) {
 		label6.text= [NSString stringWithFormat:@"%d",occClass];
 	}
 	else{
-		label6.text= [NSString stringWithFormat:@"-"];
+		if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"HMM" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"MG_IV" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PA" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ACIR" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"CIWP" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ECAR" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ECAR55" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"RRTUO" ] ||
+			[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"TPDWP" ]) {
+			label6.text= [NSString stringWithFormat:@"D"];
+		}
+		else{
+			label6.text= [NSString stringWithFormat:@"-"];
+		}
 	}
+	
     label6.textAlignment = UITextAlignmentCenter;
     label6.tag = 2006;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label6];
-	
-	CGRect frame7=CGRectMake(470,y, 63, 50);
+	//---------------
+	CGRect frame7=CGRectMake(470,y, 63, 50); //occ loading
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
     //label6.text= [NSString stringWithFormat:@"%@",occLoadType];
-	if (
-		
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ETPD"] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ETPDB" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ICR" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LCPR" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LCWP" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PR" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PLCP" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"PTR" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"SP_PRE" ] ||
-		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"SP_STD" ]) {
+	if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ECAR" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"ECAR55" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"LSR" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"RRTUO" ] ||
+		[[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"TPDWP" ]) {
 		label7.text= [NSString stringWithFormat:@"%@",occLoadType];
 	}
 	else{
@@ -1143,7 +1170,7 @@ double CurrentRiderPrem;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label7];
 	
-	NSString *hl1k = [LTypeRidHL1K objectAtIndex:indexPath.row];
+	NSString *hl1k = [LTypeRidHL1K objectAtIndex:indexPath.row]; //health loading
     NSString *hlp = [LTypeRidHLP objectAtIndex:indexPath.row];
 	CGRect frame8=CGRectMake(533,y, 63, 50);
     UILabel *label8=[[UILabel alloc]init];
@@ -1167,7 +1194,7 @@ double CurrentRiderPrem;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label8];
 	
-	NSString *hl1kT = [LTypeRidHLTerm objectAtIndex:indexPath.row];
+	NSString *hl1kT = [LTypeRidHLTerm objectAtIndex:indexPath.row]; //health loading term
     NSString *hlpT = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
     
     CGRect frame9=CGRectMake(596,y, 70, 50);
@@ -1239,6 +1266,9 @@ double CurrentRiderPrem;
 		label9.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
         
     }
+	
+	
+	
 	
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
@@ -1419,6 +1449,7 @@ double CurrentRiderPrem;
     [self.outletDeductible setTitle:itemdesc forState:UIControlStateNormal];
     deductible = [[NSString alloc] initWithFormat:@"%@",itemdesc];
     
+	
     [self.deducPopover dismissPopoverAnimated:YES];
 }
 
@@ -1477,6 +1508,11 @@ double CurrentRiderPrem;
     [self.pTypePopOver dismissPopoverAnimated:YES];
     NSLog(@"RIDERVC pType:%@, seq:%d, desc:%@ sex:%@",pTypeCode,PTypeSeq,pTypeDesc, pTypeSex);
     [self getListingRiderByType];
+	
+	if ([code isEqualToString:@"PY"] || PTypeSeq == 2) {
+		[self CheckWaiverRiderPrem];
+		[self getListingRiderByType];
+	}
     [myTableView reloadData];
 }
 
@@ -1700,6 +1736,7 @@ double CurrentRiderPrem;
         }
         sqlite3_close(contactDB);
     }
+	
 }
 
 
@@ -2158,6 +2195,7 @@ double CurrentRiderPrem;
         } else {
             [self updateRider];
         }
+	
     }
 }
 
@@ -2314,6 +2352,7 @@ double CurrentRiderPrem;
             else {
                 NSLog(@"will continue save RB!");
                 [self saveRider];
+				
             }
         }
     }
@@ -2647,7 +2686,7 @@ double CurrentRiderPrem;
     }
 
     inputSA = [txtSumAssured.text doubleValue];
-	[self ReturnCurrentRiderPrem];
+	[self ReturnCurrentRiderPrem:0];
 	
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -2712,8 +2751,10 @@ double CurrentRiderPrem;
        
     }
     
+	[self CheckWaiverRiderPrem];
     [self getListingRiderByType];
     [self getListingRider];
+	[self CalcTotalRiderPrem];
 	
 	if (inputSA > maxRiderSA) {
         NSLog(@"will delete %@",riderCode);
@@ -2739,7 +2780,7 @@ double CurrentRiderPrem;
    
 }
 
--(void)ReturnCurrentRiderPrem{
+-(void)ReturnCurrentRiderPrem: (int)WaiverRiderTerm{
 	
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -2769,8 +2810,13 @@ double CurrentRiderPrem;
         }
         else if ([riderCode isEqualToString:@"CIWP"]||[riderCode isEqualToString:@"LCWP"] || [riderCode isEqualToString:@"PR"] ||
 				 [riderCode isEqualToString:@"TPDWP"] ) {
-
-            [self getRiderRateSexPremTermAge:riderCode Sex:sex Prem:txtPaymentTerm.text Term:ridTerm Age:age];
+			if (WaiverRiderTerm == 0) {
+				[self getRiderRateSexPremTermAge:riderCode Sex:sex Prem:txtPaymentTerm.text Term:ridTerm Age:age];
+			}
+			else{
+				[self getRiderRateSexPremTermAge:riderCode Sex:sex Prem:[ NSString stringWithFormat:@"%d", WaiverRiderTerm ] Term:WaiverRiderTerm Age:age];
+			}
+    
         }
         else if ([riderCode isEqualToString:@"HMM"]) {
             [self getRiderRateTypeSexClassAgeDed:riderCode Type:outletRiderPlan.titleLabel.text
@@ -2782,9 +2828,12 @@ double CurrentRiderPrem;
         else if ([riderCode isEqualToString:@"LSR"]) {
             [self getRiderRateSexAge:riderCode Sex:sex Age:age];
         }
-        else { //for ECAR
+        else if ([riderCode isEqualToString:@"ECAR55"]) {
             [self getRiderRatePremTermAge:riderCode Prem:txtPaymentTerm.text Term:ridTerm Age:age];
         }
+		else{ //ECAR
+			[self getRiderRateGYITermAge:riderCode GYIStartFrom:txtGYIFrom.text Term:ridTerm Age:age];
+		}
 		
 		double ridSA = [txtSumAssured.text doubleValue];
         double riderHLoad = 0;
@@ -2880,6 +2929,7 @@ double CurrentRiderPrem;
 								"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				}
 
+				//NSLog(@"%@", querySQL);
 				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
 				{
 					if (sqlite3_step(statement) == SQLITE_ROW)
@@ -2891,19 +2941,35 @@ double CurrentRiderPrem;
 				sqlite3_close(contactDB);
 			}
 			
-			txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA];
-
+			if ([getBUMPMode isEqualToString:@"S"]) {
+				txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA * halfFac];
+			}
+			else if ([getBUMPMode isEqualToString:@"Q"]){
+				txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA * quarterFac];
+			}
+			else if ([getBUMPMode isEqualToString:@"M"]){
+				txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA/monthFac];
+			}
+			else {
+				txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA];
+			}
+			
+			ridSA = [txtSumAssured.text doubleValue];
+			
+			//NSLog(@"%f * %f/100.00, %f", riderRate, ridSA, monthFac);
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/100.00) / annFac;
 				_half = (riderRate *ridSA /100.00) / halfFac;
 				_quar = (riderRate *ridSA /100.00) / quarterFac;
 				_month = (riderRate *ridSA /100.00) * monthFac;
+
 			}
 			else{
 				_ann = ridSA * (riderRate * 0.01 + ridTerm/1000.00 * occLoadRider + riderHLoad/1000.00) / annFac;
 				_half = ridSA * (riderRate * 0.01 + ridTerm/1000.00 * occLoadRider + riderHLoad/1000.00) / halfFac;
 				_quar = ridSA * (riderRate * 0.01 + ridTerm/1000.00 * occLoadRider + riderHLoad/1000.00) / quarterFac;
 				_month = ridSA * (riderRate * 0.01 + ridTerm/1000.00 * occLoadRider + riderHLoad/1000.00) * monthFac;
+				
 			}
 			
 			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
@@ -2929,16 +2995,16 @@ double CurrentRiderPrem;
 			
 			
 			if (riderHLoad == 0) {
-				_ann = (riderRate * ridSA/100 * annFac);
-				_half = (riderRate *ridSA /100 *halfFac);
-				_quar = (riderRate *ridSA /100 *quarterFac);
-				_month = (riderRate *ridSA /100 *monthFac);
+				_ann = (riderRate * ridSA/100.00) ;
+				_half = (riderRate *ridSA /100.00) ;
+				_quar = (riderRate *ridSA /100.00) ;
+				_month = (riderRate *ridSA /100.00) ;
 			}
 			else{
-				_ann = ridSA/100 * 1 * (riderRate * (1 + riderHLoad /100) + occLoadRider/10 + 0 );
-				_half = ridSA/100 * 1 * (riderRate * (1 + riderHLoad /100) + occLoadRider/10 + 0 );
-				_quar = ridSA/100 * 1 * (riderRate * (1 + riderHLoad /100) + occLoadRider/10 + 0 );
-				_month = ridSA/100 * 1 * (riderRate * (1 + riderHLoad /100) + occLoadRider/10 + 0 );
+				_ann = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
+				_half = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
+				_quar = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
+				_month = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
 			}
 			
 			if (ridSA >= 10000 && ridSA < 20000) {
@@ -3096,13 +3162,30 @@ double CurrentRiderPrem;
 					}
 					sqlite3_close(contactDB);
 				}
+				
+				if ([getBUMPMode isEqualToString:@"S"]) {
+					txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA * halfFac];
+				}
+				else if ([getBUMPMode isEqualToString:@"Q"]){
+					txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA * quarterFac];
+				}
+				else if ([getBUMPMode isEqualToString:@"M"]){
+					txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA/monthFac];
+				}
+				else {
+					txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA];
+				}
+				
+				ridSA = [txtSumAssured.text doubleValue];
+				
+				//txtSumAssured.text = [NSString stringWithFormat:@"%.2f", ridSA ];
 			}
 			
 			if (riderHLoad == 0) {
-				_ann = (riderRate * ridSA/100.00 / annFac);
-				_half = (riderRate *ridSA /100.00 / halfFac);
-				_quar = (riderRate *ridSA /100.00 / quarterFac);
-				_month = (riderRate *ridSA /100.00 * monthFac);
+				_ann = (riderRate * ridSA/100.00) / annFac;
+				_half = (riderRate *ridSA /100.00) / halfFac;
+				_quar = (riderRate *ridSA /100.00) / quarterFac;
+				_month = (riderRate *ridSA /100.00) * monthFac;
 			}
 			else{
 				_ann =  (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) / annFac;
@@ -3139,10 +3222,10 @@ double CurrentRiderPrem;
 				_month = (riderRate *ridSA /1000.00 );
 			}
 			else{
-				_ann = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
-				_half = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
-				_quar = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
-				_month = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000 * 1);
+				_ann = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000.00 * 1);
+				_half = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000.00 * 1);
+				_quar = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000.00 * 1);
+				_month = ((riderRate + occLoadRider + riderHLoad) * ridSA/1000.00 * 1);
 			}
 			
 			if (ridSA >= 450 && ridSA < 1200) {
@@ -3172,7 +3255,7 @@ double CurrentRiderPrem;
 			
 			_half = _ann/halfFac;
 			_quar = _ann/quarterFac;
-			_month = _ann/monthFac;
+			_month = _ann *monthFac;
 			
 			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
 			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
@@ -3202,10 +3285,10 @@ double CurrentRiderPrem;
 				_month = (riderRate *ridSA /100.00 );
 			}
 			else{
-				_ann = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
-				_half = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
-				_quar = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
-				_month = ((riderRate + occLoadRider/10 + riderHLoad/10) * ridSA/100 * 1);
+				_ann = ((riderRate + occLoadRider/10 + riderHLoad/10.00) * ridSA/100.00 * 1);
+				_half = ((riderRate + occLoadRider/10 + riderHLoad/10.00) * ridSA/100.00 * 1);
+				_quar = ((riderRate + occLoadRider/10 + riderHLoad/10.00) * ridSA/100.00 * 1);
+				_month = ((riderRate + occLoadRider/10 + riderHLoad/10.00) * ridSA/100.00 * 1);
 			}
 			
 			if (ridSA >= 50 && ridSA < 100) {
@@ -3235,7 +3318,7 @@ double CurrentRiderPrem;
 			
 			_half = _ann/halfFac;
 			_quar = _ann/quarterFac;
-			_month = _ann/monthFac;
+			_month = _ann * monthFac;
 			
 			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
 			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
@@ -3294,15 +3377,15 @@ double CurrentRiderPrem;
 			
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/1000.00 );
-				_half = (riderRate *ridSA /1000.00 / halfFac);
-				_quar = (riderRate *ridSA /1000.00 / quarterFac);
-				_month = (riderRate *ridSA /1000.00 * monthFac);
+				_half = (riderRate *ridSA /1000.00 );
+				_quar = (riderRate *ridSA /1000.00 );
+				_month = (riderRate *ridSA /1000.00 );
 			}
 			else{
-				_ann = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / annFac;
-				_half = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / halfFac;
-				_quar = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) / quarterFac;
-				_month = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) * monthFac;
+				_ann = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) ;
+				_half = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) ;
+				_quar = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) ;
+				_month = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad);
 			}
 			
 			if (ridSA >= 20000 && ridSA < 50000) {
@@ -3332,7 +3415,7 @@ double CurrentRiderPrem;
 			
 			_half = _ann/halfFac;
 			_quar = _ann/quarterFac;
-			_month = _ann/monthFac;
+			_month = _ann * monthFac;
 			
 			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
 			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
@@ -3354,7 +3437,7 @@ double CurrentRiderPrem;
 			CurrentRiderPrem = annualRider;
 		}
 		else if([getBUMPMode isEqualToString:@"S"]){
-				CurrentRiderPrem = halfYearRider;
+			CurrentRiderPrem = halfYearRider;
 		}
 		else if([getBUMPMode isEqualToString:@"Q"]){
 			CurrentRiderPrem =quarterRider;
@@ -3362,9 +3445,6 @@ double CurrentRiderPrem;
 		else{
 			CurrentRiderPrem =monthlyRider;
 		}
-		
-		
-
 }
 
 -(void)getOccLoadRider
@@ -3451,6 +3531,7 @@ double CurrentRiderPrem;
 							  " AND FromAge = '%d' AND term ='%d'",
 							  aaplan, aaSex, aaPrem, aaAge, aaTerm];
 		
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -3583,23 +3664,16 @@ double CurrentRiderPrem;
 	
 }
 
--(void)getRiderRatePremTermAge:(NSString *)aaplan Prem:(NSString *)aaPrem Term:(int)aaTerm Age:(int)aaAge{
+-(void)getRiderRateGYITermAge:(NSString *)aaplan GYIStartFrom:(NSString *)aaGYIStartFrom Term:(int)aaTerm Age:(int)aaAge{
 	sqlite3_stmt *statement;
     if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
     {	NSString *querySQL;
-		if ([aaplan isEqualToString:@"ECAR"]) {
+		
 			querySQL = [NSString stringWithFormat:
 								  @"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND term = '%d' "
-								  " AND FromAge < '%d' AND toAge > '%d' AND prempayopt ='%@'",
-								  aaplan, aaTerm, aaAge, aaAge, aaPrem];
-		}
-		else{
-			querySQL = [NSString stringWithFormat:
-						@"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND term = '%d' "
-						" AND FromAge = '%d' AND prempayopt ='%@'",
-						aaplan, aaTerm, aaAge, aaPrem];
-		}
-        
+								  " AND FromAge < '%d' AND toAge > '%d' AND GYIStartFrom ='%@'",
+								  aaplan, aaTerm, aaAge, aaAge, aaGYIStartFrom];
+		
 		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
@@ -3616,6 +3690,32 @@ double CurrentRiderPrem;
     }
 }
 
+-(void)getRiderRatePremTermAge:(NSString *)aaplan Prem:(NSString *)aaPrem Term:(int)aaTerm Age:(int)aaAge{
+	sqlite3_stmt *statement;
+    if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK)
+    {	NSString *querySQL;
+		
+			querySQL = [NSString stringWithFormat:
+						@"SELECT rate FROM ES_Sys_Rider_Prem WHERE plancode ='%@' AND term = '%d' "
+						" AND FromAge = '%d' AND prempayopt ='%@'",
+						aaplan, aaTerm, aaAge, aaPrem];
+		
+        
+		//NSLog(@"%@", querySQL);
+        if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                riderRate =  sqlite3_column_double(statement, 0);
+                
+            } else {
+                NSLog(@"error access ES_Sys_rider_Prem");
+            }
+            sqlite3_finalize(statement);
+        }
+        sqlite3_close(contactDB);
+    }
+}
 
 -(NSString *)ReturnReinvest{
 	NSString *returnvalue;
@@ -3639,7 +3739,7 @@ double CurrentRiderPrem;
 {
 	sqlite3_stmt *statement;
 	
-	[self ReturnCurrentRiderPrem];
+	[self ReturnCurrentRiderPrem:0];
     //sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
@@ -3655,8 +3755,9 @@ double CurrentRiderPrem;
         if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
+				[self CheckWaiverRiderPrem];
                 [self validateRules];
-                
+	            
             } else {
                 NSLog(@"Update Rider failed!");
                 
@@ -3667,7 +3768,11 @@ double CurrentRiderPrem;
         }
         sqlite3_close(contactDB);
     }
+	
+	[self CalcTotalRiderPrem];
     
+	
+	
 }
 
 
@@ -3712,42 +3817,255 @@ double CurrentRiderPrem;
 }
 
 -(void)CheckWaiverRiderPrem{
+	if ([riderCode isEqualToString:@"LCWP"] || [riderCode isEqualToString:@"CIWP"] || [riderCode isEqualToString:@"PR"] ||
+		[riderCode isEqualToString:@"TPDWP"]) {
+		return;
+	}
+	
 	sqlite3_stmt *statement;
 	double ridSA = 0.00;
-	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-	{
-		NSString *querySQL;
+	NSString *tempSA = txtSumAssured.text;
+	NSString *TempRiderCode = riderCode;
+	int RiderTerm;
+	NSString *querySQL;
+	NSUInteger index = [LTypeRiderCode indexOfObject:@"CIWP"];
+	double half = 0.5, quarter = 0.25, month = 0.0833333;
+	
+		if (index != NSNotFound) {
+			
+			riderCode = @"CIWP";
+			RiderTerm = [[LTypeTerm objectAtIndex:index] intValue];
+			[self ReturnCurrentRiderPrem:RiderTerm];
+			
+			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+			 {
+				 querySQL = [NSString stringWithFormat:
+							 @"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+							 "where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ACIR') "
+							 "union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
+				 
+				 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				 {
+					 if (sqlite3_step(statement) == SQLITE_ROW)
+					 {
+						 if ([getBUMPMode isEqualToString:@"S"]) {
+							 ridSA = sqlite3_column_double(statement, 0)/half  ;
+						 }
+						 else if ([getBUMPMode isEqualToString:@"Q"]){
+							 ridSA = sqlite3_column_double(statement, 0)/quarter;
+						 }
+						 else if ([getBUMPMode isEqualToString:@"M"]){
+							 ridSA = sqlite3_column_double(statement, 0)/month;
+						 }
+						 else{
+							 ridSA = sqlite3_column_double(statement, 0);
+						 }
+					 }
+					 sqlite3_finalize(statement);
+				 }
+				 
+				 querySQL = [NSString stringWithFormat:
+							 @"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured ='%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+							 CurrentRiderPrem, ridSA, getSINo, @"CIWP"];
+				 //NSLog(@"%@", querySQL);
+				 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				 {
+					 if (sqlite3_step(statement) == SQLITE_DONE)
+					 {
+						 
+					 }
+					 sqlite3_finalize(statement);
+				 }
+				 sqlite3_close(contactDB);
+			 }
 		
-		if ([riderCode isEqualToString:@"CIWP"]) {
-			querySQL = [NSString stringWithFormat:
-						@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
-						"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ACIR') "
-						"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 		}
-		else if([riderCode isEqualToString:@"LCWP"]){
-			querySQL = [NSString stringWithFormat:
-						@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
-						"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR', 'ECAR55', 'PA', 'TPDMLA') "
-						"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
+		
+		index = [LTypeRiderCode indexOfObject:@"LCWP"];
+		if (index != NSNotFound) {
+			riderCode = @"LCWP";
+			RiderTerm = [[LTypeTerm objectAtIndex:index] intValue];
+			[self ReturnCurrentRiderPrem:RiderTerm];
+			
+			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+			{
+				querySQL = [NSString stringWithFormat:
+							@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+							"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR', 'ECAR55', 'PA', 'TPDMLA') "
+							"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_ROW)
+					{
+						if ([getBUMPMode isEqualToString:@"S"]) {
+							ridSA = sqlite3_column_double(statement, 0)/half  ;
+						}
+						else if ([getBUMPMode isEqualToString:@"Q"]){
+							ridSA = sqlite3_column_double(statement, 0)/quarter;
+						}
+						else if ([getBUMPMode isEqualToString:@"M"]){
+							ridSA = sqlite3_column_double(statement, 0)/month;
+						}
+						else{
+							ridSA = sqlite3_column_double(statement, 0);
+						}
+					}
+					sqlite3_finalize(statement);
+				}
+				
+				querySQL = [NSString stringWithFormat:
+							@"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+							CurrentRiderPrem, ridSA, getSINo, @"LCWP"];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_DONE)
+					{
+						
+					}
+					sqlite3_finalize(statement);
+				}
+			
+				sqlite3_close(contactDB);
+
+			}
+			
 		}
-		else{
+		
+		index = [LTypeRiderCode indexOfObject:@"PR"];
+		if (index != NSNotFound) {
+			riderCode = @"PR";
+			RiderTerm = [[LTypeTerm objectAtIndex:index] intValue];
+			[self ReturnCurrentRiderPrem:RiderTerm];
+			
+			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+				querySQL = [NSString stringWithFormat:
+							@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+							"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
+							"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_ROW)
+					{
+						if ([getBUMPMode isEqualToString:@"S"]) {
+							ridSA = sqlite3_column_double(statement, 0)/half  ;
+						}
+						else if ([getBUMPMode isEqualToString:@"Q"]){
+							ridSA = sqlite3_column_double(statement, 0)/quarter;
+						}
+						else if ([getBUMPMode isEqualToString:@"M"]){
+							ridSA = sqlite3_column_double(statement, 0)/month;
+						}
+						else{
+							ridSA = sqlite3_column_double(statement, 0);
+						}
+					}
+					sqlite3_finalize(statement);
+				}
+				
+				
+				querySQL = [NSString stringWithFormat:
+							@"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+							CurrentRiderPrem, ridSA, getSINo, @"PR"];
+				
+				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_DONE)
+					{
+						
+					}
+					sqlite3_finalize(statement);
+				}
+				sqlite3_close(contactDB);
+			}
+				
+		}
+	
+	index = [LTypeRiderCode indexOfObject:@"TPDWP"];
+	if (index != NSNotFound) {
+		riderCode = @"TPDWP";
+		RiderTerm = [[LTypeTerm objectAtIndex:index] intValue];
+		[self ReturnCurrentRiderPrem:RiderTerm];
+		
+		if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 			querySQL = [NSString stringWithFormat:
 						@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
 						"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
 						"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
+			
+			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			{
+				if (sqlite3_step(statement) == SQLITE_ROW)
+				{
+					if ([getBUMPMode isEqualToString:@"S"]) {
+						ridSA = sqlite3_column_double(statement, 0)/half  ;
+					}
+					else if ([getBUMPMode isEqualToString:@"Q"]){
+						ridSA = sqlite3_column_double(statement, 0)/quarter;
+					}
+					else if ([getBUMPMode isEqualToString:@"M"]){
+						ridSA = sqlite3_column_double(statement, 0)/month;
+					}
+					else{
+						ridSA = sqlite3_column_double(statement, 0);
+					}
+					
+				}
+				sqlite3_finalize(statement);
+			}
+			
+			
+			querySQL = [NSString stringWithFormat:
+						@"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+						CurrentRiderPrem, ridSA, getSINo, @"TPDWP"];
+			
+			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			{
+				if (sqlite3_step(statement) == SQLITE_DONE)
+				{
+					
+				}
+				sqlite3_finalize(statement);
+			}
+			sqlite3_close(contactDB);
 		}
 		
-		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-		{
-			if (sqlite3_step(statement) == SQLITE_ROW)
-			{
-				ridSA =  sqlite3_column_double(statement, 0);
-			}
-			sqlite3_finalize(statement);
-		}
-		sqlite3_close(contactDB);
 	}
+	
+		
+	riderCode = TempRiderCode;
+	txtSumAssured.text = tempSA;
+	
 }
+
+-(void)CalcTotalRiderPrem{
+	
+	sqlite3_stmt *statement;
+	NSString *querySQL;
+	//double half = 0.5, quarter = 0.25, month = 0.0833333;
+
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+		{
+			querySQL = [NSString stringWithFormat:
+						@"SELECT sum(premium) from ul_rider_details where sino = '%@' ",  getSINo];
+			
+			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			{
+				if (sqlite3_step(statement) == SQLITE_ROW)
+				{
+					txtRiderPremium.text =  [ NSString stringWithFormat:@"%.2f", sqlite3_column_double(statement, 0) ] ;
+					
+				}
+				sqlite3_finalize(statement);
+			}
+			
+			sqlite3_close(contactDB);
+		}
+		
+}
+
 
 #pragma mark- Button Action
 - (IBAction)ActionPersonType:(id)sender {
@@ -3932,7 +4250,9 @@ double CurrentRiderPrem;
         ItemToBeDeleted = [[NSMutableArray alloc] init];
         indexPaths = [[NSMutableArray alloc] init];
         
+		[self CheckWaiverRiderPrem];
         [self validateRules];
+		[self CalcTotalRiderPrem];
         
 		outletDelete.enabled = FALSE;
         [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
@@ -4065,7 +4385,7 @@ double CurrentRiderPrem;
 		}
 
 	}
-
+/*
 if (dodelete) {
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Some Rider(s) has been deleted due to marketing rule." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 	[alert setTag:1005];
@@ -4089,6 +4409,15 @@ else {
 	[self calculateTerm];
 	[self calculateSA];
 }
+ */
+	[self getListingRider];
+	[self getListingRiderByType];
+	[_delegate RiderAdded];
+	
+	riderCode = currentSelectedRider;
+	[self getRiderTermRule];
+	[self calculateTerm];
+	[self calculateSA];
 }
 
 - (IBAction)ActionEdit:(id)sender {

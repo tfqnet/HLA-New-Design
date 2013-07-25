@@ -68,6 +68,8 @@ NSString *gEverName = @"";
             self.outletDelete.hidden = NO;
         }
     }
+	
+	outletGender.enabled = FALSE;
 	// Do any additional setup after loading the view.
 }
 

@@ -567,7 +567,7 @@ static sqlite3 *contactDB = nil;
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"CFPA\", \"Commencing From\n(pol. anniversary)\", \"RRTUO\", \"Rider Regular Top Up Option\", \"TF\", "
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"CFPA\", \"Commencing From (pol. anniversary)\", \"RRTUO\", \"Rider Regular Top Up Option\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
 	
