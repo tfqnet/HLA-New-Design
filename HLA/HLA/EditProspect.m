@@ -42,7 +42,7 @@
 @synthesize txtOfficeTown;
 @synthesize txtOfficeState;
 @synthesize txtOfficeCountry;
-@synthesize txtExactDuties;
+@synthesize txtExactDuties,btnOfficeCountry;
 @synthesize txtrFullName,segSmoker,txtBussinessType,txtAnnIncome;
 @synthesize segGender,txtIDType,txtOtherIDType,OccupCodeSelected;
 @synthesize outletDOB,outletGroup,outletTitle,OtherIDType;
@@ -61,6 +61,7 @@
 @synthesize TitlePickerPopover = _TitlePickerPopover;
 @synthesize GroupList = _GroupList;
 @synthesize GroupPopover = _GroupPopover;
+
 
 bool IsContinue = TRUE;
 
@@ -121,9 +122,6 @@ bool IsContinue = TRUE;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnSave:)];
     
-    outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     outletDOB.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     checked = NO;
@@ -165,19 +163,37 @@ bool IsContinue = TRUE;
 - (void)viewWillAppear:(BOOL)animated
 {
     strChanges = @"No";
+
+    if (!(pp.ProspectGroup == NULL)) {
+        
+        [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectGroup]forState:UIControlStateNormal];
+        
+        outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    }
+    else {
+        [outletGroup setTitle:@"- Select -" forState:UIControlStateNormal];
+    }
     
-    [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectGroup]forState:UIControlStateNormal];
-    [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectTitle]forState:UIControlStateNormal];
-    [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectDOB]forState:UIControlStateNormal];
+    if (!(pp.ProspectTitle == NULL)) {
+        [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectTitle]forState:UIControlStateNormal];
+        
+        outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    }
+    else {
+        [outletTitle setTitle:@"- Select -" forState:UIControlStateNormal];
+    }
     
-    if (![pp.OtherIDType isEqualToString:@"(null)"]) {
+    if (!(pp.OtherIDType == NULL || [pp.OtherIDType isEqualToString:@"- Select -"])) {
         [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.OtherIDType]forState:UIControlStateNormal];
         txtOtherIDType.text = pp.OtherIDTypeNo;
+        OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     else {
         [self.OtherIDType setTitle:@"- Select -" forState:UIControlStateNormal];
         txtOtherIDType.text = @"";
     }
+    
+    [outletDOB setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectDOB]forState:UIControlStateNormal];
     
     txtIDType.text = pp.IDTypeNo;
     txtrFullName.text = pp.ProspectName;
@@ -196,6 +212,27 @@ bool IsContinue = TRUE;
     txtOfficeAddr2.text = pp.OfficeAddress2;
     txtOfficeAddr3.text = pp.OfficeAddress3;
     txtExactDuties.text = pp.ExactDuties;
+    
+    if (![pp.OfficeAddressCountry isEqualToString:@""] && ![pp.OfficeAddressCountry isEqualToString:@"MALAYSIA"]) {
+        
+        checked2 = YES;
+        txtOfficeTown.backgroundColor = [UIColor whiteColor];
+        txtOfficeState.backgroundColor = [UIColor whiteColor];
+        txtOfficeTown.enabled = YES;
+        txtOfficeState.enabled = YES;
+        txtOfficeCountry.hidden = YES;
+        btnOfficeCountry.hidden = NO;
+        [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
+        
+        btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [btnOfficeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",pp.OfficeAddressCountry] forState:UIControlStateNormal];
+    }
+    else {
+        
+        btnOfficeCountry.hidden = YES;
+        txtOfficeCountry.text = pp.OfficeAddressCountry;
+    }
+    
     
     if (![pp.AnnualIncome isEqualToString:@"(null)"]) {
         txtAnnIncome.text = pp.AnnualIncome;
@@ -391,6 +428,9 @@ bool IsContinue = TRUE;
 
 #pragma mark - action
 
+- (IBAction)ActionOfficeCountry:(id)sender {
+}
+
 - (IBAction)isForeign:(id)sender
 {
     UIButton *btnPressed = (UIButton*)sender;
@@ -444,6 +484,13 @@ bool IsContinue = TRUE;
 
 - (IBAction)btnTitle:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (_TitlePicker == nil) {
         self.TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
         _TitlePicker.delegate = self;
@@ -484,6 +531,13 @@ bool IsContinue = TRUE;
 
 - (IBAction)btnOccup:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (_OccupationList == nil) {
         self.OccupationList = [[OccupationList alloc] initWithStyle:UITableViewStylePlain];
         _OccupationList.delegate = self;
@@ -499,6 +553,13 @@ bool IsContinue = TRUE;
 
 - (IBAction)ActionGender:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if ([segGender selectedSegmentIndex]==0) {
         gender = @"M";
     }
@@ -509,6 +570,13 @@ bool IsContinue = TRUE;
 
 - (IBAction)ActionSmoker:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if ([segSmoker selectedSegmentIndex]==0) {
         ClientSmoker = @"Y";
     }
@@ -1896,6 +1964,7 @@ bool IsContinue = TRUE;
     [self setTxtClass:nil];
     [self setBtnForeignHome:nil];
     [self setBtnForeignOffice:nil];
+    [self setBtnOfficeCountry:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

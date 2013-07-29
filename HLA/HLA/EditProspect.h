@@ -95,7 +95,9 @@
 @property (strong, nonatomic) IBOutlet UITextField *txtClass;
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignHome;
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
+@property (strong, nonatomic) IBOutlet UIButton *btnOfficeCountry;
 
+- (IBAction)ActionOfficeCountry:(id)sender;
 - (IBAction)isForeign:(id)sender;
 - (IBAction)btnGroup:(id)sender;
 - (IBAction)btnTitle:(id)sender;

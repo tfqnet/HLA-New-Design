@@ -46,7 +46,7 @@
 @synthesize txtOfficeState;
 @synthesize txtOfficeCountry,btnForeignHome,btnForeignOffice;
 @synthesize txtExactDuties,txtBussinessType,txtAnnIncome,txtClass;
-@synthesize outletOccup,ClientSmoker;
+@synthesize outletOccup,ClientSmoker,btnOfficeCountry;
 @synthesize myScrollView,outletGroup,OtherIDType,txtIDType,txtOtherIDType;
 @synthesize txtFullName, ContactTypeTracker,segSmoker,outletTitle;
 @synthesize segGender, ContactType, DOB, gender, SelectedStateCode, SelectedOfficeStateCode, OccupCodeSelected;
@@ -58,6 +58,8 @@
 @synthesize IDTypePicker = _IDTypePicker;
 @synthesize TitlePicker = _TitlePicker;
 @synthesize TitlePickerPopover = _TitlePickerPopover;
+@synthesize nationalityList = _nationalityList;
+@synthesize nationalityPopover = _nationalityPopover;
 
 bool PostcodeContinue = TRUE;
 
@@ -88,6 +90,7 @@ bool PostcodeContinue = TRUE;
     txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     txtClass.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+    btnOfficeCountry.hidden = YES;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(btnSave:)];
     checked = NO;
@@ -388,7 +391,15 @@ bool PostcodeContinue = TRUE;
 
 #pragma mark - action
 
-- (IBAction)ActionGender:(id)sender {
+- (IBAction)ActionGender:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if ([segGender selectedSegmentIndex]==0) {
         gender = @"M";
     }
@@ -399,6 +410,13 @@ bool PostcodeContinue = TRUE;
 
 - (IBAction)ActionSmoker:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if ([segSmoker selectedSegmentIndex]==0) {
         ClientSmoker = @"Y";
     }
@@ -409,7 +427,6 @@ bool PostcodeContinue = TRUE;
 
 - (IBAction)btnDOB:(id)sender
 {
-    
     [self resignFirstResponder];
     [self.view endEditing:YES];
     
@@ -444,6 +461,13 @@ bool PostcodeContinue = TRUE;
 
 - (IBAction)btnOccup:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (_OccupationList == nil) {
         self.OccupationList = [[OccupationList alloc] initWithStyle:UITableViewStylePlain];
         _OccupationList.delegate = self;
@@ -459,6 +483,7 @@ bool PostcodeContinue = TRUE;
 - (IBAction)isForeign:(id)sender
 {
     UIButton *btnPressed = (UIButton*)sender;
+    ColorHexCode *CustomColor = [[ColorHexCode alloc] init ];
     
     if (btnPressed.tag == 0) {
         
@@ -478,10 +503,32 @@ bool PostcodeContinue = TRUE;
         if (checked2) {
             [btnForeignOffice setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
             checked2 = NO;
+            
+            txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+            txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+            txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+            txtOfficeTown.enabled = NO;
+            txtOfficeState.enabled = NO;
+            txtOfficeCountry.hidden = NO;
+            btnOfficeCountry.hidden = YES;
+            
+            [txtOfficePostcode addTarget:self action:@selector(OfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+            [txtOfficePostcode addTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
         }
         else {
             [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
             checked2 = YES;
+            
+            txtOfficeTown.backgroundColor = [UIColor whiteColor];
+            txtOfficeState.backgroundColor = [UIColor whiteColor];
+            txtOfficeCountry.backgroundColor = [UIColor whiteColor];
+            txtOfficeTown.enabled = YES;
+            txtOfficeState.enabled = YES;
+            txtOfficeCountry.hidden = YES;
+            btnOfficeCountry.hidden = NO;
+            
+            [txtOfficePostcode removeTarget:self action:@selector(OfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+            [txtOfficePostcode removeTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
         }
         
     }
@@ -506,10 +553,18 @@ bool PostcodeContinue = TRUE;
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
             txtFullName.text = [txtFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSString *OffCountry = nil;
+            if (checked2) {
+                OffCountry = btnOfficeCountry.titleLabel.text;
+                SelectedOfficeStateCode = txtOfficeState.text;
+            }
+            else {
+                OffCountry = txtOfficeCountry.text;
+            }
             
             NSString *insertSQL = [NSString stringWithFormat:
             @"INSERT INTO prospect_profile(\"ProspectName\", \"ProspectDOB\", \"ProspectGender\", \"ResidenceAddress1\", \"ResidenceAddress2\", \"ResidenceAddress3\", \"ResidenceAddressTown\", \"ResidenceAddressState\",\"ResidenceAddressPostCode\", \"ResidenceAddressCountry\", \"OfficeAddress1\", \"OfficeAddress2\", \"OfficeAddress3\",\"OfficeAddressTown\", \"OfficeAddressState\", \"OfficeAddressPostCode\", \"OfficeAddressCountry\", \"ProspectEmail\",\"ProspectOccupationCode\", \"ExactDuties\", \"ProspectRemark\", \"DateCreated\", \"CreatedBy\", \"DateModified\",\"ModifiedBy\", \"ProspectGroup\", \"ProspectTitle\", \"IDTypeNo\", \"OtherIDType\", \"OtherIDTypeNo\", \"Smoker\", \"AnnualIncome\", \"BussinessType\") "
-                "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", %@, \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostcode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text,
+                "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", %@, \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", txtFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostcode.text, OffCountry, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text,
                                    @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text , txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text];
             
             const char *insert_stmt = [insertSQL UTF8String];
@@ -547,6 +602,27 @@ PostcodeContinue = TRUE;
 
 }
 
+- (IBAction)actionOfficeCountry:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (_nationalityList == nil) {
+        self.nationalityList = [[Nationality alloc] initWithStyle:UITableViewStylePlain];
+        _nationalityList.delegate = self;
+        self.nationalityPopover = [[UIPopoverController alloc] initWithContentViewController:_nationalityList];
+    }
+    
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.nationalityPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
 - (IBAction)btnGroup:(id)sender
 {
     [self resignFirstResponder];
@@ -571,6 +647,13 @@ PostcodeContinue = TRUE;
 
 - (IBAction)btnTitle:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (_TitlePicker == nil) {
         _TitlePicker = [[TitleViewController alloc] initWithStyle:UITableViewStylePlain];
         _TitlePicker.delegate = self;
@@ -1344,6 +1427,12 @@ PostcodeContinue = TRUE;
     txtClass.text = OccupClass;
 }
 
+-(void)selectedCountry:(NSString *)theCountry
+{
+    btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [btnOfficeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theCountry] forState:UIControlStateNormal];
+    [self.nationalityPopover dismissPopoverAnimated:YES];
+}
 
 #pragma mark - memory management
 
@@ -1393,6 +1482,7 @@ PostcodeContinue = TRUE;
     [self setTxtClass:nil];
     [self setBtnForeignHome:nil];
     [self setBtnForeignOffice:nil];
+    [self setBtnOfficeCountry:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

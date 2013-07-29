@@ -154,9 +154,11 @@
         clickPO = YES;
         self.subPOVC.modalPresentationStyle = UIModalPresentationPageSheet;
         self.subPOVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentModalViewController:self.subPOVC animated:YES];
+//        [self presentModalViewController:self.subPOVC animated:YES];
+        [self presentViewController:self.subPOVC animated:YES completion:^{
+            [self.myTableView reloadData];
+        }];
         
-        [self.myTableView reloadData];
         secondStoryboard = nil;
     }
     

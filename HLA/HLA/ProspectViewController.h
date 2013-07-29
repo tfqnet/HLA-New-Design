@@ -13,12 +13,13 @@
 #import "IDTypeViewController.h"
 #import "TitleViewController.h"
 #import "GroupClass.h"
+#import "Nationality.h"
 
 @protocol ProspectViewControllerDelegate
 - (void)FinishInsert;
 @end
 
-@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate, UITextFieldDelegate,UITextViewDelegate>{
+@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate, UITextFieldDelegate,UITextViewDelegate,NatinalityDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -26,11 +27,13 @@
     SIDate *_SIDate;
     GroupClass *_GroupList;
     TitleViewController *_TitlePicker;
+    Nationality *_nationalityList;
     UIPopoverController *_OccupationListPopover;
     UIPopoverController *_ContactTypePopover;
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_GroupPopover;
     UIPopoverController *_TitlePickerPopover;
+    UIPopoverController *_nationalityPopover;
     id<ProspectViewControllerDelegate> _delegate;
     UIAlertView *rrr;
     BOOL checked;
@@ -49,6 +52,8 @@
 @property (nonatomic, retain) UIPopoverController *OccupationListPopover;
 @property (nonatomic, strong) GroupClass *GroupList;
 @property (nonatomic, strong) UIPopoverController *GroupPopover;
+@property (nonatomic,strong) Nationality *nationalityList;
+@property (nonatomic, strong) UIPopoverController *nationalityPopover;
 
 @property (strong, nonatomic) IBOutlet UIButton *outletGroup;
 @property (weak, nonatomic) IBOutlet UIButton *outletTitle;
@@ -92,7 +97,9 @@
 @property (strong, nonatomic) IBOutlet UITextField *txtClass;
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignHome;
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
+@property (strong, nonatomic) IBOutlet UIButton *btnOfficeCountry;
 
+- (IBAction)actionOfficeCountry:(id)sender;
 - (IBAction)btnGroup:(id)sender;
 - (IBAction)btnTitle:(id)sender;
 - (IBAction)btnDOB:(id)sender;
