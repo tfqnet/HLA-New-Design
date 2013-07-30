@@ -967,7 +967,7 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Clt_Profile delete!");
-                //[_delegate secondLADelete];
+                [_delegate secondLADelete];
                 
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
@@ -1001,7 +1001,7 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"Clt_Profile delete!");
-                //[_delegate PayorDeleted];
+                [_delegate PayorDeleted];
                 
             } else {
                 NSLog(@"Clt_Profile delete Failed!");
@@ -1099,7 +1099,7 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"All rider delete!");
-                //[_delegate RiderAdded];
+                [_delegate RiderAdded];
                 
             } else {
                 NSLog(@"rider delete Failed!");
@@ -1124,7 +1124,7 @@
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
                 NSLog(@"rider %@ delete!",aaCode);
-                //[_delegate RiderAdded];
+                [_delegate RiderAdded];
                 
             } else {
                 NSLog(@"rider delete Failed!");

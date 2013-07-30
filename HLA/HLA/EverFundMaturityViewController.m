@@ -620,6 +620,7 @@ BOOL exist;
 
 -(void)DeleteFund{
 	sqlite3_stmt *statement;
+
 	NSArray *sorted = [[NSArray alloc] init ];
 	sorted = [ItemToBeDeleted sortedArrayUsingComparator:^(id firstObject, id secondObject){
 		return [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch];
@@ -629,13 +630,19 @@ BOOL exist;
 	{
 		for(int a=0; a<sorted.count; a++) {
 			int value = [[sorted objectAtIndex:a] intValue];
-			value = value - a;
+			//value = value - a;
 			
 			NSString *Fund = [aMaturityFund objectAtIndex:value];
+			/*
 			NSString *querySQL = [NSString stringWithFormat:
 								  @"DELETE FROM UL_Fund_Maturity_Option WHERE SINo=\"%@\" AND Fund=\"%@\"",
 								  SINo, Fund];
-			
+			*/
+			NSString *querySQL = [NSString stringWithFormat:
+								  @"UPDATE UL_Fund_Maturity_Option SET option = 'ReInvest', partial_withd_pct ='0', "
+								  "EverGreen2025='0',EverGreen2028='0',EverGreen2030='0',EverGreen2035='0',CashFund='100', "
+								  "RetireFund='0' WHERE SINo=\"%@\" AND Fund=\"%@\"",
+								  SINo, Fund];
 			//NSLog(@"%@", querySQL);
 			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
 			{
@@ -647,7 +654,7 @@ BOOL exist;
 				}
 				sqlite3_finalize(statement);
 			}
-			
+			/*
 			[aMaturityFund removeObjectAtIndex:value];
 			[aFundOption removeObjectAtIndex:value];
 			[a2025 removeObjectAtIndex:value];
@@ -657,12 +664,12 @@ BOOL exist;
 			[aSecureFund removeObjectAtIndex:value];
 			[aCashFund removeObjectAtIndex:value];
 			[aPercent removeObjectAtIndex:value];
-			
+			*/
 		}
 		sqlite3_close(contactDB);
 	}
 	
-	[myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+	//[myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 	[self GetExisting];
 	[self.myTableView reloadData];
 	
@@ -673,6 +680,7 @@ BOOL exist;
 	[outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
 
 	[self.outletFund setTitle:@"Please Select" forState:UIControlStateNormal];
+	 
 }
 
 -(void)GetExisting{

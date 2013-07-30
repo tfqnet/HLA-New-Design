@@ -159,7 +159,8 @@ NSString *OriginalBump;
 	
 
 	[txtBasicPremium addTarget:self action:@selector(BasicPremiumDidChanged) forControlEvents:UIControlEventAllEditingEvents];
-	
+	labelComm.hidden = YES;
+	labelFor.hidden = YES;
 	Label1.hidden = YES;
 	label2.hidden = YES;
 	txtBasicPremium.tag = 0;
@@ -257,6 +258,8 @@ NSString *OriginalBump;
             break;
 			
 		case 2: //txtCommFrom
+			labelComm.hidden = NO;
+			labelFor.hidden = NO;
 			labelComm.text = [NSString stringWithFormat:@"Min: %d Max: %d", 1, 100- ageClient - 1];
 			labelFor.text = [NSString stringWithFormat:@"Min: %d Max: %d", 1, 100- ageClient];
             break;
@@ -450,7 +453,7 @@ NSString *OriginalBump;
 
 -(void)toggleExistingField{
 	
-	txtPolicyTerm.text = [NSString stringWithFormat:@"%d", getPolicyTerm];
+	txtPolicyTerm.text = [NSString stringWithFormat:@"%d", 100 - requestAge];
 	txtBasicSA.text = [NSString stringWithFormat:@"%.f", getSumAssured ];
 	txtBasicPremium.text = [NSString stringWithFormat:@"%.2f", getBasicPrem ];
 
@@ -643,13 +646,13 @@ NSString *OriginalBump;
 		NSString *SQLaddin;
 		if ([OriginalBump  isEqualToString:@"A"]) {
 			if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium * %f, 2)", Semi];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium * %f", Semi];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium * %f, 2)", quarterly];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium * %f", quarterly];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium * %f, 2)", Monthly];
+				SQLaddin = [NSString stringWithFormat: @"premium =  premium * %f", Monthly];
 			}
 			else{
 				sqlite3_close(contactDB);
@@ -658,13 +661,13 @@ NSString *OriginalBump;
 		}
 		else if ([OriginalBump  isEqualToString:@"S"]) {
 			if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f, 2)", Semi];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f", Semi];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Semi, quarterly];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f * %f", Semi, quarterly];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Semi, Monthly];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f * %f", Semi, Monthly];
 			}
 			else{
 				sqlite3_close(contactDB);
@@ -674,13 +677,13 @@ NSString *OriginalBump;
 		}
 		else if ([OriginalBump  isEqualToString:@"Q"]) {
 			if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f, 2)", quarterly];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f", quarterly];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", quarterly, Semi];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f * %f", quarterly, Semi];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"M"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", quarterly, Monthly];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f * %f", quarterly, Monthly];
 			}
 			else{
 				sqlite3_close(contactDB);
@@ -690,13 +693,13 @@ NSString *OriginalBump;
 		}
 		else if ([OriginalBump  isEqualToString:@"M"]) {
 			if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f, 2)", Monthly];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f", Monthly];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Monthly, Semi];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f * %f", Monthly, Semi];
 			}
 			else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
-				SQLaddin = [NSString stringWithFormat: @"premium = round(premium / %f * %f, 2)", Monthly, quarterly];
+				SQLaddin = [NSString stringWithFormat: @"premium = premium / %f * %f", Monthly, quarterly];
 			}
 			else{
 				sqlite3_close(contactDB);
@@ -828,11 +831,11 @@ NSString *OriginalBump;
 }
 
 -(double)CalculateBUMP{
-	double FirstBasicMort = [self ReturnBasicMort:ageClient]/1000;
+	double FirstBasicMort = [self ReturnBasicMort:ageClient]/1000.00;
 	double FirstSA = [txtBasicSA.text doubleValue ];
-	double SecondBasicMort = [self ReturnBasicMort:ageClient + 1]/1000;
+	double SecondBasicMort = [self ReturnBasicMort:ageClient + 1]/1000.00;
 	double SecondSA = 0;
-	double ThirdBasicMort = [self ReturnBasicMort:ageClient + 2]/1000;
+	double ThirdBasicMort = [self ReturnBasicMort:ageClient + 2]/1000.00;
 	double BUMP1;
 	double BUMP2;
 	
@@ -862,16 +865,14 @@ NSString *OriginalBump;
 	NSString *strBumpMode = [self ReturnBumpMode];
 	double ModeRate = [self ReturnModeRate:strBumpMode];
 	double divideMode = [self ReturnDivideMode];
+	double PremAllocation = [self ReturnPremAllocation:1];
+	double ExcessPrem =  [self ReturnExcessPrem:1];
 	
 	double FirstBasicSA =  (FirstSA * ((FirstBasicMort * MortDate + SecondBasicMort * (12 - MortDate))/12.00 * (1 + [getHLPct intValue]/100.00 ) +
 							([getHL doubleValue] /1000.00) + ([getOccLoading doubleValue ]/1000.00)));
 
 	double SecondBasicSA =  (SecondSA * ((SecondBasicMort * MortDate + ThirdBasicMort * (12 - MortDate))/12.00 * (1 + [getHLPct intValue]/100.00 ) +
 									   ([getHL doubleValue] /1000.00) + ([getOccLoading doubleValue ]/1000.00)));
-	
-
-	double PremAllocation = [self ReturnPremAllocation:1];
-	double ExcessPrem =  [self ReturnExcessPrem:1];
 	
 	BUMP1 = (ModeRate * (PremAllocation * ([txtBasicPremium.text doubleValue ] * divideMode) +
 				(0.95 * (ExcessPrem + [txtGrayRTUP.text doubleValue ]))) -
@@ -885,7 +886,6 @@ NSString *OriginalBump;
 	if (BUMP1 < 0.00) {
 		PremReq = ((((0.01 * divideMode) + (((PolicyFee * 12) + FirstBasicSA + 0) * 12.5/12.00))/ModeRate -
 					(0.95 * (ExcessPrem + [txtGrayRTUP.text doubleValue ])))/PremAllocation)/divideMode;
-		
 	}
 	
 	NSLog(@"bump1 = %.2f, bump2 = %.2f", BUMP1, BUMP2);
@@ -2220,16 +2220,16 @@ NSString *OriginalBump;
 
 -(double)ReturnDivideMode{
 	if ([[self ReturnBumpMode] isEqualToString:@"A"]) {
-		return 1;
+		return 1.00;
 	}
 	else if ([[self ReturnBumpMode] isEqualToString:@"S"]) {
-		return 2;
+		return 2.00;
 	}
 	else if ([[self ReturnBumpMode] isEqualToString:@"Q"]) {
-		return 4;
+		return 4.00;
 	}
 	else{
-		return 12;
+		return 12.00;
 	}
 }
 
@@ -2267,7 +2267,7 @@ NSString *OriginalBump;
 		return 0.925;
 	}
 	else{
-		return 1;
+		return 1.00;
 	}
 }
 
@@ -2732,7 +2732,7 @@ NSString *OriginalBump;
 	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
 	{
 		querySQL = [NSString stringWithFormat:
-					@"SELECT sum(premium) from ul_rider_details where sino = '%@' ",  getSINo];
+					@"SELECT sum(round(premium, 2)) from ul_rider_details where sino = '%@' ",  getSINo];
 		
 		if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
 		{

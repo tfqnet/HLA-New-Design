@@ -204,7 +204,7 @@ double CurrentRiderPrem;
 	lblTable8.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
 	lblTable8.numberOfLines = 2;
     
-    CGRect frame9=CGRectMake(627, y, 73, 50);
+    CGRect frame9=CGRectMake(627, y, 80, 50);
 	lblTable9.text = @"HL\nTerm";
 	lblTable9.frame = frame9;
 	lblTable9.textAlignment = UITextAlignmentCenter;
@@ -1051,6 +1051,7 @@ double CurrentRiderPrem;
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     [formatter setCurrencySymbol:@""];
+	[formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
 	
 	[[cell.contentView viewWithTag:2001] removeFromSuperview ];
     [[cell.contentView viewWithTag:2002] removeFromSuperview ];
@@ -1065,8 +1066,9 @@ double CurrentRiderPrem;
     
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     int y = 0;
+	int height = 50;
 	
-	CGRect frame=CGRectMake(10,y, 70, 50); //ridercode
+	CGRect frame=CGRectMake(0,y, 90, height); //ridercode
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [NSString stringWithFormat:@"    %@",[LTypeRiderCode objectAtIndex:indexPath.row]];
@@ -1075,17 +1077,18 @@ double CurrentRiderPrem;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
 	
-	CGRect frame2=CGRectMake(80,y, 105, 50); //premium
+	CGRect frame2=CGRectMake(90,y, 95, height); //premium
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
     NSString *num = [formatter stringFromNumber:[NSNumber numberWithDouble:[[LTypePremium objectAtIndex:indexPath.row] doubleValue]]];
-    label2.text= num;
+	
+    label2.text= [num stringByReplacingOccurrencesOfString:@"," withString:@""];
     label2.textAlignment = UITextAlignmentCenter;
     label2.tag = 2002;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(185,y, 90, 50); //sum assured
+    CGRect frame3=CGRectMake(185,y, 90, height); //sum assured
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
 	
@@ -1110,7 +1113,7 @@ double CurrentRiderPrem;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
 	
-	CGRect frame4=CGRectMake(275,y, 62, 50); //term
+	CGRect frame4=CGRectMake(275,y, 62, height); //term
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     label4.text= [LTypeTerm objectAtIndex:indexPath.row];
@@ -1119,7 +1122,7 @@ double CurrentRiderPrem;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
 	
-	CGRect frame5=CGRectMake(337,y, 63, 50); //unit
+	CGRect frame5=CGRectMake(337,y, 63, height); //unit
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text= @"0";
@@ -1128,7 +1131,7 @@ double CurrentRiderPrem;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label5];
 	//------------
-	CGRect frame6=CGRectMake(400,y, 70, 50); //class 
+	CGRect frame6=CGRectMake(400,y, 70, height); //class 
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
 	
@@ -1157,7 +1160,7 @@ double CurrentRiderPrem;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label6];
 	//---------------
-	CGRect frame7=CGRectMake(470,y, 63, 50); //occ loading
+	CGRect frame7=CGRectMake(470,y, 63, height); //occ loading
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
     //label6.text= [NSString stringWithFormat:@"%@",occLoadType];
@@ -1178,7 +1181,7 @@ double CurrentRiderPrem;
 	
 	NSString *hl1k = [LTypeRidHL1K objectAtIndex:indexPath.row]; //health loading
     NSString *hlp = [LTypeRidHLP objectAtIndex:indexPath.row];
-	CGRect frame8=CGRectMake(533,y, 63, 50);
+	CGRect frame8=CGRectMake(533,y, 63, height);
     UILabel *label8=[[UILabel alloc]init];
     label8.frame=frame8;
     NSString *hl1 = nil;
@@ -1203,7 +1206,7 @@ double CurrentRiderPrem;
 	NSString *hl1kT = [LTypeRidHLTerm objectAtIndex:indexPath.row]; //health loading term
     NSString *hlpT = [LTypeRidHLPTerm objectAtIndex:indexPath.row];
     
-    CGRect frame9=CGRectMake(596,y, 70, 50);
+    CGRect frame9=CGRectMake(596,y, 70, height);
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
     NSString *hl1T = nil;
@@ -1378,10 +1381,6 @@ double CurrentRiderPrem;
         
         if (  ![[LTypeRidHLTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
 			txtHLTerm.text = [LTypeRidHLTerm objectAtIndex:indexPath.row];
-        }
-        
-        if (  ![[LTypeRidHLP objectAtIndex:indexPath.row] isEqualToString:@"(null)"]) {
-			txtHL.text = [LTypeRidHLP objectAtIndex:indexPath.row];
         }
         
         if (  ![[LTypeRidHLPTerm objectAtIndex:indexPath.row] isEqualToString:@"0"]) {
@@ -2704,7 +2703,7 @@ double CurrentRiderPrem;
 						 "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
 						 "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear ) VALUES"
 						 "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
-						 "\"%.2f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
+						 "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
 						 getSINo,riderCode, pTypeCode, PTypeSeq, txtRiderTerm.text, txtSumAssured.text, planOption,
 						 deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
 						 inputHLPercentageTerm, CurrentRiderPrem, txtPaymentTerm.text, [self ReturnReinvest],
@@ -2716,7 +2715,7 @@ double CurrentRiderPrem;
 						 "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
 						 "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear ) VALUES"
 						 "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
-						 "\"%.2f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
+						 "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
 						 getSINo,riderCode, pTypeCode, PTypeSeq, txtRiderTerm.text, txtSumAssured.text, planOption,
 						 deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
 						 inputHLPercentageTerm, CurrentRiderPrem , txtPaymentTerm.text, [self ReturnReinvest],
@@ -2729,7 +2728,7 @@ double CurrentRiderPrem;
 								   "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
 								   "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear ) VALUES"
 								   "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
-								   "\"%.2f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
+								   "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
 								   getSINo,riderCode, pTypeCode, PTypeSeq, txtRiderTerm.text, txtSumAssured.text, planOption,
 								   deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
 								   inputHLPercentageTerm, CurrentRiderPrem, txtPaymentTerm.text, [self ReturnReinvest],
@@ -2866,51 +2865,49 @@ double CurrentRiderPrem;
 		//calculate occupationLoading
         [self getOccLoadRider];
         NSLog(@"occpLoadRate(%@):%d",riderCode,occLoadRider);
-		
+		/*
 		double annualRider = 0;
         double halfYearRider = 0;
         double quarterRider = 0;
         double monthlyRider = 0;
-		
+		*/
+	double _ann = 0.00;
+	double _half =0.00;
+	double _quar = 0.00;
+	double _month =0.00;
+
 		if ([riderCode isEqualToString:@"ACIR"]){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			if (riderHLoad == 0) {
-				_ann = (riderRate * ridSA/1000 / annFac);
-				_half = (riderRate *ridSA /1000 / halfFac);
-				_quar = (riderRate *ridSA /1000 / quarterFac);
-				_month = (riderRate *ridSA /1000 * monthFac);
+				_ann = (riderRate * ridSA/1000.00) / annFac;
+				_half = (riderRate *ridSA /1000.00) / halfFac;
+				_quar = (riderRate *ridSA /1000.00) / quarterFac;
+				_month = (riderRate *ridSA /1000.00) * monthFac;
 			}
 			else{
-				_ann = (riderRate * ((1 + riderHLoad /100) + occLoadRider) * ridSA/1000 / annFac);
-				_half = (riderRate * ((1 + riderHLoad /100) + occLoadRider) *ridSA /1000 / halfFac);
-				_quar = (riderRate * ((1 + riderHLoad /100) + occLoadRider) *ridSA /1000 / quarterFac);
-				_month = (riderRate * ((1 + riderHLoad /100) + occLoadRider) *ridSA /1000 *monthFac);
+				_ann = (riderRate * ridSA/1000.00) / annFac;
+				_half = (riderRate *ridSA /1000.00) / halfFac;
+				_quar = (riderRate *ridSA /1000.00) / quarterFac;
+				_month = (riderRate *ridSA /1000.00) * monthFac;
+				/*
+				_ann = (riderRate * ((1 + riderHLoad /100.00) + occLoadRider) * ridSA/1000.00 / annFac);
+				_half = (riderRate * ((1 + riderHLoad /100.00) + occLoadRider) *ridSA /1000.00 / halfFac);
+				_quar = (riderRate * ((1 + riderHLoad /100.00) + occLoadRider) *ridSA /1000.00 / quarterFac);
+				_month = (riderRate * ((1 + riderHLoad /100.00) + occLoadRider) *ridSA /1000.00 *monthFac);
+				 */
 			}
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
 			
 		}
 		else if ([riderCode isEqualToString:@"CIRD"]){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/100.00) ;
@@ -2919,6 +2916,10 @@ double CurrentRiderPrem;
 				_month = (riderRate *ridSA /100.00);
 			}
 			else{
+				_ann = (riderRate * ridSA/100.00) ;
+				_half = (riderRate *ridSA /100.00) ;
+				_quar = (riderRate *ridSA /100.00) ;
+				_month = (riderRate *ridSA /100.00);
 				/*
 				_ann = (riderRate * ((1 + riderHLoad /100) + occLoadRider) * ridSA/1000 / annFac);
 				_half = (riderRate * ((1 + riderHLoad /100) + occLoadRider) *ridSA /1000 / halfFac);
@@ -2942,28 +2943,16 @@ double CurrentRiderPrem;
 			
 			_half = _ann / halfFac;
 			_quar = _ann/quarterFac;
-			_month = _ann/monthFac;
+			_month = _ann * monthFac;
 			
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
+		
 		}
 		else if ([riderCode isEqualToString:@"CIWP"] || [riderCode isEqualToString:@"LCWP"] || [riderCode isEqualToString:@"PR"] ){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			sqlite3_stmt *statement;
 			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -2972,19 +2961,19 @@ double CurrentRiderPrem;
 				
 				if ([riderCode isEqualToString:@"CIWP"]) {
 					querySQL = [NSString stringWithFormat:
-								@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+								@"SELECT sum(round(premium, 2)) from( SELECT premium FROM ul_rider_details "
 								"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ACIR') "
 								"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				}
 				else if([riderCode isEqualToString:@"LCWP"]){
 					querySQL = [NSString stringWithFormat:
-								@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+								@"SELECT sum(round(premium, 2)) from( SELECT premium FROM ul_rider_details "
 								"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR', 'ECAR55', 'PA', 'TPDMLA') "
 								"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				}
 				else{
 					querySQL = [NSString stringWithFormat:
-								@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+								@"SELECT sum(round(premium, 2)) from( SELECT premium FROM ul_rider_details "
 								"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
 								"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				}
@@ -3032,26 +3021,13 @@ double CurrentRiderPrem;
 				
 			}
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
 			
 		}
 		else if ([riderCode isEqualToString:@"DCA"]){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			
 			if (riderHLoad == 0) {
@@ -3061,10 +3037,16 @@ double CurrentRiderPrem;
 				_month = (riderRate *ridSA /100.00) ;
 			}
 			else{
+				_ann = (riderRate * ridSA/100.00) ;
+				_half = (riderRate *ridSA /100.00) ;
+				_quar = (riderRate *ridSA /100.00) ;
+				_month = (riderRate *ridSA /100.00) ;
+				/*
 				_ann = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
 				_half = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
 				_quar = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
 				_month = ridSA/100.00 * 1 * (riderRate * (1 + riderHLoad /100.00) + occLoadRider/10.00 + 0 );
+				 */
 			}
 			
 			if (ridSA >= 10000 && ridSA < 20000) {
@@ -3177,27 +3159,14 @@ double CurrentRiderPrem;
 			_quar = _ann/quarterFac;
 			_month = _ann * monthFac;
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
 			
 		}
 		if ([riderCode isEqualToString:@"DHI"] || [riderCode isEqualToString:@"MR"] || [riderCode isEqualToString:@"PA"] ||
 			[riderCode isEqualToString:@"TPDMLA"] || [riderCode isEqualToString:@"TPDWP"] || [riderCode isEqualToString:@"WI"]){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			
 			if ([riderCode isEqualToString:@"TPDWP"]) {
@@ -3208,8 +3177,8 @@ double CurrentRiderPrem;
 					
 					
 					querySQL = [NSString stringWithFormat:
-								@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
-								"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
+								@"SELECT sum(round(premium, 2)) from( SELECT premium FROM ul_rider_details "
+								"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR', 'ECAR55') "
 								"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 					
 					if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -3248,32 +3217,26 @@ double CurrentRiderPrem;
 				_month = (riderRate *ridSA /100.00) * monthFac;
 			}
 			else{
+				_ann = (riderRate * ridSA/100.00) / annFac;
+				_half = (riderRate *ridSA /100.00) / halfFac;
+				_quar = (riderRate *ridSA /100.00) / quarterFac;
+				_month = (riderRate *ridSA /100.00) * monthFac;
+				/*
 				_ann =  (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) / annFac;
 				_half = (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) / halfFac;
 				_quar = (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) / quarterFac;
 				_month = (ridSA * (riderRate * ((1 + riderHLoad /100.00)/100.00 ) + occLoadRider/1000.00 + 0/1000.00)) * monthFac;
+				 */
 			}	
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
+		
 			
 		}
 		else if ([riderCode isEqualToString:@"ECAR"]){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/1000.00 );
@@ -3317,26 +3280,13 @@ double CurrentRiderPrem;
 			_quar = _ann/quarterFac;
 			_month = _ann *monthFac;
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
 			
 		}
 		else if ([riderCode isEqualToString:@"ECAR55"]){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/100.00 );
@@ -3380,26 +3330,12 @@ double CurrentRiderPrem;
 			_quar = _ann/quarterFac;
 			_month = _ann * monthFac;
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
-			
 		}
 		else if ([riderCode isEqualToString:@"HMM"] || [riderCode isEqualToString:@"MG_IV"]){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			if (riderHLoad == 0) {
 				_ann = riderRate / annFac;
@@ -3408,32 +3344,24 @@ double CurrentRiderPrem;
 				_month = riderRate * monthFac;
 			}
 			else{
+				_ann = riderRate / annFac;
+				_half = riderRate / halfFac;
+				_quar = riderRate / quarterFac;
+				_month = riderRate * monthFac;
+				/*
 				_ann = (riderRate * (1 + riderHLoad/100.00)) / annFac;
 				_half = (riderRate * (1 + riderHLoad/100.00)) / halfFac;
 				_quar = (riderRate * (1 + riderHLoad/100.00)) / quarterFac;
 				_month = (riderRate * (1 + riderHLoad/100.00)) * monthFac;
+				 */
 			}
-			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
 			
 		}
 		else if ([riderCode isEqualToString:@"LSR"] ){
-			double _ann = 0.00;
-			double _half =0.00;
-			double _quar = 0.00;
-			double _month =0.00;
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
 			
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/1000.00 );
@@ -3442,10 +3370,10 @@ double CurrentRiderPrem;
 				_month = (riderRate *ridSA /1000.00 );
 			}
 			else{
-				_ann = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) ;
-				_half = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) ;
-				_quar = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad) ;
-				_month = (ridSA/1000.00) * (riderRate * 0.01 +  occLoadRider + riderHLoad);
+				_ann =  (riderRate * (1) +  occLoadRider + riderHLoad) * (ridSA/1000.00) ;
+				_half = (riderRate * (1) +  occLoadRider + riderHLoad) * (ridSA/1000.00) ;
+				_quar = (riderRate * (1) +  occLoadRider + riderHLoad) * (ridSA/1000.00) ;
+				_month = (riderRate * (1) +  occLoadRider + riderHLoad) * (ridSA/1000.00);
 			}
 			
 			if (ridSA >= 20000 && ridSA < 50000) {
@@ -3477,33 +3405,38 @@ double CurrentRiderPrem;
 			_quar = _ann/quarterFac;
 			_month = _ann * monthFac;
 			
-			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
-			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
-			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
-			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
-			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
-			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
-			
-			annualRider = [str_ann doubleValue];
-			halfYearRider = [str_half doubleValue];
-			quarterRider = [str_quar doubleValue];
-			monthlyRider = [str_month doubleValue];
-			
 		}
-
+	/*
+		NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+		NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+		NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+		NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+		str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+		str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+		str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+		str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+	
+		annualRider = [str_ann doubleValue];
+		halfYearRider = [str_half doubleValue];
+		quarterRider = [str_quar doubleValue];
+		monthlyRider = [str_month doubleValue];
+*/
+	
 		if([getBUMPMode isEqualToString:@"A"]){
-			CurrentRiderPrem = annualRider;
+			//CurrentRiderPrem = annualRider;
+			CurrentRiderPrem = _ann;
 		}
 		else if([getBUMPMode isEqualToString:@"S"]){
-			CurrentRiderPrem = halfYearRider;
+			//CurrentRiderPrem = halfYearRider;
+			CurrentRiderPrem = _half;
 		}
 		else if([getBUMPMode isEqualToString:@"Q"]){
-			CurrentRiderPrem =quarterRider;
+			//CurrentRiderPrem =quarterRider;
+			CurrentRiderPrem = _quar;
 		}
 		else{
-			CurrentRiderPrem =monthlyRider;
+			//CurrentRiderPrem =monthlyRider;
+			CurrentRiderPrem = _month;
 		}
 }
 
@@ -3806,7 +3739,7 @@ double CurrentRiderPrem;
         NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
 								@"UPDATE UL_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", "
 								"Deductible=\"%@\", HLoading=\"%@\", HLoadingTerm=\"%d\", "
-								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%.2f' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
+								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%f' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
 								"PTypeCode=\"%@\" AND Seq=\"%d\"", txtRiderTerm.text, txtSumAssured.text, planOption,
 								deductible, inputHL1KSA, inputHL1KSATerm,inputHLPercentage,
 								inputHLPercentageTerm, [self ReturnReinvest], CurrentRiderPrem, getSINo,
@@ -3900,7 +3833,7 @@ double CurrentRiderPrem;
 			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
 			 {
 				 querySQL = [NSString stringWithFormat:
-							 @"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+							 @"SELECT sum(round(premium,2)) from( SELECT premium FROM ul_rider_details "
 							 "where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ACIR') "
 							 "union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				 
@@ -3925,7 +3858,7 @@ double CurrentRiderPrem;
 				 }
 				 
 				 querySQL = [NSString stringWithFormat:
-							 @"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured ='%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+							 @"UPDATE UL_Rider_Details SET premium = '%f', SumAssured ='%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
 							 CurrentRiderPrem, ridSA, getSINo, @"CIWP"];
 				 //NSLog(@"%@", querySQL);
 				 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -3950,7 +3883,7 @@ double CurrentRiderPrem;
 			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
 			{
 				querySQL = [NSString stringWithFormat:
-							@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+							@"SELECT sum(round(premium,2)) from( SELECT premium FROM ul_rider_details "
 							"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR', 'ECAR55', 'PA', 'TPDMLA') "
 							"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				
@@ -3975,7 +3908,7 @@ double CurrentRiderPrem;
 				}
 				
 				querySQL = [NSString stringWithFormat:
-							@"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+							@"UPDATE UL_Rider_Details SET premium = '%f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
 							CurrentRiderPrem, ridSA, getSINo, @"LCWP"];
 				
 				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -4001,7 +3934,7 @@ double CurrentRiderPrem;
 			
 			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 				querySQL = [NSString stringWithFormat:
-							@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
+							@"SELECT sum(round(premium,2)) from( SELECT premium FROM ul_rider_details "
 							"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
 							"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				
@@ -4027,7 +3960,7 @@ double CurrentRiderPrem;
 				
 				
 				querySQL = [NSString stringWithFormat:
-							@"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+							@"UPDATE UL_Rider_Details SET premium = '%f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
 							CurrentRiderPrem, ridSA, getSINo, @"PR"];
 				
 				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -4051,8 +3984,8 @@ double CurrentRiderPrem;
 		
 		if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 			querySQL = [NSString stringWithFormat:
-						@"SELECT sum(premium) from( SELECT premium FROM ul_rider_details "
-						"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
+						@"SELECT sum(round(premium,2)) from( SELECT premium FROM ul_rider_details "
+						"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR55', 'ECAR') "
 						"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 			
 			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -4078,7 +4011,7 @@ double CurrentRiderPrem;
 			
 			
 			querySQL = [NSString stringWithFormat:
-						@"UPDATE UL_Rider_Details SET premium = '%.2f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
+						@"UPDATE UL_Rider_Details SET premium = '%f', SumAssured = '%.2f' WHERE sino = '%@' AND Ridercode = '%@'",
 						CurrentRiderPrem, ridSA, getSINo, @"TPDWP"];
 			
 			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -4109,7 +4042,7 @@ double CurrentRiderPrem;
 	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
 		{
 			querySQL = [NSString stringWithFormat:
-						@"SELECT sum(premium) from ul_rider_details where sino = '%@' ",  getSINo];
+						@"SELECT sum(round(premium, 2)) from ul_rider_details where sino = '%@' ",  getSINo];
 			
 			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
 			{
@@ -4531,7 +4464,7 @@ else {
 		{
 			if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HL1K"]]) {
 				inputHL1KSA = [[NSString alloc]initWithFormat:@"%@",txtHL.text];
-				inputHL1KSATerm = [txtHL.text intValue];
+				inputHL1KSATerm = [txtHLTerm.text intValue];
 			} else if ([[FLabelCode objectAtIndex:i] isEqualToString:[NSString stringWithFormat:@"HLP"]]) {
 				inputHLPercentage = [[NSString alloc]initWithFormat:@"%@",txtHL.text];
 				inputHLPercentageTerm = [txtHLTerm.text intValue];
