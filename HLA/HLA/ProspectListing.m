@@ -30,6 +30,7 @@
 @synthesize IDTypePickerPopover = _IDTypePickerPopover;
 @synthesize GroupList = _GroupList;
 @synthesize GroupPopover = _GroupPopover;
+@synthesize dataMobile;
 
 - (void)viewDidLoad
 {
@@ -213,6 +214,7 @@
     idTypeLabel.textAlignment = UITextAlignmentCenter;
     idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    idTypeLabel.text = @"Name";
     
     CGRect frame2=CGRectMake(200,233, 200, 50);
     idNoLabel.frame = frame2;
@@ -225,6 +227,7 @@
     clientNameLabel.textAlignment = UITextAlignmentLeft;
     clientNameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     clientNameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
+    clientNameLabel.text = @"Mobile Number";
     
     CGRect frame4=CGRectMake(750,233, 274, 50);
     groupLabel.frame = frame4;
@@ -233,6 +236,8 @@
     groupLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
     CustomColor = Nil;
+    
+    [self getMobileNo];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -289,12 +294,11 @@
     ProspectProfile *pp = [ProspectTableData objectAtIndex:indexPath.row];
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    
     CGRect frame=CGRectMake(0,0, 200, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
-    label1.text= @"New Identification Number";
-    label1.textAlignment = UITextAlignmentCenter;
+    label1.text= [NSString stringWithFormat:@"  %@",pp.ProspectName];
+    label1.textAlignment = UITextAlignmentLeft;
     label1.tag = 2001;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
@@ -311,7 +315,7 @@
     CGRect frame3=CGRectMake(400,0, 350, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
-    label3.text= pp.ProspectName;
+    label3.text= [dataMobile objectAtIndex:indexPath.row];
     label3.textAlignment = UITextAlignmentLeft;
     label3.tag = 2003;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
@@ -356,7 +360,7 @@
         label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
     pp = Nil;
 }
@@ -490,6 +494,37 @@
 
 
 #pragma mark - action
+
+-(void)getMobileNo
+{
+    dataMobile = [[NSMutableArray alloc] init];
+    
+    for (int a=0; a<ProspectTableData.count; a++) {
+        
+        ProspectProfile *pp = [ProspectTableData objectAtIndex:a];
+        const char *dbpath = [databasePath UTF8String];
+        sqlite3_stmt *statement;
+        if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+            NSString *querySQL = [NSString stringWithFormat:@"SELECT ContactCode, ContactNo, Prefix FROM contact_input where indexNo = %@ ", pp.ProspectID];
+            
+            const char *query_stmt = [querySQL UTF8String];
+            if (sqlite3_prepare_v2(contactDB, query_stmt, -1, &statement, NULL) == SQLITE_OK)
+            {
+                if (sqlite3_step(statement) == SQLITE_ROW){
+                    
+//                    NSString *ContactCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+                    NSString *ContactNo = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
+//                    NSString *Prefix = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    
+                    [dataMobile addObject:ContactNo];
+                }
+                sqlite3_finalize(statement);
+            }
+            sqlite3_close(contactDB);
+        }
+
+    }
+}
 
 - (IBAction)btnAddNew:(id)sender
 {

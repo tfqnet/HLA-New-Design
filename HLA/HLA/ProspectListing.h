@@ -36,6 +36,7 @@
 @property (nonatomic, strong) UIPopoverController *GroupPopover;
 @property (strong, nonatomic) NSMutableArray* ProspectTableData;
 @property (strong, nonatomic) NSMutableArray* FilteredProspectTableData;
+@property (strong, nonatomic) NSMutableArray* dataMobile;
 @property (nonatomic, assign) bool isFiltered;
 //@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
