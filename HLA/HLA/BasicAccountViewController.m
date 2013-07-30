@@ -203,7 +203,12 @@ NSString *OriginalBump;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+	
 	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+	txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -352,10 +357,17 @@ NSString *OriginalBump;
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
 	
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+	[formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
+	
+	
 	if (textField.tag == 0 || textField.tag == 1 ) {
 		if (![txtBasicPremium.text isEqualToString:@""] && ![txtBasicSA.text isEqualToString:@""] &&
 			![txtBasicPremium.text isEqualToString:@"0"] && ![txtBasicSA.text isEqualToString:@"0"]) {
 			txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+			txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 		}
 
 	}
@@ -363,6 +375,7 @@ NSString *OriginalBump;
 		if (![txtRTUP.text isEqualToString:@""] && ![txtCommFrom.text isEqualToString:@""] && ![txtFor.text isEqualToString:@""] &&
 			![txtRTUP.text isEqualToString:@"0"] && ![txtCommFrom.text isEqualToString:@"0"] && ![txtFor.text isEqualToString:@"0"]) {
 				txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+			txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 		}
 	}
 
@@ -407,11 +420,16 @@ NSString *OriginalBump;
 }
 
 -(void)BasicPremiumDidChanged{
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
 	
-	txtTotalBAPremium.text = txtBasicPremium.text;
+	txtTotalBAPremium.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBasicPremium.text doubleValue]]];
+
 	//txtPremiumPayable.text = txtBasicPremium.text;
 	//
 	txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ] + TotalRiderPremium];
+	txtPremiumPayable.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtPremiumPayable.text doubleValue]]];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -483,8 +501,15 @@ NSString *OriginalBump;
 
 	txtTotalBAPremium.text = txtBasicPremium.text;
 	//txtPremiumPayable.text = txtBasicPremium.text;
-	txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ] + TotalRiderPremium]
-	;
+	txtPremiumPayable.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ] + TotalRiderPremium];
+	
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+	
+	txtTotalBAPremium.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtTotalBAPremium.text doubleValue]]];
+	txtPremiumPayable.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtPremiumPayable.text doubleValue]]];
+	
 	[_delegate BasicSI:getSINo andAge:ageClient andOccpCode:OccpCode andCovered:termCover
 			andBasicSA:txtBasicSA.text andBasicHL:getHL andBasicHLTerm:getHLTerm
 		 andBasicHLPct:getHLPct andBasicHLPctTerm:getHLPctTerm andPlanCode:getPlanCode andBumpMode:getBumpMode];
@@ -3119,8 +3144,14 @@ NSString *OriginalBump;
 		
 	}
 
-	txtTotalBAPremium.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ]];
-	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
+	[formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
 	
+	txtTotalBAPremium.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBasicPremium.text doubleValue]]];
+	//txtTotalBAPremium.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ]];
+	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+	txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 }
 @end

@@ -4038,6 +4038,9 @@ double CurrentRiderPrem;
 	sqlite3_stmt *statement;
 	NSString *querySQL;
 	//double half = 0.5, quarter = 0.25, month = 0.0833333;
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setCurrencySymbol:@""];
 
 	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
 		{
@@ -4049,6 +4052,7 @@ double CurrentRiderPrem;
 				if (sqlite3_step(statement) == SQLITE_ROW)
 				{
 					txtRiderPremium.text =  [ NSString stringWithFormat:@"%.2f", sqlite3_column_double(statement, 0) ] ;
+					txtRiderPremium.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtRiderPremium.text doubleValue]]];
 					
 				}
 				sqlite3_finalize(statement);

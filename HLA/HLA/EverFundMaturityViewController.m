@@ -146,7 +146,7 @@ BOOL exist;
 	int height = 50;
 	int FontSize = 14;
 	
-	CGRect frame=CGRectMake(10,y, 135, height);
+	CGRect frame=CGRectMake(0,y, 145, height);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [NSString stringWithFormat:@"%@", [aMaturityFund objectAtIndex:indexPath.row] ];
@@ -164,7 +164,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label2];
 	
-	CGRect frame3=CGRectMake(frame2.origin.x + frame2.size.width, y, 70, height);
+	CGRect frame3=CGRectMake(frame2.origin.x + frame2.size.width, y, 75, height);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
 	if ([[aFundOption objectAtIndex:indexPath.row] isEqualToString:@"ReInvest" ]) {
@@ -181,7 +181,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label3];
 	
-	CGRect frame4=CGRectMake(frame3.origin.x + frame3.size.width, y, 60, height);
+	CGRect frame4=CGRectMake(frame3.origin.x + frame3.size.width, y, 65, height);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     //label4.text= [NSString stringWithFormat:@"%d", [[aPercent objectAtIndex:indexPath.row] intValue ] ];
@@ -199,7 +199,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label4];
 	
-	CGRect frame5=CGRectMake(frame4.origin.x + frame4.size.width, y, 50, height);
+	CGRect frame5=CGRectMake(frame4.origin.x + frame4.size.width, y, 60, height);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text= [NSString stringWithFormat:@"%@", [a2025 objectAtIndex:indexPath.row]];
@@ -208,7 +208,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label5];
 	
-	CGRect frame6=CGRectMake(frame5.origin.x + frame5.size.width,y, 55, height);
+	CGRect frame6=CGRectMake(frame5.origin.x + frame5.size.width,y, 60, height);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
     label6.text= [NSString stringWithFormat:@"%@", [a2028 objectAtIndex:indexPath.row]];
@@ -234,7 +234,7 @@ BOOL exist;
     label8.tag = 2008;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label8];
-	
+	/*
 	CGRect frame9=CGRectMake(frame8.origin.x + frame8.size.width,y, 50, 50);
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
@@ -243,18 +243,18 @@ BOOL exist;
     label9.tag = 2009;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label9];
-	
-	CGRect frame10=CGRectMake(frame9.origin.x + frame9.size.width,y, 50, 50);
+	*/
+	CGRect frame10=CGRectMake(frame8.origin.x + frame8.size.width,y, 50, 50);
     UILabel *label10=[[UILabel alloc]init];
     label10.frame=frame10;
     label10.text= [NSString stringWithFormat:@"%@", [aSecureFund objectAtIndex:indexPath.row]];
     label10.textAlignment = UITextAlignmentCenter;
-    label10.tag = 2010;
+    label10.tag = 2009;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label10];
 	
 	
-	CGRect frame11=CGRectMake(frame10.origin.x + frame10.size.width,y, 50, 50);
+	CGRect frame11=CGRectMake(frame10.origin.x + frame10.size.width,y, 70, 50);
     UILabel *label11=[[UILabel alloc]init];
     label11.frame=frame11;
     label11.text= [NSString stringWithFormat:@"%@", [aCashFund objectAtIndex:indexPath.row]];
@@ -273,7 +273,7 @@ BOOL exist;
 		label6.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 		label7.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 		label8.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
-		label9.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+		//label9.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 		label10.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 		label11.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         
@@ -285,7 +285,7 @@ BOOL exist;
 		label6.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label7.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label8.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
-		label9.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
+		//label9.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
         label10.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label11.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     }
@@ -298,7 +298,7 @@ BOOL exist;
 		label6.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
 		label7.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
 		label8.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
-		label9.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+		//label9.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label10.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
 		label11.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
 		
@@ -310,7 +310,7 @@ BOOL exist;
 		label6.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label7.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label8.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
-		label9.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
+		//label9.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
         label10.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label11.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     }

@@ -279,7 +279,7 @@
                 CustCode2 = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 1)];
                 idProfile2 = sqlite3_column_int(statement, 9);
             } else {
-                NSLog(@"error access UL_LAPayor");
+                NSLog(@"No LA or Payor");
             }
             sqlite3_finalize(statement);
         }
@@ -936,7 +936,7 @@
 				payorAge = sqlite3_column_int(statement, 6);
                 
             } else {
-                NSLog(@"error access checkingPayor");
+                NSLog(@"no Payor ");
             }
             sqlite3_finalize(statement);
         }
