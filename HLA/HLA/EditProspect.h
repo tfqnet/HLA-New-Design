@@ -14,12 +14,13 @@
 #import "IDTypeViewController.h"
 #import "TitleViewController.h"
 #import "GroupClass.h"
+#import "Nationality.h"
 
 @protocol EditProspectDelegate
 - (void)FinishEdit;
 @end
 
-@interface EditProspect : UIViewController<OccupationListDelegate,IDTypeDelegate,SIDateDelegate,UITextViewDelegate,TitleDelegate,GroupDelegate,UITextFieldDelegate>{
+@interface EditProspect : UIViewController<OccupationListDelegate,IDTypeDelegate,SIDateDelegate,UITextViewDelegate,TitleDelegate,GroupDelegate,UITextFieldDelegate,NatinalityDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -27,10 +28,12 @@
     TitleViewController *_TitlePicker;
     SIDate *_SIDate;
     OccupationList *_OccupationList;
+    Nationality *_nationalityList;
     UIPopoverController *_GroupPopover;
     UIPopoverController *_TitlePickerPopover;
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_OccupationListPopover;
+    UIPopoverController *_nationalityPopover;
     id<EditProspectDelegate> _delegate;
     UIAlertView *rrr;
     BOOL checked;
@@ -50,6 +53,8 @@
 @property (nonatomic, strong) UIPopoverController *TitlePickerPopover;
 @property (nonatomic, strong) GroupClass *GroupList;
 @property (nonatomic, strong) UIPopoverController *GroupPopover;
+@property (nonatomic,strong) Nationality *nationalityList;
+@property (nonatomic, strong) UIPopoverController *nationalityPopover;
 
 
 @property (strong, nonatomic) IBOutlet UIButton *outletGroup;
@@ -97,6 +102,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
 @property (strong, nonatomic) IBOutlet UIButton *btnOfficeCountry;
 
+- (IBAction)addNewGroup:(id)sender;
 - (IBAction)ActionOfficeCountry:(id)sender;
 - (IBAction)isForeign:(id)sender;
 - (IBAction)btnGroup:(id)sender;

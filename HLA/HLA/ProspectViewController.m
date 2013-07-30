@@ -602,6 +602,16 @@ PostcodeContinue = TRUE;
 
 }
 
+- (IBAction)addNewGroup:(id)sender
+{
+    UIAlertView* dialog = [[UIAlertView alloc] initWithTitle:@"Enter Group Name" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    [dialog setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    
+    [[dialog textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDefault];
+    [dialog setTag:1001];
+    [dialog show];
+}
+
 - (IBAction)actionOfficeCountry:(id)sender
 {
     [self resignFirstResponder];
@@ -677,16 +687,32 @@ PostcodeContinue = TRUE;
         [self.view endEditing:YES];
         [self.navigationController popViewControllerAnimated:YES];
     }
-    else {
-        if (buttonIndex == 0) {
-            if ( alertView.tag == 2000 || alertView.tag == 2001 ) {
-                [txtHomePostCode becomeFirstResponder];
-            }
-            else if ( alertView.tag == 3000 || alertView.tag == 3001) {
-                [txtOfficePostcode becomeFirstResponder];
-            }
-        }
+    else if ((alertView.tag == 2000 || alertView.tag == 2001) && buttonIndex == 0) {
+        [txtHomePostCode becomeFirstResponder];
+    }
+    else if ((alertView.tag == 3000 || alertView.tag == 3001) && buttonIndex == 0) {
+        [txtOfficePostcode becomeFirstResponder];
+    }
+    else if (alertView.tag == 1001 && buttonIndex == 1) {
         
+        NSString *str = [NSString stringWithFormat:@"%@",[[alertView textFieldAtIndex:0]text] ];
+        if (str.length != 0) {
+            
+            NSMutableArray *array = [[NSMutableArray alloc] init];
+            [array addObject:str];
+            
+            NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsPath = [paths objectAtIndex:0];
+            NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"dataGroup.plist"];
+            
+            [array addObjectsFromArray:[NSArray arrayWithContentsOfFile:plistPath]];
+            [array writeToFile:plistPath atomically: TRUE];
+        
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please insert data" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+            [alert show];
+        }
     }
 
 }

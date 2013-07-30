@@ -61,6 +61,8 @@
 @synthesize TitlePickerPopover = _TitlePickerPopover;
 @synthesize GroupList = _GroupList;
 @synthesize GroupPopover = _GroupPopover;
+@synthesize nationalityPopover = _nationalityPopover;
+@synthesize nationalityList = _nationalityList;
 
 
 bool IsContinue = TRUE;
@@ -81,7 +83,6 @@ bool IsContinue = TRUE;
     
     [txtHomePostCode addTarget:self action:@selector(EditTextFieldDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     
-    [txtOfficePostCode addTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
     [txtEmail addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtHomeAddr1 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
     [txtHomeAddr2 addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventEditingDidEnd];
@@ -101,7 +102,6 @@ bool IsContinue = TRUE;
     [segGender addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventValueChanged];
     [outletDOB addTarget:self action:@selector(detectChanges:) forControlEvents:UIControlEventAllTouchEvents];
     [txtHomePostCode addTarget:self action:@selector(EditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
-    [txtOfficePostCode addTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
     txtRemark.delegate = self;
     txtExactDuties.delegate = self;
     
@@ -164,19 +164,17 @@ bool IsContinue = TRUE;
 {
     strChanges = @"No";
 
-    if (!(pp.ProspectGroup == NULL)) {
+    if (!(pp.ProspectGroup == NULL || [pp.ProspectGroup isEqualToString:@"- Select -"])) {
         
         [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectGroup]forState:UIControlStateNormal];
-        
         outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     else {
         [outletGroup setTitle:@"- Select -" forState:UIControlStateNormal];
     }
     
-    if (!(pp.ProspectTitle == NULL)) {
+    if (!(pp.ProspectTitle == NULL || [pp.ProspectTitle isEqualToString:@"- Select -"])) {
         [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", pp.ProspectTitle]forState:UIControlStateNormal];
-        
         outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     }
     else {
@@ -375,9 +373,15 @@ bool IsContinue = TRUE;
                 [self PopulateState];
             }
             
-            if (![[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"" ]) {
+            if (![[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"" ] && [txtOfficeCountry.text isEqualToString:@"MALAYSIA"]) {
                 
                 [self PopulateOfficeState];
+                [txtOfficePostCode addTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+            }
+            else if (![[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"" ] && ![txtOfficeCountry.text isEqualToString:@"MALAYSIA"]) {
+                
+                txtOfficeState.text = pp.OfficeAddressState;
+                NSLog(@"state:%@",pp.OfficeAddressState);
             }
             else{
                 txtOfficeState.text = @"";
@@ -428,12 +432,41 @@ bool IsContinue = TRUE;
 
 #pragma mark - action
 
-- (IBAction)ActionOfficeCountry:(id)sender {
+- (IBAction)addNewGroup:(id)sender
+{
+    UIAlertView* dialog = [[UIAlertView alloc] initWithTitle:@"Enter Group Name" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add", nil];
+    [dialog setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    
+    [[dialog textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDefault];
+    [dialog setTag:1001];
+    [dialog show];
+}
+
+- (IBAction)ActionOfficeCountry:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (_nationalityList == nil) {
+        self.nationalityList = [[Nationality alloc] initWithStyle:UITableViewStylePlain];
+        _nationalityList.delegate = self;
+        self.nationalityPopover = [[UIPopoverController alloc] initWithContentViewController:_nationalityList];
+    }
+    
+    CGRect butt = [sender frame];
+    int y = butt.origin.y - 44;
+    butt.origin.y = y;
+    [self.nationalityPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)isForeign:(id)sender
 {
     UIButton *btnPressed = (UIButton*)sender;
+    ColorHexCode *CustomColor = [[ColorHexCode alloc] init ];
     
     if (btnPressed.tag == 0) {
         
@@ -452,10 +485,32 @@ bool IsContinue = TRUE;
         if (checked2) {
             [btnForeignOffice setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
             checked2 = NO;
+            
+            txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+            txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+            txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+            txtOfficeTown.enabled = NO;
+            txtOfficeState.enabled = NO;
+            txtOfficeCountry.hidden = NO;
+            btnOfficeCountry.hidden = YES;
+            
+            [txtOfficePostCode addTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+            [txtOfficePostCode addTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
         }
         else {
             [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
             checked2 = YES;
+            
+            txtOfficeTown.backgroundColor = [UIColor whiteColor];
+            txtOfficeState.backgroundColor = [UIColor whiteColor];
+            txtOfficeCountry.backgroundColor = [UIColor whiteColor];
+            txtOfficeTown.enabled = YES;
+            txtOfficeState.enabled = YES;
+            txtOfficeCountry.hidden = YES;
+            btnOfficeCountry.hidden = NO;
+            
+            [txtOfficePostCode removeTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
+            [txtOfficePostCode removeTarget:self action:@selector(OfficeEditTextFieldBegin:) forControlEvents:UIControlEventEditingDidBegin];
         }
     }
 }
@@ -1011,6 +1066,27 @@ bool IsContinue = TRUE;
             else if (alertView.tag == 1003) { //save changes
                 //[self SaveChanges];
             }
+            else if (alertView.tag == 1001) {
+                
+                NSString *str = [NSString stringWithFormat:@"%@",[[alertView textFieldAtIndex:0]text] ];
+                if (str.length != 0) {
+                    
+                    NSMutableArray *array = [[NSMutableArray alloc] init];
+                    [array addObject:str];
+                    
+                    NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
+                    NSString *documentsPath = [paths objectAtIndex:0];
+                    NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"dataGroup.plist"];
+                    
+                    [array addObjectsFromArray:[NSArray arrayWithContentsOfFile:plistPath]];
+                    [array writeToFile:plistPath atomically: TRUE];
+                    
+                }
+                else {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please insert data" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    [alert show];
+                }
+            }
             
         }
             break;
@@ -1239,10 +1315,18 @@ bool IsContinue = TRUE;
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
             txtrFullName.text = [txtrFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSString *OffCountry = nil;
+            if (checked2) {
+                OffCountry = btnOfficeCountry.titleLabel.text;
+                SelectedOfficeStateCode = txtOfficeState.text;
+            }
+            else {
+                OffCountry = txtOfficeCountry.text;
+            }
             
             NSString *insertSQL = [NSString stringWithFormat:
                 @"update prospect_profile set \"ProspectName\"=\"%@\", \"ProspectDOB\"=\"%@\", \"ProspectGender\"=\"%@\", \"ResidenceAddress1\"=\"%@\", \"ResidenceAddress2\"=\"%@\", \"ResidenceAddress3\"=\"%@\", \"ResidenceAddressTown\"=\"%@\", \"ResidenceAddressState\"=\"%@\", \"ResidenceAddressPostCode\"=\"%@\", \"ResidenceAddressCountry\"=\"%@\", \"OfficeAddress1\"=\"%@\", \"OfficeAddress2\"=\"%@\", \"OfficeAddress3\"=\"%@\", \"OfficeAddressTown\"=\"%@\",\"OfficeAddressState\"=\"%@\", \"OfficeAddressPostCode\"=\"%@\", \"OfficeAddressCountry\"=\"%@\", \"ProspectEmail\"= \"%@\", \"ProspectOccupationCode\"=\"%@\", \"ExactDuties\"=\"%@\", \"ProspectRemark\"=\"%@\", \"DateModified\"=%@,\"ModifiedBy\"=\"%@\", \"ProspectGroup\"=\"%@\", \"ProspectTitle\"=\"%@\", \"IDTypeNo\"=\"%@\", \"OtherIDType\"=\"%@\", \"OtherIDTypeNo\"=\"%@\", \"Smoker\"=\"%@\", \"AnnualIncome\"=\"%@\", \"BussinessType\"=\"%@\"  where indexNo = \"%@\" "
-                    "", txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, txtOfficeCountry.text, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"datetime(\"now\", \"+8 hour\")", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text, txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text, pp.ProspectID];
+                    "", txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, txtHomeCountry.text, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, OffCountry, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"datetime(\"now\", \"+8 hour\")", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text, txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text, pp.ProspectID];
             
             
             const char *Update_stmt = [insertSQL UTF8String];
@@ -1795,6 +1879,13 @@ bool IsContinue = TRUE;
 
 
 #pragma mark - delegate
+
+-(void)selectedCountry:(NSString *)theCountry
+{
+    btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [btnOfficeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theCountry] forState:UIControlStateNormal];
+    [self.nationalityPopover dismissPopoverAnimated:YES];
+}
 
 -(void)selectedGroup:(NSString *)aaGroup
 {

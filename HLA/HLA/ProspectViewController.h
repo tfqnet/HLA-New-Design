@@ -99,6 +99,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
 @property (strong, nonatomic) IBOutlet UIButton *btnOfficeCountry;
 
+- (IBAction)addNewGroup:(id)sender;
 - (IBAction)actionOfficeCountry:(id)sender;
 - (IBAction)btnGroup:(id)sender;
 - (IBAction)btnTitle:(id)sender;

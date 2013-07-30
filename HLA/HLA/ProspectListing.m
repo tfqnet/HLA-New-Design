@@ -289,6 +289,7 @@
     ProspectProfile *pp = [ProspectTableData objectAtIndex:indexPath.row];
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
+    
     CGRect frame=CGRectMake(0,0, 200, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
@@ -319,7 +320,14 @@
     CGRect frame4=CGRectMake(750,0, 274, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
-    label4.text= pp.ProspectGroup;
+    NSString *gp = nil;
+    if (!(pp.ProspectGroup == NULL || [pp.ProspectGroup isEqualToString:@"- Select -"])) {
+        gp = pp.ProspectGroup;
+    }
+    else {
+        gp = @"";
+    }
+    label4.text= gp;
     label4.textAlignment = UITextAlignmentLeft;
     label4.tag = 2004;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
