@@ -794,6 +794,9 @@ double CurrentRiderPrem;
 	if ([riderCode isEqualToString:@"LSR"]) {
 		txtRiderTerm.text = [NSString stringWithFormat:@"%d", getTerm];
 	}
+	else if([riderCode isEqualToString:@"CIRD"]) {
+		txtRiderTerm.text = [NSString stringWithFormat:@"10"];
+	}
 
 	//-----------
 	if (sumA) {
@@ -884,6 +887,9 @@ double CurrentRiderPrem;
 		txtPaymentTerm.backgroundColor = [UIColor lightGrayColor];
 		if ([riderCode isEqualToString:@"LSR"]) {
 			txtPaymentTerm.text = [NSString stringWithFormat:@"%d", getTerm];
+		}
+		else if([riderCode isEqualToString:@"CIRD"]) {
+			txtPaymentTerm.text = [NSString stringWithFormat:@"10"];
 		}
 	}
 	//-------------------------
@@ -1832,7 +1838,8 @@ double CurrentRiderPrem;
 			maxRiderSA = 200;
 		}
 	}
-	else if([riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"ECAR"] || [riderCode isEqualToString:@"ECAR55"]) {
+	else if([riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"ECAR"] || [riderCode isEqualToString:@"ECAR55"] ||
+			[riderCode isEqualToString:@"CIWP"]) {
 			maxRiderSA = 9999999990;
 	}
 	else if([riderCode isEqualToString:@"PA"]){
@@ -2825,7 +2832,7 @@ double CurrentRiderPrem;
         else if ([riderCode isEqualToString:@"MG_IV"]) {
             [self getRiderRateTypeAgeSexClass:riderCode Type:outletRiderPlan.titleLabel.text Sex:sex Class:getOccpClass Age:age];
         }
-        else if ([riderCode isEqualToString:@"LSR"]) {
+        else if ([riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"CIRD"] ) {
             [self getRiderRateSexAge:riderCode Sex:sex Age:age];
         }
         else if ([riderCode isEqualToString:@"ECAR55"]) {
@@ -2898,6 +2905,59 @@ double CurrentRiderPrem;
 			quarterRider = [str_quar doubleValue];
 			monthlyRider = [str_month doubleValue];
 			
+		}
+		else if ([riderCode isEqualToString:@"CIRD"]){
+			double _ann = 0.00;
+			double _half =0.00;
+			double _quar = 0.00;
+			double _month =0.00;
+			
+			if (riderHLoad == 0) {
+				_ann = (riderRate * ridSA/100.00) ;
+				_half = (riderRate *ridSA /100.00) ;
+				_quar = (riderRate *ridSA /100.00) ;
+				_month = (riderRate *ridSA /100.00);
+			}
+			else{
+				/*
+				_ann = (riderRate * ((1 + riderHLoad /100) + occLoadRider) * ridSA/1000 / annFac);
+				_half = (riderRate * ((1 + riderHLoad /100) + occLoadRider) *ridSA /1000 / halfFac);
+				_quar = (riderRate * ((1 + riderHLoad /100) + occLoadRider) *ridSA /1000 / quarterFac);
+				_month = (riderRate * ((1 + riderHLoad /100) + occLoadRider) *ridSA /1000 *monthFac);
+				 */
+			}
+			
+			if (ridSA >= 20000 && ridSA < 30000) {
+				_ann = _ann - (ridSA * (0/1000));
+			}
+			else if (ridSA >= 30000 && ridSA < 50000) {
+				_ann = _ann - (ridSA * (1.5/1000.00));
+			}
+			else if (ridSA >= 50000 && ridSA < 75000) {
+				_ann = _ann - (ridSA * (2.5/1000.00));
+			}
+			else if (ridSA >= 75000 && ridSA <= 100000) {
+				_ann = _ann - (ridSA * (3/1000.00));
+			}
+			
+			_half = _ann / halfFac;
+			_quar = _ann/quarterFac;
+			_month = _ann/monthFac;
+			
+			
+			NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
+			NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
+			NSString *str_quar = [formatter stringFromNumber:[NSNumber numberWithDouble:_quar]];
+			NSString *str_month = [formatter stringFromNumber:[NSNumber numberWithDouble:_month]];
+			str_ann = [str_ann stringByReplacingOccurrencesOfString:@"," withString:@""];
+			str_half = [str_half stringByReplacingOccurrencesOfString:@"," withString:@""];
+			str_quar = [str_quar stringByReplacingOccurrencesOfString:@"," withString:@""];
+			str_month = [str_month stringByReplacingOccurrencesOfString:@"," withString:@""];
+			
+			annualRider = [str_ann doubleValue];
+			halfYearRider = [str_half doubleValue];
+			quarterRider = [str_quar doubleValue];
+			monthlyRider = [str_month doubleValue];
 		}
 		else if ([riderCode isEqualToString:@"CIWP"] || [riderCode isEqualToString:@"LCWP"] || [riderCode isEqualToString:@"PR"] ){
 			double _ann = 0.00;
@@ -4333,7 +4393,7 @@ double CurrentRiderPrem;
         [self calculateTerm];
         [self calculateSA];
 		double riderSA = [[LSumAssured objectAtIndex:p] doubleValue];
-        int riderUnit = [[LUnits objectAtIndex:p] intValue];
+        //int riderUnit = [[LUnits objectAtIndex:p] intValue];
         int riderTerm = [[LTerm objectAtIndex:p] intValue];
 		if (riderSA > maxRiderSA)
         {
@@ -4348,7 +4408,7 @@ double CurrentRiderPrem;
                 {
                     if (sqlite3_step(statement) == SQLITE_DONE)
                     {
-                        NSLog(@"rider %@ delete!",riderCode);
+                        NSLog(@"riderSA (%f) > maxRiderSA(%f), rider %@ delete!", riderSA, maxRiderSA, riderCode);
                     } else {
                         NSLog(@"rider delete Failed!");
                     }
@@ -4361,7 +4421,6 @@ double CurrentRiderPrem;
 	
 		if (riderTerm > maxRiderTerm)
 		{
-	
 			dodelete = YES;
 			sqlite3_stmt *statement;
 			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -4373,7 +4432,7 @@ double CurrentRiderPrem;
 				{
 					if (sqlite3_step(statement) == SQLITE_DONE)
 					{
-						NSLog(@"rider %@ delete!",riderCode);
+						NSLog(@"riderTerm (%d) > maxRiderTerm(%f), rider %@ delete!", riderTerm, maxRiderTerm, riderCode);
 					} else {
 						NSLog(@"rider delete Failed!");
 					}

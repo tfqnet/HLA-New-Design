@@ -20,7 +20,8 @@ BOOL exist;
 @implementation EverFundMaturityViewController
 @synthesize outletDelete,outletFund,outletOptions, outletTableLabel, SINo;
 @synthesize txt2025,txt2028,txt2030,txt2035,txtCashFund,txtPercentageReinvest,txtSecureFund, myTableView;
-@synthesize a2023,a2025,a2028,a2030,a2035,aCashFund,aFundOption,aMaturityFund,aSecureFund,aPercent;
+@synthesize a2025,a2028,a2030,a2035,aCashFund,aFundOption,aMaturityFund,aSecureFund,aPercent,outletEdit;
+@synthesize indexPaths,ItemToBeDeleted;
 @synthesize FundList = _FundList;
 @synthesize FundPopover = _FundPopover;
 @synthesize delegate = _delegate;
@@ -44,7 +45,8 @@ BOOL exist;
 	databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
 	
 
-	
+	outletDelete.hidden = YES;
+	outletEdit.hidden = NO;
 	outletTableLabel.hidden = YES;
 	myTableView.hidden = YES;
 	myTableView.delegate = self;
@@ -67,17 +69,25 @@ BOOL exist;
 	txtPercentageReinvest.backgroundColor = [UIColor lightGrayColor];
 	outletOptions.enabled =FALSE;
 	txt2025.delegate = self;
-		txt2028.delegate = self;
-		txt2030.delegate = self;
-		txt2035.delegate = self;
-		txtCashFund.delegate = self;
-		txtSecureFund.delegate = self;
+	txt2028.delegate = self;
+	txt2030.delegate = self;
+	txt2035.delegate = self;
+	txtCashFund.delegate = self;
+	txtSecureFund.delegate = self;
 	exist = FALSE;
 	
+	ItemToBeDeleted = [[NSMutableArray alloc] init];
+    indexPaths = [[NSMutableArray alloc] init];
+	outletDelete.enabled = FALSE;
 	[outletDelete setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f] forState:UIControlStateNormal];
     [outletDelete setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	outletDelete.titleLabel.shadowColor = [UIColor lightGrayColor];
     outletDelete.titleLabel.shadowOffset = CGSizeMake(0, -1);
+	
+	[outletEdit setBackgroundImage:[[UIImage imageNamed:@"iphone_delete_button.png"] stretchableImageWithLeftCapWidth:8.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+    [outletEdit setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+	outletEdit.titleLabel.shadowColor = [UIColor lightGrayColor];
+    outletEdit.titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
 	[self GetExisting];
 	[self toggleFund];
@@ -133,9 +143,10 @@ BOOL exist;
 	
 	ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     int y = 0;
+	int height = 50;
 	int FontSize = 14;
 	
-	CGRect frame=CGRectMake(10,y, 135, 50);
+	CGRect frame=CGRectMake(10,y, 135, height);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [NSString stringWithFormat:@"%@", [aMaturityFund objectAtIndex:indexPath.row] ];
@@ -144,7 +155,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label1];
 	
-	CGRect frame2=CGRectMake(frame.origin.x + frame.size.width, y, 70, 50);
+	CGRect frame2=CGRectMake(frame.origin.x + frame.size.width, y, 70, height);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
     label2.text= [NSString stringWithFormat:@"%@", [aFundOption objectAtIndex:indexPath.row] ];
@@ -153,7 +164,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label2];
 	
-	CGRect frame3=CGRectMake(frame2.origin.x + frame2.size.width, y, 70, 50);
+	CGRect frame3=CGRectMake(frame2.origin.x + frame2.size.width, y, 70, height);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
 	if ([[aFundOption objectAtIndex:indexPath.row] isEqualToString:@"ReInvest" ]) {
@@ -170,7 +181,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label3];
 	
-	CGRect frame4=CGRectMake(frame3.origin.x + frame3.size.width, y, 70, 50);
+	CGRect frame4=CGRectMake(frame3.origin.x + frame3.size.width, y, 60, height);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     //label4.text= [NSString stringWithFormat:@"%d", [[aPercent objectAtIndex:indexPath.row] intValue ] ];
@@ -188,7 +199,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label4];
 	
-	CGRect frame5=CGRectMake(frame4.origin.x + frame4.size.width, y, 60, 50);
+	CGRect frame5=CGRectMake(frame4.origin.x + frame4.size.width, y, 50, height);
     UILabel *label5=[[UILabel alloc]init];
     label5.frame=frame5;
     label5.text= [NSString stringWithFormat:@"%@", [a2025 objectAtIndex:indexPath.row]];
@@ -197,7 +208,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label5];
 	
-	CGRect frame6=CGRectMake(frame5.origin.x + frame5.size.width,y, 60, 50);
+	CGRect frame6=CGRectMake(frame5.origin.x + frame5.size.width,y, 55, height);
     UILabel *label6=[[UILabel alloc]init];
     label6.frame=frame6;
     label6.text= [NSString stringWithFormat:@"%@", [a2028 objectAtIndex:indexPath.row]];
@@ -206,7 +217,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label6];
 	
-	CGRect frame7=CGRectMake(frame6.origin.x + frame6.size.width,y, 60, 50);
+	CGRect frame7=CGRectMake(frame6.origin.x + frame6.size.width,y, 55, height);
     UILabel *label7=[[UILabel alloc]init];
     label7.frame=frame7;
     label7.text= [NSString stringWithFormat:@"%@", [a2030 objectAtIndex:indexPath.row]];
@@ -215,7 +226,7 @@ BOOL exist;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label7];
 
-	CGRect frame8=CGRectMake(frame7.origin.x + frame7.size.width,y, 50, 50);
+	CGRect frame8=CGRectMake(frame7.origin.x + frame7.size.width,y, 55, height);
     UILabel *label8=[[UILabel alloc]init];
     label8.frame=frame8;
     label8.text= [NSString stringWithFormat:@"%@", [a2035 objectAtIndex:indexPath.row]];
@@ -227,20 +238,30 @@ BOOL exist;
 	CGRect frame9=CGRectMake(frame8.origin.x + frame8.size.width,y, 50, 50);
     UILabel *label9=[[UILabel alloc]init];
     label9.frame=frame9;
-    label9.text= [NSString stringWithFormat:@"%@", [aSecureFund objectAtIndex:indexPath.row]];
+    label9.text= [NSString stringWithFormat:@"0"];
     label9.textAlignment = UITextAlignmentCenter;
     label9.tag = 2009;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label9];
 	
-	CGRect frame10=CGRectMake(frame9.origin.x + frame9.size.width,y, 70, 50);
+	CGRect frame10=CGRectMake(frame9.origin.x + frame9.size.width,y, 50, 50);
     UILabel *label10=[[UILabel alloc]init];
     label10.frame=frame10;
-    label10.text= [NSString stringWithFormat:@"%@", [aCashFund objectAtIndex:indexPath.row]];
+    label10.text= [NSString stringWithFormat:@"%@", [aSecureFund objectAtIndex:indexPath.row]];
     label10.textAlignment = UITextAlignmentCenter;
     label10.tag = 2010;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     [cell.contentView addSubview:label10];
+	
+	
+	CGRect frame11=CGRectMake(frame10.origin.x + frame10.size.width,y, 50, 50);
+    UILabel *label11=[[UILabel alloc]init];
+    label11.frame=frame11;
+    label11.text= [NSString stringWithFormat:@"%@", [aCashFund objectAtIndex:indexPath.row]];
+    label11.textAlignment = UITextAlignmentCenter;
+    label11.tag = 2010;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
+    [cell.contentView addSubview:label11];
 	
 	if (indexPath.row % 2 == 0) {
         label1.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
@@ -254,6 +275,7 @@ BOOL exist;
 		label8.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 		label9.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
 		label10.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
+		label11.backgroundColor = [CustomColor colorWithHexString:@"D0D8E8"];
         
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
@@ -265,7 +287,7 @@ BOOL exist;
 		label8.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label9.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
         label10.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
-		
+		label11.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     }
     else {
         label1.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
@@ -278,6 +300,7 @@ BOOL exist;
 		label8.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
 		label9.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
         label10.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
+		label11.backgroundColor = [CustomColor colorWithHexString:@"E9EDF4"];
 		
         label1.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
         label2.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
@@ -289,6 +312,7 @@ BOOL exist;
 		label8.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
 		label9.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
         label10.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
+		label11.font = [UIFont fontWithName:@"TreBuchet MS" size:FontSize];
     }
 	
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -298,25 +322,82 @@ BOOL exist;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 	exist = TRUE;
 	
-	[outletFund setTitle:[aMaturityFund objectAtIndex:indexPath.row] forState:UIControlStateNormal];
-	if ([[aFundOption objectAtIndex:indexPath.row] isEqualToString:@"ReInvest" ]) {
-		outletOptions.selectedSegmentIndex = 0;
-	}
-	else if ([[aFundOption objectAtIndex:indexPath.row] isEqualToString:@"Withdraw" ]){
-		outletOptions.selectedSegmentIndex = 1;
-	}
+	if ([myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
+        
+        for (UITableViewCell *zzz in [myTableView visibleCells])
+        {
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+        }
+        
+        if (!gotRowSelected) {
+            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+			outletDelete.enabled = FALSE;
+        }
+        else {
+            [outletDelete setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+			outletDelete.enabled = TRUE;
+        }
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted addObject:zzz];
+        [indexPaths addObject:indexPath];
+		
+		//NSLog(@"%d", ItemToBeDeleted.count);
+    }
 	else{
-		outletOptions.selectedSegmentIndex = 2;
+		[outletFund setTitle:[aMaturityFund objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+		if ([[aFundOption objectAtIndex:indexPath.row] isEqualToString:@"ReInvest" ]) {
+			outletOptions.selectedSegmentIndex = 0;
+		}
+		else if ([[aFundOption objectAtIndex:indexPath.row] isEqualToString:@"Withdraw" ]){
+			outletOptions.selectedSegmentIndex = 1;
+		}
+		else{
+			outletOptions.selectedSegmentIndex = 2;
+		}
+		txtPercentageReinvest.text = [NSString stringWithFormat:@"%.0f", [[aPercent objectAtIndex:indexPath.row] doubleValue]];
+		txt2025.text = [NSString stringWithFormat:@"%.0f", [[a2025 objectAtIndex:indexPath.row] doubleValue]];
+		txt2028.text = [NSString stringWithFormat:@"%.0f", [[a2028 objectAtIndex:indexPath.row] doubleValue]];
+		txt2030.text = [NSString stringWithFormat:@"%.0f", [[a2030 objectAtIndex:indexPath.row] doubleValue]];
+		txt2035.text = [NSString stringWithFormat:@"%.0f", [[a2035 objectAtIndex:indexPath.row] doubleValue]];
+		txtCashFund.text = [NSString stringWithFormat:@"%.0f", [[aCashFund objectAtIndex:indexPath.row] doubleValue]];
+		txtSecureFund.text = [NSString stringWithFormat:@"%.0f", [[aSecureFund objectAtIndex:indexPath.row] doubleValue]];
+		outletOptions.enabled = TRUE;
+		[self toggleFund];
 	}
-	txtPercentageReinvest.text = [NSString stringWithFormat:@"%.0f", [[aPercent objectAtIndex:indexPath.row] doubleValue]];
-	txt2025.text = [NSString stringWithFormat:@"%.0f", [[a2025 objectAtIndex:indexPath.row] doubleValue]];
-	txt2028.text = [NSString stringWithFormat:@"%.0f", [[a2028 objectAtIndex:indexPath.row] doubleValue]];
-	txt2030.text = [NSString stringWithFormat:@"%.0f", [[a2030 objectAtIndex:indexPath.row] doubleValue]];
-	txt2035.text = [NSString stringWithFormat:@"%.0f", [[a2035 objectAtIndex:indexPath.row] doubleValue]];
-	txtCashFund.text = [NSString stringWithFormat:@"%.0f", [[aCashFund objectAtIndex:indexPath.row] doubleValue]];
-	txtSecureFund.text = [NSString stringWithFormat:@"%.0f", [[aSecureFund objectAtIndex:indexPath.row] doubleValue]];
-	outletOptions.enabled = TRUE;
-	[self toggleFund];
+	
+	
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+	if ([myTableView isEditing] == TRUE ) {
+        BOOL gotRowSelected = FALSE;
+        
+        for (UITableViewCell *zzz in [myTableView visibleCells])
+        {
+            if (zzz.selected  == TRUE) {
+                gotRowSelected = TRUE;
+                break;
+            }
+        }
+        
+        if (!gotRowSelected) {
+            [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+			outletDelete.enabled = FALSE;
+        }
+        else {
+            [outletDelete setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+			outletDelete.enabled = TRUE;
+        }
+        
+        NSString *zzz = [NSString stringWithFormat:@"%d", indexPath.row];
+        [ItemToBeDeleted removeObject:zzz];
+        [indexPaths removeObject:indexPath];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -343,12 +424,12 @@ BOOL exist;
 	return  YES;
 }
 
-
+#pragma mark - delegate
 -(void)Fundlisting:(PopOverFundViewController *)inController andDesc:(NSString *)aaDesc{
 	
 	[outletFund setTitle:aaDesc forState:UIControlStateNormal];
 	[self.FundPopover dismissPopoverAnimated:YES];
-	outletOptions.selectedSegmentIndex = 0;
+	//outletOptions.selectedSegmentIndex = 0;
 	[self DisplayData];
 	/*
 	if (outletOptions.selectedSegmentIndex != 1) {
@@ -384,6 +465,7 @@ BOOL exist;
 	outletOptions.enabled = TRUE;
 }
 
+#pragma mark - handle data
 -(void)DisplayData{
 
 	NSRange search;
@@ -464,6 +546,17 @@ BOOL exist;
 		
 		[self InsertandUpdate];
 	}
+	if (alertView.tag == 1002) {
+		
+		if (ItemToBeDeleted.count < 1) {
+            return;
+        }
+        else{
+            NSLog(@"itemToBeDeleted:%d", ItemToBeDeleted.count);
+        }
+		
+		[self DeleteFund];
+	}
 	else if (alertView.tag == 1007 && buttonIndex == 0) {
 		
 		if ([self Validation] == TRUE) {
@@ -511,7 +604,7 @@ BOOL exist;
 								   txt2028.text, txt2030.text, txt2035.text, txtCashFund.text, txtSecureFund.text];
 			 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
 				 if (sqlite3_step(statement) == SQLITE_DONE){
-	 
+					 exist = TRUE;
 				 }
 				 sqlite3_finalize(statement);
 			 }
@@ -525,9 +618,65 @@ BOOL exist;
 
 }
 
+-(void)DeleteFund{
+	sqlite3_stmt *statement;
+	NSArray *sorted = [[NSArray alloc] init ];
+	sorted = [ItemToBeDeleted sortedArrayUsingComparator:^(id firstObject, id secondObject){
+		return [((NSString *)firstObject) compare:((NSString *)secondObject) options:NSNumericSearch];
+	}];
+	
+	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+	{
+		for(int a=0; a<sorted.count; a++) {
+			int value = [[sorted objectAtIndex:a] intValue];
+			value = value - a;
+			
+			NSString *Fund = [aMaturityFund objectAtIndex:value];
+			NSString *querySQL = [NSString stringWithFormat:
+								  @"DELETE FROM UL_Fund_Maturity_Option WHERE SINo=\"%@\" AND Fund=\"%@\"",
+								  SINo, Fund];
+			
+			//NSLog(@"%@", querySQL);
+			if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			{
+				if (sqlite3_step(statement) == SQLITE_DONE)
+				{
+					NSLog(@"fund delete!");
+				} else {
+					NSLog(@"fund delete Failed!");
+				}
+				sqlite3_finalize(statement);
+			}
+			
+			[aMaturityFund removeObjectAtIndex:value];
+			[aFundOption removeObjectAtIndex:value];
+			[a2025 removeObjectAtIndex:value];
+			[a2028 removeObjectAtIndex:value];
+			[a2030 removeObjectAtIndex:value];
+			[a2035 removeObjectAtIndex:value];
+			[aSecureFund removeObjectAtIndex:value];
+			[aCashFund removeObjectAtIndex:value];
+			[aPercent removeObjectAtIndex:value];
+			
+		}
+		sqlite3_close(contactDB);
+	}
+	
+	[myTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+	[self GetExisting];
+	[self.myTableView reloadData];
+	
+	ItemToBeDeleted = [[NSMutableArray alloc] init];
+	indexPaths = [[NSMutableArray alloc] init];
+	
+	outletDelete.enabled = FALSE;
+	[outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+
+	[self.outletFund setTitle:@"Please Select" forState:UIControlStateNormal];
+}
+
 -(void)GetExisting{
 	
-	a2023 = [[NSMutableArray alloc] init ];
 	a2025 = [[NSMutableArray alloc] init ];
 	a2028 = [[NSMutableArray alloc] init ];
 	a2030 = [[NSMutableArray alloc] init ];
@@ -569,8 +718,11 @@ BOOL exist;
 		myTableView.hidden = NO;
 		outletTableLabel.hidden = NO;
 		[myTableView reloadData];
+		outletEdit.hidden = NO;
 	}
 	else{
+		outletDelete.hidden = YES;
+		outletEdit.hidden = YES;
 		myTableView.hidden = YES;
 		outletTableLabel.hidden = YES;
 	}
@@ -604,6 +756,7 @@ BOOL exist;
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:@"Percentage ReInvest must be greater than 0" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
 			[alert show];
+			[txtPercentageReinvest becomeFirstResponder ];
 			return  FALSE;
 		}
 		
@@ -611,6 +764,7 @@ BOOL exist;
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:@"Percentage ReInvest must be greater than 0" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
 			[alert show];
+			[txtPercentageReinvest becomeFirstResponder ];
 			return  FALSE;
 		}
 	}
@@ -640,9 +794,12 @@ BOOL exist;
 	[self setTxt2035:nil];
 	[self setTxtCashFund:nil];
 	[self setOutletDelete:nil];
-	[self setACtionDelete:nil];
 	[self setMyTableView:nil];
 	[self setOutletTableLabel:nil];
+	[self setOutletEdit:nil];
+	[self setOutletEdit:nil];
+	[self setOutletDelete:nil];
+	[self setOutletEdit:nil];
 	[super viewDidUnload];
 }
 
@@ -826,4 +983,57 @@ BOOL exist;
 					 permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	
 }
+- (IBAction)ActionDelete:(id)sender {
+	NSString *ridCode;
+    int RecCount = 0;
+    for (UITableViewCell *cell in [myTableView visibleCells])
+    {
+        if (cell.selected == TRUE) {
+            NSIndexPath *selectedIndexPath = [myTableView indexPathForCell:cell];
+            if (RecCount == 0) {
+                ridCode = [aMaturityFund objectAtIndex:selectedIndexPath.row];
+            }
+            
+            RecCount = RecCount + 1;
+            
+            if (RecCount > 1) {
+                break;
+            }
+        }
+    }
+    
+    NSString *msg;
+    if (RecCount == 1) {
+        msg = [NSString stringWithFormat:@"Delete fund:%@",ridCode];
+    }
+    else {
+        msg = @"Are you sure want to delete these Rider(s)?";
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+    [alert setTag:1002];
+    [alert show];
+	
+}
+
+- (IBAction)ActionEdit:(id)sender {
+	[self resignFirstResponder];
+    if ([self.myTableView isEditing]) {
+        [self.myTableView setEditing:NO animated:TRUE];
+		outletDelete.hidden = true;
+        [outletEdit setTitle:@"Delete" forState:UIControlStateNormal ];
+        
+		
+        ItemToBeDeleted = [[NSMutableArray alloc] init];
+        indexPaths = [[NSMutableArray alloc] init];
+    }
+    else{
+        [self.myTableView setEditing:YES animated:TRUE];
+		outletDelete.hidden = FALSE;
+        [outletDelete setTitleColor:[UIColor grayColor] forState:UIControlStateNormal ];
+        [outletEdit setTitle:@"Cancel" forState:UIControlStateNormal ];
+    }
+}
+
+
 @end

@@ -213,6 +213,7 @@
 			 }
 		 }
 		 
+
 		 
 		 querySQL = [NSString stringWithFormat: @"DELETE FROM UL_Fund_Maturity_Option where sino = '%@' and fund IN (%@) ",  SINo, ToBeDeleted ];
 		 //NSLog(@"%@", querySQL);
@@ -225,6 +226,100 @@
 			 } 
 			 sqlite3_finalize(statement);
 		 }
+
+		 bool F2023 = FALSE;
+		 bool F2025 = FALSE;
+		 bool F2028 = FALSE;
+		 bool F2030 = FALSE;
+		 
+		 querySQL = [NSString stringWithFormat: @"Select Fund FROM UL_Fund_Maturity_Option where sino = '%@' ",  SINo];
+		 //NSLog(@"%@", querySQL);
+		 
+		 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+		 {
+			 while (sqlite3_step(statement) == SQLITE_ROW)
+			 {
+				 if([[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] isEqualToString:@"HLA EverGreen 2023"]){
+					 F2023 = TRUE;
+				 }
+				 else if([[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] isEqualToString:@"HLA EverGreen 2025"]){
+					 F2025 = TRUE;
+				 }
+				 else if([[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] isEqualToString:@"HLA EverGreen 2028"]){
+					 F2028 = TRUE;
+				 }
+				 else if([[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] isEqualToString:@"HLA EverGreen 2030"]){
+					 F2030 = TRUE;
+				 }
+
+			 }
+			 sqlite3_finalize(statement);
+		 }
+		 
+		 if (![txt2023.text isEqualToString:@"0"] && F2023 == FALSE) {
+			 querySQL = [NSString stringWithFormat: @"INSERT INTO UL_Fund_Maturity_Option (SINO, Fund, Option, Partial_Withd_Pct, "
+						 "EverGreen2025, EverGreen2028, EverGreen2030, EverGreen2035, CashFund, RetireFund ) VALUES ('%@', '%@', '%@', '%@', "
+						 " '%@', '%@','%@','%@','%@','%@') ", SINo, @"HLA EverGreen 2023", @"ReInvest", @"0", @"0", @"0", @"0",@"0",@"100", @"0"  ];
+			 //NSLog(@"%@", querySQL);
+			 
+			 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			 {
+				 if (sqlite3_step(statement) == SQLITE_DONE)
+				 {
+					 
+				 }
+				 sqlite3_finalize(statement);
+			 }
+		 }
+		 
+		 if (![txt2025.text isEqualToString:@"0"] && F2025 == FALSE) {
+			 querySQL = [NSString stringWithFormat: @"INSERT INTO UL_Fund_Maturity_Option (SINO, Fund, Option, Partial_Withd_Pct, "
+						 "EverGreen2025, EverGreen2028, EverGreen2030, EverGreen2035, CashFund, RetireFund ) VALUES ('%@', '%@', '%@', '%@', "
+						 " '%@', '%@','%@','%@','%@','%@') ", SINo, @"HLA EverGreen 2025", @"ReInvest", @"0", @"0", @"0", @"0",@"0",@"100", @"0"  ];
+			 //NSLog(@"%@", querySQL);
+			 
+			 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			 {
+				 if (sqlite3_step(statement) == SQLITE_DONE)
+				 {
+					 
+				 }
+				 sqlite3_finalize(statement);
+			 }
+		 }
+		 
+		 if (![txt2028.text isEqualToString:@"0"] && F2028 == FALSE) {
+			 querySQL = [NSString stringWithFormat: @"INSERT INTO UL_Fund_Maturity_Option (SINO, Fund, Option, Partial_Withd_Pct, "
+						 "EverGreen2025, EverGreen2028, EverGreen2030, EverGreen2035, CashFund, RetireFund ) VALUES ('%@', '%@', '%@', '%@', "
+						 " '%@', '%@','%@','%@','%@','%@') ", SINo, @"HLA EverGreen 2028", @"ReInvest", @"0", @"0", @"0", @"0",@"0",@"100", @"0"  ];
+			 //NSLog(@"%@", querySQL);
+			 
+			 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			 {
+				 if (sqlite3_step(statement) == SQLITE_DONE)
+				 {
+					 
+				 }
+				 sqlite3_finalize(statement);
+			 }
+		 }
+		 
+		 if (![txt2030.text isEqualToString:@"0"] && F2030 == FALSE) {
+			 querySQL = [NSString stringWithFormat: @"INSERT INTO UL_Fund_Maturity_Option (SINO, Fund, Option, Partial_Withd_Pct, "
+						 "EverGreen2025, EverGreen2028, EverGreen2030, EverGreen2035, CashFund, RetireFund ) VALUES ('%@', '%@', '%@', '%@', "
+						 " '%@', '%@','%@','%@','%@','%@') ", SINo, @"HLA EverGreen 2030", @"ReInvest", @"0", @"0", @"0", @"0",@"0",@"100", @"0"  ];
+			 //NSLog(@"%@", querySQL);
+			 
+			 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			 {
+				 if (sqlite3_step(statement) == SQLITE_DONE)
+				 {
+					 
+				 }
+				 sqlite3_finalize(statement);
+			 }
+		 }
+		 
 		 sqlite3_close(contactDB);
 	 }
 	 
@@ -361,7 +456,7 @@
 	}
 	else if ([txtCashFund.text isEqualToString:@"0"]) {
 		UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-															message:@"Fund Allocation for HLA Cash Fund canot be less than 1%." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+															message:@"Fund Allocation for HLA Cash Fund cannot be less than 1%." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[failAlert show];
 		[txtCashFund becomeFirstResponder ];
 		return FALSE;

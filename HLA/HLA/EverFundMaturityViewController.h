@@ -47,18 +47,25 @@
 @property (weak, nonatomic) IBOutlet UITextField *txt2035;
 @property (weak, nonatomic) IBOutlet UITextField *txtCashFund;
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
-@property (weak, nonatomic) IBOutlet UIButton *ACtionDelete;
+- (IBAction)ActionDelete:(id)sender;
+- (IBAction)ActionEdit:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *outletEdit;
+
+
+
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *outletTableLabel;
 
 @property (retain, nonatomic) NSMutableArray *aMaturityFund;
 @property (retain, nonatomic) NSMutableArray *aFundOption;
 @property (retain, nonatomic) NSMutableArray *aPercent;
-@property (retain, nonatomic) NSMutableArray *a2023;
 @property (retain, nonatomic) NSMutableArray *a2025;
 @property (retain, nonatomic) NSMutableArray *a2028;
 @property (retain, nonatomic) NSMutableArray *a2030;
 @property (retain, nonatomic) NSMutableArray *a2035;
 @property (retain, nonatomic) NSMutableArray *aCashFund;
 @property (retain, nonatomic) NSMutableArray *aSecureFund;
+
+@property (retain, nonatomic) NSMutableArray *ItemToBeDeleted;
+@property (retain, nonatomic) NSMutableArray *indexPaths;
 @end

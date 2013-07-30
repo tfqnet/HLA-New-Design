@@ -233,9 +233,9 @@
 			 			[txtInterval becomeFirstResponder];
 			 			return FALSE;
 				}
-				if([txtInterval.text intValue] > ([txtStartTo.text intValue] - [txtStartFrom.text integerValue])  ){
+				if([txtInterval.text intValue] > 100 - getAge  ){
 					UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-																	message:[NSString stringWithFormat:@"Interval (Years) for Regular Withdrawal cannot be more than %d.", [txtStartTo.text intValue] - [txtStartFrom.text integerValue]] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+																	message:[NSString stringWithFormat:@"Interval (Years) for Regular Withdrawal must be within (1-%d).", 100 - getAge ] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 					[failAlert show];
 					[txtInterval becomeFirstResponder];
 					return FALSE;
