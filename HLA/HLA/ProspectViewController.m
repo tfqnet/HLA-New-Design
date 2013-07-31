@@ -504,6 +504,10 @@ bool PostcodeContinue = TRUE;
             [btnForeignOffice setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
             checked2 = NO;
             
+            txtOfficePostcode.text = @"";
+            txtOfficeTown.text = @"";
+            txtOfficeState.text = @"";
+            txtOfficeCountry.text = @"MALAYSIA";
             txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
             txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
             txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
@@ -519,6 +523,11 @@ bool PostcodeContinue = TRUE;
             [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
             checked2 = YES;
             
+            txtOfficePostcode.text = @"";
+            txtOfficeTown.text = @"";
+            txtOfficeState.text = @"";
+            [btnOfficeCountry setTitle:@"- Select -" forState:UIControlStateNormal];
+            btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
             txtOfficeTown.backgroundColor = [UIColor whiteColor];
             txtOfficeState.backgroundColor = [UIColor whiteColor];
             txtOfficeCountry.backgroundColor = [UIColor whiteColor];

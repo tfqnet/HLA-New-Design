@@ -22,12 +22,10 @@
 
 @implementation ProspectListing
 @synthesize ProspectTableData, FilteredProspectTableData, isFiltered;
-@synthesize txtIDTypeNo,btnGroup,IDType,groupLabel;
+@synthesize txtIDTypeNo,btnGroup,groupLabel;
 @synthesize EditProspect = _EditProspect;
 @synthesize ProspectViewController = _ProspectViewController;
 @synthesize idNoLabel,idTypeLabel,clientNameLabel,editBtn,deleteBtn,nametxt;
-@synthesize IDTypePicker = _IDTypePicker;
-@synthesize IDTypePickerPopover = _IDTypePickerPopover;
 @synthesize GroupList = _GroupList;
 @synthesize GroupPopover = _GroupPopover;
 @synthesize dataMobile,dataPrefix;
@@ -209,27 +207,27 @@
     ItemToBeDeleted = [[NSMutableArray alloc] init];
     indexPaths = [[NSMutableArray alloc] init];
     
-    CGRect frame1=CGRectMake(0,233, 350, 50);
+    CGRect frame1=CGRectMake(0,169, 350, 50);
     idTypeLabel.frame = frame1;
     idTypeLabel.textAlignment = UITextAlignmentCenter;
     idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     idTypeLabel.text = @"Name";
     
-    CGRect frame2=CGRectMake(350,233, 200, 50);
+    CGRect frame2=CGRectMake(350,169, 200, 50);
     idNoLabel.frame = frame2;
     idNoLabel.textAlignment = UITextAlignmentCenter;
     idNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame3=CGRectMake(550,233, 200, 50);
+    CGRect frame3=CGRectMake(550,169, 200, 50);
     clientNameLabel.frame = frame3;
     clientNameLabel.textAlignment = UITextAlignmentCenter;
     clientNameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     clientNameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     clientNameLabel.text = @"Mobile Number";
     
-    CGRect frame4=CGRectMake(750,233, 220, 50);
+    CGRect frame4=CGRectMake(750,169, 220, 50);
     groupLabel.frame = frame4;
     groupLabel.textAlignment = UITextAlignmentCenter;
     groupLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
@@ -697,18 +695,16 @@
         querySQL = @"SELECT * FROM prospect_profile";
             
         if (![nametxt.text isEqualToString:@""]) {
-            querySQL = [querySQL stringByAppendingFormat:@" WHERE ProspectName like \"%%%@%%\" order by ProspectName ASC", nametxt.text ];
-        }
-        else if (![IDType.titleLabel.text isEqualToString:@""]) {
-            querySQL = [querySQL stringByAppendingFormat:@" WHERE OtherIDType like \"%%%@%%\" order by ProspectName ASC", IDType.titleLabel.text ];
+            querySQL = [querySQL stringByAppendingFormat:@" WHERE ProspectName like \"%%%@%%\"", nametxt.text ];
         }
         else if (![txtIDTypeNo.text isEqualToString:@""]) {
-            querySQL = [querySQL stringByAppendingFormat:@" WHERE IDTypeNo like \"%%%@%%\" order by ProspectName ASC", txtIDTypeNo.text ];
+            querySQL = [querySQL stringByAppendingFormat:@" WHERE IDTypeNo like \"%%%@%%\"", txtIDTypeNo.text ];
         }
-        else if (![btnGroup.titleLabel.text isEqualToString:@""]) {
-            querySQL = [querySQL stringByAppendingFormat:@" WHERE ProspectGroup like \"%%%@%%\" order by ProspectName ASC", btnGroup.titleLabel.text ];
+        else if (!([btnGroup.titleLabel.text isEqualToString:@""]||[btnGroup.titleLabel.text isEqualToString:@"- Select -"])) {
+            querySQL = [querySQL stringByAppendingFormat:@" WHERE ProspectGroup like \"%%%@%%\"", btnGroup.titleLabel.text ];
         }
         
+        querySQL = [querySQL stringByAppendingFormat:@" order by ProspectName ASC"];
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             ProspectTableData = [[NSMutableArray alloc] init];
@@ -805,11 +801,9 @@
 - (IBAction)resetPressed:(id)sender
 {
     nametxt.text = @"";
-    [IDType setTitle:@"" forState:UIControlStateNormal];
-    IDType.titleLabel.text = @"";
     txtIDTypeNo.text = @"";
-    [btnGroup setTitle:@"" forState:UIControlStateNormal];
-    btnGroup.titleLabel.text = @"";
+    [btnGroup setTitle:@"- Select -" forState:UIControlStateNormal];
+    btnGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [self ReloadTableData];
 }
 
@@ -934,22 +928,10 @@
     [self.GroupPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
-- (IBAction)IdType:(id)sender
-{
-    if (_IDTypePicker == nil) {
-        self.IDTypePicker = [[IDTypeViewController alloc] initWithStyle:UITableViewStylePlain];
-        _IDTypePicker.delegate = self;
-        self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
-    }
-    
-    [self.IDTypePickerPopover presentPopoverFromRect:[sender frame] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-}
-
 #pragma mark - memory management
 
 - (void)viewDidUnload
 {
-    [self setIDType:nil];
     [self setMyTableView:nil];
     [self setIdTypeLabel:nil];
     [self setIdNoLabel:nil];
@@ -957,7 +939,6 @@
     [self setEditBtn:nil];
     [self setDeleteBtn:nil];
     [self setNametxt:nil];
-    [self setIDType:nil];
     [self setBtnGroup:nil];
     [self setTxtIDTypeNo:nil];
     [self setGroupLabel:nil];
@@ -971,13 +952,6 @@
 	ProspectTableData = Nil;
 	FilteredProspectTableData = Nil;
 	databasePath = Nil;
-}
-
--(void)selectedIDType:(NSString *)selectedIDType
-{
-    IDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [IDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType] forState:UIControlStateNormal];
-    [self.IDTypePickerPopover dismissPopoverAnimated:YES];
 }
 
 -(void)selectedGroup:(NSString *)aaGroup

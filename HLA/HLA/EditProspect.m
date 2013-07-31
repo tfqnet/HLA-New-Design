@@ -381,10 +381,11 @@ bool IsContinue = TRUE;
             else if (![[txtOfficePostCode.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"" ] && ![txtOfficeCountry.text isEqualToString:@"MALAYSIA"]) {
                 
                 txtOfficeState.text = pp.OfficeAddressState;
-                NSLog(@"state:%@",pp.OfficeAddressState);
+                
             }
             else{
                 txtOfficeState.text = @"";
+                [txtOfficePostCode addTarget:self action:@selector(EditOfficePostcodeDidChange:) forControlEvents:UIControlEventEditingDidEnd];
             }
         }
         sqlite3_close(contactDB);
@@ -486,6 +487,10 @@ bool IsContinue = TRUE;
             [btnForeignOffice setImage: [UIImage imageNamed:@"emptyCheckBox.png"] forState:UIControlStateNormal];
             checked2 = NO;
             
+            txtOfficePostCode.text = @"";
+            txtOfficeTown.text = @"";
+            txtOfficeState.text = @"";
+            txtOfficeCountry.text = @"MALAYSIA";
             txtOfficeTown.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
             txtOfficeState.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
             txtOfficeCountry.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
@@ -501,6 +506,11 @@ bool IsContinue = TRUE;
             [btnForeignOffice setImage: [UIImage imageNamed:@"tickCheckBox.png"] forState:UIControlStateNormal];
             checked2 = YES;
             
+            txtOfficePostCode.text = @"";
+            txtOfficeTown.text = @"";
+            txtOfficeState.text = @"";
+            [btnOfficeCountry setTitle:@"- Select -" forState:UIControlStateNormal];
+            btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
             txtOfficeTown.backgroundColor = [UIColor whiteColor];
             txtOfficeState.backgroundColor = [UIColor whiteColor];
             txtOfficeCountry.backgroundColor = [UIColor whiteColor];
