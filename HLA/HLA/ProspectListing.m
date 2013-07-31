@@ -30,7 +30,7 @@
 @synthesize IDTypePickerPopover = _IDTypePickerPopover;
 @synthesize GroupList = _GroupList;
 @synthesize GroupPopover = _GroupPopover;
-@synthesize dataMobile;
+@synthesize dataMobile,dataPrefix;
 
 - (void)viewDidLoad
 {
@@ -209,29 +209,29 @@
     ItemToBeDeleted = [[NSMutableArray alloc] init];
     indexPaths = [[NSMutableArray alloc] init];
     
-    CGRect frame1=CGRectMake(0,233, 200, 50);
+    CGRect frame1=CGRectMake(0,233, 350, 50);
     idTypeLabel.frame = frame1;
     idTypeLabel.textAlignment = UITextAlignmentCenter;
     idTypeLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idTypeLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     idTypeLabel.text = @"Name";
     
-    CGRect frame2=CGRectMake(200,233, 200, 50);
+    CGRect frame2=CGRectMake(350,233, 200, 50);
     idNoLabel.frame = frame2;
     idNoLabel.textAlignment = UITextAlignmentCenter;
     idNoLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     idNoLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
-    CGRect frame3=CGRectMake(400,233, 350, 50);
+    CGRect frame3=CGRectMake(550,233, 200, 50);
     clientNameLabel.frame = frame3;
-    clientNameLabel.textAlignment = UITextAlignmentLeft;
+    clientNameLabel.textAlignment = UITextAlignmentCenter;
     clientNameLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     clientNameLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     clientNameLabel.text = @"Mobile Number";
     
-    CGRect frame4=CGRectMake(750,233, 274, 50);
+    CGRect frame4=CGRectMake(750,233, 220, 50);
     groupLabel.frame = frame4;
-    groupLabel.textAlignment = UITextAlignmentLeft;
+    groupLabel.textAlignment = UITextAlignmentCenter;
     groupLabel.textColor = [CustomColor colorWithHexString:@"FFFFFF"];
     groupLabel.backgroundColor = [CustomColor colorWithHexString:@"4F81BD"];
     
@@ -294,7 +294,7 @@
     ProspectProfile *pp = [ProspectTableData objectAtIndex:indexPath.row];
     ColorHexCode *CustomColor = [[ColorHexCode alloc]init ];
     
-    CGRect frame=CGRectMake(0,0, 200, 50);
+    CGRect frame=CGRectMake(0,0, 350, 50);
     UILabel *label1=[[UILabel alloc]init];
     label1.frame=frame;
     label1.text= [NSString stringWithFormat:@"  %@",pp.ProspectName];
@@ -303,7 +303,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label1];
     
-    CGRect frame2=CGRectMake(200,0, 200, 50);
+    CGRect frame2=CGRectMake(350,0, 200, 50);
     UILabel *label2=[[UILabel alloc]init];
     label2.frame=frame2;
     label2.text= pp.IDTypeNo;
@@ -312,16 +312,21 @@
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label2];
     
-    CGRect frame3=CGRectMake(400,0, 350, 50);
+    CGRect frame3=CGRectMake(550,0, 200, 50);
     UILabel *label3=[[UILabel alloc]init];
     label3.frame=frame3;
-    label3.text= [dataMobile objectAtIndex:indexPath.row];
-    label3.textAlignment = UITextAlignmentLeft;
+    if (![[dataPrefix objectAtIndex:indexPath.row] isEqualToString:@""]) {
+        label3.text= [NSString stringWithFormat:@"%@ - %@",[dataPrefix objectAtIndex:indexPath.row],[dataMobile objectAtIndex:indexPath.row]];
+    }
+    else {
+        label3.text = @"";
+    }
+    label3.textAlignment = UITextAlignmentCenter;
     label3.tag = 2003;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label3];
     
-    CGRect frame4=CGRectMake(750,0, 274, 50);
+    CGRect frame4=CGRectMake(750,0, 220, 50);
     UILabel *label4=[[UILabel alloc]init];
     label4.frame=frame4;
     NSString *gp = nil;
@@ -332,7 +337,7 @@
         gp = @"";
     }
     label4.text= gp;
-    label4.textAlignment = UITextAlignmentLeft;
+    label4.textAlignment = UITextAlignmentCenter;
     label4.tag = 2004;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     [cell.contentView addSubview:label4];
@@ -360,7 +365,7 @@
         label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     
-//    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
     pp = Nil;
 }
@@ -498,6 +503,7 @@
 -(void)getMobileNo
 {
     dataMobile = [[NSMutableArray alloc] init];
+    dataPrefix = [[NSMutableArray alloc] init];
     
     for (int a=0; a<ProspectTableData.count; a++) {
         
@@ -514,9 +520,10 @@
                     
 //                    NSString *ContactCode = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                     NSString *ContactNo = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
-//                    NSString *Prefix = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
+                    NSString *Prefix = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];
                     
                     [dataMobile addObject:ContactNo];
+                    [dataPrefix addObject:Prefix];
                 }
                 sqlite3_finalize(statement);
             }

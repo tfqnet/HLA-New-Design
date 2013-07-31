@@ -699,17 +699,38 @@ PostcodeContinue = TRUE;
         if (str.length != 0) {
             
             NSMutableArray *array = [[NSMutableArray alloc] init];
-            [array addObject:str];
             
             NSArray *paths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsPath = [paths objectAtIndex:0];
             NSString *plistPath = [documentsPath stringByAppendingPathComponent:@"dataGroup.plist"];
-            
             [array addObjectsFromArray:[NSArray arrayWithContentsOfFile:plistPath]];
-            [array writeToFile:plistPath atomically: TRUE];
+            
+            BOOL Found = NO;
         
+            for (NSString *existing in array) {
+                
+                if ([str isEqualToString:existing]) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Group already exist" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
+                    [alert show];
+                    
+                    Found = YES;
+                    break;
+                }
+            }
+            
+            if (!Found) {
+                
+                [array addObject:str];
+                [array writeToFile:plistPath atomically: TRUE];
+                
+                outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                [outletGroup setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",str]forState:UIControlStateNormal];
+            }
+            
         }
         else {
+            
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Please insert data" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil];
             [alert show];
         }
