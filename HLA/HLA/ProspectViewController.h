@@ -38,6 +38,8 @@
     UIAlertView *rrr;
     BOOL checked;
     BOOL checked2;
+    BOOL isHomeCountry;
+    BOOL isOffCountry;
 }
 
 @property (nonatomic, strong) id<ProspectViewControllerDelegate> delegate;
@@ -98,7 +100,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignHome;
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
 @property (strong, nonatomic) IBOutlet UIButton *btnOfficeCountry;
+@property (strong, nonatomic) IBOutlet UIButton *btnHomeCountry;
 
+- (IBAction)actionHomeCountry:(id)sender;
 - (IBAction)addNewGroup:(id)sender;
 - (IBAction)actionOfficeCountry:(id)sender;
 - (IBAction)btnGroup:(id)sender;

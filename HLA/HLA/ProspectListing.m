@@ -363,7 +363,7 @@
         label4.font = [UIFont fontWithName:@"TreBuchet MS" size:16];
     }
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
     pp = Nil;
 }
@@ -664,6 +664,8 @@
     dbpath = Nil;
     statement = Nil;
     
+    [self getMobileNo];
+    
 }
 
 -(void) FinishEdit
@@ -794,6 +796,9 @@
         sqlite3_close(contactDB);
         querySQL = Nil;
     }
+    
+    [self getMobileNo];
+    
     [self.myTableView reloadData];
     statement = Nil;
 }

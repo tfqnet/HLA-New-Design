@@ -38,6 +38,8 @@
     UIAlertView *rrr;
     BOOL checked;
     BOOL checked2;
+    BOOL isHomeCountry;
+    BOOL isOffCountry;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
@@ -101,7 +103,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignHome;
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
 @property (strong, nonatomic) IBOutlet UIButton *btnOfficeCountry;
+@property (strong, nonatomic) IBOutlet UIButton *btnHomeCountry;
 
+- (IBAction)ActionHomeCountry:(id)sender;
 - (IBAction)addNewGroup:(id)sender;
 - (IBAction)ActionOfficeCountry:(id)sender;
 - (IBAction)isForeign:(id)sender;
