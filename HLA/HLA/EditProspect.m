@@ -63,6 +63,8 @@
 @synthesize GroupPopover = _GroupPopover;
 @synthesize nationalityPopover = _nationalityPopover;
 @synthesize nationalityList = _nationalityList;
+@synthesize nationalityPopover2 = _nationalityPopover2;
+@synthesize nationalityList2 = _nationalityList2;
 
 
 bool IsContinue = TRUE;
@@ -160,6 +162,8 @@ bool IsContinue = TRUE;
     outletOccup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     outletGroup.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    
+    [_delegate FinishEdit];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -521,16 +525,16 @@ bool IsContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    if (_nationalityList == nil) {
-        self.nationalityList = [[Nationality alloc] initWithStyle:UITableViewStylePlain];
-        _nationalityList.delegate = self;
-        self.nationalityPopover = [[UIPopoverController alloc] initWithContentViewController:_nationalityList];
+    if (_nationalityList2 == nil) {
+        self.nationalityList2 = [[Nationality alloc] initWithStyle:UITableViewStylePlain];
+        _nationalityList2.delegate = self;
+        self.nationalityPopover2 = [[UIPopoverController alloc] initWithContentViewController:_nationalityList2];
     }
     
     CGRect butt = [sender frame];
     int y = butt.origin.y - 44;
     butt.origin.y = y;
-    [self.nationalityPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [self.nationalityPopover2 presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)isForeign:(id)sender
@@ -1447,11 +1451,15 @@ bool IsContinue = TRUE;
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
             txtrFullName.text = [txtrFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSString *group = [outletGroup.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+            NSString *title = [outletTitle.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+            NSString *birth = [outletDOB.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+            NSString *otherID = [OtherIDType.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
             NSString *OffCountry = nil;
             NSString *HomeCountry = nil;
             
             if (checked) {
-                HomeCountry = btnHomeCountry.titleLabel.text;
+                HomeCountry = [btnHomeCountry.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
                 SelectedStateCode = txtHomeState.text;
             }
             else {
@@ -1459,7 +1467,7 @@ bool IsContinue = TRUE;
             }
             
             if (checked2) {
-                OffCountry = btnOfficeCountry.titleLabel.text;
+                OffCountry = [btnOfficeCountry.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
                 SelectedOfficeStateCode = txtOfficeState.text;
             }
             else {
@@ -1468,7 +1476,7 @@ bool IsContinue = TRUE;
             
             NSString *insertSQL = [NSString stringWithFormat:
                 @"update prospect_profile set \"ProspectName\"=\"%@\", \"ProspectDOB\"=\"%@\", \"ProspectGender\"=\"%@\", \"ResidenceAddress1\"=\"%@\", \"ResidenceAddress2\"=\"%@\", \"ResidenceAddress3\"=\"%@\", \"ResidenceAddressTown\"=\"%@\", \"ResidenceAddressState\"=\"%@\", \"ResidenceAddressPostCode\"=\"%@\", \"ResidenceAddressCountry\"=\"%@\", \"OfficeAddress1\"=\"%@\", \"OfficeAddress2\"=\"%@\", \"OfficeAddress3\"=\"%@\", \"OfficeAddressTown\"=\"%@\",\"OfficeAddressState\"=\"%@\", \"OfficeAddressPostCode\"=\"%@\", \"OfficeAddressCountry\"=\"%@\", \"ProspectEmail\"= \"%@\", \"ProspectOccupationCode\"=\"%@\", \"ExactDuties\"=\"%@\", \"ProspectRemark\"=\"%@\", \"DateModified\"=%@,\"ModifiedBy\"=\"%@\", \"ProspectGroup\"=\"%@\", \"ProspectTitle\"=\"%@\", \"IDTypeNo\"=\"%@\", \"OtherIDType\"=\"%@\", \"OtherIDTypeNo\"=\"%@\", \"Smoker\"=\"%@\", \"AnnualIncome\"=\"%@\", \"BussinessType\"=\"%@\"  where indexNo = \"%@\" "
-                    "", txtrFullName.text, outletDOB.titleLabel.text, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, HomeCountry, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, OffCountry, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"datetime(\"now\", \"+8 hour\")", @"1", outletGroup.titleLabel.text, outletTitle.titleLabel.text, txtIDType.text, OtherIDType.titleLabel.text, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text, pp.ProspectID];
+                    "", txtrFullName.text, birth, gender, txtHomeAddr1.text, txtHomeAddr2.text, txtHomeAddr3.text, txtHomeTown.text, SelectedStateCode, txtHomePostCode.text, HomeCountry, txtOfficeAddr1.text, txtOfficeAddr2.text, txtOfficeAddr3.text, txtOfficeTown.text, SelectedOfficeStateCode, txtOfficePostCode.text, OffCountry, txtEmail.text, OccupCodeSelected, txtExactDuties.text, txtRemark.text, @"datetime(\"now\", \"+8 hour\")", @"1", group, title, txtIDType.text, otherID, txtOtherIDType.text, ClientSmoker, txtAnnIncome.text, txtBussinessType.text, pp.ProspectID];
             
             
             const char *Update_stmt = [insertSQL UTF8String];
@@ -2027,13 +2035,16 @@ bool IsContinue = TRUE;
     if (isOffCountry) {
         btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [btnOfficeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theCountry] forState:UIControlStateNormal];
+        
+        [self.nationalityPopover2 dismissPopoverAnimated:YES];
     }
     else if (isHomeCountry) {
         btnHomeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [btnHomeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theCountry] forState:UIControlStateNormal];
+        
+        [self.nationalityPopover dismissPopoverAnimated:YES];
     }
     
-    [self.nationalityPopover dismissPopoverAnimated:YES];
     isOffCountry = NO;
     isHomeCountry = NO;
 }

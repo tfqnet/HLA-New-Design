@@ -29,11 +29,13 @@
     SIDate *_SIDate;
     OccupationList *_OccupationList;
     Nationality *_nationalityList;
+    Nationality *_nationalityList2;
     UIPopoverController *_GroupPopover;
     UIPopoverController *_TitlePickerPopover;
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_OccupationListPopover;
     UIPopoverController *_nationalityPopover;
+    UIPopoverController *_nationalityPopover2;
     id<EditProspectDelegate> _delegate;
     UIAlertView *rrr;
     BOOL checked;
@@ -57,6 +59,8 @@
 @property (nonatomic, strong) UIPopoverController *GroupPopover;
 @property (nonatomic,strong) Nationality *nationalityList;
 @property (nonatomic, strong) UIPopoverController *nationalityPopover;
+@property (nonatomic,strong) Nationality *nationalityList2;
+@property (nonatomic, strong) UIPopoverController *nationalityPopover2;
 
 
 @property (strong, nonatomic) IBOutlet UIButton *outletGroup;

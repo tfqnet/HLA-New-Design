@@ -14,6 +14,7 @@
 
 @interface Nationality : UITableViewController {
     id <NatinalityDelegate> _delegate;
+    NSMutableArray *_items;
 }
 
 @property (nonatomic, strong) NSMutableArray *items;

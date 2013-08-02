@@ -8,12 +8,13 @@
 
 #import "Nationality.h"
 
+NSString *SelectedString;
 @interface Nationality ()
 
 @end
 
 @implementation Nationality
-@synthesize items;
+@synthesize items = _items;
 @synthesize delegate = _delegate;
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -23,18 +24,18 @@
         
         NSString *file = [[NSBundle mainBundle] pathForResource:@"Nationality" ofType:@"plist"];
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:file];
-        self.items = [dict objectForKey:@"Nationality"];
+        _items = [dict objectForKey:@"Nationality"];
     
         self.clearsSelectionOnViewWillAppear = NO;
         
-        NSInteger rowsCount = [self.items count];
+        NSInteger rowsCount = [_items count];
         NSInteger singleRowHeight = [self.tableView.delegate tableView:self.tableView
                                                heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         NSInteger totalRowsHeight = rowsCount * singleRowHeight;
         
         
         CGFloat largestLabelWidth = 0;
-        for (NSString *Title in self.items) {
+        for (NSString *Title in _items) {
             CGSize labelSize = [Title sizeWithFont:[UIFont boldSystemFontOfSize:20.0f]];
             if (labelSize.width > largestLabelWidth) {
                 largestLabelWidth = labelSize.width;
@@ -51,7 +52,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,7 +70,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.items count];
+    return [_items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -81,8 +82,19 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    cell.textLabel.text = [self.items objectAtIndex:indexPath.row];
+    NSString *country = [_items objectAtIndex:indexPath.row];
+    cell.textLabel.text = country;
     
+    if (country == SelectedString) {
+        cell.accessoryType= UITableViewCellAccessoryCheckmark;
+    }
+    else
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16 ];
     return cell;
 }
 
@@ -91,8 +103,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *zzz = [self.items objectAtIndex:indexPath.row];
+    NSString *zzz = [_items objectAtIndex:indexPath.row];
+    SelectedString = zzz;
     [_delegate selectedCountry:zzz];
+    
+    [tableView reloadData];
 }
 
 @end

@@ -60,6 +60,8 @@
 @synthesize TitlePickerPopover = _TitlePickerPopover;
 @synthesize nationalityList = _nationalityList;
 @synthesize nationalityPopover = _nationalityPopover;
+@synthesize nationalityList2 = _nationalityList2;
+@synthesize nationalityPopover2 = _nationalityPopover2;
 
 bool PostcodeContinue = TRUE;
 
@@ -660,7 +662,6 @@ PostcodeContinue = TRUE;
 {
     isHomeCountry = YES;
     isOffCountry = NO;
-    
     [self resignFirstResponder];
     [self.view endEditing:YES];
     
@@ -701,16 +702,16 @@ PostcodeContinue = TRUE;
     id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
     [activeInstance performSelector:@selector(dismissKeyboard)];
     
-    if (_nationalityList == nil) {
-        self.nationalityList = [[Nationality alloc] initWithStyle:UITableViewStylePlain];
-        _nationalityList.delegate = self;
-        self.nationalityPopover = [[UIPopoverController alloc] initWithContentViewController:_nationalityList];
+    if (_nationalityList2 == nil) {
+        self.nationalityList2 = [[Nationality alloc] initWithStyle:UITableViewStylePlain];
+        _nationalityList2.delegate = self;
+        self.nationalityPopover2 = [[UIPopoverController alloc] initWithContentViewController:_nationalityList2];
     }
     
     CGRect butt = [sender frame];
     int y = butt.origin.y - 44;
     butt.origin.y = y;
-    [self.nationalityPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [self.nationalityPopover2 presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)btnGroup:(id)sender
@@ -1559,13 +1560,16 @@ PostcodeContinue = TRUE;
     if (isOffCountry) {
         btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [btnOfficeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theCountry] forState:UIControlStateNormal];
+        
+        [self.nationalityPopover2 dismissPopoverAnimated:YES];
     }
     else if (isHomeCountry) {
         btnHomeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [btnHomeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theCountry] forState:UIControlStateNormal];
+        
+        [self.nationalityPopover dismissPopoverAnimated:YES];
     }
     
-    [self.nationalityPopover dismissPopoverAnimated:YES];
     isOffCountry = NO;
     isHomeCountry = NO;
 }

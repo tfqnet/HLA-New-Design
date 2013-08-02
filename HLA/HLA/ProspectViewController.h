@@ -28,12 +28,14 @@
     GroupClass *_GroupList;
     TitleViewController *_TitlePicker;
     Nationality *_nationalityList;
+    Nationality *_nationalityList2;
     UIPopoverController *_OccupationListPopover;
     UIPopoverController *_ContactTypePopover;
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_GroupPopover;
     UIPopoverController *_TitlePickerPopover;
     UIPopoverController *_nationalityPopover;
+    UIPopoverController *_nationalityPopover2;
     id<ProspectViewControllerDelegate> _delegate;
     UIAlertView *rrr;
     BOOL checked;
@@ -55,7 +57,9 @@
 @property (nonatomic, strong) GroupClass *GroupList;
 @property (nonatomic, strong) UIPopoverController *GroupPopover;
 @property (nonatomic,strong) Nationality *nationalityList;
+@property (nonatomic,strong) Nationality *nationalityList2;
 @property (nonatomic, strong) UIPopoverController *nationalityPopover;
+@property (nonatomic, strong) UIPopoverController *nationalityPopover2;
 
 @property (strong, nonatomic) IBOutlet UIButton *outletGroup;
 @property (weak, nonatomic) IBOutlet UIButton *outletTitle;
