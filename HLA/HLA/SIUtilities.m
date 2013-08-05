@@ -211,18 +211,16 @@ static sqlite3 *contactDB = nil;
 	
 	
 	NSString *query;
-	query = [NSString stringWithFormat:@"Update UL_Rider_Label set condition = 'PlanChoiceMGIV', ridercode = 'MG_IV' where labeldesc = 'Plan Choice' and ridercode = 'MGIV'  "];
+	
+	query = [NSString stringWithFormat:@"Delete From UL_Rider_mtn"];
     [database executeUpdate:query];
 	
+	query = [NSString stringWithFormat:@"Delete From UL_Rider_label"];
+    [database executeUpdate:query];
 
-	query = [NSString stringWithFormat:@"Update UL_Rider_Label set ridercode = 'MG_IV' where ridercode = 'MGIV'  "];
+	query = [NSString stringWithFormat:@"Delete From UL_Rider_Profile"];
     [database executeUpdate:query];
-	
-	
-	/*
-	NSString *query = [NSString stringWithFormat:@"INSERT INTO Trad_sys_profile ('PlanCode', 'planname' ) VALUES('UV', 'HLA Ever Life')"];
-    [database executeUpdate:query];
-	
+
 	
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Details (\"SINO\" VARCHAR, \"PlanCode\" VARCHAR, \"CovTypeCode\" INTEGER, \"ATPrem\" "
 					   "DOUBLE, \"BasicSA\" DOUBLE, \"CovPeriod\" INTEGER, \"OccpCode\" VARCHAR, \"OccLoading\" DOUBLE, \"CPA\" INTEGER, "
@@ -357,7 +355,7 @@ static sqlite3 *contactDB = nil;
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES('ACIR', 'Accelerated Critical Illness', 0, 1)"];
     [database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES('CIRD', 'Diabetes Wellness Care Rider", 0 , 1];
+	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES('CIRD', 'Diabetes Wellness Care Rider', 0 , 1)"];
     [database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Profile VALUES('CIWP', 'Critical Illness Waiver of Premium Rider', 0, 1)"];
@@ -619,8 +617,9 @@ static sqlite3 *contactDB = nil;
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"WI\", \"Acc. Weekly Indemnity Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
-	*/
+	
 	[database close];
+	 
 }
 
 

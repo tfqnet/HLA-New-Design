@@ -1808,7 +1808,6 @@ id RiderCount;
 																   pageSize:kPaperSizeA4
 											   //                   margins:UIEdgeInsetsMake(20, 5, 90, 5)];
 																	margins:UIEdgeInsetsMake(0, 0, 0, 0)];
-
 							
 						}
 						

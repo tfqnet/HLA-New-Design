@@ -112,22 +112,6 @@
 	[super viewDidDisappear:animated];
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
 
@@ -145,9 +129,6 @@
 -(void)keyboardDidHide:(NSNotificationCenter *)notification{
 	self.myScrollView.frame = CGRectMake(0, 44, 768, 960);
 }
-
-
-
 
 -(void)InsertandUpdate{
 	
@@ -231,6 +212,7 @@
 		 bool F2025 = FALSE;
 		 bool F2028 = FALSE;
 		 bool F2030 = FALSE;
+		 bool F2035 = FALSE;
 		 
 		 querySQL = [NSString stringWithFormat: @"Select Fund FROM UL_Fund_Maturity_Option where sino = '%@' ",  SINo];
 		 //NSLog(@"%@", querySQL);
@@ -249,6 +231,9 @@
 					 F2028 = TRUE;
 				 }
 				 else if([[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] isEqualToString:@"HLA EverGreen 2030"]){
+					 F2030 = TRUE;
+				 }
+				 else if([[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 0)] isEqualToString:@"HLA EverGreen 2035"]){
 					 F2030 = TRUE;
 				 }
 
@@ -308,6 +293,22 @@
 			 querySQL = [NSString stringWithFormat: @"INSERT INTO UL_Fund_Maturity_Option (SINO, Fund, Option, Partial_Withd_Pct, "
 						 "EverGreen2025, EverGreen2028, EverGreen2030, EverGreen2035, CashFund, RetireFund ) VALUES ('%@', '%@', '%@', '%@', "
 						 " '%@', '%@','%@','%@','%@','%@') ", SINo, @"HLA EverGreen 2030", @"ReInvest", @"0", @"0", @"0", @"0",@"0",@"100", @"0"  ];
+			 //NSLog(@"%@", querySQL);
+			 
+			 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+			 {
+				 if (sqlite3_step(statement) == SQLITE_DONE)
+				 {
+					 
+				 }
+				 sqlite3_finalize(statement);
+			 }
+		 }
+		 
+		 if (![txt2035.text isEqualToString:@"0"] && F2035 == FALSE) {
+			 querySQL = [NSString stringWithFormat: @"INSERT INTO UL_Fund_Maturity_Option (SINO, Fund, Option, Partial_Withd_Pct, "
+						 "EverGreen2025, EverGreen2028, EverGreen2030, EverGreen2035, CashFund, RetireFund ) VALUES ('%@', '%@', '%@', '%@', "
+						 " '%@', '%@','%@','%@','%@','%@') ", SINo, @"HLA EverGreen 2035", @"ReInvest", @"0", @"0", @"0", @"0",@"0",@"100", @"0"  ];
 			 //NSLog(@"%@", querySQL);
 			 
 			 if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
