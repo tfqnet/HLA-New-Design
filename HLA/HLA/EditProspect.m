@@ -174,7 +174,6 @@ bool IsContinue = TRUE;
 - (void)viewWillAppear:(BOOL)animated
 {
     strChanges = @"No";
-    
 
     if (!(pp.ProspectGroup == NULL || [pp.ProspectGroup isEqualToString:@"- Select -"])) {
         
@@ -476,6 +475,23 @@ bool IsContinue = TRUE;
 -(void)keyboardDidHide:(NSNotificationCenter *)notification
 {
     self.myScrollView.frame = CGRectMake(0, -44, 1024, 748);
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString *myString = [txtrFullName.text stringByReplacingCharactersInRange:range withString:string];
+    
+    if (myString.length > 2) {
+        NSString *last = [myString substringFromIndex:[myString length] -1];
+        NSString *secLast = [myString substringWithRange:NSMakeRange([myString length] -2, 1)];
+        NSString *thirdLast = [myString substringWithRange:NSMakeRange([myString length] -3, 1)];
+        
+        if ([last isEqualToString:secLast] &&  [secLast isEqualToString:thirdLast]) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 
@@ -1450,13 +1466,38 @@ bool IsContinue = TRUE;
         
         if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK)
         {
-            txtrFullName.text = [txtrFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            NSString *group = [outletGroup.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-            NSString *title = [outletTitle.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-            NSString *birth = [outletDOB.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-            NSString *otherID = [OtherIDType.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+            NSString *group = nil;
+            NSString *title = nil;
+            NSString *otherID = nil;
             NSString *OffCountry = nil;
             NSString *HomeCountry = nil;
+            
+            txtrFullName.text = [txtrFullName.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSString *birth = [outletDOB.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+            
+            if (![outletGroup.titleLabel.text isEqualToString:@"- Select -"]) {
+                group = [outletGroup.titleLabel.text substringWithRange:NSMakeRange(1,outletGroup.titleLabel.text.length - 1)];
+            }
+            else {
+                group = outletGroup.titleLabel.text;
+            }
+            
+            
+            if (![outletTitle.titleLabel.text isEqualToString:@"- Select -"]) {
+                title = [outletTitle.titleLabel.text substringWithRange:NSMakeRange(1,outletTitle.titleLabel.text.length - 1)];
+            }
+            else {
+                title = outletTitle.titleLabel.text;
+            }
+            
+            
+            if (![OtherIDType.titleLabel.text isEqualToString:@"- Select -"]) {
+                otherID = [OtherIDType.titleLabel.text substringWithRange:NSMakeRange(1,OtherIDType.titleLabel.text.length - 1)];
+            }
+            else {
+                otherID = OtherIDType.titleLabel.text;
+            }
+            
             
             if (checked) {
                 HomeCountry = [btnHomeCountry.titleLabel.text stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -1554,7 +1595,7 @@ bool IsContinue = TRUE;
         return false;
     }
     
-    if(outletDOB.titleLabel.text == NULL){
+    if([outletDOB.titleLabel.text isEqualToString:@"- Select -"]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Date of Birth is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     
@@ -1563,6 +1604,65 @@ bool IsContinue = TRUE;
         
         [alert show];
         return false;
+    }
+    
+    if (![[txtIDType.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]) {
+        
+        BOOL valid;
+        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtIDType.text];
+        valid = [alphaNums isSupersetOfSet:inStringSet];
+        if (!valid) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"New IC No must be numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            [txtIDType becomeFirstResponder];
+            return false;
+        }
+        
+        if (txtIDType.text.length != 12) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Invalid New IC No length. IC No length should be 12 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            [txtIDType becomeFirstResponder];
+            return false;
+        }
+    }
+    
+    if (![OtherIDType.titleLabel.text isEqualToString:@"- Select -"] && [[txtOtherIDType.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Other ID is required." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        
+        [txtOtherIDType becomeFirstResponder];
+        [alert show];
+        return false;
+    }
+    
+    if (![[txtAnnIncome.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]) {
+        
+        BOOL valid;
+        NSCharacterSet *alphaNums = [NSCharacterSet decimalDigitCharacterSet];
+        NSCharacterSet *inStringSet = [NSCharacterSet characterSetWithCharactersInString:txtAnnIncome.text];
+        valid = [alphaNums isSupersetOfSet:inStringSet];
+        if (!valid) {
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Annual Income must be numeric" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            [txtAnnIncome becomeFirstResponder];
+            return false;
+        }
+        
+        if (txtAnnIncome.text.length > 13) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"Invalid Annual Income length. Annual Income length should be not more than 13 characters long" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            [txtAnnIncome becomeFirstResponder];
+            return false;
+        }
     }
     
     if(![txtPrefix1.text isEqualToString:@""]) {
@@ -2065,8 +2165,22 @@ bool IsContinue = TRUE;
 
 -(void)selectedIDType:(NSString *)selectedIDType
 {
+    ColorHexCode *CustomColor = [[ColorHexCode alloc] init ];
+    
     OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@", selectedIDType] forState:UIControlStateNormal];
+    
+    if (![selectedIDType isEqualToString:@"New Identification Number"]) {
+        txtOtherIDType.backgroundColor = [UIColor whiteColor];
+        txtOtherIDType.enabled = YES;
+        
+        [txtOtherIDType becomeFirstResponder];
+    }
+    else {
+        txtOtherIDType.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
+        txtOtherIDType.enabled = NO;
+    }
+    
     [self.IDTypePickerPopover dismissPopoverAnimated:YES];
 }
 
