@@ -1607,7 +1607,7 @@ id RiderCount;
 						
 					} else {
 						cont = FALSE;
-						NSLog(@"error access SI_Store_Premium");
+						//NSLog(@"error access SI_Store_Premium");
 					}
 					sqlite3_finalize(statement);
 				}

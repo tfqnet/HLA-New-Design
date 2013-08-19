@@ -2968,7 +2968,7 @@ double CurrentRiderPrem;
 				else if([riderCode isEqualToString:@"LCWP"]){
 					querySQL = [NSString stringWithFormat:
 								@"SELECT sum(round(premium, 2)) from( SELECT premium FROM ul_rider_details "
-								"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR', 'ECAR55', 'PA', 'TPDMLA') "
+								"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
 								"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				}
 				else{
@@ -3884,7 +3884,7 @@ double CurrentRiderPrem;
 			{
 				querySQL = [NSString stringWithFormat:
 							@"SELECT sum(round(premium,2)) from( SELECT premium FROM ul_rider_details "
-							"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP', 'ECAR', 'ECAR55', 'PA', 'TPDMLA') "
+							"where sino = '%@' and ridercode not in('CIWP', 'LCWP', 'PR', 'TPDWP') "
 							"union SELECT atprem FROM ul_details  where  sino = '%@') as zzz", getSINo, getSINo];
 				
 				if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)

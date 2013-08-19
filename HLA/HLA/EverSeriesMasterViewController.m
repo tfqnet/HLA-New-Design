@@ -13,6 +13,8 @@
 #import "EverSecondLAViewController.h"
 #import "FundAllocationViewController.h"
 #import "AppDelegate.h"
+#import "EverLifeViewController.h"
+#import "demo.h"
 
 @interface EverSeriesMasterViewController ()
 
@@ -34,6 +36,7 @@
 @synthesize getPayAge,getPayDOB,getPayOccp,getPayorIndexNo,getPaySex,getPaySmoker,getPlanCode;
 @synthesize getSINo,getTerm, payorCustCode, payorSINo, requestSINo2, CustCode2, clientID2;
 @synthesize getOccpCPA, getBumpMode, getLADOB, getOccLoading;
+@synthesize FS = _FS;
 id EverRiderCount;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -517,6 +520,7 @@ id EverRiderCount;
 		}
 	}
 	else if (indexPath.row == 9){ //Quotation
+		/*
 		AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
 		if (![zzz.EverMessage isEqualToString:@""]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -524,9 +528,112 @@ id EverRiderCount;
 			[alert show];
 			zzz.EverMessage = @"";
 		}
-		else{
+		*/
+		PDSorSI = @"SI";
+		
+		if ([getOccpCode isEqualToString:@"OCC01975"]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
 			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		}
+		else if (getAge > 100 ) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product."
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+			[alert show];
+			alert = Nil;
+			if (previousPath == Nil) {
+				previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+			}
+			
+			[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		}
+		else{
+			sqlite3_stmt *statement;
+			BOOL cont = FALSE;
+			
+			if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+			{
+				// NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
+				
+				NSString *QuerySQL = [ NSString stringWithFormat:@"select \"CovPeriod\", \"BasicSA\"  "
+									  "\"HLoading\",  \"sex\" from UL_Details as A, "
+									  "Clt_Profile as B, UL_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+									  "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
+				
+				
+				
+				if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+				{
+					if (sqlite3_step(statement) == SQLITE_ROW)
+					{
+						cont = TRUE;
+						
+					} else {
+						cont = FALSE;
+						//NSLog(@"error access SI_Store_Premium");
+					}
+					sqlite3_finalize(statement);
+				}
+				sqlite3_close(contactDB);
+			}
+			
+			if (_FS == Nil) {
+				self.FS = [FSVerticalTabBarController alloc];
+				_FS.delegate = self;
+			}
+
+			
+			if (cont == TRUE) {
+				spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+				spinner_SI.center = CGPointMake(400, 350);
+				
+				//spinner_SI.hidesWhenStopped = YES;
+				[self.view addSubview:spinner_SI];
+				UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+				spinnerLabel.text  = @" Please Wait...";
+				spinnerLabel.backgroundColor = [UIColor blackColor];
+				spinnerLabel.opaque = YES;
+				spinnerLabel.textColor = [UIColor whiteColor];
+				[self.view addSubview:spinnerLabel];
+				[self.view setUserInteractionEnabled:NO];
+				[spinner_SI startAnimating];
+				
+
+				
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+					
+					EverLifeViewController *UVReport;
+					
+					if([getBasicPlan isEqualToString:@"UV" ]){
+						UVReport = [[EverLifeViewController alloc] init ];
+						UVReport.SINo = getSINo;
+						UVReport.PDSorSI = @"SI";
+						[self presentViewController:UVReport animated:NO completion:Nil];
+					}
+					
+					//[self generateJSON_HLCP];
+					//[self copySIToDoc];
+					
+					dispatch_async(dispatch_get_main_queue(), ^{
+						if([getBasicPlan isEqualToString:@"UV" ]){
+							[UVReport dismissViewControllerAnimated:NO completion:Nil];
+						}
+
+						demo *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"demo"];
+						demoPage.modalPresentationStyle = UIModalPresentationFullScreen;
+						[self presentViewController:demoPage animated:NO completion:Nil];
+
+					});
+				});
+			}
+		}
+		
+
 	}
 	else if (indexPath.row == 11){ //Eng PDS
 		AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];

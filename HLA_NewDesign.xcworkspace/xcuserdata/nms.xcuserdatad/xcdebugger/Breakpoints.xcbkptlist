@@ -308,8 +308,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "344"
          endingLineNumber = "344"
-         landmarkName = "@implementation ProspectListing"
-         landmarkType = "3">
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -1389,11 +1389,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/BasicAccountViewController.m"
-         timestampString = "397967154.059008"
+         timestampString = "398074808.267939"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1051"
-         endingLineNumber = "1051"
+         startingLineNumber = "1055"
+         endingLineNumber = "1055"
          landmarkName = "-CalculateBUMP"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1415,11 +1415,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EverSeriesMasterViewController.m"
-         timestampString = "396416727.068872"
+         timestampString = "398569240.079944"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "561"
-         endingLineNumber = "561"
+         startingLineNumber = "668"
+         endingLineNumber = "668"
          landmarkName = "-selectBasicPlan"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1519,11 +1519,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/BasicAccountViewController.m"
-         timestampString = "397967154.059008"
+         timestampString = "398074808.267939"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "989"
-         endingLineNumber = "989"
+         startingLineNumber = "993"
+         endingLineNumber = "993"
          landmarkName = "-saveBasicPlan"
          landmarkType = "5">
       </FileBreakpoint>

@@ -17,15 +17,20 @@
 #import "FundAllocationViewController.h"
 #import "EverSpecialViewController.h"
 #import "EverFundMaturityViewController.h"
+#import "FSVerticalTabBarController.h"
+#import "NDHTMLtoPDF.h"
+#import "FMDatabase.h"
 
 @interface EverSeriesMasterViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, EverLAViewControllerDelegate,
 											EverBasicPlanViewControllerDelegate, EverRiderViewControllerDelegate,
 											EverSecondLAViewControllerDelegate, EverPayorViewControllerDelegate,
-											EverHLViewControllerDelegate, EverFundDelegate, EverSpecial, EverFundMaturity>{
+											EverHLViewControllerDelegate, EverFundDelegate, EverSpecial, EverFundMaturity,
+											FSTabBarControllerDelegate, NDHTMLtoPDFDelegate>{
 	NSString *databasePath;
     sqlite3 *contactDB;
 	NSIndexPath *selectedPath;
 	NSIndexPath *previousPath;
+	UIActivityIndicatorView *spinner_SI;
     BOOL blocked;
     BOOL saved;
     BOOL payorSaved;
@@ -41,6 +46,7 @@
 	FundAllocationViewController*_EverFund;
 	EverSpecialViewController*_EverSpecial;
 	EverFundMaturityViewController*_EverFundMaturity;
+	FSVerticalTabBarController *_FS;
 }
 
 @property (nonatomic, retain) EverLAViewController *EverLAController;
@@ -52,6 +58,7 @@
 @property (nonatomic, retain) FundAllocationViewController *EverFund;
 @property (nonatomic, retain) EverSpecialViewController *EverSpecial;
 @property (nonatomic, retain) EverFundMaturityViewController *EverFundMaturity;
+@property (nonatomic,retain) FSVerticalTabBarController *FS;
 
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (weak, nonatomic) IBOutlet UIView *RightView;

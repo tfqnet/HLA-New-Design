@@ -835,39 +835,74 @@
 - (IBAction)deletePressed:(id)sender
 {
     NSString *clt;
+	sqlite3_stmt *statement;
+	BOOL CanDelete;
     int RecCount = 0;
     for (UITableViewCell *cell in [self.myTableView visibleCells])
     {
         if (cell.selected == TRUE) {
             NSIndexPath *selectedIndexPath = [self.myTableView indexPathForCell:cell];
+			ProspectProfile *pp = [ProspectTableData objectAtIndex:selectedIndexPath.row];
             if (RecCount == 0) {
-                ProspectProfile *pp = [ProspectTableData objectAtIndex:selectedIndexPath.row];
                 clt = pp.ProspectName;
             }
+			
+			if (sqlite3_open([databasePath UTF8String ], &contactDB) == SQLITE_OK) {
+				NSString *SQL = [NSString stringWithFormat:@"select * from ul_lapayor as A, clt_profile as B, prospect_profile as C where A.custcode = B.custcode "
+								 "and B.indexno = c.indexno AND C.indexNo = '%@' ", pp.ProspectID];
+				if(sqlite3_prepare_v2(contactDB, [SQL UTF8String], -1, &statement, NULL) == SQLITE_OK){
+					if (sqlite3_step(statement) == SQLITE_ROW) {
+						CanDelete = FALSE;
+					}
+					else{
+						CanDelete = TRUE;
+					}
+					sqlite3_finalize(statement);
+				}
+				sqlite3_close(contactDB);
+			}
+			
+			if (CanDelete == FALSE) {
+				break;
+			}
+			else{
+				RecCount = RecCount + 1;
+				
+				if (RecCount > 1) {
+					break;
+				}
+			}
             
-            RecCount = RecCount + 1;
             
-            if (RecCount > 1) {
-                break;
-            }
         }
     }
     
-    NSString *msg;
-    if (RecCount == 1) {
-        msg = [NSString stringWithFormat:@"Delete %@",clt];
-    }
-    else {
-        msg = @"Are you sure want to delete these Client(s)?";
-    }
+	if (CanDelete == FALSE) {
+		NSString *msg = @"Error, there is SI tie to the prospect";
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:Nil cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+		[alert show];
+
+	}
+	else{
+		NSString *msg;
+		if (RecCount == 1) {
+			msg = [NSString stringWithFormat:@"Delete %@",clt];
+		}
+		else {
+			msg = @"Are you sure want to delete these Client(s)?";
+		}
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
+		[alert setTag:1001];
+		[alert show];
+	}
+
+	
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
-    [alert setTag:1001];
-    [alert show];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+{	
     if (alertView.tag==1001 && buttonIndex == 0) //delete
     {
         NSLog(@"delete!");
@@ -888,13 +923,14 @@
         sqlite3_stmt *statement;
         if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
         {
+			
             for(int a=0; a<sorted.count; a++) {
                 int value = [[sorted objectAtIndex:a] intValue];
                 value = value - a;
                 
                 ProspectProfile *pp = [ProspectTableData objectAtIndex:value];
                 NSString *DeleteSQL = [NSString stringWithFormat:@"Delete from prospect_profile where indexNo = \"%@\"", pp.ProspectID];
-                NSLog(@"%@",DeleteSQL);
+                //NSLog(@"%@",DeleteSQL);
                 
                 const char *Delete_stmt = [DeleteSQL UTF8String];
                 if(sqlite3_prepare_v2(contactDB, Delete_stmt, -1, &statement, NULL) == SQLITE_OK)

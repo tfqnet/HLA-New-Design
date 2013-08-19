@@ -196,6 +196,9 @@
 		C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB4923161558F300C7FC8C /* ChangePassword.m */; };
 		C4EB492716155A4A00C7FC8C /* setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB492616155A4A00C7FC8C /* setting.m */; };
 		C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB493B161592EB00C7FC8C /* UserProfile.m */; };
+		C4EEB64317BCD11900F268B3 /* EverLifeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */; };
+		C4EEB64617C1A98900F268B3 /* demo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64517C1A98900F268B3 /* demo.m */; };
+		C4EEB64817C1B76B00F268B3 /* zzz.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4EEB64717C1B76B00F268B3 /* zzz.pdf */; };
 		C4EF084D1648DC5C000444BA /* iphone_delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EF084C1648DC5C000444BA /* iphone_delete_button.png */; };
 		C4EF087316496A5A000444BA /* pages.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087216496A5A000444BA /* pages.m */; };
 		C4EF74F71704481400434B02 /* iMPLogo_Curve.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EF74F61704481400434B02 /* iMPLogo_Curve.png */; };
@@ -587,6 +590,11 @@
 		C4EB492616155A4A00C7FC8C /* setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setting.m; sourceTree = "<group>"; };
 		C4EB493A161592EB00C7FC8C /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		C4EB493B161592EB00C7FC8C /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
+		C4EEB64117BCD11900F268B3 /* EverLifeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverLifeViewController.h; sourceTree = "<group>"; };
+		C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverLifeViewController.m; sourceTree = "<group>"; };
+		C4EEB64417C1A98900F268B3 /* demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = demo.h; sourceTree = "<group>"; };
+		C4EEB64517C1A98900F268B3 /* demo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = demo.m; sourceTree = "<group>"; };
+		C4EEB64717C1B76B00F268B3 /* zzz.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = zzz.pdf; sourceTree = "<group>"; };
 		C4EF084C1648DC5C000444BA /* iphone_delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_delete_button.png; sourceTree = "<group>"; };
 		C4EF087116496A5A000444BA /* pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pages.h; sourceTree = "<group>"; };
 		C4EF087216496A5A000444BA /* pages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pages.m; sourceTree = "<group>"; };
@@ -1115,6 +1123,7 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4EEB64717C1B76B00F268B3 /* zzz.pdf */,
 				EFBECF391791167E00C3D177 /* iconComplete.png */,
 				EFBECF3A1791167E00C3D177 /* iconNotComplete.png */,
 				EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */,
@@ -1188,6 +1197,8 @@
 				C47F40E5178BA5230023D9EF /* EverFundMaturityViewController.m */,
 				C4C6C0A4178BB0F50006B00D /* PopOverFundViewController.h */,
 				C4C6C0A5178BB0F50006B00D /* PopOverFundViewController.m */,
+				C4EEB64417C1A98900F268B3 /* demo.h */,
+				C4EEB64517C1A98900F268B3 /* demo.m */,
 			);
 			name = EverSeries;
 			sourceTree = "<group>";
@@ -1325,6 +1336,8 @@
 				C40059F916BB678000B03041 /* CashPromiseViewController.m */,
 				C4E1B9281713F97600D7F83B /* BrowserViewController.h */,
 				C4E1B9291713F97600D7F83B /* BrowserViewController.m */,
+				C4EEB64117BCD11900F268B3 /* EverLifeViewController.h */,
+				C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */,
 			);
 			name = Report;
 			sourceTree = "<group>";
@@ -1772,6 +1785,7 @@
 				EFBECF3B1791167E00C3D177 /* iconComplete.png in Resources */,
 				EFBECF3C1791167E00C3D177 /* iconNotComplete.png in Resources */,
 				EF30C75F17A63E61009A301A /* Nationality.plist in Resources */,
+				C4EEB64817C1B76B00F268B3 /* zzz.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1929,6 +1943,8 @@
 				EFBECF4017911B5200C3D177 /* SubDetailsData.m in Sources */,
 				4203861B1791AECD00EBB10E /* ExistingPolicies.m in Sources */,
 				EF30C76217A63E94009A301A /* Nationality.m in Sources */,
+				C4EEB64317BCD11900F268B3 /* EverLifeViewController.m in Sources */,
+				C4EEB64617C1A98900F268B3 /* demo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2022,8 +2038,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -2038,8 +2054,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -2049,8 +2065,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -2065,8 +2081,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
