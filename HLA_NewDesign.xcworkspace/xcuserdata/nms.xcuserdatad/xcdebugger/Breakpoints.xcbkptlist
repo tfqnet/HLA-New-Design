@@ -1389,11 +1389,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/BasicAccountViewController.m"
-         timestampString = "398074808.267939"
+         timestampString = "398832134.383238"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1055"
-         endingLineNumber = "1055"
+         startingLineNumber = "1054"
+         endingLineNumber = "1054"
          landmarkName = "-CalculateBUMP"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1415,11 +1415,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EverSeriesMasterViewController.m"
-         timestampString = "398569240.079944"
+         timestampString = "399178168.258736"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "668"
-         endingLineNumber = "668"
+         startingLineNumber = "732"
+         endingLineNumber = "732"
          landmarkName = "-selectBasicPlan"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1428,11 +1428,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EverRiderViewController.m"
-         timestampString = "396860705.375516"
+         timestampString = "398860629.046876"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2879"
-         endingLineNumber = "2879"
+         startingLineNumber = "2892"
+         endingLineNumber = "2892"
          landmarkName = "-ReturnCurrentRiderPrem:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1441,11 +1441,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EverRiderViewController.m"
-         timestampString = "396860705.375516"
+         timestampString = "398860629.046876"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "3291"
-         endingLineNumber = "3291"
+         startingLineNumber = "3304"
+         endingLineNumber = "3304"
          landmarkName = "-ReturnCurrentRiderPrem:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1467,11 +1467,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/EverRiderViewController.m"
-         timestampString = "396860705.375516"
+         timestampString = "398860629.046876"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "3812"
-         endingLineNumber = "3812"
+         startingLineNumber = "3828"
+         endingLineNumber = "3828"
          landmarkName = "-CheckWaiverRiderPrem"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1519,11 +1519,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "HLA/HLA/BasicAccountViewController.m"
-         timestampString = "398074808.267939"
+         timestampString = "398832134.383238"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "993"
-         endingLineNumber = "993"
+         startingLineNumber = "992"
+         endingLineNumber = "992"
          landmarkName = "-saveBasicPlan"
          landmarkType = "5">
       </FileBreakpoint>

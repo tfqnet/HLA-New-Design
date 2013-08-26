@@ -36,6 +36,7 @@
     databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hladb.sqlite"]];
     RatesDatabasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"UL_Rates.sqlite"]];
 	
+	[self deleteTemp];
 	[self InsertToSI_Temp_Trad_LA]; // for the front summary page
 }
 
@@ -170,7 +171,7 @@
 						
 						QuerySQL  = [ NSString stringWithFormat:@"Insert INTO UL_Temp_Trad_LA (\"SINo\", \"LADesc\", "
 									 "\"PtypeCode\", \"Seq\", \"Name\", \"Age\", \"Sex\", \"Smoker\", \"LADescM\") "
-									 " VALUES (\"%@\",\"Life Assured\",\"LA\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
+									 " VALUES (\"%@\",\"1st Life Assured\",\"LA\",\"%d\",\"%@\",\"%d\", \"%@\", \"%@\", "
 									 " \"Hayat yang Diinsuranskan\")", SINo, 1, Name, Age, sex, smoker ];
 						
 						if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement3, NULL) == SQLITE_OK) {

@@ -795,9 +795,9 @@ NSString *OriginalBump;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:@"UPDATE UL_Details SET CovPeriod = '%@', CovPeriod=\"%@\", BasicSA=\"%@\", "
-							  "AtPrem = \"%@\", BumpMode = \"%@\", DateModified=%@ "
+							  "AtPrem = \"%@\", BumpMode = \"%@\", DateModified=%@, ComDate = '%@' "
 							  " WHERE SINo=\"%@\"", txtPolicyTerm.text, txtPolicyTerm.text, txtBasicSA.text, txtBasicPremium.text,
-							  [self ReturnBumpMode], @"datetime(\"now\", \"+8 hour\")", SINo];
+							  [self ReturnBumpMode], @"datetime(\"now\", \"+8 hour\")", getPlanCommDate, SINo];
         
         //NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
@@ -946,12 +946,11 @@ NSString *OriginalBump;
         NSString *insertSQL = [NSString stringWithFormat:
 							   @"INSERT INTO UL_Details (SINo,  PlanCode, CovTypeCode, ATPrem, BasicSA, CovPeriod, OccpCode, "
 							   "BumpMode, VU2023, VU2025,VU2028,VU2030,VU2035,VURet,VUCash,VURetOpt,VUCashOpt, PolicySustainYear, "
-							   "DateCreated, CreatedBy, DateModified, ModifiedBy) VALUES "
+							   "DateCreated, CreatedBy, DateModified, ModifiedBy,ComDate) VALUES "
 							   "(\"%@\", \"UV\", \"IC\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", '0', '0', "
 							   "'0','0','40','40','20','0','0','0', "
-							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA') ",
-							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode, [self ReturnBumpMode]];
-		
+							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA', '%@') ",
+							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode, [self ReturnBumpMode], getPlanCommDate];
 		
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
@@ -1058,6 +1057,7 @@ NSString *OriginalBump;
 	double SecondBasicSA =  (SecondSA * ((SecondBasicMort * MortDate + ThirdBasicMort * (12 - MortDate))/12.00 * (1 + [getHLPct intValue]/100.00 ) +
 									   ([getHL doubleValue] /1000.00) + ([getOccLoading doubleValue ]/1000.00)));
 	
+	//NSLog(@"%f %f %f", FirstBasicSA, SecondBasicSA, MortDate );
 	BUMP1 = (ModeRate * (PremAllocation * ([txtBasicPremium.text doubleValue ] * divideMode) +
 				(0.95 * (ExcessPrem + [txtGrayRTUP.text doubleValue ]))) -
 			 (((PolicyFee * 12) + FirstBasicSA + 0) * 12.5/12.00))/divideMode;
@@ -5737,9 +5737,11 @@ NSString *OriginalBump;
 		}
 		else{
 			return 12 - ([self monthsBetweenDate:d andDate:d2])%12;
+
 		}
 	}
 	else{
+		NSLog(@"error, no DOB and plan Comm date");
 		return -1;
 	}
 }
@@ -5750,6 +5752,7 @@ NSString *OriginalBump;
     NSDate *toDate;
 	
     NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSLog(@"%@ %@", fromDateTime, toDateTime);
 	
     [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
 				 interval:NULL forDate:fromDateTime];
@@ -6449,6 +6452,11 @@ NSString *OriginalBump;
 	if ([txtBasicPremium isFirstResponder ]) {
 		[self DisplayPremiumCondtion];
 	}
+
+	if(getBumpMode.length == 0){
+		getBumpMode = @"A";
+	}
+	
 	
 	if (segPremium.selectedSegmentIndex == 0) {
 		if (![txtBasicPremium.text isEqualToString:@""]) {

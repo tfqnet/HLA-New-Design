@@ -761,7 +761,7 @@
 							  "b.id, b.IndexNo, a.rowid, b.MaritalStatusCode FROM UL_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode "
 							  "WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Seq=1",getSINo];
 
-		NSLog(@"%@", querySQL);
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

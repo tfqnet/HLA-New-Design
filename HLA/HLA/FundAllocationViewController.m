@@ -466,7 +466,21 @@
 		[txtCashFund becomeFirstResponder ];
 		return FALSE;
 	}
-	else if(outletSustain.selectedSegmentIndex == 0 && [txtAge.text intValue ] < getAge + 10 ){
+	else if (txtExpireCashFund.enabled == TRUE && [txtExpireCashFund.text intValue] + [txtExpireSecureFund.text intValue] != 100 ) {
+		UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Total Fund Percentage must be 100%%." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[failAlert show];
+		[txtCashFund becomeFirstResponder ];
+		return FALSE;
+	}
+	else if (outletSustain.selectedSegmentIndex == 0 && outletAge.selectedSegmentIndex == 3 && [txtAge.text intValue] > 100) {
+		UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Maximum Policy Sustainability (Age) is 100." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[failAlert show];
+		[txtAge becomeFirstResponder ];
+		return FALSE;
+	}
+	else if(outletSustain.selectedSegmentIndex == 0 && outletAge.selectedSegmentIndex == 3 && [txtAge.text intValue ] < getAge + 10 ){
 		UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:[NSString stringWithFormat:@"Minimum Policy Sustainability (Age) is %d ", getAge + 10] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[failAlert show];
@@ -702,6 +716,36 @@
 - (IBAction)ActionSustain:(id)sender {
 	if (outletSustain.selectedSegmentIndex == 0) {
 		outletAge.enabled = TRUE;
+		
+		
+		if (getAge > 55) {
+			[outletAge setEnabled:NO forSegmentAtIndex:0 ];
+			[[outletAge.subviews objectAtIndex:3] setAlpha:0.5];
+			
+		}
+		else if (getAge > 75){
+			[outletAge setEnabled:NO forSegmentAtIndex:0 ];
+			[outletAge setEnabled:NO forSegmentAtIndex:1 ];
+			[[outletAge.subviews objectAtIndex:3] setAlpha:0.5];
+			[[outletAge.subviews objectAtIndex:2] setAlpha:0.5];
+		}
+		else if (getAge > 90){
+			[outletAge setEnabled:NO forSegmentAtIndex:0 ];
+			[outletAge setEnabled:NO forSegmentAtIndex:1 ];
+			[outletAge setEnabled:NO forSegmentAtIndex:2 ];
+			[[outletAge.subviews objectAtIndex:3] setAlpha:0.5];
+			[[outletAge.subviews objectAtIndex:2] setAlpha:0.5];
+			[[outletAge.subviews objectAtIndex:1] setAlpha:0.5];
+		}
+		else{
+			[outletAge setEnabled:YES forSegmentAtIndex:0 ];
+			[outletAge setEnabled:YES forSegmentAtIndex:1 ];
+			[outletAge setEnabled:YES forSegmentAtIndex:2 ];
+			[[outletAge.subviews objectAtIndex:3] setAlpha:1];
+			[[outletAge.subviews objectAtIndex:2] setAlpha:1];
+			[[outletAge.subviews objectAtIndex:1] setAlpha:1];
+		}
+		
 	}
 	else{
 		outletAge.enabled = NO;

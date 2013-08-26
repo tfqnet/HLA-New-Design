@@ -30,7 +30,7 @@
 	// Do any additional setup after loading the view.
 	webview.delegate =  self;
 	
-	NSString *pdfFile = [NSString stringWithFormat:@"zzz"];
+	NSString *pdfFile = [NSString stringWithFormat:@"testing"];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:pdfFile ofType:@"pdf"];
     NSURL *targetURL = [NSURL fileURLWithPath:path];
@@ -38,6 +38,12 @@
     [webview setScalesPageToFit:YES];
     [webview loadRequest:request];
 }
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -52,4 +58,5 @@
 - (IBAction)ActionClose:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
+
 @end

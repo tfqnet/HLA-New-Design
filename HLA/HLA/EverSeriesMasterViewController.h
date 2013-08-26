@@ -49,6 +49,7 @@
 	FSVerticalTabBarController *_FS;
 }
 
+@property (nonatomic, strong) NDHTMLtoPDF *PDFCreator;
 @property (nonatomic, retain) EverLAViewController *EverLAController;
 @property (nonatomic, retain) BasicAccountViewController *BasicAccount;
 @property (nonatomic, retain) EverRiderViewController *EverRider;

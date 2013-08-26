@@ -228,7 +228,7 @@
 			
 				if ([txtStartTo.text doubleValue] > 100 - getAge){
 					UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
-																	message:@"First regular Withdrawal policy year must be less than or equal to policy term." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+																	message:@"Last regular Withdrawal policy year must be less than or equal to policy term." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 					[failAlert show];
 					[txtStartTo becomeFirstResponder];
 					return FALSE;

@@ -232,7 +232,7 @@ static sqlite3 *contactDB = nil;
 					   ", \"VU2030To\" VARCHAR, \"VU2035\" VARCHAR, \"VU2035To\" VARCHAR, \"VUCash\" VARCHAR, \"VUCashTo\" VARCHAR"
 					   ", \"ReinvestYI\" VARCHAR, \"FullyPaidUp6Year\" VARCHAR, \"FullyPaidUp10Year\" VARCHAR, \"ReduceBSA\" VARCHAR"
 					   ", \"SpecialVersion\" VARCHAR, \"VURet\" VARCHAR, \"VURetTo\" VARCHAR, \"VURetOpt\" VARCHAR, \"VURetToOpt\" VARCHAR"
-					   ", \"VUCashOpt\" VARCHAR, \"VUCashToOpt\" VARCHAR, \"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
+					   ", \"VUCashOpt\" VARCHAR, \"VUCashToOpt\" VARCHAR, \"SIVersion\" VARCHAR, \"SIStatus\" VARCHAR, \"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
 
     [database executeUpdate:query];
 	
@@ -252,7 +252,7 @@ static sqlite3 *contactDB = nil;
 			 "VARCHAR, \"Seq\" INTEGER, \"RiderTerm\" INTEGER, \"SumAssured\" DOUBLE, \"Units\" INTEGER, \"PlanOption\" VARCHAR, "
 			 "\"HLoading\" DOUBLE, \"HLoadingTerm\" INTEGER, \"HLoadingPCt\" INTEGER, \"HLoadingPCtTerm\" INTEGER, \"Premium\" DOUBLE, "
 			 "\"Deductible\" VARCHAR, \"PaymentTerm\" INTEGER, \"ReinvestGYI\" VARCHAR, \"GYIYear\" INTEGER, \"RRTUOFromYear\" INTEGER, "
-			 "\"RRTUOYear\" INTEGER) "];
+			 "\"RRTUOYear\" INTEGER, \"RiderDesc\" VARCHAR) "];
     [database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_TopupPrem (\"SINO\" VARCHAR, \"PolYear\" INTEGER, \"Amount\" "

@@ -198,7 +198,9 @@
 		C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB493B161592EB00C7FC8C /* UserProfile.m */; };
 		C4EEB64317BCD11900F268B3 /* EverLifeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */; };
 		C4EEB64617C1A98900F268B3 /* demo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64517C1A98900F268B3 /* demo.m */; };
-		C4EEB64817C1B76B00F268B3 /* zzz.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4EEB64717C1B76B00F268B3 /* zzz.pdf */; };
+		C4EEB64A17C1C05000F268B3 /* everlife.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4EEB64917C1C05000F268B3 /* everlife.pdf */; };
+		C4EEB6A217C4AFAF00F268B3 /* EverLife_SI in Resources */ = {isa = PBXBuildFile; fileRef = C4EEB6A117C4AFAF00F268B3 /* EverLife_SI */; };
+		C4EEB6A417CAF92900F268B3 /* testing.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4EEB6A317CAF92800F268B3 /* testing.pdf */; };
 		C4EF084D1648DC5C000444BA /* iphone_delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EF084C1648DC5C000444BA /* iphone_delete_button.png */; };
 		C4EF087316496A5A000444BA /* pages.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EF087216496A5A000444BA /* pages.m */; };
 		C4EF74F71704481400434B02 /* iMPLogo_Curve.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EF74F61704481400434B02 /* iMPLogo_Curve.png */; };
@@ -594,7 +596,9 @@
 		C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverLifeViewController.m; sourceTree = "<group>"; };
 		C4EEB64417C1A98900F268B3 /* demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = demo.h; sourceTree = "<group>"; };
 		C4EEB64517C1A98900F268B3 /* demo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = demo.m; sourceTree = "<group>"; };
-		C4EEB64717C1B76B00F268B3 /* zzz.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = zzz.pdf; sourceTree = "<group>"; };
+		C4EEB64917C1C05000F268B3 /* everlife.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = everlife.pdf; sourceTree = "<group>"; };
+		C4EEB6A117C4AFAF00F268B3 /* EverLife_SI */ = {isa = PBXFileReference; lastKnownFileType = folder; path = EverLife_SI; sourceTree = "<group>"; };
+		C4EEB6A317CAF92800F268B3 /* testing.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = testing.pdf; sourceTree = "<group>"; };
 		C4EF084C1648DC5C000444BA /* iphone_delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iphone_delete_button.png; sourceTree = "<group>"; };
 		C4EF087116496A5A000444BA /* pages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pages.h; sourceTree = "<group>"; };
 		C4EF087216496A5A000444BA /* pages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pages.m; sourceTree = "<group>"; };
@@ -989,6 +993,7 @@
 		C4E9D1851612C64900016053 = {
 			isa = PBXGroup;
 			children = (
+				C4EEB6A117C4AFAF00F268B3 /* EverLife_SI */,
 				EF5B611B173C96A000751157 /* Default-Landscape~ipad.png */,
 				EF1ADDF11782D1FF00996388 /* homeScreenBrochure2.png */,
 				C4E7C0C2172FC9CD00038FA9 /* AFNetworking */,
@@ -1123,7 +1128,8 @@
 		C4E9D1BF1612C6A500016053 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				C4EEB64717C1B76B00F268B3 /* zzz.pdf */,
+				C4EEB6A317CAF92800F268B3 /* testing.pdf */,
+				C4EEB64917C1C05000F268B3 /* everlife.pdf */,
 				EFBECF391791167E00C3D177 /* iconComplete.png */,
 				EFBECF3A1791167E00C3D177 /* iconNotComplete.png */,
 				EF90B0C5178D38BF00FEC129 /* disclosure_indicator.png */,
@@ -1785,7 +1791,9 @@
 				EFBECF3B1791167E00C3D177 /* iconComplete.png in Resources */,
 				EFBECF3C1791167E00C3D177 /* iconNotComplete.png in Resources */,
 				EF30C75F17A63E61009A301A /* Nationality.plist in Resources */,
-				C4EEB64817C1B76B00F268B3 /* zzz.pdf in Resources */,
+				C4EEB64A17C1C05000F268B3 /* everlife.pdf in Resources */,
+				C4EEB6A217C4AFAF00F268B3 /* EverLife_SI in Resources */,
+				C4EEB6A417CAF92900F268B3 /* testing.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,6 +15,7 @@
 #import "AppDelegate.h"
 #import "EverLifeViewController.h"
 #import "demo.h"
+#import "BrowserViewController.h"
 
 @interface EverSeriesMasterViewController ()
 
@@ -35,9 +36,49 @@
 @synthesize get2ndLAOccp,get2ndLASex,get2ndLASmoker,getbasicHL,getBasicPlan,getbasicSA,getbasicHLPct;
 @synthesize getPayAge,getPayDOB,getPayOccp,getPayorIndexNo,getPaySex,getPaySmoker,getPlanCode;
 @synthesize getSINo,getTerm, payorCustCode, payorSINo, requestSINo2, CustCode2, clientID2;
-@synthesize getOccpCPA, getBumpMode, getLADOB, getOccLoading;
+@synthesize getOccpCPA, getBumpMode, getLADOB, getOccLoading, PDFCreator;
 @synthesize FS = _FS;
 id EverRiderCount;
+
+- (void)HTMLtoPDFDidSucceed:(NDHTMLtoPDF *)htmlToPDF{
+	BrowserViewController *controller = [[BrowserViewController alloc] initWithFilePath:htmlToPDF.PDFpath PDSorSI:PDSorSI];
+	if([PDSorSI isEqualToString:@"PDS"]){
+		controller.title = [NSString stringWithFormat:@"PDS_%@.pdf",self.getSINo];
+		
+	}
+	else{
+		controller.title = [NSString stringWithFormat:@"%@.pdf",self.getSINo];
+	}
+	
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    
+    UINavigationController *container = [[UINavigationController alloc] init];
+    [container setNavigationBarHidden:YES animated:NO];
+    [container setViewControllers:[NSArray arrayWithObject:navController] animated:NO];
+	
+	[spinner_SI stopAnimating ];
+	[self.view setUserInteractionEnabled:YES];
+	
+	UIView *v =  [[self.view subviews] objectAtIndex:[self.view subviews].count - 1 ];
+	[v removeFromSuperview];
+	v = Nil;
+	
+	if (previousPath == Nil) {
+		previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+	}
+	
+	[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	selectedPath = previousPath;
+	spinner_SI = Nil;
+	
+	[self presentModalViewController:container animated:YES];
+    container = Nil;
+	controller= Nil;
+}
+
+-(void)HTMLtoPDFDidFail:(NDHTMLtoPDF *)htmlToPDF{
+	NSLog(@"HTMLtoPDF did fail (%@)", htmlToPDF);
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -587,8 +628,12 @@ id EverRiderCount;
 				_FS.delegate = self;
 			}
 
-			
+			demo *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"demo"];
+			demoPage.modalPresentationStyle = UIModalPresentationFullScreen;
+			[self presentViewController:demoPage animated:NO completion:Nil];
+/*
 			if (cont == TRUE) {
+				
 				spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 				spinner_SI.center = CGPointMake(400, 350);
 				
@@ -609,28 +654,47 @@ id EverRiderCount;
 					
 					EverLifeViewController *UVReport;
 					
-					if([getBasicPlan isEqualToString:@"UV" ]){
+					//NSLog(@"dadas %@", getBasicPlan);
+					if([getPlanCode isEqualToString:@"UV" ]){
 						UVReport = [[EverLifeViewController alloc] init ];
 						UVReport.SINo = getSINo;
 						UVReport.PDSorSI = @"SI";
 						[self presentViewController:UVReport animated:NO completion:Nil];
 					}
 					
-					//[self generateJSON_HLCP];
-					//[self copySIToDoc];
+					[self generateJSON_UV];
+					[self copySIToDoc];
 					
 					dispatch_async(dispatch_get_main_queue(), ^{
-						if([getBasicPlan isEqualToString:@"UV" ]){
+						if([getPlanCode isEqualToString:@"UV" ]){
 							[UVReport dismissViewControllerAnimated:NO completion:Nil];
 						}
-
-						demo *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"demo"];
-						demoPage.modalPresentationStyle = UIModalPresentationFullScreen;
-						[self presentViewController:demoPage animated:NO completion:Nil];
+						
+						NSString *path = [[NSBundle mainBundle] pathForResource:@"EverLife_SI/Page1" ofType:@"html"];
+						NSURL *pathURL = [NSURL fileURLWithPath:path];
+						NSArray* path_forDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+						NSString* documentsDirectory = [path_forDirectory objectAtIndex:0];
+						
+						NSData* data = [NSData dataWithContentsOfURL:pathURL];
+						[data writeToFile:[NSString stringWithFormat:@"%@/SI_Temp.html",documentsDirectory] atomically:YES];
+						
+						NSString *HTMLPath = [documentsDirectory stringByAppendingPathComponent:@"SI_Temp.html"];
+						
+						if([[NSFileManager defaultManager] fileExistsAtPath:HTMLPath]) {
+							NSURL *targetURL = [NSURL fileURLWithPath:HTMLPath];
+							NSString *SIPDFName = [NSString stringWithFormat:@"%@.pdf",self.getSINo];
+							self.PDFCreator = [NDHTMLtoPDF createPDFWithURL:targetURL
+																 pathForPDF:[documentsDirectory stringByAppendingPathComponent:SIPDFName]
+																   delegate:self
+																   pageSize:kPaperSizeA4
+											   					margins:UIEdgeInsetsMake(0, 0, 0, 0)];
+						}
 
 					});
 				});
+				 
 			}
+ */
 		}
 		
 
@@ -1211,7 +1275,29 @@ id EverRiderCount;
 }
 
 -(void)copySIToDoc{
-	
+	NSString *directory = @"EverLife_SI";
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentSIFolderPath = [documentsDirectory stringByAppendingPathComponent:directory];
+    NSString *resourceSIFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:directory];
+    
+    
+    if (![fileManager fileExistsAtPath:documentSIFolderPath]) {
+        [fileManager createDirectoryAtPath:documentSIFolderPath withIntermediateDirectories:NO attributes:nil error:&error];
+    }
+	else{
+		[fileManager removeItemAtPath:documentSIFolderPath error:&error];
+		[fileManager createDirectoryAtPath:documentSIFolderPath withIntermediateDirectories:NO attributes:nil error:&error];
+	}
+    
+    NSArray *fileList = [fileManager contentsOfDirectoryAtPath:resourceSIFolderPath error:&error];
+    for (NSString *SIFiles in fileList) {
+        NSString *newFilePath = [documentSIFolderPath stringByAppendingPathComponent:SIFiles];
+        NSString *oldFilePath = [resourceSIFolderPath stringByAppendingPathComponent:SIFiles];
+        [fileManager copyItemAtPath:oldFilePath toPath:newFilePath error:&error];
+    }
 }
 
 
@@ -1389,6 +1475,199 @@ id EverRiderCount;
     NSLog(@"::received EverHL");
     getbasicHL = aaBasicHL;
     getbasicHLPct = aaBasicTempHL;
+}
+
+#pragma mark - Json
+-(void)generateJSON_UV{
+	NSArray *paths2 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docsPath2 = [paths2 objectAtIndex:0];
+    NSString *path2 = [docsPath2 stringByAppendingPathComponent:@"hladb.sqlite"];
+	
+	FMDatabase *database = [FMDatabase databaseWithPath:path2];
+    [database open];
+	
+	FMResultSet *results;
+    NSString *query;
+    int totalRecords = 0;
+    int currentRecord = 0;
+    
+    results = [database executeQuery:@"select AgentCode,AgentName from Agent_profile"];
+    NSString *agentCode;
+    NSString *agentName;
+    while([results next]) {
+        agentCode = [results stringForColumn:@"AgentCode"];
+        agentName  = [results stringForColumn:@"AgentName"];
+    }
+	
+	results = [database executeQuery:[NSString stringWithFormat:@"select Class,OccLoading_UL from Adm_Occp_Loading_Penta where occpcode = '%@'", getOccpCode]];
+    NSString *OccpClass;
+	NSString *OccpLoading;
+    while([results next]) {
+		OccpClass = [results stringForColumn:@"Class"];
+		OccpLoading = [results stringForColumn:@"OccLoading_UL"];
+    }
+	
+	query = [NSString stringWithFormat:@"Select DateModified, ComDate, ATPrem, basicSA, CovPeriod, Hloading, HloadingTerm, "
+											"hloadingPct, hloadingPctTerm from UL_Details where SINo ='%@'",getSINo];
+
+	results = [database executeQuery:query];
+    NSString *DateModified;
+	NSString *ComDate;
+	NSString *ATPrem;
+	NSString *bSA;
+	NSString *CovPeriod;
+	NSString *HLoad;
+	NSString *HLoadTerm;
+	NSString *HLoadPct;
+	NSString *HLoadPctTerm;
+	
+    if ([results next]) {
+		DateModified = [results stringForColumnIndex:0];
+        ComDate = [results stringForColumnIndex:1];
+		ATPrem = [results stringForColumnIndex:2];
+		bSA = [results stringForColumnIndex:3];
+		CovPeriod = [results stringForColumnIndex:4];
+		HLoad = [results stringForColumnIndex:5];
+		HLoadTerm = [results stringForColumnIndex:6];
+		HLoadPct = [results stringForColumnIndex:7];
+		HLoadPctTerm = [results stringForColumnIndex:8];
+    }
+	
+	NSString *jsonFile = [docsPath2 stringByAppendingPathComponent:@"SI.json"];
+	NSString *content = @"{\n";
+    content = [content stringByAppendingString:@"\"SI\": [\n"];
+	
+	content = [content stringByAppendingString:@"{\n"];
+    content = [content stringByAppendingFormat:@"\"agentCode\":\"%@\",\n", agentCode];
+    content = [content stringByAppendingFormat:@"\"agentName\":\"%@\",\n", agentName];
+	content = [content stringByAppendingFormat:@"\"DateModified\":\"%@\",\n", DateModified];
+	content = [content stringByAppendingFormat:@"\"ComDate\":\"%@\",\n", ComDate];
+	content = [content stringByAppendingFormat:@"\"ATPrem\":\"%@\",\n", ATPrem];
+	content = [content stringByAppendingFormat:@"\"BasicSA\":\"%@\",\n", bSA];
+	content = [content stringByAppendingFormat:@"\"CovPeriod\":\"%@\",\n", CovPeriod];
+	content = [content stringByAppendingFormat:@"\"HLoad\":\"%@\",\n", HLoad];
+	content = [content stringByAppendingFormat:@"\"HLoadTerm\":\"%@\",\n", HLoadTerm];
+	content = [content stringByAppendingFormat:@"\"HLoadPct\":\"%@\",\n", HLoadPct];
+	content = [content stringByAppendingFormat:@"\"HLoadPctTerm\":\"%@\",\n", HLoadPctTerm];
+	content = [content stringByAppendingFormat:@"\"SINo\":\"%@\",\n", getSINo];
+	if ([OccpClass integerValue ] > 4) {
+		content = [content stringByAppendingFormat:@"\"OccpClass\":\" Class D\",\n"];
+	}
+	else{
+		content = [content stringByAppendingFormat:@"\"OccpClass\":\"%@\",\n", OccpClass ];
+	}
+	if ([OccpLoading integerValue ] > 0) {
+		content = [content stringByAppendingFormat:@"\"OccpLoading\":\"%@\",\n", OccpLoading ];
+	}
+	else{
+		content = [content stringByAppendingFormat:@"\"OccpLoading\":\"STD\",\n" ];
+	}
+	content = [content stringByAppendingFormat:@"\"TotalPages\":\"%d\",\n", 1];
+	
+	//UL_Temp_Trad_LA start
+    totalRecords = 0;
+    currentRecord = 0;
+    
+    query = [NSString stringWithFormat:@"Select count(*) as cnt from UL_Temp_Trad_LA where SINo ='%@'",getSINo];
+    results = [database executeQuery:query];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    results = Nil;
+    query = [NSString stringWithFormat:@"Select LADesc,LADescM,Name,Age,Sex,Smoker,PTypeCode from UL_Temp_trad_LA where SINo ='%@'",getSINo];
+    results = [database executeQuery:query];
+    if (results != Nil){
+        content = [content stringByAppendingString:@"\"UL_Temp_trad_LA\":{\n"];
+        content = [content stringByAppendingString:@"\"data\":[\n"];
+    }
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"LADesc\":\"%@\",\n", [results stringForColumn:@"LADesc"]];
+        content = [content stringByAppendingFormat:@"\"LADescM\":\"%@\",\n", [results stringForColumn:@"LADescM"]];
+        content = [content stringByAppendingFormat:@"\"Name\":\"%@\",\n", [results stringForColumn:@"Name"]];
+        content = [content stringByAppendingFormat:@"\"Age\":\"%@\",\n", [results stringForColumn:@"Age"]];
+        content = [content stringByAppendingFormat:@"\"Sex\":\"%@\",\n", [results stringForColumn:@"Sex"]];
+        content = [content stringByAppendingFormat:@"\"Smoker\":\"%@\",\n", [results stringForColumn:@"Smoker"]];
+        content = [content stringByAppendingFormat:@"\"PTypeCode\":\"%@\"\n", [results stringForColumn:@"PTypeCode"]];
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"},\n"];
+    //UL_Temp_Trad_LA end
+	
+	//UL_Temp_Trad_Details start
+    totalRecords = 0;
+    currentRecord = 0;
+    
+    query = [NSString stringWithFormat:@"Select count(*) as cnt from UL_Rider_Details where SINo ='%@'",getSINo];
+    results = [database executeQuery:query];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    results = Nil;
+    query = [NSString stringWithFormat:@"Select RiderCode, RiderDesc, PTypeCode, Seq, RiderTerm, SumAssured, Units, "
+										"PlanOption, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, Premium, "
+										"PaymentTerm from UL_Rider_Details where SINo ='%@'",getSINo];
+	
+    results = [database executeQuery:query];
+    if (results != Nil){
+        content = [content stringByAppendingString:@"\"UL_Temp_trad_Details\":{\n"];
+        content = [content stringByAppendingString:@"\"data\":[\n"];
+    }
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"RiderCode\":\"%@\",\n", [results stringForColumn:@"RiderCode"]];
+        content = [content stringByAppendingFormat:@"\"RiderDesc\":\"%@\",\n", [results stringForColumn:@"RiderDesc"]];
+		
+		if ([[results stringForColumn:@"PTypeCode" ] isEqualToString:@"LA"]) {
+			if ([[results stringForColumn:@"Seq" ] isEqualToString:@"1" ]) {
+				content = [content stringByAppendingFormat:@"\"InsuredLives\":\"1st Life Assured\",\n" ];
+			}
+			else{
+				content = [content stringByAppendingFormat:@"\"InsuredLives\":\"2nd Life Assured\",\n"];
+			}
+		}
+		else{
+			content = [content stringByAppendingFormat:@"\"InsuredLives\":\"Payor\",\n"];	
+		}
+
+        content = [content stringByAppendingFormat:@"\"SumAssured\":\"%@\",\n", [results stringForColumn:@"SumAssured"]];
+        content = [content stringByAppendingFormat:@"\"CovPeriod\":\"%@\",\n", [results stringForColumn:@"RiderTerm"]];
+        content = [content stringByAppendingFormat:@"\"PaymentTerm\":\"%@\",\n", [results stringForColumn:@"PaymentTerm"]];
+        content = [content stringByAppendingFormat:@"\"AnnualTarget\":\"%@\",\n", [results stringForColumn:@"Premium"]];
+		content = [content stringByAppendingFormat:@"\"AnnualLoading\":\"%@\",\n", @"0.00"];
+		content = [content stringByAppendingFormat:@"\"RiderHLoading\":\"%@\",\n", [results stringForColumn:@"HLoading"]];
+		content = [content stringByAppendingFormat:@"\"RiderHLoadingTerm\":\"%@\",\n", [results stringForColumn:@"HLoadingTerm"]];
+		content = [content stringByAppendingFormat:@"\"RiderHLoadingPct\":\"%@\",\n", [results stringForColumn:@"HLoadingPct"]];
+		content = [content stringByAppendingFormat:@"\"RiderHLoadingPctTerm\":\"%@\",\n", [results stringForColumn:@"HLoadingPctTerm"]];
+		content = [content stringByAppendingFormat:@"\"TotalPremium\":\"%@\"\n", [results stringForColumn:@"Premium"]];
+		
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"}\n"];
+    //UL_Temp_Trad_Details end
+
+	content = [content stringByAppendingString:@"}\n"];
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"}"];
+	
+	[content writeToFile:jsonFile atomically:NO encoding:NSStringEncodingConversionAllowLossy error:nil];
+    [database close];
+
+	
 }
 
 #pragma mark - memory management

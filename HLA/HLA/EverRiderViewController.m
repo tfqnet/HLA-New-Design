@@ -2683,6 +2683,17 @@ double CurrentRiderPrem;
     }
 }
 
+-(NSString*)ReturnRiderDesc :(NSString *)aaRiderCode{
+
+	NSString *value = riderDesc;
+	
+	if ([aaRiderCode isEqualToString:@"HMM"] || [aaRiderCode isEqualToString:@"MG_IV"] ) {
+		value = [value stringByAppendingFormat:@"(%@) Deductible(%@)", planOption, deductible ];
+	}
+	
+	return value;
+}
+
 -(void)saveRider
 {
 	sqlite3_stmt *statement;
@@ -2694,6 +2705,8 @@ double CurrentRiderPrem;
     inputSA = [txtSumAssured.text doubleValue];
 	[self ReturnCurrentRiderPrem:0];
 	
+	NSString *FullRiderDesc = [self ReturnRiderDesc:riderCode];
+	
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
 		NSString *insertSQL;
@@ -2701,38 +2714,38 @@ double CurrentRiderPrem;
 			insertSQL = [NSString stringWithFormat:
 						 @"INSERT INTO UL_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, "
 						 "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
-						 "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear ) VALUES"
+						 "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear, RiderDesc ) VALUES"
 						 "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
-						 "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
+						 "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\", '%@')",
 						 getSINo,riderCode, pTypeCode, PTypeSeq, txtRiderTerm.text, txtSumAssured.text, planOption,
 						 deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
 						 inputHLPercentageTerm, CurrentRiderPrem, txtPaymentTerm.text, [self ReturnReinvest],
-						 @"1", @"0", @"0"];
+						 @"1", @"0", @"0", FullRiderDesc];
 		}
 		if ([riderCode isEqualToString:@"ECAR55"]) {
 			insertSQL = [NSString stringWithFormat:
 						 @"INSERT INTO UL_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, "
 						 "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
-						 "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear ) VALUES"
+						 "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear, RiderDesc ) VALUES"
 						 "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
-						 "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
+						 "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\", '%@')",
 						 getSINo,riderCode, pTypeCode, PTypeSeq, txtRiderTerm.text, txtSumAssured.text, planOption,
 						 deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
 						 inputHLPercentageTerm, CurrentRiderPrem , txtPaymentTerm.text, [self ReturnReinvest],
-						 @"55", @"0", @"0"];
+						 @"55", @"0", @"0", FullRiderDesc];
 		}
 		else
 		{
 			insertSQL = [NSString stringWithFormat:
 								   @"INSERT INTO UL_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, "
 								   "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
-								   "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear ) VALUES"
+								   "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear, RiderDesc ) VALUES"
 								   "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
-								   "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\")",
+								   "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\", '%@')",
 								   getSINo,riderCode, pTypeCode, PTypeSeq, txtRiderTerm.text, txtSumAssured.text, planOption,
 								   deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
 								   inputHLPercentageTerm, CurrentRiderPrem, txtPaymentTerm.text, [self ReturnReinvest],
-						 @"0", @"0", @"0"];
+						 @"0", @"0", @"0", FullRiderDesc];
 
 		}
 		
@@ -3734,15 +3747,18 @@ double CurrentRiderPrem;
 	
 	[self ReturnCurrentRiderPrem:0];
     //sqlite3_stmt *statement;
+	
+	NSString *FullRiderDesc = [self ReturnRiderDesc:riderCode];
+	
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
 								@"UPDATE UL_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", "
 								"Deductible=\"%@\", HLoading=\"%@\", HLoadingTerm=\"%d\", "
-								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%f' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
+								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%f', RiderDesc = '%@' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
 								"PTypeCode=\"%@\" AND Seq=\"%d\"", txtRiderTerm.text, txtSumAssured.text, planOption,
 								deductible, inputHL1KSA, inputHL1KSATerm,inputHLPercentage,
-								inputHLPercentageTerm, [self ReturnReinvest], CurrentRiderPrem, getSINo,
+								inputHLPercentageTerm, [self ReturnReinvest], CurrentRiderPrem, FullRiderDesc, getSINo,
 								riderCode,pTypeCode, PTypeSeq];
 		
         if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
