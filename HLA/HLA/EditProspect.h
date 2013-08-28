@@ -42,6 +42,7 @@
     BOOL checked2;
     BOOL isHomeCountry;
     BOOL isOffCountry;
+    BOOL companyCase;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
@@ -67,6 +68,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *outletTitle;
 @property (weak, nonatomic) IBOutlet UITextField *txtrFullName;
 @property (weak, nonatomic) IBOutlet UIButton *outletDOB;
+@property (strong, nonatomic) IBOutlet UITextField *txtDOB;
 @property (strong, nonatomic) IBOutlet UITextField *txtIDType;
 @property (strong, nonatomic) IBOutlet UIButton *OtherIDType;
 @property (strong, nonatomic) IBOutlet UITextField *txtOtherIDType;

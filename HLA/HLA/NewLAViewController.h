@@ -46,6 +46,7 @@
     BOOL JobChanged;
     BOOL date1;
     BOOL date2;
+    BOOL isNewClient;
 }
 
 @property (strong, nonatomic) NSMutableArray *dataInsert;

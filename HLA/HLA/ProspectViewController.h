@@ -42,6 +42,7 @@
     BOOL checked2;
     BOOL isHomeCountry;
     BOOL isOffCountry;
+    BOOL companyCase;
 }
 
 @property (nonatomic, strong) id<ProspectViewControllerDelegate> delegate;
@@ -65,6 +66,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *outletTitle;
 @property (weak, nonatomic) IBOutlet UITextField *txtFullName;
 @property (weak, nonatomic) IBOutlet UIButton *outletDOB;
+@property (strong, nonatomic) IBOutlet UITextField *txtDOB;
 @property (strong, nonatomic) IBOutlet UIButton *OtherIDType;
 @property (strong, nonatomic) IBOutlet UITextField *txtOtherIDType;
 @property (strong, nonatomic) IBOutlet UITextField *txtIDType;

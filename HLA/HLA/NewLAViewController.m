@@ -76,6 +76,7 @@ id dobtemp;
     useExist = NO;
     AgeChanged = NO;
     JobChanged = NO;
+    isNewClient = NO;
     self.btnOccp.titleLabel.textColor = [UIColor darkGrayColor];
     
     getSINo = [self.requestSINo description];
@@ -562,7 +563,6 @@ id dobtemp;
     LANameField.enabled = NO;
     LANameField.backgroundColor = [UIColor lightGrayColor];
     LANameField.textColor = [UIColor darkGrayColor];
-    
     sexSegment.enabled = NO;
     
     btnDOB.enabled = NO;
@@ -570,6 +570,8 @@ id dobtemp;
     
     btnOccp.enabled = NO;
     self.btnOccp.titleLabel.textColor = [UIColor darkGrayColor];
+    
+    isNewClient = NO;
     
     if (_ProspectList == nil) {
         self.ProspectList = [[ListingTbViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -582,16 +584,47 @@ id dobtemp;
 
 - (IBAction)enableFields:(id)sender
 {
-    LANameField.enabled = YES;
-    LANameField.backgroundColor = [UIColor whiteColor];
-    LANameField.textColor = [UIColor blackColor];
-    sexSegment.enabled = YES;
+    if (isNewClient) {
+        
+        LANameField.enabled = NO;
+        LANameField.backgroundColor = [UIColor lightGrayColor];
+        LANameField.textColor = [UIColor darkGrayColor];
+        sexSegment.enabled = NO;
+        
+        btnDOB.enabled = NO;
+        self.btnDOB.titleLabel.textColor = [UIColor darkGrayColor];
+        
+        btnOccp.enabled = NO;
+        self.btnOccp.titleLabel.textColor = [UIColor darkGrayColor];
+        
+        isNewClient = NO;
+    }
+    else {
+        
+        LANameField.enabled = YES;
+        LANameField.backgroundColor = [UIColor whiteColor];
+        LANameField.textColor = [UIColor blackColor];
+        sexSegment.enabled = YES;
+        
+        btnDOB.enabled = YES;
+        self.btnDOB.titleLabel.textColor = [UIColor blackColor];
+        
+        btnOccp.enabled = YES;
+        self.btnOccp.titleLabel.textColor = [UIColor blackColor];
+        
+        isNewClient = YES;
+    }
     
-    btnDOB.enabled = YES;
-    self.btnDOB.titleLabel.textColor = [UIColor blackColor];
-    
-    btnOccp.enabled = YES;
-    self.btnOccp.titleLabel.textColor = [UIColor blackColor];
+    LANameField.text = @"";
+    sexSegment.selectedSegmentIndex = UISegmentedControlNoSegment;
+    smokerSegment.selectedSegmentIndex = UISegmentedControlNoSegment;
+    btnDOB.titleLabel.text = @"";
+    LAAgeField.text = @"";
+    btnCommDate.titleLabel.text = @"";
+    btnOccp.titleLabel.text = @"";
+    LAOccLoadingField.text = @"";
+    LACPAField.text = @"";
+    LAPAField.text = @"";
 }
 
 - (IBAction)btnDOBPressed:(id)sender
@@ -984,7 +1017,7 @@ id dobtemp;
         NSString *insertSQL = [NSString stringWithFormat:
                 @"INSERT INTO Trad_LAPayor (PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"LA\",\"1\",\"%@\",\"hla\")",commDate];
         
-//        NSLog(@"%@",insertSQL);
+        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -998,7 +1031,7 @@ id dobtemp;
         
         NSString *insertSQL2 = [NSString stringWithFormat:@"INSERT INTO Clt_Profile (Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")",LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
         
-//        NSLog(@"%@",insertSQL2);
+        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -1014,12 +1047,41 @@ id dobtemp;
             }
             sqlite3_finalize(statement);
         }
-    
+        
+        if (isNewClient) {
+            [self insertClient];
+        }
+            
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
         Inserted = YES;
         AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
         zzz.SICompleted = NO;
         
+        sqlite3_close(contactDB);
+    }
+}
+
+-(void)insertClient
+{
+    sqlite3_stmt *statement;
+    if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+    {
+        NSString *insertSQL3 = [NSString stringWithFormat:
+                      @"INSERT INTO prospect_profile(\"ProspectName\", \"ProspectDOB\", \"ProspectGender\", \"ProspectOccupationCode\", \"DateCreated\", \"CreatedBy\", \"DateModified\",\"ModifiedBy\", \"Smoker\") "
+                      "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", %@, \"%@\", \"%@\", \"%@\", \"%@\")", LANameField.text, DOB, sex, occuCode, @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1", smoker];
+        
+        NSLog(@"%@",insertSQL3);
+            
+        if(sqlite3_prepare_v2(contactDB, [insertSQL3 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE)
+            {
+                NSLog(@"Done client");
+                
+            } else {
+                NSLog(@"Failed client");
+            }
+            sqlite3_finalize(statement);
+        }
         sqlite3_close(contactDB);
     }
 }
