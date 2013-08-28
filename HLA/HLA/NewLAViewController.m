@@ -475,6 +475,13 @@ id dobtemp;
 
 - (IBAction)sexSegmentPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if ([sexSegment selectedSegmentIndex]==0) {
         sex = @"M";
     } 
@@ -485,6 +492,13 @@ id dobtemp;
 
 - (IBAction)smokerSegmentPressed:(id)sender 
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if ([smokerSegment selectedSegmentIndex]==0) {
         smoker = @"Y";
     }
@@ -629,6 +643,13 @@ id dobtemp;
 
 - (IBAction)btnDOBPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     date1 = YES;
     date2 = NO;
     
@@ -652,11 +673,18 @@ id dobtemp;
     self.dobPopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
     
     [self.dobPopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    [self.dobPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+    [self.dobPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
 - (IBAction)btnCommDatePressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     date1 = NO;
     date2 = YES;
     
@@ -679,18 +707,25 @@ id dobtemp;
     self.datePopover = [[UIPopoverController alloc] initWithContentViewController:_LADate];
     
     [self.datePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    [self.datePopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+    [self.datePopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
 }
 
 - (IBAction)btnOccpPressed:(id)sender
 {
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
     if (_OccupationList == nil) {
         self.OccupationList = [[OccupationList alloc] initWithStyle:UITableViewStylePlain];
         _OccupationList.delegate = self;
         self.OccupationListPopover = [[UIPopoverController alloc] initWithContentViewController:_OccupationList];
     }
     
-    [self.OccupationListPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+    [self.OccupationListPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1011,13 +1046,17 @@ id dobtemp;
 
 -(void)insertData
 {
+    
+    if (isNewClient) {
+        [self insertClient];
+    }
+    
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *insertSQL = [NSString stringWithFormat:
                 @"INSERT INTO Trad_LAPayor (PTypeCode,Sequence,DateCreated,CreatedBy) VALUES (\"LA\",\"1\",\"%@\",\"hla\")",commDate];
         
-        NSLog(@"%@",insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -1031,7 +1070,6 @@ id dobtemp;
         
         NSString *insertSQL2 = [NSString stringWithFormat:@"INSERT INTO Clt_Profile (Name, Smoker, Sex, DOB, ALB, ANB, OccpCode, DateCreated, CreatedBy,indexNo) VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"hla\", \"%d\")",LANameField.text, smoker, sex, DOB, age, ANB, occuCode, commDate,IndexNo];
         
-        NSLog(@"%@",insertSQL2);
         if(sqlite3_prepare_v2(contactDB, [insertSQL2 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -1048,9 +1086,7 @@ id dobtemp;
             sqlite3_finalize(statement);
         }
         
-        if (isNewClient) {
-            [self insertClient];
-        }
+        
             
         [_delegate LAIDPayor:lastIdPayor andIDProfile:lastIdProfile andAge:age andOccpCode:occuCode andOccpClass:occuClass andSex:sex andIndexNo:IndexNo andCommDate:commDate andSmoker:smoker];
         Inserted = YES;
@@ -1069,13 +1105,11 @@ id dobtemp;
         NSString *insertSQL3 = [NSString stringWithFormat:
                       @"INSERT INTO prospect_profile(\"ProspectName\", \"ProspectDOB\", \"ProspectGender\", \"ProspectOccupationCode\", \"DateCreated\", \"CreatedBy\", \"DateModified\",\"ModifiedBy\", \"Smoker\") "
                       "VALUES (\"%@\", \"%@\", \"%@\", \"%@\", %@, \"%@\", \"%@\", \"%@\", \"%@\")", LANameField.text, DOB, sex, occuCode, @"datetime(\"now\", \"+8 hour\")", @"1", @"", @"1", smoker];
-        
-        NSLog(@"%@",insertSQL3);
             
         if(sqlite3_prepare_v2(contactDB, [insertSQL3 UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
-                NSLog(@"Done client");
+                [self GetLastID];
                 
             } else {
                 NSLog(@"Failed client");
@@ -1085,6 +1119,99 @@ id dobtemp;
         sqlite3_close(contactDB);
     }
 }
+
+-(void) GetLastID
+{
+    sqlite3_stmt *statement2;
+    sqlite3_stmt *statement3;
+    NSString *lastID;
+    NSString *contactCode;
+    
+    const char *dbpath = [databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &contactDB) == SQLITE_OK){
+        NSString *GetLastIdSQL = [NSString stringWithFormat:@"Select indexno  from prospect_profile order by \"indexNo\" desc limit 1"];
+        const char *SelectLastId_stmt = [GetLastIdSQL UTF8String];
+        if(sqlite3_prepare_v2(contactDB, SelectLastId_stmt, -1, &statement2, NULL) == SQLITE_OK)
+        {
+            if (sqlite3_step(statement2) == SQLITE_ROW)
+            {
+                lastID = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement2, 0)];
+                IndexNo = [lastID intValue];
+                sqlite3_finalize(statement2);
+            }
+        }
+    }
+    
+    for (int a = 0; a<4; a++) {
+        
+        switch (a) {
+            case 0:
+                
+                contactCode = @"CONT006";
+                break;
+                
+            case 1:
+                contactCode = @"CONT008";
+                break;
+                
+            case 2:
+                contactCode = @"CONT007";
+                break;
+                
+            case 3:
+                contactCode = @"CONT009";
+                break;
+                
+            default:
+                break;
+        }
+        
+        if (![contactCode isEqualToString:@""]) {
+            
+            NSString *insertContactSQL = @"";
+            if (a==0) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, @"", @"N", @""];
+            }
+            else if (a==1) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, @"", @"N", @""];
+            }
+            else if (a==2) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, @"", @"N", @""];
+            }
+            else if (a==3) {
+                insertContactSQL = [NSString stringWithFormat:
+                                    @"INSERT INTO contact_input(\"IndexNo\",\"contactCode\", \"ContactNo\", \"Primary\", \"Prefix\") "
+                                    " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, @"", @"N", @""];
+            }
+            
+            const char *insert_contactStmt = [insertContactSQL UTF8String];
+            if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
+                if (sqlite3_step(statement3) == SQLITE_DONE){
+                    sqlite3_finalize(statement3);
+                }
+                else {
+                    NSLog(@"Error - 4");
+                }
+            }
+            else {
+                NSLog(@"Error - 3");
+            }
+            insert_contactStmt = Nil, insertContactSQL = Nil;
+        }
+    }
+    
+    statement2 = Nil, statement3 = Nil, lastID = Nil;
+    contactCode = Nil;
+    dbpath = Nil;
+}
+
 
 -(void)updateData
 {
@@ -1229,7 +1356,8 @@ id dobtemp;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
         NSString *querySQL = [NSString stringWithFormat:
-                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id, b.IndexNo, a.rowid FROM Trad_LAPayor a LEFT JOIN Clt_Profile b ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
+                @"SELECT a.SINo, a.CustCode, b.Name, b.Smoker, b.Sex, b.DOB, b.ALB, b.OccpCode, b.DateCreated, b.id, b.IndexNo, a.rowid FROM Trad_LAPayor a LEFT JOIN Clt_Profile b "
+                    "ON a.CustCode=b.CustCode WHERE a.SINo=\"%@\" AND a.PTypeCode=\"LA\" AND a.Sequence=1",getSINo];
         
 //        NSLog(@"%@",querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)

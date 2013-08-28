@@ -1849,6 +1849,8 @@ PostcodeContinue = TRUE;
                                     " VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\")", lastID, contactCode, txtContact4.text, @"N", txtPrefix4.text];
             }
             
+            NSLog(@"%@",insertContactSQL);
+            
             const char *insert_contactStmt = [insertContactSQL UTF8String];
             if(sqlite3_prepare_v2(contactDB, insert_contactStmt, -1, &statement3, NULL) == SQLITE_OK) {
                 if (sqlite3_step(statement3) == SQLITE_DONE){
