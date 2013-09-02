@@ -112,6 +112,9 @@ bool PostcodeContinue = TRUE;
     
     CustomColor = Nil;
     
+    [myScrollView setScrollEnabled:YES];
+    [myScrollView setContentSize:CGSizeMake(1024, 819)];
+    
 }
 /*
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)picker;
@@ -202,7 +205,7 @@ bool PostcodeContinue = TRUE;
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
     self.myScrollView.frame = CGRectMake(0, -44, 1024, 748-352);
-    self.myScrollView.contentSize = CGSizeMake(1024, 748);
+    self.myScrollView.contentSize = CGSizeMake(1024, 819);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 15;
@@ -1219,7 +1222,6 @@ PostcodeContinue = TRUE;
         return false;
     }
     
-    
     if (![[txtAnnIncome.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]) {
         
         BOOL valid;
@@ -1666,6 +1668,7 @@ PostcodeContinue = TRUE;
 
     if (PostcodeContinue == TRUE) {
         if(![[txtHomeAddr1.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
+            NSLog(@"test postcode");
             if([txtHomePostCode.text isEqualToString:@""]){
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                 message:@"Home Address PostCode is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];

@@ -134,6 +134,9 @@ bool IsContinue = TRUE;
     txtDOB.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
     
     CustomColor = nil;
+    
+    [myScrollView setScrollEnabled:YES];
+    [myScrollView setContentSize:CGSizeMake(1024, 819)];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView{
@@ -497,7 +500,7 @@ bool IsContinue = TRUE;
 -(void)keyboardDidShow:(NSNotificationCenter *)notification
 {
     self.myScrollView.frame = CGRectMake(0, -44, 1024, 748-352);
-    self.myScrollView.contentSize = CGSizeMake(1024, 748);
+    self.myScrollView.contentSize = CGSizeMake(1024, 819);
     
     CGRect textFieldRect = [activeField frame];
     textFieldRect.origin.y += 15;
