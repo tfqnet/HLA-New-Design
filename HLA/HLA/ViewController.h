@@ -17,4 +17,7 @@
 @property (nonatomic, retain) Login *Login;
 @property (nonatomic, retain) CarouselViewController *CVC;
 @property (nonatomic, assign,readwrite) int sss;
+
+//bbbb
+
 @end
