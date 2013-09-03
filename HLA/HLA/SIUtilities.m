@@ -209,19 +209,54 @@ static sqlite3 *contactDB = nil;
 	FMDatabase *database = [FMDatabase databaseWithPath:path];
     [database open];
 	
-	
 	NSString *query;
 	
-	query = [NSString stringWithFormat:@"Delete From UL_Rider_mtn"];
-    [database executeUpdate:query];
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Pages' ('htmlName' TEXT,'PageNum' NUMERIC,'PageDesc' TEXT,'riders' VARCHAR)"];
+	[database executeUpdate:query];
 	
-	query = [NSString stringWithFormat:@"Delete From UL_Rider_label"];
-    [database executeUpdate:query];
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Rider' ('SINo' VARCHAR, 'RiderCode' VARCHAR, 'DataType2' VARCHAR, "
+										"'PolTerm' INTEGER, 'TotPremPaid' DOUBLE, 'SurrenderValueHigh' INTEGER, 'SurrenderValueLow' INTEGER)"];
+	[database executeUpdate:query];
 
-	query = [NSString stringWithFormat:@"Delete From UL_Rider_Profile"];
-    [database executeUpdate:query];
-
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Trad_Basic' ('SINo' VARCHAR, 'SeqNo' INTEGER, 'DataType' VARCHAR, 'col0_1' INTEGER, "
+										"'col0_2' INTEGER, 'col1' VARCHAR, 'col2' VARCHAR, 'col3' VARCHAR, 'col4' VARCHAR, 'col5' VARCHAR, 'col6' "
+										"VARCHAR, 'col7' VARCHAR, 'col8' VARCHAR, 'col9' VARCHAR, 'col10' VARCHAR, 'col11' VARCHAR, 'col12' VARCHAR, "
+										"'col13' VARCHAR, 'col14' VARCHAR, 'col15' VARCHAR, 'col16' VARCHAR, 'col17' VARCHAR, 'col18' VARCHAR, 'col19' VARCHAR, "
+										"'col20' VARCHAR, 'col21' VARCHAR, 'col22' VARCHAR, 'col23' VARCHAR, 'col24' VARCHAR, 'col25' VARCHAR, 'col26' VARCHAR, 'col27' VARCHAR, "
+										"'col28' VARCHAR, 'col29' VARCHAR, 'col30' VARCHAR, 'col31' VARCHAR)"];
+	[database executeUpdate:query];
 	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Trad_Details' ('SINo' VARCHAR, 'SeqNo' VARCHAR, 'DataType' VARCHAR, 'col0_1' VARCHAR, "
+										"'col0_2' VARCHAR, 'col1' VARCHAR, 'col2' VARCHAR, 'col3' VARCHAR, 'col4' VARCHAR, 'col5' VARCHAR, 'col6' VARCHAR, "
+										"'col7' VARCHAR, 'col8' VARCHAR, 'col9' VARCHAR, 'col10' VARCHAR, 'col11' VARCHAR)"];
+	[database executeUpdate:query];
+
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Trad_Overall' ('SINo' VARCHAR,'SurrenderValueHigh1' VARCHAR,'SurrenderValueLow1' VARCHAR, "
+										"'TotPremPaid1' VARCHAR,'TotYearlyIncome1' VARCHAR,'SurrenderValueHigh2' VARCHAR,'SurrenderValueLow2' VARCHAR, "
+										"'TotPremPaid2' VARCHAR,'TotYearlyIncome2' VARCHAR)"];
+	[database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Trad_Rider' ('SINo' VARCHAR,'SeqNo' VARCHAR,'DataType' VARCHAR,'PageNo' VARCHAR,'col0_1' "
+										"VARCHAR,'col0_2' VARCHAR,'col1' VARCHAR,'col2' VARCHAR,'col3' VARCHAR,'col4' VARCHAR,'col5' VARCHAR,'col6' VARCHAR,'col7' "
+										"VARCHAR,'col8' VARCHAR,'col9' VARCHAR,'col10' VARCHAR,'col11' VARCHAR,'col12' VARCHAR,'col13' VARCHAR,'col14' VARCHAR)"];
+	[database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_trad_LA' ('SINo' VARCHAR, 'LADesc' VARCHAR, 'PTypeCode' VARCHAR, 'Seq' VARCHAR, 'Name' VARCHAR, "
+										"'Age' VARCHAR, 'Sex' VARCHAR, 'Smoker' VARCHAR, 'LADescM' VARCHAR)"];
+	[database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE 'UL_Temp_ECAR' ('SINo' VARCHAR, \"SeqNo\" INTEGER, \"DataType\" VARCHAR, \"col0_1\" INTEGER, \"col0_2\" INTEGER, \"col1\" VARCHAR, "
+						"\"col2\" VARCHAR, \"col3\" VARCHAR, \"col4\" VARCHAR, \"col5\" VARCHAR, \"col6\" VARCHAR, \"col7\" VARCHAR, \"col8\" VARCHAR, \"col9\" VARCHAR, \"col10\" VARCHAR, "
+						"\"col11\" VARCHAR, \"col12\" VARCHAR, \"col13\" VARCHAR, \"col14\" VARCHAR, \"col15\" VARCHAR, \"col16\" VARCHAR, \"col17\" VARCHAR, \"col18\" VARCHAR, \"col19\" VARCHAR, "
+						"\"col20\" VARCHAR, \"col21\" VARCHAR, \"col22\" VARCHAR )"];
+	[database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE 'UL_Temp_ECAR55' ('SINo' VARCHAR, \"SeqNo\" INTEGER, \"DataType\" VARCHAR, \"col0_1\" INTEGER, \"col0_2\" INTEGER, \"col1\" VARCHAR, "
+			 "\"col2\" VARCHAR, \"col3\" VARCHAR, \"col4\" VARCHAR, \"col5\" VARCHAR, \"col6\" VARCHAR, \"col7\" VARCHAR, \"col8\" VARCHAR, \"col9\" VARCHAR, \"col10\" VARCHAR, "
+			 "\"col11\" VARCHAR, \"col12\" VARCHAR, \"col13\" VARCHAR, \"col14\" VARCHAR, \"col15\" VARCHAR, \"col16\" VARCHAR, \"col17\" VARCHAR, \"col18\" VARCHAR, \"col19\" VARCHAR, "
+			 "\"col20\" VARCHAR, \"col21\" VARCHAR, \"col22\" VARCHAR )"];
+		[database executeUpdate:query];
+	 	
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS UL_Details (\"SINO\" VARCHAR, \"PlanCode\" VARCHAR, \"CovTypeCode\" INTEGER, \"ATPrem\" "
 					   "DOUBLE, \"BasicSA\" DOUBLE, \"CovPeriod\" INTEGER, \"OccpCode\" VARCHAR, \"OccLoading\" DOUBLE, \"CPA\" INTEGER, "
 					   "\"PA\" INTEGER, \"HLoading\" DOUBLE, \"HloadingTerm\" INTEGER, \"HloadingPct\" VARCHAR, \"HloadingPctTerm\" VARCHAR "
@@ -232,7 +267,8 @@ static sqlite3 *contactDB = nil;
 					   ", \"VU2030To\" VARCHAR, \"VU2035\" VARCHAR, \"VU2035To\" VARCHAR, \"VUCash\" VARCHAR, \"VUCashTo\" VARCHAR"
 					   ", \"ReinvestYI\" VARCHAR, \"FullyPaidUp6Year\" VARCHAR, \"FullyPaidUp10Year\" VARCHAR, \"ReduceBSA\" VARCHAR"
 					   ", \"SpecialVersion\" VARCHAR, \"VURet\" VARCHAR, \"VURetTo\" VARCHAR, \"VURetOpt\" VARCHAR, \"VURetToOpt\" VARCHAR"
-					   ", \"VUCashOpt\" VARCHAR, \"VUCashToOpt\" VARCHAR, \"SIVersion\" VARCHAR, \"SIStatus\" VARCHAR, \"DateCreated\" DATETIME, \"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
+					   ", \"VUCashOpt\" VARCHAR, \"VUCashToOpt\" VARCHAR, \"SIVersion\" VARCHAR, \"SIStatus\" VARCHAR, \"SILanguage\" VARCHAR, \"DateCreated\" DATETIME, "
+					    "\"CreatedBy\" VARCHAR, \"DateModified\" DATETIME, \"ModifiedBy\" VARCHAR)"];
 
     [database executeUpdate:query];
 	
@@ -617,7 +653,7 @@ static sqlite3 *contactDB = nil;
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_Label VALUES(\"HLP\", \"Health Loading (%%)\", \"WI\", \"Acc. Weekly Indemnity Rider\", \"TF\", "
 			 "\"\", \"\", \"\",  date('now'), 'HLA', date('now'), 'HLA')"];
     [database executeUpdate:query];
-	
+
 	[database close];
 	 
 }

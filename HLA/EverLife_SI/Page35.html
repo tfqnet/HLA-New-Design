@@ -51,44 +51,30 @@
 
 <div style="width:100%;height:793px;background-color: #fff;margin-top:-38px;">
 
-
-
-<table border=0 width="100%">
-<tr>
-<td width="30%" valign="top">Basic Plan <i>Pelan Asas</i>: <span id="planName" class="planName">{PlanName}</span></td>
-<td width="40%" valign="top"><span id="paymentDesc" class="paymentDesc">{PaymentDescription}</span></td>
-<td width="30%" valign="top">&nbsp;&nbsp;Life Assured <i>Hayat&nbsp;&nbsp;Diinsuranskan:</i> <span id="LAName1" class="LAName1">{LAName}</span></td>
-</tr>
-</table>
-
-
-
-
-
 <span id="riderInPage" class="riderInPage" style="display:none"><b>Description of Rider(s) Benefits</b><br/><br/></span>
 
 
 <table id="table-design1" class="riderDescription_EN"> 
 <tr class="tblHeader" id="tblHeader" style="display:table-row;">
-<th class="contentSmall"><b>Plan<br/>Name</b></th>
-<th class="contentSmall" style="text-align:center;"><b>Insured Lives</b></th>
-<th class="contentSmall" style="text-align:center;"><b>Plan Choice</b></th>
-<th class="contentSmall" style="text-align:center;"><b>No. of<br/>Benefit<br/>Units</b></th>
-<th class="contentSmall" style="text-align:center;"><b>Coverage<br/>Term</b></th>
-<th class="contentSmall" style="text-align:center;"><b>Sum<br/>Assured /<br/>Benefit</b></th>
+<th class="extraContentSmall" style="width: 5%"><b>Plan<br/>Name</b></th>
+<th class="extraContentSmall" style="text-align:center;width: 5%"><b>Insured Lives</b></th>
+<th class="extraContentSmall" style="text-align:center;width: 5%"><b>Plan Choice</b></th>
+<th class="extraContentSmall" style="text-align:center;width: 5%"><b>No. of<br/>Benefit<br/>Units</b></th>
+<th class="extraContentSmall" style="text-align:center;width: 5%"><b>Coverage<br/>Term</b></th>
+<th class="extraContentSmall" style="text-align:center;width: 5%"><b>Sum<br/>Assured /<br/>Benefit</b></th>
 <th class="content"><b>Description</b></th>
 </tr>
 
 <!--ACIR start-->
-<tr class="ACIR" id="ACIR" style="display:table-row;">
-    <td class="contentSmall">Accelerated Critical Illness Rider</td>
-    <td class="contentSmall" style="text-align:center;">{FirstLA}</td>
-    <td class="contentSmall" style="text-align:center;">{PlanChoice}</td>
-    <td class="contentSmall" style="text-align:center;">{NoBenefitUnit}</td>
-    <td class="contentSmall" style="text-align:center;"><span id="CRiderTerm" class="CRiderTerm">{ACIRRiderTerm}</span></td>
-    <td class="contentSmall" style="text-align:center;">{RiderSumAssured}</td>
+  <tr class="ACIR" id="ACIR" style="display:table-row;">
+    <td class="extraContentSmall">Accelerated Critical Illness Rider</td>
+    <td class="extraContentSmall" style="text-align:center;"><span class="FirstLA">{FirstLA}</td>
+    <td class="extraContentSmall" style="text-align:center;"><span class="ACIRRiderPlan">{ACIRRiderPlan}</td>
+    <td class="extraContentSmall" style="text-align:center;"><span class="ACIRRiderBenefit">{ACIRRiderBenefit}</td>
+    <td class="extraContentSmall" style="text-align:center;"><span class="ACIRRiderTerm">{ACIRRiderTerm}</span></td>
+    <td class="extraContentSmall" style="text-align:center;"><span class="ACIRRiderSA">{ACIRRiderSA}</span></td>
     <td class="content">
-    RM {RiderSumAssured} is payable upon diagnosis of any of the 36 critical illnesses of the Life Assured during the coverage term.<br/>
+    RM <span class="ACIRSA">{ACIRSA}</span> is payable upon diagnosis of any of the 36 critical illnesses of the Life Assured during the coverage term.<br/>
     Upon payment of the ACIR Sum Assured, the Basic Sum Assured will be reduced accordingly.<br/><br/>
     The following 36 critical illnesses are covered:
     
@@ -219,21 +205,20 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other serious coronary artery disease<br/>
     <br/>
     Please refer to the policy contract for the precise definition of each critical illness.
-    
     </td>
 </tr>
 <!--ACIR end-->
 
 <!--CIRD---> 
 <tr class="CIRD" id="CIRD" style="display:table-row;">
-<td class="contentSmall">Diabetes<br/>Wellness Care<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;">{FirstLA}</td>
-<td class="contentSmall" style="text-align:center;">{PlanChoice}</td>
-<td class="contentSmall" style="text-align:center;">{NoBenefitUnit}</td>
-<td class="contentSmall" style="text-align:center;"><span id="CIRDRiderTerm" class="CIRDRiderTerm">{CIRDRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;">{RiderSumAssured}</td>
+<td class="extraContentSmall">Diabetes<br/>Wellness Care<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;">{FirstLA}</td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIRDRiderPlan">{CIRDRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIRDRiderBenefit">{CIRDRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIRDRiderTerm">{CIRDRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIRDRiderSA">{CIRDRiderSA}</span></td>
 <td class="content">
-RM <span id="CIRDGYI" class="CIRDGYI">{RiderSumAssured}</span> is payable upon Death or diagnosis/ happening of any one of the Critical Illnesses/ Condition as listed below, whichever occur first:<br/>
+RM <span class="CIRDRiderSA">{CIRDSA}</span> is payable upon Death or diagnosis/ happening of any one of the Critical Illnesses/ Condition as listed below, whichever occur first:<br/>
 1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stroke<br/>
 2.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Blindness<br/>
 3.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kidney Failure (End Stage Renal Failure)<br/>
@@ -245,12 +230,12 @@ RM <span id="CIRDGYI" class="CIRDGYI">{RiderSumAssured}</span> is payable upon D
 
 <!--CIWP-Critical Illness WP Rider start--> 
 <tr class="CIWP" id="CIWP" style="display:table-row;">
-<td class="contentSmall">Critical Illness WP<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;">{FirstLA}</td>
-<td class="contentSmall" style="text-align:center;">{PlanChoice}</td>
-<td class="contentSmall" style="text-align:center;">{NoBenefitUnit}</td>
-<td class="contentSmall" style="text-align:center;"><span id="CIWPRiderTerm" class="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;">{RiderSumAssured}<br/>(Annual)</td>
+<td class="extraContentSmall">Critical Illness WP<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIWPRiderPlan">{CIWPRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIWPRiderBenefit">{CIWPRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIWPRiderTerm">{CIWPRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="CIWPRiderSA">{CIWPRiderSA}</span><br/>(Annual)</td>
 <td class="content">
 The rider Sum Assured will be paid to reduce future premium up to expiry date of the rider upon diagnosis of any of the 36 critical illnesses covered of the life<br/>
 assured during the coverage period. Premium is guaranteed and on level basis.<br/><br/>
@@ -387,12 +372,12 @@ Please refer to the policy contract for the precise definition of each critical 
 
 <!--DCA- Acc. Death & Compassionate Allowance Rider start-->
 <tr class="DCA" id="DCA" style="display:table-row;">
-<td class="contentSmall">Acc. Death &<br/>Compassionate<br/>Allowance<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;">{FirstLA}</td>
-<td class="contentSmall" style="text-align:center;">{PlanChoice}</td>
-<td class="contentSmall" style="text-align:center;">{NoBenefitUnit}</td>
-<td class="contentSmall" style="text-align:center;"><span id="DCARiderTerm" class="DCARiderTerm">{DCARiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;">{RiderSumAssured}<br/>(Annual)</td>
+<td class="extraContentSmall">Acc. Death &<br/>Compassionate<br/>Allowance<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="DCARiderPlan">{DCARiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="DCARiderBenefit">{DCARiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="DCARiderTerm">{DCARiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span class="DCARiderSA">{DCARiderSA}</span><br/>(Annual)</td>
 <td class="content">
 In the event of accidental Death of the Life Assured, the Accidental Death Benefit payable shall be RM10,000.00. Compassionate Allowance of RM10,000 will be
 payable in addition to Accidental Death Benefit.
@@ -400,12 +385,12 @@ payable in addition to Accidental Death Benefit.
 
 <!--DHI-Enhanced Death Benefit Rider start-->
 <tr class="DHI" id="DHI" style="display:table-row;">
-<td class="contentSmall">Acc. Daily<br/>Hospitalisation<br/>Income Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="DHIRiderPlan" class="DHIRiderPlan">{DHIRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="DHIRiderBenefit" class="DHIRiderBenefit">{DHIRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="DHIRiderTerm" class="DHIRiderTerm">{DHIRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="DHIRiderSA" class="DHIRiderSA">{DHIRiderSA}</span><br/>(Daily)</td>
+<td class="extraContentSmall">Acc. Daily<br/>Hospitalisation<br/>Income Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="DHIRiderPlan" class="DHIRiderPlan">{DHIRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="DHIRiderBenefit" class="DHIRiderBenefit">{DHIRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="DHIRiderTerm" class="DHIRiderTerm">{DHIRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="DHIRiderSA" class="DHIRiderSA">{DHIRiderSA}</span><br/>(Daily)</td>
 <td class="content">
 In the event that the Life Assured is hospitalised in an approved hospital for a minimum of 6 continuous hours per admission as the result of an accident, an<br/>
 Accidental Daily Hospitalisation Income equivalent to RM<span id="DHIRiderSA" class="DHIRiderSA">{DHIRiderSA}</span> will be payable up to a maximum of 730 days per acciden
@@ -415,12 +400,12 @@ Accidental Daily Hospitalisation Income equivalent to RM<span id="DHIRiderSA" cl
 
 <!--EverCash 1- start-->
 <tr class="ECAR" id="ECAR" style="display:table-row;">
-<td class="contentSmall">EverCash 1</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECARRiderPlan" class="ECARRiderPlan">{ECARRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECARRiderBenefit" class="ECARRiderBenefit">{ECARRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECARRiderTerm" class="ECARRiderTerm">{ECARRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECARRiderSA" class="ECARRiderSA">{ECARRiderSA}</span><br/>(Annual)</td>
+<td class="extraContentSmall">EverCash 1</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECARRiderPlan" class="ECARRiderPlan">{ECARRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECARRiderBenefit" class="ECARRiderBenefit">{ECARRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECARRiderTerm" class="ECARRiderTerm">{ECARRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECARRiderSA" class="ECARRiderSA">{ECARRiderSA}</span><br/>(Annual)</td>
 <td class="content">
 This rider will provide a Guaranteed Yearly Income of RM <span id="ECARRiderSA" class="ECARRiderSA">{ECARRiderSA}</span> starting from end of 1st year up to the expiry of this Rider. Upon death/ TPD (prior to attaining
 age 65), 100% of the outstanding Guaranteed Yearly Income shall be payable. Upon Accidental TPD, the additional amount payable shall be 300% of
@@ -432,12 +417,12 @@ outstanding Guaranteed Yearly Income.
 
 <!--ECAR55-->
 <tr class="ECAR55" id="ECAR55" style="display:table-row;">
-<td class="contentSmall">EverCash 55<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECAR55RiderPlan" class="ECAR55RiderPlan">{ECAR55RiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECAR55RiderBenefit" class="ECAR55RiderBenefit">{ECAR55RiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECAR55RiderTerm" class="ECAR55RiderTerm">{ECAR55RiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="ECAR55RiderSA" class="ECAR55RiderSA">{ECAR55RiderSA}</span><br/>(Monthly)</td>
+<td class="extraContentSmall">EverCash 55<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECAR55RiderPlan" class="ECAR55RiderPlan">{ECAR55RiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECAR55RiderBenefit" class="ECAR55RiderBenefit">{ECAR55RiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECAR55RiderTerm" class="ECAR55RiderTerm">{ECAR55RiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="ECAR55RiderSA" class="ECAR55RiderSA">{ECAR55RiderSA}</span><br/>(Monthly)</td>
 <td class="content">
   This rider will provide a Guaranteed Monthly Income (GMI) of RM 1,500.00 starting from the end of year where Life Assured attains age 55 until the first<br/>
   occurrence of either death, TPD (prior to attaining age 65) or expiry of this rider at age 100. Upon Death/ TPD, the Death/ TPD benefit payable shall be as<br/>
@@ -466,13 +451,13 @@ outstanding Guaranteed Yearly Income.
 <!--ECAR55-end-->
 
 <!--HMM-start-->
-<tr class="HB" id="HB" style="display:table-row;">
-<td class="contentSmall">HLA Major<br/>Medi</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="HMMRiderPlan" class="HMMRiderPlan">{HMMRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="HMMRiderBenefit" class="HMMRiderBenefit">{HMMRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="HMMRiderTerm" class="HMMRiderTerm">{HMMRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="HMMRiderSA" class="HMMRiderSA">{HMMRiderSA}</span></td>
+<tr class="HMM" id="HMM" style="display:table-row;">
+<td class="extraContentSmall">HLA Major<br/>Medi</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="HMMRiderPlan" class="HMMRiderPlan">{HMMRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="HMMRiderBenefit" class="HMMRiderBenefit">{HMMRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="HMMRiderTerm" class="HMMRiderTerm">{HMMRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="HMMRiderSA" class="HMMRiderSA">{HMMRiderSA}</span></td>
 <td class="content">
 This rider provides for hospitalisation and surgical expenses, and outpatient treatment benefits incurred due to illness covered under the rider. <br/>
 Refer to the Schedule of Benefits in the Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the entry age of the Life Assured.<br/>
@@ -486,12 +471,12 @@ as his own insurer/ amount to be borne by policyholder.
 
 <!--LSR start-->
 <tr class="LSR" id="LSR" style="display:table-row;">
-<td class="contentSmall">LifeShield Rider<br/>Medi</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LSRRiderPlan" class="LSRRiderPlan">{LSRRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LSRRiderBenefit" class="LSRRiderBenefit">{LSRRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LSRRiderTerm" class="LSRRiderTerm">{LSRRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LSRRiderSA" class="LSRRiderSA">{LSRRiderSA}</span></td>
+<td class="extraContentSmall">LifeShield Rider<br/>Medi</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LSRRiderPlan" class="LSRRiderPlan">{LSRRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LSRRiderBenefit" class="LSRRiderBenefit">{LSRRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LSRRiderTerm" class="LSRRiderTerm">{LSRRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LSRRiderSA" class="LSRRiderSA">{LSRRiderSA}</span></td>
 <td class="content">
 In the event of Death or TPD (prior to attaining age 65) of Life Assured, the Death/ TPD benefit equivalent to RM <span id="LSRRiderSA" class="LSRRiderSA">{LSRRiderSA}</span>shall be payable.<br/>
 TPD benefit will be paid in accordance to TPD provision.<br/>
@@ -502,12 +487,12 @@ Juvenile LIEN rule shall apply.<br/>
 
 <!--LCWP-Living Care Waiver of Premium Payor Rider start--> 
 <tr class="LCWP" id="LCWP" style="display:table-row;">
-<td class="contentSmall">Living Care<br/>Waiver of<br/>Premium<br/>Payor<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderPlan" class="LCWPRiderPlan">{LCWPRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderBenefit" class="LCWPRiderBenefit">{LCWPRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderTerm" class="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="LCWPRiderSA" class="LCWPRiderSA">{LCWPRiderSA}</span></td>
+<td class="extraContentSmall">Living Care<br/>Waiver of<br/>Premium<br/>Payor<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LCWPRiderPlan" class="LCWPRiderPlan">{LCWPRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LCWPRiderBenefit" class="LCWPRiderBenefit">{LCWPRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LCWPRiderTerm" class="LCWPRiderTerm">{LCWPRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="LCWPRiderSA" class="LCWPRiderSA">{LCWPRiderSA}</span></td>
 <td class="content">
 
 The rider sum assured will be paid to reduce future premium up to the expiry date of the rider upon death / TPD / diagnosis of any of the 36 critical illnesses covered<br/>
@@ -645,12 +630,12 @@ iv.&nbsp;&nbsp;&nbsp;&nbsp;Other than the first incidence of the critical illnes
 
 <!--MG_IV- start-->
 <tr class="MG_IV" id="MG_IV" style="display:table-row;">
-<td class="contentSmall">HLA<br/>MedGLOBAL IV<br/>Plus</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MG_IVRiderPlan" class="MG_IVRiderPlan">{MG_IVRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MG_IVRiderBenefit" class="MG_IVRiderBenefit">{MG_IVRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MG_IVRiderTerm" class="MG_IVRiderTerm">{MG_IVRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MG_IVRiderSA" class="MG_IVRiderSA">{MG_IVRiderSA}</span></td>
+<td class="extraContentSmall">HLA<br/>MedGLOBAL IV<br/>Plus</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MG_IVRiderPlan" class="MG_IVRiderPlan">{MG_IVRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MG_IVRiderBenefit" class="MG_IVRiderBenefit">{MG_IVRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MG_IVRiderTerm" class="MG_IVRiderTerm">{MG_IVRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MG_IVRiderSA" class="MG_IVRiderSA">{MG_IVRiderSA}</span></td>
 <td class="content">
 This rider provides for hospitalisation and surgical expenses, and outpatient treatment benefits incurred due to illness covered under the rider.<br/>
 Refer to the Schedule of Benefits in the Product Disclosure Sheet for details. Premium is not guaranteed and it is dependent on the entry age of the Life Assured.<br/>
@@ -660,12 +645,12 @@ Refer to the Schedule of Benefits in the Product Disclosure Sheet for details. P
 
 <!--MR-start-->
 <tr class="MR" id="MR" style="display:table-row;">
-<td class="contentSmall">Acc. Medical<br/>Reimbursement<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MRRiderPlan" class="MRRiderPlan">{MRRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MRRiderBenefit" class="MRRiderBenefit">{MRRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MRRiderTerm" class="MRRiderTerm">{MRRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="MRRiderSA" class="MRRiderSA">{MRRiderSA}</span></td>
+<td class="extraContentSmall">Acc. Medical<br/>Reimbursement<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MRRiderPlan" class="MRRiderPlan">{MRRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MRRiderBenefit" class="MRRiderBenefit">{MRRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MRRiderTerm" class="MRRiderTerm">{MRRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="MRRiderSA" class="MRRiderSA">{MRRiderSA}</span></td>
 <td class="content">
 In the event of accident, medical and surgical expenses such as inpatient and outpatient treatment incurred by the Life Assured will be reimbursed up to<br/>
 RM<span id="MRRiderSA" class="MRRiderSA">{MRRiderSA}</span> per accident.
@@ -675,12 +660,12 @@ RM<span id="MRRiderSA" class="MRRiderSA">{MRRiderSA}</span> per accident.
 
 <!--PA-start--> 
 <tr class="PA" id="PA" style="display:table-row;">
-<td class="contentSmall">Personal<br/>Accident Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PARiderPlan" class="PARiderPlan">{PARiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PARiderBenefit" class="PARiderBenefit">{PARiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PARiderTerm" class="PARiderTerm">{PARiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PARiderSA" class="PARiderSA">{PARiderSA}</span></td>
+<td class="extraContentSmall">Personal<br/>Accident Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PARiderPlan" class="PARiderPlan">{PARiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PARiderBenefit" class="PARiderBenefit">{PARiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PARiderTerm" class="PARiderTerm">{PARiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PARiderSA" class="PARiderSA">{PARiderSA}</span></td>
 <td class="content">
 In the event of accidental Death of the Life Assured, the Accidental Death Benefit payable shall be RM<span id="PARiderSA" class="PARiderSA">{PARiderSA}</span>. In the event of accidental Partial/ Total &<br/>
 Permanent Disability of the Life Assured, Accidental Partial/ Total & Permanent Disability Benefit payable shall be in accordance to Schedule of Indemnities. The<br/>
@@ -693,12 +678,12 @@ Accidental Partial/ Total & Permanent Disability Benefit payable shall be accele
 
 <!--TPDMLA- start-->
 <tr class="TPDMLA" id="TPDMLA" style="display:table-row;">
-<td class="contentSmall">Acc. TPD<br/>Monthly Living<br/>Allowance<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDMLARiderPlan" class="TPDMLARiderPlan">{TPDMLARiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDMLARiderBenefit" class="TPDMLARiderBenefit">{TPDMLARiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDMLARiderTerm" class="TPDMLARiderTerm">{TPDMLARiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDMLARiderSA" class="TPDMLARiderSA">{TPDMLARiderSA}</span><br/>(Monthly)</td>
+<td class="extraContentSmall">Acc. TPD<br/>Monthly Living<br/>Allowance<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDMLARiderPlan" class="TPDMLARiderPlan">{TPDMLARiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDMLARiderBenefit" class="TPDMLARiderBenefit">{TPDMLARiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDMLARiderTerm" class="TPDMLARiderTerm">{TPDMLARiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDMLARiderSA" class="TPDMLARiderSA">{TPDMLARiderSA}</span><br/>(Monthly)</td>
 <td class="content">
 In the event that the Life Assured suffers any of the following loss or disability as the result of an accident within 365 days from the date of occurrence; a Monthly<br/>
 Living Allowance equivalent to RM<span id="TPDMLARiderSA" class="TPDMLARiderSA">{TPDMLARiderSA}</span> will be payable up to maximum of 180 months during the lifetime of the Life Assured:<br/>
@@ -716,12 +701,12 @@ Living Allowance equivalent to RM<span id="TPDMLARiderSA" class="TPDMLARiderSA">
 
 <!--TPDWP-start-->
 <tr class="TPDWP" id="TPDWP" style="display:table-row;">
-<td class="contentSmall">TPD Waiver<br/>of Premium<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDWPRiderPlan" class="TPDWPRiderPlan">{TPDWPRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDWPRiderBenefit" class="TPDWPRiderBenefit">{TPDWPRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDWPRiderTerm" class="TPDWPRiderTerm">{TPDWPRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="TPDWPRiderSA" class="TPDWPRiderSA">{TPDWPRiderSA}</span><br/>(Annual)</td>
+<td class="extraContentSmall">TPD Waiver<br/>of Premium<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDWPRiderPlan" class="TPDWPRiderPlan">{TPDWPRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDWPRiderBenefit" class="TPDWPRiderBenefit">{TPDWPRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDWPRiderTerm" class="TPDWPRiderTerm">{TPDWPRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="TPDWPRiderSA" class="TPDWPRiderSA">{TPDWPRiderSA}</span><br/>(Annual)</td>
 <td class="content">
 The rider Sum Assured will be paid to reduce future premium up to expiry date of the rider upon the first occurrence of TPD (prior to attaining age 65)/ OAD (after<br/>
 attaining age 65) of the life assured during the coverage period. Premium is guaranteed and on level basis.
@@ -731,12 +716,12 @@ attaining age 65) of the life assured during the coverage period. Premium is gua
 
 <!--WI--->
 <tr class="WI" id="WI" style="display:table-row;">
-<td class="contentSmall">Acc. Weekly<br/>Indemnity<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="WIRiderPlan" class="WIRiderPlan">{WIRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="WIRiderBenefit" class="WIRiderBenefit">{WIRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="WIRiderTerm" class="WIRiderTerm">{WIRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="WIRiderSA" class="WIRiderSA">{WIRiderSA}</span><br/>(Weekly)</td>
+<td class="extraContentSmall">Acc. Weekly<br/>Indemnity<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="WIRiderPlan" class="WIRiderPlan">{WIRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="WIRiderBenefit" class="WIRiderBenefit">{WIRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="WIRiderTerm" class="WIRiderTerm">{WIRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="WIRiderSA" class="WIRiderSA">{WIRiderSA}</span><br/>(Weekly)</td>
 <td class="content">
 
 In the event of accidental Temporary Total Disability of the Life Assured, weekly indemnity equivalent to RM<span id="WIRiderSA" class="WIRiderSA">{WIRiderSA}</span> will be payable. In the event of accidental<br/>
@@ -748,12 +733,12 @@ Total Disability and accidental Temporary Partial Disability is up to 104 weeks 
 
 <!--PR- start--> 
 <tr class="PR" id="PR" style="display:table-row;">
-<td class="contentSmall">Waiver of<br/>Premium<br/>Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderPlan" class="PRRiderPlan">{PRRiderPlan}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderBenefit" class="PRRiderBenefit">{PRRiderBenefit}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderTerm" class="PRRiderTerm">{PRRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;"><span id="PRRiderSA" class="PRRiderSA">{PRRiderSA}</span><br/>(Annual)</td>
+<td class="extraContentSmall">Waiver of<br/>Premium<br/>Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="FirstLA" class="FirstLA">{FirstLA}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PRRiderPlan" class="PRRiderPlan">{PRRiderPlan}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PRRiderBenefit" class="PRRiderBenefit">{PRRiderBenefit}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PRRiderTerm" class="PRRiderTerm">{PRRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PRRiderSA" class="PRRiderSA">{PRRiderSA}</span><br/>(Annual)</td>
 <td class="content">
 
 The rider Sum Assured will be paid to reduce future premium up to the expiry date of the rider upon death or TPD (prior to attaining age 65)/ OAD (after attaining<br/>
@@ -766,9 +751,9 @@ age 65) of the Policy Owner/ 2nd Life Assured during the coverage period. Premiu
 
 <!--PTR-Payor Term Rider start--> 
 <tr class="PTR" id="PTR" style="display:table-row;">
-<td class="contentSmall">Payor Term Rider</td>
-<td class="contentSmall" style="text-align:center;"><span id="PTRRiderTerm" class="PTRRiderTerm">{PTRRiderTerm}</span></td>
-<td class="contentSmall" style="text-align:center;">Policy Owner</td>
+<td class="extraContentSmall">Payor Term Rider</td>
+<td class="extraContentSmall" style="text-align:center;"><span id="PTRRiderTerm" class="PTRRiderTerm">{PTRRiderTerm}</span></td>
+<td class="extraContentSmall" style="text-align:center;">Policy Owner</td>
 <td class="content">
 RM <span id="PTRGYI" class="PTRGYI">{PTRGYI}</span> is payable upon  death / TPD (prior to age 65) of the payor during the coverage period.<br/>
 <br/>

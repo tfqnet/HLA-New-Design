@@ -41,7 +41,7 @@ double CurrentRiderPrem;
 @synthesize txtRRTUP,txtRRTUPTerm,txtSumAssured, expAge, existRidCode, lblMax, lblMin, LPremium, outletReinvest;
 @synthesize LReinvest, LTypeReinvest, requestBumpMode, age, pTypeSex, riderRate, getBUMPMode, arrCombNo, arrRBBenefit;
 @synthesize medRiderCode,medPlanCodeRider, medPlanOpt, CombNo, RBBenefit, AllCombNo, RBGroup, RBLimit;
-@synthesize LPaymentTerm,LTypePaymentTerm;
+@synthesize LPaymentTerm,LTypePaymentTerm, LTypeRRTUOFromYear, LTypeRRTUOYear, LRRTUOFromYear, LRRTUOYear;
 @synthesize delegate = _delegate;
 @synthesize RiderList = _RiderList;
 @synthesize RiderListPopover = _RiderListPopover;
@@ -315,10 +315,10 @@ double CurrentRiderPrem;
 			lblMax.text = @"";
 			lblMin.text = @"";
             break;
-		case 2:
+		case 2: //payment term
 			if ([riderCode isEqualToString:@"RRTUO"]) {
 				lblMin.text = [NSString stringWithFormat:@"Min Term: %d",minTerm];
-				lblMax.text = [NSString stringWithFormat:@"Max Term: %.f",maxRiderTerm];
+				lblMax.text = [NSString stringWithFormat:@"Max Term: %d", (getTerm - [txtRiderTerm.text intValue])];
 			}
 			break;
 		case 1: // term
@@ -486,6 +486,8 @@ double CurrentRiderPrem;
 	LPremium = [[NSMutableArray alloc] init];
 	LReinvest = [[NSMutableArray alloc] init];
 	LPaymentTerm = [[NSMutableArray alloc] init];
+	LRRTUOFromYear = [[NSMutableArray alloc] init];
+	LRRTUOYear = [[NSMutableArray alloc] init];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -493,7 +495,7 @@ double CurrentRiderPrem;
         NSString *querySQL = [NSString stringWithFormat:
 							  @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Deductible, a.HLoading, "
 							  "a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
-							  "a.HLoadingTerm, a.HLoadingPctTerm, c.OccpCode, a.premium, a.units, a.ReinvestGYI, a.PaymentTerm FROM UL_Rider_Details a, "
+							  "a.HLoadingTerm, a.HLoadingPctTerm, c.OccpCode, a.premium, a.units, a.ReinvestGYI, a.PaymentTerm, a.RRTUOFromYear, a.RRTUOYear FROM UL_Rider_Details a, "
 							  "UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
 							  "AND a.SINo=b.SINo AND a.SINo=\"%@\" ORDER by a.RiderCode asc",getSINo];
         
@@ -541,6 +543,9 @@ double CurrentRiderPrem;
 				
 				[LReinvest addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 15)]];
 				[LPaymentTerm addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 16)]];
+				
+				[LRRTUOFromYear addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 17)]];
+				[LRRTUOYear addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 18)]];
             }
             
             sqlite3_finalize(statement);
@@ -1332,10 +1337,20 @@ double CurrentRiderPrem;
             SumToDisplay = [LTypeSumAssured objectAtIndex:indexPath.row];
         }
         
-		txtSumAssured.text = SumToDisplay;
-		txtRiderTerm.text = [LTypeTerm objectAtIndex:indexPath.row];
-        //unitField.text = [LTypeUnits objectAtIndex:indexPath.row];
-		txtPaymentTerm.text = [LTypePaymentTerm objectAtIndex:indexPath.row];
+		if ([[LTypeRiderCode objectAtIndex:indexPath.row] isEqualToString:@"RRTUO" ]) {
+			txtSumAssured.text = [LTypePremium objectAtIndex:indexPath.row] ;
+			txtRiderTerm.text = [LTypeRRTUOFromYear objectAtIndex:indexPath.row];
+			//unitField.text = [LTypeUnits objectAtIndex:indexPath.row]
+			txtPaymentTerm.text = [LTypeRRTUOYear objectAtIndex:indexPath.row];
+		}
+		else{
+			txtSumAssured.text = SumToDisplay;
+			txtRiderTerm.text = [LTypeTerm objectAtIndex:indexPath.row];
+			//unitField.text = [LTypeUnits objectAtIndex:indexPath.row];
+			txtPaymentTerm.text = [LTypePaymentTerm objectAtIndex:indexPath.row];
+		}
+		
+		
 
 		if ([[LTypeReinvest objectAtIndex:indexPath.row] isEqualToString:@"Yes" ]) {
 			//outletReinvest.hidden = FALSE;
@@ -1625,6 +1640,8 @@ double CurrentRiderPrem;
 	LTypePremium = [[NSMutableArray alloc] init];
 	LTypeReinvest = [[NSMutableArray alloc] init];
 	LTypePaymentTerm = [[NSMutableArray alloc] init];
+	LTypeRRTUOFromYear = [[NSMutableArray alloc] init];
+	LTypeRRTUOYear = [[NSMutableArray alloc] init];
     
     sqlite3_stmt *statement;
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
@@ -1634,7 +1651,7 @@ double CurrentRiderPrem;
             querySQL = [NSString stringWithFormat:
                         @"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HLoading, "
                         "a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
-						"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium, a.ReinvestGYI, a.PaymentTerm FROM UL_Rider_Details a, "
+						"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium, a.ReinvestGYI, a.PaymentTerm, a.RRTUOFromYear, a.RRTUOYear FROM UL_Rider_Details a, "
                         "UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
                         "AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'PY' ",getSINo];
         }
@@ -1643,7 +1660,7 @@ double CurrentRiderPrem;
 				querySQL = [NSString stringWithFormat:
 							@"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HLoading, "
 							"a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
-							"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium, a.ReinvestGYI, a.PaymentTerm FROM UL_Rider_Details a, "
+							"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium, a.ReinvestGYI, a.PaymentTerm, a.RRTUOFromYear, a.RRTUOYear FROM UL_Rider_Details a, "
 							"UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
 							"AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND b.Seq = '2'  ",getSINo];
 				
@@ -1652,7 +1669,7 @@ double CurrentRiderPrem;
                 querySQL = [NSString stringWithFormat:
 							@"SELECT a.RiderCode, a.SumAssured, a.RiderTerm, a.PlanOption, a.Units, a.Deductible, a.HLoading, "
 							" a.HLoadingPct, c.Smoker,c.Sex, c.ALB, "
-							"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium, a.ReinvestGYI, a.PaymentTerm FROM UL_Rider_Details a, "
+							"c.OccpCode, a.HLoadingTerm, a.HLoadingPctTerm, a.premium, a.ReinvestGYI, a.PaymentTerm, a.RRTUOFromYear, a.RRTUOYear FROM UL_Rider_Details a, "
 							"UL_LAPayor b, Clt_Profile c WHERE a.PTypeCode=b.PTypeCode AND a.Seq=b.Seq AND b.CustCode=c.CustCode "
 							"AND a.SINo=b.SINo AND a.SINo=\"%@\" AND b.Ptypecode = 'LA' AND b.Seq = '1'  ",getSINo];
 				
@@ -1702,6 +1719,8 @@ double CurrentRiderPrem;
 				
                 [LTypeReinvest addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 15)]];
 				[LTypePaymentTerm addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 16)]];
+				[LTypeRRTUOFromYear addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 17)]];
+				[LTypeRRTUOYear addObject:[[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 18)]];
             }
             
             if ([LTypeRiderCode count] == 0) {
@@ -1838,7 +1857,7 @@ double CurrentRiderPrem;
 		}
 	}
 	else if([riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"ECAR"] || [riderCode isEqualToString:@"ECAR55"] ||
-			[riderCode isEqualToString:@"CIWP"]) {
+			[riderCode isEqualToString:@"CIWP"] || [riderCode isEqualToString:@"RRTUO"]) {
 			maxRiderSA = 9999999990;
 	}
 	else if([riderCode isEqualToString:@"PA"]){
@@ -1877,6 +1896,7 @@ double CurrentRiderPrem;
             HLPTerm = YES;
         }
     }
+		
     
     if (txtRiderTerm.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Rider Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1902,6 +1922,15 @@ double CurrentRiderPrem;
         [alert show];
         [txtRiderTerm becomeFirstResponder];
     }
+
+	
+	else if ([riderCode isEqualToString:@"RRTUO"] && [txtPaymentTerm.text intValue ] > (getTerm - [txtRiderTerm.text intValue]) ) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:[NSString stringWithFormat:@"Rider Regular Top Up Option Year cannot be greater than %d",(getTerm - [txtRiderTerm.text intValue])]
+													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtPaymentTerm becomeFirstResponder];
+    }
+	 
     else if ([txtHLTerm.text intValue] > [txtRiderTerm.text intValue]) {
         NSString *msg;
         if (HL1kTerm) {
@@ -2155,6 +2184,18 @@ double CurrentRiderPrem;
         [alert show];
         [txtRiderTerm becomeFirstResponder];
 	}
+	else if ([riderCode isEqualToString:@"ECAR"] && [txtSumAssured.text intValue ] < minSATerm ){
+		NSString *msg = [NSString stringWithFormat:@"Yearly Income must be greater than or equal to %d", minSATerm ];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+	}
+	else if ([riderCode isEqualToString:@"ECAR55"] && [txtSumAssured.text intValue ] < minSATerm ){
+		NSString *msg = [NSString stringWithFormat:@"Monthly Income must be greater than or equal to %d", minSATerm ];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alert show];
+        [txtSumAssured becomeFirstResponder];
+	}
 	else if ([riderCode isEqualToString:@"RRTUO"]){
 		bool unitization = false;
 		for (int i = 0; i < LTypeRiderCode.count ; i++) {
@@ -2172,19 +2213,16 @@ double CurrentRiderPrem;
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 			[alert show];
 		}
+		Edit = FALSE;
+        [self checkingRider];
+        if (existRidCode.length == 0) {
+            
+            [self saveRider];
+        } else {
+            [self updateRider];
+        }
+
 		
-	}
-	else if ([riderCode isEqualToString:@"ECAR"] && [txtSumAssured.text intValue ] < minSATerm ){
-		NSString *msg = [NSString stringWithFormat:@"Yearly Income must be greater than or equal to %d", minSATerm ];
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [txtSumAssured becomeFirstResponder];
-	}
-	else if ([riderCode isEqualToString:@"ECAR55"] && [txtSumAssured.text intValue ] < minSATerm ){
-		NSString *msg = [NSString stringWithFormat:@"Monthly Income must be greater than or equal to %d", minSATerm ];
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        [txtSumAssured becomeFirstResponder];
 	}
     else if (([riderCode isEqualToString:@"HMM"] ||
               [riderCode isEqualToString:@"MG_IV"] || [riderCode isEqualToString:@"HSP_II"]) && LRiderCode.count != 0) {
@@ -2687,8 +2725,11 @@ double CurrentRiderPrem;
 
 	NSString *value = riderDesc;
 	
-	if ([aaRiderCode isEqualToString:@"HMM"] || [aaRiderCode isEqualToString:@"MG_IV"] ) {
+	if ([aaRiderCode isEqualToString:@"HMM"] ) {
 		value = [value stringByAppendingFormat:@"(%@) Deductible(%@)", planOption, deductible ];
+	}
+	else if([aaRiderCode isEqualToString:@"MG_IV"]){
+		value = [value stringByAppendingFormat:@"(%@)", planOption ];
 	}
 	
 	return value;
@@ -2722,7 +2763,7 @@ double CurrentRiderPrem;
 						 inputHLPercentageTerm, CurrentRiderPrem, txtPaymentTerm.text, [self ReturnReinvest],
 						 @"1", @"0", @"0", FullRiderDesc];
 		}
-		if ([riderCode isEqualToString:@"ECAR55"]) {
+		else if ([riderCode isEqualToString:@"ECAR55"]) {
 			insertSQL = [NSString stringWithFormat:
 						 @"INSERT INTO UL_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, "
 						 "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
@@ -2733,6 +2774,18 @@ double CurrentRiderPrem;
 						 deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
 						 inputHLPercentageTerm, CurrentRiderPrem , txtPaymentTerm.text, [self ReturnReinvest],
 						 @"55", @"0", @"0", FullRiderDesc];
+		}
+		else if ([riderCode isEqualToString:@"RRTUO"]) {
+			insertSQL = [NSString stringWithFormat:
+						 @"INSERT INTO UL_Rider_Details (SINo,  RiderCode, PTypeCode, Seq, RiderTerm, SumAssured, "
+						 "PlanOption, Deductible, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, premium, "
+						 "paymentTerm, ReinvestGYI, GYIYear, RRTUOFromYear, RRTUOYear, RiderDesc ) VALUES"
+						 "(\"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\", \"%d\", "
+						 "\"%f\", \"%@\", \"%@\", \"%@\",\"%@\",\"%@\", '%@')",
+						 getSINo,riderCode, pTypeCode, PTypeSeq, @"0", @"0", planOption,
+						 deductible, inputHL1KSA, inputHL1KSATerm, inputHLPercentage,
+						 inputHLPercentageTerm, CurrentRiderPrem , @"15", @"No",
+						 @"0", txtRiderTerm.text, txtPaymentTerm.text, FullRiderDesc];
 		}
 		else
 		{
@@ -2749,7 +2802,7 @@ double CurrentRiderPrem;
 
 		}
 		
-		        //NSLog(@"%@",insertSQL);
+
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -2846,6 +2899,9 @@ double CurrentRiderPrem;
         }
         else if ([riderCode isEqualToString:@"LSR"] || [riderCode isEqualToString:@"CIRD"] ) {
             [self getRiderRateSexAge:riderCode Sex:sex Age:age];
+        }
+		else if ([riderCode isEqualToString:@"RRTUO"]) {
+            riderRate = [txtSumAssured.text doubleValue ];
         }
         else if ([riderCode isEqualToString:@"ECAR55"]) {
             [self getRiderRatePremTermAge:riderCode Prem:txtPaymentTerm.text Term:ridTerm Age:age];
@@ -3419,6 +3475,18 @@ double CurrentRiderPrem;
 			_month = _ann * monthFac;
 			
 		}
+		else if ([riderCode isEqualToString:@"RRTUO"] ){
+			_ann = 0.00;
+			_half =0.00;
+			_quar = 0.00;
+			_month =0.00;
+			
+			_ann = riderRate ;
+			_half = _ann/halfFac;
+			_quar = _ann/quarterFac;
+			_month = _ann * monthFac;
+			
+		}
 	/*
 		NSString *str_ann = [formatter stringFromNumber:[NSNumber numberWithDouble:_ann]];
 		NSString *str_half = [formatter stringFromNumber:[NSNumber numberWithDouble:_half]];
@@ -3752,14 +3820,28 @@ double CurrentRiderPrem;
 	
     if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
     {
-        NSString *updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
-								@"UPDATE UL_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", "
-								"Deductible=\"%@\", HLoading=\"%@\", HLoadingTerm=\"%d\", "
-								"HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%f', RiderDesc = '%@' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
-								"PTypeCode=\"%@\" AND Seq=\"%d\"", txtRiderTerm.text, txtSumAssured.text, planOption,
-								deductible, inputHL1KSA, inputHL1KSATerm,inputHLPercentage,
-								inputHLPercentageTerm, [self ReturnReinvest], CurrentRiderPrem, FullRiderDesc, getSINo,
-								riderCode,pTypeCode, PTypeSeq];
+        NSString *updatetSQL;
+		
+		if ([riderCode isEqualToString:@"RRTUO"]) {
+			updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
+						  @"UPDATE UL_Rider_Details SET RRTUOFromYear=\"%@\", RRTUOYear=\"%@\", PlanOption=\"%@\", "
+						  "Deductible=\"%@\", HLoading=\"%@\", HLoadingTerm=\"%d\", "
+						  "HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%f', RiderDesc = '%@' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
+						  "PTypeCode=\"%@\" AND Seq=\"%d\"", txtRiderTerm.text, txtPaymentTerm.text, planOption,
+						  deductible, inputHL1KSA, inputHL1KSATerm,inputHLPercentage,
+						  inputHLPercentageTerm, [self ReturnReinvest], CurrentRiderPrem, FullRiderDesc, getSINo,
+						  riderCode,pTypeCode, PTypeSeq];
+		}
+		else{
+			updatetSQL = [NSString stringWithFormat: //changes in inputHLPercentageTerm by heng
+						  @"UPDATE UL_Rider_Details SET RiderTerm=\"%@\", SumAssured=\"%@\", PlanOption=\"%@\", "
+						  "Deductible=\"%@\", HLoading=\"%@\", HLoadingTerm=\"%d\", "
+						  "HLoadingPct=\"%@\", HLoadingPctTerm=\"%d\", ReinvestGYI = '%@', premium ='%f', RiderDesc = '%@' WHERE SINo=\"%@\" AND RiderCode=\"%@\" AND "
+						  "PTypeCode=\"%@\" AND Seq=\"%d\"", txtRiderTerm.text, txtSumAssured.text, planOption,
+						  deductible, inputHL1KSA, inputHL1KSATerm,inputHLPercentage,
+						  inputHLPercentageTerm, [self ReturnReinvest], CurrentRiderPrem, FullRiderDesc, getSINo,
+						  riderCode,pTypeCode, PTypeSeq];
+		}
 		
         if(sqlite3_prepare_v2(contactDB, [updatetSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)

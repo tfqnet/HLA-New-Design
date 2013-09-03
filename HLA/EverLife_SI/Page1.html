@@ -116,10 +116,10 @@
   				gdata = data;
   				
   		
-  		/*
-				for(j=0;j<data.SI[0].SI_Temp_Pages.data.length;j++)
+  		
+				for(j=0;j<data.SI[0].UL_Temp_Pages.data.length;j++)
 				{
-					row = gdata.SI[0].SI_Temp_Pages.data[j];
+					row = gdata.SI[0].UL_Temp_Pages.data[j];
 					if (row.PageDesc != "Page1")
 					{
 						if (row.PageDesc == "Page2")
@@ -131,11 +131,11 @@
 				}
 		  
 				
-				for(j=0;j<data.SI[0].SI_Temp_Pages.data.length;j++)
+				for(j=0;j<data.SI[0].UL_Temp_Pages.data.length;j++)
 				{
-					row = gdata.SI[0].SI_Temp_Pages.data[j];
+					row = gdata.SI[0].UL_Temp_Pages.data[j];
 						$.ajax({
-  							url: "SI/" + row.htmlName,
+  							url: "EverLife_SI/" + row.htmlName,
   							async: false,
   							dataType: 'html',
   							success: function (data) {
@@ -143,8 +143,31 @@
   							}
 						});
 				}
-	*/
+	
+		/*
 				htmlPages = '<div id="Page2" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page3" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page4" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page40" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page41" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page42" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page43" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page44" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page45" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page46" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page47" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
+				$(htmlPages).appendTo('#externalPages');
+				htmlPages = '<div id="Page48" style="margin-top:900px;padding: 15px 0px 0px 0px;"></div>';
 				$(htmlPages).appendTo('#externalPages');
 				
 				  $.ajax({
@@ -165,6 +188,99 @@
   							}
 				    });
 				  
+				  $.ajax({
+  							url: "EverLife_SI/Page3.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page3').html(data);
+  							}
+				    });
+				  
+				  $.ajax({
+  							url: "EverLife_SI/Page4.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page4').html(data);
+  							}
+				    });
+				  
+				  $.ajax({
+  							url: "EverLife_SI/Page40.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page40').html(data);
+  							}
+				    });
+				  
+				  $.ajax({
+  							url: "EverLife_SI/Page41.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page41').html(data);
+  							}
+				    });
+				  
+				  $.ajax({
+  							url: "EverLife_SI/Page42.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page42').html(data);
+  							}
+				    });
+				  $.ajax({
+  							url: "EverLife_SI/Page43.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page43').html(data);
+  							}
+				    });
+				  $.ajax({
+  							url: "EverLife_SI/Page44.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page44').html(data);
+  							}
+				    });
+				  $.ajax({
+  							url: "EverLife_SI/Page45.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page45').html(data);
+  							}
+				    });
+				  $.ajax({
+  							url: "EverLife_SI/Page46.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page46').html(data);
+  							}
+				    });
+				  $.ajax({
+  							url: "EverLife_SI/Page47.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page46').html(data);
+  							}
+				    });
+				  $.ajax({
+  							url: "EverLife_SI/Page48.html",
+  							async: false,
+  							dataType: 'html',
+  							success: function (data) {
+  								$("#" + 'Page46').html(data);
+  							}
+				    });
+				  */
   				loadJson();
   			}
 		});
@@ -180,21 +296,27 @@
   
 function loadJson()
 {
-
-	  Page2_UV();
 	  setPage();
-
-
-			
-			
-			
+	  Page2_UV();
+	  Page3_UV();
+	  Page6_UV();
+	  Page7_UV();
+	  Page9_UV();
+	  Page10_UV();
+	  Page11_UV();
+	  Page12_UV();
+	  writeRiderPage1();
+	  writeRiderDescription_EN();
+	  Page40_UV();
+	  Page41_UV();
+	  Page42_UV();
+	  
 	      var result = gdata.SI[0].UL_Temp_trad_LA.data;
 			
-			if(result.length > 1){
-			  
-			  var row2 = result[1];
-			}
-			
+	      if(result.length > 1){
+		var row2 = result[1];
+	      }
+	      
 			
             if(result.length == 1){
             	var row = result[0];
@@ -295,7 +417,7 @@ function loadJson()
 		'<td style="text-align:center;padding: 2px 2px 2px 2px;border: 1px solid black; width: 10%;">' + row.PaymentTerm + '</td>' +
 		'<td style="text-align:right;padding: 2px 2px 2px 2px;border: 1px solid black; width: 10%;">' + row.AnnualTarget + '</td>' +
 		'<td style="text-align:right;padding: 2px 2px 2px 2px;border: 1px solid black; width: 10%;">0.00</td>' +
-		'<td style="text-align:right;padding: 2px 2px 2px 2px;border: 1px solid black; width: 10%;">' + row.TotalPremium + '</td>' + '</tr>');
+		'<td style="text-align:right;padding: 2px 2px 2px 2px;border: 1px solid black; width: 10%;">' + formatCurrency(row.TotalPremium) + '</td>' + '</tr>');
 	      
 		totalRiderPremium = parseFloat(totalRiderPremium) +  parseFloat(row.TotalPremium);
 				
@@ -487,7 +609,21 @@ function loadJson()
     }
   }
   
-  
+  function formatCurrency(num) {
+	if (num == "-")
+		return "-"
+	num = num.toString().replace(/\$|\,/g, '');
+    if (isNaN(num)) num = "0";
+    sign = (num == (num = Math.abs(num)));
+    num = Math.floor(num * 100 + 0.50000000001);
+    cents = num % 100;
+    num = Math.floor(num / 100).toString();
+    if (cents < 10) cents = "0" + cents;
+    for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+    	num = num.substring(0, num.length - (4 * i + 3)) + ',' + num.substring(num.length - (4 * i + 3));
+    return (((sign) ? '' : '-') + '' + num + '.' + cents);
+        //document.write (((sign) ? '' : '-') + '' + num + '.' + cents);
+}
   
   
 
@@ -552,7 +688,7 @@ function loadJson()
     </table>
     <!--520,430px-->
     <br/>
-    <div style="width:100%;height:520px;background-color: #fff;">
+    <div style="width:100%;height:570px;background-color: #fff;">
 	<table id="Page1Basic" style="border: 1px solid black; width: 100%; border-collapse: collapse">
 	  <thead>
 	    <tr>

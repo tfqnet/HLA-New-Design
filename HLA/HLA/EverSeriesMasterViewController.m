@@ -627,11 +627,11 @@ id EverRiderCount;
 				self.FS = [FSVerticalTabBarController alloc];
 				_FS.delegate = self;
 			}
-
+/*
 			demo *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"demo"];
 			demoPage.modalPresentationStyle = UIModalPresentationFullScreen;
 			[self presentViewController:demoPage animated:NO completion:Nil];
-/*
+*/			
 			if (cont == TRUE) {
 				
 				spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -658,7 +658,14 @@ id EverRiderCount;
 					if([getPlanCode isEqualToString:@"UV" ]){
 						UVReport = [[EverLifeViewController alloc] init ];
 						UVReport.SINo = getSINo;
+						UVReport.requestOccLoading = getOccLoading;
+						UVReport.requestPlanCommDate = getCommDate;
 						UVReport.PDSorSI = @"SI";
+						UVReport.requestDOB = getLADOB;
+						UVReport.requestSexLA = getSex;
+						UVReport.requestSmokerLA = getSmoker;
+						UVReport.requestOccpClass = getOccpClass;
+						UVReport.SimpleOrDetail = @"Detail";
 						[self presentViewController:UVReport animated:NO completion:Nil];
 					}
 					
@@ -694,7 +701,6 @@ id EverRiderCount;
 				});
 				 
 			}
- */
 		}
 		
 
@@ -1507,6 +1513,77 @@ id EverRiderCount;
 		OccpLoading = [results stringForColumn:@"OccLoading_UL"];
     }
 	
+	int TotalPages = 0;
+	
+	results = [database executeQuery:@"select count(*) as cnt from UL_Temp_Pages"];
+	
+	if ([results next]) {
+        TotalPages = [results intForColumn:@"cnt"];
+    }
+	
+	results = Nil;
+	query = [NSString stringWithFormat:@"Select FromYear, ForYear, Amount from UL_TPExcess where SINo ='%@'",getSINo];
+	
+	results = [database executeQuery:query];
+	NSString *TopupStart;
+	NSString *TopupEnd;
+	NSString *TopupAmount;
+	if ( results.next == TRUE) {
+		//[results next];
+		TopupStart = [NSString stringWithFormat:@"%d", [[results stringForColumnIndex:0] integerValue ] - 1];
+		TopupEnd = [NSString stringWithFormat:@"%d", [TopupStart intValue ] + [[results stringForColumnIndex:1] intValue ]];
+		TopupAmount = [NSString stringWithFormat:@"%f",[[results stringForColumnIndex:2] doubleValue ]];
+	}
+	else{
+		TopupStart = @"-";
+		TopupEnd = @"-";
+		TopupAmount = @"-";
+	}
+	
+	results = Nil;
+	query = [NSString stringWithFormat:@"Select FromAge, ToAge, YearInt, Amount  from UL_RegWithdrawal where SINo ='%@'",getSINo];
+	
+	results = [database executeQuery:query];
+	NSString *WithdrawAgeFrom;
+	NSString *WithdrawAgeTo;
+	NSString *WithdrawAmount;
+	NSString *WithdrawInterval;
+	if ( results.next == TRUE) {
+		WithdrawAgeFrom = [results stringForColumnIndex:0];
+		WithdrawAgeTo = [results stringForColumnIndex:1];
+		WithdrawInterval = [results stringForColumnIndex:2];
+		WithdrawAmount = [results stringForColumnIndex:3];
+
+	}
+	else{
+		WithdrawAgeFrom = @"-";
+		WithdrawAgeTo = @"-";
+		WithdrawAmount = @"-";
+		WithdrawInterval = @"-";
+	}
+	
+	results = Nil;
+	query = [NSString stringWithFormat:@"Select RRTUOFromYear, RRTUOYear, Premium from UL_Rider_Details where SINo ='%@' AND ridercode = 'RRTUO'",getSINo];
+	
+	results = [database executeQuery:query];
+	NSString *RRTUOFrom;
+	NSString *RRTUOTo;
+	NSString *RRTUOAmount;
+
+	if ( results.next == TRUE) {
+		RRTUOFrom = [results stringForColumnIndex:0];
+		RRTUOTo = [NSString stringWithFormat:@"%d", [[results stringForColumnIndex:1] intValue ] + [RRTUOFrom intValue ] - 1];
+		RRTUOAmount = [results stringForColumnIndex:2];
+		
+	}
+	else{
+		RRTUOFrom = @"-";
+		RRTUOTo = @"-";
+		RRTUOAmount = @"-";
+
+	}
+	
+	
 	query = [NSString stringWithFormat:@"Select DateModified, ComDate, ATPrem, basicSA, CovPeriod, Hloading, HloadingTerm, "
 											"hloadingPct, hloadingPctTerm from UL_Details where SINo ='%@'",getSINo];
 
@@ -1541,6 +1618,7 @@ id EverRiderCount;
     content = [content stringByAppendingFormat:@"\"agentCode\":\"%@\",\n", agentCode];
     content = [content stringByAppendingFormat:@"\"agentName\":\"%@\",\n", agentName];
 	content = [content stringByAppendingFormat:@"\"DateModified\":\"%@\",\n", DateModified];
+	content = [content stringByAppendingFormat:@"\"TotalPages\":\"%d\",\n", TotalPages];
 	content = [content stringByAppendingFormat:@"\"ComDate\":\"%@\",\n", ComDate];
 	content = [content stringByAppendingFormat:@"\"ATPrem\":\"%@\",\n", ATPrem];
 	content = [content stringByAppendingFormat:@"\"BasicSA\":\"%@\",\n", bSA];
@@ -1549,6 +1627,16 @@ id EverRiderCount;
 	content = [content stringByAppendingFormat:@"\"HLoadTerm\":\"%@\",\n", HLoadTerm];
 	content = [content stringByAppendingFormat:@"\"HLoadPct\":\"%@\",\n", HLoadPct];
 	content = [content stringByAppendingFormat:@"\"HLoadPctTerm\":\"%@\",\n", HLoadPctTerm];
+	content = [content stringByAppendingFormat:@"\"TopupStart\":\"%@\",\n", TopupStart];
+	content = [content stringByAppendingFormat:@"\"TopupEnd\":\"%@\",\n", TopupEnd];
+	content = [content stringByAppendingFormat:@"\"TopupAmount\":\"%@\",\n", TopupAmount];
+	content = [content stringByAppendingFormat:@"\"WithdrawAgeFrom\":\"%@\",\n", WithdrawAgeFrom];
+	content = [content stringByAppendingFormat:@"\"WithdrawAgeTo\":\"%@\",\n", WithdrawAgeTo];
+	content = [content stringByAppendingFormat:@"\"WithdrawAmount\":\"%@\",\n", WithdrawAmount];
+	content = [content stringByAppendingFormat:@"\"WithdrawInterval\":\"%@\",\n", WithdrawInterval];
+	content = [content stringByAppendingFormat:@"\"RRTUOFrom\":\"%@\",\n", RRTUOFrom];
+	content = [content stringByAppendingFormat:@"\"RRTUOTo\":\"%@\",\n", RRTUOTo];
+	content = [content stringByAppendingFormat:@"\"RRTUOAmount\":\"%@\",\n", RRTUOAmount];
 	content = [content stringByAppendingFormat:@"\"SINo\":\"%@\",\n", getSINo];
 	if ([OccpClass integerValue ] > 4) {
 		content = [content stringByAppendingFormat:@"\"OccpClass\":\" Class D\",\n"];
@@ -1562,7 +1650,6 @@ id EverRiderCount;
 	else{
 		content = [content stringByAppendingFormat:@"\"OccpLoading\":\"STD\",\n" ];
 	}
-	content = [content stringByAppendingFormat:@"\"TotalPages\":\"%d\",\n", 1];
 	
 	//UL_Temp_Trad_LA start
     totalRecords = 0;
@@ -1601,6 +1688,40 @@ id EverRiderCount;
     content = [content stringByAppendingString:@"},\n"];
     //UL_Temp_Trad_LA end
 	
+	//UL_Temp_Pages start
+    totalRecords = 0;
+    currentRecord = 0;
+    results = [database executeQuery:@"select count(*) as cnt from UL_Temp_Pages"];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    results = Nil;
+    query = [NSString stringWithFormat:@"SELECT * FROM UL_Temp_Pages ORDER BY PageNum"];
+    results = [database executeQuery:query];
+    
+    if (results != Nil){
+        content = [content stringByAppendingString:@"\"UL_Temp_Pages\":{\n"];
+        content = [content stringByAppendingString:@"\"data\":[\n"];
+    }
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"htmlName\":\"%@\",\n", [results stringForColumn:@"htmlName"]];
+        content = [content stringByAppendingFormat:@"\"PageNum\":\"%@\",\n", [results stringForColumn:@"PageNum"]];
+        content = [content stringByAppendingFormat:@"\"PageDesc\":\"%@\",\n", [results stringForColumn:@"PageDesc"]];
+        content = [content stringByAppendingFormat:@"\"riders\":\"%@\"\n", [results stringForColumn:@"riders"]];
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"},\n"];
+    //SI_Temp_Pages end
+	
+	
 	//UL_Temp_Trad_Details start
     totalRecords = 0;
     currentRecord = 0;
@@ -1613,7 +1734,7 @@ id EverRiderCount;
     results = Nil;
     query = [NSString stringWithFormat:@"Select RiderCode, RiderDesc, PTypeCode, Seq, RiderTerm, SumAssured, Units, "
 										"PlanOption, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, Premium, "
-										"PaymentTerm from UL_Rider_Details where SINo ='%@'",getSINo];
+										"PaymentTerm, Deductible, RRTUOFromYear,RRTUOYear from UL_Rider_Details where SINo ='%@' ORDER BY RiderCode",getSINo];
 	
     results = [database executeQuery:query];
     if (results != Nil){
@@ -1647,7 +1768,11 @@ id EverRiderCount;
 		content = [content stringByAppendingFormat:@"\"RiderHLoadingTerm\":\"%@\",\n", [results stringForColumn:@"HLoadingTerm"]];
 		content = [content stringByAppendingFormat:@"\"RiderHLoadingPct\":\"%@\",\n", [results stringForColumn:@"HLoadingPct"]];
 		content = [content stringByAppendingFormat:@"\"RiderHLoadingPctTerm\":\"%@\",\n", [results stringForColumn:@"HLoadingPctTerm"]];
-		content = [content stringByAppendingFormat:@"\"TotalPremium\":\"%@\"\n", [results stringForColumn:@"Premium"]];
+		content = [content stringByAppendingFormat:@"\"TotalPremium\":\"%@\",\n", [results stringForColumn:@"Premium"]];
+		content = [content stringByAppendingFormat:@"\"PlanOption\":\"%@\",\n", [results stringForColumn:@"PlanOption"]];
+		content = [content stringByAppendingFormat:@"\"Deductible\":\"%@\",\n", [results stringForColumn:@"Deductible"]];
+		content = [content stringByAppendingFormat:@"\"RRTUOFromYear\":\"%@\",\n", [results stringForColumn:@"RRTUOFromYear"]];
+		content = [content stringByAppendingFormat:@"\"RRTUOYear\":\"%@\"\n", [results stringForColumn:@"RRTUOYear"]];
 		
         if (currentRecord == totalRecords){ //last record
             content = [content stringByAppendingString:@"}\n"];
@@ -1657,9 +1782,344 @@ id EverRiderCount;
         }
     }
     content = [content stringByAppendingString:@"]\n"];
-    content = [content stringByAppendingString:@"}\n"];
+    content = [content stringByAppendingString:@"},\n"];
     //UL_Temp_Trad_Details end
 
+	//UL_Temp_Trad_Basic start
+    totalRecords = 0;
+    currentRecord = 0;
+    results = [database executeQuery:@"select count(*) as cnt from UL_Temp_Trad_Basic where DataType = 'DATA'"];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    
+    results = Nil;
+    query = [NSString stringWithFormat:@"SELECT col0_1,col0_2,col1,col2,col3,col4,col5,col6,col7,col8,col9,col10 "
+										",col11,col12,col13,col14,col15,col16,col17,col18,col19,col20,col21,col22, "
+										"col23,col24,col25,col26,col27,col28,col29,col30,col31 FROM UL_Temp_Trad_Basic where DataType = 'DATA'"];
+    results = [database executeQuery:query];
+    if (results != Nil){
+        content = [content stringByAppendingString:@"\"UL_Temp_Trad_Basic\":{\n"];
+        content = [content stringByAppendingString:@"\"data\":[\n"];
+    }
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"col0_1\":\"%@\",\n", [results stringForColumn:@"col0_1"]];
+        content = [content stringByAppendingFormat:@"\"col0_2\":\"%@\",\n", [results stringForColumn:@"col0_2"]];
+        content = [content stringByAppendingFormat:@"\"col1\":\"%@\",\n", [results stringForColumn:@"col1"]];
+        content = [content stringByAppendingFormat:@"\"col2\":\"%@\",\n", [results stringForColumn:@"col2"]];
+        content = [content stringByAppendingFormat:@"\"col3\":\"%@\",\n", [results stringForColumn:@"col3"]];
+        content = [content stringByAppendingFormat:@"\"col4\":\"%@\",\n", [results stringForColumn:@"col4"]];
+        content = [content stringByAppendingFormat:@"\"col5\":\"%@\",\n", [results stringForColumn:@"col5"]];
+        content = [content stringByAppendingFormat:@"\"col6\":\"%@\",\n", [results stringForColumn:@"col6"]];
+        content = [content stringByAppendingFormat:@"\"col7\":\"%@\",\n", [results stringForColumn:@"col7"]];
+        content = [content stringByAppendingFormat:@"\"col8\":\"%@\",\n", [results stringForColumn:@"col8"]];
+        content = [content stringByAppendingFormat:@"\"col9\":\"%@\",\n", [results stringForColumn:@"col9"]];
+        content = [content stringByAppendingFormat:@"\"col10\":\"%@\",\n", [results stringForColumn:@"col10"]];
+        content = [content stringByAppendingFormat:@"\"col11\":\"%@\",\n", [results stringForColumn:@"col11"]];
+        content = [content stringByAppendingFormat:@"\"col12\":\"%@\",\n", [results stringForColumn:@"col12"]];
+        content = [content stringByAppendingFormat:@"\"col13\":\"%@\",\n", [results stringForColumn:@"col13"]];
+        content = [content stringByAppendingFormat:@"\"col14\":\"%@\",\n", [results stringForColumn:@"col14"]];
+        content = [content stringByAppendingFormat:@"\"col15\":\"%@\",\n", [results stringForColumn:@"col15"]];
+        content = [content stringByAppendingFormat:@"\"col16\":\"%@\",\n", [results stringForColumn:@"col16"]];
+        content = [content stringByAppendingFormat:@"\"col17\":\"%@\",\n", [results stringForColumn:@"col17"]];
+        content = [content stringByAppendingFormat:@"\"col18\":\"%@\",\n", [results stringForColumn:@"col18"]];
+        content = [content stringByAppendingFormat:@"\"col19\":\"%@\",\n", [results stringForColumn:@"col19"]];
+        content = [content stringByAppendingFormat:@"\"col20\":\"%@\",\n", [results stringForColumn:@"col20"]];
+        content = [content stringByAppendingFormat:@"\"col21\":\"%@\",\n", [results stringForColumn:@"col21"]];
+        content = [content stringByAppendingFormat:@"\"col22\":\"%@\",\n", [results stringForColumn:@"col22"]];
+        content = [content stringByAppendingFormat:@"\"col23\":\"%@\",\n", [results stringForColumn:@"col23"]];
+		content = [content stringByAppendingFormat:@"\"col24\":\"%@\",\n", [results stringForColumn:@"col24"]];
+        content = [content stringByAppendingFormat:@"\"col25\":\"%@\",\n", [results stringForColumn:@"col25"]];
+        content = [content stringByAppendingFormat:@"\"col26\":\"%@\",\n", [results stringForColumn:@"col26"]];
+        content = [content stringByAppendingFormat:@"\"col27\":\"%@\",\n", [results stringForColumn:@"col27"]];
+        content = [content stringByAppendingFormat:@"\"col28\":\"%@\",\n", [results stringForColumn:@"col28"]];
+        content = [content stringByAppendingFormat:@"\"col29\":\"%@\",\n", [results stringForColumn:@"col29"]];
+        content = [content stringByAppendingFormat:@"\"col30\":\"%@\",\n", [results stringForColumn:@"col30"]];
+        content = [content stringByAppendingFormat:@"\"col31\":\"%@\"\n", [results stringForColumn:@"col31"]];
+
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"},\n"];
+    //SI_Temp_Trad_Basic end
+    
+	//SI_Temp_Trad_Rider start
+    content = [content stringByAppendingString:@"\"UL_Temp_Trad_Rider\":{\n"];
+    //page1 start
+    content = [content stringByAppendingString:@"\"p1\":[\n"];
+    content = [content stringByAppendingString:@"{\n"];
+    content = [content stringByAppendingString:@"\"data\":[\n"];
+    
+    totalRecords = 0;
+    currentRecord = 0;
+    results = [database executeQuery:@"SELECT count(*) as cnt FROM UL_Temp_Trad_Rider where PageNo = '1' order by CAST(SeqNo AS INT) asc"];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    results = Nil;
+    query = [NSString stringWithFormat:@"SELECT * FROM UL_Temp_Trad_Rider where PageNo = '1' order by CAST(SeqNo AS INT) asc"];
+    results = [database executeQuery:query];
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"SeqNo\":\"%@\",\n", [results stringForColumn:@"SeqNo"]];
+        content = [content stringByAppendingFormat:@"\"DataType\":\"%@\",\n", [results stringForColumn:@"DataType"]];
+        content = [content stringByAppendingFormat:@"\"PageNo\":\"%@\",\n", [results stringForColumn:@"PageNo"]];
+        content = [content stringByAppendingFormat:@"\"col0_1\":\"%@\",\n", [results stringForColumn:@"col0_1"]];
+        content = [content stringByAppendingFormat:@"\"col0_2\":\"%@\",\n", [results stringForColumn:@"col0_2"]];
+        content = [content stringByAppendingFormat:@"\"col1\":\"%@\",\n", [results stringForColumn:@"col1"]];
+        content = [content stringByAppendingFormat:@"\"col2\":\"%@\",\n", [results stringForColumn:@"col2"]];
+        content = [content stringByAppendingFormat:@"\"col3\":\"%@\",\n", [results stringForColumn:@"col3"]];
+        content = [content stringByAppendingFormat:@"\"col4\":\"%@\",\n", [results stringForColumn:@"col4"]];
+        content = [content stringByAppendingFormat:@"\"col5\":\"%@\",\n", [results stringForColumn:@"col5"]];
+        content = [content stringByAppendingFormat:@"\"col6\":\"%@\",\n", [results stringForColumn:@"col6"]];
+        content = [content stringByAppendingFormat:@"\"col7\":\"%@\",\n", [results stringForColumn:@"col7"]];
+        content = [content stringByAppendingFormat:@"\"col8\":\"%@\",\n", [results stringForColumn:@"col8"]];
+        content = [content stringByAppendingFormat:@"\"col9\":\"%@\",\n", [results stringForColumn:@"col9"]];
+        content = [content stringByAppendingFormat:@"\"col10\":\"%@\",\n", [results stringForColumn:@"col10"]];
+        content = [content stringByAppendingFormat:@"\"col11\":\"%@\",\n", [results stringForColumn:@"col11"]];
+        content = [content stringByAppendingFormat:@"\"col12\":\"%@\"\n", [results stringForColumn:@"col12"]];
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"}\n"];
+    content = [content stringByAppendingString:@"],\n"];
+    //page1 end
+    
+    //page2 start
+    content = [content stringByAppendingString:@"\"p2\":[\n"];
+    content = [content stringByAppendingString:@"{\n"];
+    content = [content stringByAppendingString:@"\"data\":[\n"];
+    
+    totalRecords = 0;
+    currentRecord = 0;
+    results = [database executeQuery:@"SELECT count(*) as cnt FROM UL_Temp_Trad_Rider where PageNo = '8' order by CAST(SeqNo AS INT) asc"];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    results = Nil;
+    query = [NSString stringWithFormat:@"SELECT * FROM UL_Temp_Trad_Rider where PageNo = '8' order by CAST(SeqNo AS INT) asc"];
+    results = [database executeQuery:query];
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"SeqNo\":\"%@\",\n", [results stringForColumn:@"SeqNo"]];
+        content = [content stringByAppendingFormat:@"\"DataType\":\"%@\",\n", [results stringForColumn:@"DataType"]];
+        content = [content stringByAppendingFormat:@"\"PageNo\":\"%@\",\n", [results stringForColumn:@"PageNo"]];
+        content = [content stringByAppendingFormat:@"\"col0_1\":\"%@\",\n", [results stringForColumn:@"col0_1"]];
+        content = [content stringByAppendingFormat:@"\"col0_2\":\"%@\",\n", [results stringForColumn:@"col0_2"]];
+        content = [content stringByAppendingFormat:@"\"col1\":\"%@\",\n", [results stringForColumn:@"col1"]];
+        content = [content stringByAppendingFormat:@"\"col2\":\"%@\",\n", [results stringForColumn:@"col2"]];
+        content = [content stringByAppendingFormat:@"\"col3\":\"%@\",\n", [results stringForColumn:@"col3"]];
+        content = [content stringByAppendingFormat:@"\"col4\":\"%@\",\n", [results stringForColumn:@"col4"]];
+        content = [content stringByAppendingFormat:@"\"col5\":\"%@\",\n", [results stringForColumn:@"col5"]];
+        content = [content stringByAppendingFormat:@"\"col6\":\"%@\",\n", [results stringForColumn:@"col6"]];
+        content = [content stringByAppendingFormat:@"\"col7\":\"%@\",\n", [results stringForColumn:@"col7"]];
+        content = [content stringByAppendingFormat:@"\"col8\":\"%@\",\n", [results stringForColumn:@"col8"]];
+        content = [content stringByAppendingFormat:@"\"col9\":\"%@\",\n", [results stringForColumn:@"col9"]];
+        content = [content stringByAppendingFormat:@"\"col10\":\"%@\",\n", [results stringForColumn:@"col10"]];
+        content = [content stringByAppendingFormat:@"\"col11\":\"%@\",\n", [results stringForColumn:@"col11"]];
+        content = [content stringByAppendingFormat:@"\"col12\":\"%@\"\n", [results stringForColumn:@"col12"]];
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"}\n"];
+    content = [content stringByAppendingString:@"]\n"];
+    //page2 end
+    
+    content = [content stringByAppendingString:@"},\n"];
+    //UL_Temp_Trad_Rider end
+    
+	//UL_Temp_ECAR55 start
+    totalRecords = 0;
+    currentRecord = 0;
+    results = [database executeQuery:@"select count(*) as cnt from UL_Temp_ECAR55 where DataType = 'DATA'"];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    
+    results = Nil;
+    query = [NSString stringWithFormat:@"SELECT col0_1,col0_2,col1,col2,col3,col4,col5,col6,col7 FROM UL_Temp_ECAR55 where DataType = 'DATA'"];
+    results = [database executeQuery:query];
+    if (results != Nil){
+        content = [content stringByAppendingString:@"\"UL_Temp_ECAR55\":{\n"];
+        content = [content stringByAppendingString:@"\"data\":[\n"];
+    }
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"col0_1\":\"%@\",\n", [results stringForColumn:@"col0_1"]];
+        content = [content stringByAppendingFormat:@"\"col0_2\":\"%@\",\n", [results stringForColumn:@"col0_2"]];
+        content = [content stringByAppendingFormat:@"\"col1\":\"%@\",\n", [results stringForColumn:@"col1"]];
+        content = [content stringByAppendingFormat:@"\"col2\":\"%@\",\n", [results stringForColumn:@"col2"]];
+        content = [content stringByAppendingFormat:@"\"col3\":\"%@\",\n", [results stringForColumn:@"col3"]];
+        content = [content stringByAppendingFormat:@"\"col4\":\"%@\",\n", [results stringForColumn:@"col4"]];
+        content = [content stringByAppendingFormat:@"\"col5\":\"%@\",\n", [results stringForColumn:@"col5"]];
+        content = [content stringByAppendingFormat:@"\"col6\":\"%@\",\n", [results stringForColumn:@"col6"]];
+        content = [content stringByAppendingFormat:@"\"col7\":\"%@\"\n", [results stringForColumn:@"col7"]];
+
+		
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"},\n"];
+    //SI_Temp_ECAR55 end
+
+	//UL_Temp_ECAR1 start
+    totalRecords = 0;
+    currentRecord = 0;
+    results = [database executeQuery:@"select count(*) as cnt from UL_Temp_ECAR where DataType = 'DATA'"];
+    if ([results next]) {
+        totalRecords = [results intForColumn:@"cnt"];
+    }
+    
+    results = Nil;
+    query = [NSString stringWithFormat:@"SELECT col0_1,col0_2,col1,col2,col3,col4,col5,col6,col7,col8 FROM UL_Temp_ECAR where DataType = 'DATA'"];
+    results = [database executeQuery:query];
+    if (results != Nil){
+        content = [content stringByAppendingString:@"\"UL_Temp_ECAR\":{\n"];
+        content = [content stringByAppendingString:@"\"data\":[\n"];
+    }
+    while([results next]) {
+        currentRecord++;
+        content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"col0_1\":\"%@\",\n", [results stringForColumn:@"col0_1"]];
+        content = [content stringByAppendingFormat:@"\"col0_2\":\"%@\",\n", [results stringForColumn:@"col0_2"]];
+        content = [content stringByAppendingFormat:@"\"col1\":\"%@\",\n", [results stringForColumn:@"col1"]];
+        content = [content stringByAppendingFormat:@"\"col2\":\"%@\",\n", [results stringForColumn:@"col2"]];
+        content = [content stringByAppendingFormat:@"\"col3\":\"%@\",\n", [results stringForColumn:@"col3"]];
+        content = [content stringByAppendingFormat:@"\"col4\":\"%@\",\n", [results stringForColumn:@"col4"]];
+        content = [content stringByAppendingFormat:@"\"col5\":\"%@\",\n", [results stringForColumn:@"col5"]];
+        content = [content stringByAppendingFormat:@"\"col6\":\"%@\",\n", [results stringForColumn:@"col6"]];
+		content = [content stringByAppendingFormat:@"\"col7\":\"%@\",\n", [results stringForColumn:@"col7"]];
+        content = [content stringByAppendingFormat:@"\"col8\":\"%@\"\n", [results stringForColumn:@"col8"]];
+		
+		
+        if (currentRecord == totalRecords){ //last record
+            content = [content stringByAppendingString:@"}\n"];
+        }
+        else{
+            content = [content stringByAppendingString:@"},\n"];
+        }
+    }
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"},\n"];
+    //SI_Temp_ECAR1 end
+
+	
+	//page3 start
+    totalRecords = 0;
+    currentRecord = 0;
+    
+	NSDateFormatter* df = [[NSDateFormatter alloc] init];
+	[df setDateFormat:@"dd/MM/yyyy"];
+	NSDate* now =  [NSDate date];
+	NSString* ccc = [df stringFromDate:now];
+	NSDate* d = [df dateFromString:ccc];
+	NSDate* d2 = [df dateFromString:@"26/12/2023"];
+	NSDate* d3 = [df dateFromString:@"26/12/2025"];
+	NSDate* d4 = [df dateFromString:@"26/12/2028"];
+	NSDate* d5 = [df dateFromString:@"26/12/2030"];
+	NSDate* d6 = [df dateFromString:@"26/12/2035"];
+	NSDate *fromDate;
+	NSDate *toDate2;
+	NSDate *toDate3;
+	NSDate *toDate4;
+	NSDate *toDate5;
+	NSDate *toDate6;
+	
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+				 interval:NULL forDate:d];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate2
+				 interval:NULL forDate:d2];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate3
+				 interval:NULL forDate:d3];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate4
+				 interval:NULL forDate:d4];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate5
+				 interval:NULL forDate:d5];
+	[calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate6
+				 interval:NULL forDate:d6];
+	
+	NSDateComponents *difference2 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate2 options:0];
+	NSDateComponents *difference3 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate3 options:0];
+	NSDateComponents *difference4 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate4 options:0];
+	NSDateComponents *difference5 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate5 options:0];
+	NSDateComponents *difference6 = [calendar components:NSDayCalendarUnit
+												fromDate:fromDate toDate:toDate6 options:0];
+	
+	
+	NSString *round2 = [NSString stringWithFormat:@"%.2f", [difference2 day]/365.25];
+	NSString *round3 = [NSString stringWithFormat:@"%.2f", [difference3 day]/365.25];
+	NSString *round4 = [NSString stringWithFormat:@"%.2f", [difference4 day]/365.25];
+	NSString *round5 = [NSString stringWithFormat:@"%.2f", [difference5 day]/365.25];
+	NSString *round6 = [NSString stringWithFormat:@"%.2f", [difference6 day]/365.25];
+	
+	
+	double YearDiff2023 = [round2 doubleValue];
+	double YearDiff2025 = [round3 doubleValue];
+	double YearDiff2028 = [round4 doubleValue];
+	double YearDiff2030 = [round5 doubleValue];
+	double YearDiff2035 = [round6 doubleValue];
+	
+	query = [NSString stringWithFormat:@"Select VU2023,VU2025,VU2028,VU2030,VU2035,VUCash,VURet,VURetOpt, VUCashOpt From UL_Details "
+				" WHERE sino = '%@'", getSINo];
+	
+    results = [database executeQuery:query];
+    if (results != Nil){
+		[results next];
+        content = [content stringByAppendingString:@"\"UL_Page3\":{\n"];
+        content = [content stringByAppendingString:@"\"data\":[\n"];
+		content = [content stringByAppendingString:@"{\n"];
+        content = [content stringByAppendingFormat:@"\"VU2023\":\"%@\",\n", [results stringForColumn:@"VU2023"]];
+        content = [content stringByAppendingFormat:@"\"VU2025\":\"%@\",\n", [results stringForColumn:@"VU2025"]];
+        content = [content stringByAppendingFormat:@"\"VU2028\":\"%@\",\n", [results stringForColumn:@"VU2028"]];
+        content = [content stringByAppendingFormat:@"\"VU2030\":\"%@\",\n", [results stringForColumn:@"VU2030"]];
+        content = [content stringByAppendingFormat:@"\"VU2035\":\"%@\",\n", [results stringForColumn:@"VU2035"]];
+        content = [content stringByAppendingFormat:@"\"VURet\":\"%@\",\n", [results stringForColumn:@"VURet"]];
+		content = [content stringByAppendingFormat:@"\"VUCash\":\"%@\",\n", [results stringForColumn:@"VUCash"]];
+		content = [content stringByAppendingFormat:@"\"YearDiff2023\":\"%f\",\n", YearDiff2023 ];
+		content = [content stringByAppendingFormat:@"\"YearDiff2025\":\"%f\",\n", YearDiff2025 ];
+		content = [content stringByAppendingFormat:@"\"YearDiff2028\":\"%f\",\n", YearDiff2028 ];
+		content = [content stringByAppendingFormat:@"\"YearDiff2030\":\"%f\",\n", YearDiff2030 ];
+		content = [content stringByAppendingFormat:@"\"YearDiff2035\":\"%f\"\n", YearDiff2035 ];
+		content = [content stringByAppendingString:@"}\n"];
+    }
+	
+    content = [content stringByAppendingString:@"]\n"];
+    content = [content stringByAppendingString:@"}\n"];
+    //page3 end
+
+
+	
 	content = [content stringByAppendingString:@"}\n"];
     content = [content stringByAppendingString:@"]\n"];
     content = [content stringByAppendingString:@"}"];

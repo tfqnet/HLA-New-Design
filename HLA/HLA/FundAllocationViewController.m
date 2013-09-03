@@ -541,10 +541,10 @@
 		txtSecureFund.text = @"0";
 	}
 	if ([txtExpireCashFund.text isEqualToString:@""]) {
-		txt2023.text = @"0";
+		txtExpireCashFund.text = @"0";
 	}
 	if ([txtExpireSecureFund.text isEqualToString:@""]) {
-		txt2023.text = @"0";
+		txtExpireSecureFund.text = @"0";
 	}
 }
 
