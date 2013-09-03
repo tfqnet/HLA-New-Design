@@ -384,7 +384,7 @@ int DateOption;
 		//NSLog(@"%@", SIListingSQL);
         //const char *SelectSI = [SIListingSQL UTF8String];
         if(sqlite3_prepare_v2(contactDB, [SIListingSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
-            
+
             SINO = [[NSMutableArray alloc] init ];
             DateCreated = [[NSMutableArray alloc] init ];
             Name = [[NSMutableArray alloc] init ];
@@ -394,6 +394,7 @@ int DateOption;
             CustomerCode = [[NSMutableArray alloc] init ];
             
             while (sqlite3_step(statement) == SQLITE_ROW){
+
                 NSString *SINumber = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
                 NSString *ItemDateCreated = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)];
                 NSString *ItemName = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)];

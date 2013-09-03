@@ -230,6 +230,8 @@
 @property(nonatomic , retain) NSMutableArray *LPremium;
 @property(nonatomic , retain) NSMutableArray *LReinvest;
 @property(nonatomic , retain) NSMutableArray *LPaymentTerm;
+@property(nonatomic , retain) NSMutableArray *LRRTUOFromYear;
+@property(nonatomic , retain) NSMutableArray *LRRTUOYear;
 
 @property (retain, nonatomic) NSMutableArray *LTypeRiderCode;
 @property (retain, nonatomic) NSMutableArray *LTypeSumAssured;
@@ -250,6 +252,8 @@
 @property(nonatomic , retain) NSMutableArray *LTypePremium;
 @property(nonatomic , retain) NSMutableArray *LTypeReinvest;
 @property(nonatomic , retain) NSMutableArray *LTypePaymentTerm;
+@property(nonatomic , retain) NSMutableArray *LTypeRRTUOFromYear;
+@property(nonatomic , retain) NSMutableArray *LTypeRRTUOYear;
 
 @property (nonatomic, assign,readwrite) int age;
 @property (nonatomic,strong) NSString *sex;

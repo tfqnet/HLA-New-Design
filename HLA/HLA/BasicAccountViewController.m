@@ -10,12 +10,16 @@
 #import "EverLAViewController.h"
 #import "MainScreen.h"
 #import "AppDelegate.h"
+#import "EverLifeViewController.h"
 
 @interface BasicAccountViewController ()
 
 @end
 
 const double Anually = 1.00, Semi = 0.50, quarterly = 0.25, Monthly = 0.083333;
+double TotalRiderPremium;
+BOOL TPExcess;
+/*
 const double PolicyFee = 5, IncreasePrem =0, CYFactor = 1, ExcessAllo = 0.95, RegularAllo =0.95;
 int YearDiff2023, YearDiff2025, YearDiff2028, YearDiff2030, YearDiff2035, CommMonth;
 int MonthDiff2023, MonthDiff2025, MonthDiff2028, MonthDiff2030, MonthDiff2035;
@@ -30,7 +34,7 @@ double VU2023InstHigh, VU2023InstMedian, VU2023InstLow,VU2025InstHigh, VU2025Ins
 double VU2028InstHigh, VU2028InstMedian, VU2028InstLow,VU2030InstHigh, VU2030InstMedian, VU2030InstLow;
 double VU2035InstHigh, VU2035InstMedian, VU2035InstLow, NegativeValueOfMaxCashFundHigh,NegativeValueOfMaxCashFundMedian,NegativeValueOfMaxCashFundLow ;
 double HSurrenderValue,MSurrenderValue,LSurrenderValue,HRiderSurrenderValue,MRiderSurrenderValue,LRiderSurrenderValue;
-double TotalRiderPremium, PremReq;
+
 double VUCashValueHigh, VU2023ValueHigh,VU2025ValueHigh,VU2028ValueHigh,VU2030ValueHigh;
 double VU2035ValueHigh,VURetValueHigh;
 double VU2023PrevValuehigh, VU2025PrevValuehigh,VU2028PrevValuehigh, VU2030PrevValuehigh, VU2035PrevValuehigh,VUCashPrevValueHigh;
@@ -66,7 +70,8 @@ double MonthFundValueOfTheYearValueTotalHigh,MonthFundValueOfTheYearValueTotalMe
 double MonthVU2023ValueHigh,MonthVU2023ValueMedian,MonthVU2023ValueLow,MonthVU2025ValueHigh,MonthVU2025ValueMedian,MonthVU2025ValueLow;
 double MonthVU2028ValueHigh,MonthVU2028ValueMedian,MonthVU2028ValueLow,MonthVU2030ValueHigh,MonthVU2030ValueMedian,MonthVU2030ValueLow;
 double MonthVU2035ValueHigh,MonthVU2035ValueMedian,MonthVU2035ValueLow,MonthVURetValueHigh,MonthVURetValueMedian,MonthVURetValueLow;
-BOOL TPExcess, VUCashValueNegative;
+BOOL VUCashValueNegative;
+ */
 NSString *OriginalBump;
 
 @implementation BasicAccountViewController
@@ -243,8 +248,8 @@ NSString *OriginalBump;
 	
 	if (self.requestSINo) {
 		if (getSINo.length != 0){
-			txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
-			txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
+			//txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+			//txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 
 		}
 	}
@@ -402,11 +407,18 @@ NSString *OriginalBump;
     [formatter setCurrencySymbol:@""];
 	[formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
 	
+	EverLifeViewController *rrr = [[EverLifeViewController alloc] init ];
+	rrr.SimpleOrDetail = @"Simple";
 	
 	if (textField.tag == 0 || textField.tag == 1 ) {
 		if (![txtBasicPremium.text isEqualToString:@""] && ![txtBasicSA.text isEqualToString:@""] &&
 			![txtBasicPremium.text isEqualToString:@"0"] && ![txtBasicSA.text isEqualToString:@"0"]) {
-			txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+			txtBUMP.text = [NSString stringWithFormat:@"%.2f", [rrr FromBasic:txtBasicPremium.text andGetHL:getHL
+																  andGetHLPct:getHLPct andBumpMode:[self ReturnBumpMode]
+																   andBasicSA:txtBasicSA.text andRTUPFrom:txtCommFrom.text
+																   andRTUPFor:txtFor.text andRTUPAmount:txtRTUP.text
+																andSmokerLA:getSmokerLA andOccLoading:getOccLoading
+															  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo]];
 			txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 		}
 
@@ -414,7 +426,12 @@ NSString *OriginalBump;
 	else if (textField.tag == 2 || textField.tag == 4 || textField.tag == 3 ){
 		if (![txtRTUP.text isEqualToString:@""] && ![txtCommFrom.text isEqualToString:@""] && ![txtFor.text isEqualToString:@""] &&
 			![txtRTUP.text isEqualToString:@"0"] && ![txtCommFrom.text isEqualToString:@"0"] && ![txtFor.text isEqualToString:@"0"]) {
-				txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+			txtBUMP.text = [NSString stringWithFormat:@"%.2f", [rrr FromBasic:txtBasicPremium.text andGetHL:getHL
+																  andGetHLPct:getHLPct andBumpMode:[self ReturnBumpMode]
+																   andBasicSA:txtBasicSA.text andRTUPFrom:txtCommFrom.text
+																   andRTUPFor:txtFor.text andRTUPAmount:txtRTUP.text
+																  andSmokerLA:getSmokerLA andOccLoading:getOccLoading
+															  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo]];
 			txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 		}
 	}
@@ -595,9 +612,10 @@ NSString *OriginalBump;
     {
         NSString *querySQL = [NSString stringWithFormat:
 							  @"SELECT SINo, CovPeriod, BasicSA, "
-							  "ATPrem, BUMPMode, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, planCode FROM UL_Details"
+							  "ATPrem, BUMPMode, ifnull(HLoading,'0'), HLoadingTerm, ifnull(HLoadingPct,'0'), HLoadingPctTerm, planCode FROM UL_Details"
 							  " WHERE SINo=\"%@\"",SINo];
 
+		//NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)
@@ -616,6 +634,8 @@ NSString *OriginalBump;
 				getPlanCode = [[NSString alloc] initWithUTF8String:(const char *)sqlite3_column_text(statement, 9)];
 				//                NSLog(@"basicPlan:%@",planChoose);
                 OriginalBump = getBumpMode;
+				
+				
             } else {
                 NSLog(@"error access getExistingBasic");
             }
@@ -642,7 +662,7 @@ NSString *OriginalBump;
             }
             sqlite3_finalize(statement);
         }
-		
+		/*
 		querySQL = [NSString stringWithFormat:@"SELECT fund, option, partial_withd_pct, EverGreen2025, EverGreen2028, EverGreen2030, EverGreen2035, CashFund, RetireFund FROM UL_fund_maturity_option WHERE SINo=\"%@\"",SINo];
 		
 		Fund2023PartialReinvest = 100.00; //means fully withdraw
@@ -755,7 +775,7 @@ NSString *OriginalBump;
             }
             sqlite3_finalize(statement);
         }
-
+*/
 		
         sqlite3_close(contactDB);
     }
@@ -952,6 +972,7 @@ NSString *OriginalBump;
 							   "datetime('now', '+8 hour'), 'HLA', datetime('now', '+8 hour'), 'HLA', '%@') ",
 							   SINo, txtBasicPremium.text, txtBasicSA.text, termCover, OccpCode, [self ReturnBumpMode], getPlanCommDate];
 		
+		//NSLog(@"%@", insertSQL);
         if(sqlite3_prepare_v2(contactDB, [insertSQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE)
             {
@@ -1012,7 +1033,7 @@ NSString *OriginalBump;
 		
 	
 }
-
+/*
 -(double)CalculateBUMP{
 	double FirstBasicMort = [self ReturnBasicMort:ageClient]/1000.00;
 	double FirstSA = [txtBasicSA.text doubleValue ];
@@ -1223,32 +1244,6 @@ NSString *OriginalBump;
 		MRiderSurrenderValue = 0;
 		LRiderSurrenderValue = 0;
 	}
-	/*
-	if (aaPolicyYear == YearDiff2035) {
-		//HSurrenderValue = HSurrenderValue - MonthFundMaturityValue2035_Bull;
-		MSurrenderValue = MSurrenderValue - MonthFundMaturityValue2035_Flat;
-	}
-	else if (aaPolicyYear == YearDiff2030){
-		HSurrenderValue = HSurrenderValue - MonthFundMaturityValue2030_Bull;
-		MSurrenderValue = MSurrenderValue - MonthFundMaturityValue2030_Flat;
-	}
-	else if (aaPolicyYear == YearDiff2028){
-		HSurrenderValue = HSurrenderValue - MonthFundMaturityValue2028_Bull;
-		MSurrenderValue = MSurrenderValue - MonthFundMaturityValue2028_Flat;
-	}
-	else if (aaPolicyYear == YearDiff2025){
-		HSurrenderValue = HSurrenderValue - MonthFundMaturityValue2025_Bull;
-		MSurrenderValue = MSurrenderValue - MonthFundMaturityValue2025_Flat;
-	}
-	else if (aaPolicyYear == YearDiff2023){
-		HSurrenderValue = HSurrenderValue - MonthFundMaturityValue2023_Bull;
-		MSurrenderValue = MSurrenderValue - MonthFundMaturityValue2023_Flat;
-	}
-	else{
-		HSurrenderValue = HSurrenderValue - 0;
-		MSurrenderValue = MSurrenderValue - 0;
-	}
-	*/
 	
 
 }
@@ -1268,15 +1263,7 @@ NSString *OriginalBump;
 			VU2035ValueHigh = [self ReturnVU2035ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
 			
 		
-		/*
-		VU2023ValueHigh = [self ReturnVU2023ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
-		VU2025ValueHigh = [self ReturnVU2025ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
-		VU2028ValueHigh = [self ReturnVU2028ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
-		VU2030ValueHigh = [self ReturnVU2030ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
-		VU2035ValueHigh = [self ReturnVU2035ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
-		VUCashValueHigh = [self ReturnVUCashValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth];
-		VURetValueHigh = [self ReturnVURetValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
-		 */
+		
 
 	}
 	else{
@@ -3871,9 +3858,7 @@ NSString *OriginalBump;
 		[self ReturnFundValueOfTheYearVURetValueHigh:aaPolicyYear andYearOrMonth:@"Y"];
 	}
 	
-	/*
-	return  0;
-	 */
+	
 }
 
 
@@ -4011,9 +3996,7 @@ NSString *OriginalBump;
 		[self ReturnFundValueOfTheYearVU2035ValueMedian:aaPolicyYear andYearOrMonth:@"Y"] +
 		[self ReturnFundValueOfTheYearVURetValueMedian:aaPolicyYear andYearOrMonth:@"Y"];
 	}
-	 /*
-		return  0;
-	  */
+	 
 }
 
 
@@ -4148,9 +4131,7 @@ NSString *OriginalBump;
 	}
 	
 	
-	/*
-		return  0;
-	 */
+
 }
 
 
@@ -5782,7 +5763,7 @@ NSString *OriginalBump;
 	
     return [difference day];
 }
-
+*/
 -(void)InsertIntoTPExcess{
 	sqlite3_stmt *statement;
 	NSString *insertSQL;
@@ -6405,6 +6386,7 @@ NSString *OriginalBump;
 		[txtFor becomeFirstResponder ];
 	}
 	else if ([txtBUMP.text doubleValue ] < 0) {
+		/*
 		if (PremReq < 2 * [txtBasicPremium.text doubleValue ]) {
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:[NSString stringWithFormat:@"Please increase basic premium to %.2f", PremReq]
@@ -6413,12 +6395,13 @@ NSString *OriginalBump;
 			[txtBasicPremium becomeFirstResponder ];
 		}
 		else{
+		 */
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:[NSString stringWithFormat:@"Please reduce Basic Sum Assured"]
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 			[alert show];
 			[txtBasicSA becomeFirstResponder ];
-		}
+		//}
 	}
 	/*
 	 else if (rangeofDotSA.location != NSNotFound) {
@@ -6557,7 +6540,15 @@ NSString *OriginalBump;
 	
 	txtTotalBAPremium.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBasicPremium.text doubleValue]]];
 	//txtTotalBAPremium.text = [NSString stringWithFormat:@"%.2f", [txtBasicPremium.text doubleValue ]];
-	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [self CalculateBUMP]];
+	EverLifeViewController *rrr = [[EverLifeViewController alloc] init ];
+	rrr.SimpleOrDetail = @"Simple";
+	
+	txtBUMP.text = [NSString stringWithFormat:@"%.2f", [rrr FromBasic:txtBasicPremium.text andGetHL:getHL andGetHLPct:getHLPct
+														  andBumpMode:[self ReturnBumpMode] andBasicSA:txtBasicSA.text
+														  andRTUPFrom:txtCommFrom.text andRTUPFor:txtFor.text andRTUPAmount:txtRTUP.text
+														andSmokerLA:getSmokerLA andOccLoading:getOccLoading
+													  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo	]];
 	txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
+	rrr = Nil;
 }
 @end

@@ -4520,7 +4520,7 @@ NSMutableArray *UpdateTradDetail, *gWaiverAnnual, *gWaiverSemiAnnual, *gWaiverQu
 					" \"TempHL1kSA\", \"TempHL1kSATerm\"  from trad_rider_details as A, "
                     "trad_sys_rider_profile as B  where \"sino\" = \"%@\" AND A.ridercode = B.RiderCode ORDER BY B.RiderCode ASC ", SINo];
         
-		NSLog(@"%@", QuerySQL);
+		//NSLog(@"%@", QuerySQL);
 		
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement2, NULL) == SQLITE_OK) {
             
