@@ -48,7 +48,7 @@
 @synthesize txtExactDuties,txtBussinessType,txtAnnIncome,txtClass;
 @synthesize outletOccup,ClientSmoker,btnOfficeCountry;
 @synthesize myScrollView,outletGroup,OtherIDType,txtIDType,txtOtherIDType;
-@synthesize txtFullName, ContactTypeTracker,segSmoker,outletTitle;
+@synthesize txtFullName, ContactTypeTracker,segSmoker,outletTitle,outletNationality,outletRace,outletMaritalStatus,outletReligion;
 @synthesize segGender, ContactType, DOB, gender, SelectedStateCode, SelectedOfficeStateCode, OccupCodeSelected;
 @synthesize OccupationList = _OccupationList;
 @synthesize OccupationListPopover = _OccupationListPopover;
@@ -57,7 +57,10 @@
 @synthesize delegate = _delegate;
 @synthesize IDTypePicker = _IDTypePicker;
 @synthesize TitlePicker = _TitlePicker;
+@synthesize raceListPopover = _raceListPopover;
+@synthesize MaritalStatusPopover = _MaritalStatusPopover;
 @synthesize TitlePickerPopover = _TitlePickerPopover;
+@synthesize ReligionListPopover = _ReligionListPopover;
 @synthesize nationalityList = _nationalityList;
 @synthesize nationalityPopover = _nationalityPopover;
 @synthesize nationalityList2 = _nationalityList2;
@@ -714,10 +717,8 @@ bool PostcodeContinue = TRUE;
      }
     
     [self.SIDatePopover setPopoverContentSize:CGSizeMake(300.0f, 255.0f)];
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.SIDatePopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:NO];
+    
+    [self.SIDatePopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft animated:NO];
     
     dateFormatter = Nil;
     dateString = Nil;
@@ -739,10 +740,8 @@ bool PostcodeContinue = TRUE;
         self.OccupationListPopover = [[UIPopoverController alloc] initWithContentViewController:_OccupationList];               
     }
     
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.OccupationListPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    
+    [self.OccupationListPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 - (IBAction)isForeign:(id)sender
@@ -925,6 +924,8 @@ PostcodeContinue = TRUE;
 
 }
 
+
+
 - (IBAction)actionHomeCountry:(id)sender
 {
     isHomeCountry = YES;
@@ -942,11 +943,96 @@ PostcodeContinue = TRUE;
         self.nationalityPopover = [[UIPopoverController alloc] initWithContentViewController:_nationalityList];
     }
     
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.nationalityPopover presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+  
+    [self.nationalityPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
+
+- (IBAction)actionMaritalStatus:(id)sender
+{
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (_MaritalStatusList == nil) {
+        self.MaritalStatusList = [[MaritalStatus alloc] initWithStyle:UITableViewStylePlain];
+        _MaritalStatusList.delegate = self;
+        self.MaritalStatusPopover = [[UIPopoverController alloc] initWithContentViewController:_MaritalStatusList];
+    }
+    
+    
+    [self.MaritalStatusPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+
+}
+
+
+- (IBAction)actionNationality:(id)sender
+{
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (_nationalityList == nil) {
+        self.nationalityList = [[Nationality alloc] initWithStyle:UITableViewStylePlain];
+        _nationalityList.delegate = self;
+        self.nationalityPopover = [[UIPopoverController alloc] initWithContentViewController:_nationalityList];
+    }
+    
+    //CGRect butt = [sender frame];
+    //int y = butt.origin.y - 44;
+    //butt.origin.y = y;
+    [self.nationalityPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+
+- (IBAction)actionRace:(id)sender
+{
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (_raceList == nil) {
+        self.raceList = [[Race alloc] initWithStyle:UITableViewStylePlain];
+        _raceList.delegate = self;
+        self.raceListPopover = [[UIPopoverController alloc] initWithContentViewController:_raceList];
+    }
+    
+    
+    [self.raceListPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+
+- (IBAction)actionReligion:(id)sender
+{
+    
+    [self resignFirstResponder];
+    [self.view endEditing:YES];
+    
+    Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+    id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+    [activeInstance performSelector:@selector(dismissKeyboard)];
+    
+    if (_ReligionList == nil) {
+        self.ReligionList = [[Religion alloc] initWithStyle:UITableViewStylePlain];
+        _ReligionList.delegate = self;
+        self.ReligionListPopover = [[UIPopoverController alloc] initWithContentViewController:_ReligionList];
+    }
+    
+    
+    [self.ReligionListPopover presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+
 
 - (IBAction)addNewGroup:(id)sender
 {
@@ -975,10 +1061,8 @@ PostcodeContinue = TRUE;
         self.nationalityPopover2 = [[UIPopoverController alloc] initWithContentViewController:_nationalityList2];
     }
     
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.nationalityPopover2 presentPopoverFromRect:butt  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+   
+    [self.nationalityPopover2 presentPopoverFromRect:[sender bounds]  inView:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)btnGroup:(id)sender
@@ -997,10 +1081,8 @@ PostcodeContinue = TRUE;
         self.GroupPopover = [[UIPopoverController alloc] initWithContentViewController:_GroupList];
     }
     
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.GroupPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    
+    [self.GroupPopover presentPopoverFromRect:[sender bounds] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 - (IBAction)btnTitle:(id)sender
@@ -1018,10 +1100,8 @@ PostcodeContinue = TRUE;
         self.TitlePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_TitlePicker];
     }
     
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.TitlePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+    
+    [self.TitlePickerPopover presentPopoverFromRect:[sender bounds] inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1105,10 +1185,8 @@ PostcodeContinue = TRUE;
         self.IDTypePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_IDTypePicker];
     }
     
-    CGRect butt = [sender frame];
-    int y = butt.origin.y - 44;
-    butt.origin.y = y;
-    [self.IDTypePickerPopover presentPopoverFromRect:butt inView:self.view permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+   
+    [self.IDTypePickerPopover presentPopoverFromRect:[sender bounds] inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 }
 
 
@@ -1945,9 +2023,26 @@ PostcodeContinue = TRUE;
 
 -(void)selectedTitle:(NSString *)selectedTitle
 {
+    
     outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedTitle]forState:UIControlStateNormal];
     [self.TitlePickerPopover dismissPopoverAnimated:YES];
+}
+
+-(void)selectedNationality:(NSString *)selectedNationality
+{
+    
+    outletNationality.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletNationality setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedNationality]forState:UIControlStateNormal];
+    [self.nationalityPopover dismissPopoverAnimated:YES];
+}
+
+-(void)selectedReligion:(NSString *)setReligion
+{
+    
+    outletReligion.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletReligion setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",setReligion]forState:UIControlStateNormal];
+    [self.ReligionListPopover dismissPopoverAnimated:YES];
 }
 
 -(void)CloseWindow
@@ -2057,9 +2152,31 @@ PostcodeContinue = TRUE;
     txtClass.text = OccupClass;
 }
 
+-(void)selectedRace:(NSString *)theRace
+{
+   
+    
+    outletRace.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletRace setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theRace]forState:UIControlStateNormal];
+    [self.raceListPopover dismissPopoverAnimated:YES];
+    
+    
+}
+-(void)selectedMaritalStatus:(NSString *)status
+{
+    
+    
+    outletMaritalStatus.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletMaritalStatus setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",status]forState:UIControlStateNormal];
+    [self.MaritalStatusPopover dismissPopoverAnimated:YES];
+    
+    
+}
+
 -(void)selectedCountry:(NSString *)theCountry
 {
     if (isOffCountry) {
+        
         btnOfficeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [btnOfficeCountry setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theCountry] forState:UIControlStateNormal];
         
@@ -2075,6 +2192,7 @@ PostcodeContinue = TRUE;
     isOffCountry = NO;
     isHomeCountry = NO;
 }
+
 
 #pragma mark - memory management
 
@@ -2113,6 +2231,10 @@ PostcodeContinue = TRUE;
     [self setLblOfficeAddr:nil];
     [self setLblPostCode:nil];
     [self setOutletTitle:nil];
+    [self setOutletReligion:nil];
+    [self setOutletNationality:nil];
+    [self setOutletMaritalStatus:nil];
+    [self setOutletRace:nil];
     [self setSegSmoker:nil];
     [self setOutletGroup:nil];
     [self setOtherIDType:nil];

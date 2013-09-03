@@ -14,12 +14,15 @@
 #import "TitleViewController.h"
 #import "GroupClass.h"
 #import "Nationality.h"
+#import "Race.h"
+#import "MaritalStatus.h"
+#import "Religion.h"
 
 @protocol ProspectViewControllerDelegate
 - (void)FinishInsert;
 @end
 
-@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate, UITextFieldDelegate,UITextViewDelegate,NatinalityDelegate>{
+@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate, UITextFieldDelegate,UITextViewDelegate,NatinalityDelegate,RaceDelegate,MaritalStatusDelegate,ReligionDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -27,6 +30,8 @@
     SIDate *_SIDate;
     GroupClass *_GroupList;
     TitleViewController *_TitlePicker;
+    Race *_raceList;
+    MaritalStatus *_MaritalStatusList;
     Nationality *_nationalityList;
     Nationality *_nationalityList2;
     UIPopoverController *_OccupationListPopover;
@@ -34,6 +39,9 @@
     UIPopoverController *_SIDatePopover;
     UIPopoverController *_GroupPopover;
     UIPopoverController *_TitlePickerPopover;
+    UIPopoverController *_ReligionListPopover;
+    UIPopoverController *_RaceListPopover;
+    UIPopoverController *_MaritalStatusPopover;
     UIPopoverController *_nationalityPopover;
     UIPopoverController *_nationalityPopover2;
     id<ProspectViewControllerDelegate> _delegate;
@@ -48,6 +56,12 @@
 @property (nonatomic, strong) id<ProspectViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, strong) TitleViewController *TitlePicker;
+@property (nonatomic, strong) Race *raceList;
+@property (nonatomic, strong) MaritalStatus *MaritalStatusList;
+@property (nonatomic, strong) Religion *ReligionList;
+@property (nonatomic, strong) UIPopoverController *ReligionListPopover;
+@property (nonatomic, strong) UIPopoverController *raceListPopover;
+@property (nonatomic, strong) UIPopoverController *MaritalStatusPopover;
 @property (nonatomic, strong) UIPopoverController *TitlePickerPopover;
 @property (nonatomic, strong) IDTypeViewController *IDTypePicker;
 @property (nonatomic, strong) UIPopoverController *IDTypePickerPopover;
@@ -64,6 +78,10 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *outletGroup;
 @property (weak, nonatomic) IBOutlet UIButton *outletTitle;
+@property (weak, nonatomic) IBOutlet UIButton *outletRace;
+@property (weak, nonatomic) IBOutlet UIButton *outletMaritalStatus;
+@property (weak, nonatomic) IBOutlet UIButton *outletReligion;
+@property (weak, nonatomic) IBOutlet UIButton *outletNationality;
 @property (weak, nonatomic) IBOutlet UITextField *txtFullName;
 @property (weak, nonatomic) IBOutlet UIButton *outletDOB;
 @property (strong, nonatomic) IBOutlet UITextField *txtDOB;
@@ -109,6 +127,10 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnHomeCountry;
 
 - (IBAction)actionHomeCountry:(id)sender;
+- (IBAction)actionNationality:(id)sender;
+- (IBAction)actionRace:(id)sender;
+- (IBAction)actionMaritalStatus:(id)sender;
+- (IBAction)actionReligion:(id)sender;
 - (IBAction)addNewGroup:(id)sender;
 - (IBAction)actionOfficeCountry:(id)sender;
 - (IBAction)btnGroup:(id)sender;

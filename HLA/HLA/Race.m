@@ -1,31 +1,33 @@
 //
-//  Nationality.m
+//  Race.m
 //  iMobile Planner
 //
-//  Created by shawal sapuan on 7/29/13.
+//  Created by Administrator on 9/2/13.
 //  Copyright (c) 2013 InfoConnect Sdn Bhd. All rights reserved.
 //
 
-#import "Nationality.h"
+#import "Race.h"
 
 NSString *SelectedString;
-@interface Nationality ()
+@interface Race ()
 
 @end
 
-@implementation Nationality
+@implementation Race
 @synthesize items = _items;
 @synthesize delegate = _delegate;
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         
-        NSString *file = [[NSBundle mainBundle] pathForResource:@"Nationality" ofType:@"plist"];
+        
+        NSString *file = [[NSBundle mainBundle] pathForResource:@"Race" ofType:@"plist"];
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:file];
-        _items = [dict objectForKey:@"Nationality"];
-    
+        _items = [dict objectForKey:@"Race"];
+        
         self.clearsSelectionOnViewWillAppear = NO;
         
         NSInteger rowsCount = [_items count];
@@ -45,6 +47,8 @@ NSString *SelectedString;
         CGFloat popoverWidth = largestLabelWidth + 100;
         
         self.contentSizeForViewInPopover = CGSizeMake(popoverWidth, totalRowsHeight);
+ 
+        // Custom initialization
     }
     return self;
 }
@@ -52,7 +56,12 @@ NSString *SelectedString;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -65,11 +74,15 @@ NSString *SelectedString;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+
+    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+
+    // Return the number of rows in the section.
     return [_items count];
 }
 
@@ -81,11 +94,12 @@ NSString *SelectedString;
     if (cell==nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
+
+    NSString *race = [_items objectAtIndex:indexPath.row];
+    cell.textLabel.text = race;
     
-    NSString *country = [_items objectAtIndex:indexPath.row];
-    cell.textLabel.text = country;
     
-    if (country == SelectedString) {
+    if (race == SelectedString) {
         cell.accessoryType= UITableViewCellAccessoryCheckmark;
     }
     else
@@ -95,6 +109,10 @@ NSString *SelectedString;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.font = [UIFont fontWithName:@"TreBuchet MS" size:16 ];
+
+    
+    // Configure the cell...
+    
     return cell;
 }
 
@@ -103,13 +121,14 @@ NSString *SelectedString;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *zzz = [_items objectAtIndex:indexPath.row];
+    NSString *theRace = [_items objectAtIndex:indexPath.row];
+    SelectedString = theRace;
     
-    SelectedString = zzz;
-    //[_delegate selectedCountry:zzz];
-    [_delegate selectedNationality:zzz];
+    [_delegate selectedRace:theRace];
     
     [tableView reloadData];
+
+    
 }
 
 @end

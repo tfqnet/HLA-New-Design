@@ -10,6 +10,8 @@
 
 @protocol NatinalityDelegate
 -(void)selectedCountry:(NSString *)theCountry;
+-(void)selectedNationality:(NSString *)selectedNationality;
+
 @end
 
 @interface Nationality : UITableViewController {
