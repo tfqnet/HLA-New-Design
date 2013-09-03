@@ -56,6 +56,7 @@
 @property (nonatomic, strong) id<ProspectViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, strong) TitleViewController *TitlePicker;
+@property (strong, nonatomic) IBOutlet UIButton *btnTitle;
 @property (nonatomic, strong) Race *raceList;
 @property (nonatomic, strong) MaritalStatus *MaritalStatusList;
 @property (nonatomic, strong) Religion *ReligionList;

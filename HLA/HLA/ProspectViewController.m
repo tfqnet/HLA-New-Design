@@ -1194,6 +1194,19 @@ PostcodeContinue = TRUE;
 
 - (bool) Validation
 {
+    if([_btnTitle.titleLabel.text isEqualToString:@"- Select -"]){
+        NSLog(@"noted");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Title is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [outletTitle becomeFirstResponder];
+        //[self.view endEditing:TRUE];
+        
+        [alert show];
+        return false;
+
+        
+    }
+    
     if([[txtFullName.text stringByReplacingOccurrencesOfString:@" " withString:@"" ] isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                         message:@"Full Name is required" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
@@ -1227,6 +1240,8 @@ PostcodeContinue = TRUE;
             return false;
         }
     }
+    
+    
     
     if(segGender.selectedSegmentIndex == -1){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -2026,7 +2041,10 @@ PostcodeContinue = TRUE;
     
     outletTitle.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletTitle setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedTitle]forState:UIControlStateNormal];
+    
     [self.TitlePickerPopover dismissPopoverAnimated:YES];
+    
+    NSLog(@"%@",_btnTitle.titleLabel.text);
 }
 
 -(void)selectedNationality:(NSString *)selectedNationality
@@ -2079,6 +2097,11 @@ PostcodeContinue = TRUE;
     
     OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [OtherIDType setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedIDType]forState:UIControlStateNormal];
+    
+    if ([selectedIDType isEqualToString:@"- Select -"]) {
+        OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        txtOtherIDType.enabled = NO;
+    }
     
     if (![selectedIDType isEqualToString:@"New Identification Number"]) {
         txtOtherIDType.backgroundColor = [UIColor whiteColor];
@@ -2249,6 +2272,7 @@ PostcodeContinue = TRUE;
     [self setBtnOfficeCountry:nil];
     [self setBtnHomeCountry:nil];
     [self setTxtDOB:nil];
+    [self setBtnTitle:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }

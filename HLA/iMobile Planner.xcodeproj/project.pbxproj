@@ -28,14 +28,15 @@
 		42F8590F1772E4EF003907CD /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F8590D1772E4EF003907CD /* add.png */; };
 		42F859101772E4EF003907CD /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F8590E1772E4EF003907CD /* delete.png */; };
 		42FB604D1772EF6000943E1F /* Preference.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FB604C1772EF6000943E1F /* Preference.m */; };
-		6A6ED09417D47751009FFA56 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED09217D47751009FFA56 /* HLA_Rates.sqlite */; };
-		6A6ED09517D47751009FFA56 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED09317D47751009FFA56 /* hladb.sqlite */; };
 		6A6ED09717D49937009FFA56 /* Race.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED09617D49937009FFA56 /* Race.plist */; };
 		6A6ED09D17D49B73009FFA56 /* Race.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6ED09C17D49B73009FFA56 /* Race.m */; };
 		6A6ED0A017D57F9B009FFA56 /* MaritalStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6ED09F17D57F9B009FFA56 /* MaritalStatus.m */; };
 		6A6ED0A217D57FD6009FFA56 /* MaritalStatus.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A117D57FD6009FFA56 /* MaritalStatus.plist */; };
 		6A6ED0A417D59186009FFA56 /* Religion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A317D59186009FFA56 /* Religion.plist */; };
 		6A6ED0A717D591DC009FFA56 /* Religion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A617D591DC009FFA56 /* Religion.m */; };
+		6A6ED0AA17D5B74D009FFA56 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A817D5B74D009FFA56 /* HLA_Rates.sqlite */; };
+		6A6ED0AB17D5B74D009FFA56 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A917D5B74D009FFA56 /* hladb.sqlite */; };
+		6A6ED0AD17D5E97E009FFA56 /* Country.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0AC17D5E97E009FFA56 /* Country.plist */; };
 		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
 		C42E48B516E4A34A003F218E /* Brochure_CashPromise.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C42E48B416E4A34A003F218E /* Brochure_CashPromise.pdf */; };
@@ -364,8 +365,6 @@
 		42F8590E1772E4EF003907CD /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		42FB604B1772EF6000943E1F /* Preference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preference.h; sourceTree = "<group>"; };
 		42FB604C1772EF6000943E1F /* Preference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preference.m; sourceTree = "<group>"; };
-		6A6ED09217D47751009FFA56 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
-		6A6ED09317D47751009FFA56 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		6A6ED09617D49937009FFA56 /* Race.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Race.plist; sourceTree = "<group>"; };
 		6A6ED09B17D49B73009FFA56 /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Race.h; sourceTree = "<group>"; };
 		6A6ED09C17D49B73009FFA56 /* Race.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Race.m; sourceTree = "<group>"; };
@@ -375,6 +374,9 @@
 		6A6ED0A317D59186009FFA56 /* Religion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Religion.plist; sourceTree = "<group>"; };
 		6A6ED0A517D591DC009FFA56 /* Religion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Religion.h; sourceTree = "<group>"; };
 		6A6ED0A617D591DC009FFA56 /* Religion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Religion.m; sourceTree = "<group>"; };
+		6A6ED0A817D5B74D009FFA56 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
+		6A6ED0A917D5B74D009FFA56 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		6A6ED0AC17D5E97E009FFA56 /* Country.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Country.plist; sourceTree = "<group>"; };
 		C40059F816BB678000B03041 /* CashPromiseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashPromiseViewController.h; sourceTree = "<group>"; };
 		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
 		C418112616561D87006A05B9 /* SettingUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserProfile.h; sourceTree = "<group>"; };
@@ -1110,6 +1112,7 @@
 		C4E9D19B1612C64900016053 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6A6ED0AC17D5E97E009FFA56 /* Country.plist */,
 				42867EAE175F75BD001CE661 /* Title.plist */,
 				6A6ED09617D49937009FFA56 /* Race.plist */,
 				EF30C75E17A63E61009A301A /* Nationality.plist */,
@@ -1331,8 +1334,8 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				6A6ED09217D47751009FFA56 /* HLA_Rates.sqlite */,
-				6A6ED09317D47751009FFA56 /* hladb.sqlite */,
+				6A6ED0A817D5B74D009FFA56 /* HLA_Rates.sqlite */,
+				6A6ED0A917D5B74D009FFA56 /* hladb.sqlite */,
 				C4E643811724F175001DF8F8 /* Rates.json */,
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
@@ -1816,11 +1819,12 @@
 				C4EEB64A17C1C05000F268B3 /* everlife.pdf in Resources */,
 				C4EEB6A217C4AFAF00F268B3 /* EverLife_SI in Resources */,
 				C4EEB6A417CAF92900F268B3 /* testing.pdf in Resources */,
-				6A6ED09417D47751009FFA56 /* HLA_Rates.sqlite in Resources */,
-				6A6ED09517D47751009FFA56 /* hladb.sqlite in Resources */,
 				6A6ED09717D49937009FFA56 /* Race.plist in Resources */,
 				6A6ED0A217D57FD6009FFA56 /* MaritalStatus.plist in Resources */,
 				6A6ED0A417D59186009FFA56 /* Religion.plist in Resources */,
+				6A6ED0AA17D5B74D009FFA56 /* HLA_Rates.sqlite in Resources */,
+				6A6ED0AB17D5B74D009FFA56 /* hladb.sqlite in Resources */,
+				6A6ED0AD17D5E97E009FFA56 /* Country.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
