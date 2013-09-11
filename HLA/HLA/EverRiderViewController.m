@@ -4540,6 +4540,7 @@ else {
 }
 
 - (IBAction)ActionSave:(id)sender {
+	/*
 	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
 	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
 	[activeInstance performSelector:@selector(dismissKeyboard)];
@@ -4554,7 +4555,25 @@ else {
 	else{
 		[self Validation];
 	}
+	*/
+	[_delegate RiderGlobalSave];
+}
+
+- (IBAction)ActionAddRider:(id)sender {
+	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+	[activeInstance performSelector:@selector(dismissKeyboard)];
 	
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
+	}
+	else{
+		[self Validation];
+	}
 }
 
 -(void)Validation{
@@ -4670,20 +4689,5 @@ else {
 
 - (IBAction)ActionReinvest:(id)sender {
 }
-- (IBAction)ActionAddRider:(id)sender {
-	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
-	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
-	[activeInstance performSelector:@selector(dismissKeyboard)];
-	
-	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
-	if (![zzz.EverMessage isEqualToString:@""]) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-		alert.tag = 1007;
-        [alert show];
-		zzz.EverMessage = @"";
-	}
-	else{
-		[self Validation];
-	}
-}
+
 @end

@@ -662,139 +662,141 @@ id EverRiderCount;
 			 zzz.EverMessage = @"";
 			 }
 			 */
-			PDSorSI = @"SI";
-			
-			if ([getOccpCode isEqualToString:@"OCC01975"]) {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-				[alert show];
-				alert = Nil;
-				if (previousPath == Nil) {
-					previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
-				}
+			if([self GlobalValidation] == TRUE){
+				PDSorSI = @"SI";
 				
-				[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			}
-			else if (getAge > 100 ) {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product."
-															   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-				[alert show];
-				alert = Nil;
-				if (previousPath == Nil) {
-					previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
-				}
-				
-				[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			}
-			else{
-				sqlite3_stmt *statement;
-				BOOL cont = FALSE;
-				
-				if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
-				{
-					// NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
-					
-					NSString *QuerySQL = [ NSString stringWithFormat:@"select \"CovPeriod\", \"BasicSA\"  "
-										  "\"HLoading\",  \"sex\" from UL_Details as A, "
-										  "Clt_Profile as B, UL_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
-										  "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
-					
-					
-					
-					if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
-					{
-						if (sqlite3_step(statement) == SQLITE_ROW)
-						{
-							cont = TRUE;
-							
-						} else {
-							cont = FALSE;
-							//NSLog(@"error access SI_Store_Premium");
-						}
-						sqlite3_finalize(statement);
+				if ([getOccpCode isEqualToString:@"OCC01975"]) {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+					[alert show];
+					alert = Nil;
+					if (previousPath == Nil) {
+						previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
 					}
-					sqlite3_close(contactDB);
+					
+					[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+				}
+				else if (getAge > 100 ) {
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product."
+																   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+					[alert show];
+					alert = Nil;
+					if (previousPath == Nil) {
+						previousPath =	[NSIndexPath indexPathForRow:0 inSection:0];
+					}
+					
+					[self.myTableView selectRowAtIndexPath:previousPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+				}
+				else{
+					sqlite3_stmt *statement;
+					BOOL cont = FALSE;
+					
+					if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK)
+					{
+						// NSString *querySQL = [NSString stringWithFormat:@"SELECT * from SI_Store_Premium "];
+						
+						NSString *QuerySQL = [ NSString stringWithFormat:@"select \"CovPeriod\", \"BasicSA\"  "
+											  "\"HLoading\",  \"sex\" from UL_Details as A, "
+											  "Clt_Profile as B, UL_LaPayor as C where A.Sino = C.Sino AND C.custCode = B.custcode AND "
+											  "A.sino = \"%@\" AND \"seq\" = 1 ", getSINo];
+						
+						
+						
+						if (sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
+						{
+							if (sqlite3_step(statement) == SQLITE_ROW)
+							{
+								cont = TRUE;
+								
+							} else {
+								cont = FALSE;
+								//NSLog(@"error access SI_Store_Premium");
+							}
+							sqlite3_finalize(statement);
+						}
+						sqlite3_close(contactDB);
+					}
+					
+					if (_FS == Nil) {
+						self.FS = [FSVerticalTabBarController alloc];
+						_FS.delegate = self;
+					}
+					/*
+					 demo *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"demo"];
+					 demoPage.modalPresentationStyle = UIModalPresentationFullScreen;
+					 [self presentViewController:demoPage animated:NO completion:Nil];
+					 */
+					if (cont == TRUE) {
+						
+						spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+						spinner_SI.center = CGPointMake(400, 350);
+						
+						//spinner_SI.hidesWhenStopped = YES;
+						[self.view addSubview:spinner_SI];
+						UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
+						spinnerLabel.text  = @" Please Wait...";
+						spinnerLabel.backgroundColor = [UIColor blackColor];
+						spinnerLabel.opaque = YES;
+						spinnerLabel.textColor = [UIColor whiteColor];
+						[self.view addSubview:spinnerLabel];
+						[self.view setUserInteractionEnabled:NO];
+						[spinner_SI startAnimating];
+						
+						
+						
+						dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
+							
+							EverLifeViewController *UVReport;
+							
+							//NSLog(@"dadas %@", getBasicPlan);
+							if([getPlanCode isEqualToString:@"UV" ]){
+								UVReport = [[EverLifeViewController alloc] init ];
+								UVReport.SINo = getSINo;
+								UVReport.requestOccLoading = getOccLoading;
+								UVReport.requestPlanCommDate = getCommDate;
+								UVReport.PDSorSI = @"SI";
+								UVReport.requestDOB = getLADOB;
+								UVReport.requestSexLA = getSex;
+								UVReport.requestSmokerLA = getSmoker;
+								UVReport.requestOccpClass = getOccpClass;
+								UVReport.SimpleOrDetail = @"Detail";
+								[self presentViewController:UVReport animated:NO completion:Nil];
+							}
+							
+							[self generateJSON_UV];
+							[self copySIToDoc];
+							
+							dispatch_async(dispatch_get_main_queue(), ^{
+								if([getPlanCode isEqualToString:@"UV" ]){
+									[UVReport dismissViewControllerAnimated:NO completion:Nil];
+								}
+								
+								NSString *path = [[NSBundle mainBundle] pathForResource:@"EverLife_SI/Page1" ofType:@"html"];
+								NSURL *pathURL = [NSURL fileURLWithPath:path];
+								NSArray* path_forDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+								NSString* documentsDirectory = [path_forDirectory objectAtIndex:0];
+								
+								NSData* data = [NSData dataWithContentsOfURL:pathURL];
+								[data writeToFile:[NSString stringWithFormat:@"%@/SI_Temp.html",documentsDirectory] atomically:YES];
+								
+								NSString *HTMLPath = [documentsDirectory stringByAppendingPathComponent:@"SI_Temp.html"];
+								
+								if([[NSFileManager defaultManager] fileExistsAtPath:HTMLPath]) {
+									NSURL *targetURL = [NSURL fileURLWithPath:HTMLPath];
+									NSString *SIPDFName = [NSString stringWithFormat:@"%@.pdf",self.getSINo];
+									self.PDFCreator = [NDHTMLtoPDF createPDFWithURL:targetURL
+																		 pathForPDF:[documentsDirectory stringByAppendingPathComponent:SIPDFName]
+																		   delegate:self
+																		   pageSize:kPaperSizeA4
+																			margins:UIEdgeInsetsMake(0, 0, 0, 0)];
+								}
+								
+							});
+						});
+						
+					}
 				}
 				
-				if (_FS == Nil) {
-					self.FS = [FSVerticalTabBarController alloc];
-					_FS.delegate = self;
-				}
-				/*
-				 demo *demoPage = [self.storyboard instantiateViewControllerWithIdentifier:@"demo"];
-				 demoPage.modalPresentationStyle = UIModalPresentationFullScreen;
-				 [self presentViewController:demoPage animated:NO completion:Nil];
-				 */
-				if (cont == TRUE) {
-					
-					spinner_SI = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-					spinner_SI.center = CGPointMake(400, 350);
-					
-					//spinner_SI.hidesWhenStopped = YES;
-					[self.view addSubview:spinner_SI];
-					UILabel *spinnerLabel = [[UILabel alloc] initWithFrame:CGRectMake(350, 370, 120, 40) ];
-					spinnerLabel.text  = @" Please Wait...";
-					spinnerLabel.backgroundColor = [UIColor blackColor];
-					spinnerLabel.opaque = YES;
-					spinnerLabel.textColor = [UIColor whiteColor];
-					[self.view addSubview:spinnerLabel];
-					[self.view setUserInteractionEnabled:NO];
-					[spinner_SI startAnimating];
-					
-					
-					
-					dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-						
-						EverLifeViewController *UVReport;
-						
-						//NSLog(@"dadas %@", getBasicPlan);
-						if([getPlanCode isEqualToString:@"UV" ]){
-							UVReport = [[EverLifeViewController alloc] init ];
-							UVReport.SINo = getSINo;
-							UVReport.requestOccLoading = getOccLoading;
-							UVReport.requestPlanCommDate = getCommDate;
-							UVReport.PDSorSI = @"SI";
-							UVReport.requestDOB = getLADOB;
-							UVReport.requestSexLA = getSex;
-							UVReport.requestSmokerLA = getSmoker;
-							UVReport.requestOccpClass = getOccpClass;
-							UVReport.SimpleOrDetail = @"Detail";
-							[self presentViewController:UVReport animated:NO completion:Nil];
-						}
-						
-						[self generateJSON_UV];
-						[self copySIToDoc];
-						
-						dispatch_async(dispatch_get_main_queue(), ^{
-							if([getPlanCode isEqualToString:@"UV" ]){
-								[UVReport dismissViewControllerAnimated:NO completion:Nil];
-							}
-							
-							NSString *path = [[NSBundle mainBundle] pathForResource:@"EverLife_SI/Page1" ofType:@"html"];
-							NSURL *pathURL = [NSURL fileURLWithPath:path];
-							NSArray* path_forDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-							NSString* documentsDirectory = [path_forDirectory objectAtIndex:0];
-							
-							NSData* data = [NSData dataWithContentsOfURL:pathURL];
-							[data writeToFile:[NSString stringWithFormat:@"%@/SI_Temp.html",documentsDirectory] atomically:YES];
-							
-							NSString *HTMLPath = [documentsDirectory stringByAppendingPathComponent:@"SI_Temp.html"];
-							
-							if([[NSFileManager defaultManager] fileExistsAtPath:HTMLPath]) {
-								NSURL *targetURL = [NSURL fileURLWithPath:HTMLPath];
-								NSString *SIPDFName = [NSString stringWithFormat:@"%@.pdf",self.getSINo];
-								self.PDFCreator = [NDHTMLtoPDF createPDFWithURL:targetURL
-																	 pathForPDF:[documentsDirectory stringByAppendingPathComponent:SIPDFName]
-																	   delegate:self
-																	   pageSize:kPaperSizeA4
-																		margins:UIEdgeInsetsMake(0, 0, 0, 0)];
-							}
-							
-						});
-					});
-					
-				}
 			}
-			
 			
 		}
 		else if (indexPath.row == 11){ //Eng PDS
@@ -1594,6 +1596,10 @@ id EverRiderCount;
 														message:msg delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:Nil, nil ];
 		[alert show ];
 		[self toogleView];
+		return FALSE;
+	}
+	else{
+		return TRUE;
 	}
 	
 	tempRiderCode = Nil ;
@@ -1618,8 +1624,6 @@ id EverRiderCount;
 	RRTUOYear = Nil;
 	RiderToDelete = Nil;
 
-	
-	return TRUE;
 }
 
 #pragma mark - delegate
@@ -1811,6 +1815,19 @@ id EverRiderCount;
 -(void)HLGlobalSave{
 	[self GlobalValidation];
 }
+
+-(void)SpecialGlobalSave{
+	[self GlobalValidation];
+}
+
+-(void)RiderGlobalSave{
+	[self GlobalValidation];
+}
+
+-(void)FundMaturityGlobalSave{
+	[self GlobalValidation];
+}
+
 #pragma mark - Json
 -(void)copySIToDoc{
 	NSString *directory = @"EverLife_SI";

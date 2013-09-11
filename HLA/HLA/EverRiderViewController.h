@@ -17,6 +17,7 @@
 @protocol EverRiderViewControllerDelegate
 -(void) RiderAdded;
 -(void) BasicSARevised:(NSString *)aabasicSA;
+-(void) RiderGlobalSave;
 @end
 
 @interface EverRiderViewController : UIViewController<RiderPTypeTbViewControllerDelegate,RiderListTbViewControllerDelegate,

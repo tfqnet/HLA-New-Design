@@ -543,11 +543,14 @@
 	}
 	else{
 		if([self Validation] == TRUE){
+			/*
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
 			[alert setTag:1001];
 			[alert show];
-			
+			 */
+			[self Insertandupdate];
+			[_delegate SpecialGlobalSave];
 		}
 	}
 	

@@ -12,7 +12,7 @@
 
 @class EverFundMaturity;
 @protocol EverFundMaturity
-
+-(void)FundMaturityGlobalSave;
 @end
 
 @interface EverFundMaturityViewController : UIViewController<UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource,
@@ -50,6 +50,7 @@
 - (IBAction)ActionDelete:(id)sender;
 - (IBAction)ActionEdit:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletEdit;
+- (IBAction)ActionAdd:(id)sender;
 
 
 

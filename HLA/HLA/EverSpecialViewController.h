@@ -11,7 +11,7 @@
 
 @class EverSpecial;
 @protocol EverSpecial
-
+-(void)SpecialGlobalSave;
 @end
 
 @interface EverSpecialViewController : UIViewController<UITextFieldDelegate>{

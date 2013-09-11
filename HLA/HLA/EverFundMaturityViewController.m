@@ -510,10 +510,39 @@ BOOL exist;
 	
 }
 
+
+
 - (IBAction)ACtionDone:(id)sender {
 	//myTableView.hidden = FALSE;
 	//outletTableLabel.hidden = FALSE;
+	/*
+	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+	[activeInstance performSelector:@selector(dismissKeyboard)];
+	
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
+	}
+	else{
+		if ([self Validation] == TRUE) {
+			
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			[alert setTag:1001];
+			[alert show];
+			
+		}
+	}
+	*/
+	[_delegate FundMaturityGlobalSave];
+		
+}
 
+- (IBAction)ActionAdd:(id)sender {
 	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
 	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
 	[activeInstance performSelector:@selector(dismissKeyboard)];
@@ -536,8 +565,6 @@ BOOL exist;
 		}
 	}
 	
-
-		
 }
 
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1042,6 +1069,7 @@ BOOL exist;
         [outletEdit setTitle:@"Cancel" forState:UIControlStateNormal ];
     }
 }
+
 
 
 @end
