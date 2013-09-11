@@ -12,6 +12,7 @@
 @class EverHLViewController;
 @protocol EverHLViewControllerDelegate
 -(void) HLInsert:(NSString *)aaBasicHL andBasicTempHL:(NSString *)aaBasicTempHL;
+-(void)HLGlobalSave;
 @end
 
 
@@ -40,5 +41,7 @@
 @property (nonatomic,copy) NSString *getHLPct;
 @property (nonatomic,assign,readwrite) int getHLTermPct;
 @property (nonatomic,assign,readwrite) int getMed;
+
+-(BOOL)NewDone;
 
 @end

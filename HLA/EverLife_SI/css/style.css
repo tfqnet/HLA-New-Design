@@ -248,8 +248,8 @@
 #Page10-table,
 #Page11-table,
 #Page12-table,
-#table-I40R1,
-#table-I40R2,
+#Page30-table,
+#Page31-table,
 #table-ID20R1,
 #table-ID20R2,
 #table-ID30R1,
@@ -274,8 +274,8 @@
 #Page10-table td,
 #Page11-table td,
 #Page12-table td,
-#table-I40R1 td,
-#table-I40R2 td,
+#Page30-table td,
+#Page31-table td,
 #table-ID20R1 td,
 #table-ID20R2 td,
 #table-ID30R1 td,
@@ -300,8 +300,8 @@
 #Page10-table thead th,
 #Page11-table thead th,
 #Page12-table thead th,
-#table-I40R1 thead th,
-#table-I40R2 thead th,
+#Page30-table thead th,
+#Page31-table thead th,
 #table-ID20R1 thead th,
 #table-ID20R2 thead th,
 #table-ID30R1 thead th,
@@ -327,8 +327,8 @@
 #Page10-table thead th.title,
 #Page11-table thead th.title,
 #Page12-table thead th.title,
-#table-I40R1 thead th.title,
-#table-I40R2 thead th.title,
+#Page30-table thead th.title,
+#Page31-table thead th.title,
 #table-ID20R1 thead th.title,
 #table-ID20R2 thead th.title,
 #table-ID30R1 thead th.title,
@@ -353,8 +353,8 @@
 #Page10-table thead th.content,
 #Page11-table thead th.content,
 #Page12-table thead th.content,
-#table-I40R1 thead th.content,
-#table-I40R2 thead th.content,
+#Page30-table thead th.content,
+#Page31-table thead th.content,
 #table-ID20R1 thead th.content,
 #table-ID20R2 thead th.content,
 #table-ID30R1 thead th.content,
@@ -380,8 +380,8 @@
 #Page10-table thead th.contentMedium,
 #Page11-table thead th.contentMedium,
 #Page12-table thead th.contentMedium,
-#table-I40R1 thead th.contentMedium,
-#table-I40R2 thead th.contentMedium,
+#Page30-table thead th.contentMedium,
+#Page31-table thead th.contentMedium,
 #table-ID20R1 thead th.contentMedium,
 #table-ID20R2 thead th.contentMedium,
 #table-ID30R1 thead th.contentMedium,
@@ -408,8 +408,8 @@
 #Page10-table thead th.contentMedium1,
 #Page11-table thead th.contentMedium1,
 #Page12-table thead th.contentMedium1,
-#table-I40R1 thead th.contentMedium1,
-#table-I40R2 thead th.contentMedium1,
+#Page30-table thead th.contentMedium1,
+#Page31-table thead th.contentMedium1,
 #table-ID20R1 thead th.contentMedium1,
 #table-ID20R2 thead th.contentMedium1,
 #table-ID30R1 thead th.contentMedium1,
@@ -437,8 +437,8 @@
 #Page10-table thead th.contentSmall,
 #Page11-table thead th.contentSmall,
 #Page12-table thead th.contentSmall,
-#table-I40R1 thead th.contentSmall,
-#table-I40R2 thead th.contentSmall,
+#Page30-table thead th.contentSmall,
+#Page31-table thead th.contentSmall,
 #table-ID20R1 thead th.contentSmall,
 #table-ID20R2 thead th.contentSmall,
 #table-ID30R1 thead th.contentSmall,
@@ -467,7 +467,9 @@
 #Page9-table thead th.contentLeft,
 #Page10-table thead th.contentLeft,
 #Page11-table thead th.contentLeft,
-#Page12-table thead th.contentLeft
+#Page12-table thead th.contentLeft,
+#Page30-table thead th.contentLeft,
+#Page31-table thead th.contentLeft
 {
     width:80px;
 	padding: 0px;
@@ -481,7 +483,9 @@
 #Page9-table thead th.contentSmallLeft,
 #Page10-table thead th.contentSmallLeft,
 #Page11-table thead th.contentSmallLeft,
-#Page12-table thead th.contentSmallLeft
+#Page12-table thead th.contentSmallLeft,
+#Page30-table thead th.contentSmallLeft,
+#Page31-table thead th.contentSmallLeft
 {
     width:10px;
 	padding: 0px;
@@ -495,7 +499,9 @@
 #Page9-table thead th.contentRight,
 #Page10-table thead th.contentRight,
 #Page11-table thead th.contentRight,
-#Page12-table thead th.contentRight
+#Page12-table thead th.contentRight,
+#Page30-table thead th.contentRight,
+#Page31-table thead th.contentRight
 {
     width:80px;
 	padding: 0px;
@@ -509,7 +515,9 @@
 #Page9-table thead th.contentMediumRight,
 #Page10-table thead th.contentMediumRight,
 #Page11-table thead th.contentMediumRight,
-#Page12-table thead th.contentMediumRight
+#Page12-table thead th.contentMediumRight,
+#Page30-table thead th.contentMediumRight,
+#Page31-table thead th.contentMediumRight
 {
     width:80px;
 	padding: 0px;
@@ -523,7 +531,9 @@
 #Page9-table thead th.contentSmallRight,
 #Page10-table thead th.contentSmallRight,
 #Page11-table thead th.contentSmallRight,
-#Page12-table thead th.contentSmallRight
+#Page12-table thead th.contentSmallRight,
+#Page30-table thead th.contentSmallRight,
+#Page31-table thead th.contentSmallRight
 {
     width:10px;
 	padding: 0px;
@@ -692,6 +702,52 @@
     border: 0px solid black;
 }
 
+#table-General {
+	
+    border-collapse:collapse;
+    border: 1px solid black;
+    width: 100%;
+
+        
+}
+#table-General td {
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black;
+    vertical-align: text-top;
+}
+
+#table-General th.content {
+	width:88%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black; 
+}
+
+#table-General th.contentSmall {
+	width:12%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black; 
+}
+
+#table-General td.content {
+	width:88%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black;
+    vertical-align: text-top; 
+}
+
+#table-General td.contentSmall {
+	width:12%;
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black;
+    vertical-align: text-top;
+}
+
+
 #Page42-table-design1 {
 	
     border-collapse:collapse;
@@ -734,6 +790,37 @@
 	padding: 5px 5px 5px 5px;
 	text-align:left;
     border: 1px solid black;
+    vertical-align: text-top;
+}
+
+
+
+#Page14-table {
+	
+    border-collapse:collapse;
+    border: 1px solid black;
+    width: 100%;
+
+        
+}
+#Page14-table td {
+	padding: 5px 5px 5px 5px;
+	text-align:left;
+    border: 1px solid black;
+    vertical-align: text-top;
+}
+
+#Page14-table td.dot {
+	
+	text-align:center;
+    border: 1px dotted;
+    vertical-align: text-top;
+}
+
+#Page14-table td.noBorder {
+	
+	text-align:center;
+    border: 0px;
     vertical-align: text-top;
 }
 

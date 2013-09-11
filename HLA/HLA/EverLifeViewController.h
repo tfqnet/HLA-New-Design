@@ -52,13 +52,27 @@
 @property (retain, nonatomic) NSMutableArray *OtherRiderPremium;
 @property (retain, nonatomic) NSMutableArray *OtherRiderPaymentTerm;
 
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderCode;
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderSA;
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderHL;
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderHLPct;
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderTerm;
+//@property (retain, nonatomic) NSMutableArray *UnitizeRiderMort;
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderPlanChoice;
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderDeductible;
+//@property (retain, nonatomic) NSMutableArray *UnitizeRiderAlloc;
+@property (retain, nonatomic) NSMutableArray *UnitizeRiderPremium;
+@property (retain, nonatomic) NSMutableArray *UniTotalRiderPremAtPolYear;
+@property (retain, nonatomic) NSMutableArray *UniTotalRiderPremWithAlloc;
+
 @property (strong, nonatomic) DBController* db;
 @property (strong, nonatomic) DataTable * dataTable;
 
 -(double)FromBasic :(NSString *)aaATPrem andGetHL :(NSString *)aaGetHL andGetHLPct :(NSString *)aaGetHLPct 
 		andBumpMode :(NSString *)aaBumpMode andBasicSA :(NSString *)aaBasicSA andRTUPFrom :(NSString *)aaRTUPFrom andRTUPFor :(NSString *)aaRTUPFor
 		andRTUPAmount :(NSString *)aaRTUPAmount andSmokerLA :(NSString *)aaSmokerLA andOccLoading :(NSString *)aaOccLoading
-		andPlanCommDate :(NSString *)aaPlanCommDate andDOB :(NSString *)aaDOB andSexLA :(NSString *)aaSexLA andSino :(NSString *)aaSino;
+		andPlanCommDate :(NSString *)aaPlanCommDate andDOB :(NSString *)aaDOB andSexLA :(NSString *)aaSexLA andSino :(NSString *)aaSino
+		andLAAge:(int)aaLAAge;
 
 #define IsAtLeastiOSVersion(X) ([[[UIDevice currentDevice] systemVersion] compare:X options:NSNumericSearch] != NSOrderedAscending)
 @end

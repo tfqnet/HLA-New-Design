@@ -204,7 +204,27 @@ static sqlite3 *contactDB = nil;
     return YES;
 }
 
++(void)ClearAllDBData :(NSString *)path{
+	FMDatabase *database = [FMDatabase databaseWithPath:path];
+    [database open];
+	
+	NSString *query;
+	query = [NSString stringWithFormat:@"Delete from UL_Temp_Pages"];
+	[database executeUpdate:query];
+	query = [NSString stringWithFormat:@"Delete from UL_Temp_Rider"];
+	[database executeUpdate:query];
+	query = [NSString stringWithFormat:@"Delete from UL_Rider_Mtn"];
+	[database executeUpdate:query];
+	query = [NSString stringWithFormat:@"Delete from UL_Rider_Profile"];
+	[database executeUpdate:query];
+	query = [NSString stringWithFormat:@"Delete from UL_Rider_Label"];
+	[database executeUpdate:query];
+	
+}
+
 +(void)InstallVersion1dot3:(NSString *)path{
+	
+	//[self ClearAllDBData:path];
 	
 	FMDatabase *database = [FMDatabase databaseWithPath:path];
     [database open];
@@ -224,6 +244,19 @@ static sqlite3 *contactDB = nil;
 										"'col13' VARCHAR, 'col14' VARCHAR, 'col15' VARCHAR, 'col16' VARCHAR, 'col17' VARCHAR, 'col18' VARCHAR, 'col19' VARCHAR, "
 										"'col20' VARCHAR, 'col21' VARCHAR, 'col22' VARCHAR, 'col23' VARCHAR, 'col24' VARCHAR, 'col25' VARCHAR, 'col26' VARCHAR, 'col27' VARCHAR, "
 										"'col28' VARCHAR, 'col29' VARCHAR, 'col30' VARCHAR, 'col31' VARCHAR)"];
+	[database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Summary' ('SINo' VARCHAR, 'SeqNo' INTEGER, 'DataType' VARCHAR, 'col0_1' INTEGER, "
+			 "'col0_2' INTEGER, 'col1' VARCHAR, 'col2' VARCHAR, 'col3' VARCHAR, 'col4' VARCHAR, 'col5' VARCHAR, 'col6' "
+			 "VARCHAR, 'col7' VARCHAR, 'col8' VARCHAR, 'col9' VARCHAR, 'col10' VARCHAR, 'col11' VARCHAR, 'col12' VARCHAR, "
+			 "'col13' VARCHAR, 'col14' VARCHAR, 'col15' VARCHAR, 'col16' VARCHAR, 'col17' VARCHAR, 'col18' VARCHAR, 'col19' VARCHAR, "
+			 "'col20' VARCHAR, 'col21' VARCHAR, 'col22' VARCHAR, 'col23' VARCHAR, 'col24' VARCHAR, 'col25' VARCHAR, 'col26' VARCHAR, 'col27' VARCHAR, "
+			 "'col28' VARCHAR, 'col29' VARCHAR, 'col30' VARCHAR, 'col31' VARCHAR)"];
+	[database executeUpdate:query];
+	
+	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Fund' ('SINo' VARCHAR, "
+									"'col1' VARCHAR, 'col2' VARCHAR, 'col3' VARCHAR, 'col4' VARCHAR, 'col5' VARCHAR, 'col6' "
+									"VARCHAR, 'col7' VARCHAR, 'col8' VARCHAR, 'col9' VARCHAR, 'col10' VARCHAR)"];
 	[database executeUpdate:query];
 	
 	query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS 'UL_Temp_Trad_Details' ('SINo' VARCHAR, 'SeqNo' VARCHAR, 'DataType' VARCHAR, 'col0_1' VARCHAR, "
@@ -327,6 +360,10 @@ static sqlite3 *contactDB = nil;
     [database executeUpdate:query];
 	
 	//
+	
+	query = [NSString stringWithFormat:@"INSERT INTO Trad_Sys_Profile ('PlanCode', 'PlanName') VALUES(\"UV\", 'HLA EverLife')"];
+    [database executeUpdate:query];
+	
 	query = [NSString stringWithFormat:@"INSERT INTO UL_Rider_mtn VALUES(\"ACIR\", 0, 0, 65, -100, 10000, 1500000, 10, 100, \"UV\", \"LA\", 1 )"];
     [database executeUpdate:query];
 	

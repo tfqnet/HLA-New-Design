@@ -11,7 +11,7 @@
 
 @class EverFundAllocation;
 @protocol EverFundDelegate
-
+-(void)FundAllocationGlobalSave;
 @end
 
 
@@ -58,5 +58,6 @@
 - (IBAction)ActionAge:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *txtAge;
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
+-(BOOL)NewDone;
 
 @end

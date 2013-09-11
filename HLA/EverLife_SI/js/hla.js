@@ -312,6 +312,93 @@ function Page6_UV()
 	
 }
 
+function Page13_UV(){
+	$('.AnnuityPremPct').html(formatCurrency(gdata.SI[0].Annuity));
+	var temp = parseFloat(100.00) - parseFloat(gdata.SI[0].Annuity);
+	$('.NonAnnuityPremPct').html(formatCurrency(temp));
+	var temp1 = parseFloat(gdata.SI[0].AnnuityPrem) * parseFloat(gdata.SI[0].Annuity)/100.00 ;
+	var temp2 = parseFloat(gdata.SI[0].AnnuityPrem) * parseFloat(temp)/100.00;
+	
+	$('.AnnuityAmount').html(formatCurrency(temp1));
+	$('.NonAnnuityAmount').html(formatCurrency(temp2));
+	
+}
+
+function Page14_UV(){
+	
+	if(gdata.SI[0].UL_Temp_Fund.data.length > 0){
+		$.each(gdata.SI[0].UL_Temp_Fund.data, function(index, row) {
+			$('#Page14-table > tbody').append('<tr><td>' + row.Fund +  '</td>' +
+			'<td>' +
+			  '<table>' +
+			    '<tr>' +
+				(row.Option == 'ReInvest' ?  '<td class="noBorder" style="text-align: left">Fully Reinvest</td><td class="noBorder">&nbsp;</td>' : '') +
+				(row.Option == 'Partial' ?  '<td class="noBorder" style="text-align: left">Partial Reinvest</td><td class="noBorder">&nbsp;</td>' : '') +
+				(row.Option == 'Withdraw' ?  '<td class="noBorder" style="text-align: left">Fully Withdrawal</td><td class="noBorder">&nbsp;</td>' : '') +
+			    '</tr>' +
+			    (row.Option == 'Partial' ?  '<tr><td class="noBorder" style="text-align: left">Reinvest(% of matured fund) :</td><td class="dot" style="vertical-align: bottom">' + row.Partial + '</td></tr>' : '') +
+			  '</table>' +
+			  (row.Option == 'Withdraw' ?  '<table style="visibility: hidden">' : '<table>') +
+			    '<tr>' +
+			       (row.Fund == 'HLA EverGreen 2023' ? '<td class="dot">HLA EverGreen<br/>2025</td><td class="dot">HLA EverGreen<br/>2028</td><td class="dot">HLA EverGreen<br/>2030</td><td class="dot">HLA EverGreen<br/>2035</td>' : '') +
+			       (row.Fund == 'HLA EverGreen 2025' ? '<td class="dot">HLA EverGreen<br/>2028</td><td class="dot">HLA EverGreen<br/>2030</td><td class="dot">HLA EverGreen<br/>2035</td>' : '') +
+			       (row.Fund == 'HLA EverGreen 2028' ? '<td class="dot">HLA EverGreen<br/>2030</td><td class="dot">HLA EverGreen<br/>2035</td>' : '') +
+			      (row.Fund == 'HLA EverGreen 2030' ?  '<td class="dot">HLA EverGreen<br/>2035</td>' : '') +
+			      '<td class="dot">HLA Secure Fund</td>'+
+			      '<td class="dot">HLA<br/>Cash Fund</td>'+
+			    '</tr>'+
+			    '<tr>'+
+			       (row.Fund == 'HLA EverGreen 2023' ? '<td class="dot">'+ parseInt(row.Fund2025) +'</td><td class="dot">'+ parseInt(row.Fund2028) +'</td><td class="dot">'+ parseInt(row.Fund2030) +'</td><td class="dot">'+ parseInt(row.Fund2035) +'</td>' : '') +
+			       (row.Fund == 'HLA EverGreen 2025' ? '<td class="dot">'+ parseInt(row.Fund2028) +'</td><td class="dot">'+ parseInt(row.Fund2030) +'</td><td class="dot">'+ parseInt(row.Fund2035) +'</td>' : '') +
+			       (row.Fund == 'HLA EverGreen 2028' ? '<td class="dot">'+ parseInt(row.Fund2030) +'</td><td class="dot">'+ parseInt(row.Fund2035) +'</td>' : '') +
+			      (row.Fund == 'HLA EverGreen 2030' ?  '<td class="dot">'+ parseInt(row.Fund2035) +'</td>' : '') +
+			      '<td class="dot">'+ parseInt(row.RetireFund) +'</td>'+
+			      '<td class="dot">'+ parseInt(row.CashFund) +'</td>'+
+			    '</tr>'+
+			  '</table>'+
+			'</td>'+
+			'<td>'+
+			  '<table style="width: 90%;alignment-adjust: central">'+
+				(row.Option == 'ReInvest' ?  '<tr><td class="dot">Not Applicable</td></tr>' : '') +
+				(row.Option == 'Partial' ?  '<tr><td class="dot">Bull</td><td class="dot">Flat</td><td class="dot">Bear</td></tr><tr><td class="dot">1.231</td><td class="dot">1.0123</td><td class="dot">1.0023</td></tr>' : '') +
+				(row.Option == 'Withdraw' ? '<tr><td class="dot">Bull</td><td class="dot">Flat</td><td class="dot">Bear</td></tr><tr><td class="dot">1.231</td><td class="dot">1.0123</td><td class="dot">1.0023</td></tr>' : '') +
+			  '</table>'+
+			'</td>'+
+			'<td>'+
+			  '<table style="width: 90%;alignment-adjust: central">'+
+				(row.Option == 'ReInvest' ?  '<tr><td class="dot">Bull</td><td class="dot">Flat</td><td class="dot">Bear</td></tr><tr><td class="dot">1.231</td><td class="dot">1.0123</td><td class="dot">1.0023</td></tr>' : '') +
+				(row.Option == 'Partial' ?  '<tr><td class="dot">Bull</td><td class="dot">Flat</td><td class="dot">Bear</td></tr><tr><td class="dot">1.231</td><td class="dot">1.0123</td><td class="dot">1.0023</td></tr>' : '') +
+				(row.Option == 'Withdraw' ? '<tr><td class="dot">Not Applicable</td></tr>' : '') +
+			  '</table>'+
+			'</td></tr>');		
+		});
+		
+		
+	}
+	
+	
+}
+
+function Page30_UV()
+{
+	$.each(gdata.SI[0].UL_Temp_Summary.data, function(index, row) {		
+	 
+		$('#Page30-table > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + formatCurrency(row.col1) + '</td><td>' + formatCurrency(row.col2) + '</td><td>' + formatCurrency(row.col3)  +
+		'</td><td>' + formatCurrency(row.col4) + '</td><td>' + formatCurrency(row.col5) + '</td><td>' + formatCurrency(row.col6) + '</td><td>' + formatCurrency(row.col7) +  '</td></tr>');
+                    
+	});
+}
+
+function Page31_UV()
+{
+	$.each(gdata.SI[0].UL_Temp_Summary.data, function(index, row) {		
+	 
+		$('#Page31-table > tbody').append('<tr><td>' + row.col0_1 + '</td><td>' + row.col0_2 + '</td><td>' + formatCurrency(row.col8) + '</td><td>' + formatCurrency(row.col9) + '</td><td>' + formatCurrency(row.col10)  +
+		'</td><td>' + formatCurrency(row.col11) + '</td><td>' + formatCurrency(row.col12) + '</td><td>' + formatCurrency(row.col13) + '</td><td>' + formatCurrency(row.col14) +  '</td><td>' + formatCurrency(row.col15) +
+		'</td><td>' + formatCurrency(row.col16) +  '</td><td>' + formatCurrency(row.col17) +  '</td></tr>');
+                    
+	});
+}
 
 function Page40_UV()
 {
@@ -994,10 +1081,11 @@ function Page7_UV()
 	
 	$.each(gdata.SI[0].UL_Temp_Trad_Basic.data, function(index, rowBasic) {		
 	            
-		$('#table-Summary1 > tbody').append('<tr><td>' + rowBasic.col0_1 + '</td><td>' + rowBasic.col0_2 + '</td><td>' + formatCurrency(rowBasic.col1) + '</td><td>' + formatCurrency(rowBasic.col2) + '</td><td>' + formatCurrency(rowBasic.col3) + '</td><td>' + formatCurrency(parseFloat(rowBasic.col4))  + '</td><td>' + formatCurrency(rowBasic.col5)  +
-		'</td><td>' + formatCurrency(rowBasic.col6)  + '</td><td>' + formatCurrency(rowBasic.col7)  + '</td><td>' + formatCurrency(rowBasic.col8)  + '</td><td>' + formatCurrency(rowBasic.col9)  +
-		'</td><td>' + formatCurrency( rowBasic.col10) + '</td><td>' + formatCurrency( rowBasic.col11) + '</td><td>' + formatCurrency( rowBasic.col12) +
-		'</td><td>' + formatCurrency( rowBasic.col13) + '</td></tr>');
+		$('#table-Summary1 > tbody').append('<tr><td>' + rowBasic.col0_1 + '</td><td>' + rowBasic.col0_2 + '</td><td>' + formatCurrency(rowBasic.col1) + '</td><td>' + formatCurrency(rowBasic.col2) +
+		'</td><td>' + CurrencyNoCents(rowBasic.col3) + '</td><td>' + CurrencyNoCents(parseFloat(rowBasic.col4))  + '</td><td>' + CurrencyNoCents(rowBasic.col5)  +
+		'</td><td>' + CurrencyNoCents(rowBasic.col6)  + '</td><td>' + CurrencyNoCents(rowBasic.col7)  + '</td><td>' + CurrencyNoCents(rowBasic.col8)  + '</td><td>' + CurrencyNoCents(rowBasic.col9)  +
+		'</td><td>' + CurrencyNoCents( rowBasic.col10) + '</td><td>' + CurrencyNoCents( rowBasic.col11) + '</td><td>' + CurrencyNoCents( rowBasic.col12) +
+		'</td><td>' + CurrencyNoCents( rowBasic.col13) + '</td></tr>');
                     
 	});
     
@@ -1008,8 +1096,8 @@ function Page9_UV()
 	
 	$.each(gdata.SI[0].UL_Temp_Trad_Basic.data, function(index, rowBasic2) {		
 	 
-		$('#Page9-table > tbody').append('<tr><td>' + rowBasic2.col0_1 + '</td><td>' + rowBasic2.col0_2 + '</td><td>' + formatCurrency(rowBasic2.col14) + '</td><td>' + formatCurrency(rowBasic2.col15) + '</td><td>' + formatCurrency(rowBasic2.col16)  +
-		'</td><td>' + formatCurrency(rowBasic2.col17) + '</td><td>' + formatCurrency(rowBasic2.col18) + '</td><td>' + formatCurrency(rowBasic2.col19) + '</td><td>' + formatCurrency(rowBasic2.col20) + '</td><td>' + formatCurrency(rowBasic2.col21) + '</td><td>' + formatCurrency(rowBasic2.col22) + '</td></tr>');
+		$('#Page9-table > tbody').append('<tr><td>' + rowBasic2.col0_1 + '</td><td>' + rowBasic2.col0_2 + '</td><td>' + CurrencyNoCents(rowBasic2.col14) + '</td><td>' + CurrencyNoCents(rowBasic2.col15) + '</td><td>' + CurrencyNoCents(rowBasic2.col16)  +
+		'</td><td>' + CurrencyNoCents(rowBasic2.col17) + '</td><td>' + CurrencyNoCents(rowBasic2.col18) + '</td><td>' + CurrencyNoCents(rowBasic2.col19) + '</td><td>' + CurrencyNoCents(rowBasic2.col20) + '</td><td>' + CurrencyNoCents(rowBasic2.col21) + '</td><td>' + CurrencyNoCents(rowBasic2.col22) + '</td></tr>');
                     
 	});
     
@@ -2092,10 +2180,14 @@ function formatCurrency(num) {
 }
 
 function CurrencyNoCents(num) {
-	if (num == "-")
-		return "-"
+	
+	if (num == "-"){
+		return "-";
+	}
 	num = num.toString().replace(/\$|\,/g, '');
-    if (isNaN(num)) num = "0";
+	if (isNaN(num)){
+		num = "0";
+	}
     	sign = (num == (num = Math.abs(num)));
     	num = num.toString();
     	for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)

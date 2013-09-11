@@ -2872,6 +2872,8 @@ double CurrentRiderPrem;
 			sex = getSex;
 		}
 		
+	//NSLog(@"dasdas  %@ %@ %@ %d", pTypeSex, getSex, pTypeCode, PTypeSeq);
+	
 		if ([riderCode isEqualToString:@"DCA"]||[riderCode isEqualToString:@"DHI"]||[riderCode isEqualToString:@"MR"]||
 			[riderCode isEqualToString:@"PA"] || [riderCode isEqualToString:@"TPDMLA"]||[riderCode isEqualToString:@"WI"])
         {
@@ -2920,6 +2922,10 @@ double CurrentRiderPrem;
         
         NSLog(@"~riderRate(%@):%.2f, ridersum:%.3f, HL:%.3f",riderCode,riderRate,ridSA,riderHLoad);
 		
+	if (riderRate == 0.00) {
+		NSLog(@"No rates were found");
+	}
+	
 		double annFac;
         double halfFac;
         double quarterFac;
@@ -3097,7 +3103,7 @@ double CurrentRiderPrem;
 			_half =0.00;
 			_quar = 0.00;
 			_month =0.00;
-			
+			//NSLog(@"%f", riderRate);
 			
 			if (riderHLoad == 0) {
 				_ann = (riderRate * ridSA/100.00) ;
@@ -4663,5 +4669,21 @@ else {
 }
 
 - (IBAction)ActionReinvest:(id)sender {
+}
+- (IBAction)ActionAddRider:(id)sender {
+	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
+	id activeInstance = [UIKeyboardImpl performSelector:@selector(activeInstance)];
+	[activeInstance performSelector:@selector(dismissKeyboard)];
+	
+	AppDelegate *zzz= (AppDelegate*)[[UIApplication sharedApplication] delegate ];
+	if (![zzz.EverMessage isEqualToString:@""]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:zzz.EverMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+		alert.tag = 1007;
+        [alert show];
+		zzz.EverMessage = @"";
+	}
+	else{
+		[self Validation];
+	}
 }
 @end

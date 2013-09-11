@@ -198,7 +198,7 @@
 	
 	 	if (outletReduce.selectedSegmentIndex == 1 && outletWithdrawal.selectedSegmentIndex == 1 &&
 			WithdrawExist == FALSE && ReduceExist == FALSE)   {
-			return FALSE;
+			return TRUE;
 		}
 	
 	 	if (outletWithdrawal.selectedSegmentIndex == 0) {
@@ -519,6 +519,15 @@
 		 	}
 	 }
 
+-(BOOL)NewDone{
+	if([self Validation] == TRUE){
+		[self Insertandupdate];
+		return TRUE;
+	}
+	else{
+		return FALSE;
+	}
+}
 
 - (IBAction)ActionDone:(id)sender {
 	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");

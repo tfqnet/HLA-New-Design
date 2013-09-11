@@ -45,7 +45,7 @@
 @property(nonatomic , retain) NSString *getSINo;
 @property (nonatomic, copy) NSString *getCommDate;
 //--
-
+-(BOOL)NewDone;
 @property (nonatomic, assign,readwrite) int IndexNo;
 @property (nonatomic, copy) NSString *sex;
 @property (nonatomic, copy) NSString *smoker;
@@ -75,9 +75,7 @@
 - (IBAction)ActionDelete:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *outletDelete;
 - (IBAction)ActionGender:(id)sender;
-
 - (IBAction)ActionSmoker:(id)sender;
-
 - (IBAction)btnDone:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UITextField *txtName;
@@ -95,6 +93,7 @@
 
 @property(nonatomic , retain) NSString *Change;
 @property(nonatomic , retain) NSString *LAView;
+
 
 
 @end

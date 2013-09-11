@@ -203,6 +203,7 @@
 		C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB4923161558F300C7FC8C /* ChangePassword.m */; };
 		C4EB492716155A4A00C7FC8C /* setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB492616155A4A00C7FC8C /* setting.m */; };
 		C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB493B161592EB00C7FC8C /* UserProfile.m */; };
+		C4EC68A917DF267B0063599A /* UL_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4EC68A817DF267B0063599A /* UL_Rates.sqlite */; };
 		C4EEB64317BCD11900F268B3 /* EverLifeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */; };
 		C4EEB64617C1A98900F268B3 /* demo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64517C1A98900F268B3 /* demo.m */; };
 		C4EEB64A17C1C05000F268B3 /* everlife.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4EEB64917C1C05000F268B3 /* everlife.pdf */; };
@@ -609,6 +610,7 @@
 		C4EB492616155A4A00C7FC8C /* setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setting.m; sourceTree = "<group>"; };
 		C4EB493A161592EB00C7FC8C /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		C4EB493B161592EB00C7FC8C /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
+		C4EC68A817DF267B0063599A /* UL_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = UL_Rates.sqlite; sourceTree = "<group>"; };
 		C4EEB64117BCD11900F268B3 /* EverLifeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverLifeViewController.h; sourceTree = "<group>"; };
 		C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverLifeViewController.m; sourceTree = "<group>"; };
 		C4EEB64417C1A98900F268B3 /* demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = demo.h; sourceTree = "<group>"; };
@@ -1334,6 +1336,7 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				C4EC68A817DF267B0063599A /* UL_Rates.sqlite */,
 				6A6ED0A817D5B74D009FFA56 /* HLA_Rates.sqlite */,
 				6A6ED0A917D5B74D009FFA56 /* hladb.sqlite */,
 				C4E643811724F175001DF8F8 /* Rates.json */,
@@ -1825,6 +1828,7 @@
 				6A6ED0AA17D5B74D009FFA56 /* HLA_Rates.sqlite in Resources */,
 				6A6ED0AB17D5B74D009FFA56 /* hladb.sqlite in Resources */,
 				6A6ED0AD17D5E97E009FFA56 /* Country.plist in Resources */,
+				C4EC68A917DF267B0063599A /* UL_Rates.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2080,8 +2084,8 @@
 		C4E9D1AF1612C64900016053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -2096,8 +2100,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;
@@ -2107,8 +2111,8 @@
 		C4E9D1B01612C64900016053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shawal sapuan mohamad (5N6T84DH58)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Hong Leong Assurance Berhad";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Hong Leong Assurance Berhad";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HLA/iMobile Planner-Prefix.pch";
 				INFOPLIST_FILE = "HLA/iMobile Planner-Info.plist";
@@ -2123,8 +2127,8 @@
 					"-Obj-C",
 				);
 				PRODUCT_NAME = "iMobile Planner";
-				PROVISIONING_PROFILE = "01666B30-9BE7-4406-8168-F9E83AC557EE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "01666B30-9BE7-4406-8168-F9E83AC557EE";
+				PROVISIONING_PROFILE = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "147EC1EB-EE9F-442F-B150-C3111A0A3A59";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv6";
 				WRAPPER_EXTENSION = app;

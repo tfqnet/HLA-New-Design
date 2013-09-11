@@ -287,5 +287,8 @@
 @property (nonatomic,strong) NSMutableArray *arrCombNo;
 @property (nonatomic,strong) NSMutableArray *arrRBBenefit;
 
+- (IBAction)ActionAddRider:(id)sender;
+
+
 
 @end

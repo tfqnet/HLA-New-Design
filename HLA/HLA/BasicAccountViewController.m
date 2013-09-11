@@ -418,7 +418,8 @@ NSString *OriginalBump;
 																   andBasicSA:txtBasicSA.text andRTUPFrom:txtCommFrom.text
 																   andRTUPFor:txtFor.text andRTUPAmount:txtRTUP.text
 																andSmokerLA:getSmokerLA andOccLoading:getOccLoading
-															  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo]];
+															  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo
+																andLAAge:ageClient]];
 			txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 		}
 
@@ -431,7 +432,8 @@ NSString *OriginalBump;
 																   andBasicSA:txtBasicSA.text andRTUPFrom:txtCommFrom.text
 																   andRTUPFor:txtFor.text andRTUPAmount:txtRTUP.text
 																  andSmokerLA:getSmokerLA andOccLoading:getOccLoading
-															  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo]];
+															  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo
+																andLAAge:ageClient]];
 			txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 		}
 	}
@@ -6235,6 +6237,18 @@ NSString *OriginalBump;
     [self.planPopover presentPopoverFromRect:[sender frame]  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	
 }
+
+-(BOOL)NewDone{
+	if([self Validation] == TRUE){
+		[self checkingExisting];
+		[self checkingSave];
+		return TRUE;
+	}
+	else{
+		return FALSE;
+	}
+}
+
 - (IBAction)ActionDone:(id)sender {
 	[self resignFirstResponder];
     [self.view endEditing:YES];
@@ -6252,8 +6266,24 @@ NSString *OriginalBump;
 		zzz.EverMessage = @"";
 	}
 	else{
-		[self Validation];
-		//[self CheckBump];
+		if([self Validation] == TRUE){
+			[self checkingExisting];
+			/*
+			NSString *msg;
+			if (useExist) {
+				msg = @"Confirm changes?";
+			} else {
+				msg = @"Confirm creating new record?";
+			}
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg
+														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			[alert setTag:1003];
+			[alert show];
+			*/
+			[self checkingSave];
+			[_delegate BasicGlobalSave];
+		}
+		
 	}
 }
 
@@ -6261,7 +6291,7 @@ NSString *OriginalBump;
 	
 }
 
--(void)Validation{
+-(BOOL)Validation{
 	
 	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
@@ -6272,11 +6302,13 @@ NSString *OriginalBump;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert setTag:1001];
         [alert show];
+		return FALSE;
     }
 	else if (ageClient > 100) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 														message:[NSString stringWithFormat:@"Age Last Birthday must be less than or equal to 100 for this product."] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+		return FALSE;
     }
     else if ([txtBasicPremium.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -6284,6 +6316,7 @@ NSString *OriginalBump;
         [alert show];
 		txtBasicPremium.text = @"";
         [txtBasicPremium becomeFirstResponder];
+		return FALSE;
     }
 	else if ([txtBasicSA.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -6291,18 +6324,21 @@ NSString *OriginalBump;
         [alert show];
 		txtBasicSA.text = @"";
         [txtBasicSA becomeFirstResponder];
+		return FALSE;
     }
 	else if ([txtBasicSA.text isEqualToString:@""]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 														message:[NSString stringWithFormat:@"Basic Sum Assured is required"] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
 		[txtBasicSA becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtBasicPremium.text doubleValue] < minPremium) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 														message:[NSString stringWithFormat:@"Basic Annual Premium must be at least %.0f",minPremium] delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtBasicPremium becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtBasicSA.text intValue] < minSA) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -6311,6 +6347,7 @@ NSString *OriginalBump;
 		[alert show];
 		[txtBasicSA becomeFirstResponder];
 		//txtBasicSA.text = [NSString stringWithFormat:@"%.0f", minSA];
+		return FALSE;
         
     }
 	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
@@ -6319,6 +6356,7 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtRTUP becomeFirstResponder ];
+		return FALSE;
 	}
 	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"] &&
 			 ![[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
@@ -6326,6 +6364,7 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtRTUP becomeFirstResponder ];
+		return FALSE;
 	}
 	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 ![[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
@@ -6333,6 +6372,7 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtFor becomeFirstResponder ];
+		return FALSE;
 	}
 	else if ([[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"] &&
 			 ![[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]){
@@ -6340,6 +6380,7 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtFor becomeFirstResponder ];
+		return FALSE;
 	}
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 [[txtCommFrom.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"]){
@@ -6347,6 +6388,7 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"Regular Top Up Premium Commnencement Year is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtCommFrom becomeFirstResponder ];
+		return FALSE;
 	}
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 [[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@"0"] ){
@@ -6355,6 +6397,7 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"The number of year for Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtFor becomeFirstResponder ];
+		return FALSE;
 	}
 	
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
@@ -6363,6 +6406,7 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"Regular Top Up Premium Commnencement Year is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtCommFrom becomeFirstResponder ];
+		return FALSE;
 	}
 	else if (![[txtRTUP.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] &&
 			 [[txtFor.text stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""] ){
@@ -6371,12 +6415,14 @@ NSString *OriginalBump;
 														message:[NSString stringWithFormat:@"The number of year for Regular Top Up Premium is required"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtFor becomeFirstResponder ];
+		return FALSE;
 	}
 	else if ([txtCommFrom.text intValue ] > 100 - ageClient - 1){
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 														message:[NSString stringWithFormat:@"Regular Top Up must commence before %dth policy anniversary.", 100-ageClient-1] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtCommFrom becomeFirstResponder ];
+		return FALSE;
 	}
 	else if ([txtFor.text intValue ] > [txtPolicyTerm.text intValue] - [txtCommFrom.text intValue ]){
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
@@ -6384,6 +6430,7 @@ NSString *OriginalBump;
 													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 		[alert show];
 		[txtFor becomeFirstResponder ];
+		return FALSE;
 	}
 	else if ([txtBUMP.text doubleValue ] < 0) {
 		/*
@@ -6401,6 +6448,7 @@ NSString *OriginalBump;
 														   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
 			[alert show];
 			[txtBasicSA becomeFirstResponder ];
+		return FALSE;
 		//}
 	}
 	/*
@@ -6411,17 +6459,9 @@ NSString *OriginalBump;
 	 [txtBasicSA becomeFirstResponder];
 	 }*/
 	else {
-		NSString *msg;
-		[self checkingExisting];
-		if (useExist) {
-			msg = @"Confirm changes?";
-		} else {
-			msg = @"Confirm creating new record?";
-		}
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg
-													   delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
-		[alert setTag:1003];
-		[alert show];
+		return TRUE;
+		
+		
 	}
 
 }
@@ -6547,7 +6587,8 @@ NSString *OriginalBump;
 														  andBumpMode:[self ReturnBumpMode] andBasicSA:txtBasicSA.text
 														  andRTUPFrom:txtCommFrom.text andRTUPFor:txtFor.text andRTUPAmount:txtRTUP.text
 														andSmokerLA:getSmokerLA andOccLoading:getOccLoading
-													  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo	]];
+													  andPlanCommDate:getPlanCommDate andDOB:getDOB andSexLA:getSexLA andSino:getSINo
+														andLAAge:ageClient]];
 	txtBUMP.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[txtBUMP.text doubleValue]]];
 	rrr = Nil;
 }

@@ -512,6 +512,13 @@
 		[failAlert show];
 		return FALSE;
 	}
+	else if (![txtExpireSecureFund.text isEqualToString:@""] && [txtExpireCashFund.text isEqualToString:@"0"] && txtExpireCashFund.enabled == TRUE){
+		UIAlertView *failAlert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
+															message:[NSString stringWithFormat:@"Fund Allocation for HLA Cash Fund cannot be less than 1%%"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[failAlert show];
+		[txtExpireCashFund becomeFirstResponder ];
+		return FALSE;
+	}
 	else{
 		return TRUE;
 	}
@@ -655,6 +662,18 @@
 
 #pragma mark - Button action
 
+-(BOOL)NewDone{
+	
+	if ([self Validation]  == TRUE) {
+		[self InsertandUpdate];
+		return TRUE;
+	}
+	else{
+		return FALSE;
+	}
+	
+}
+
 - (IBAction)ActionDone:(id)sender {
 	
 	Class UIKeyboardImpl = NSClassFromString(@"UIKeyboardImpl");
@@ -670,11 +689,14 @@
 	}
 	else{
 		if ([self Validation]  == TRUE) {
-			
+			/*
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 															message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
 			[alert setTag:1001];
 			[alert show];
+			 */
+			[self InsertandUpdate];
+			[_delegate FundAllocationGlobalSave];
 		}
 	}
 	

@@ -244,17 +244,17 @@ NSString *gEverName = @"";
     {
         if (self.requestSINo) {
             if (useExist) {
-				NSLog(@"rrrr");
+				//NSLog(@"rrrr");
 				[self updatePayor];
 				[self CheckValidRider];
 				
             } else {
-				NSLog(@"wwww");
+				//NSLog(@"wwww");
 				[self savePayor];
             }
         }
         else {
-			NSLog(@"qqqq");
+			//NSLog(@"qqqq");
             [self savePayorHandler];
         }
     }
@@ -929,32 +929,37 @@ NSString *gEverName = @"";
 }
 
 #pragma mark - button action
+
+-(BOOL)NewDone{
+	if([self Validation] == TRUE){
+		if (self.requestSINo) {
+            [self checkingExisting2];
+
+        }
+        
+		if (self.requestSINo) {
+            if (useExist) {
+				[self updatePayor];
+				[self CheckValidRider];
+				
+            } else {
+				[self savePayor];
+            }
+        }
+        else {
+            [self savePayorHandler];
+        }
+		
+		return TRUE;
+	}
+	else{
+		return FALSE;
+	}
+}
+
 - (IBAction)ActionDone:(id)sender {
 	//    NSLog(@"smoker:%@",smoker);
-    NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
-    
-    if (txtName.text.length <= 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if (OccpCode.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if ([txtName.text rangeOfCharacterFromSet:set].location != NSNotFound) {
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if (smoker.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if (age < 16) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else {
+	if([self Validation] == TRUE){
         NSString *msg;
         if (self.requestSINo) {
             [self checkingExisting2];
@@ -976,6 +981,41 @@ NSString *gEverName = @"";
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:2001];
         [alert show];
+    }
+}
+
+-(BOOL)Validation{
+	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
+    
+    if (txtName.text.length <= 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Payor Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+    else if (OccpCode.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+    else if ([txtName.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+    else if (smoker.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+    else if (age < 16) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+    else {
+		return TRUE;
+        
     }
 }
 

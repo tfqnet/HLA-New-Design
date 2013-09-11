@@ -1015,7 +1015,7 @@ BOOL exist;
         msg = [NSString stringWithFormat:@"Delete fund:%@",ridCode];
     }
     else {
-        msg = @"Are you sure want to delete these Rider(s)?";
+        msg = @"Are you sure want to delete these Fund(s)?";
     }
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"Yes" otherButtonTitles:@"No", nil];
@@ -1029,7 +1029,7 @@ BOOL exist;
     if ([self.myTableView isEditing]) {
         [self.myTableView setEditing:NO animated:TRUE];
 		outletDelete.hidden = true;
-        [outletEdit setTitle:@"Delete" forState:UIControlStateNormal ];
+        [outletEdit setTitle:@"Edit" forState:UIControlStateNormal ];
         
 		
         ItemToBeDeleted = [[NSMutableArray alloc] init];

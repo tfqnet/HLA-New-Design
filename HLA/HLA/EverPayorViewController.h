@@ -90,5 +90,7 @@
 - (IBAction)ActionProspect:(id)sender;
 - (IBAction)ActionGender:(id)sender;
 - (IBAction)ACtionSmoker:(id)sender;
+-(BOOL)NewDone;
+
 
 @end

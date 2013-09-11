@@ -45,4 +45,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblReduceAt;
 @property (weak, nonatomic) IBOutlet UILabel *lblReduceTo;
 
+-(BOOL)NewDone;
+
 @end

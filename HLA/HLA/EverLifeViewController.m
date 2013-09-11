@@ -29,18 +29,13 @@ double VU2023InstHigh, VU2023InstMedian, VU2023InstLow,VU2025InstHigh, VU2025Ins
 double VU2028InstHigh, VU2028InstMedian, VU2028InstLow,VU2030InstHigh, VU2030InstMedian, VU2030InstLow;
 double VU2035InstHigh, VU2035InstMedian, VU2035InstLow, NegativeValueOfMaxCashFundHigh,NegativeValueOfMaxCashFundMedian,NegativeValueOfMaxCashFundLow ;
 double HSurrenderValue,MSurrenderValue,LSurrenderValue,HRiderSurrenderValue,MRiderSurrenderValue,LRiderSurrenderValue;
-double VUCashValueHigh, VU2023ValueHigh,VU2025ValueHigh,VU2028ValueHigh,VU2030ValueHigh;
-double VU2035ValueHigh,VURetValueHigh;
-double VU2023PrevValuehigh, VU2025PrevValuehigh,VU2028PrevValuehigh, VU2030PrevValuehigh, VU2035PrevValuehigh,VUCashPrevValueHigh;
-double VURetPrevValueHigh;
-double MonthVU2023PrevValuehigh, MonthVU2025PrevValuehigh,MonthVU2028PrevValuehigh, MonthVU2030PrevValuehigh, MonthVU2035PrevValuehigh,MonthVUCashPrevValueHigh;
-double MonthVURetPrevValueHigh;
+double VUCashValueHigh, VU2023ValueHigh,VU2025ValueHigh,VU2028ValueHigh,VU2030ValueHigh,VU2035ValueHigh,VURetValueHigh;
+double VU2023PrevValuehigh, VU2025PrevValuehigh,VU2028PrevValuehigh, VU2030PrevValuehigh, VU2035PrevValuehigh,VUCashPrevValueHigh,VURetPrevValueHigh;
+double MonthVU2023PrevValuehigh, MonthVU2025PrevValuehigh,MonthVU2028PrevValuehigh, MonthVU2030PrevValuehigh, MonthVU2035PrevValuehigh,MonthVUCashPrevValueHigh, MonthVURetPrevValueHigh;
 double VUCashValueMedian, VU2023ValueMedian,VU2025ValueMedian,VU2028ValueMedian,VU2030ValueMedian,VU2035ValueMedian,VURetValueMedian;
 double VUCashValueLow, VU2023ValueLow,VU2025ValueLow,VU2028ValueLow,VU2030ValueLow,VU2035ValueLow,VURetValueLow;
-double VU2023PrevValueMedian, VU2025PrevValueMedian,VU2028PrevValueMedian, VU2030PrevValueMedian, VU2035PrevValueMedian,VUCashPrevValueMedian;
-double VURetPrevValueMedian;
-double VU2023PrevValueLow, VU2025PrevValueLow,VU2028PrevValueLow, VU2030PrevValueLow, VU2035PrevValueLow,VUCashPrevValueLow;
-double VURetPrevValueLow;
+double VU2023PrevValueMedian, VU2025PrevValueMedian,VU2028PrevValueMedian, VU2030PrevValueMedian, VU2035PrevValueMedian,VUCashPrevValueMedian,VURetPrevValueMedian;
+double VU2023PrevValueLow, VU2025PrevValueLow,VU2028PrevValueLow, VU2030PrevValueLow, VU2035PrevValueLow,VUCashPrevValueLow,VURetPrevValueLow;
 double MonthVU2023PrevValueMedian, MonthVU2025PrevValueMedian,MonthVU2028PrevValueMedian, MonthVU2030PrevValueMedian;
 double  MonthVU2035PrevValueMedian,MonthVUCashPrevValueMedian,MonthVURetPrevValueMedian;
 double MonthVU2023PrevValueLow, MonthVU2025PrevValueLow,MonthVU2028PrevValueLow, MonthVU2030PrevValueLow;
@@ -64,9 +59,32 @@ double MonthFundValueOfTheYearValueTotalHigh,MonthFundValueOfTheYearValueTotalMe
 double MonthVU2023ValueHigh,MonthVU2023ValueMedian,MonthVU2023ValueLow,MonthVU2025ValueHigh,MonthVU2025ValueMedian,MonthVU2025ValueLow;
 double MonthVU2028ValueHigh,MonthVU2028ValueMedian,MonthVU2028ValueLow,MonthVU2030ValueHigh,MonthVU2030ValueMedian,MonthVU2030ValueLow;
 double MonthVU2035ValueHigh,MonthVU2035ValueMedian,MonthVU2035ValueLow,MonthVURetValueHigh,MonthVURetValueMedian,MonthVURetValueLow;
-BOOL VUCashValueNegative, CIRDExist;
+BOOL VUCashValueNegative,RiderVUCashValueNegative, CIRDExist;
+
+double RiderVUCashValueHigh, RiderVU2023ValueHigh,RiderVU2025ValueHigh,RiderVU2028ValueHigh,RiderVU2030ValueHigh,RiderVU2035ValueHigh,RiderVURetValueHigh;
+double RiderVU2023PrevValuehigh, RiderVU2025PrevValuehigh,RiderVU2028PrevValuehigh, RiderVU2030PrevValuehigh, RiderVU2035PrevValuehigh,RiderVUCashPrevValueHigh,RiderVURetPrevValueHigh;
+double RiderMonthVU2023PrevValuehigh, RiderMonthVU2025PrevValuehigh,RiderMonthVU2028PrevValuehigh, RiderMonthVU2030PrevValuehigh, RiderMonthVU2035PrevValuehigh,RiderMonthVUCashPrevValueHigh, RiderMonthVURetPrevValueHigh;
+double RiderVUCashValueMedian, RiderVU2023ValueMedian,RiderVU2025ValueMedian,RiderVU2028ValueMedian,RiderVU2030ValueMedian,RiderVU2035ValueMedian,RiderVURetValueMedian;
+double RiderVUCashValueLow, RiderVU2023ValueLow,RiderVU2025ValueLow,RiderVU2028ValueLow,RiderVU2030ValueLow,RiderVU2035ValueLow,RiderVURetValueLow;
+double RiderVU2023PrevValueMedian, RiderVU2025PrevValueMedian,RiderVU2028PrevValueMedian, RiderVU2030PrevValueMedian, RiderVU2035PrevValueMedian,RiderVUCashPrevValueMedian,RiderVURetPrevValueMedian;
+double RiderVU2023PrevValueLow, RiderVU2025PrevValueLow,RiderVU2028PrevValueLow, RiderVU2030PrevValueLow, RiderVU2035PrevValueLow,RiderVUCashPrevValueLow,RiderVURetPrevValueLow;
+double RiderMonthVU2023PrevValueMedian, RiderMonthVU2025PrevValueMedian,RiderMonthVU2028PrevValueMedian, RiderMonthVU2030PrevValueMedian;
+double  RiderMonthVU2035PrevValueMedian,RiderMonthVUCashPrevValueMedian,RiderMonthVURetPrevValueMedian;
+double RiderMonthVU2023PrevValueLow, RiderMonthVU2025PrevValueLow,RiderMonthVU2028PrevValueLow, RiderMonthVU2030PrevValueLow;
+double  RiderMonthVU2035PrevValueLow,RiderMonthVUCashPrevValueLow,RiderMonthVURetPrevValueLow;
+double RiderFundValueOfTheYearValueTotalHigh,RiderFundValueOfTheYearValueTotalMedian, RiderFundValueOfTheYearValueTotalLow;
+double RiderMonthFundValueOfTheYearValueTotalHigh,RiderMonthFundValueOfTheYearValueTotalMedian, RiderMonthFundValueOfTheYearValueTotalLow;
+double RiderMonthVU2023ValueHigh,RiderMonthVU2023ValueMedian,RiderMonthVU2023ValueLow,RiderMonthVU2025ValueHigh,RiderMonthVU2025ValueMedian,RiderMonthVU2025ValueLow;
+double RiderMonthVU2028ValueHigh,RiderMonthVU2028ValueMedian,RiderMonthVU2028ValueLow,RiderMonthVU2030ValueHigh,RiderMonthVU2030ValueMedian,RiderMonthVU2030ValueLow;
+double RiderMonthVU2035ValueHigh,RiderMonthVU2035ValueMedian,RiderMonthVU2035ValueLow,RiderMonthVURetValueHigh,RiderMonthVURetValueMedian,RiderMonthVURetValueLow;
+double RiderNegativeValueOfMaxCashFundHigh,RiderNegativeValueOfMaxCashFundMedian,RiderNegativeValueOfMaxCashFundLow ;
+double Ridertemp2023High, Ridertemp2023Median,Ridertemp2023Low,Ridertemp2025High, Ridertemp2025Median,Ridertemp2025Low,Ridertemp2028High, Ridertemp2028Median,Ridertemp2028Low;
+double Ridertemp2030High, Ridertemp2030Median,Ridertemp2030Low, Ridertemp2035High, Ridertemp2035Median,Ridertemp2035Low;;
+
+
+
 NSString *getHL, *getHLPct, *getOccLoading, *strBumpMode, *strBasicPremium, *strBasicSA, *strRTUPFrom, *strRTUPFor,*strRTUPAmount;
-NSString *strUnitizeRiderPrem, *PYSex, *SecSex;
+NSString *strRRTUOPrem,*strRRTUOFrom,*strRRTUOFor, *PYSex, *SecSex;
 int PYAge, SecAge;
 
 
@@ -75,6 +93,9 @@ int PYAge, SecAge;
 @synthesize getSexLA,requestSexLA, getSmokerLA, requestSmokerLA, SimpleOrDetail, getOccpClass, requestOccpClass;
 @synthesize OtherRiderCode,OtherRiderDeductible,OtherRiderDesc,OtherRiderHL,OtherRiderHLP,OtherRiderHLPTerm,OtherRiderHLTerm;
 @synthesize OtherRiderPlanOption,OtherRiderSA,OtherRiderTerm,OtherRiderPaymentTerm, OtherRiderPremium;
+@synthesize UnitizeRiderCode,UnitizeRiderDeductible,UnitizeRiderHL,UnitizeRiderHLPct;
+@synthesize UnitizeRiderPlanChoice,UnitizeRiderSA,UnitizeRiderTerm, UnitizeRiderPremium,UniTotalRiderPremAtPolYear;
+@synthesize UniTotalRiderPremWithAlloc;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -132,6 +153,19 @@ int PYAge, SecAge;
 		OtherRiderPremium = [[NSMutableArray alloc] init];
 		OtherRiderPaymentTerm= [[NSMutableArray alloc] init];
 		
+		UnitizeRiderCode = [[NSMutableArray alloc] init ];
+		UnitizeRiderSA = [[NSMutableArray alloc] init ];
+		UnitizeRiderHL= [[NSMutableArray alloc] init ];
+		UnitizeRiderHLPct = [[NSMutableArray alloc] init ];
+		UnitizeRiderTerm = [[NSMutableArray alloc] init ];
+		//UnitizeRiderMort = [[NSMutableArray alloc] init ];
+		UnitizeRiderPlanChoice = [[NSMutableArray alloc] init ];
+		UnitizeRiderDeductible = [[NSMutableArray alloc] init ];
+		//UnitizeRiderAlloc = [[NSMutableArray alloc] init ];
+		UnitizeRiderPremium = [[NSMutableArray alloc] init ];
+		UniTotalRiderPremAtPolYear = [[NSMutableArray alloc] init ];
+		UniTotalRiderPremWithAlloc = [[NSMutableArray alloc] init ];
+		
 		[self deleteTemp];
 		[self PopulateData];
 		[self GetRTUPData];
@@ -141,6 +175,7 @@ int PYAge, SecAge;
 		[self InsertToUL_Temp_Trad_Rider];
 		[self InsertToUL_Temp_ECAR55];
 		[self InsertToUL_Temp_ECAR1];
+		[self InsertToUL_Temp_Summary];
 		
 		NSString *databaseName = @"hladb.sqlite";
 		self.db = [DBController sharedDatabaseController:databaseName];
@@ -168,6 +203,13 @@ int PYAge, SecAge;
 		}
 		
 		pageNum++;
+		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page13.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+		DBID = [_db ExecuteINSERT:sqlStmt];
+		if (DBID <= 0){
+			NSLog(@"Error inserting data into database.");
+		}
+		
+		pageNum++;
 		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page3.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
 		DBID = [_db ExecuteINSERT:sqlStmt];
 		if (DBID <= 0){
@@ -176,6 +218,13 @@ int PYAge, SecAge;
 		
 		pageNum++;
 		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page4.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+		DBID = [_db ExecuteINSERT:sqlStmt];
+		if (DBID <= 0){
+			NSLog(@"Error inserting data into database.");
+		}
+		
+		pageNum++;
+		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page14.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
 		DBID = [_db ExecuteINSERT:sqlStmt];
 		if (DBID <= 0){
 			NSLog(@"Error inserting data into database.");
@@ -368,6 +417,7 @@ int PYAge, SecAge;
 		}
 		
 		pageNum++;
+		//EverCash 55
 		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page11.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
 		DBID = [_db ExecuteINSERT:sqlStmt];
 		if (DBID <= 0){
@@ -375,6 +425,7 @@ int PYAge, SecAge;
 		}
 		
 		pageNum++;
+		//EverCash 1
 		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page12.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
 		DBID = [_db ExecuteINSERT:sqlStmt];
 		if (DBID <= 0){
@@ -387,6 +438,23 @@ int PYAge, SecAge;
 		if (DBID <= 0){
 			NSLog(@"Error inserting data into database.");
 		}
+		
+		pageNum++;
+		//Summary Page 1
+		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page30.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+		DBID = [_db ExecuteINSERT:sqlStmt];
+		if (DBID <= 0){
+			NSLog(@"Error inserting data into database.");
+		}
+
+		pageNum++;
+		//Summary Page 2
+		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page31.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
+		DBID = [_db ExecuteINSERT:sqlStmt];
+		if (DBID <= 0){
+			NSLog(@"Error inserting data into database.");
+		}
+
 		
 		pageNum++;
 		sqlStmt = [NSString stringWithFormat:@"INSERT INTO UL_Temp_Pages(htmlName, PageNum, PageDesc) VALUES ('Page40.html',%d,'%@')",pageNum,[desc stringByAppendingString:[NSString stringWithFormat:@"%d",pageNum]]];
@@ -484,6 +552,24 @@ int PYAge, SecAge;
             sqlite3_finalize(statement);
         }
         
+		QuerySQL = @"Delete from UL_temp_Fund";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+		
+		QuerySQL = @"Delete from UL_temp_Summary";
+        if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_DONE) {
+                
+                
+            }
+            sqlite3_finalize(statement);
+        }
+		
         QuerySQL = @"Delete from UL_temp_Rider";
         if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -752,6 +838,8 @@ int PYAge, SecAge;
 	NSMutableArray *FundChargeBull = [[NSMutableArray alloc] init ];
 	NSMutableArray *FundChargeFlat = [[NSMutableArray alloc] init ];
 	NSMutableArray *FundChargeBear = [[NSMutableArray alloc] init ];
+
+
 	
 	NSLog(@"------------basic start --------");
 	
@@ -789,6 +877,7 @@ int PYAge, SecAge;
             sqlite3_finalize(statement);
         }
 		
+		/*
 		QuerySQL = [NSString stringWithFormat: @"Select sum(premium) as TotalRiderPrem from  ul_rider_details Where  "
 					" sino = '%@' AND ridercode in ('CIRD', 'DCA', 'ACIR', 'HMM', 'MG_IV', "
 					"'WI', 'MR', 'TPDMLA', 'PA', 'DHI')", SINo];
@@ -804,9 +893,67 @@ int PYAge, SecAge;
 			}
             sqlite3_finalize(statement);
         }
+		 */
+		
 		
 		sqlite3_close(contactDB);
 	}
+	
+	if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
+		if (UnitizeRiderCode.count > 0) {
+			for (int i = 1; i <= 30; i++) {
+				double tempUniRiderPrem = 0.00;
+				double tempValue = 0.00;
+				double tempUniRiderAlloc = 0.00;
+				
+				for (int j = 0; j < [UnitizeRiderCode count]; j++) {
+					if ([[UnitizeRiderTerm objectAtIndex:j ] integerValue ] >= i ) {
+						tempUniRiderPrem = tempUniRiderPrem + [[UnitizeRiderPremium objectAtIndex:j] doubleValue ];
+						
+						QuerySQL = [NSString stringWithFormat: @"select Rate from ES_Sys_Rider_Allocation where Term = '%@' AND PolYear = '%d'",
+									[UnitizeRiderTerm objectAtIndex:j], i];
+						
+						//NSLog(@"%@", QuerySQL);
+						if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+							if (sqlite3_step(statement) == SQLITE_ROW) {
+								tempValue = sqlite3_column_double(statement, 0);
+								
+							}
+							else{
+								tempValue = 0.00;
+							}
+							sqlite3_finalize(statement);
+						}
+						else{
+							tempValue = 0.00;
+						}
+						
+						tempUniRiderAlloc = tempUniRiderAlloc + ([[UnitizeRiderPremium objectAtIndex:j] doubleValue ] * tempValue/100.00 );
+						
+					}
+				}
+				
+				[UniTotalRiderPremAtPolYear addObject:[NSString stringWithFormat:@"%f", tempUniRiderPrem]];
+				[UniTotalRiderPremWithAlloc addObject:[NSString stringWithFormat:@"%f", tempUniRiderAlloc]];
+			}
+		}
+		else{
+			[UniTotalRiderPremAtPolYear addObject:[NSString stringWithFormat:@"0.00"]];
+			[UniTotalRiderPremWithAlloc addObject:[NSString stringWithFormat:@"0.00"]];
+		}
+
+	}
+	
+	if (UniTotalRiderPremAtPolYear.count < 30) {
+		NSLog(@" UniTotalRiderPremAtPolYear is less than 30");
+		return;
+	}
+
+	if (UniTotalRiderPremWithAlloc.count < 30) {
+		NSLog(@" UniTotalRiderAlloc is less than 30");
+		return;
+	}
+	
 	
 	if ([strBasicPremium isEqualToString:@""]) {
 		NSLog(@"no basic premium");
@@ -816,29 +963,29 @@ int PYAge, SecAge;
 	[self ResetData];
     for (int i =1; i <= 30; i++) {
 		[BasicSumAssured addObject: strBasicSA ];
-		NSLog(@"basicSA ok");
+		//NSLog(@"basicSA ok");
 		
-		double TotalPolicyPrem = [strBasicPremium doubleValue] + [strUnitizeRiderPrem doubleValue];
-		[AnnualPremium addObject: [NSString stringWithFormat:@"%f", TotalPolicyPrem]];
-				NSLog(@"premium ok");
+		double TotalPolicyPrem = [strBasicPremium doubleValue] + [[UniTotalRiderPremAtPolYear objectAtIndex:i -1] doubleValue];
+		[AnnualPremium addObject: [NSString stringWithFormat:@"%.3f", TotalPolicyPrem]];
+				//NSLog(@"premium ok");
 		
 		if (i == 1) {
 			[CumulativePremium addObject: [AnnualPremium objectAtIndex: i -1]];
 		}
 		else{
-			NSString *Prev = [NSString stringWithFormat:@"%f", [[CumulativePremium objectAtIndex:i - 2] doubleValue ] + [[AnnualPremium objectAtIndex: i -1] doubleValue ]];
+			NSString *Prev = [NSString stringWithFormat:@"%.3f", [[CumulativePremium objectAtIndex:i - 2] doubleValue ] + [[AnnualPremium objectAtIndex: i -1] doubleValue ]];
 			[CumulativePremium addObject: Prev];
 		}
-				NSLog(@"cumPremium ok");
+				//NSLog(@"cumPremium ok");
 		
 		double sss = [self ReturnPremAllocation:i];
 		[AllocatedBasicPrem addObject:[NSString stringWithFormat:@"%f", [strBasicPremium doubleValue ] * sss]];
-							NSLog(@"4 ok");
-		[AllocatedRiderPrem addObject:[NSString stringWithFormat:@"%f", [strUnitizeRiderPrem doubleValue ]]];
-										NSLog(@"5 ok");
+							//NSLog(@"4 ok");
+		[AllocatedRiderPrem addObject:[NSString stringWithFormat:@"%f", [[UniTotalRiderPremWithAlloc objectAtIndex:i -1] doubleValue ]]];
+										//NSLog(@"5 ok");
 		[UnAllocatedAllPrem addObject:[NSString stringWithFormat:@"%f",
 									   TotalPolicyPrem - [[AllocatedBasicPrem objectAtIndex:i - 1] doubleValue] - [[AllocatedRiderPrem objectAtIndex:i - 1] doubleValue]]];
-										NSLog(@"6 ok");
+										//NSLog(@"6 ok");
 		if (i == 1) {
 			[CumAlloBasicPrem addObject: [AllocatedBasicPrem objectAtIndex: i -1]];
 		}
@@ -846,7 +993,7 @@ int PYAge, SecAge;
 			NSString *Prev = [NSString stringWithFormat:@"%f", [[CumAlloBasicPrem objectAtIndex:i - 2] doubleValue ] + [[AllocatedBasicPrem objectAtIndex: i -1] doubleValue ]];
 			[CumAlloBasicPrem addObject: Prev];
 		}
-												NSLog(@"7 ok");
+												//NSLog(@"7 ok");
 		if (i == 1) {
 			[CumAlloRiderPrem addObject: [AllocatedRiderPrem objectAtIndex: i -1]];
 		}
@@ -854,17 +1001,18 @@ int PYAge, SecAge;
 			NSString *Prev = [NSString stringWithFormat:@"%f", [[CumAlloRiderPrem objectAtIndex:i - 2] doubleValue ] + [[AllocatedRiderPrem objectAtIndex: i -1] doubleValue ]];
 			[CumAlloRiderPrem addObject: Prev];
 		}
-												NSLog(@"8 ok");
+												//NSLog(@"8 ok");
 		[TotalCumPrem addObject:[NSString stringWithFormat:@"%f", [[CumAlloBasicPrem objectAtIndex:i - 1] doubleValue] + [[CumAlloRiderPrem objectAtIndex:i-1] doubleValue ]]];
-												NSLog(@"9 ok");
+												//NSLog(@"9 ok");
  		 [BasicInsCharge addObject:[NSString stringWithFormat:@"%f",[self ReturnTotalBasicMortLow:i] * 12]];
-		 										NSLog(@"10 ok");
-		[RiderInsCharge addObject:[NSString stringWithFormat:@"%f", [self ReturnTotalRiderMort:i] * 12]];
-												NSLog(@"11 ok");
-		[OtherCharge addObject:[NSString stringWithFormat:@"%f", PolicyFee * [self ReturnRiderPolicyFee:i]]];
-												NSLog(@"12 ok");
-		[DirectDistributionCost addObject:[NSString stringWithFormat:@"%f", ([strBasicPremium doubleValue ] * [self ReturnBasicCommisionFee:i]/100.00) + ([self ReturnRegTopUpPrem] * 0.0375) ]];
-											NSLog(@"13 ok");
+		 										//NSLog(@"10 ok");
+		[RiderInsCharge addObject:[NSString stringWithFormat:@"%f", [self ReturnTotalRiderMort:i] * 12.00]];
+												//NSLog(@"11 ok");
+		[OtherCharge addObject:[NSString stringWithFormat:@"%f", (PolicyFee + [self ReturnRiderPolicyFee:i]) * 12]];
+												//NSLog(@"12 ok");
+		[DirectDistributionCost addObject:[NSString stringWithFormat:@"%f", ([strBasicPremium doubleValue ] * [self ReturnBasicCommisionFee:i]/100.00) +
+										   ([self ReturnRegTopUpPrem] * 0.0375) + ([self ReturnExcessPrem:1] * 0.0375) + [self ReturnRiderCommisionFee:i]  ]];
+											//NSLog(@"13 ok");
 		//-----------
 		if (i == 1) {
 			[self CalcInst:@""];
@@ -874,18 +1022,22 @@ int PYAge, SecAge;
 		}
 		
 		 VUCashValueNegative = false;
+		 RiderVUCashValueNegative = false;
 		 if (i == YearDiff2023 || i == YearDiff2025 || i == YearDiff2028 || i == YearDiff2030 || i == YearDiff2035) {
 		 
 			 for (int m = 1; m <= 12; m++) {
 				 MonthFundValueOfTheYearValueTotalHigh = [self ReturnMonthFundValueOfTheYearValueTotalHigh:i andMonth:m];
+				 RiderMonthFundValueOfTheYearValueTotalHigh = [self ReturnRiderMonthFundValueOfTheYearValueTotalHigh:i andMonth:m];
 				 //NSLog(@"%d %f %f %f", m, MonthVURetValueHigh, MonthVU2035ValueHigh, MonthFundValueOfTheYearValueTotalHigh );
 				 [self SurrenderValue:i andMonth:m andLevel:1];
 				
 				 MonthFundValueOfTheYearValueTotalMedian = [self ReturnMonthFundValueOfTheYearValueTotalMedian:i andMonth:m];
+				 RiderMonthFundValueOfTheYearValueTotalMedian = [self ReturnRiderMonthFundValueOfTheYearValueTotalMedian:i andMonth:m];
 				 [self SurrenderValue:i andMonth:m andLevel:2];
 				 
 				 
 				 MonthFundValueOfTheYearValueTotalLow = [self ReturnMonthFundValueOfTheYearValueTotalLow:i andMonth:m];
+				 RiderMonthFundValueOfTheYearValueTotalLow = [self ReturnRiderMonthFundValueOfTheYearValueTotalLow:i andMonth:m];
 				 //NSLog(@"%d %f %f %f", m, MonthVURetValueLow, MonthVU2035ValueLow, MonthFundValueOfTheYearValueTotalLow );
 				 [self SurrenderValue:i andMonth:m andLevel:3];
 		 
@@ -894,9 +1046,14 @@ int PYAge, SecAge;
 		 }
 		 else{
 			 VUCashValueNegative = false;
+			 RiderVUCashValueNegative = false;
 			 FundValueOfTheYearValueTotalHigh = [self ReturnFundValueOfTheYearValueTotalHigh:i];
 			 FundValueOfTheYearValueTotalMedian = [self ReturnFundValueOfTheYearValueTotalMedian:i];
 			 FundValueOfTheYearValueTotalLow = [self ReturnFundValueOfTheYearValueTotalLow:i];
+			 RiderFundValueOfTheYearValueTotalHigh = [self ReturnRiderFundValueOfTheYearValueTotalHigh:i];
+			 RiderFundValueOfTheYearValueTotalMedian = [self ReturnRiderFundValueOfTheYearValueTotalMedian:i];
+			 RiderFundValueOfTheYearValueTotalLow = [self ReturnRiderFundValueOfTheYearValueTotalLow:i];
+			 
 			 [self SurrenderValue:i andMonth:0 andLevel:0];
 
 		 }
@@ -904,17 +1061,19 @@ int PYAge, SecAge;
 		[BullSurrender addObject:[NSString stringWithFormat:@"%f", HSurrenderValue]];
 		[FlatSurrender addObject:[NSString stringWithFormat:@"%f", MSurrenderValue]];
 		[BearSurrender addObject:[NSString stringWithFormat:@"%f", LSurrenderValue]];
-		 //NSLog(@"%d) %f, %f, %f",i, HSurrenderValue, MSurrenderValue, LSurrenderValue );
-		 //NSLog(@"%d) %f,%f,%f,%f,%f,%f,%f", i, VUCashValueHigh,VURetValueHigh,VU2023ValueHigh, VU2025ValueHigh,VU2028ValueHigh, VU2030ValueHigh, VU2035ValueHigh);
+		 //NSLog(@"%d) %f, %f, %f",i, HRiderSurrenderValue, MRiderSurrenderValue, LRiderSurrenderValue );
+		 //NSLog(@"%d) %f,%f,%f,%f,%f,%f,%f", i, RiderVUCashValueHigh,RiderVURetValueHigh,RiderVU2023ValueHigh, RiderVU2025ValueHigh,RiderVU2028ValueHigh, RiderVU2030ValueHigh, RiderVU2035ValueHigh);
 		 //NSLog(@"%d) %f,%f,%f,%f,%f,%f,%f", i, VUCashValueLow,VURetValueLow,VU2023ValueLow, VU2025ValueLow,VU2028ValueLow, VU2030ValueLow, VU2035ValueLow);
 		 // --------------------
 		
-		[RiderBullSurrender addObject:[NSString stringWithFormat:@"0.00"]];
-		[RiderFlatSurrender addObject:[NSString stringWithFormat:@"0.00"]];
-		[RiderBearSurrender addObject:[NSString stringWithFormat:@"0.00"]];
-		[TotalBullSurrender addObject:[NSString stringWithFormat:@"%f", HSurrenderValue]];
-		[TotalFlatSurrender addObject:[NSString stringWithFormat:@"%f", MSurrenderValue]];
-		[TotalBearSurrender addObject:[NSString stringWithFormat:@"%f", LSurrenderValue]];
+		[RiderBullSurrender addObject:[NSString stringWithFormat:@"%f", HRiderSurrenderValue]];
+		[RiderFlatSurrender addObject:[NSString stringWithFormat:@"%f", MRiderSurrenderValue]];
+		[RiderBearSurrender addObject:[NSString stringWithFormat:@"%f", LRiderSurrenderValue]];
+		
+		[TotalBullSurrender addObject:[NSString stringWithFormat:@"%f", HSurrenderValue + HRiderSurrenderValue] ];
+		[TotalFlatSurrender addObject:[NSString stringWithFormat:@"%f", MSurrenderValue + MRiderSurrenderValue]];
+		[TotalBearSurrender addObject:[NSString stringWithFormat:@"%f", LSurrenderValue + LRiderSurrenderValue]];
+		
 		[EOFTPDBull addObject:[NSString stringWithFormat:@"%f", [strBasicSA doubleValue] + HSurrenderValue]];
 		[EOFTPDFlat addObject:[NSString stringWithFormat:@"%f", [strBasicSA doubleValue] + MSurrenderValue]];
 		[EOFTPDBear addObject:[NSString stringWithFormat:@"%f", [strBasicSA doubleValue] + LSurrenderValue]];
@@ -937,23 +1096,27 @@ int PYAge, SecAge;
 				QuerySQL = [NSString stringWithFormat: @"Insert INTO UL_Temp_Trad_Basic (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
 							"'col3','col4','col5','col6','col7','col8','col9','col10','col11','col12','col13','col14','col15','col16','col17','col18','col19','col20','col21','col22', "
 							" 'col23','col24','col25','col26','col27','col28','col29','col30','col31') VALUES ( "
-							" \"%@\",\"%d\",\"%@\",\"%d\",\"%d\",\"%@\", '%@', '%@','%@', '%@', %@, '%@', '%@','%@', '%@','%@', '%@','%@','%@', '%@','%@','%@', '%@','%@', "
-							"'%@', '%@','%@','%@', '%@','%@','%@', '%@','%@','%@', '%@','%@' )",
-							SINo, a, @"DATA", a, inputAge, [BasicSumAssured objectAtIndex:a-1], [AnnualPremium objectAtIndex:a -1], [CumulativePremium objectAtIndex: a -1],
-							[UnAllocatedAllPrem objectAtIndex:a-1], [AllocatedBasicPrem objectAtIndex:a-1], [AllocatedRiderPrem objectAtIndex:a-1],
-							[CumAlloBasicPrem objectAtIndex:a-1], [CumAlloRiderPrem objectAtIndex:a-1], [TotalCumPrem objectAtIndex:a-1],
-							[BasicInsCharge objectAtIndex:a-1], [RiderInsCharge objectAtIndex:a-1], [OtherCharge objectAtIndex:a-1], [DirectDistributionCost objectAtIndex:a-1],
-							[BullSurrender objectAtIndex:a-1], [FlatSurrender objectAtIndex:a-1], [BearSurrender objectAtIndex:a-1],
-							[RiderBullSurrender objectAtIndex:a-1], [RiderFlatSurrender objectAtIndex:a-1], [RiderBearSurrender objectAtIndex:a-1],
-							[TotalBullSurrender objectAtIndex:a-1], [TotalFlatSurrender objectAtIndex:a-1], [TotalBearSurrender objectAtIndex:a-1],
-							[EOFTPDBull objectAtIndex:a-1], [EOFTPDFlat objectAtIndex:a-1], [EOFTPDBear objectAtIndex:a-1],
-							[EOFOADBull objectAtIndex:a-1], [EOFOADFlat objectAtIndex:a-1], [EOFOADBear objectAtIndex:a-1],
-							[FundChargeBull objectAtIndex:a-1], [FundChargeFlat objectAtIndex:a-1], [FundChargeBear objectAtIndex:a-1]];
+							" \"%@\",\"%d\",\"%@\",\"%d\",\"%d\",\"%@\", '%@', '%.0f','%.0f', '%.0f', %.0f, '%.0f', '%.0f','%.0f', '%.0f','%.0f', '%.0f','%.0f','%.0f', '%.0f','%.0f','%.0f', '%.0f','%.0f', "
+							"'%.0f', '%.0f','%.0f','%.0f', '%.0f','%.0f','%.0f', '%.0f','%.0f','%.0f', '%.0f','%.0f' )",
+							SINo, a, @"DATA", a, inputAge, [BasicSumAssured objectAtIndex:a-1], [AnnualPremium objectAtIndex:a -1], round([[CumulativePremium objectAtIndex: a -1] doubleValue]),
+							round([[UnAllocatedAllPrem objectAtIndex:a-1] doubleValue]), round([[AllocatedBasicPrem objectAtIndex:a-1] doubleValue ]), round([[AllocatedRiderPrem objectAtIndex:a-1] doubleValue ]),
+							round([[CumAlloBasicPrem objectAtIndex:a-1] doubleValue ]), round([[CumAlloRiderPrem objectAtIndex:a-1]doubleValue ]), round([[TotalCumPrem objectAtIndex:a-1] doubleValue ]),
+							round([[BasicInsCharge objectAtIndex:a-1]doubleValue ]), round([[RiderInsCharge objectAtIndex:a-1]doubleValue ]), round([[OtherCharge objectAtIndex:a-1]doubleValue ]),
+							round([[DirectDistributionCost objectAtIndex:a-1]doubleValue ]),
+							round([[BullSurrender objectAtIndex:a-1]doubleValue ]), round([[FlatSurrender objectAtIndex:a-1]doubleValue ]), round([[BearSurrender objectAtIndex:a-1]doubleValue ]),
+							round([[RiderBullSurrender objectAtIndex:a-1]doubleValue ]), round([[RiderFlatSurrender objectAtIndex:a-1] doubleValue ]), round([[RiderBearSurrender objectAtIndex:a-1] doubleValue ]),
+							round([[TotalBullSurrender objectAtIndex:a-1]doubleValue ]), round([[TotalFlatSurrender objectAtIndex:a-1] doubleValue ]), round([[TotalBearSurrender objectAtIndex:a-1] doubleValue ]),
+							round([[EOFTPDBull objectAtIndex:a-1]doubleValue ]), round([[EOFTPDFlat objectAtIndex:a-1] doubleValue ]), round([[EOFTPDBear objectAtIndex:a-1] doubleValue ]),
+							round([[EOFOADBull objectAtIndex:a-1]doubleValue ]), round([[EOFOADFlat objectAtIndex:a-1] doubleValue ]), round([[EOFOADBear objectAtIndex:a-1] doubleValue ]),
+							round([[FundChargeBull objectAtIndex:a-1]doubleValue ]), round([[FundChargeFlat objectAtIndex:a-1] doubleValue ]), round([[FundChargeBear objectAtIndex:a-1] doubleValue ])];
 				
 				//NSLog(@"%@", QuerySQL);
 				if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 					if (sqlite3_step(statement) == SQLITE_DONE) {
 						
+					}
+					else{
+						NSLog(@"error in inserting data to UL_Temp_Trad_Basic");
 					}
 					sqlite3_finalize(statement);
 				}
@@ -1005,10 +1168,45 @@ int PYAge, SecAge;
 			sqlite3_finalize(statement);
 		}
 		
+		QuerySQL = [NSString stringWithFormat: @"Select ridercode, SumAssured, ifnull(Hloading, '0') as Hloading, ifnull(HLoadingPct, '0') as HLoadingPct, "
+					"RiderTerm, planOption, Deductible, premium from ul_rider_details Where  "
+					"  sino = '%@' AND ridercode in ('CIRD', 'DCA', 'ACIR', 'HMM', 'MG_IV', "
+					"'WI', 'MR', 'TPDMLA', 'PA', 'DHI')", SINo];
+		
+		//NSLog(@"%@", QuerySQL);
+		if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+				[UnitizeRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+				[UnitizeRiderSA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)]];
+				[UnitizeRiderHL addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)]];
+				[UnitizeRiderHLPct addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)]];
+				[UnitizeRiderTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)]];
+				[UnitizeRiderPlanChoice addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)]];
+				[UnitizeRiderDeductible addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)]];
+				[UnitizeRiderPremium addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 7)]];
+			}
+            sqlite3_finalize(statement);
+        }
+
+		QuerySQL = [NSString stringWithFormat: @"Select premium, RRTUOFromYear, RRTUOYear from ul_rider_details Where  "
+					"  sino = '%@' AND ridercode in ('RRTUO')", SINo];
+		
+		//NSLog(@"%@", QuerySQL);
+		if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+            if (sqlite3_step(statement) == SQLITE_ROW) {
+				strRRTUOPrem = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+				strRRTUOFrom = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+				strRRTUOFor = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
+			}
+            sqlite3_finalize(statement);
+        }
+		
+		
 		
 		
 		sqlite3_close(contactDB);
 	}
+	
 }
 
 -(void)InsertToUL_Temp_ECAR55{
@@ -1202,16 +1400,28 @@ int PYAge, SecAge;
 		
 		int inputAge;
 		if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+
 			for (int a= 1; a<=30; a++) {
 				if (Age >= 0){
 					inputAge = Age + a;
 					
-					QuerySQL = [NSString stringWithFormat: @"Insert INTO UL_Temp_ECAR55 (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
-								"'col3','col4','col5','col6','col7') VALUES ( "
-								" \"%@\",\"%d\",\"%@\",\"%d\",\"%d\",\"%@\", '%@', '%@','%@', '%@', %@, '%@')",
-								SINo, a, @"DATA", a, inputAge, [AnnualPremium objectAtIndex:a - 1], [RiderMonthlyIncome objectAtIndex:a -1],
-								[RiderSurrenderValueMRA objectAtIndex:a-1], [RiderSurrenderValue objectAtIndex:a-1], [RiderTPDBegin objectAtIndex:a-1],
-								[RiderTPDEnd objectAtIndex:a-1], [RiderDistributionCost objectAtIndex:a-1]];
+					if (a == 1) {
+						QuerySQL = [NSString stringWithFormat: @"Insert INTO UL_Temp_ECAR55 (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+									"'col3','col4','col5','col6','col7', 'col8', 'col9') VALUES ( "
+									" \"%@\",\"%d\",\"%@\",\"%d\",\"%d\",\"%@\", '%@', '%@','%@', '%@', %@, '%@', '%f', '%@')",
+									SINo, a, @"DATA", a, inputAge, [AnnualPremium objectAtIndex:a - 1], [RiderMonthlyIncome objectAtIndex:a -1],
+									[RiderSurrenderValueMRA objectAtIndex:a-1], [RiderSurrenderValue objectAtIndex:a-1], [RiderTPDBegin objectAtIndex:a-1],
+									[RiderTPDEnd objectAtIndex:a-1], [RiderDistributionCost objectAtIndex:a-1], ECAR55AnnuityRate, ECAR55Premium];
+					}
+					else{
+						QuerySQL = [NSString stringWithFormat: @"Insert INTO UL_Temp_ECAR55 (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+									"'col3','col4','col5','col6','col7') VALUES ( "
+									" \"%@\",\"%d\",\"%@\",\"%d\",\"%d\",\"%@\", '%@', '%@','%@', '%@', %@, '%@')",
+									SINo, a, @"DATA", a, inputAge, [AnnualPremium objectAtIndex:a - 1], [RiderMonthlyIncome objectAtIndex:a -1],
+									[RiderSurrenderValueMRA objectAtIndex:a-1], [RiderSurrenderValue objectAtIndex:a-1], [RiderTPDBegin objectAtIndex:a-1],
+									[RiderTPDEnd objectAtIndex:a-1], [RiderDistributionCost objectAtIndex:a-1]];
+					}
+			
 					
 					//NSLog(@"%@", QuerySQL);
 					if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
@@ -1502,6 +1712,41 @@ int PYAge, SecAge;
 		return 0.00;
 	}
 }
+
+-(void)InsertToUL_Temp_Summary{
+	sqlite3_stmt *statement;
+    NSString *QuerySQL;
+	
+		NSLog(@"--------- UL_Temp_Summary begin --------");
+	
+		int inputAge;
+		if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
+			for (int a= 1; a<=30; a++) {
+				if (Age >= 0){
+					inputAge = Age + a;
+					
+					QuerySQL = [NSString stringWithFormat: @"Insert INTO UL_Temp_Summary (\"SINO\", \"SeqNo\", \"DataType\",\"col0_1\",\"col0_2\",\"col1\",\"col2\", "
+								"'col3','col4','col5','col6','col7','col8','col9','col10','col11','col12','col13','col14','col15','col16','col17') VALUES ( "
+								" \"%@\",\"%d\",\"%@\",\"%d\",\"%d\",\"%@\", '%@', '%@','%@', '%@', %@, '%@', '%@',\"%@\", '%@', '%@','%@', '%@', %@, '%@', '%@','%@')",
+								SINo, a, @"DATA", a, inputAge, @"0", @"0", @"0", @"0",@"0",@"0",@"0",@"0",@"0", @"0", @"0", @"0",@"0",@"0",@"0",@"0",@"0" ];
+					
+					//NSLog(@"%@", QuerySQL);
+					if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+						if (sqlite3_step(statement) == SQLITE_DONE) {
+							
+						}
+						sqlite3_finalize(statement);
+					}
+					
+				}
+			}
+			sqlite3_close(contactDB);
+		}
+		NSLog(@"--------- UL_Temp_Summary end --------");
+	
+	
+}
+
 
 -(void)InsertToUL_Temp_Trad_Rider{
     
@@ -2170,13 +2415,14 @@ int PYAge, SecAge;
 	double PremAllocation = [self ReturnPremAllocation:1];
 	double ExcessPrem =  [self ReturnExcessPrem:1];
 	
+		//NSLog(@" %f,%f,%f,%f, %f", MortDate, ModeRate, divideMode, PremAllocation, ExcessPrem);
 	double FirstBasicSA =  (FirstSA * ((FirstBasicMort * MortDate + SecondBasicMort * (12 - MortDate))/12.00 * (1 + [getHLPct intValue]/100.00 ) +
 									   ([getHL doubleValue] /1000.00) + ([getOccLoading doubleValue ]/1000.00)));
 	
 	double SecondBasicSA =  (SecondSA * ((SecondBasicMort * MortDate + ThirdBasicMort * (12 - MortDate))/12.00 * (1 + [getHLPct intValue]/100.00 ) +
 										 ([getHL doubleValue] /1000.00) + ([getOccLoading doubleValue ]/1000.00)));
 	
-	//NSLog(@"%f %f %f", FirstBasicSA, SecondBasicSA, MortDate );
+	//NSLog(@"%f %f ", FirstBasicSA, SecondBasicSA);
 	BUMP1 = (ModeRate * (PremAllocation * ([strBasicPremium doubleValue ] * divideMode) +
 						 (0.95 * (ExcessPrem + [strRTUPAmount doubleValue ]))) -
 			 (((PolicyFee * 12) + FirstBasicSA + 0) * 12.5/12.00))/divideMode;
@@ -2257,6 +2503,14 @@ int PYAge, SecAge;
 	VU2028PrevValuehigh =0;
 	VU2030PrevValuehigh = 0;
 	VU2035PrevValuehigh = 0;
+	RiderVUCashPrevValueHigh =0;
+	RiderVURetPrevValueHigh  =0;
+	RiderVU2023PrevValuehigh = 0;
+	RiderVU2025PrevValuehigh =0;
+	RiderVU2028PrevValuehigh =0;
+	RiderVU2030PrevValuehigh = 0;
+	RiderVU2035PrevValuehigh = 0;
+
 	
 	VUCashPrevValueMedian =0;
 	VURetPrevValueMedian  =0;
@@ -2265,6 +2519,13 @@ int PYAge, SecAge;
 	VU2028PrevValueMedian =0;
 	VU2030PrevValueMedian = 0;
 	VU2035PrevValueMedian = 0;
+	RiderVUCashPrevValueMedian =0;
+	RiderVURetPrevValueMedian  =0;
+	RiderVU2023PrevValueMedian = 0;
+	RiderVU2025PrevValueMedian =0;
+	RiderVU2028PrevValueMedian =0;
+	RiderVU2030PrevValueMedian = 0;
+	RiderVU2035PrevValueMedian = 0;
 	
 	VUCashPrevValueLow =0;
 	VURetPrevValueLow  =0;
@@ -2273,6 +2534,13 @@ int PYAge, SecAge;
 	VU2028PrevValueLow =0;
 	VU2030PrevValueLow = 0;
 	VU2035PrevValueLow = 0;
+	RiderVUCashPrevValueLow =0;
+	RiderVURetPrevValueLow  =0;
+	RiderVU2023PrevValueLow = 0;
+	RiderVU2025PrevValueLow =0;
+	RiderVU2028PrevValueLow =0;
+	RiderVU2030PrevValueLow = 0;
+	RiderVU2035PrevValueLow = 0;
 	
 	MonthVUCashPrevValueHigh =0;
 	MonthVURetPrevValueHigh  =0;
@@ -2281,6 +2549,13 @@ int PYAge, SecAge;
 	MonthVU2028PrevValuehigh =0;
 	MonthVU2030PrevValuehigh = 0;
 	MonthVU2035PrevValuehigh = 0;
+	RiderMonthVUCashPrevValueHigh =0;
+	RiderMonthVURetPrevValueHigh  =0;
+	RiderMonthVU2023PrevValuehigh = 0;
+	RiderMonthVU2025PrevValuehigh =0;
+	RiderMonthVU2028PrevValuehigh =0;
+	RiderMonthVU2030PrevValuehigh = 0;
+	RiderMonthVU2035PrevValuehigh = 0;
 	
 	MonthVUCashPrevValueMedian =0;
 	MonthVURetPrevValueMedian  =0;
@@ -2289,6 +2564,13 @@ int PYAge, SecAge;
 	MonthVU2028PrevValueMedian =0;
 	MonthVU2030PrevValueMedian = 0;
 	MonthVU2035PrevValueMedian = 0;
+	RiderMonthVUCashPrevValueMedian =0;
+	RiderMonthVURetPrevValueMedian  =0;
+	RiderMonthVU2023PrevValueMedian = 0;
+	RiderMonthVU2025PrevValueMedian =0;
+	RiderMonthVU2028PrevValueMedian =0;
+	RiderMonthVU2030PrevValueMedian = 0;
+	RiderMonthVU2035PrevValueMedian = 0;
 	
 	MonthVUCashPrevValueLow =0;
 	MonthVURetPrevValueLow  =0;
@@ -2297,6 +2579,13 @@ int PYAge, SecAge;
 	MonthVU2028PrevValueLow =0;
 	MonthVU2030PrevValueLow = 0;
 	MonthVU2035PrevValueLow = 0;
+	RiderMonthVUCashPrevValueLow =0;
+	RiderMonthVURetPrevValueLow  =0;
+	RiderMonthVU2023PrevValueLow = 0;
+	RiderMonthVU2025PrevValueLow =0;
+	RiderMonthVU2028PrevValueLow =0;
+	RiderMonthVU2030PrevValueLow = 0;
+	RiderMonthVU2035PrevValueLow = 0;
 	
 	temp2023High = 0;
 	temp2023Median= 0;
@@ -2313,38 +2602,63 @@ int PYAge, SecAge;
 	temp2035High = 0;
 	temp2035Median = 0;
 	temp2035Low = 0;
+	Ridertemp2023High = 0;
+	Ridertemp2023Median= 0;
+	Ridertemp2023Low = 0;
+	Ridertemp2025High = 0;
+	Ridertemp2025Median = 0;
+	Ridertemp2025Low = 0;
+	Ridertemp2028High = 0;
+	Ridertemp2028Median = 0;
+	Ridertemp2028Low = 0;
+	Ridertemp2030High = 0;
+	Ridertemp2030Median = 0;
+	Ridertemp2030Low = 0;
+	Ridertemp2035High = 0;
+	Ridertemp2035Median = 0;
+	Ridertemp2035Low = 0;
 }
 
-#pragma mark - Surrender Value Calculation
+#pragma mark - Surrender Value Calculation for basic
 -(void)SurrenderValue :(int)aaPolicyYear andMonth:(int)aaMonth andLevel:(int)aaLevel{
 	if (aaPolicyYear == YearDiff2023 || aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2028 || aaPolicyYear == YearDiff2030 ||
 		aaPolicyYear == YearDiff2035) {
 		//month
 		if (aaLevel == 1) {
 			HSurrenderValue = [self ReturnHSurrenderValue:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth ];
+			
 		}
 		else if (aaLevel == 2){
 			MSurrenderValue = [self ReturnMSurrenderValue:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth ];
+			
 		}
 		else if (aaLevel == 3){
 			LSurrenderValue = [self ReturnLSurrenderValue:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth ];
+			
 		}
 		else{
 			
 		}
 		
-		HRiderSurrenderValue = 0;
-		MRiderSurrenderValue = 0;
-		LRiderSurrenderValue = 0;
+		if (aaLevel == 1) {
+			HRiderSurrenderValue = [self ReturnRiderHSurrenderValue:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth ];;
+		}
+		else if (aaLevel == 2){
+			MRiderSurrenderValue = [self ReturnRiderMSurrenderValue:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth ];
+		}
+		else if (aaLevel == 3){
+			LRiderSurrenderValue = [self ReturnRiderLSurrenderValue:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth ];
+		}
+		
 		
 	} else {
 		//year
 		HSurrenderValue = [self ReturnHSurrenderValue:aaPolicyYear andYearOrMonth:@"Y" andMonth:0 ];
 		MSurrenderValue = [self ReturnMSurrenderValue:aaPolicyYear andYearOrMonth:@"Y" andMonth:0 ];
 		LSurrenderValue = [self ReturnLSurrenderValue:aaPolicyYear andYearOrMonth:@"Y" andMonth:0 ];
-		HRiderSurrenderValue = 0;
-		MRiderSurrenderValue = 0;
-		LRiderSurrenderValue = 0;
+		HRiderSurrenderValue = [self ReturnRiderHSurrenderValue:aaPolicyYear andYearOrMonth:@"Y" andMonth:0 ];
+		MRiderSurrenderValue = [self ReturnRiderMSurrenderValue:aaPolicyYear andYearOrMonth:@"Y" andMonth:0 ];
+		LRiderSurrenderValue = [self ReturnRiderLSurrenderValue:aaPolicyYear andYearOrMonth:@"Y" andMonth:0 ];
 	}
 	/*
 	 if (aaPolicyYear == YearDiff2035) {
@@ -2507,6 +2821,141 @@ int PYAge, SecAge;
 	}
 	
 }
+
+#pragma mark - Surrender Value Calculation for Rider
+
+-(double)ReturnRiderHSurrenderValue :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth {
+	//NSLog(@"%f", [self ReturnVUCashValueHigh:aaPolicyYear]);
+	
+	if (aaPolicyYear == YearDiff2035 || aaPolicyYear == YearDiff2030 || aaPolicyYear == YearDiff2028
+		|| aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2023) {
+		
+		RiderVUCashValueHigh = [self ReturnRiderVUCashValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andMonth:aaMonth];
+		RiderVURetValueHigh = [self ReturnRiderVURetValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2023ValueHigh = [self ReturnRiderVU2023ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2025ValueHigh = [self ReturnRiderVU2025ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2028ValueHigh = [self ReturnRiderVU2028ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2030ValueHigh = [self ReturnRiderVU2030ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2035ValueHigh = [self ReturnRiderVU2035ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		
+		
+		/*
+		 VU2023ValueHigh = [self ReturnVU2023ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
+		 VU2025ValueHigh = [self ReturnVU2025ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
+		 VU2028ValueHigh = [self ReturnVU2028ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
+		 VU2030ValueHigh = [self ReturnVU2030ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
+		 VU2035ValueHigh = [self ReturnVU2035ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
+		 VUCashValueHigh = [self ReturnVUCashValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth];
+		 VURetValueHigh = [self ReturnVURetValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2];
+		 */
+		
+	}
+	else{
+		RiderVUCashValueHigh = [self ReturnRiderVUCashValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andMonth:0];
+		RiderVURetValueHigh = [self ReturnRiderVURetValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2023ValueHigh = [self ReturnRiderVU2023ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2025ValueHigh = [self ReturnRiderVU2025ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2028ValueHigh = [self ReturnRiderVU2028ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2030ValueHigh = [self ReturnRiderVU2030ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2035ValueHigh = [self ReturnRiderVU2035ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+	}
+	
+	
+	
+	if (RiderVUCashValueHigh == 1 && RiderVU2023ValueHigh == 0 && RiderVU2025ValueHigh == 0 && RiderVU2028ValueHigh == 0 &&
+		RiderVU2030ValueHigh == 0 && RiderVU2035ValueHigh == 0 && RiderVURetValueHigh == 0) {
+		return 0;
+	} else {
+		return RiderVU2023ValueHigh + RiderVU2025ValueHigh + RiderVU2028ValueHigh + RiderVU2030ValueHigh + RiderVU2035ValueHigh +
+		RiderVUCashValueHigh + RiderVURetValueHigh;
+	}
+	
+}
+
+
+
+
+
+-(double)ReturnRiderMSurrenderValue :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth {
+	//NSLog(@"%f", [self ReturnVUCashValueHigh:aaPolicyYear]);
+	
+	if (aaPolicyYear == YearDiff2035 || aaPolicyYear == YearDiff2030 || aaPolicyYear == YearDiff2028
+		|| aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2023) {
+		
+		RiderVUCashValueMedian = [self ReturnRiderVUCashValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andMonth:aaMonth];
+		RiderVURetValueMedian = [self ReturnRiderVURetValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2023ValueMedian = [self ReturnRiderVU2023ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2025ValueMedian = [self ReturnRiderVU2025ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2028ValueMedian = [self ReturnRiderVU2028ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2030ValueMedian = [self ReturnRiderVU2030ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2035ValueMedian = [self ReturnRiderVU2035ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		
+	}
+	else{
+		RiderVUCashValueMedian = [self ReturnRiderVUCashValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andMonth:0];
+		RiderVURetValueMedian = [self ReturnRiderVURetValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2023ValueMedian = [self ReturnRiderVU2023ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2025ValueMedian = [self ReturnRiderVU2025ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2028ValueMedian = [self ReturnRiderVU2028ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2030ValueMedian = [self ReturnRiderVU2030ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2035ValueMedian = [self ReturnRiderVU2035ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		
+	}
+	
+	
+	
+	if (RiderVUCashValueMedian == 1 && RiderVU2023ValueMedian == 0 && RiderVU2025ValueMedian == 0 && RiderVU2028ValueMedian == 0 &&
+		RiderVU2030ValueMedian == 0 && RiderVU2035ValueMedian == 0 && RiderVURetValueMedian == 0) {
+		return 0;
+	} else {
+		//NSLog(@"%f,%f,%f,%f,%f,%f,%f", VUCashValueMedian,VURetValueMedian,VU2023ValueMedian, VU2025ValueMedian,VU2028ValueMedian, VU2030ValueMedian, VU2035ValueMedian);
+		return RiderVU2023ValueMedian + RiderVU2025ValueMedian + RiderVU2028ValueMedian + RiderVU2030ValueMedian + RiderVU2035ValueMedian +
+		RiderVUCashValueMedian + RiderVURetValueMedian;
+		
+	}
+	
+}
+
+-(double)ReturnRiderLSurrenderValue :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth {
+	//NSLog(@"%f", [self ReturnVUCashValueHigh:aaPolicyYear]);
+	
+	if (aaPolicyYear == YearDiff2035 || aaPolicyYear == YearDiff2030 || aaPolicyYear == YearDiff2028
+		|| aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2023) {
+		
+		RiderVUCashValueLow = [self ReturnRiderVUCashValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andMonth:aaMonth];
+		RiderVURetValueLow = [self ReturnRiderVURetValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2023ValueLow = [self ReturnRiderVU2023ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2025ValueLow = [self ReturnRiderVU2025ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2028ValueLow = [self ReturnRiderVU2028ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2030ValueLow = [self ReturnRiderVU2030ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		RiderVU2035ValueLow = [self ReturnRiderVU2035ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:aaMonth];
+		
+		
+	}
+	else{
+		RiderVUCashValueLow = [self ReturnRiderVUCashValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andMonth:0];
+		RiderVURetValueLow = [self ReturnRiderVURetValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2023ValueLow = [self ReturnRiderVU2023ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2025ValueLow = [self ReturnRiderVU2025ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2028ValueLow = [self ReturnRiderVU2028ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2030ValueLow = [self ReturnRiderVU2030ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		RiderVU2035ValueLow = [self ReturnRiderVU2035ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:2 andMonth:0];
+		
+	}
+	
+	
+	
+	if (RiderVUCashValueLow == 1 && RiderVU2023ValueLow == 0 && RiderVU2025ValueLow == 0 && RiderVU2028ValueLow == 0 &&
+		RiderVU2030ValueLow == 0 && RiderVU2035ValueLow == 0 && RiderVURetValueLow == 0) {
+		return 0;
+	} else {
+		return RiderVU2023ValueLow + RiderVU2025ValueLow + RiderVU2028ValueLow + RiderVU2030ValueLow + RiderVU2035ValueLow +
+		RiderVUCashValueLow + RiderVURetValueLow;
+		
+	}
+	
+}
+
 
 
 -(void)ReturnFundFactor{
@@ -4970,9 +5419,2272 @@ int PYAge, SecAge;
 	}
 }
 
-#pragma mark - Calculate Fund Factor
+-(double)ReturnRiderRegTopUpPrem :(int) aaPolicyYear{
+	if ([strRRTUOPrem isEqualToString:@""]) {
+		return 0.00;
+	}
+	else{
+		if (aaPolicyYear > [strRRTUOFrom intValue ] && aaPolicyYear < ([strRRTUOFrom intValue] + [strRRTUOFor intValue])) {
+			return [strRRTUOPrem doubleValue];
+		}
+		else{
+			return 0.00;
+		}
+	}
+	
+}
 
-#pragma mark - Calculate Yearly Fund Value
+
+#pragma mark - Calculate Fund Surrender Value for Rider
+-(double)ReturnRiderVU2023ValueHigh :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(NSInteger)aaMonth{
+	double currentValue;
+	if (aaPolicyYear > YearDiff2023) {
+		return 0.00;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			//month calculation
+			
+			
+			if (aaMonth == 1) {
+				RiderMonthVU2023PrevValuehigh = RiderVU2023PrevValuehigh;
+			}
+			
+			if (aaMonth > MonthDiff2023 && aaPolicyYear == YearDiff2023) {
+				RiderMonthVU2023PrevValuehigh = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2023PrevValuehigh;
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalHigh != 0 ) {
+				
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:aaMonth] ) + IncreasePrem) * [self ReturnVU2023Fac] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor * [self ReturnPremiumFactor:aaMonth]) *
+				pow((1 + [self ReturnVU2023InstHigh:@"A" ]), (1.00/12.00)) + RiderMonthVU2023PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear] * [self ReturnLoyaltyBonusFactor:aaMonth]/100.00)) *
+				pow((1 + [self ReturnVU2023InstHigh:@"A" ]), 1.00/12.00)  + (NegativeValueOfMaxCashFundHigh - 1) * (RiderMonthVU2023ValueHigh/RiderMonthFundValueOfTheYearValueTotalHigh);
+				
+			}
+			else{
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:aaMonth]) + IncreasePrem) * [self ReturnVU2023Fac] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor * [self ReturnPremiumFactor:aaMonth]) *
+				pow(1 + [self ReturnVU2023InstHigh:@"A" ], 1.00/12.00) + RiderMonthVU2023PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:aaMonth]/100.00)) *
+				pow(1 + [self ReturnVU2023InstHigh:@"A" ], 1.00/12.00);
+			}
+			if (aaMonth == MonthDiff2023 && aaPolicyYear == YearDiff2023) {
+				if (Fund2023PartialReinvest != 100) {
+					MonthFundMaturityValue2023_Bull = MonthVU2023PrevValuehigh * (100 - Fund2023PartialReinvest)/100.00;
+					
+					Ridertemp2023High = currentValue * (100 - Fund2023PartialReinvest)/100.00;
+					//NSLog(@"%f", temp2028High);
+				}
+				else{
+					MonthFundMaturityValue2023_Bull = 0;
+				}
+				
+				if (aaRound == 2) {
+					RiderMonthVU2023PrevValuehigh = 0;
+				}
+				else{
+					RiderMonthVU2023PrevValuehigh = tempPrev;
+				}
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2023PrevValuehigh = currentValue;
+				}
+				else{
+					RiderMonthVU2023PrevValuehigh = tempPrev;
+				}
+			}
+			
+			if (aaMonth == 12 && aaRound == 2) {
+				RiderVU2023PrevValuehigh = RiderMonthVU2023PrevValuehigh;
+			}
+			
+			return currentValue;
+			// below part to be edit later
+		}
+		else{
+			//year calculation
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalHigh != 0 ) {
+				
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2023Fac] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor) *
+				(1 + VU2023InstHigh) + RiderVU2023PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2023InstHigh:@"A"])
+				+ (RiderNegativeValueOfMaxCashFundHigh - 1) * (RiderVU2023ValueHigh/RiderFundValueOfTheYearValueTotalHigh);
+				
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2023Fac]  +
+								   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor) *
+					(1 + VU2023InstHigh) + RiderVU2023PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2023InstHigh:@"A"]);
+					RiderVU2023ValueHigh = currentValue;
+				}
+				else{
+					currentValue = RiderVU2023ValueHigh;
+				}
+				
+			}
+			
+			if (aaRound == 2){
+				RiderVU2023PrevValuehigh = currentValue;
+			}
+			
+			return currentValue;
+			// below part to be edit later
+		}
+		
+	}
+}
+
+-(double)ReturnRiderVU2023ValueMedian :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	double currentValue;
+	if (aaPolicyYear > YearDiff2023) {
+		return 0.00;
+	}
+	else{
+		
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			if (i == 1) {
+				RiderMonthVU2023PrevValueMedian = RiderVU2023PrevValueMedian;
+			}
+			
+			if (i > MonthDiff2023 && aaPolicyYear == YearDiff2023) {
+				RiderMonthVU2023PrevValueMedian = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2023PrevValueMedian;
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalMedian != 0 ) {
+				
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2023Fac]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor) *
+				pow(1 + [self ReturnVU2023InstMedian:@"A" ], 1.00/12.00) + RiderMonthVU2023PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2023InstMedian:@"A" ], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderMonthVU2023ValueMedian/RiderMonthFundValueOfTheYearValueTotalMedian);
+				
+			}
+			else{
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2023Fac ]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor) *
+				pow(1 + [self ReturnVU2023InstMedian:@"A" ], 1.00/12.00) + RiderMonthVU2023PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2023InstMedian:@"A" ], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2023 && aaPolicyYear == YearDiff2023) {
+				if (Fund2023PartialReinvest != 100) {
+					MonthFundMaturityValue2023_Flat = MonthVU2023PrevValueMedian * (100 - Fund2023PartialReinvest)/100.00;
+					
+					Ridertemp2023Median = currentValue * (100 - Fund2023PartialReinvest)/100.00;
+					//NSLog(@"%f", temp2028High);
+				}
+				else{
+					MonthFundMaturityValue2023_Flat = 0;
+				}
+				
+				if (aaRound == 2) {
+					RiderMonthVU2023PrevValueMedian = 0;
+				}
+				else{
+					RiderMonthVU2023PrevValueMedian = tempPrev;
+				}
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2023PrevValueMedian = currentValue;
+				}
+				else{
+					RiderMonthVU2023PrevValueMedian = tempPrev;
+				}
+				
+			}
+			
+			
+			if (i == 12 && aaRound == 2) {
+				RiderVU2023PrevValueMedian = RiderMonthVU2023PrevValueMedian;
+			}
+			
+			return currentValue;
+			// below part to be edit later
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalMedian != 0 ) {
+				
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2023Fac]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor) *
+				(1 + VU2023InstMedian) + RiderVU2023PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2023InstMedian:@"A"])
+				+ (RiderNegativeValueOfMaxCashFundMedian - 1) * (RiderVU2023ValueMedian/RiderFundValueOfTheYearValueTotalMedian);
+				
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2023Fac]  +
+								   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor  +
+								   [self ReturnExcessPrem:aaPolicyYear] * ExcessAllo * VU2023Factor * CYFactor) *
+					(1 + VU2023InstMedian) + RiderVU2023PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2023InstMedian:@"A"]);
+					RiderVU2023ValueMedian = currentValue;
+				}
+				else{
+					currentValue = RiderVU2023ValueMedian;
+				}
+				
+			}
+			
+			if (aaRound == 2){
+				RiderVU2023PrevValueMedian = currentValue;
+			}
+			
+			return currentValue;
+			// below part to be edit later
+		}
+		
+	}
+}
+
+-(double)ReturnRiderVU2023ValueLow :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	double currentValue;
+	if (aaPolicyYear > YearDiff2023) {
+		return 0.00;
+	}
+	else{
+		
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			if (i == 1) {
+				RiderMonthVU2023PrevValueLow = RiderVU2023PrevValueLow;
+			}
+			
+			if (i > MonthDiff2023 && aaPolicyYear == YearDiff2023) {
+				RiderMonthVU2023PrevValueLow = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2023PrevValueLow;
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalLow != 0 ) {
+				
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2023Fac]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor * [self ReturnPremiumFactor:aaPolicyYear]) *
+				pow(1 + [self ReturnVU2023InstLow:@"A" ], 1.00/12.00) + RiderMonthVU2023PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2023InstLow:@"A" ], 1.00/12.00)  + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderMonthVU2023ValueLow/RiderMonthFundValueOfTheYearValueTotalLow);
+				
+			}
+			else{
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2023Fac ]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor * [self ReturnPremiumFactor:aaPolicyYear]) *
+				pow(1 + [self ReturnVU2023InstLow:@"A" ], 1.00/12.00) + RiderMonthVU2023PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2023InstLow:@"A" ], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2023 && aaPolicyYear == YearDiff2023) {
+				if (Fund2023PartialReinvest != 100) {
+					MonthFundMaturityValue2023_Bear = MonthVU2023PrevValueLow * (100 - Fund2023PartialReinvest)/100.00;
+					
+					Ridertemp2023Low = currentValue * (100 - Fund2023PartialReinvest)/100.00;
+					//NSLog(@"%f", temp2028High);
+				}
+				else{
+					MonthFundMaturityValue2023_Bear = 0;
+				}
+				if (aaRound == 2) {
+					RiderMonthVU2023PrevValueLow = 0;
+				}
+				else{
+					RiderMonthVU2023PrevValueLow = tempPrev;
+				}
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2023PrevValueLow = currentValue;
+				}
+				else{
+					RiderMonthVU2023PrevValueLow = tempPrev;
+				}
+			}
+			
+			if (i == 12 && aaRound == 2) {
+				RiderVU2023PrevValueLow = RiderMonthVU2023PrevValueLow;
+			}
+			
+			return currentValue;
+			// below part to be edit later
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalLow != 0 ) {
+				
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1 ] doubleValue ]) + IncreasePrem) * [self ReturnVU2023Fac]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor * [self ReturnPremiumFactor:aaPolicyYear]) *
+				(1 + VU2023InstLow) + RiderVU2023PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2023InstLow:@"A"]) +
+				(RiderNegativeValueOfMaxCashFundLow - 1) * (RiderVU2023ValueLow/RiderFundValueOfTheYearValueTotalLow);
+				
+			}
+			else{
+				
+				if (aaRound == 1) {
+					currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2023Fac] * +
+								   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2023Factor * [self ReturnPremiumFactor:aaPolicyYear]) *
+					(1 + VU2023InstLow) + RiderVU2023PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2023InstLow:@"A"]);
+					RiderVU2023ValueLow = currentValue ;
+				}
+				else{
+					currentValue = RiderVU2023ValueLow;
+				}
+				
+			}
+			
+			if (aaRound == 2){
+				RiderVU2023PrevValueLow = currentValue;
+			}
+			
+			return currentValue;
+			// below part to be edit later
+		}
+		
+	}
+}
+
+
+-(double)ReturnRiderVU2025ValueHigh :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(NSInteger)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2025) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			if (i == 1) {
+				RiderMonthVU2025PrevValuehigh = RiderVU2025PrevValuehigh;
+			}
+			
+			if (i > MonthDiff2025 && aaPolicyYear == YearDiff2025) {
+				RiderMonthVU2025PrevValuehigh = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2025PrevValuehigh;
+			
+			if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2025PrevValuehigh = RiderMonthVU2025PrevValuehigh + (Ridertemp2023High * Fund2023ReinvestTo2025Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalHigh != 0 ) {
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]  * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear  andMonth:i]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2025InstHigh:@"A" ], 1.00/12.00) + RiderMonthVU2025PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2025InstHigh:@"A" ], 1.00/12.00) - ([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderMonthVU2025ValueHigh/RiderMonthFundValueOfTheYearValueTotalHigh);
+			}
+			else{
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear  andMonth:i]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2025InstHigh:@"A" ], 1.00/12.00) + RiderMonthVU2025PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2025InstHigh:@"A" ], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2025 && aaPolicyYear == YearDiff2025) {
+				if (Fund2025PartialReinvest != 100) {
+					MonthFundMaturityValue2025_Bull = MonthVU2025PrevValuehigh * (100 - Fund2025PartialReinvest)/100.00;
+					
+					Ridertemp2025High = currentValue * (100 - Fund2025PartialReinvest)/100.00;
+					//NSLog(@"%f", temp2028High);
+				}
+				else{
+					MonthFundMaturityValue2025_Bull = 0;
+				}
+				if (aaRound == 2){
+					RiderMonthVU2025PrevValuehigh = 0;
+				}
+				else{
+					RiderMonthVU2025PrevValuehigh = tempPrev;
+				}
+				
+			}
+			else{
+				if (aaRound == 2){
+					RiderMonthVU2025PrevValuehigh = currentValue;
+				}
+				else{
+					RiderMonthVU2025PrevValuehigh = tempPrev;
+				}
+				
+			}
+			
+			
+			if (aaRound == 2 && i == 12) {
+				RiderVU2025PrevValuehigh = RiderMonthVU2025PrevValuehigh;
+			}
+			
+			return currentValue;
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalHigh != 0 ) {
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2025InstHigh) + RiderVU2025PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2025InstHigh:@"A"]) -
+				([self ReturnRegWithdrawal:aaPolicyYear] * 0) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderVU2025ValueHigh/RiderFundValueOfTheYearValueTotalHigh);
+				
+				
+			}
+			else{
+				
+				if (aaRound == 1) {
+					currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear] +
+								   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2025InstHigh) + RiderVU2025PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2025InstHigh:@"A"]) -
+					([self ReturnRegWithdrawal:aaPolicyYear] * 0);
+					
+					RiderVU2025ValueHigh = currentValue;
+				}
+				else{
+					currentValue = RiderVU2025ValueHigh;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2025PrevValuehigh = currentValue;
+			}
+			
+			return currentValue;
+		}
+		
+	}
+	
+	// below part to be edit later
+}
+
+-(double)ReturnRiderVU2025ValueMedian :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2025) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			
+			if (i == 1) {
+				RiderMonthVU2025PrevValueMedian = RiderVU2025PrevValueMedian;
+			}
+			
+			if (i > MonthDiff2025 && aaPolicyYear == YearDiff2025) {
+				RiderMonthVU2025PrevValueMedian = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2025PrevValueMedian;
+			
+			if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2025PrevValueMedian = RiderMonthVU2025PrevValueMedian + (Ridertemp2023Median * Fund2023ReinvestTo2025Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalMedian != 0 ) {
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear  andMonth:i]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2025InstMedian:@"A" ], 1.00/12.00) + RiderMonthVU2025PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2025InstMedian:@"A" ], 1.00/12.00) + (NegativeValueOfMaxCashFundMedian - 1) *
+				(RiderMonthVU2025ValueMedian/RiderMonthFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear  andMonth:i]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2025InstMedian:@"A" ], 1.00/12.00) + RiderMonthVU2025PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2025InstMedian:@"A" ], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2025 && aaPolicyYear == YearDiff2025) {
+				if (Fund2025PartialReinvest != 100) {
+					MonthFundMaturityValue2025_Flat = RiderMonthVU2025PrevValueMedian * (100 - Fund2025PartialReinvest)/100.00;
+					
+					Ridertemp2025Median = currentValue * (100 - Fund2025PartialReinvest)/100.00;
+					//NSLog(@"%f", temp2028High);
+				}
+				else{
+					MonthFundMaturityValue2025_Flat = 0;
+				}
+				if (aaRound == 2){
+					RiderMonthVU2025PrevValueMedian = 0;
+				}
+				else{
+					RiderMonthVU2025PrevValueMedian = tempPrev;
+				}
+				
+			}
+			else{
+				if (aaRound == 2){
+					RiderMonthVU2025PrevValueMedian = currentValue;
+				}
+				else{
+					RiderMonthVU2025PrevValueMedian = tempPrev;
+				}
+				
+			}
+			
+			
+			if (aaRound == 2 && i == 12) {
+				RiderVU2025PrevValueMedian = RiderMonthVU2025PrevValueMedian;
+			}
+			
+			
+			return currentValue;
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalMedian != 0 ) {
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2025InstMedian) + RiderVU2025PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2025InstMedian:@"A"]) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderVU2025ValueMedian/RiderFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear]  +
+								   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2025InstMedian) + RiderVU2025PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2025InstMedian:@"A"]);
+					
+					RiderVU2025ValueMedian = currentValue;
+				}
+				else{
+					currentValue = RiderVU2025ValueMedian;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2025PrevValueMedian = currentValue;
+			}
+			
+			return currentValue;
+		}
+		
+	}
+	
+	// below part to be edit later
+}
+
+
+-(double)ReturnRiderVU2025ValueLow :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2025) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			
+			if (i == 1) {
+				RiderMonthVU2025PrevValueLow = RiderVU2025PrevValueLow;
+			}
+			
+			if (i > MonthDiff2025 && aaPolicyYear == YearDiff2025) {
+				RiderMonthVU2025PrevValueLow = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2025PrevValueLow;
+			
+			if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2025PrevValueLow = RiderMonthVU2025PrevValueLow + (Ridertemp2023Low * Fund2023ReinvestTo2025Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalLow != 0 ) {
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear  andMonth:i] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2025InstLow:@"A" ], 1.00/12.00) + RiderMonthVU2025PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2025InstLow:@"A" ], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderMonthVU2025ValueLow/RiderMonthFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]  * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear  andMonth:i]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2025InstLow:@"A" ], 1.00/12.00) + RiderMonthVU2025PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2025InstLow:@"A" ], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2025 && aaPolicyYear == YearDiff2025) {
+				if (Fund2025PartialReinvest != 100) {
+					MonthFundMaturityValue2025_Bear = RiderMonthVU2025PrevValueLow * (100 - Fund2025PartialReinvest)/100.00;
+					
+					Ridertemp2025Low = currentValue * (100 - Fund2025PartialReinvest)/100.00;
+					//NSLog(@"%f", temp2028High);
+				}
+				else{
+					MonthFundMaturityValue2025_Bear = 0;
+				}
+				if (aaRound == 2){
+					RiderMonthVU2025PrevValueLow = 0;
+				}
+				else{
+					RiderMonthVU2025PrevValueLow = tempPrev;
+				}
+				
+			}
+			else{
+				if (aaRound == 2){
+					RiderMonthVU2025PrevValueLow = currentValue;
+				}
+				else{
+					RiderMonthVU2025PrevValueLow = tempPrev;
+				}
+				
+			}
+			
+			if (aaRound == 2 && i == 12) {
+				RiderVU2025PrevValueLow = RiderMonthVU2025PrevValueLow;
+			}
+			
+			
+			return currentValue;
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalLow != 0 ) {
+				currentValue =((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2025InstLow) + RiderVU2025PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2025InstLow:@"A"]) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderVU2025ValueLow/RiderFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2025Fac:aaPolicyYear] +
+								   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2025Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2025InstLow) + RiderVU2025PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2025InstLow:@"A"]);
+					
+					RiderVU2025ValueLow = currentValue;
+				}
+				else{
+					currentValue =RiderVU2025ValueLow;
+				}
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2025PrevValueLow = currentValue;
+			}
+			
+			return currentValue;
+		}
+		
+	}
+	
+	// below part to be edit later
+}
+
+-(double)ReturnRiderVU2028ValueHigh :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2028) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			if (i == 1) {
+				RiderMonthVU2028PrevValuehigh = RiderVU2028PrevValuehigh;
+			}
+			
+			if (i > MonthDiff2028 && aaPolicyYear == YearDiff2028) {
+				RiderMonthVU2028PrevValuehigh = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2028PrevValuehigh;
+			if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2028PrevValuehigh = RiderMonthVU2028PrevValuehigh + (Ridertemp2025High * Fund2025ReinvestTo2028Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2028PrevValuehigh = RiderMonthVU2028PrevValuehigh + (Ridertemp2023High * Fund2023ReinvestTo2028Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalHigh != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear  andMonth:i]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2028InstHigh:@"A" ], 1.00/12.00) + RiderMonthVU2028PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2028InstHigh:@"A"], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderMonthVU2028ValueHigh/RiderMonthFundValueOfTheYearValueTotalHigh);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear  andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2028InstHigh:@"A" ], 1.00/12.00)+ RiderMonthVU2028PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2028InstHigh:@"A"], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2028 && aaPolicyYear == YearDiff2028) {
+				if (Fund2028PartialReinvest != 100) {
+					MonthFundMaturityValue2028_Bull = MonthVU2028PrevValuehigh * (100 - Fund2028PartialReinvest)/100.00;
+					
+					Ridertemp2028High = currentValue * (100 - Fund2028PartialReinvest)/100.00;
+					//NSLog(@"%f", temp2028High);
+				}
+				else{
+					MonthFundMaturityValue2028_Bull = 0;
+				}
+				if (aaRound == 2) {
+					RiderMonthVU2028PrevValuehigh = 0;
+				}
+				else{
+					RiderMonthVU2028PrevValuehigh = tempPrev;
+				}
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2028PrevValuehigh = currentValue;
+				}
+				else{
+					RiderMonthVU2028PrevValuehigh = tempPrev;
+				}
+				
+			}
+			
+			if (i == 12 && aaRound == 2) {
+				RiderVU2028PrevValuehigh = RiderMonthVU2028PrevValuehigh;
+			}
+			
+			return currentValue;
+			
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalHigh != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2028InstHigh) + RiderVU2028PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2028InstHigh:@"A"]) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderVU2028ValueHigh/RiderFundValueOfTheYearValueTotalHigh);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear] +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2028InstHigh) + RiderVU2028PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2028InstHigh:@"A"]);
+					RiderVU2028ValueHigh = currentValue;
+				}
+				else{
+					currentValue = RiderVU2028ValueHigh;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2028PrevValuehigh = currentValue;
+			}
+			
+			return currentValue;
+			
+		}
+		
+	}
+	
+}
+
+-(double)ReturnRiderVU2028ValueMedian :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2028) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			if (i == 1) {
+				RiderMonthVU2028PrevValueMedian = RiderVU2028PrevValueMedian;
+			}
+			
+			if (i > MonthDiff2028 && aaPolicyYear == YearDiff2028) {
+				RiderMonthVU2028PrevValueMedian = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2028PrevValueMedian;
+			if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2028PrevValueMedian = RiderMonthVU2028PrevValueMedian + (Ridertemp2025Median * Fund2025ReinvestTo2028Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2028PrevValueMedian = RiderMonthVU2028PrevValueMedian + (Ridertemp2023Median * Fund2023ReinvestTo2028Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalMedian != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear  andMonth:i] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2028InstMedian:@"A" ], 1.00/12.00) + RiderMonthVU2028PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2028InstMedian:@"A"],1.00/12.00) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderMonthVU2028ValueMedian/RiderMonthFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear  andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2028InstMedian:@"A" ], 1.00/12.00)+ RiderMonthVU2028PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2028InstMedian:@"A"], 1.00/12.00);
+			}
+			if (i == MonthDiff2028 && aaPolicyYear == YearDiff2028) {
+				if (Fund2028PartialReinvest != 100) {
+					MonthFundMaturityValue2028_Flat = RiderMonthVU2028PrevValueMedian * (100 - Fund2028PartialReinvest)/100.00;
+					
+					Ridertemp2028Median = currentValue * (100 - Fund2028PartialReinvest)/100.00;
+					
+				}
+				else{
+					MonthFundMaturityValue2028_Flat = 0;
+				}
+				
+				if (aaRound == 2) {
+					RiderMonthVU2028PrevValueMedian = 0;
+				}
+				else{
+					RiderMonthVU2028PrevValueMedian = tempPrev;
+				}
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2028PrevValueMedian = currentValue;
+				}
+				else{
+					RiderMonthVU2028PrevValueMedian = tempPrev;
+				}
+				
+			}
+			
+			if (i == 12 && aaRound == 2) {
+				RiderVU2028PrevValueMedian = RiderMonthVU2028PrevValueMedian;
+			}
+			
+			
+			return currentValue;
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalMedian != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2028InstMedian) + RiderVU2028PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2028InstMedian:@"A"]) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderVU2028ValueMedian/RiderFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear] +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2028InstMedian) + RiderVU2028PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2028InstMedian:@"A"]);
+					RiderVU2028ValueMedian = currentValue;
+				}
+				else{
+					currentValue = RiderVU2028ValueMedian;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2028PrevValueMedian = currentValue;
+			}
+			
+			return currentValue;
+		}
+		
+	}
+	
+}
+
+-(double)ReturnRiderVU2028ValueLow :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2028) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			if (i == 1) {
+				RiderMonthVU2028PrevValueLow = RiderVU2028PrevValueLow;
+			}
+			
+			if (i > MonthDiff2028 && aaPolicyYear == YearDiff2028) {
+				RiderMonthVU2028PrevValueLow = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2028PrevValueLow;
+			if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2028PrevValueLow = RiderMonthVU2028PrevValueLow + (Ridertemp2025Low * Fund2025ReinvestTo2028Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2028PrevValueLow = RiderMonthVU2028PrevValueLow + (Ridertemp2023Low * Fund2023ReinvestTo2028Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalLow != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear  andMonth:i] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2028InstLow:@"A" ], 1.00/12.00) + RiderMonthVU2028PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2028InstLow:@"A"],1.00/12.00) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderMonthVU2028ValueLow/RiderMonthFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear  andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2028InstLow:@"A" ], 1.00/12.00)+ RiderMonthVU2028PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2028InstLow:@"A"], 1.00/12.00);
+			}
+			if (i == MonthDiff2028 && aaPolicyYear == YearDiff2028) {
+				if (Fund2028PartialReinvest != 100) {
+					MonthFundMaturityValue2028_Bear = RiderMonthVU2028PrevValueLow * (100 - Fund2028PartialReinvest)/100.00;
+					
+					Ridertemp2028Low = currentValue * (100 - Fund2028PartialReinvest)/100.00;
+					
+				}
+				else{
+					MonthFundMaturityValue2028_Bear = 0;
+				}
+				
+				if (aaRound == 2) {
+					RiderMonthVU2028PrevValueLow = 0;
+				}
+				else{
+					RiderMonthVU2028PrevValueLow = tempPrev;
+				}
+				
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2028PrevValueLow = currentValue;
+				}
+				else{
+					RiderMonthVU2028PrevValueLow = tempPrev;
+				}
+				
+			}
+			
+			if (i == 12 && aaRound == 2) {
+				RiderVU2028PrevValueLow = RiderMonthVU2028PrevValueLow;
+			}
+			
+			
+			return currentValue;
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalLow != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2028InstLow) + RiderVU2028PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2028InstLow:@"A"]) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderVU2028ValueLow/RiderFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2028Fac:aaPolicyYear] +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2028Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2028InstLow) + RiderVU2028PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2028InstLow:@"A"]);
+					RiderVU2028ValueLow = currentValue;
+				}
+				else{
+					currentValue = RiderVU2028ValueLow;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2028PrevValueLow = currentValue;
+			}
+			
+			return currentValue;
+		}
+		
+	}
+	
+}
+
+-(double)ReturnRiderVU2030ValueHigh :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2030) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			if (i == 1) {
+				RiderMonthVU2030PrevValuehigh = RiderVU2030PrevValuehigh;
+			}
+			
+			if (i > MonthDiff2030 && aaPolicyYear == YearDiff2030) {
+				RiderMonthVU2030PrevValuehigh = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2030PrevValuehigh;
+			if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+				RiderMonthVU2030PrevValuehigh = RiderMonthVU2030PrevValuehigh + (Ridertemp2028High * Fund2028ReinvestTo2030Fac/100.00);
+			}
+			else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2030PrevValuehigh = RiderMonthVU2030PrevValuehigh + (Ridertemp2025High * Fund2025ReinvestTo2030Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2030PrevValuehigh = RiderMonthVU2030PrevValuehigh + (Ridertemp2023High * Fund2023ReinvestTo2030Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalHigh != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear  andMonth:i]  +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2030InstHigh:@"A" ], 1.00/12.00) + RiderMonthVU2030PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2030InstHigh:@"A"], 1.00/12.00)  + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderMonthVU2030ValueHigh/RiderMonthFundValueOfTheYearValueTotalHigh);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear  andMonth:i]  +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2030InstHigh:@"A" ], 1.00/12.00) + RiderMonthVU2030PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2030InstHigh:@"A"], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2030 && aaPolicyYear == YearDiff2030) {
+				if (Fund2030PartialReinvest != 100) {
+					MonthFundMaturityValue2030_Bear = RiderMonthVU2030PrevValuehigh * (100 - Fund2030PartialReinvest)/100.00;
+					
+					Ridertemp2030High = currentValue * (100 - Fund2030PartialReinvest)/100.00;
+					
+				}
+				else{
+					MonthFundMaturityValue2030_Bear = 0;
+				}
+				if (aaRound == 2) {
+					RiderMonthVU2030PrevValuehigh = 0;
+				}
+				
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2030PrevValuehigh = currentValue;
+				}
+				else{
+					RiderMonthVU2030PrevValuehigh = tempPrev;
+				}
+				
+			}
+			
+			if (aaRound == 2 && i == 12) {
+				RiderVU2030PrevValuehigh = RiderMonthVU2030PrevValuehigh;
+			}
+			
+			return currentValue;
+			
+		}
+		else{
+			
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalHigh != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2030InstHigh) + RiderVU2030PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2030InstHigh:@"A"]) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderVU2030ValueHigh/RiderFundValueOfTheYearValueTotalHigh);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear]  +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2030InstHigh) + RiderVU2030PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2030InstHigh:@"A"]);
+					RiderVU2030ValueHigh = currentValue;
+				}
+				else{
+					currentValue = RiderVU2030ValueHigh;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2030PrevValuehigh = currentValue;
+			}
+			
+			return currentValue;
+			
+		}
+		
+	}
+	
+	// below part to be edit later
+}
+
+-(double)ReturnRiderVU2030ValueMedian :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2030) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			if (i == 1) {
+				RiderMonthVU2030PrevValueMedian = RiderVU2030PrevValueMedian;
+			}
+			
+			if (i > MonthDiff2030 && aaPolicyYear == YearDiff2030) {
+				RiderMonthVU2030PrevValueMedian = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2030PrevValueMedian;
+			if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+				RiderMonthVU2030PrevValueMedian = RiderMonthVU2030PrevValueMedian + (Ridertemp2028Median * Fund2028ReinvestTo2030Fac/100.00);
+			}
+			else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2030PrevValueMedian = RiderMonthVU2030PrevValueMedian + (Ridertemp2025Median * Fund2025ReinvestTo2030Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2030PrevValueMedian = RiderMonthVU2030PrevValueMedian + (Ridertemp2023Median * Fund2023ReinvestTo2030Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative ==TRUE && RiderMonthFundValueOfTheYearValueTotalMedian != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear andMonth:i] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2030InstMedian:@"A" ], 1.00/12.00) + RiderMonthVU2030PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2030InstMedian:@"A"], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderMonthVU2030ValueMedian/RiderMonthFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear andMonth:i]  +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2030InstMedian:@"A" ], 1.00/12.00) + RiderMonthVU2030PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2030InstMedian:@"A"], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2030 && aaPolicyYear == YearDiff2030) {
+				if (Fund2030PartialReinvest != 100) {
+					MonthFundMaturityValue2030_Flat = MonthVU2030PrevValueMedian * (100 - Fund2030PartialReinvest)/100.00;
+					Ridertemp2030Median = currentValue * (100 - Fund2030PartialReinvest)/100.00;
+				}
+				else{
+					MonthFundMaturityValue2030_Flat = 0;
+				}
+				if (aaRound == 2) {
+					RiderMonthVU2030PrevValueMedian = 0;
+				}
+				
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2030PrevValueMedian = currentValue;
+				}
+				else{
+					RiderMonthVU2030PrevValueMedian = tempPrev;
+				}
+			}
+			
+			if (aaRound == 2 && i == 12) {
+				RiderVU2030PrevValueMedian = RiderMonthVU2030PrevValueMedian;
+			}
+			
+			
+			return currentValue;
+			
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalMedian != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2030InstMedian) + RiderVU2030PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2030InstMedian:@"A"]) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderVU2030ValueMedian/RiderFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear] +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2030InstMedian) + RiderVU2030PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2030InstMedian:@"A"]);
+					RiderVU2030ValueMedian = currentValue;
+				}
+				else{
+					currentValue = RiderVU2030ValueMedian;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2030PrevValueMedian = currentValue;
+			}
+			
+			return currentValue;
+			
+		}
+		
+	}
+	
+	// below part to be edit later
+}
+
+-(double)ReturnRiderVU2030ValueLow :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2030) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			if (i == 1) {
+				RiderMonthVU2030PrevValueLow = RiderVU2030PrevValueLow;
+			}
+			
+			if (i > MonthDiff2030 && aaPolicyYear == YearDiff2030) {
+				RiderMonthVU2030PrevValueLow = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2030PrevValueLow;
+			if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+				RiderMonthVU2030PrevValueLow = RiderMonthVU2030PrevValueLow + (Ridertemp2028Low * Fund2028ReinvestTo2030Fac/100.00);
+			}
+			else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2030PrevValueLow = RiderMonthVU2030PrevValueLow + (Ridertemp2025Low * Fund2025ReinvestTo2030Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2030PrevValueLow = RiderMonthVU2030PrevValueLow + (Ridertemp2023Low * Fund2023ReinvestTo2030Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalLow != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear andMonth:i] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2030InstLow:@"A" ], 1.00/12.00) + RiderMonthVU2030PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2030InstLow:@"A"], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderMonthVU2030ValueLow/RiderMonthFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2030InstLow:@"A" ], 1.00/12.00) + RiderMonthVU2030PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2030InstLow:@"A"], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2030 && aaPolicyYear == YearDiff2030) {
+				if (Fund2030PartialReinvest != 100) {
+					MonthFundMaturityValue2030_Bear = MonthVU2030PrevValueLow * (100 - Fund2030PartialReinvest)/100.00;
+					Ridertemp2030Low = currentValue * (100 - Fund2030PartialReinvest)/100.00;
+				}
+				else{
+					MonthFundMaturityValue2030_Bear = 0;
+				}
+				if (aaRound == 2) {
+					RiderMonthVU2030PrevValueLow = 0;
+				}
+				
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2030PrevValueLow = currentValue;
+				}
+				else{
+					RiderMonthVU2030PrevValueLow = tempPrev;
+				}
+				
+			}
+			
+			if (aaRound == 2 && i == 12) {
+				RiderVU2030PrevValueLow = RiderMonthVU2030PrevValueLow;
+			}
+			
+			
+			return currentValue;
+			
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalLow != 0) {
+				currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear] +
+							   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2030InstLow) + RiderVU2030PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2030InstLow:@"A"]) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderVU2030ValueLow/RiderFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2030Fac:aaPolicyYear]  +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2030Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2030InstLow) + RiderVU2030PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2030InstLow:@"A"]);
+					RiderVU2030ValueLow = currentValue;
+				}
+				else{
+					currentValue = RiderVU2030PrevValueLow;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2030PrevValueLow = currentValue;
+			}
+			
+			return currentValue;
+			
+		}
+		
+	}
+	
+	// below part to be edit later
+}
+
+-(double)ReturnRiderVU2035ValueHigh :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(NSInteger)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2035) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			
+			if (i == 1) {
+				RiderMonthVU2035PrevValuehigh = RiderVU2035PrevValuehigh;
+			}
+			
+			if (i > MonthDiff2035 && aaPolicyYear == YearDiff2035) {
+				RiderMonthVU2035PrevValuehigh = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2035PrevValuehigh;
+			if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+				RiderMonthVU2035PrevValuehigh = RiderMonthVU2035PrevValuehigh + (Ridertemp2030High * Fund2030ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+				RiderMonthVU2035PrevValuehigh = RiderMonthVU2035PrevValuehigh + (Ridertemp2028High * Fund2028ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2035PrevValuehigh = RiderMonthVU2035PrevValuehigh + (Ridertemp2025High * Fund2025ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2035PrevValuehigh = RiderMonthVU2035PrevValuehigh + (Ridertemp2023High * Fund2023ReinvestTo2035Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalHigh != 0 ) {
+				
+				currentValue=  ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i] ) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2035InstHigh:@"A"], 1.00/12.00) + RiderMonthVU2035PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2035InstHigh:@"A"], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderMonthVU2035ValueHigh/RiderMonthFundValueOfTheYearValueTotalHigh);
+				if (aaPolicyYear == 23) {
+					//NSLog(@"%f %f %f", NegativeValueOfMaxCashFundHigh, MonthVU2035ValueHigh, MonthFundValueOfTheYearValueTotalHigh );
+				}
+			}
+			else if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalHigh == 0 ) {
+				currentValue = 0;
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				pow(1 + [self ReturnVU2035InstHigh:@"A"], 1.00/12.00) + RiderMonthVU2035PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow(1 + [self ReturnVU2035InstHigh:@"A"], 1.00/12.00);
+			}
+			
+			if (i == MonthDiff2035 && aaPolicyYear == YearDiff2035) {
+				if (Fund2035PartialReinvest != 100) {
+					
+					MonthFundMaturityValue2035_Bull = RiderMonthVU2035PrevValuehigh * (100 - Fund2035PartialReinvest)/100.00;
+					
+					Ridertemp2035High = currentValue * (100 - Fund2035PartialReinvest)/100.00;
+				}
+				else{
+					MonthFundMaturityValue2035_Bull = 0;
+				}
+				
+				if (aaRound == 2) {
+					RiderMonthVU2035PrevValuehigh = 0;
+				}
+				else{
+					RiderMonthVU2035PrevValuehigh = tempPrev;
+				}
+				
+			}
+			
+			else{
+				
+				if (aaRound == 2) {
+					RiderMonthVU2035PrevValuehigh = currentValue;
+				}
+				else{
+					RiderMonthVU2035PrevValuehigh = tempPrev;
+				}
+				
+			}
+			
+			if (i == 12 && aaRound == 2) {
+				RiderVU2035PrevValuehigh = RiderMonthVU2035PrevValuehigh;
+			}
+			
+			
+			//return MonthVU2035PrevValuehigh;
+			return currentValue;
+			
+			
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalHigh != 0 ) {
+				
+				currentValue=  ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2035InstHigh) + RiderVU2035PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2035InstHigh:@"A"]) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+				(RiderVU2035ValueHigh/RiderFundValueOfTheYearValueTotalHigh);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear]  +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2035InstHigh) + RiderVU2035PrevValuehigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2035InstHigh:@"A"]);
+					
+					RiderVU2035ValueHigh = currentValue;
+				}
+				else{
+					currentValue = RiderVU2035ValueHigh;
+				}
+				
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2035PrevValuehigh = currentValue;
+			}
+			
+			
+			return currentValue;
+		}
+		
+		
+	}
+}
+
+-(double)ReturnRiderVU2035ValueMedian :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2035) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			if (i == 1) {
+				RiderMonthVU2035PrevValueMedian = RiderVU2035PrevValueMedian;
+			}
+			
+			if (i > MonthDiff2035 && aaPolicyYear == YearDiff2035) {
+				RiderMonthVU2035PrevValueMedian = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2035PrevValueMedian;
+			if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+				RiderMonthVU2035PrevValueMedian = RiderMonthVU2035PrevValueMedian + (Ridertemp2030Median * Fund2030ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+				RiderMonthVU2035PrevValueMedian = RiderMonthVU2035PrevValueMedian + (Ridertemp2028Median * Fund2028ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2035PrevValueMedian = RiderMonthVU2035PrevValueMedian + (Ridertemp2025Median * Fund2025ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2035PrevValueMedian = RiderMonthVU2035PrevValueMedian + (Ridertemp2023Median * Fund2023ReinvestTo2035Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalMedian != 0 ) {
+				
+				currentValue=  ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				pow((1 + [self ReturnVU2035InstMedian:@"A"]), (1.00/12.00)) + RiderMonthVU2035PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow((1 + [self ReturnVU2035InstMedian:@"A"]), (1.00/12.00)) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderMonthVU2035ValueMedian/RiderMonthFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] *[self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				pow((1 + [self ReturnVU2035InstMedian:@"A" ]), (1.00/12.00)) + RiderMonthVU2035PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow((1 + [self ReturnVU2035InstMedian:@"A"]), (1.00/12.00));
+			}
+			
+			
+			if (i == MonthDiff2035 && aaPolicyYear == YearDiff2035) {
+				if (Fund2035PartialReinvest != 100) {
+					MonthFundMaturityValue2035_Flat = RiderMonthVU2035PrevValueMedian * (100 - Fund2035PartialReinvest)/100.00;
+					Ridertemp2035Median = currentValue * (100 - Fund2035PartialReinvest)/100.00;
+				}
+				else{
+					MonthFundMaturityValue2035_Flat = 0;
+				}
+				if (aaRound == 2) {
+					RiderMonthVU2035PrevValueMedian = 0;
+				}
+				else{
+					RiderMonthVU2035PrevValueMedian = tempPrev;
+				}
+				
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2035PrevValueMedian = currentValue;
+				}
+				else{
+					RiderMonthVU2035PrevValueMedian = tempPrev;
+				}
+				
+			}
+			
+			if (i == 12 && aaRound == 2) {
+				RiderVU2035PrevValueMedian = RiderMonthVU2035PrevValueMedian;
+			}
+			
+			//return MonthVU2035PrevValueMedian;
+			return currentValue;
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalMedian != 0 ) {
+				
+				currentValue=  ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear]  +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2035InstMedian) + RiderVU2035PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2035InstMedian:@"A"]) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+				(RiderVU2035ValueMedian/RiderFundValueOfTheYearValueTotalMedian);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear] +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2035InstMedian) + RiderVU2035PrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2035InstMedian:@"A"]);
+					RiderVU2035ValueMedian = currentValue;
+				}
+				else{
+					currentValue = RiderVU2035ValueMedian;
+				}
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2035PrevValueMedian = currentValue;
+			}
+			
+			return currentValue;
+		}
+		
+		
+	}
+}
+
+-(double)ReturnRiderVU2035ValueLow :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	if (aaPolicyYear > YearDiff2035) {
+		return 0;
+	}
+	else{
+		if ([aaYearOrMonth isEqualToString:@"M"]) {
+			
+			if (i == 1) {
+				RiderMonthVU2035PrevValueLow = RiderVU2035PrevValueLow;
+			}
+			
+			if (i > MonthDiff2035 && aaPolicyYear == YearDiff2035) {
+				RiderMonthVU2035PrevValueLow = 0;
+				return 0;
+			}
+			
+			double tempPrev = RiderMonthVU2035PrevValueLow;
+			if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+				RiderMonthVU2035PrevValueLow = RiderMonthVU2035PrevValueLow + (Ridertemp2030Low * Fund2030ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+				RiderMonthVU2035PrevValueLow = RiderMonthVU2035PrevValueLow + (Ridertemp2028Low * Fund2028ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+				RiderMonthVU2035PrevValueLow = RiderMonthVU2035PrevValueLow + (Ridertemp2025Low * Fund2025ReinvestTo2035Fac/100.00);
+			}
+			else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+				RiderMonthVU2035PrevValueLow = RiderMonthVU2035PrevValueLow + (Ridertemp2023Low * Fund2023ReinvestTo2035Fac/100.00);
+			}
+			else{
+				
+			}
+			
+			if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalLow != 0 ) {
+				
+				currentValue=  ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear andMonth:i]  +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				pow((1 + [self ReturnVU2035InstLow:@"A"]), (1.00/12.00)) + RiderMonthVU2035PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow((1 + [self ReturnVU2035InstLow:@"A"]), (1.00/12.00)) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderMonthVU2035ValueLow/RiderMonthFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] *[self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear andMonth:i] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				pow((1 + [self ReturnVU2035InstLow:@"A" ]), (1.00/12.00)) + RiderMonthVU2035PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+				pow((1 + [self ReturnVU2035InstLow:@"A"]), (1.00/12.00));
+			}
+			
+			
+			if (i == MonthDiff2035 && aaPolicyYear == YearDiff2035) {
+				if (Fund2035PartialReinvest != 100) {
+					MonthFundMaturityValue2035_Bear = MonthVU2035PrevValueLow * (100 - Fund2035PartialReinvest)/100.00;
+					Ridertemp2035Low = currentValue * (100 - Fund2035PartialReinvest)/100.00;
+				}
+				else{
+					MonthFundMaturityValue2035_Bear = 0;
+				}
+				
+				if (aaRound == 2) {
+					RiderMonthVU2035PrevValueLow = 0;
+				}
+				else{
+					RiderMonthVU2035PrevValueLow = tempPrev;
+				}
+				
+			}
+			else{
+				if (aaRound == 2) {
+					RiderMonthVU2035PrevValueLow = currentValue;
+				}
+				else{
+					RiderMonthVU2035PrevValueLow = tempPrev;
+				}
+			}
+			
+			if (aaRound == 2 && i == 12) {
+				RiderVU2035PrevValueLow = RiderMonthVU2035PrevValueLow;
+			}
+			
+			//return MonthVU2035PrevValueLow;
+			return currentValue;
+		}
+		else{
+			if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalLow != 0 ) {
+				
+				currentValue=  ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear]  +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+				(1 + VU2035InstLow) + RiderVU2035PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2035InstLow:@"A"]) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+				(RiderVU2035ValueLow/RiderFundValueOfTheYearValueTotalLow);
+			}
+			else{
+				if (aaRound == 1) {
+					currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVU2035Fac:aaPolicyYear] +
+									[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VU2035Factor * [self ReturnPremiumFactor:i]) *
+					(1 + VU2035InstLow) + RiderVU2035PrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVU2035InstLow:@"A"]);
+					RiderVU2035ValueLow = currentValue;
+				}
+				else{
+					currentValue = RiderVU2035ValueLow;
+				}
+			}
+			
+			if (aaRound == 2) {
+				RiderVU2035PrevValueLow = currentValue;
+			}
+			
+			return currentValue;
+		}
+		
+		
+	}
+}
+
+
+-(double)ReturnRiderVUCashValueHigh :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)i {
+	
+	double tempValue = 0.00;
+	
+	if ([aaYearOrMonth isEqualToString:@"M"]) {
+		
+		if (i == 1) {
+			RiderMonthVUCashPrevValueHigh = RiderVUCashPrevValueHigh;
+		}
+		
+		if ((i == MonthDiff2035 + 1 && aaPolicyYear == YearDiff2035)  ) {
+			
+			RiderMonthVUCashPrevValueHigh = RiderMonthVUCashPrevValueHigh + (Ridertemp2035High * Fund2035ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+			RiderMonthVUCashPrevValueHigh = RiderMonthVUCashPrevValueHigh + (Ridertemp2030High * Fund2030ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+			//NSLog(@"%f", temp2028High);
+			RiderMonthVUCashPrevValueHigh = RiderMonthVUCashPrevValueHigh + (Ridertemp2028High * Fund2028ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+			RiderMonthVUCashPrevValueHigh = RiderMonthVUCashPrevValueHigh + (Ridertemp2025High * Fund2025ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+			RiderMonthVUCashPrevValueHigh = RiderMonthVUCashPrevValueHigh + (Ridertemp2023High * Fund2023ReinvestToCashFac/100.00);
+		}
+		else{
+			
+		}
+		
+		tempValue = ((( [[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i] ) + IncreasePrem) * [self ReturnVUCashFac:aaPolicyYear andMonth:i] +
+					 [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * [self ReturnVUCashFac:aaPolicyYear andMonth:i] * [self ReturnPremiumFactor:i]) *
+		pow((1 + [self ReturnVUCashInstHigh:@"A"]), (1.00/12.00)) + RiderMonthVUCashPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+		pow((1 + [self ReturnVUCashInstHigh:@"A"]), (1.00/12.00)) - ([self ReturnRiderPolicyFee:aaPolicyYear] + [self ReturnTotalRiderMort:aaPolicyYear]);
+		
+		RiderMonthVUCashPrevValueHigh =  tempValue;
+		//NSLog(@"%f", MonthVUCashPrevValueHigh);
+		
+		if (tempValue < 0) {
+			RiderMonthVUCashPrevValueHigh = 1.00;
+		}
+		else{
+			RiderMonthVUCashPrevValueHigh = tempValue;
+		}
+		
+		if (i == 12) {
+			RiderVUCashPrevValueHigh = RiderMonthVUCashPrevValueHigh;
+		}
+		
+		if (tempValue < 0 && RiderMonthFundValueOfTheYearValueTotalHigh != 0) {
+			RiderNegativeValueOfMaxCashFundHigh = tempValue;
+			RiderVUCashValueNegative = TRUE;
+			return RiderMonthVUCashPrevValueHigh;
+		} else {
+			RiderNegativeValueOfMaxCashFundHigh = tempValue;
+			RiderVUCashValueNegative = FALSE;
+			return RiderMonthVUCashPrevValueHigh + 0; // to be edit later
+		}
+		
+	}
+	else
+	{
+		tempValue = ((( [[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVUCashFac:aaPolicyYear] +
+					 [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * [self ReturnVUCashFac:aaPolicyYear] * [self ReturnPremiumFactor:i]) *
+		(1 + [self ReturnVUCashInstHigh:@""]) + RiderVUCashPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVUCashInstHigh:@"A"]) -
+		([self ReturnRiderPolicyFee:aaPolicyYear ] + [self ReturnTotalRiderMort:aaPolicyYear]) * [self ReturnVUCashHigh];
+		//NSLog(@"%f, %f", [self ReturnRiderPolicyFee:aaPolicyYear ], [self ReturnTotalRiderMort:aaPolicyYear] );
+		
+		if (tempValue < 0) {
+			RiderVUCashPrevValueHigh = 1.00;
+		}
+		else{
+			RiderVUCashPrevValueHigh = tempValue;
+		}
+		
+		
+		//VUCashPrevValueHigh = tempValue;
+		if (tempValue < 0 && RiderFundValueOfTheYearValueTotalHigh != 0) {
+			//NegativeValueOfMaxCashFundHigh = tempValue;
+			RiderNegativeValueOfMaxCashFundHigh = tempValue;
+			RiderVUCashValueNegative = TRUE;
+			return RiderVUCashPrevValueHigh;
+		} else {
+			RiderVUCashValueNegative = FALSE;
+			RiderNegativeValueOfMaxCashFundHigh = tempValue;
+			return tempValue + 0; // to be edit later
+		}
+	}
+	
+	
+	
+	
+	
+}
+
+-(double)ReturnRiderVUCashValueMedian :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)i{
+	
+	double tempValue = 0.00;
+	if ([aaYearOrMonth isEqualToString:@"M"]) {
+		
+		if (i == 1) {
+			RiderMonthVUCashPrevValueMedian = RiderVUCashPrevValueMedian;
+		}
+		
+		if ((i == MonthDiff2035 + 1 && aaPolicyYear == YearDiff2035)  ) {
+			RiderMonthVUCashPrevValueMedian = RiderMonthVUCashPrevValueMedian + (Ridertemp2035Median * Fund2035ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+			RiderMonthVUCashPrevValueMedian = RiderMonthVUCashPrevValueMedian + (Ridertemp2030Median * Fund2030ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+			RiderMonthVUCashPrevValueMedian = RiderMonthVUCashPrevValueMedian + (Ridertemp2028Median * Fund2028ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+			RiderMonthVUCashPrevValueMedian = RiderMonthVUCashPrevValueMedian + (Ridertemp2025Median * Fund2025ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+			RiderMonthVUCashPrevValueMedian = RiderMonthVUCashPrevValueMedian + (Ridertemp2023Median * Fund2023ReinvestToCashFac/100.00);
+		}
+		else{
+			
+		}
+		
+		tempValue = ((( [[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i] ) + IncreasePrem) * [self ReturnVUCashFac:aaPolicyYear andMonth:i] +
+					 [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * [self ReturnVUCashFac:aaPolicyYear andMonth:i] * [self ReturnPremiumFactor:i]) *
+		pow(1 + [self ReturnVUCashInstMedian:@"A"], 1.00/12.00) + RiderMonthVUCashPrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+		pow(1 + [self ReturnVUCashInstMedian:@"A"], 1.00/12.00) - ([self ReturnRiderPolicyFee:aaPolicyYear ] + [self ReturnTotalRiderMort:aaPolicyYear]);
+		
+		RiderMonthVUCashPrevValueMedian = tempValue;
+		
+		if (tempValue < 0) {
+			RiderMonthVUCashPrevValueMedian = 1.00;
+		}
+		else{
+			RiderMonthVUCashPrevValueMedian = tempValue;
+		}
+		
+		if (i == 12) {
+			RiderVUCashPrevValueMedian = RiderMonthVUCashPrevValueMedian;
+		}
+		
+		
+		if (tempValue < 0 && RiderMonthFundValueOfTheYearValueTotalMedian != 0) {
+			RiderNegativeValueOfMaxCashFundMedian = tempValue;
+			RiderVUCashValueNegative = TRUE;
+			return  RiderMonthVUCashPrevValueMedian;
+		} else {
+			RiderNegativeValueOfMaxCashFundMedian =  tempValue;
+			RiderVUCashValueNegative = FALSE;
+			return  RiderMonthVUCashPrevValueMedian + 0; // to be edit later
+		}
+		
+		
+		
+		
+	}
+	else{
+		tempValue = ((( [[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVUCashFac:aaPolicyYear] +
+					 [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * [self ReturnVUCashFac:aaPolicyYear] * [self ReturnPremiumFactor:i]) *
+		(1 + [self ReturnVUCashInstMedian:@""]) + RiderVUCashPrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVUCashInstMedian:@"A"]) -
+		([self ReturnRiderPolicyFee:aaPolicyYear ] + [self ReturnTotalRiderMort:aaPolicyYear]) * [self ReturnVUCashMedian];
+		
+		
+		if (tempValue < 0) {
+			RiderVUCashPrevValueMedian = 1.00;
+		}
+		else{
+			RiderVUCashPrevValueMedian = tempValue;
+		}
+		
+		//VUCashPrevValueMedian = tempValue;
+		if (tempValue < 0 && RiderFundValueOfTheYearValueTotalMedian != 0) {
+			RiderNegativeValueOfMaxCashFundMedian = tempValue;
+			RiderVUCashValueNegative = TRUE;
+			return RiderVUCashPrevValueMedian;
+			//return tempValue;
+		} else {
+			RiderNegativeValueOfMaxCashFundMedian = tempValue;
+			RiderVUCashValueNegative = FALSE;
+			return tempValue + 0; // to be edit later
+		}
+	}
+	
+	
+	
+	
+}
+
+
+-(double)ReturnRiderVUCashValueLow :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)i{
+	
+	double tempValue = 0.00;
+	if ([aaYearOrMonth isEqualToString:@"M"]) {
+		
+		if (i == 1) {
+			RiderMonthVUCashPrevValueLow = VUCashPrevValueLow;
+		}
+		
+		if ((i == MonthDiff2035 + 1 && aaPolicyYear == YearDiff2035)  ) {
+			RiderMonthVUCashPrevValueLow = RiderMonthVUCashPrevValueLow + (Ridertemp2035Low * Fund2035ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+			RiderMonthVUCashPrevValueLow = RiderMonthVUCashPrevValueLow + (Ridertemp2030Low * Fund2030ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+			RiderMonthVUCashPrevValueLow = RiderMonthVUCashPrevValueLow + (Ridertemp2028Low * Fund2028ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+			RiderMonthVUCashPrevValueLow = RiderMonthVUCashPrevValueLow + (Ridertemp2025Low * Fund2025ReinvestToCashFac/100.00);
+		}
+		else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+			RiderMonthVUCashPrevValueLow = RiderMonthVUCashPrevValueLow + (Ridertemp2023Low * Fund2023ReinvestToCashFac/100.00);
+		}
+		else{
+			
+		}
+		
+		tempValue = ((( [[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i] ) + IncreasePrem) * [self ReturnVUCashFac:aaPolicyYear andMonth:i] +
+					 [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * [self ReturnVUCashFac:aaPolicyYear andMonth:i] * [self ReturnPremiumFactor:i]) *
+		pow(1 + [self ReturnVUCashInstLow:@"A"], 1.00/12.00) + RiderMonthVUCashPrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+		pow(1 + [self ReturnVUCashInstLow:@"A"], 1.00/12.00) - ([self ReturnRiderPolicyFee:aaPolicyYear ] + [self ReturnTotalRiderMort:aaPolicyYear]);
+		
+		
+		
+		if (tempValue < 0) {
+			RiderMonthVUCashPrevValueLow = 1.00;
+		}
+		else{
+			RiderMonthVUCashPrevValueLow = tempValue;
+		}
+		
+		if (i == 12) {
+			RiderVUCashPrevValueLow = RiderMonthVUCashPrevValueLow;
+		}
+		
+		
+		
+		
+		if (tempValue < 0 && RiderMonthFundValueOfTheYearValueTotalLow != 0) {
+			RiderNegativeValueOfMaxCashFundLow = tempValue;
+			RiderVUCashValueNegative = TRUE;
+			return  RiderMonthVUCashPrevValueLow;
+		} else {
+			RiderNegativeValueOfMaxCashFundLow =  tempValue;
+			RiderVUCashValueNegative = FALSE;
+			return  RiderMonthVUCashPrevValueLow + 0; // to be edit later
+		}
+	}
+	else{
+		tempValue = ((( [[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVUCashFac:aaPolicyYear] +
+					 [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * [self ReturnVUCashFac:aaPolicyYear] * [self ReturnPremiumFactor:i]) *
+		(1 + [self ReturnVUCashInstLow:@""]) + RiderVUCashPrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVUCashInstLow:@"A"]) -
+		([self ReturnRiderPolicyFee:aaPolicyYear ] + [self ReturnTotalRiderMort:aaPolicyYear]) * [self ReturnVUCashLow];
+		
+		if (tempValue < 0) {
+			RiderVUCashPrevValueLow = 1.00;
+		}
+		else{
+			RiderVUCashPrevValueLow = tempValue;
+		}
+		
+		//VUCashPrevValueLow = tempValue;
+		if (tempValue < 0 && RiderFundValueOfTheYearValueTotalLow != 0) {
+			RiderNegativeValueOfMaxCashFundLow = tempValue;
+			RiderVUCashValueNegative = TRUE;
+			return RiderVUCashPrevValueLow;
+			//return tempValue;
+		} else {
+			RiderNegativeValueOfMaxCashFundLow = tempValue;
+			RiderVUCashValueNegative = FALSE;
+			return tempValue + 0; // to be edit later
+		}
+	}
+	
+	
+	
+	
+}
+
+
+-(double)ReturnRiderVURetValueHigh :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(NSInteger)i{
+	
+	double currentValue =0.0;
+	if ([aaYearOrMonth isEqualToString:@"M"]) {
+		
+		
+		if (i == 1) {
+			RiderMonthVURetPrevValueHigh = RiderVURetPrevValueHigh ;
+		}
+		
+		double tempPrev = RiderMonthVURetPrevValueHigh;
+		
+		if ((i == MonthDiff2035 + 1 && aaPolicyYear == YearDiff2035)) {
+			RiderMonthVURetPrevValueHigh = RiderMonthVURetPrevValueHigh + (Ridertemp2035High * Fund2035ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+			RiderMonthVURetPrevValueHigh = RiderMonthVURetPrevValueHigh + (Ridertemp2030High * Fund2030ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+			RiderMonthVURetPrevValueHigh = RiderMonthVURetPrevValueHigh + (Ridertemp2028High * Fund2028ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+			RiderMonthVURetPrevValueHigh = RiderMonthVURetPrevValueHigh + (Ridertemp2025High * Fund2025ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+			RiderMonthVURetPrevValueHigh = RiderMonthVURetPrevValueHigh + (Ridertemp2023High * Fund2023ReinvestToRetFac/100.00);
+		}
+		else{
+			
+		}
+		
+		//NSLog(@"%f", MonthVURetPrevValueHigh);
+		if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalHigh != 0 ) {
+			currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear andMonth:i] +
+						   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			pow(1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@"A"],1.00/12.00) + RiderMonthVURetPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+			pow(1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@"A"], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+			(RiderMonthVURetValueHigh/RiderMonthFundValueOfTheYearValueTotalHigh);
+			
+			//NSLog(@"%f %f %f",NegativeValueOfMaxCashFundHigh, MonthVURetValueHigh,MonthFundValueOfTheYearValueTotalHigh );
+			
+		}
+		else{
+			currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear  andMonth:i] +
+							[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			pow((1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@"A"]),(1.00/12.00)) + RiderMonthVURetPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+			pow((1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@"A"]), (1.00/12.00));
+			
+			
+		}
+		
+		//NSLog(@"%f, %f, %f, %f",NegativeValueOfMaxCashFundHigh, MonthVURetValueHigh, MonthFundValueOfTheYearValueTotalHigh, currentValue);
+		
+		if (aaRound == 2) {
+			RiderMonthVURetPrevValueHigh = currentValue;
+		}
+		else{
+			RiderMonthVURetPrevValueHigh = tempPrev;
+		}
+		
+		
+		if (i == 12  && aaRound == 2) {
+			RiderVURetPrevValueHigh = RiderMonthVURetPrevValueHigh;
+		}
+		
+		//NSLog(@"%d %f %f, %d ", i, MonthVURetValueHigh, MonthFundValueOfTheYearValueTotalHigh, VUCashValueNegative);
+		//return MonthVURetPrevValueHigh;
+		return currentValue;
+		
+		
+		
+		
+	}
+	else{
+		//if (VUCashValueHigh < 0 && [self ReturnFundValueOfTheYearValueTotalHigh:aaPolicyYear] != 0 ) {
+		if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalHigh != 0 ) {
+			currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear] +
+						   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			(1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@""]) + RiderVURetPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@"A"]) + (RiderNegativeValueOfMaxCashFundHigh - 1) *
+			(RiderVURetValueHigh/RiderFundValueOfTheYearValueTotalHigh);
+			
+		}
+		else{
+			if (aaRound == 1) {
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] ) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+				(1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@""]) + RiderVURetPrevValueHigh * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVURetInstHigh:aaPolicyYear andMOP:@"A"]);
+				RiderVURetValueHigh = currentValue;
+			}
+			else{
+				currentValue = RiderVURetValueHigh;
+			}
+			
+		}
+		
+		if (aaRound == 2) {
+			RiderVURetPrevValueHigh = currentValue;
+		}
+		
+		return currentValue;
+	}
+	
+	
+}
+
+-(double)ReturnRiderVURetValueMedian :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	
+	if ([aaYearOrMonth isEqualToString:@"M"]) {
+		
+		
+		if (i == 1) {
+			RiderMonthVURetPrevValueMedian = RiderVURetPrevValueMedian ;
+		}
+		
+		double tempPrev = RiderMonthVURetPrevValueMedian;
+		if ((i == MonthDiff2035 + 1 && aaPolicyYear == YearDiff2035)  ) {
+			RiderMonthVURetPrevValueMedian = RiderMonthVURetPrevValueMedian + (Ridertemp2035Median * Fund2035ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+			RiderMonthVURetPrevValueMedian = RiderMonthVURetPrevValueMedian + (Ridertemp2030Median * Fund2030ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+			RiderMonthVURetPrevValueMedian = RiderMonthVURetPrevValueMedian + (Ridertemp2028Median * Fund2028ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+			RiderMonthVURetPrevValueMedian = RiderMonthVURetPrevValueMedian + (Ridertemp2025Median * Fund2025ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+			RiderMonthVURetPrevValueMedian = RiderMonthVURetPrevValueMedian + (Ridertemp2023Median * Fund2023ReinvestToRetFac/100.00);
+		}
+		else{
+			
+		}
+		
+		if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalMedian != 0 ) {
+			currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear  andMonth:i] +
+						   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			pow(1 + [self ReturnVURetInstMedian], 1.00/12.00) + RiderMonthVURetPrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+			pow(1 + [self ReturnVURetInstMedian], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+			(RiderMonthVURetValueMedian/RiderMonthFundValueOfTheYearValueTotalMedian);
+			
+		}
+		else{
+			currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear  andMonth:i] +
+							[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			pow(1 + [self ReturnVURetInstMedian], 1.00/12.00) + RiderMonthVURetPrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+			pow(1 + [self ReturnVURetInstMedian], 1.00/12.00);
+			
+		}
+		
+		if (aaRound == 2) {
+			RiderMonthVURetPrevValueMedian = currentValue;
+		}
+		else{
+			RiderMonthVURetPrevValueMedian = tempPrev;
+		}
+		
+		if (i == 12  && aaRound == 2) {
+			RiderVURetPrevValueMedian = RiderMonthVURetPrevValueMedian ;
+		}
+		
+		
+		//return MonthVURetPrevValueMedian;
+		return currentValue;
+		
+	}
+	else{
+		//if (VUCashValueMedian < 0 && [self ReturnFundValueOfTheYearValueTotalMedian:aaPolicyYear] != 0 ) {
+		if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalMedian != 0 ) {
+			currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear] +
+						   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			(1 + [self ReturnVURetInstMedian]) + RiderVURetPrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVURetInstMedian]) + (RiderNegativeValueOfMaxCashFundMedian - 1) *
+			(RiderVURetValueMedian/RiderFundValueOfTheYearValueTotalMedian);
+			
+		}
+		else{
+			if (aaRound == 1) {
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+				(1 + [self ReturnVURetInstMedian]) + RiderVURetPrevValueMedian * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVURetInstMedian]);
+				RiderVURetValueMedian = currentValue;
+			}
+			else{
+				currentValue = RiderVURetValueMedian;
+			}
+		}
+		
+		if (aaRound == 2) {
+			RiderVURetPrevValueMedian = currentValue;
+		}
+		return currentValue;
+	}
+	
+}
+
+-(double)ReturnRiderVURetValueLow :(int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andRound:(NSInteger)aaRound andMonth:(int)i{
+	
+	double currentValue;
+	
+	
+	if ([aaYearOrMonth isEqualToString:@"M"]) {
+		
+		
+		if (i == 1) {
+			RiderMonthVURetPrevValueLow = RiderVURetPrevValueLow ;
+		}
+		
+		double tempPrev = RiderMonthVURetPrevValueLow;
+		if ((i == MonthDiff2035 + 1 && aaPolicyYear == YearDiff2035)  ) {
+			RiderMonthVURetPrevValueLow = RiderMonthVURetPrevValueLow + (Ridertemp2035Low * Fund2035ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2030 + 1 && aaPolicyYear == YearDiff2030){
+			RiderMonthVURetPrevValueLow = RiderMonthVURetPrevValueLow + (Ridertemp2030Low * Fund2030ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2028 + 1 && aaPolicyYear == YearDiff2028){
+			RiderMonthVURetPrevValueLow = RiderMonthVURetPrevValueLow + (Ridertemp2028Low * Fund2028ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2025 + 1 && aaPolicyYear == YearDiff2025){
+			RiderMonthVURetPrevValueLow = RiderMonthVURetPrevValueLow + (Ridertemp2025Low * Fund2025ReinvestToRetFac/100.00);
+		}
+		else if(i == MonthDiff2023 + 1 && aaPolicyYear == YearDiff2023){
+			RiderMonthVURetPrevValueLow = RiderMonthVURetPrevValueLow + (Ridertemp2023Low * Fund2023ReinvestToRetFac/100.00);
+		}
+		else{
+			
+		}
+		
+		if (RiderVUCashValueNegative == TRUE && RiderMonthFundValueOfTheYearValueTotalLow != 0 ) {
+			currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear  andMonth:i] +
+						   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			pow(1 + [self ReturnVURetInstLow], 1.00/12.00) + RiderMonthVURetPrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+			pow(1 + [self ReturnVURetInstLow], 1.00/12.00) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+			(RiderMonthVURetValueLow/RiderMonthFundValueOfTheYearValueTotalLow);
+			
+		}
+		else{
+			currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ] * [self ReturnPremiumFactor:i]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear  andMonth:i] +
+							[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			pow(1 + [self ReturnVURetInstLow], 1.00/12.00) + RiderMonthVURetPrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]* [self ReturnLoyaltyBonusFactor:i]/100.00)) *
+			pow(1 + [self ReturnVURetInstLow], 1.00/12.00);
+			
+		}
+		
+		
+		if (aaRound == 2) {
+			RiderMonthVURetPrevValueLow = currentValue;
+		}
+		else{
+			RiderMonthVURetPrevValueLow = tempPrev;
+		}
+		
+		if (i == 12  && aaRound == 2) {
+			RiderVURetPrevValueLow = RiderMonthVURetPrevValueLow ;
+		}
+		
+		//return MonthVURetPrevValueLow;
+		return currentValue;
+		
+	}
+	else{
+		if (RiderVUCashValueNegative == TRUE && RiderFundValueOfTheYearValueTotalLow != 0 ) {
+			currentValue= ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear]  +
+						   [self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+			(1 + [self ReturnVURetInstLow]) + RiderVURetPrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVURetInstLow]) + (RiderNegativeValueOfMaxCashFundLow - 1) *
+			(RiderVURetValueLow/RiderFundValueOfTheYearValueTotalLow);
+			
+		}
+		else{
+			if (aaRound == 1) {
+				currentValue = ((([[UniTotalRiderPremWithAlloc objectAtIndex:aaPolicyYear - 1] doubleValue ]) + IncreasePrem) * [self ReturnVURetFac:aaPolicyYear] +
+								[self ReturnRiderRegTopUpPrem:aaPolicyYear] * RegularAllo * VURetFactor * [self ReturnPremiumFactor:i]) *
+				(1 + [self ReturnVURetInstLow]) + RiderVURetPrevValueLow * (1 + ([self ReturnLoyaltyBonus:aaPolicyYear]/100.00)) * (1 + [self ReturnVURetInstLow]);
+				RiderVURetValueLow = currentValue;
+			}
+			else{
+				currentValue = RiderVURetValueLow;
+			}
+			
+		}
+		
+		if (aaRound == 2) {
+			RiderVURetPrevValueLow = currentValue;
+		}
+		return currentValue;
+	}
+	
+}
+
+
+#pragma mark - Calculate Yearly Fund Value for Basic
 
 -(double)ReturnFundValueOfTheYearValueTotalHigh: (int)aaPolicyYear{
 	
@@ -5386,6 +8098,421 @@ int PYAge, SecAge;
 	return MonthVURetValueLow;
 }
 
+#pragma mark - Calculate Yearly Fund Value for Rider
+
+-(double)ReturnRiderFundValueOfTheYearValueTotalHigh: (int)aaPolicyYear{
+	
+	if (aaPolicyYear == YearDiff2035 || aaPolicyYear == YearDiff2030 || aaPolicyYear == YearDiff2028
+		|| aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2023) {
+		return [self ReturnRiderFundValueOfTheYearVU2023ValueHigh:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2025ValueHigh:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2028ValueHigh:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2030ValueHigh:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2035ValueHigh:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVURetValueHigh:aaPolicyYear andYearOrMonth:@"M"];
+	}
+	else{
+		return [self ReturnRiderFundValueOfTheYearVU2023ValueHigh:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2025ValueHigh:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2028ValueHigh:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2030ValueHigh:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2035ValueHigh:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVURetValueHigh:aaPolicyYear andYearOrMonth:@"Y"];
+	}
+	
+	/*
+	 return  0;
+	 */
+}
+
+
+
+-(double)ReturnRiderFundValueOfTheYearVU2023ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth {
+	if (aaPolicyYear <= YearDiff2023) {
+		return [self ReturnRiderVU2023ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2025ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2025) {
+		return [self ReturnRiderVU2025ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+
+-(double)ReturnRiderFundValueOfTheYearVU2028ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2028) {
+		return [self ReturnRiderVU2028ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2030ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2030) {
+		return [self ReturnRiderVU2030ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2035ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2035) {
+		return [self ReturnRiderVU2035ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVURetValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	return [self ReturnRiderVURetValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearValueTotalHigh: (int)aaPolicyYear andMonth:(int)aaMonth{
+	
+	[self ReturnRiderMonthFundValueOfTheYearVURetValueHigh:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth];
+	[self ReturnRiderMonthFundValueOfTheYearVU2023ValueHigh:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth];
+	[self ReturnRiderMonthFundValueOfTheYearVU2025ValueHigh:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth];
+	[self ReturnRiderMonthFundValueOfTheYearVU2028ValueHigh:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth];
+	[self ReturnRiderMonthFundValueOfTheYearVU2030ValueHigh:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth];
+	[self ReturnRiderMonthFundValueOfTheYearVU2035ValueHigh:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth];
+	
+	
+	return RiderMonthVU2023ValueHigh + RiderMonthVU2025ValueHigh + RiderMonthVU2028ValueHigh + RiderMonthVU2030ValueHigh + RiderMonthVU2035ValueHigh + RiderMonthVURetValueHigh;
+	//return  0;
+	
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2023ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	
+	if (aaPolicyYear <= YearDiff2023) {
+		RiderMonthVU2023ValueHigh = [self ReturnRiderVU2023ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2023ValueHigh;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2025ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	
+	if (aaPolicyYear <= YearDiff2025) {
+		RiderMonthVU2025ValueHigh = [self ReturnRiderVU2025ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2025ValueHigh;
+	} else {
+		return 0;
+	}
+}
+
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2028ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2028) {
+		RiderMonthVU2028ValueHigh = [self ReturnRiderVU2028ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2028ValueHigh;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2030ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2030) {
+		RiderMonthVU2030ValueHigh = [self ReturnRiderVU2030ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2030ValueHigh;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2035ValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2035) {
+		RiderMonthVU2035ValueHigh = [self ReturnRiderVU2035ValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2035ValueHigh;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVURetValueHigh: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	RiderMonthVURetValueHigh = [self ReturnRiderVURetValueHigh:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+	return RiderMonthVURetValueHigh;
+}
+
+-(double)ReturnRiderFundValueOfTheYearValueTotalMedian: (int)aaPolicyYear{
+	
+	if (aaPolicyYear == YearDiff2035 || aaPolicyYear == YearDiff2030 || aaPolicyYear == YearDiff2028
+		|| aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2023) {
+		
+		return [self ReturnRiderFundValueOfTheYearVU2023ValueMedian:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2025ValueMedian:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2028ValueMedian:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2030ValueMedian:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2035ValueMedian:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVURetValueMedian:aaPolicyYear andYearOrMonth:@"M"];
+	}
+	else{
+		return [self ReturnRiderFundValueOfTheYearVU2023ValueMedian:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2025ValueMedian:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2028ValueMedian:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2030ValueMedian:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2035ValueMedian:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVURetValueMedian:aaPolicyYear andYearOrMonth:@"Y"];
+	}
+	/*
+	 return  0;
+	 */
+}
+
+
+-(double)ReturnRiderFundValueOfTheYearVU2023ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2023) {
+		return [self ReturnRiderVU2023ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+		
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2025ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2025) {
+		return [self ReturnRiderVU2025ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+
+-(double)ReturnRiderFundValueOfTheYearVU2028ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2028) {
+		return [self ReturnRiderVU2028ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2030ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth {
+	if (aaPolicyYear <= YearDiff2030) {
+		return [self ReturnRiderVU2030ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2035ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2035) {
+		return [self ReturnRiderVU2035ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVURetValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	//return VURetValueMedian;
+	return [self ReturnRiderVURetValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearValueTotalMedian: (int)aaPolicyYear andMonth:(int)aaMonth{
+	
+	return
+	[self ReturnRiderMonthFundValueOfTheYearVU2023ValueMedian:aaPolicyYear andYearOrMonth:@"M" andMont:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2025ValueMedian:aaPolicyYear andYearOrMonth:@"M" andMont:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2028ValueMedian:aaPolicyYear andYearOrMonth:@"M" andMont:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2030ValueMedian:aaPolicyYear andYearOrMonth:@"M" andMont:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2035ValueMedian:aaPolicyYear andYearOrMonth:@"M" andMont:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVURetValueMedian:aaPolicyYear andYearOrMonth:@"M" andMont:aaMonth];
+	
+	
+	
+}
+
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2023ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMont:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2023) {
+		RiderMonthVU2023ValueMedian = [self ReturnRiderVU2023ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2023ValueMedian;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2025ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMont:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2025) {
+		RiderMonthVU2025ValueMedian = [self ReturnRiderVU2025ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return 	RiderMonthVU2025ValueMedian;
+	} else {
+		return 0;
+	}
+}
+
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2028ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMont:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2028) {
+		RiderMonthVU2028ValueMedian = [self ReturnRiderVU2028ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return 	RiderMonthVU2028ValueMedian;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2030ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMont:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2030) {
+		RiderMonthVU2030ValueMedian = [self ReturnRiderVU2030ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return 	RiderMonthVU2030ValueMedian;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2035ValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMont:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2035) {
+		RiderMonthVU2035ValueMedian = [self ReturnRiderVU2035ValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return 	RiderMonthVU2035ValueMedian;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVURetValueMedian: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMont:(int)aaMonth{
+	RiderMonthVURetValueMedian = [self ReturnRiderVURetValueMedian:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+	return 	RiderMonthVURetValueMedian;
+}
+
+-(double)ReturnRiderFundValueOfTheYearValueTotalLow: (int)aaPolicyYear{
+	if (aaPolicyYear == YearDiff2035 || aaPolicyYear == YearDiff2030 || aaPolicyYear == YearDiff2028
+		|| aaPolicyYear == YearDiff2025 || aaPolicyYear == YearDiff2023) {
+		return [self ReturnRiderFundValueOfTheYearVU2023ValueLow:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2025ValueLow:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2028ValueLow:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2030ValueLow:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVU2035ValueLow:aaPolicyYear andYearOrMonth:@"M"] +
+		[self ReturnRiderFundValueOfTheYearVURetValueLow:aaPolicyYear andYearOrMonth:@"M"];
+	}
+	else{
+		return [self ReturnRiderFundValueOfTheYearVU2023ValueLow:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2025ValueLow:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2028ValueLow:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2030ValueLow:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVU2035ValueLow:aaPolicyYear andYearOrMonth:@"Y"] +
+		[self ReturnRiderFundValueOfTheYearVURetValueLow:aaPolicyYear andYearOrMonth:@"Y"];
+	}
+	
+	
+	/*
+	 return  0;
+	 */
+}
+
+
+-(double)ReturnRiderFundValueOfTheYearVU2023ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2023) {
+		return [self ReturnRiderVU2023ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2025ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2025) {
+		return [self ReturnRiderVU2025ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+
+-(double)ReturnRiderFundValueOfTheYearVU2028ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2028) {
+		return [self ReturnRiderVU2028ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2030ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2030) {
+		return [self ReturnRiderVU2030ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVU2035ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	if (aaPolicyYear <= YearDiff2035) {
+		return [self ReturnRiderVU2035ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderFundValueOfTheYearVURetValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth{
+	return [self ReturnRiderVURetValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:0];
+}
+
+
+-(double)ReturnRiderMonthFundValueOfTheYearValueTotalLow: (int)aaPolicyYear andMonth:(int)aaMonth{
+	
+	return [self ReturnRiderMonthFundValueOfTheYearVU2023ValueLow:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2025ValueLow:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2028ValueLow:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2030ValueLow:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVU2035ValueLow:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth] +
+	[self ReturnRiderMonthFundValueOfTheYearVURetValueLow:aaPolicyYear andYearOrMonth:@"M" andMonth:aaMonth];
+	
+	
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2023ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2023) {
+		RiderMonthVU2023ValueLow = [self ReturnRiderVU2023ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2023ValueLow;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2025ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2025) {
+		RiderMonthVU2025ValueLow = [self ReturnRiderVU2025ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2025ValueLow;
+	} else {
+		return 0;
+	}
+}
+
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2028ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2028) {
+		RiderMonthVU2028ValueLow = [self ReturnRiderVU2028ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2028ValueLow;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2030ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2030) {
+		RiderMonthVU2030ValueLow = [self ReturnRiderVU2030ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2030ValueLow;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVU2035ValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	if (aaPolicyYear <= YearDiff2035) {
+		RiderMonthVU2035ValueLow = [self ReturnRiderVU2035ValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+		return RiderMonthVU2035ValueLow;
+	} else {
+		return 0;
+	}
+}
+
+-(double)ReturnRiderMonthFundValueOfTheYearVURetValueLow: (int)aaPolicyYear andYearOrMonth:(NSString *)aaYearOrMonth andMonth:(int)aaMonth{
+	RiderMonthVURetValueLow = [self ReturnRiderVURetValueLow:aaPolicyYear andYearOrMonth:aaYearOrMonth andRound:1 andMonth:aaMonth];
+	return RiderMonthVURetValueLow;
+}
 
 
 #pragma mark - Others
@@ -5941,16 +9068,9 @@ int PYAge, SecAge;
 	double tempTotal = 0.00;
 	sqlite3_stmt *statement;
 	NSString *QuerySQL;
-	NSMutableArray *TempRiderCode = [[NSMutableArray alloc] init ];
-	NSMutableArray *TempSA = [[NSMutableArray alloc] init ];
-	NSMutableArray *tempHL= [[NSMutableArray alloc] init ];
-	NSMutableArray *tempHLPct = [[NSMutableArray alloc] init ];
-	NSMutableArray *tempTerm = [[NSMutableArray alloc] init ];
-	NSMutableArray *tempRiderMort = [[NSMutableArray alloc] init ];
-	NSMutableArray *tempPlanChoice = [[NSMutableArray alloc] init ];
-	NSMutableArray *tempDeductible = [[NSMutableArray alloc] init ];
-	NSMutableArray *tempRiderAlloc = [[NSMutableArray alloc] init ];
-	
+	NSMutableArray *UnitizeRiderAlloc = [[NSMutableArray alloc] init ];
+	NSMutableArray *UnitizeRiderMort = [[NSMutableArray alloc] init ];
+	/*
 	if (sqlite3_open([databasePath UTF8String], &contactDB) == SQLITE_OK){
 		QuerySQL = [NSString stringWithFormat: @"Select ridercode, SumAssured, ifnull(Hloading, '0') as Hloading, ifnull(HLoadingPct, '0') as HLoadingPct, "
 					"RiderTerm, planOption, Deductible from ul_rider_details Where  "
@@ -5960,114 +9080,114 @@ int PYAge, SecAge;
 		//NSLog(@"%@", QuerySQL);
 		if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
-				[TempRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
-				[TempSA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)]];
-				[tempHL addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)]];
-				[tempHLPct addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)]];
-				[tempTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)]];
-				[tempPlanChoice addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)]];
-				[tempDeductible addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)]];
-				NSLog(@"10- 1 ok");
+				[UnitizeRiderCode addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+				[UnitizeRiderSA addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 1)]];
+				[UnitizeRiderHL addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 2)]];
+				[UnitizeRiderHLPct addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 3)]];
+				[UnitizeRiderTerm addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 4)]];
+				[UnitizeRiderPlanChoice addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 5)]];
+				[UnitizeRiderDeductible addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 6)]];
+				//NSLog(@"10- 1 ok");
 			}
             sqlite3_finalize(statement);
         }
 		
 		sqlite3_close(contactDB);
 	}
-	
+	*/
 	if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
 
-		for (int i = 0; i < TempRiderCode.count; i++) {
-			if ([[TempRiderCode objectAtIndex:i] isEqualToString:@"ACIR"]) {
+		for (int i = 0; i < UnitizeRiderCode.count; i++) {
+			if ([[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"ACIR"]) {
 				QuerySQL = [NSString stringWithFormat: @"select Rate from ES_Sys_Rider_Mort where plancode = '%@' AND sex = '%@' AND fromage='%d' AND smoker = '%@' ",
-							[TempRiderCode objectAtIndex:i] ,getSexLA, Age, getSmokerLA];
+							[UnitizeRiderCode objectAtIndex:i] ,getSexLA, Age + aaPolicyYear - 1, getSmokerLA];
 			}
-			else if ([[TempRiderCode objectAtIndex:i] isEqualToString:@"CIRD"]){
+			else if ([[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"CIRD"]){
 				QuerySQL = [NSString stringWithFormat: @"select Rate from ES_Sys_Rider_Mort where plancode = '%@' AND sex = '%@' AND fromage='%d' AND PolYear = '%d' AND Term = '%@' ",
-							[TempRiderCode objectAtIndex:i], getSexLA, Age, aaPolicyYear, [tempTerm objectAtIndex:i] ];
+							[UnitizeRiderCode objectAtIndex:i], getSexLA, Age + aaPolicyYear - 1, aaPolicyYear, [UnitizeRiderTerm objectAtIndex:i] ];
 			}
-			else if ([[TempRiderCode objectAtIndex:i] isEqualToString:@"WI"] ||
-					 [[TempRiderCode objectAtIndex:i] isEqualToString:@"PA"] ||
-					 [[TempRiderCode objectAtIndex:i] isEqualToString:@"MR"] ||
-					 [[TempRiderCode objectAtIndex:i] isEqualToString:@"TPDMLA"] ||
-					 [[TempRiderCode objectAtIndex:i] isEqualToString:@"DHI"] ||
-					 [[TempRiderCode objectAtIndex:i] isEqualToString:@"DCA"]){
+			else if ([[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"WI"] ||
+					 [[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"PA"] ||
+					 [[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"MR"] ||
+					 [[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"TPDMLA"] ||
+					 [[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"DHI"] ||
+					 [[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"DCA"]){
 				
 				QuerySQL = [NSString stringWithFormat: @"select Rate from ES_Sys_Rider_Mort where plancode = '%@' AND sex = '%@' AND fromage='%d' AND  OccClass= '%d' ",
-							[TempRiderCode objectAtIndex:i], getSexLA, Age, getOccpClass ];
+							[UnitizeRiderCode objectAtIndex:i], getSexLA, Age + aaPolicyYear - 1, getOccpClass ];
 			}
-			else if ([[TempRiderCode objectAtIndex:i] isEqualToString:@"HMM"]){
+			else if ([[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"HMM"]){
 				NSString *ccc;
-				if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"HMM_150"]) {
+				if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"HMM_150"]) {
 					ccc = @"MM150";
 				}
-				else if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"HMM_200"]) {
+				else if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"HMM_200"]) {
 					ccc = @"MM200";
 				}
-				else if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"HMM_300"]) {
+				else if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"HMM_300"]) {
 					ccc = @"MM300";
 				}
-				else if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"HMM_400"]) {
+				else if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"HMM_400"]) {
 					ccc = @"MM400";
 				}
 				
 				QuerySQL = [NSString stringWithFormat: @"select Rate from ES_Sys_Rider_Mort where plancode = '%@' AND sex = '%@' AND fromage='%d' AND  OccClass= '%d' "
 							"AND Type = '%@' AND Deductible = '%@'",
-							[TempRiderCode objectAtIndex:i], getSexLA, Age, getOccpClass, ccc, [tempDeductible objectAtIndex:i] ];
+							[UnitizeRiderCode objectAtIndex:i], getSexLA, Age + aaPolicyYear - 1, getOccpClass, ccc, [UnitizeRiderDeductible objectAtIndex:i] ];
 			}
-			else if ([[TempRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"]){
+			else if ([[UnitizeRiderCode objectAtIndex:i] isEqualToString:@"MG_IV"]){
 				NSString *ccc;
-				if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_150"]) {
+				if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_150"]) {
 					ccc = @"MGIV_150";
 				}
-				else if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_200"]) {
+				else if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_200"]) {
 					ccc = @"MGIV_200";
 				}
-				else if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_300"]) {
+				else if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_300"]) {
 					ccc = @"MGIV_300";
 				}
-				else if ([[tempPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_400"]) {
+				else if ([[UnitizeRiderPlanChoice objectAtIndex:i] isEqualToString:@"MGIVP_400"]) {
 					ccc = @"MGIV_400";
 				}
 				
 				
 				QuerySQL = [NSString stringWithFormat: @"select Rate from ES_Sys_Rider_Mort where plancode = '%@' AND sex = '%@' AND fromage='%d' AND  OccClass= '%d' "
 							"AND Type = '%@'",
-							[TempRiderCode objectAtIndex:i], getSexLA, Age, getOccpClass, ccc];
+							[UnitizeRiderCode objectAtIndex:i], getSexLA, Age + aaPolicyYear - 1, getOccpClass, ccc];
 			}
 			
 			
 			//NSLog(@"%@", QuerySQL);
 			if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 				if (sqlite3_step(statement) == SQLITE_ROW) {
-					[tempRiderMort addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+					[UnitizeRiderMort addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
 						//NSLog(@"10- 2 ok");
 				}
 				else{
-					[tempRiderMort addObject:@"0.00"];
+					[UnitizeRiderMort addObject:@"0.00"];
 				}
 				sqlite3_finalize(statement);
 			}
 			else{
-				[tempRiderMort addObject:@"0.00"];
+				[UnitizeRiderMort addObject:@"0.00"];
 			}
 			
 			QuerySQL = [NSString stringWithFormat: @"select Rate from ES_Sys_Rider_Allocation where Term = '%@' AND PolYear = '%d'",
-						[tempTerm objectAtIndex:i], aaPolicyYear];
+						[UnitizeRiderTerm objectAtIndex:i], aaPolicyYear];
 				
 				//NSLog(@"%@", QuerySQL);
 			if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
 				if (sqlite3_step(statement) == SQLITE_ROW) {
-					[tempRiderAlloc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
+					[UnitizeRiderAlloc addObject:[[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)]];
 					
 				}
 				else{
-					[tempRiderAlloc addObject:@"0.00"];
+					[UnitizeRiderAlloc addObject:@"0.00"];
 				}
 				sqlite3_finalize(statement);
 			}
 			else{
-				[tempRiderAlloc addObject:@"0.00"];
+				[UnitizeRiderAlloc addObject:@"0.00"];
 			}
 			
 		}
@@ -6075,32 +9195,34 @@ int PYAge, SecAge;
 
 	}
 
-	for (int i = 0; i < [TempRiderCode count]; i++) {
+	for (int i = 0; i < [UnitizeRiderCode count]; i++) {
 
-		NSString *RidercodeFromArray = [TempRiderCode objectAtIndex:i];
-		double SAFromArray = [[TempSA objectAtIndex:i] doubleValue ];
-		double HLFromArray = [[tempHL objectAtIndex:i] doubleValue ];
-		double  HLPctFromArray = [[tempHLPct objectAtIndex:i] doubleValue ];
-		double  RiderMortFromArray = [[tempRiderMort objectAtIndex:i] doubleValue ];
-		double RiderAllocFromArray = [[tempRiderAlloc objectAtIndex:i]doubleValue ];
+		NSString *RidercodeFromArray = [UnitizeRiderCode objectAtIndex:i];
+		double SAFromArray = [[UnitizeRiderSA objectAtIndex:i] doubleValue ];
+		double HLFromArray = [[UnitizeRiderHL objectAtIndex:i] doubleValue ];
+		double  HLPctFromArray = [[UnitizeRiderHLPct objectAtIndex:i] doubleValue ];
+		double  RiderMortFromArray = [[UnitizeRiderMort objectAtIndex:i] doubleValue ];
+		double RiderAllocFromArray = [[UnitizeRiderAlloc objectAtIndex:i]doubleValue ]/100.00;
 		
+		//NSLog(@"%d, %@, %f, %f, %f, %f, %f", aaPolicyYear,  RidercodeFromArray, SAFromArray, HLFromArray, HLPctFromArray, RiderMortFromArray, RiderAllocFromArray);
 		if ([RidercodeFromArray isEqualToString:@"CIRD"] || [RidercodeFromArray isEqualToString:@"ACIR" ] ) {
-			tempTotal = tempTotal +  (SAFromArray * (RiderMortFromArray/1000) * (1 + HLPctFromArray/100) + HLFromArray + SAFromArray * [getOccLoading doubleValue]/1000)/12 * RiderAllocFromArray;
+			tempTotal = tempTotal +  (SAFromArray * (RiderMortFromArray/1000.00) * (1.00 + HLPctFromArray/100.00) + HLFromArray + SAFromArray * [getOccLoading doubleValue]/1000.00)/12.00 * RiderAllocFromArray;
 			if ([RidercodeFromArray isEqualToString:@"CIRD"]) {
 				CIRDExist = TRUE;
 			}
+
 		}
 		else if ([RidercodeFromArray isEqualToString:@"WI"] || [RidercodeFromArray isEqualToString:@"PA" ] ||
 				 [RidercodeFromArray isEqualToString:@"PA"] || [RidercodeFromArray isEqualToString:@"MR" ] ||
 				 [RidercodeFromArray isEqualToString:@"TPDMLA"] || [RidercodeFromArray isEqualToString:@"DCA" ]) {
 			
-			tempTotal = tempTotal +  (SAFromArray * (RiderMortFromArray/100) * RiderAllocFromArray * (1 + HLPctFromArray/100) + HLFromArray + SAFromArray * [getOccLoading doubleValue ]/1000)/12;
+			tempTotal = tempTotal +  (SAFromArray * (RiderMortFromArray/100.00) * RiderAllocFromArray * (1 + HLPctFromArray/100.00) + HLFromArray + SAFromArray * [getOccLoading doubleValue ]/1000.00)/12.00;
 		}
 		else if ([RidercodeFromArray isEqualToString:@"DCA"]) {
-			tempTotal = tempTotal +  ((10000 + SAFromArray) * (RiderMortFromArray/100) * RiderAllocFromArray * (1 + HLPctFromArray/100) + HLFromArray + (10000 + SAFromArray) * [getOccLoading doubleValue ]/1000)/12;
+			tempTotal = tempTotal +  ((10000.00 + SAFromArray) * (RiderMortFromArray/100.00) * RiderAllocFromArray * (1 + HLPctFromArray/100.00) + HLFromArray + (10000.00 + SAFromArray) * [getOccLoading doubleValue ]/1000.00)/12;
 		}
 		else if ([RidercodeFromArray isEqualToString:@"HMM"] || [RidercodeFromArray isEqualToString:@"MG_IV"] ) {
-			tempTotal = tempTotal +  (RiderMortFromArray * (1 + HLPctFromArray/100) + HLFromArray + SAFromArray * [getOccLoading doubleValue ]/1000)/12 * RiderAllocFromArray;
+			tempTotal = tempTotal +  (RiderMortFromArray * (1 + HLPctFromArray/100.00) + HLFromArray + SAFromArray * [getOccLoading doubleValue ]/1000.00)/12.00 * RiderAllocFromArray;
 		}
 		
 	}
@@ -6164,6 +9286,39 @@ int PYAge, SecAge;
 	
 	return value;
 }
+
+-(double)ReturnRiderCommisionFee: (int)aaPolicyYear{
+	sqlite3_stmt *statement;
+	NSString *QuerySQL;
+	double value = 0.00;
+	double TotalValue = 0.00;
+	
+	if (sqlite3_open([UL_RatesDatabasePath UTF8String], &contactDB) == SQLITE_OK){
+		for (int i =0; i < [UnitizeRiderCode count]; i++) {
+			QuerySQL = [NSString stringWithFormat: @"Select Rate From ES_Sys_Rider_Commission Where PolYear = %d AND RiderTerm = '%@' ",
+						aaPolicyYear, [UnitizeRiderTerm objectAtIndex:i]];
+			
+			//NSLog(@"%@", QuerySQL);
+			if(sqlite3_prepare_v2(contactDB, [QuerySQL UTF8String], -1, &statement, NULL) == SQLITE_OK) {
+				if (sqlite3_step(statement) == SQLITE_ROW) {
+					value = sqlite3_column_double(statement, 0);
+				}
+				else{
+					value = 0.00;
+				}
+				sqlite3_finalize(statement);
+			}
+			
+			TotalValue = TotalValue + ([[UnitizeRiderPremium objectAtIndex:i] doubleValue ] * value)/100.00;
+		}
+		
+		sqlite3_close(contactDB);
+	}
+	
+	
+	return TotalValue;
+}
+
 
 
 -(double)ReturnVUCashHigh{
@@ -7075,8 +10230,8 @@ int PYAge, SecAge;
 		
 		NSDateFormatter* df = [[NSDateFormatter alloc] init];
 		[df setDateFormat:@"dd/MM/yyyy"];
-     	NSDate* d = [df dateFromString:getDOB];
-		NSDate* d2 = [df dateFromString:getPlanCommDate];
+     	NSDate* d = [[df dateFromString:getDOB] dateByAddingTimeInterval:8*60*60 - 1800 ];
+		NSDate* d2 = [[df dateFromString:getPlanCommDate]dateByAddingTimeInterval:8*60*60  ];
 		
 		NSCalendar* calendar = [NSCalendar currentCalendar];
 		NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
@@ -7106,14 +10261,16 @@ int PYAge, SecAge;
     NSCalendar *calendar = [NSCalendar currentCalendar];
 	//NSLog(@"%@ %@", fromDateTime, toDateTime);
 	
-    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+    [calendar rangeOfUnit:NSMonthCalendarUnit startDate:&fromDate
 				 interval:NULL forDate:fromDateTime];
-    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate
+    [calendar rangeOfUnit:NSMonthCalendarUnit startDate:&toDate
 				 interval:NULL forDate:toDateTime];
 	
     NSDateComponents *difference = [calendar components:NSMonthCalendarUnit
 											   fromDate:fromDate toDate:toDate options:0];
 	
+
+	//NSLog(@"%d", [difference month]);
     return [difference month];
 }
 
@@ -7140,7 +10297,7 @@ int PYAge, SecAge;
 	   andBumpMode:(NSString *)aaBumpMode andBasicSA:(NSString *)aaBasicSA
 	   andRTUPFrom:(NSString *)aaRTUPFrom andRTUPFor:(NSString *)aaRTUPFor andRTUPAmount:(NSString *)aaRTUPAmount
 	   andSmokerLA:(NSString *)aaSmokerLA andOccLoading:(NSString *)aaOccLoading andPlanCommDate:(NSString *)aaPlanCommDate
-			andDOB:(NSString *)aaDOB andSexLA:(NSString *)aaSexLA andSino:(NSString *)aaSino{
+			andDOB:(NSString *)aaDOB andSexLA:(NSString *)aaSexLA andSino:(NSString *)aaSino andLAAge:(int)aaLAAge{
 	
 	NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
@@ -7152,6 +10309,7 @@ int PYAge, SecAge;
 	getHLPct = aaGetHLPct;
 	strBumpMode = aaBumpMode;
 	strBasicSA = aaBasicSA;
+	BasicSA = [aaBasicSA doubleValue];
 	strRTUPFrom = aaRTUPFrom;
 	strRTUPFor = aaRTUPFor;
 	strRTUPAmount = aaRTUPAmount;
@@ -7161,9 +10319,10 @@ int PYAge, SecAge;
 	getDOB = aaDOB;
 	getSexLA = aaSexLA;
 	SINo = aaSino;
+	Age = aaLAAge;
 	
-	NSLog(@"%@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@", aaATPrem, aaGetHL, aaGetHLPct, aaBumpMode, aaBasicSA, aaRTUPFrom, aaRTUPFor,
-		  aaRTUPAmount, aaSmokerLA, aaOccLoading, aaPlanCommDate, aaDOB, aaSexLA, aaSino);
+	NSLog(@"%@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %@ %d", aaATPrem, aaGetHL, aaGetHLPct, aaBumpMode, aaBasicSA, aaRTUPFrom, aaRTUPFor,
+		  aaRTUPAmount, aaSmokerLA, aaOccLoading, aaPlanCommDate, aaDOB, aaSexLA, aaSino, aaLAAge);
 	SimpleOrDetail = @"Simple";
 	[self PopulateData];
 	

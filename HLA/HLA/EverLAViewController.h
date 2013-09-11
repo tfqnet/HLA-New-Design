@@ -161,4 +161,6 @@
 @property(nonatomic , retain) NSMutableArray *atcRidCode;
 @property(nonatomic , retain) NSMutableArray *atcPlanChoice;
 
+-(BOOL)NewDone;
+
 @end

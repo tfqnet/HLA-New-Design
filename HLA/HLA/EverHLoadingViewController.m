@@ -46,7 +46,7 @@
 	
     [self getTermRule];
     [self getExistingData];
-    if (getHLTerm > 0 || getHLTermPct > 0) {
+    if (getHLTerm > 0 || getHLTermPct > 0 || getMed == 1) {
         [self getExistingView];
     }
 }
@@ -185,6 +185,16 @@
 	}
 }
 
+-(BOOL)NewDone{
+	if ([self Validation] == TRUE) {
+		[self updateHL];
+		return TRUE;
+	}
+	else{
+		return FALSE;
+	}
+}
+
 - (IBAction)ActionDone:(id)sender {
 	[self resignFirstResponder];
     [self.view endEditing:YES];
@@ -201,13 +211,22 @@
 		zzz.EverMessage = @"";
 	}
 	else{
-		[self Validation];
+		if ([self Validation] == TRUE) {
+			/*
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
+			[alert setTag:1001];
+			[alert show];
+			 */
+			[self updateHL];
+			[_delegate HLGlobalSave];
+		}
+		
 	}
 	
-    
 }
 
--(void)Validation{
+
+-(BOOL)Validation{
 	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789."] invertedSet];
     NSCharacterSet *setTerm = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
     
@@ -227,42 +246,50 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) or dot(.) into Health input for (per 1k SA)." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [txtHLoad becomeFirstResponder];
+		return FALSE;
     }
     else if (substringHL.length > 5) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (Per 1k SA) only allow 4 decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [txtHLoad becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHLoad.text intValue] > 0 && txtHloadTerm.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHloadTerm becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHloadTerm.text intValue] > 0 && txtHLoad.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHLoad becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHloadTerm.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) into Health input for (per 1k SA) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [txtHloadTerm becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHLoad.text intValue] == 0 && txtHLoad.text.length != 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHLoad becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHloadTerm.text intValue] == 0 && txtHloadTerm.text.length != 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (per 1k SA) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHloadTerm becomeFirstResponder];
+		return FALSE;
     }
 	else if ([txtHloadTerm.text intValue] > termCover) {
 		NSString *msg = [NSString stringWithFormat:@"Health Loading (per 1k SA) Term cannot be more than %d.", termCover];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHloadTerm becomeFirstResponder];
+		return FALSE;
     }
     
     //--
@@ -272,52 +299,64 @@
 														message:@"Invalid input. Please enter numeric value (0-9) into Health Loading (%) input." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [txtHloadPct becomeFirstResponder];
+		return FALSE;
     }
     else if (substringTempHL.length > 2) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) does not allow decimal places." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [txtHloadPct becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHLoadPctTerm.text rangeOfCharacterFromSet:setTerm].location != NSNotFound) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input. Please enter numeric value (0-9) into  Health Loading (%) Term." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
         [txtHLoadPctTerm becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHloadPct.text intValue] > 999) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) cannot greater than 999" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHloadPct becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHloadPct.text intValue] > 0 && txtHLoadPctTerm.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHloadPct becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHLoadPctTerm.text intValue] > 0 && txtHloadPct.text.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHloadPct becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHloadPct.text intValue] == 0 && txtHloadPct.text.length != 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHloadPct becomeFirstResponder];
+		return FALSE;
     }
     else if ([txtHLoadPctTerm.text intValue] == 0 && txtHLoadPctTerm.text.length != 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Health Loading (%) Term is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHLoadPctTerm becomeFirstResponder];
+		return FALSE;
     }
 	else if ([txtHLoadPctTerm.text intValue] > termCover) {
 		NSString *msg = [NSString stringWithFormat:@"Health Loading (%%) Term cannot be more than %d.", termCover];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         [txtHLoadPctTerm becomeFirstResponder];
+		return FALSE;
     }
 	else {
+		/*
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Confirm changes?" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
         [alert show];
+		 */
+		return TRUE;
     }
 
 }
@@ -383,7 +422,7 @@
         NSString *querySQL = [NSString stringWithFormat:
                               @"SELECT SINo, PlanCode, HLoading, HLoadingTerm, HLoadingPct, HLoadingPctTerm, MedicalReq FROM "
 							  "UL_Details WHERE SINo=\"%@\"",SINo];
-        
+        //NSLog(@"%@", querySQL);
         if (sqlite3_prepare_v2(contactDB, [querySQL UTF8String], -1, &statement, NULL) == SQLITE_OK)
         {
             if (sqlite3_step(statement) == SQLITE_ROW)

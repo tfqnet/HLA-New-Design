@@ -92,6 +92,7 @@
 			
 			
 			if ([difference day ] > 0) {
+				NSLog(@"more than %d day", [difference day]);
 				
 				zzz.EverMessage = @"Please note that the commencement date of this sales illustration is earlier than today’s date. "
 				"You may want to update the commencement date as sustainability, premium payable and projected values may change due "
@@ -1583,39 +1584,36 @@
 	
 	txtCommDate.text = commDate;
 }
-- (IBAction)ActionDone:(id)sender {
-	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
-	if (txtName.text.length <= 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-        //[Field becomeFirstResponder];
-    }
-    else if (smoker.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-	else if (AgeLess) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert setTag:1005];
-        [alert show];
-    }else if (age > 100) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-	else if (occuCode.length == 0 || btnOccpDesc.titleLabel.text.length == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-	else if ([txtName.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+
+-(BOOL)NewDone{
+	if ([self Validation] == TRUE) {
+		if (self.requestSINo) {
+            [self checkingExisting2];
+        }
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }
-    else if ([occuCode isEqualToString:@"OCC01975"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
-        [alert show];
-    }else {
-        //prompt save
+		if (useExist) {
+            NSLog(@"will update");
+            [self updateData];
+        }
+        else if (Inserted) {
+            NSLog(@"will update2");
+            [self updateData2];
+        }
+        else {
+            NSLog(@"will insert new");
+            [self insertData];
+        }
+        Saved = YES;
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
+- (IBAction)ActionDone:(id)sender {
+	
+	if ([self Validation] == TRUE) {
+		//prompt save
         NSString *msg;
         if (self.requestSINo) {
             [self checkingExisting2];
@@ -1638,8 +1636,51 @@
 											  cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
         [alert show];
-    }
+	}
 	
+}
+
+-(BOOL)Validation{
+	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
+	if (txtName.text.length <= 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+        //[Field becomeFirstResponder];
+		return FALSE;
+    }
+    else if (smoker.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+	else if (AgeLess) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 30 days." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert setTag:1005];
+        [alert show];
+		return FALSE;
+    }else if (age > 100) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age Last Birthday must be less than or equal to 100 for this product." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+	else if (occuCode.length == 0 || btnOccpDesc.titleLabel.text.length == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+	else if ([txtName.text rangeOfCharacterFromSet:set].location != NSNotFound) {
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }
+    else if ([occuCode isEqualToString:@"OCC01975"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"There is no existing plan which can be offered to this occupation." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
+        [alert show];
+		return FALSE;
+    }else {
+        return TRUE;
+    }
 }
 
 - (IBAction)ActionMaritalStatus:(id)sender {

@@ -949,33 +949,45 @@ NSString *gEverNameSecond = @"";
     }
 }
 
-- (IBAction)btnDone:(id)sender {
+-(BOOL)Validation{
 	NSCharacterSet *set = [[NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789'@/-. "] invertedSet];
     
     if (txtName.text.length <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner"
 														message:@"2nd Life Assured Name is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+		return FALSE;
     }
     else if (OccpCode.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Please select an Occupation Description." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+		return FALSE;
     }
     else if ([txtName.text rangeOfCharacterFromSet:set].location != NSNotFound) {
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Invalid input format. Input must be alphabet A to Z, space, apostrotrophe('), alias(@), slash(/), dash(-) or dot(.)" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+		return FALSE;
     }
     else if (smoker.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Smoker is required." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+		return FALSE;
     }
     else if (age < 16) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:@"Age must be at least 16 years old." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
         [alert show];
+		return FALSE;
     }
     else {
-        NSString *msg;
+		return TRUE;
+    }
+}
+
+- (IBAction)btnDone:(id)sender {
+	
+	if ([self Validation] == TRUE) {
+		NSString *msg;
         if (self.requestSINo) {
             [self checkingExisting2];
             if (useExist) {
@@ -996,7 +1008,42 @@ NSString *gEverNameSecond = @"";
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mobile Planner" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"CANCEL",nil];
         [alert setTag:1001];
         [alert show];
-    }
+	}
+}
+
+-(BOOL)NewDone{
+	NSLog(@"inside second LA");
+	if (![txtName.text isEqualToString:@""]) {
+		if ([self Validation] == TRUE) {
+			if (self.requestSINo) {
+				[self checkingExisting2];
+			}
+			
+			if (self.requestSINo) {
+				if (useExist) {
+					[self updateData];
+					[self CheckValidRider];
+					[_delegate RiderAdded];
+					
+				} else {
+					[self saveData];
+				}
+			}
+			else {
+				[self save2ndLAHandler];
+			}
+			return TRUE;
+		}
+		else{
+
+			return FALSE;
+		}
+	}
+	else{
+
+		return TRUE;
+	}
+		
 }
 
 - (IBAction)ActionProspect:(id)sender {

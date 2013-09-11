@@ -19,6 +19,7 @@
 
 -(void)RiderAdded;
 -(void) BasicSARevised:(NSString *)aabasicSA;
+-(void)BasicGlobalSave;
 @end
 
 
@@ -149,4 +150,6 @@
 @property (nonatomic,strong) NSString *getPlanCommDate;
 @property (nonatomic,strong) NSString *getDOB;
 @property (nonatomic,strong) NSString *getOccLoading;
+
+-(BOOL)NewDone;
 @end
