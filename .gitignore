@@ -6,3 +6,7 @@ HLA/HLA/EverSeriesViewController.m
 HLA/HLA/EverSeriesViewController.m
 
 HLA/HLA/EverSeriesViewController.h
+
+HLA/HLA_Rates.sqlite
+
+*.sqlite

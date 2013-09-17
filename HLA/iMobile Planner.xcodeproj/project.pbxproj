@@ -28,14 +28,15 @@
 		42F8590F1772E4EF003907CD /* add.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F8590D1772E4EF003907CD /* add.png */; };
 		42F859101772E4EF003907CD /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 42F8590E1772E4EF003907CD /* delete.png */; };
 		42FB604D1772EF6000943E1F /* Preference.m in Sources */ = {isa = PBXBuildFile; fileRef = 42FB604C1772EF6000943E1F /* Preference.m */; };
+		6A4ACBB317E8429F0037C358 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A4ACBB117E8429F0037C358 /* HLA_Rates.sqlite */; };
+		6A4ACBB417E8429F0037C358 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A4ACBB217E8429F0037C358 /* hladb.sqlite */; };
+		6A4ACBB717E843190037C358 /* Country.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4ACBB617E843190037C358 /* Country.m */; };
 		6A6ED09717D49937009FFA56 /* Race.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED09617D49937009FFA56 /* Race.plist */; };
 		6A6ED09D17D49B73009FFA56 /* Race.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6ED09C17D49B73009FFA56 /* Race.m */; };
 		6A6ED0A017D57F9B009FFA56 /* MaritalStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6ED09F17D57F9B009FFA56 /* MaritalStatus.m */; };
 		6A6ED0A217D57FD6009FFA56 /* MaritalStatus.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A117D57FD6009FFA56 /* MaritalStatus.plist */; };
 		6A6ED0A417D59186009FFA56 /* Religion.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A317D59186009FFA56 /* Religion.plist */; };
 		6A6ED0A717D591DC009FFA56 /* Religion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A617D591DC009FFA56 /* Religion.m */; };
-		6A6ED0AA17D5B74D009FFA56 /* HLA_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A817D5B74D009FFA56 /* HLA_Rates.sqlite */; };
-		6A6ED0AB17D5B74D009FFA56 /* hladb.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0A917D5B74D009FFA56 /* hladb.sqlite */; };
 		6A6ED0AD17D5E97E009FFA56 /* Country.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A6ED0AC17D5E97E009FFA56 /* Country.plist */; };
 		C40059FA16BB678000B03041 /* CashPromiseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C40059F916BB678000B03041 /* CashPromiseViewController.m */; };
 		C418112816561D87006A05B9 /* SettingUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C418112716561D87006A05B9 /* SettingUserProfile.m */; };
@@ -203,7 +204,6 @@
 		C4EB4924161558F300C7FC8C /* ChangePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB4923161558F300C7FC8C /* ChangePassword.m */; };
 		C4EB492716155A4A00C7FC8C /* setting.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB492616155A4A00C7FC8C /* setting.m */; };
 		C4EB493C161592EC00C7FC8C /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EB493B161592EB00C7FC8C /* UserProfile.m */; };
-		C4EC68A917DF267B0063599A /* UL_Rates.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = C4EC68A817DF267B0063599A /* UL_Rates.sqlite */; };
 		C4EEB64317BCD11900F268B3 /* EverLifeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */; };
 		C4EEB64617C1A98900F268B3 /* demo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4EEB64517C1A98900F268B3 /* demo.m */; };
 		C4EEB64A17C1C05000F268B3 /* everlife.pdf in Resources */ = {isa = PBXBuildFile; fileRef = C4EEB64917C1C05000F268B3 /* everlife.pdf */; };
@@ -366,6 +366,10 @@
 		42F8590E1772E4EF003907CD /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		42FB604B1772EF6000943E1F /* Preference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preference.h; sourceTree = "<group>"; };
 		42FB604C1772EF6000943E1F /* Preference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preference.m; sourceTree = "<group>"; };
+		6A4ACBB117E8429F0037C358 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
+		6A4ACBB217E8429F0037C358 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
+		6A4ACBB517E843190037C358 /* Country.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Country.h; sourceTree = "<group>"; };
+		6A4ACBB617E843190037C358 /* Country.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Country.m; sourceTree = "<group>"; };
 		6A6ED09617D49937009FFA56 /* Race.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Race.plist; sourceTree = "<group>"; };
 		6A6ED09B17D49B73009FFA56 /* Race.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Race.h; sourceTree = "<group>"; };
 		6A6ED09C17D49B73009FFA56 /* Race.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Race.m; sourceTree = "<group>"; };
@@ -375,8 +379,6 @@
 		6A6ED0A317D59186009FFA56 /* Religion.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Religion.plist; sourceTree = "<group>"; };
 		6A6ED0A517D591DC009FFA56 /* Religion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Religion.h; sourceTree = "<group>"; };
 		6A6ED0A617D591DC009FFA56 /* Religion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Religion.m; sourceTree = "<group>"; };
-		6A6ED0A817D5B74D009FFA56 /* HLA_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = HLA_Rates.sqlite; sourceTree = "<group>"; };
-		6A6ED0A917D5B74D009FFA56 /* hladb.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hladb.sqlite; sourceTree = "<group>"; };
 		6A6ED0AC17D5E97E009FFA56 /* Country.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Country.plist; sourceTree = "<group>"; };
 		C40059F816BB678000B03041 /* CashPromiseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CashPromiseViewController.h; sourceTree = "<group>"; };
 		C40059F916BB678000B03041 /* CashPromiseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CashPromiseViewController.m; sourceTree = "<group>"; };
@@ -610,7 +612,6 @@
 		C4EB492616155A4A00C7FC8C /* setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setting.m; sourceTree = "<group>"; };
 		C4EB493A161592EB00C7FC8C /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		C4EB493B161592EB00C7FC8C /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
-		C4EC68A817DF267B0063599A /* UL_Rates.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = UL_Rates.sqlite; sourceTree = "<group>"; };
 		C4EEB64117BCD11900F268B3 /* EverLifeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EverLifeViewController.h; sourceTree = "<group>"; };
 		C4EEB64217BCD11900F268B3 /* EverLifeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EverLifeViewController.m; sourceTree = "<group>"; };
 		C4EEB64417C1A98900F268B3 /* demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = demo.h; sourceTree = "<group>"; };
@@ -646,9 +647,6 @@
 		C4F8300B162FA84D00EF8FAA /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		C4F8300C162FA84D00EF8FAA /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		C4F8302C162FCEE000EF8FAA /* HLassurance.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HLassurance.png; sourceTree = "<group>"; };
-		C4F8302D162FCEE000EF8FAA /* Page1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page1.html; sourceTree = "<group>"; };
-		C4F8302E162FCEE000EF8FAA /* Page2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page2.html; sourceTree = "<group>"; };
-		C4F8302F162FCEE000EF8FAA /* Page3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Page3.html; sourceTree = "<group>"; };
 		C4F83030162FCEE000EF8FAA /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 		C4FCDDBD16395F120065D024 /* background12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background12.png; sourceTree = "<group>"; };
 		C4FCDDBE16395F120065D024 /* background13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background13.png; sourceTree = "<group>"; };
@@ -1273,6 +1271,8 @@
 				6A6ED09F17D57F9B009FFA56 /* MaritalStatus.m */,
 				6A6ED0A517D591DC009FFA56 /* Religion.h */,
 				6A6ED0A617D591DC009FFA56 /* Religion.m */,
+				6A4ACBB517E843190037C358 /* Country.h */,
+				6A4ACBB617E843190037C358 /* Country.m */,
 			);
 			name = PopOver;
 			sourceTree = "<group>";
@@ -1336,9 +1336,8 @@
 		C4EB491A161537B100C7FC8C /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				C4EC68A817DF267B0063599A /* UL_Rates.sqlite */,
-				6A6ED0A817D5B74D009FFA56 /* HLA_Rates.sqlite */,
-				6A6ED0A917D5B74D009FFA56 /* hladb.sqlite */,
+				6A4ACBB117E8429F0037C358 /* HLA_Rates.sqlite */,
+				6A4ACBB217E8429F0037C358 /* hladb.sqlite */,
 				C4E643811724F175001DF8F8 /* Rates.json */,
 				C4F45DF2165C6C430035CAA9 /* viewer.plist */,
 				C486DAB7163FB928009F8F21 /* Databases.db */,
@@ -1382,9 +1381,6 @@
 			isa = PBXGroup;
 			children = (
 				C4F8302C162FCEE000EF8FAA /* HLassurance.png */,
-				C4F8302D162FCEE000EF8FAA /* Page1.html */,
-				C4F8302E162FCEE000EF8FAA /* Page2.html */,
-				C4F8302F162FCEE000EF8FAA /* Page3.html */,
 				C4F83030162FCEE000EF8FAA /* style.css */,
 			);
 			name = html;
@@ -1825,10 +1821,9 @@
 				6A6ED09717D49937009FFA56 /* Race.plist in Resources */,
 				6A6ED0A217D57FD6009FFA56 /* MaritalStatus.plist in Resources */,
 				6A6ED0A417D59186009FFA56 /* Religion.plist in Resources */,
-				6A6ED0AA17D5B74D009FFA56 /* HLA_Rates.sqlite in Resources */,
-				6A6ED0AB17D5B74D009FFA56 /* hladb.sqlite in Resources */,
 				6A6ED0AD17D5E97E009FFA56 /* Country.plist in Resources */,
-				C4EC68A917DF267B0063599A /* UL_Rates.sqlite in Resources */,
+				6A4ACBB317E8429F0037C358 /* HLA_Rates.sqlite in Resources */,
+				6A4ACBB417E8429F0037C358 /* hladb.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1991,6 +1986,7 @@
 				6A6ED09D17D49B73009FFA56 /* Race.m in Sources */,
 				6A6ED0A017D57F9B009FFA56 /* MaritalStatus.m in Sources */,
 				6A6ED0A717D591DC009FFA56 /* Religion.m in Sources */,
+				6A4ACBB717E843190037C358 /* Country.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

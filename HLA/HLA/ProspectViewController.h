@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 InfoConnect Sdn Bhd. All rights reserved.
 //
 
+//test 1
 #import <UIKit/UIKit.h>
 #import <sqlite3.h>
 #import "OccupationList.h"
@@ -17,12 +18,13 @@
 #import "Race.h"
 #import "MaritalStatus.h"
 #import "Religion.h"
+#import "Country.h"
 
 @protocol ProspectViewControllerDelegate
 - (void)FinishInsert;
 @end
 
-@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate, UITextFieldDelegate,UITextViewDelegate,NatinalityDelegate,RaceDelegate,MaritalStatusDelegate,ReligionDelegate>{
+@interface ProspectViewController : UIViewController<IDTypeDelegate,SIDateDelegate,IDTypeDelegate, OccupationListDelegate,TitleDelegate,GroupDelegate, UITextFieldDelegate,UITextViewDelegate,NatinalityDelegate,RaceDelegate,MaritalStatusDelegate,ReligionDelegate,CountryDelegate>{
     NSString *databasePath;
     sqlite3 *contactDB;
     UITextField *activeField;
@@ -42,6 +44,7 @@
     UIPopoverController *_ReligionListPopover;
     UIPopoverController *_RaceListPopover;
     UIPopoverController *_MaritalStatusPopover;
+    UIPopoverController *_CountryListPopover;
     UIPopoverController *_nationalityPopover;
     UIPopoverController *_nationalityPopover2;
     id<ProspectViewControllerDelegate> _delegate;
@@ -57,10 +60,14 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, strong) TitleViewController *TitlePicker;
 @property (strong, nonatomic) IBOutlet UIButton *btnTitle;
+@property (strong, nonatomic) IBOutlet UIButton *btnOtherIdType;
+
 @property (nonatomic, strong) Race *raceList;
+@property (nonatomic, strong) Country *CountryList;
 @property (nonatomic, strong) MaritalStatus *MaritalStatusList;
 @property (nonatomic, strong) Religion *ReligionList;
 @property (nonatomic, strong) UIPopoverController *ReligionListPopover;
+@property (nonatomic, strong) UIPopoverController *CountryListPopover;
 @property (nonatomic, strong) UIPopoverController *raceListPopover;
 @property (nonatomic, strong) UIPopoverController *MaritalStatusPopover;
 @property (nonatomic, strong) UIPopoverController *TitlePickerPopover;

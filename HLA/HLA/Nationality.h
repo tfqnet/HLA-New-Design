@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol NatinalityDelegate
--(void)selectedCountry:(NSString *)theCountry;
+
 -(void)selectedNationality:(NSString *)selectedNationality;
 
 @end
