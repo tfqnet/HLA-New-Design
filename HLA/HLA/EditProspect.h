@@ -110,6 +110,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnForeignOffice;
 @property (strong, nonatomic) IBOutlet UIButton *btnOfficeCountry;
 @property (strong, nonatomic) IBOutlet UIButton *btnHomeCountry;
+@property (weak, nonatomic) IBOutlet UIButton *outletNationality;
 
 - (IBAction)ActionHomeCountry:(id)sender;
 - (IBAction)addNewGroup:(id)sender;

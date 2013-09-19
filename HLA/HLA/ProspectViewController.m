@@ -1490,6 +1490,12 @@ bool PostcodeContinue = TRUE;
     }
     
     
+    if ([outletMaritalStatus.titleLabel.text isEqualToString:@"- Select -"]) {
+        NSLog(@"haaa!!!");
+    }
+    
+    
+    
     if(![txtPrefix1.text isEqualToString:@""]) {
         
         if ([txtContact1.text isEqualToString:@""]) {
@@ -2258,6 +2264,34 @@ bool PostcodeContinue = TRUE;
         outletMaritalStatus.enabled = YES;
         outletMaritalStatus.titleLabel.textColor = [UIColor blackColor];
     }
+    else if([selectedIDType isEqualToString:@"Birth Certificate"])
+    {
+        companyCase = NO;
+        
+        txtIDType.backgroundColor = [UIColor whiteColor];
+        txtIDType.enabled = YES;
+        
+        
+        
+        outletTitle.enabled = YES;
+        outletTitle.titleLabel.textColor = [UIColor blackColor];
+        
+        OtherIDType.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        txtOtherIDType.backgroundColor = [UIColor whiteColor];
+        txtOtherIDType.enabled = YES;
+        
+        outletRace.titleLabel.textColor = [UIColor blackColor];
+        outletRace.enabled = YES;
+        
+        outletReligion.enabled = YES;
+        outletReligion.titleLabel.textColor = [UIColor blackColor];
+        
+        outletNationality.enabled = YES;
+        outletNationality.titleLabel.textColor = [UIColor blackColor];
+        
+        outletMaritalStatus.enabled = YES;
+        outletMaritalStatus.titleLabel.textColor = [UIColor blackColor];
+    }
     
     else if([selectedIDType isEqualToString:@"Company Registration Number"])
     {
@@ -2266,8 +2300,8 @@ bool PostcodeContinue = TRUE;
         txtOtherIDType.backgroundColor = [UIColor whiteColor];
         txtOtherIDType.enabled = YES;
         
-        txtIDType.enabled = YES;
-        txtIDType.backgroundColor = [UIColor whiteColor];
+        txtIDType.enabled = NO;
+        txtIDType.backgroundColor = [CustomColor colorWithHexString:@"EEEEEE"];
         
         outletTitle.enabled = NO;
         //outletTitle.titleLabel.text = @"-";
@@ -2393,7 +2427,7 @@ bool PostcodeContinue = TRUE;
 -(void)selectedRace:(NSString *)theRace
 {
     
-    
+    outletRace.titleLabel.text = theRace;
     outletRace.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [outletRace setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",theRace]forState:UIControlStateNormal];
     [self.raceListPopover dismissPopoverAnimated:YES];

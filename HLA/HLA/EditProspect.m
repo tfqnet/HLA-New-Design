@@ -45,7 +45,7 @@
 @synthesize txtExactDuties,btnOfficeCountry;
 @synthesize txtrFullName,segSmoker,txtBussinessType,txtAnnIncome;
 @synthesize segGender,txtIDType,txtOtherIDType,OccupCodeSelected;
-@synthesize outletDOB,outletGroup,outletTitle,OtherIDType;
+@synthesize outletDOB,outletGroup,outletTitle,OtherIDType,outletNationality;
 @synthesize txtContact1, gender,btnHomeCountry;
 @synthesize txtEmail, pp, DOB, SelectedStateCode,SelectedOfficeStateCode;
 @synthesize OccupationList = _OccupationList;
@@ -2609,6 +2609,14 @@ bool IsContinue = TRUE;
     }
     [self.IDTypePickerPopover dismissPopoverAnimated:YES];
     
+}
+
+-(void)selectedNationality:(NSString *)selectedNationality
+{
+    
+    outletNationality.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [outletNationality setTitle:[[NSString stringWithFormat:@" "] stringByAppendingFormat:@"%@",selectedNationality]forState:UIControlStateNormal];
+    [self.nationalityPopover dismissPopoverAnimated:YES];
 }
 
 - (void)OccupCodeSelected:(NSString *)OccupCode
